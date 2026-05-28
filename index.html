@@ -158,6 +158,8 @@ select, input, textarea { color-scheme: dark; }
 .ntb-warning{background:#FCEBEB;color:#791F1F;}
 .ntb-coaching{background:#EEEDFE;color:#3C3489;}
 .ntb-pip{background:#E24B4A;color:#fff;}
+.ntb-observation{background:#E3EAF2;color:#2A4567;}
+.ntb-latecallin{background:#FCE8D6;color:#7A4A12;}
 .note-text{font-size:12px;color:var(--color-text-primary);line-height:1.6;}
 .editable-row{display:flex;align-items:center;gap:6px;}
 .edit-pencil{font-size:11px;padding:2px 5px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;opacity:0;transition:opacity .15s;flex-shrink:0;font-family:inherit;}
@@ -414,13 +416,13 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
     <div class="chips" id="hrSum"></div><div id="hrLog"></div>
   </div>
   <div class="card">
-    <div class="ct">Log coaching note</div>
+    <div class="ct">Log note, observation, or late/call-in</div>
     <div class="igrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
       <div class="ig"><label>Rep</label><select id="cnRep"></select></div>
       <div class="ig"><label>Date</label><input type="date" id="cnDate"></div>
       <div class="ig"><label>Note type</label>
-        <select id="cnType">
-          <option value="coaching">Coaching session</option><option value="positive">Positive recognition</option><option value="concern">Performance concern</option><option value="warning">Warning discussion</option><option value="pip">PIP check-in</option>
+        <select id="cnType" onchange="_cnUpdatePlaceholder()">
+          <option value="coaching">Coaching session</option><option value="positive">Positive recognition</option><option value="concern">Performance concern</option><option value="warning">Warning discussion</option><option value="pip">PIP check-in</option><option value="observation">Observation</option><option value="latecallin">Late / call-in</option>
         </select>
       </div>
       <div class="ig"><label>Tied to week</label><select id="cnWeek"><option value="">None</option></select></div>
@@ -430,7 +432,7 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
   </div>
   <div class="card">
     <div class="ct">Coaching notes log <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);">&#8212; hover to edit</span></div>
-    <div class="filter-row"><label>Rep:</label><select id="cnFR" onchange="renderCNL()"><option value="all">All reps</option></select><label>Type:</label><select id="cnFT" onchange="renderCNL()"><option value="all">All</option><option value="coaching">Coaching</option><option value="positive">Positive</option><option value="concern">Concern</option><option value="warning">Warning</option><option value="pip">PIP</option></select><label>Year:</label><select id="cnFYr" onchange="renderCNL()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+    <div class="filter-row"><label>Rep:</label><select id="cnFR" onchange="renderCNL()"><option value="all">All reps</option></select><label>Type:</label><select id="cnFT" onchange="renderCNL()"><option value="all">All</option><option value="coaching">Coaching</option><option value="positive">Positive</option><option value="concern">Concern</option><option value="warning">Warning</option><option value="pip">PIP</option><option value="observation">Observation</option><option value="latecallin">Late / call-in</option></select><label>Year:</label><select id="cnFYr" onchange="renderCNL()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
     <div id="cnLog"></div>
   </div>
   <div class="card"><div class="ct">HR summary by rep</div><div id="hrSummaryByRep"></div></div>
@@ -1024,8 +1026,8 @@ const MI={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec
 const YEARS=[2026,2027,2028,2029,2030];
 const QTRS=['Q1','Q2','Q3','Q4'];
 const HR_CATS={tardy:{label:'Tardy',pts:.5,badge:'hr-tardy',note:'Tardy = 0.5 pts'},absence:{label:'Unexcused absence',pts:1,badge:'hr-absence',note:'Absence = 1 pt'},conduct:{label:'Conduct issue',pts:1,badge:'hr-conduct',note:'Conduct = 1 pt'},performance:{label:'Performance warning',pts:1,badge:'hr-perf',note:'Performance warning = 1 pt'},verbal:{label:'Verbal warning',pts:1,badge:'hr-verbal',note:'Verbal warning = 1 pt'},written:{label:'Written warning',pts:2,badge:'hr-written',note:'Written warning = 2 pts'},final:{label:'Final written warning',pts:3,badge:'hr-final',note:'Final warning = 3 pts'},pip:{label:'PIP',pts:5,badge:'hr-pip',note:'PIP = 5 pts'}};
-const CN_TYPES={coaching:'Coaching session',positive:'Positive recognition',concern:'Performance concern',warning:'Warning discussion',pip:'PIP check-in'};
-const CN_BADGES={coaching:'ntb-coaching',positive:'ntb-positive',concern:'ntb-concern',warning:'ntb-warning',pip:'ntb-pip'};
+const CN_TYPES={coaching:'Coaching session',positive:'Positive recognition',concern:'Performance concern',warning:'Warning discussion',pip:'PIP check-in',observation:'Observation',latecallin:'Late / call-in'};
+const CN_BADGES={coaching:'ntb-coaching',positive:'ntb-positive',concern:'ntb-concern',warning:'ntb-warning',pip:'ntb-pip',observation:'ntb-observation',latecallin:'ntb-latecallin'};
 const PROFILE_FIELDS=[{key:'hireDate',label:'Hire date',emoji:'📅',type:'date'},{key:'birthday',label:'Birthday',emoji:'🎂',type:'date'},{key:'favFood',label:'Favorite food',emoji:'🍕',type:'text',placeholder:'e.g. Pizza'},{key:'favCandy',label:'Favorite candy',emoji:'🍬',type:'text',placeholder:"e.g. Reese's"},{key:'favDrink',label:'Favorite drink',emoji:'🥤',type:'text',placeholder:'e.g. Iced tea'},{key:'starbucks',label:'Starbucks order',emoji:'☕',type:'text',placeholder:'e.g. Venti iced latte'},{key:'favMovie',label:'Favorite movie',emoji:'🎬',type:'text',placeholder:'e.g. Interstellar'},{key:'favBook',label:'Favorite book',emoji:'📚',type:'text',placeholder:'e.g. Atomic Habits'}];
 const REPORT_TYPE_META={meeting:{label:'Meeting report',badge:'rtb-meeting',icon:'📊'},review:{label:'Performance review',badge:'rtb-review',icon:'📝'},rep:{label:'Rep report',badge:'rtb-rep',icon:'👤'},team:{label:'Team report',badge:'rtb-team',icon:'👥'},ai:{label:'AI analysis',badge:'rtb-ai',icon:'✦'}};
 
@@ -1658,6 +1660,7 @@ function renderHRL(){let fr=document.getElementById('hrFR')?.value||'all',fc=doc
 function editHR(id){let v=S.hrViolations.find(x=>x.id===id);if(!v)return;document.querySelectorAll('.inline-edit-box').forEach(el=>el.remove());let box=document.getElementById('hr_edit_'+id);if(!box)return;let catOpts=Object.entries(HR_CATS).map(([k,h])=>'<option value="'+k+'"'+(v.cat===k?' selected':'')+'>'+h.label+'</option>').join('');box.innerHTML='<div class="inline-edit-box"><div class="ig"><label>Rep</label><select id="hie_rep_'+id+'">'+S.reps.map(r=>'<option'+(v.rep===r.name?' selected':'')+'>'+r.name+'</option>').join('')+'</select></div><div class="ig"><label>Date</label><input id="hie_date_'+id+'" type="date" value="'+v.date+'"></div><div class="ig"><label>Category</label><select id="hie_cat_'+id+'">'+catOpts+'</select></div><div class="ig"><label>Points</label><input id="hie_pts_'+id+'" type="number" value="'+v.pts+'" min="0" max="10" style="width:60px;"></div><div class="ig" style="flex:1;min-width:200px;"><label>Description</label><textarea id="hie_desc_'+id+'">'+(v.desc||'')+'</textarea></div><div style="display:flex;gap:6px;width:100%;margin-top:4px;"><button class="ie-save" onclick="saveHREdit('+id+')">✓ Save</button><button class="ie-cancel" onclick="document.getElementById(\'hr_edit_'+id+'\').innerHTML=\'\'">Cancel</button></div></div>';}
 function saveHREdit(id){let v=S.hrViolations.find(x=>x.id===id);if(!v)return;v.rep=document.getElementById('hie_rep_'+id)?.value||v.rep;v.date=document.getElementById('hie_date_'+id)?.value||v.date;v.cat=document.getElementById('hie_cat_'+id)?.value||v.cat;v.pts=parseFloat(document.getElementById('hie_pts_'+id)?.value)||v.pts;v.desc=document.getElementById('hie_desc_'+id)?.value||'';v.yr=new Date(v.date+'T12:00:00').getFullYear();v.q=dateToQ(v.date,v.yr)||v.q;renderHRL();renderHRSummaryByRep();}
 function saveCN(){let rep=document.getElementById('cnRep').value,date=document.getElementById('cnDate').value,type=document.getElementById('cnType').value,week=document.getElementById('cnWeek').value,note=document.getElementById('cnNote').value.trim();if(!note||!date){alert('Please enter a date and note.');return;}let yr=new Date(date+'T12:00:00').getFullYear(),q=dateToQ(date,yr)||getQ();S.coachingNotes.push({id:Date.now(),rep,date,yr,q,type,week,note});document.getElementById('cnDate').value='';document.getElementById('cnNote').value='';let m=document.getElementById('cnMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);renderCNL();markDirty();}
+function _cnUpdatePlaceholder(){var t=(document.getElementById('cnType')||{}).value;var ta=document.getElementById('cnNote');if(!ta)return;var hints={coaching:'What was discussed...',positive:'What they did well...',concern:'What the concern is...',warning:'What was discussed...',pip:'Progress / check-in notes...',observation:'What you observed (no action needed, just logging it)...',latecallin:'e.g. Called in sick / arrived 25 min late / left early — time + reason if known'};ta.placeholder=hints[t]||'Details...';}
 function deleteCN(id){S.coachingNotes=S.coachingNotes.filter(n=>n.id!==id);renderCNL();markDirty();}
 function renderCNL(){let fr=document.getElementById('cnFR')?.value||'all',ft=document.getElementById('cnFT')?.value||'all',fyr=document.getElementById('cnFYr')?.value||'all';let f=S.coachingNotes.filter(n=>(fr==='all'||n.rep===fr)&&(ft==='all'||n.type===ft)&&(fyr==='all'||n.yr==fyr));let el=document.getElementById('cnLog');if(!f.length){el.innerHTML='<p style="font-size:12px;color:var(--color-text-secondary);padding:.4rem 0;">No notes found.</p>';return;}el.innerHTML=f.slice().reverse().map(n=>'<div class="note-card type-'+n.type+'" id="cn_row_'+n.id+'"><div class="editable-row" style="align-items:flex-start;"><div style="flex:1;"><div class="note-meta"><span style="font-size:12px;font-weight:500;">'+n.rep+'</span><span class="note-type-badge '+(CN_BADGES[n.type]||'ntb-coaching')+'">'+(CN_TYPES[n.type]||n.type)+'</span><span class="note-date">'+fdfull(n.date)+'</span></div><div class="note-text">'+n.note+'</div></div><div style="display:flex;gap:5px;flex-shrink:0;margin-left:8px;">'+pencil('editCN('+n.id+')')+'<button class="rbtn" onclick="deleteCN('+n.id+')" style="font-size:10px;padding:2px 5px;">✕</button></div></div><div id="cn_edit_'+n.id+'"></div></div>').join('');}
 function editCN(id){let n=S.coachingNotes.find(x=>x.id===id);if(!n)return;document.querySelectorAll('.inline-edit-box').forEach(el=>el.remove());let box=document.getElementById('cn_edit_'+id);if(!box)return;let typeOpts=Object.entries(CN_TYPES).map(([k,l])=>'<option value="'+k+'"'+(n.type===k?' selected':'')+'>'+l+'</option>').join('');box.innerHTML='<div class="inline-edit-box"><div class="ig"><label>Rep</label><select id="cnie_rep_'+id+'">'+S.reps.map(r=>'<option'+(n.rep===r.name?' selected':'')+'>'+r.name+'</option>').join('')+'</select></div><div class="ig"><label>Date</label><input id="cnie_date_'+id+'" type="date" value="'+n.date+'"></div><div class="ig"><label>Type</label><select id="cnie_type_'+id+'">'+typeOpts+'</select></div><div class="ig" style="flex:1;min-width:220px;"><label>Note</label><textarea id="cnie_note_'+id+'">'+n.note+'</textarea></div><div style="display:flex;gap:6px;width:100%;margin-top:4px;"><button class="ie-save" onclick="saveCNEdit('+id+')">✓ Save</button><button class="ie-cancel" onclick="document.getElementById(\'cn_edit_'+id+'\').innerHTML=\'\'">Cancel</button></div></div>';}
@@ -8196,19 +8199,25 @@ function _gistLoadCreds(){
   }catch(e){}
 }
 
-// Build the same full-state payload that exportAllData produces
-function _buildBackupPayload(){
+// Build the CLOUD payload for GitHub Gist sync.
+// EXCLUDES rep photos (base64 blobs) — they're large and would blow past GitHub's
+// ~1MB inline gist limit, which breaks Load (truncated files need a CORS-blocked URL).
+// Photos stay local; everything else (reps, goals, weekly data, games, tracker) syncs.
+// NOTE: distinct from _buildBackupPayload (used for local file + export), which keeps photos.
+function _buildCloudPayload(){
   var dump={};
+  var skippedPhotos=0;
   for(var i=0;i<localStorage.length;i++){
     var k=localStorage.key(i);
-    // Don't sync the token itself into the cloud copy
-    if(k===GIST_TOKEN_STORE)continue;
+    if(k===GIST_TOKEN_STORE)continue; // never sync the token
+    if(k.indexOf('salesTracker_photo_')===0){skippedPhotos++;continue;} // skip photos
     dump[k]=localStorage.getItem(k);
   }
   return{
     exportedAt:new Date().toISOString(),
     version:'TCP_Tracker_Backup_v1',
     keyCount:Object.keys(dump).length,
+    photosExcluded:skippedPhotos,
     data:dump
   };
 }
@@ -8274,12 +8283,14 @@ async function saveToCloud(){
   if(btn){btn.disabled=true;btn.textContent='Saving...';}
   _gistStatus('Pushing data to the cloud...','#A8B8FF');
   try{
-    var payload=_buildBackupPayload();
+    var payload=_buildCloudPayload();
+    var payloadStr=JSON.stringify(payload,null,2);
+    var sizeKB=Math.round(payloadStr.length/1024);
     var body={
       description:'TCP Sales Tracker data \u2014 updated '+new Date().toLocaleString(),
       files:{}
     };
-    body.files[GIST_FILENAME]={content:JSON.stringify(payload,null,2)};
+    body.files[GIST_FILENAME]={content:payloadStr};
     var url='https://api.github.com/gists'+(gistId?'/'+gistId:'');
     var method=gistId?'PATCH':'POST';
     if(!gistId)body.public=false; // create as secret gist
@@ -8300,7 +8311,8 @@ async function saveToCloud(){
       gistId=data.id;
     }
     try{localStorage.setItem('_tcp_last_cloud_save',new Date().toISOString());}catch(e){}
-    _gistStatus('\u2705 Saved to cloud '+new Date().toLocaleTimeString()+'. Gist ID: <strong style="font-family:monospace;">'+gistId+'</strong>'+(method==='POST'?' <em>(new private Gist created \u2014 share this ID)</em>':''),'#5DCAA5');
+    var sizeWarn=sizeKB>900?' <strong style="color:#EF9F27;">\u26A0 '+sizeKB+'KB \u2014 getting close to GitHub\u0027s 1MB limit; if Load ever fails, you have too much data to sync this way.</strong>':' ('+sizeKB+'KB'+(payload.photosExcluded?', '+payload.photosExcluded+' photos kept local':'')+')';
+    _gistStatus('\u2705 Saved to cloud '+new Date().toLocaleTimeString()+'. Gist ID: <strong style="font-family:monospace;">'+gistId+'</strong>'+(method==='POST'?' <em>(new private Gist created \u2014 share this ID)</em>':'')+sizeWarn,'#5DCAA5');
   }catch(e){
     console.error('[cloud save]',e);
     var hint='';
@@ -8330,10 +8342,15 @@ async function loadFromCloud(){
     var file=data.files&&(data.files[GIST_FILENAME]||data.files[Object.keys(data.files)[0]]);
     if(!file)throw new Error('No data file found in that Gist.');
     var content=file.content;
-    // GitHub truncates large gist files inline; fetch raw_url if so
+    // GitHub truncates large gist files inline; fetch raw_url if so (may be CORS-blocked in browser)
     if(file.truncated&&file.raw_url){
-      var rawResp=await fetch(file.raw_url);
-      content=await rawResp.text();
+      try{
+        var rawResp=await fetch(file.raw_url);
+        if(!rawResp.ok)throw new Error('raw fetch '+rawResp.status);
+        content=await rawResp.text();
+      }catch(rawErr){
+        throw new Error('The cloud data is too large to load in the browser (over GitHub\u0027s 1MB inline limit). Re-save from the source machine \u2014 photos are now excluded, which should keep it small enough. If it still fails, you have too much data for Gist sync.');
+      }
     }
     var parsed=JSON.parse(content);
     if(!parsed||!parsed.data||parsed.version!=='TCP_Tracker_Backup_v1'){
