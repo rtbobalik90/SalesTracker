@@ -900,6 +900,7 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
         <input type="text" id="gistIdInput" placeholder="e.g. a1b2c3d4e5f6..." oninput="saveGistId()" autocomplete="off" spellcheck="false" style="display:block;width:100%;margin-top:4px;font-size:12px;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:6px;background:var(--color-background-primary);color:var(--color-text-primary);font-family:monospace;">
       </label>
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button class="sbtn" id="gistTestBtn" onclick="testGistToken()" style="background:#1A1F2A;border-color:#EF9F27;color:#EF9F27;font-weight:600;">&#129514; Test token</button>
         <button class="sbtn" id="gistSaveBtn" onclick="saveToCloud()" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:600;">&#9729;&#65039;&#11015; Save to cloud</button>
         <button class="sbtn" id="gistLoadBtn" onclick="loadFromCloud()" style="background:#1A1F2A;border-color:#A8B8FF;color:#A8B8FF;font-weight:600;">&#9729;&#65039;&#11014; Load from cloud</button>
         <button class="sbtn" onclick="document.getElementById('gistTokenInput').type=document.getElementById('gistTokenInput').type==='password'?'text':'password'" style="font-size:11px;padding:5px 10px;">Show/hide token</button>
@@ -8212,8 +8213,61 @@ function _buildBackupPayload(){
   };
 }
 
+// Try a GitHub API request with Bearer, falling back to token-prefix on 401.
+async function _gistFetch(url,token,opts){
+  opts=opts||{};
+  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json'},opts.headers||{});
+  var h1=Object.assign({},baseHeaders);
+  if(token)h1['Authorization']='Bearer '+token;
+  var resp=await fetch(url,Object.assign({},opts,{headers:h1}));
+  if(resp.status===401&&token){
+    // Retry with the classic "token" prefix
+    var h2=Object.assign({},baseHeaders);
+    h2['Authorization']='token '+token;
+    var resp2=await fetch(url,Object.assign({},opts,{headers:h2}));
+    return resp2;
+  }
+  return resp;
+}
+
+async function testGistToken(){
+  var token=((document.getElementById('gistTokenInput')||{}).value||'').replace(/\s+/g,'');
+  if(!token){_gistStatus('\u26A0 Enter a token first, then test.','#EF9F27');return;}
+  var btn=document.getElementById('gistTestBtn');
+  if(btn){btn.disabled=true;btn.textContent='Testing...';}
+  _gistStatus('Testing token against GitHub...','#A8B8FF');
+  try{
+    var resp=await _gistFetch('https://api.github.com/user',token);
+    if(resp.status===401){
+      _gistStatus('\u274C GitHub says the token is invalid (401 Bad credentials). The token string itself isn\u0027t active. Make a brand-new <strong>classic</strong> token, copy it with GitHub\u0027s copy button, and paste it here. (If you JUST made it, give it a few seconds and retest.)','#F09595');
+      return;
+    }
+    if(!resp.ok){
+      var t=await resp.text();
+      _gistStatus('\u274C GitHub error '+resp.status+': '+esc_html(t.substring(0,160)),'#F09595');
+      return;
+    }
+    var u=await resp.json();
+    var scopes=resp.headers.get('x-oauth-scopes');
+    var hasGist=scopes!==null&&scopes.split(',').map(function(s){return s.trim();}).indexOf('gist')>=0;
+    var scopeMsg;
+    if(scopes===null){
+      scopeMsg='(couldn\u0027t read scope list \u2014 if save/load fails, your token is likely missing the gist scope)';
+    } else if(hasGist){
+      scopeMsg='Gist scope present \u2705 \u2014 you\u0027re good. Click <strong>Save to cloud</strong>.';
+    } else {
+      scopeMsg='\u26A0 <strong>No gist scope!</strong> Scopes found: ['+esc_html(scopes||'none')+']. Regenerate the token and CHECK THE gist BOX, then paste the new one.';
+    }
+    _gistStatus('\u2705 Token works \u2014 authenticated as <strong>'+esc_html(u.login||'?')+'</strong>. '+scopeMsg,hasGist?'#5DCAA5':'#EF9F27');
+  }catch(e){
+    _gistStatus('\u274C Could not reach GitHub at all: '+esc_html(e.message||String(e))+'. This usually means a corporate firewall/proxy/antivirus is blocking api.github.com from your browser. If so, cloud sync won\u0027t work on this network \u2014 use Download/Upload JSON instead.','#F09595');
+  }finally{
+    if(btn){btn.disabled=false;btn.innerHTML='\uD83E\uDDEA Test token';}
+  }
+}
+
 async function saveToCloud(){
-  var token=((document.getElementById('gistTokenInput')||{}).value||'').trim();
+  var token=((document.getElementById('gistTokenInput')||{}).value||'').replace(/\s+/g,'');
   var gistId=((document.getElementById('gistIdInput')||{}).value||'').trim();
   if(!token){_gistStatus('\u26A0 Enter your GitHub token first.','#EF9F27');return;}
   var btn=document.getElementById('gistSaveBtn');
@@ -8229,9 +8283,9 @@ async function saveToCloud(){
     var url='https://api.github.com/gists'+(gistId?'/'+gistId:'');
     var method=gistId?'PATCH':'POST';
     if(!gistId)body.public=false; // create as secret gist
-    var resp=await fetch(url,{
+    var resp=await _gistFetch(url,token,{
       method:method,
-      headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify(body)
     });
     if(!resp.ok){
@@ -8250,7 +8304,7 @@ async function saveToCloud(){
   }catch(e){
     console.error('[cloud save]',e);
     var hint='';
-    if(String(e.message).indexOf('401')>=0)hint=' \u2014 token invalid or missing Gist scope.';
+    if(String(e.message).indexOf('401')>=0)hint=' \u2014 token not recognized by GitHub. It may be incomplete, expired, or revoked (including auto-revoked if it was exposed). Generate a fresh classic token with the gist scope and paste it using GitHub\u0027s copy button.';
     else if(String(e.message).indexOf('404')>=0)hint=' \u2014 Gist ID not found, or token can\u0027t access it.';
     _gistStatus('\u274C Save failed: '+esc_html(e.message)+hint,'#F09595');
   }finally{
@@ -8259,7 +8313,7 @@ async function saveToCloud(){
 }
 
 async function loadFromCloud(){
-  var token=((document.getElementById('gistTokenInput')||{}).value||'').trim();
+  var token=((document.getElementById('gistTokenInput')||{}).value||'').replace(/\s+/g,'');
   var gistId=((document.getElementById('gistIdInput')||{}).value||'').trim();
   if(!gistId){_gistStatus('\u26A0 Enter the Gist ID to load from.','#EF9F27');return;}
   if(!confirm('LOAD FROM CLOUD:\n\nThis REPLACES all current tracker data with the cloud copy. Any local changes since the last save will be lost.\n\nThe page will reload afterward. Continue?'))return;
@@ -8267,9 +8321,7 @@ async function loadFromCloud(){
   if(btn){btn.disabled=true;btn.textContent='Loading...';}
   _gistStatus('Pulling data from the cloud...','#A8B8FF');
   try{
-    var headers={'Accept':'application/vnd.github+json'};
-    if(token)headers['Authorization']='Bearer '+token;
-    var resp=await fetch('https://api.github.com/gists/'+gistId,{headers:headers});
+    var resp=await _gistFetch('https://api.github.com/gists/'+gistId,token);
     if(!resp.ok){
       var errTxt=await resp.text();
       throw new Error('GitHub API '+resp.status+': '+(errTxt.substring(0,200)));
@@ -8300,7 +8352,7 @@ async function loadFromCloud(){
     console.error('[cloud load]',e);
     var hint='';
     if(String(e.message).indexOf('404')>=0)hint=' \u2014 Gist ID not found or token can\u0027t access it.';
-    else if(String(e.message).indexOf('401')>=0)hint=' \u2014 token invalid.';
+    else if(String(e.message).indexOf('401')>=0)hint=' \u2014 token not recognized by GitHub. It may be incomplete, expired, or revoked. Generate a fresh classic token with the gist scope, copy it with GitHub\u0027s copy button, and try Save to cloud first to confirm it works.';
     _gistStatus('\u274C Load failed: '+esc_html(e.message)+hint,'#F09595');
     if(btn){btn.disabled=false;btn.innerHTML='\u2601\uFE0F\u2B06 Load from cloud';}
   }
