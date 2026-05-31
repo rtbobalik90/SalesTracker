@@ -2249,18 +2249,29 @@ function loadWeeklyProjects(){
   try{var s=localStorage.getItem(WEEKLY_PROJECTS_STORE);return s?JSON.parse(s):{};}catch(e){return {};}
 }
 function saveWeeklyProjects(obj){
-  try{localStorage.setItem(WEEKLY_PROJECTS_STORE,JSON.stringify(obj));}catch(e){}
+  try{
+    localStorage.setItem(WEEKLY_PROJECTS_STORE,JSON.stringify(obj));
+    return true;
+  }catch(e){
+    console.error('[weeklyProjects] save failed:',e);
+    return false;
+  }
 }
 function getWeeklyProjects(weekKey){
   var all=loadWeeklyProjects();
   return Array.isArray(all[weekKey])?all[weekKey]:[];
 }
 function addWeeklyProject(weekKey,text){
-  if(!weekKey||!text||!text.trim())return;
-  var all=loadWeeklyProjects();
-  if(!Array.isArray(all[weekKey]))all[weekKey]=[];
-  all[weekKey].push(text.trim());
-  saveWeeklyProjects(all);
+  if(!weekKey||!text||!text.trim())return false;
+  try{
+    var all=loadWeeklyProjects();
+    if(!Array.isArray(all[weekKey]))all[weekKey]=[];
+    all[weekKey].push(text.trim());
+    return saveWeeklyProjects(all);
+  }catch(e){
+    console.error('[weeklyProjects] add failed:',e);
+    return false;
+  }
 }
 function removeWeeklyProject(weekKey,idx){
   var all=loadWeeklyProjects();
@@ -2316,10 +2327,9 @@ function getWeekBeforeKey(weekKey){
 // Add a project item via the input box
 function addProjectItemFromInput(){
   var input=document.getElementById('projItemInput');
-  if(!input)return;
+  if(!input){alert('[Project oversight] input field missing — try switching tabs and back.');return;}
   var text=input.value.trim();
-  if(!text)return;
-  // Items get added to whatever week is selected in the dropdown (the report week)
+  if(!text){input.focus();return;}
   var sel=document.getElementById('mtgWeekSel');
   var targetKey=sel?sel.value:null;
   if(!targetKey){
@@ -2327,9 +2337,25 @@ function addProjectItemFromInput(){
     if(!cw){alert('Could not determine which week to add this item to.');return;}
     targetKey=cw.key;
   }
-  addWeeklyProject(targetKey,text);
+  var ok=addWeeklyProject(targetKey,text);
+  if(!ok){
+    alert('[Project oversight] Could not save the item. This usually means localStorage is full or blocked.\n\nWhat you typed: "'+text+'"\nTarget week: '+targetKey+'\n\nTry: Admin tab \u2192 export JSON backup, then close and reopen the browser. If it still fails, check Admin \u2192 Auto-save to file is connected.');
+    return;
+  }
   input.value='';
   renderWeeklyProjectsUI();
+  // Brief success blip on the now-fresh input
+  var freshInput=document.getElementById('projItemInput');
+  if(freshInput){
+    var orig=freshInput.style.borderColor;
+    freshInput.style.borderColor='#5DCAA5';
+    freshInput.placeholder='\u2713 Added \u2014 type the next one...';
+    setTimeout(function(){
+      freshInput.style.borderColor=orig||'';
+      // Restore the long placeholder by re-rendering
+      renderWeeklyProjectsUI();
+    },1200);
+  }
 }
 function removeProjectItemUI(weekKey,idx){
   removeWeeklyProject(weekKey,idx);
