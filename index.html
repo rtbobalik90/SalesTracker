@@ -315,6 +315,11 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
     </div>
     <div style="display:flex;align-items:center;gap:9px;"><button class="sbtn" onclick="saveE()">Save entry</button><span id="sMsg" style="display:none;font-size:12px;color:#3B6D11;">&#10003; Saved!</span></div>
   </div>
+  <div class="card" style="border-color:#7F77DD;background:var(--color-background-secondary);">
+    <div class="ct" style="margin-bottom:6px;">&#128101; Customer set sizes <span id="ssQtrLabel" style="font-size:11px;font-weight:400;color:var(--color-text-secondary);"></span></div>
+    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;line-height:1.5;">Set each rep&#39;s authoritative customer-set count for the current quarter. <strong>This overrides</strong> whatever weekly uploads compute, so reports show the real number. (Same value as &ldquo;Customers in set&rdquo; on the Goals card &mdash; edit either place.)</p>
+    <div id="setSizeBody"></div>
+  </div>
   <div class="card" style="border-color:#534AB7;background:var(--color-background-secondary);">
     <div class="ct" style="margin-bottom:7px;">&#128196; Bulk entry &#8212; fill for whole team at once</div>
     <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Download the entry template, fill in one row per rep, then upload. All reps update at once for the selected week.</p>
@@ -1254,8 +1259,8 @@ function buildMonthSel(q){let el=document.getElementById('selM');el.innerHTML=QM
 function buildWeekSel(){let yr=getYr(),q=getQ(),m=getM(),weeks=gwm(yr,q,m);let el=document.getElementById('selW');el.innerHTML=weeks.map(w=>'<option value="'+w.num+'">'+w.label+'</option>').join('');if(weeks.length)el.value=weeks[0].num;}
 function fwSel(id,yr,q){let el=document.getElementById(id);if(el)el.innerHTML=gwq(yr,q).map(w=>'<option value="'+w.key+'">'+w.label+'</option>').join('');}
 function updateDisplay(){let yr=getYr(),q=getQ(),m=getM(),wn=getWN();document.getElementById('currentBadge').textContent=q+' '+yr;let wks=gwm(yr,q,m),wk=wks.find(w=>w.num===wn);if(wk){document.getElementById('weekRange').textContent=fd(wk.start)+' – '+fd(wk.end);document.getElementById('ewl').textContent=wk.key+' ('+fd(wk.start)+' – '+fd(wk.end)+')';}let prev=getPrevWeek();let pl=document.getElementById('mtgPrevWeekLabel');if(pl)pl.textContent=prev?prev.label+' '+prev.key.split('_')[0]:'(no previous week found)';}
-function onYrChange(){buildMonthSel(getQ());buildWeekSel();updateDisplay();fwSel('cmWeek',getYr(),getQ());fwSel('aeWeek',getYr(),getQ());buildWeekOptional();renderDash();}
-function onQChange(){buildMonthSel(getQ());buildWeekSel();updateDisplay();fwSel('cmWeek',getYr(),getQ());fwSel('aeWeek',getYr(),getQ());buildWeekOptional();renderDash();}
+function onYrChange(){buildMonthSel(getQ());buildWeekSel();updateDisplay();fwSel('cmWeek',getYr(),getQ());fwSel('aeWeek',getYr(),getQ());buildWeekOptional();renderDash();if(document.getElementById('setSizeBody'))renderSetSizes();}
+function onQChange(){buildMonthSel(getQ());buildWeekSel();updateDisplay();fwSel('cmWeek',getYr(),getQ());fwSel('aeWeek',getYr(),getQ());buildWeekOptional();renderDash();if(document.getElementById('setSizeBody'))renderSetSizes();}
 function onMChange(){buildWeekSel();updateDisplay();renderDash();}
 function onWChange(){updateDisplay();renderDash();}
 function buildWeekOptional(){let yr=getYr(),q=getQ();let opts=[{key:'',label:'None'},...gwq(yr,q)];let html=opts.map(w=>'<option value="'+w.key+'">'+w.label+'</option>').join('');['hrWeek','cnWeek'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML=html;});}
@@ -1350,7 +1355,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,entry:()=>{renderRL();renderGoals();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();markDirty();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();markDirty();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},cknow:renderCKnow})[p]?.();}
 
 const CKNOW_CATS=[
   {key:'sales_process',title:'Sales Process',icon:'\ud83d\udcde',desc:'How leads come in, how reps qualify and close',questions:['How do reps typically find new leads (cold calls, referrals, trade shows, online, walk-ins)?','What does the typical sales cycle look like from first contact to closed order? How long does it usually take?','How do reps qualify prospects? What questions do you teach them to ask early?','What objections come up most often, and how do you handle them?','What deal sizes do you consider small, medium, large? What\'s the average order value?']},
@@ -2211,6 +2216,43 @@ function editBaselineBestSale(ri){
 }
 
 function setGoal(rep,yr,q,f,v){getGoal(rep,yr,q)[f]=v;markDirty();}
+
+// Render the per-rep quarterly customer set size inputs on the Data Entry tab.
+// Reads/writes the same S.goals[rep][yr][q].setSize as the Goals card — overrides weekly-averaged value in totW.
+function renderSetSizes(){
+  var body=document.getElementById('setSizeBody');
+  if(!body)return;
+  var lbl=document.getElementById('ssQtrLabel');
+  var yr=getYr(),q=getQ();
+  if(lbl)lbl.textContent='\u2014 '+q+' '+yr;
+  var reps=(typeof activeReps==='function'?activeReps():S.reps.filter(function(r){return r&&!r.retired&&r.name&&r.name.trim();}));
+  if(!reps.length){body.innerHTML='<p style="font-size:12px;color:var(--color-text-secondary);">No active reps.</p>';return;}
+  var html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;">';
+  reps.forEach(function(r){
+    var ri=S.reps.indexOf(r);
+    var g=getGoal(r.name,yr,q);
+    var cur=parseInt(g.setSize)||0;
+    var avEl=(typeof avatarEl==='function')?avatarEl(r,ri,28):'';
+    var safeName=(r.name||'').replace(/'/g,"\\'");
+    html+='<div style="display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:6px;">'
+      +avEl
+      +'<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc_html(r.name)+'</div></div>'
+      +'<input type="number" min="0" step="1" value="'+cur+'" '
+      +'oninput="setGoal(\''+safeName+'\','+yr+',\''+q+'\',\'setSize\',parseInt(this.value)||0);_ssDirtyBlip(this);" '
+      +'style="width:78px;font-size:13px;font-weight:600;text-align:right;padding:5px 7px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:5px;color:var(--color-text-primary);">'
+      +'<span style="font-size:10px;color:var(--color-text-secondary);">accts</span>'
+      +'</div>';
+  });
+  html+='</div>';
+  body.innerHTML=html;
+}
+function _ssDirtyBlip(inp){
+  if(!inp)return;
+  var orig=inp.style.borderColor;
+  inp.style.borderColor='#5DCAA5';
+  clearTimeout(inp._ssTimer);
+  inp._ssTimer=setTimeout(function(){inp.style.borderColor=orig||'';},800);
+}
 function copyGoalsFromPrevYear(){var yr=parseInt(document.getElementById('gYr')&&document.getElementById('gYr').value)||getYr();if(yr<=2026){alert('No previous year.');return;}var py=yr-1;S.reps.forEach(function(r){QTRS.forEach(function(q){var p=getGoal(r.name,py,q),cu=getGoal(r.name,yr,q);cu.rev=p.rev;cu.hrs=p.hrs;cu.calls=p.calls;});});markDirty();renderGoals();var m=document.getElementById('gCopyMsg');m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
 function copyQtrToAll(){var rn=document.getElementById('gFillRep')&&document.getElementById('gFillRep').value,fq=document.getElementById('gFillQ')&&document.getElementById('gFillQ').value,yr=parseInt(document.getElementById('gYr')&&document.getElementById('gYr').value)||getYr();if(!rn||!fq)return;var src=getGoal(rn,yr,fq);QTRS.forEach(function(q){if(q!==fq){var g=getGoal(rn,yr,q);g.rev=src.rev;g.hrs=src.hrs;g.calls=src.calls;}});markDirty();renderGoals();var m=document.getElementById('gFillMsg');m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
 function downloadEntryTemplate(){if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return;}var yr=getYr(),q=getQ(),cwk=getCWK();var allWeeks=gwq(yr,q);var wkObj=allWeeks.find(function(w){return w.key===cwk;})||allWeeks[0];var weekLabel=wkObj?wkObj.label:'Week';var weekRange=wkObj?(fd(wkObj.start)+' \u2013 '+fd(wkObj.end)):'';var headers=['Rep Name','Week Key','Week Label','Hours Worked','Calls Made','Orders Taken','Sales Revenue ($)','Set Size (Accounts)','Accounts Called','Top Single Sale ($)','Top Sale Customer'];var instRow=['INSTRUCTIONS: Fill columns D\u2013K. Do not change Rep Name or Week Key.','','','','','','','','','',''];var rows=activeReps().map(function(r){var d=gd(r.name+'|'+cwk);return[r.name,cwk,weekLabel+' ('+weekRange+')',d.hours||'',d.calls||'',d.orders||'',d.revenue||'',d.setSize||'',d.acctsCalled||'',d.topSale||'',d.topSaleCustomer||''];});var ws=XLSX.utils.aoa_to_sheet([instRow,headers].concat(rows));ws['!cols']=[{wch:22},{wch:26},{wch:28},{wch:14},{wch:12},{wch:14},{wch:18},{wch:20},{wch:16},{wch:18},{wch:22}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Weekly Entry');var refData=[['Rep Name','Quarter Goal ($)','Hrs/wk','Calls/wk']].concat(activeReps().map(function(r){var g=getGoal(r.name,yr,q);return[r.name,g.rev,g.hrs,g.calls];}));XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(refData),'Goals Reference');XLSX.writeFile(wb,'sales_entry_'+cwk+'.xlsx');var msg=document.getElementById('bulkMsg');if(msg){msg.textContent='Downloaded';msg.style.color='#5DCAA5';}}
@@ -6048,10 +6090,10 @@ function downloadRepSummaryPDF(repName){
   // Helper to build a row
   function row(label,value,color){
     var col=color?'color:'+color+';':'color:#1A1A2E;';
-    return '<tr><td style="padding:14px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;font-weight:600;">'+label+'</td><td style="padding:14px 8px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:22px;font-weight:700;'+col+'">'+value+'</td></tr>';
+    return '<tr><td style="padding:9px 8px;border-bottom:1px solid #e5e7eb;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;font-weight:600;">'+label+'</td><td style="padding:9px 8px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:17px;font-weight:700;'+col+'">'+value+'</td></tr>';
   }
   function sectionHeader(label,color){
-    return '<tr><td colspan="2" style="padding:18px 0 8px;font-size:13px;color:'+color+';text-transform:uppercase;letter-spacing:.08em;font-weight:700;border-bottom:2px solid '+color+';">'+label+'</td></tr>';
+    return '<tr><td colspan="2" style="padding:14px 0 6px;font-size:12px;color:'+color+';text-transform:uppercase;letter-spacing:.08em;font-weight:700;border-bottom:2px solid '+color+';">'+label+'</td></tr>';
   }
 
   var salesRows=[
@@ -6085,13 +6127,13 @@ function downloadRepSummaryPDF(repName){
   ):'';
 
   var html='<!DOCTYPE html><html><head><title>'+repName+' \u2014 '+q+' '+yr+' Summary</title>'
-    +'<style>@page{margin:0.5in;size:letter;}'
-    +'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1A1A2E;max-width:680px;margin:0 auto;padding:32px 24px;}'
-    +'.title{font-size:28px;font-weight:700;margin:0 0 4px;letter-spacing:-0.01em;}'
-    +'.subtitle{font-size:12px;color:#6b7280;margin-bottom:24px;}'
+    +'<style>@page{margin:0.4in;size:letter;}'
+    +'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1A1A2E;max-width:680px;margin:0 auto;padding:20px 24px;}'
+    +'.title{font-size:24px;font-weight:700;margin:0 0 2px;letter-spacing:-0.01em;}'
+    +'.subtitle{font-size:11px;color:#6b7280;margin-bottom:16px;}'
     +'table{width:100%;border-collapse:collapse;}'
-    +'.footer{font-size:10px;color:#9ca3af;margin-top:30px;text-align:center;padding-top:12px;border-top:1px solid #e5e7eb;}'
-    +'.notes{font-size:11px;color:#6b7280;margin-top:20px;line-height:1.6;}'
+    +'.footer{font-size:9px;color:#9ca3af;margin-top:18px;text-align:center;padding-top:8px;border-top:1px solid #e5e7eb;}'
+    +'.notes{font-size:10px;color:#6b7280;margin-top:14px;line-height:1.5;}'
     +'@media print{body{padding:0;}}</style></head><body>'
     +'<div class="title">'+esc_html(repName)+'</div>'
     +'<div class="subtitle">'+q+' '+yr+' summary \u2014 through week '+we+' of '+weeks.length+' ('+weeksRemaining+' week'+(weeksRemaining===1?'':'s')+' remaining)</div>'
@@ -6103,7 +6145,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Adjusted goals</strong> = remaining target &divide; weeks left in the quarter. They float each week based on what\u2019s booked, so the numbers always reflect exactly what\u2019s needed going forward. <strong>33/33/33</strong> is the quarter pacing model: by end of Month 1 hit 33% of your set, Month 2 = 66%, Month 3 = 100%.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v208 (sales + calls)</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
