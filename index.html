@@ -1647,7 +1647,7 @@ function renderProfiles(){renderProfileAlerts();renderProfileCards();let ri=S.re
 function selectRep(name){selectedRep=name;renderProfileCards();let ri=S.reps.findIndex(r=>r.name===name);if(ri>=0)renderProfileDetail(ri);}
 function pfSave(ri,field,val){if(!S.reps[ri].profile)S.reps[ri].profile={};S.reps[ri].profile[field]=val;updateProfileSummary(ri);if(field==='hireDate'){let hl=document.getElementById('pf_hl_'+ri);if(hl){let y=yearsAgo(val);hl.textContent=val?'Hired '+fdfull(val)+' · '+y+' yr'+(y!==1?'s':''):'Hire date not set';}renderProfileCards();}}
 function updateProfileSummary(ri){let p=S.reps[ri].profile||{};let el=document.getElementById('pf_sum_'+ri);if(!el)return;let items=PROFILE_FIELDS.filter(f=>p[f.key]).map(f=>'<div class="pf-summary-item"><div>'+f.label+'</div><div>'+f.emoji+' '+(f.type==='date'?fdfull(p[f.key]):p[f.key])+'</div></div>');el.innerHTML=items.join('')||'<span style="font-size:12px;color:var(--color-text-secondary);">Fill in info above.</span>';el.style.display=items.length?'flex':'block';}
-function renderProfileDetail(ri){let r=S.reps[ri];if(!r)return;if(!r.profile)r.profile={hireDate:'',birthday:'',favFood:'',favCandy:'',favDrink:'',starbucks:'',favMovie:'',favBook:'',photo:null,manualBestWeek:0,manualBestWeekLabel:'',manualBestSale:0};let p=r.profile,bw=getBestWeek(r.name),bs=getBestSale(r.name),atr=getAllTimeRevenue(r.name),yqRevs=getYQRevenues(r.name),yr=getYr(),q=getQ(),hrP=getHRPoints(r.name,yr,q),yrs=p.hireDate?yearsAgo(p.hireDate):null;let pfHtml=PROFILE_FIELDS.map(f=>{let val=p[f.key]||'';let displayVal=val?(f.type==='date'?fdfull(val):val):'—';let cid='pf_field_'+ri+'_'+f.key;return'<div style="padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);"><div class="editable-row" id="'+cid+'"><span style="font-size:11px;color:var(--color-text-secondary);width:130px;flex-shrink:0;">'+f.emoji+' '+f.label+'</span><span style="font-size:12px;color:'+(val?'var(--color-text-primary)':'var(--color-text-secondary)')+';">'+displayVal+'</span>'+pencil('editProfileField('+ri+',\''+f.key+'\',\''+f.type+'\',\''+((val+'').replace(/'/g,"\\'"))+'\',\''+(f.placeholder||'')+'\')')+'</div><div id="'+cid+'_box"></div></div>';}).join('');document.getElementById('profileDetail').innerHTML='<div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:1.1rem;flex-wrap:wrap;">'+avatarEl(r,ri,56)+'<div><div style="font-size:16px;font-weight:500;">'+r.name+'</div><div id="pf_hl_'+ri+'" style="font-size:12px;color:var(--color-text-secondary);margin-top:2px;">'+(p.hireDate?'Hired '+fdfull(p.hireDate)+' · '+yrs+' yr'+(yrs!==1?'s':''):'Hire date not set')+'</div>'+(p.photo?'<button onclick="clearPhoto(\''+(r.name||'').replace(/'/g,"\\'")+'\')" style="margin-top:5px;font-size:10px;padding:2px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:#F09595;cursor:pointer;" title="Remove this photo and revert to initials">&times; Remove photo</button>':'')+'</div></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-bottom:1.1rem;"><div class="profile-stat"><div class="ps-lbl" style="display:flex;align-items:center;justify-content:space-between;"><span>Best sales week'+helpBtn('profile-best-week')+'</span><button onclick="editBaselineBestWeek('+ri+')" title="Set baseline (overridden when a higher real week is recorded)" style="background:transparent;border:none;color:var(--color-text-secondary);cursor:pointer;padding:0;font-size:11px;opacity:.6;">&#9998;</button></div><div class="ps-val" style="color:#534AB7;">'+(bw.rev>0?'$'+Math.round(bw.rev).toLocaleString():'—')+'</div><div class="ps-sub">'+(bw.weekLabel||'No data yet')+(p.manualBestWeek>0&&bw.rev===p.manualBestWeek?' &middot; <span style="color:#7F77DD;font-style:italic;">baseline</span>':'')+'</div></div><div class="profile-stat"><div class="ps-lbl" style="display:flex;align-items:center;justify-content:space-between;"><span>Top single sale'+helpBtn('profile-top-sale')+'</span><button onclick="editBaselineBestSale('+ri+')" title="Set baseline (overridden when a higher real sale is recorded)" style="background:transparent;border:none;color:var(--color-text-secondary);cursor:pointer;padding:0;font-size:11px;opacity:.6;">&#9998;</button></div><div class="ps-val" style="color:#1D9E75;">'+(bs>0?'$'+Math.round(bs).toLocaleString():'—')+'</div>'+(p.manualBestSale>0&&bs===p.manualBestSale?'<div class="ps-sub"><span style="color:#1D9E75;font-style:italic;">baseline</span></div>':'')+'</div><div class="profile-stat"><div class="ps-lbl">All-time revenue'+helpBtn('profile-alltime-rev')+'</div><div class="ps-val">$'+Math.round(atr).toLocaleString()+'</div></div><div class="profile-stat"><div class="ps-lbl">HR pts this quarter'+helpBtn('profile-hr-pts')+'</div><div class="ps-val" style="color:'+(hrP>=3?'#E24B4A':hrP>0?'#EF9F27':'#5DCAA5')+'">'+hrP.toFixed(1)+'</div><div class="ps-sub">Cap: '+rfrom(hrcap(hrP)).l+'</div></div></div><div style="margin:1.1rem 0;padding:14px 16px;background:linear-gradient(135deg,rgba(93,202,165,0.06),rgba(93,202,165,0.02));border:0.5px solid rgba(93,202,165,0.3);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;"><div><div style="font-size:12px;font-weight:600;color:#5DCAA5;margin-bottom:2px;">&#128221; Sales summary PDF</div><div style="font-size:11px;color:var(--color-text-secondary);line-height:1.5;">Single-page printable handoff &mdash; sales goal, total sales, difference, weekly goal, weekly adjusted goal, and % to goal.</div></div><button onclick=\"downloadRepSummaryPDF(selectedRep)\" class=\"sbtn\" style=\"background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:600;white-space:nowrap;\">&#11015; Download summary PDF</button></div><div style="font-size:12px;font-weight:500;margin:1.1rem 0 .4rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">Goals overview — '+yr+helpBtn('profile-goals')+'</div><div style="overflow-x:auto;margin-bottom:1rem;"><table class="goals-table" style="font-size:11px;"><thead><tr><th>Quarter</th><th style="text-align:right;">Rev goal ($)</th><th style="text-align:right;">Hrs/wk</th><th style="text-align:right;">Calls/wk</th></tr></thead><tbody>'+QTRS.map(qr=>{let g=getGoal(r.name,yr,qr);return'<tr class="'+(qr===q?'active-qtr':'')+'"><td>'+qr+(qr===q?' ★':'')+'</td><td style="text-align:right;">$'+Math.round(g.rev).toLocaleString()+'</td><td style="text-align:right;">'+g.hrs+'</td><td style="text-align:right;">'+g.calls+'</td></tr>';}).join('')+'</tbody></table></div><div style="font-size:12px;font-weight:500;margin:1.1rem 0 .6rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">Quarterly sales log'+helpBtn('profile-qtr-log')+'</div><div class="qhdr"><span>Year</span><span>Qtr</span><span>Revenue</span><span>vs Goal</span><span>Orders</span><span>Rating</span></div>'+(yqRevs.length?yqRevs.map(({yr:y,q:qr,rev,weeks})=>{let tot=totW(r.name,weeks),hrP2=getHRPoints(r.name,y,qr),ro=repGoalObj(r.name,y,qr),we2=weeksElapsed(y,qr),sc=calcSc(r.name,tot,ro,weeks.length,hrP2,we2),rt=rfrom(sc.fin),pct=ro.rev>0?Math.round(rev/ro.rev*100):0;return'<div class="qrow"><span style="font-weight:500;">'+y+'</span><span>'+qr+'</span><span>$'+Math.round(rev).toLocaleString()+'</span><span style="color:'+(pct>=100?'#5DCAA5':pct>=85?'#EF9F27':'#F09595')+'">'+pct+'%</span><span>'+tot.orders+'</span><span><span class="rb '+rt.c+'" style="font-size:10px;padding:2px 5px;">'+rt.l+'</span></span></div>';}).join(''):'<p style="font-size:12px;color:var(--color-text-secondary);padding:.4rem 0;">No data yet.</p>')+'<div style="font-size:12px;font-weight:500;margin:1.1rem 0 .6rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">Personal info'+helpBtn('profile-personal')+' <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);">— hover to edit</span></div>'+pfHtml+'<div id="pf_sum_'+ri+'" class="pf-summary" style="margin-top:1rem;"></div>'+'<div style="margin-top:1.1rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">'+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;">'+'<span style="font-size:12px;font-weight:500;">Credit memos'+helpBtn('profile-credits')+'</span>'+'<select id="pf_cm_qtr_'+ri+'" onchange="renderProfileCMs('+ri+')" style="font-size:11px;padding:2px 7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);">'+'<option value="all">All quarters</option>'+QTRS.map(qr=>'<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>').join('')+'</select></div><div id="pf_cms_'+ri+'"></div></div>'+'<div style="margin-top:1.1rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">'+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;">'+'<span style="font-size:12px;font-weight:500;">Art errors'+helpBtn('profile-art-errors')+'</span>'+'<select id="pf_ae_qtr_'+ri+'" onchange="renderProfileAEs('+ri+')" style="font-size:11px;padding:2px 7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);">'+'<option value="all">All quarters</option>'+QTRS.map(qr=>'<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>').join('')+'</select></div><div id="pf_aes_'+ri+'"></div></div>'+'</div>';
+function renderProfileDetail(ri){let r=S.reps[ri];if(!r)return;if(!r.profile)r.profile={hireDate:'',birthday:'',favFood:'',favCandy:'',favDrink:'',starbucks:'',favMovie:'',favBook:'',photo:null,manualBestWeek:0,manualBestWeekLabel:'',manualBestSale:0};let p=r.profile,bw=getBestWeek(r.name),bs=getBestSale(r.name),atr=getAllTimeRevenue(r.name),yqRevs=getYQRevenues(r.name),yr=getYr(),q=getQ(),hrP=getHRPoints(r.name,yr,q),yrs=p.hireDate?yearsAgo(p.hireDate):null;let pfHtml=PROFILE_FIELDS.map(f=>{let val=p[f.key]||'';let displayVal=val?(f.type==='date'?fdfull(val):val):'—';let cid='pf_field_'+ri+'_'+f.key;return'<div style="padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);"><div class="editable-row" id="'+cid+'"><span style="font-size:11px;color:var(--color-text-secondary);width:130px;flex-shrink:0;">'+f.emoji+' '+f.label+'</span><span style="font-size:12px;color:'+(val?'var(--color-text-primary)':'var(--color-text-secondary)')+';">'+displayVal+'</span>'+pencil('editProfileField('+ri+',\''+f.key+'\',\''+f.type+'\',\''+((val+'').replace(/'/g,"\\'"))+'\',\''+(f.placeholder||'')+'\')')+'</div><div id="'+cid+'_box"></div></div>';}).join('');document.getElementById('profileDetail').innerHTML='<div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:1.1rem;flex-wrap:wrap;">'+avatarEl(r,ri,56)+'<div><div style="font-size:16px;font-weight:500;">'+r.name+'</div><div id="pf_hl_'+ri+'" style="font-size:12px;color:var(--color-text-secondary);margin-top:2px;">'+(p.hireDate?'Hired '+fdfull(p.hireDate)+' · '+yrs+' yr'+(yrs!==1?'s':''):'Hire date not set')+'</div>'+(p.photo?'<button onclick="clearPhoto(\''+(r.name||'').replace(/'/g,"\\'")+'\')" style="margin-top:5px;font-size:10px;padding:2px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:#F09595;cursor:pointer;" title="Remove this photo and revert to initials">&times; Remove photo</button>':'')+'</div></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-bottom:1.1rem;"><div class="profile-stat"><div class="ps-lbl" style="display:flex;align-items:center;justify-content:space-between;"><span>Best sales week'+helpBtn('profile-best-week')+'</span><button onclick="editBaselineBestWeek('+ri+')" title="Set baseline (overridden when a higher real week is recorded)" style="background:transparent;border:none;color:var(--color-text-secondary);cursor:pointer;padding:0;font-size:11px;opacity:.6;">&#9998;</button></div><div class="ps-val" style="color:#534AB7;">'+(bw.rev>0?'$'+Math.round(bw.rev).toLocaleString():'—')+'</div><div class="ps-sub">'+(bw.weekLabel||'No data yet')+(p.manualBestWeek>0&&bw.rev===p.manualBestWeek?' &middot; <span style="color:#7F77DD;font-style:italic;">baseline</span>':'')+'</div></div><div class="profile-stat"><div class="ps-lbl" style="display:flex;align-items:center;justify-content:space-between;"><span>Top single sale'+helpBtn('profile-top-sale')+'</span><button onclick="editBaselineBestSale('+ri+')" title="Set baseline (overridden when a higher real sale is recorded)" style="background:transparent;border:none;color:var(--color-text-secondary);cursor:pointer;padding:0;font-size:11px;opacity:.6;">&#9998;</button></div><div class="ps-val" style="color:#1D9E75;">'+(bs>0?'$'+Math.round(bs).toLocaleString():'—')+'</div>'+(p.manualBestSale>0&&bs===p.manualBestSale?'<div class="ps-sub"><span style="color:#1D9E75;font-style:italic;">baseline</span></div>':'')+'</div><div class="profile-stat"><div class="ps-lbl">All-time revenue'+helpBtn('profile-alltime-rev')+'</div><div class="ps-val">$'+Math.round(atr).toLocaleString()+'</div></div><div class="profile-stat"><div class="ps-lbl">HR pts this quarter'+helpBtn('profile-hr-pts')+'</div><div class="ps-val" style="color:'+(hrP>=3?'#E24B4A':hrP>0?'#EF9F27':'#5DCAA5')+'">'+hrP.toFixed(1)+'</div><div class="ps-sub">Cap: '+rfrom(hrcap(hrP)).l+'</div></div></div><div style="margin:1.1rem 0;padding:14px 16px;background:linear-gradient(135deg,rgba(93,202,165,0.06),rgba(93,202,165,0.02));border:0.5px solid rgba(93,202,165,0.3);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;"><div><div style="font-size:12px;font-weight:600;color:#5DCAA5;margin-bottom:2px;">&#128221; Sales summary PDF</div><div style="font-size:11px;color:var(--color-text-secondary);line-height:1.5;">Single-page printable handoff &mdash; sales numbers + call numbers (totals, difference, original + adjusted weekly/daily goals, % to goal) and account set coverage.</div></div><button onclick=\"downloadRepSummaryPDF(selectedRep)\" class=\"sbtn\" style=\"background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:600;white-space:nowrap;\">&#11015; Download summary PDF</button></div><div style="font-size:12px;font-weight:500;margin:1.1rem 0 .4rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">Goals overview — '+yr+helpBtn('profile-goals')+'</div><div style="overflow-x:auto;margin-bottom:1rem;"><table class="goals-table" style="font-size:11px;"><thead><tr><th>Quarter</th><th style="text-align:right;">Rev goal ($)</th><th style="text-align:right;">Hrs/wk</th><th style="text-align:right;">Calls/wk</th></tr></thead><tbody>'+QTRS.map(qr=>{let g=getGoal(r.name,yr,qr);return'<tr class="'+(qr===q?'active-qtr':'')+'"><td>'+qr+(qr===q?' ★':'')+'</td><td style="text-align:right;">$'+Math.round(g.rev).toLocaleString()+'</td><td style="text-align:right;">'+g.hrs+'</td><td style="text-align:right;">'+g.calls+'</td></tr>';}).join('')+'</tbody></table></div><div style="font-size:12px;font-weight:500;margin:1.1rem 0 .6rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">Quarterly sales log'+helpBtn('profile-qtr-log')+'</div><div class="qhdr"><span>Year</span><span>Qtr</span><span>Revenue</span><span>vs Goal</span><span>Orders</span><span>Rating</span></div>'+(yqRevs.length?yqRevs.map(({yr:y,q:qr,rev,weeks})=>{let tot=totW(r.name,weeks),hrP2=getHRPoints(r.name,y,qr),ro=repGoalObj(r.name,y,qr),we2=weeksElapsed(y,qr),sc=calcSc(r.name,tot,ro,weeks.length,hrP2,we2),rt=rfrom(sc.fin),pct=ro.rev>0?Math.round(rev/ro.rev*100):0;return'<div class="qrow"><span style="font-weight:500;">'+y+'</span><span>'+qr+'</span><span>$'+Math.round(rev).toLocaleString()+'</span><span style="color:'+(pct>=100?'#5DCAA5':pct>=85?'#EF9F27':'#F09595')+'">'+pct+'%</span><span>'+tot.orders+'</span><span><span class="rb '+rt.c+'" style="font-size:10px;padding:2px 5px;">'+rt.l+'</span></span></div>';}).join(''):'<p style="font-size:12px;color:var(--color-text-secondary);padding:.4rem 0;">No data yet.</p>')+'<div style="font-size:12px;font-weight:500;margin:1.1rem 0 .6rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">Personal info'+helpBtn('profile-personal')+' <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);">— hover to edit</span></div>'+pfHtml+'<div id="pf_sum_'+ri+'" class="pf-summary" style="margin-top:1rem;"></div>'+'<div style="margin-top:1.1rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">'+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;">'+'<span style="font-size:12px;font-weight:500;">Credit memos'+helpBtn('profile-credits')+'</span>'+'<select id="pf_cm_qtr_'+ri+'" onchange="renderProfileCMs('+ri+')" style="font-size:11px;padding:2px 7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);">'+'<option value="all">All quarters</option>'+QTRS.map(qr=>'<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>').join('')+'</select></div><div id="pf_cms_'+ri+'"></div></div>'+'<div style="margin-top:1.1rem;padding-top:1.1rem;border-top:0.5px solid var(--color-border-tertiary);">'+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;">'+'<span style="font-size:12px;font-weight:500;">Art errors'+helpBtn('profile-art-errors')+'</span>'+'<select id="pf_ae_qtr_'+ri+'" onchange="renderProfileAEs('+ri+')" style="font-size:11px;padding:2px 7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);">'+'<option value="all">All quarters</option>'+QTRS.map(qr=>'<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>').join('')+'</select></div><div id="pf_aes_'+ri+'"></div></div>'+'</div>';
 updateProfileSummary(ri);
 renderProfileCMs(ri);
 renderProfileAEs(ri);
@@ -5996,7 +5996,7 @@ function printGameTeams(){
   setTimeout(function(){w.print();},500);
 }
 
-// ─── REP SUMMARY PDF (simple handoff sheet) ─────────────────────────────────
+// ─── REP SUMMARY PDF (simple handoff sheet — sales + calls) ─────────────────
 function downloadRepSummaryPDF(repName){
   if(!repName){alert('No rep selected. Click a rep card first, then download.');return;}
   var yr=getYr(),q=getQ();
@@ -6005,42 +6005,104 @@ function downloadRepSummaryPDF(repName){
   var weeksRemaining=Math.max(0,weeks.length-we);
   var ro=repGoalObj(repName,yr,q);
   var t=totW(repName,weeks);
+
+  // ── SALES math ──
   var salesGoal=Math.round(ro.rev||0);
   var totalSales=Math.round(t.revenue||0);
-  var difference=salesGoal-totalSales;
-  var weeklyGoal=weeks.length?Math.round(salesGoal/weeks.length):0;
-  var weeklyAdjusted=weeksRemaining>0?Math.ceil(Math.max(0,difference)/weeksRemaining):0;
-  var percent=salesGoal>0?Math.round(totalSales/salesGoal*100):0;
-  var diffLabel,diffColor;
-  if(difference<=0){diffLabel='$'+Math.abs(difference).toLocaleString()+' over goal \u2713';diffColor='#1D9E75';}
-  else{diffLabel='$'+difference.toLocaleString()+' to go';diffColor='#B45309';}
-  var pctColor=percent>=100?'#1D9E75':percent>=85?'#B45309':'#B91C1C';
+  var salesDiff=salesGoal-totalSales;
+  var salesWeeklyGoal=weeks.length?Math.round(salesGoal/weeks.length):0;
+  var salesWeeklyAdj=weeksRemaining>0?Math.ceil(Math.max(0,salesDiff)/weeksRemaining):0;
+  var salesPercent=salesGoal>0?Math.round(totalSales/salesGoal*100):0;
+  var salesDiffLabel,salesDiffColor;
+  if(salesDiff<=0){salesDiffLabel='$'+Math.abs(salesDiff).toLocaleString()+' over goal \u2713';salesDiffColor='#1D9E75';}
+  else{salesDiffLabel='$'+salesDiff.toLocaleString()+' to go';salesDiffColor='#B45309';}
+  var salesPctColor=salesPercent>=100?'#1D9E75':salesPercent>=85?'#B45309':'#B91C1C';
+
+  // ── CALLS math (33/33/33 pacing: quarter target evenly spread) ──
+  var callsWeeklyGoal=ro.calls||0;
+  var callsQGoal=callsWeeklyGoal*weeks.length;
+  var totalCalls=Math.round(t.calls||0);
+  var callsDiff=callsQGoal-totalCalls;
+  var callsDailyOrig=Math.round(callsWeeklyGoal/5); // original daily target = weekly / 5 workdays
+  var callsWeeklyAdj=weeksRemaining>0?Math.ceil(Math.max(0,callsDiff)/weeksRemaining):0;
+  var callsDailyAdj=Math.round(callsWeeklyAdj/5);
+  var callsPercent=callsQGoal>0?Math.round(totalCalls/callsQGoal*100):0;
+  var callsDiffLabel,callsDiffColor;
+  if(callsDiff<=0){callsDiffLabel=Math.abs(callsDiff).toLocaleString()+' over goal \u2713';callsDiffColor='#1D9E75';}
+  else{callsDiffLabel=callsDiff.toLocaleString()+' to go';callsDiffColor='#B45309';}
+  var callsPctColor=callsPercent>=100?'#1D9E75':callsPercent>=85?'#B45309':'#B91C1C';
+
+  // ── ACCOUNT COVERAGE (the actual 33/33/33 model — set coverage by month) ──
+  var setSize=Math.round(t.setSize||0);
+  var acctsCalled=Math.round(t.acctsCalled||0);
+  var coveragePct=setSize>0?Math.round(acctsCalled/setSize*100):0;
+  var qMonths={Q1:[0,1,2],Q2:[3,4,5],Q3:[6,7,8],Q4:[9,10,11]};
+  var mIdx=(qMonths[q]||[0,1,2]).indexOf(new Date().getMonth());
+  if(mIdx<0)mIdx=0;
+  var coverageTarget=mIdx===0?33:mIdx===1?66:100;
+  var coverageDelta=coveragePct-coverageTarget;
+  var covCol=coveragePct>=coverageTarget?'#1D9E75':coveragePct>=coverageTarget-15?'#B45309':'#B91C1C';
+
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  var rows=[
-    ['Sales Goal','$'+salesGoal.toLocaleString(),''],
-    ['Total Sales','$'+totalSales.toLocaleString(),''],
-    ['Difference',diffLabel,diffColor],
-    ['Weekly Goal','$'+weeklyGoal.toLocaleString(),''],
-    ['Weekly Adjusted Goal','$'+weeklyAdjusted.toLocaleString(),''],
-    ['Percent of Goal',percent+'%',pctColor]
-  ];
-  var rowsHtml=rows.map(function(r){
-    var col=r[2]?'color:'+r[2]+';':'color:#1A1A2E;';
-    return '<tr><td style="padding:18px 8px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;font-weight:600;">'+r[0]+'</td><td style="padding:18px 8px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:24px;font-weight:700;'+col+'">'+r[1]+'</td></tr>';
-  }).join('');
+
+  // Helper to build a row
+  function row(label,value,color){
+    var col=color?'color:'+color+';':'color:#1A1A2E;';
+    return '<tr><td style="padding:14px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;font-weight:600;">'+label+'</td><td style="padding:14px 8px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:22px;font-weight:700;'+col+'">'+value+'</td></tr>';
+  }
+  function sectionHeader(label,color){
+    return '<tr><td colspan="2" style="padding:18px 0 8px;font-size:13px;color:'+color+';text-transform:uppercase;letter-spacing:.08em;font-weight:700;border-bottom:2px solid '+color+';">'+label+'</td></tr>';
+  }
+
+  var salesRows=[
+    row('Sales Goal','$'+salesGoal.toLocaleString()),
+    row('Total Sales','$'+totalSales.toLocaleString()),
+    row('Difference',salesDiffLabel,salesDiffColor),
+    row('Weekly Goal','$'+salesWeeklyGoal.toLocaleString()),
+    row('Weekly Adjusted Goal','$'+salesWeeklyAdj.toLocaleString()),
+    row('Percent of Goal',salesPercent+'%',salesPctColor)
+  ].join('');
+
+  var callsRows=[
+    row('Quarterly Call Goal',callsQGoal.toLocaleString()),
+    row('Total Calls',totalCalls.toLocaleString()),
+    row('Difference',callsDiffLabel,callsDiffColor),
+    row('Original Daily Goal (33/33/33)',callsDailyOrig.toLocaleString()+' / day'),
+    row('Original Weekly Goal',callsWeeklyGoal.toLocaleString()+' / week'),
+    row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week'),
+    row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day'),
+    row('Percent of Goal',callsPercent+'%',callsPctColor)
+  ].join('');
+
+  // Account coverage as a small bonus block (33/33/33 set-coverage model)
+  var coverageBlock=setSize>0?(
+    '<div style="margin-top:24px;padding:14px 16px;background:#f9fafb;border-left:3px solid '+covCol+';border-radius:0 6px 6px 0;font-size:12px;color:#1A1A2E;line-height:1.6;">'
+    +'<div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:4px;">Account Set Coverage (33/33/33)</div>'
+    +'Called <strong>'+acctsCalled+' of '+setSize+'</strong> accounts = <strong style="color:'+covCol+';">'+coveragePct+'%</strong> covered.'
+    +' Target at this point in '+q+': <strong>'+coverageTarget+'%</strong> '
+    +(coverageDelta>=0?'(<span style="color:#1D9E75;">+'+coverageDelta+' pts ahead</span>)':'(<span style="color:#B91C1C;">'+coverageDelta+' pts behind</span>)')+'.'
+    +'</div>'
+  ):'';
+
   var html='<!DOCTYPE html><html><head><title>'+repName+' \u2014 '+q+' '+yr+' Summary</title>'
-    +'<style>@page{margin:0.6in;size:letter;}'
-    +'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1A1A2E;max-width:680px;margin:0 auto;padding:40px 24px;}'
-    +'.title{font-size:30px;font-weight:700;margin:0 0 4px;letter-spacing:-0.01em;}'
-    +'.subtitle{font-size:13px;color:#6b7280;margin-bottom:32px;}'
-    +'table{width:100%;border-collapse:collapse;border-top:2px solid #1A1A2E;}'
-    +'.footer{font-size:10px;color:#9ca3af;margin-top:36px;text-align:center;padding-top:16px;border-top:1px solid #e5e7eb;}'
-    +'.notes{font-size:11px;color:#6b7280;margin-top:24px;line-height:1.6;}'
+    +'<style>@page{margin:0.5in;size:letter;}'
+    +'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1A1A2E;max-width:680px;margin:0 auto;padding:32px 24px;}'
+    +'.title{font-size:28px;font-weight:700;margin:0 0 4px;letter-spacing:-0.01em;}'
+    +'.subtitle{font-size:12px;color:#6b7280;margin-bottom:24px;}'
+    +'table{width:100%;border-collapse:collapse;}'
+    +'.footer{font-size:10px;color:#9ca3af;margin-top:30px;text-align:center;padding-top:12px;border-top:1px solid #e5e7eb;}'
+    +'.notes{font-size:11px;color:#6b7280;margin-top:20px;line-height:1.6;}'
     +'@media print{body{padding:0;}}</style></head><body>'
     +'<div class="title">'+esc_html(repName)+'</div>'
-    +'<div class="subtitle">'+q+' '+yr+' sales summary \u2014 through week '+we+' of '+weeks.length+' ('+weeksRemaining+' week'+(weeksRemaining===1?'':'s')+' remaining)</div>'
-    +'<table><tbody>'+rowsHtml+'</tbody></table>'
-    +'<div class="notes"><strong>Weekly Adjusted Goal</strong> = remaining $ to goal &divide; weeks left in the quarter. It updates each week based on what\u2019s been booked, so you always know exactly what to hit going forward.</div>'
+    +'<div class="subtitle">'+q+' '+yr+' summary \u2014 through week '+we+' of '+weeks.length+' ('+weeksRemaining+' week'+(weeksRemaining===1?'':'s')+' remaining)</div>'
+    +'<table><tbody>'
+    +sectionHeader('Sales','#1D9E75')
+    +salesRows
+    +sectionHeader('Calls','#534AB7')
+    +callsRows
+    +'</tbody></table>'
+    +coverageBlock
+    +'<div class="notes"><strong>Adjusted goals</strong> = remaining target &divide; weeks left in the quarter. They float each week based on what\u2019s booked, so the numbers always reflect exactly what\u2019s needed going forward. <strong>33/33/33</strong> is the quarter pacing model: by end of Month 1 hit 33% of your set, Month 2 = 66%, Month 3 = 100%.</div>'
     +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products</div>'
     +'</body></html>';
   var w=window.open('','_blank');
