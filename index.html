@@ -6060,18 +6060,21 @@ function downloadRepSummaryPDF(repName){
   else{salesDiffLabel='$'+salesDiff.toLocaleString()+' to go';salesDiffColor='#B45309';}
   var salesPctColor=salesPercent>=100?'#1D9E75':salesPercent>=85?'#B45309':'#B91C1C';
 
-  // ── CALLS math (33/33/33 pacing: quarter target evenly spread) ──
-  var callsWeeklyGoal=ro.calls||0;
-  var callsQGoal=callsWeeklyGoal*weeks.length;
-  var totalCalls=Math.round(t.calls||0);
+  // ── CALLS math (33/33/33 set coverage: call every customer once per quarter) ──
+  // Quarterly call goal = set size (call every customer in your set once)
+  // Total calls = unique accounts called this quarter
+  var callsQGoal=Math.round(t.setSize||0);
+  var totalCalls=Math.round(t.acctsCalled||0);
   var callsDiff=callsQGoal-totalCalls;
-  var callsDailyOrig=Math.round(callsWeeklyGoal/5); // original daily target = weekly / 5 workdays
+  var totalWorkDays=weeks.length*5;
+  var callsDailyOrig=totalWorkDays>0?Math.ceil(callsQGoal/totalWorkDays):0;
+  var callsWeeklyOrig=weeks.length>0?Math.ceil(callsQGoal/weeks.length):0;
   var callsWeeklyAdj=weeksRemaining>0?Math.ceil(Math.max(0,callsDiff)/weeksRemaining):0;
-  var callsDailyAdj=Math.round(callsWeeklyAdj/5);
+  var callsDailyAdj=Math.ceil(callsWeeklyAdj/5);
   var callsPercent=callsQGoal>0?Math.round(totalCalls/callsQGoal*100):0;
   var callsDiffLabel,callsDiffColor;
-  if(callsDiff<=0){callsDiffLabel=Math.abs(callsDiff).toLocaleString()+' over goal \u2713';callsDiffColor='#1D9E75';}
-  else{callsDiffLabel=callsDiff.toLocaleString()+' to go';callsDiffColor='#B45309';}
+  if(callsDiff<=0){callsDiffLabel=Math.abs(callsDiff).toLocaleString()+' accts over goal \u2713';callsDiffColor='#1D9E75';}
+  else{callsDiffLabel=callsDiff.toLocaleString()+' accts to go';callsDiffColor='#B45309';}
   var callsPctColor=callsPercent>=100?'#1D9E75':callsPercent>=85?'#B45309':'#B91C1C';
 
   // ── ACCOUNT COVERAGE (the actual 33/33/33 model — set coverage by month) ──
@@ -6106,11 +6109,11 @@ function downloadRepSummaryPDF(repName){
   ].join('');
 
   var callsRows=[
-    row('Quarterly Call Goal',callsQGoal.toLocaleString()),
-    row('Total Calls',totalCalls.toLocaleString()),
+    row('Quarterly Call Goal',callsQGoal.toLocaleString()+' accts'),
+    row('Accounts Called',totalCalls.toLocaleString()),
     row('Difference',callsDiffLabel,callsDiffColor),
     row('Original Daily Goal (33/33/33)',callsDailyOrig.toLocaleString()+' / day'),
-    row('Original Weekly Goal',callsWeeklyGoal.toLocaleString()+' / week'),
+    row('Original Weekly Goal',callsWeeklyOrig.toLocaleString()+' / week'),
     row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week'),
     row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day'),
     row('Percent of Goal',callsPercent+'%',callsPctColor)
@@ -6144,8 +6147,8 @@ function downloadRepSummaryPDF(repName){
     +callsRows
     +'</tbody></table>'
     +coverageBlock
-    +'<div class="notes"><strong>Adjusted goals</strong> = remaining target &divide; weeks left in the quarter. They float each week based on what\u2019s booked, so the numbers always reflect exactly what\u2019s needed going forward. <strong>33/33/33</strong> is the quarter pacing model: by end of Month 1 hit 33% of your set, Month 2 = 66%, Month 3 = 100%.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v208 (sales + calls)</div>'
+    +'<div class="notes"><strong>Calls</strong> = unique customer accounts contacted. The quarterly call goal equals the set size \u2014 every customer in your set should be called at least once per quarter. <strong>33/33/33</strong> pacing: 33% of set by end of Month 1, 66% by Month 2, 100% by Month 3. <strong>Adjusted goals</strong> = remaining accounts \u00f7 weeks left, so the targets always reflect what\u2019s needed going forward.</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v210 (set-size call model)</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
