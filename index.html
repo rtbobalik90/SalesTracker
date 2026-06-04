@@ -456,8 +456,11 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
     <!-- Preview panel — hidden until scan completes -->
     <div id="cmScanPreview" style="display:none;">
       <div style="font-size:11px;font-weight:500;color:#A8B8FF;margin-bottom:8px;padding:4px 8px;background:#1A1730;border-radius:4px;display:inline-block;">&#10003; Fields extracted — review below, select fault, then confirm</div>
+      <div id="cmScanDateStatus" style="font-size:11px;margin-bottom:8px;padding:5px 9px;border-radius:4px;display:none;"></div>
       <div class="igrid" style="grid-template-columns:repeat(auto-fit,minmax(145px,1fr));margin-bottom:8px;">
         <div class="ig"><label>Rep (matched)</label><select id="cmScanRep"></select></div>
+        <div class="ig"><label>Year</label><select id="cmScanYr" onchange="_cmScanRebuildWeeks()"></select></div>
+        <div class="ig"><label>Quarter</label><select id="cmScanQ" onchange="_cmScanRebuildWeeks()"><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
         <div class="ig"><label>Week</label><select id="cmScanWeek"></select></div>
         <div class="ig"><label>Customer name</label><input type="text" id="cmScanCustName" placeholder="From form"></div>
         <div class="ig"><label>Customer ID</label><input type="text" id="cmScanCustId" placeholder="From form"></div>
@@ -2641,6 +2644,64 @@ function handleCMScan(event){
   });
 }
 
+// Parse a loose date string (M/D/YYYY, MM-DD-YY, YYYY-MM-DD, "May 24 2026", etc) into a Date
+function _cmParseDate(s){
+  if(!s)return null;
+  var str=String(s).trim();
+  if(!str)return null;
+  // ISO YYYY-MM-DD or YYYY/MM/DD
+  var m=str.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})$/);
+  if(m){var dt=new Date(parseInt(m[1]),parseInt(m[2])-1,parseInt(m[3]),12,0,0);return isNaN(dt)?null:dt;}
+  // M/D/YYYY or M-D-YYYY (US)
+  m=str.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})$/);
+  if(m){
+    var mo=parseInt(m[1]),da=parseInt(m[2]),yr=parseInt(m[3]);
+    if(yr<100)yr+=2000;
+    var dt=new Date(yr,mo-1,da,12,0,0);return isNaN(dt)?null:dt;
+  }
+  // Fall back to JS Date parsing (handles "May 24, 2026" etc)
+  var d=new Date(str);
+  return isNaN(d)?null:d;
+}
+
+// Given a date string from the form, find which year/quarter/week it falls into.
+// Returns {yr, q, weekKey, label} or null if no match.
+function _cmGuessWeekFromDate(dateStr){
+  var d=_cmParseDate(dateStr);
+  if(!d)return null;
+  var yr=d.getFullYear();
+  var qs=['Q1','Q2','Q3','Q4'];
+  for(var i=0;i<qs.length;i++){
+    var weeks=gwq(yr,qs[i]);
+    for(var j=0;j<weeks.length;j++){
+      var w=weeks[j];
+      if(w.start&&w.end&&d>=w.start&&d<=ad(w.end,1)){
+        return{yr:yr,q:qs[i],weekKey:w.key,label:w.label};
+      }
+    }
+  }
+  return null;
+}
+
+// Rebuild the week dropdown when year/quarter changes. Pass a preferred weekKey to pre-select.
+function _cmScanRebuildWeeks(preferredKey){
+  var wkSel=document.getElementById('cmScanWeek');
+  var yrSel=document.getElementById('cmScanYr');
+  var qSel=document.getElementById('cmScanQ');
+  if(!wkSel||!yrSel||!qSel)return;
+  var yr=parseInt(yrSel.value)||getYr();
+  var q=qSel.value||getQ();
+  var weeks=gwq(yr,q);
+  wkSel.innerHTML=weeks.map(function(w){return'<option value="'+w.key+'">'+w.label+'</option>';}).join('');
+  if(preferredKey&&weeks.some(function(w){return w.key===preferredKey;})){
+    wkSel.value=preferredKey;
+  } else if(yr===getYr()&&q===getQ()){
+    wkSel.value=getCWK();
+  } else {
+    wkSel.selectedIndex=0;
+  }
+}
+
 function mapCreditMemoFields(f){
   function get(){
     for(var i=0;i<arguments.length;i++){
@@ -2651,6 +2712,7 @@ function mapCreditMemoFields(f){
   }
   var total=get('total','cost1');
   return{
+    dateSubmitted:get('date','date submitted','submitted','cm date','credit date','request date','date of credit','date of request'),
     customerName: get('customer name'),
     customerId:   get('customer id'),
     salesRep:     get('sales rep','taken by'),
@@ -2695,14 +2757,37 @@ function fillCMScanFields(d){
     }
   }
 
-  // Populate week dropdown — current quarter weeks, default to current week
-  var wkSel=document.getElementById('cmScanWeek');
-  if(wkSel){
-    var yr=getYr(),q=getQ();
-    wkSel.innerHTML=gwq(yr,q).map(function(w){
-      return'<option value="'+w.key+'">'+w.label+'</option>';
-    }).join('');
-    wkSel.value=getCWK();
+  // Year + Quarter + Week selectors. If a date was extracted from the PDF, try to match it.
+  var statusEl=document.getElementById('cmScanDateStatus');
+  var guess=_cmGuessWeekFromDate(d.dateSubmitted);
+  var targetYr=guess?guess.yr:getYr();
+  var targetQ=guess?guess.q:getQ();
+  var targetWkKey=guess?guess.weekKey:getCWK();
+  // Populate year dropdown (last 3 yrs through next year)
+  var yrSel=document.getElementById('cmScanYr');
+  if(yrSel){
+    var nowYr=new Date().getFullYear();
+    var yrs=[];for(var _y=nowYr-2;_y<=nowYr+1;_y++)yrs.push(_y);
+    if(yrs.indexOf(targetYr)<0)yrs.push(targetYr);
+    yrs.sort();
+    yrSel.innerHTML=yrs.map(function(y){return'<option value="'+y+'"'+(y==targetYr?' selected':'')+'>'+y+'</option>';}).join('');
+  }
+  // Set quarter
+  var qSel=document.getElementById('cmScanQ');
+  if(qSel)qSel.value=targetQ;
+  // Build week dropdown for the chosen year+quarter, default to target week
+  _cmScanRebuildWeeks(targetWkKey);
+  // Status message
+  if(statusEl){
+    if(guess){
+      statusEl.style.display='block';
+      statusEl.style.background='#1A2A1A';statusEl.style.color='#5DCAA5';
+      statusEl.innerHTML='✓ Auto-detected date from form (<strong>'+d.dateSubmitted+'</strong>) — set to <strong>'+targetQ+' '+targetYr+' · '+(guess.label||targetWkKey)+'</strong>. Override above if wrong.';
+    } else {
+      statusEl.style.display='block';
+      statusEl.style.background='#2A2417';statusEl.style.color='#EF9F27';
+      statusEl.innerHTML='⚠ No date found on this form'+(d.dateSubmitted?' (couldn\'t parse "'+d.dateSubmitted+'")':'')+'. Defaulted to current week — please select the right Year / Quarter / Week above.';
+    }
   }
 
   // Leave fault blank — manager must select it
