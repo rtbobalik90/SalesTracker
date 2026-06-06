@@ -694,7 +694,7 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
 <div id="pg-intel" class="page">
   <div class="card" style="border-color:#534AB7;background:linear-gradient(135deg,rgba(83,74,183,0.08),rgba(83,74,183,0.02));">
     <div class="ct" style="margin-bottom:4px;color:#A8B8FF;">&#128197; Forecast &mdash; what&#39;s coming up</div>
-    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Curated calendar of holidays, awareness months, employee appreciation days, industry events, and seasonal markers \u2014 each with what to sell, who to call, and how to pitch it. Click <strong style="color:#A8B8FF;">Verify with AI</strong> to confirm dates and find any missing events.</p>
+    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Curated calendar of holidays, awareness months, employee appreciation days, industry events, and seasonal markers &mdash; each with what to sell, who to call, and how to pitch it. Click <strong style="color:#A8B8FF;">Verify with AI</strong> to confirm dates and find any missing events.</p>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <button class="pbtn" id="forecastVerifyBtn" onclick="verifyForecastWithAI()" style="background:#534AB7;border-color:#7F77DD;color:#fff;">&#10024; Verify &amp; enhance with AI</button>
       <button class="sbtn" id="forecastPrintBtn" onclick="printForecast()" style="background:#1A1A2E;border-color:#534AB7;color:#A8B8FF;">&#128438; Print / PDF</button>
@@ -713,7 +713,7 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
         <span>Next 7 days</span>
         <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);margin-left:auto;" id="nextWeekRange"></span>
       </div>
-      <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">What&#39;s here now or imminent. <strong>Lead time is critical</strong> \u2014 if it&#39;s within a week, only quick-turn items work.</p>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">What&#39;s here now or imminent. <strong>Lead time is critical</strong> &mdash; if it&#39;s within a week, only quick-turn items work.</p>
       <div id="forecastNextWeek"></div>
     </div>
 
@@ -1826,10 +1826,10 @@ async function generateMeetingReport(){
   +'\n- Focus on what the team needs to do NOW and in coming weeks to close the gap or protect the lead.'
   +'\n- This report is read on Monday morning at the team meeting. The week you are recapping JUST ENDED. "This week" in the THIS WEEK\'S FOCUS section refers to the brand-new week that started today.'
   +'\n\nFORMAT (CRITICAL): Output exactly 3 sections separated by ||| (three pipe characters). Do NOT use ---, ===, asterisks, or any other separator. Do NOT write the section name (e.g., \"WEEK RECAP\") in your output. Just write the content back-to-back with ||| between each.\n\nThe 3 sections in order:'
-  +'\n1. WEEK RECAP: A detailed, in-depth recap of the week. MANDATORY: name specific reps from the STANDOUT MOMENTS data above. If anyone hit their quarter goal this week, LEAD WITH THAT (e.g., "Kevin Scott hit his Q2 goal this week with $X QTD"). Call out the top 3 earners by name with their dollar numbers. Mention anyone close to goal (90%+) and anyone who had a big week vs their personal avg. Include the team total, order count, and call count. Tone: energetic but honest. Aim for 6-9 sentences with multiple named reps, not generic team-level prose.'
+  +'\n1. WEEK RECAP: An in-depth recap (8-12 sentences). RULES:\n   a. If any rep is in [GOAL HIT THIS WEEK], LEAD WITH THAT - name them and say they hit their quarter goal this week. Multiple reps? Name them all.\n   b. If any rep is in [Already over goal], mention them by name.\n   c. Name the TOP 3 by revenue this week with their exact dollar figures and what they did (orders, calls).\n   d. Name anyone [Close to goal] (90%+) - they could cross this week.\n   e. Name anyone in [Big week vs personal avg] explicitly.\n   f. State team totals (revenue, orders, calls).\n   g. NO generic phrases like the team or several reps without naming who. Every claim must attach to a name or a number.\n   h. If a category is empty, do not invent - but cover the other categories that do have data.'
   +'\n2. QUARTER PACING: Where we stand right now in the quarter. Are we ahead/behind pace? What does the math say we need each remaining week? Be direct about the gap or the opportunity.'
   +'\n3. THIS WEEK\'S FOCUS: 3-4 concrete priorities for THIS WEEK (the new week that started today). Frame as "this week" — this report is read Monday morning at the team meeting kicking off the new week, so the focus is what to do over the next 5 business days. Tie back to the quarter target. Be specific and actionable.'
-  +'\nReminder: Use ||| between the 3 sections. Do not write section titles. Do not mention art errors or credits.';let sections=['','',''];try{let text=await callAI(prompt);var rawSec=text.split('|||').map(function(s){return s.trim();}).filter(function(s){return s;});
+  +'\nReminder: Use ||| between the 3 sections. Do not write section titles. Do not mention art errors or credits.\n\nABSOLUTELY NO MARKDOWN: Do not use ** for bold, ## for headers, * for italics, or any asterisks/pound signs. Output plain prose only. The display already styles the boxes; markdown shows up as literal junk characters.';let sections=['','',''];try{let text=await callAI(prompt);var rawSec=text.split('|||').map(function(s){return s.trim();}).filter(function(s){return s;});
 if(rawSec.length<3){
   // AI didn't use |||  - try --- or === markdown separators
   rawSec=text.split(/\n\s*[-=]{3,}\s*\n/).map(function(s){return s.trim();}).filter(function(s){return s;});
@@ -1852,6 +1852,14 @@ sections=rawSec.map(function(s){
   var t=(s||'').trim();
   // Strip any leading section name the AI may have included
   t=t.replace(/^(?:#{1,3}\s*)?(?:\d+\.\s*)?(?:WEEK RECAP|QUARTER PACING|THIS WEEK[\u2019']?S? FOCUS|WEEK FOCUS)\s*:?\s*\n?/i,'');
+  // Strip any markdown the AI included despite instructions
+  t=t.replace(/^#{1,6}\s+.*$/gm,'');                    // drop ### header lines entirely
+  t=t.replace(/\*\*([^*\n]+?)\*\*/g,'<strong>$1</strong>'); // **bold** -> <strong>
+  t=t.replace(/__([^_\n]+?)__/g,'<strong>$1</strong>');         // __bold__ -> <strong>
+  t=t.replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g,'$1<em>$2</em>'); // *italic* -> <em>
+  t=t.replace(/^[-*]\s+/gm,'&bull; ');                  // bullet markers -> bullet char
+  t=t.replace(/\n{2,}/g,'<br><br>');                    // paragraph breaks
+  t=t.replace(/\n/g,' ');                               // soft wraps -> spaces
   return t.trim();
 });
 while(sections.length<3)sections.push('');}catch(e){sections=['AI error: '+e.message,'',''];console.error('Meeting AI error:',e);}preview.innerHTML='<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;margin-bottom:.625rem;border:0.5px solid var(--color-border-tertiary);"><div style="font-size:10px;font-weight:600;color:#7F77DD;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Week Recap</div><div style="font-size:12px;color:var(--color-text-primary);line-height:1.7;">'+sections[0]+'</div></div><div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;margin-bottom:.625rem;border:0.5px solid var(--color-border-tertiary);"><div style="font-size:10px;font-weight:600;color:#1D9E75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Quarter Pacing</div><div style="font-size:12px;color:var(--color-text-primary);line-height:1.7;">'+sections[1]+'</div></div><div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;border:0.5px solid var(--color-border-tertiary);"><div style="font-size:10px;font-weight:600;color:#BA7517;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">This Week&#39;s Focus</div><div style="font-size:12px;color:var(--color-text-primary);line-height:1.7;">'+sections[2]+'</div></div>';let qtdPct=qGoalTotal>0?Math.min(100,Math.round(qtdRevTotal/qGoalTotal*100)):0;let repRows=sorted.map((r,i)=>{let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';let artColor=r.art>3?'#F09595':r.art>0?'#EF9F27':'#5DCAA5';let pct=r.goalRev>0?Math.round(r.revenue/r.goalRev*100):0;return'<div class="rep-row">'+rAv(r.name,r.idx)+'<div style="flex:1;"><div style="font-size:13px;font-weight:500;">'+medal+' '+r.name+'</div><div style="font-size:11px;color:#8B8A94;margin-top:1px;">'+r.calls+' calls · '+r.orders+' orders · <span style="color:'+artColor+';">'+r.art+' art err</span>'+(r.credits>0?' · <span style="color:#F09595;">$'+r.credits.toFixed(2)+' credits</span>':'')+'</div></div><div style="text-align:right;"><div style="font-size:14px;font-weight:600;">$'+Math.round(r.revenue).toLocaleString()+'</div><div style="font-size:11px;color:#8B8A94;">'+pct+'% of goal</div></div></div>';}).join('');let   intelHtml='';
@@ -4264,14 +4272,24 @@ async function verifyForecastWithAI(){
       console.warn('[Forecast verify] AI raw response:',raw.substring(0,500));
       throw new Error('AI returned text but no parseable JSON array was found. Click verify again to retry.');
     }
-    var validated=arr.filter(function(ev){
-      return ev && typeof ev.month==='number' && ev.month>=0 && ev.month<=11
-        && ev.day!==undefined && ev.day!==null
-        && ev.name && String(ev.name).length>3
-        && ev.pitch && String(ev.pitch).length>10;
-    });
+    // Coerce month strings to numbers so "5" → 5; relax pitch requirement
+    var validated=arr.map(function(ev){
+      if(!ev)return null;
+      var m=(typeof ev.month==='string')?parseInt(ev.month,10):ev.month;
+      if(typeof m!=='number'||isNaN(m)||m<0||m>11)return null;
+      ev.month=m;
+      if(ev.day===undefined||ev.day===null||ev.day==='')return null;
+      if(!ev.name||String(ev.name).length<3)return null;
+      // Pitch optional — synthesize a minimal one if missing so the card has SOMETHING to show
+      if(!ev.pitch||String(ev.pitch).length<3){
+        ev.pitch=String(ev.name)+' &mdash; opportunity for branded gear, recognition items, or seasonal apparel.';
+      }
+      return ev;
+    }).filter(function(ev){return ev;});
     if(validated.length===0){
-      throw new Error('AI returned a JSON array but none of the events had usable content. Try regenerating.');
+      var sample=arr.slice(0,2).map(function(e){return JSON.stringify(e).substring(0,150);}).join(' | ');
+      console.warn('[Forecast verify] AI returned',arr.length,'items but 0 passed. First items:',sample);
+      throw new Error('AI returned '+arr.length+' event(s) but none had a valid month/day/name. Sample: '+sample.substring(0,200)+'... Try regenerating.');
     }
     var meta={verifiedAt:new Date().toISOString(),addedCount:validated.length};
     _forecastAiEvents=validated;
