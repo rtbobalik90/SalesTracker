@@ -1775,6 +1775,28 @@ async function generateMeetingReport(){
   let forwardCatchupWeekly=weeksRemaining>0?Math.max(0,(qGoalTotal-qtdRevTotal)/weeksRemaining):0;
   let weeklyVsAdjPct=adjWeeklyForReportedWeek>0?Math.round(tRev/adjWeeklyForReportedWeek*100):0;
   let weeklyVsStaticPct=weeklyGoal>0?Math.round(tRev/weeklyGoal*100):0;
+  
+  // Per-rep QTD up through PRIOR week (so we can detect "just hit goal this week")
+  let _qtdRevByRepPrior={};activeReps().forEach(r=>{_qtdRevByRepPrior[r.name]=0;qtdWeeks.slice(0,prevIdx).forEach(w=>{_qtdRevByRepPrior[r.name]+=(gd(r.name+'|'+w.key).revenue||0);});});
+  // Build standout moments — to be quoted in WEEK RECAP
+  let _hitGoalThisWk=[],_alreadyOverGoal=[],_closeToGoal=[],_bigWeekVsAvg=[];
+  repData.forEach(function(r){
+    var priorQTD=_qtdRevByRepPrior[r.name]||0;
+    var currQTD=qtdRevByRep[r.name]||0;
+    var pct=r.goalRev>0?(currQTD/r.goalRev*100):0;
+    var priorPct=r.goalRev>0?(priorQTD/r.goalRev*100):0;
+    if(priorPct<100 && pct>=100){
+      _hitGoalThisWk.push(r.name+' HIT '+q+' GOAL this week (QTD $'+Math.round(currQTD).toLocaleString()+' vs $'+Math.round(r.goalRev).toLocaleString()+' goal = '+Math.round(pct)+'%)');
+    } else if(priorPct>=100){
+      _alreadyOverGoal.push(r.name+' already over '+q+' goal — now at '+Math.round(pct)+'% ($'+Math.round(currQTD).toLocaleString()+' QTD)');
+    } else if(pct>=90){
+      _closeToGoal.push(r.name+' at '+Math.round(pct)+'% of '+q+' goal — needs $'+Math.round(r.goalRev-currQTD).toLocaleString()+' more');
+    }
+    var avgWk=weeksCompleted>0?(qtdRevByRep[r.name]||0)/weeksCompleted:0;
+    if(avgWk>1000 && r.revenue>=avgWk*1.5){
+      _bigWeekVsAvg.push(r.name+' had a standout week: $'+Math.round(r.revenue).toLocaleString()+' vs $'+Math.round(avgWk).toLocaleString()+' personal weekly avg');
+    }
+  });
   let sorted=[...repData].sort((a,b)=>b.revenue-a.revenue),topRep=sorted[0];st.textContent='Building market intel from forecast...';let intelData=null;try{intelData=generateIntelForMeeting();}catch(e){console.warn('Intel error:',e);}st.textContent='Generating AI analysis...';const prompt='You are a sales manager writing the weekly team meeting report for Triple Crown Products (custom branded apparel, workwear, hi-vis safety gear, Mukwonago WI).'
   +'\n\nTODAY: '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})
   +'\nQUARTER IN PROGRESS: '+q+' '+yr+' — Week '+weeksCompleted+' of '+qtdWeeks.length+' ('+weeksRemaining+' weeks remaining)'
@@ -1784,6 +1806,14 @@ async function generateMeetingReport(){
   +'\n- ADJUSTED weekly target for this week (catch-up rate going in): $'+Math.round(adjWeeklyForReportedWeek).toLocaleString()+' ('+weeklyVsAdjPct+'% of adjusted target — this is the REAL target the team needed to hit)'
   +'\n- Orders: '+tOrders+' | Calls: '+tCalls
   +'\n- Top rep this week: '+(topRep?topRep.name+' $'+Math.round(topRep.revenue||0).toLocaleString():'-')
+  +'\n\nTOP 3 BY REVENUE THIS WEEK (use real numbers):'
+  +sorted.slice(0,3).filter(function(r){return r.revenue>0;}).map(function(r,i){return '\n'+(i+1)+'. '+r.name+' — $'+Math.round(r.revenue).toLocaleString()+' ('+r.orders+' orders, '+r.calls+' calls'+(r.goalRev>0?', '+Math.round((qtdRevByRep[r.name]||0)/r.goalRev*100)+'% of Q goal':'')+')';}).join('')
+  +'\n\nSTANDOUT MOMENTS — YOU MUST CALL THESE OUT BY NAME IN THE WEEK RECAP:'
+  +(_hitGoalThisWk.length>0?'\n[GOAL HIT THIS WEEK — LEAD WITH THIS]\n- '+_hitGoalThisWk.join('\n- '):'')
+  +(_alreadyOverGoal.length>0?'\n[Already over goal — keep mentioning]\n- '+_alreadyOverGoal.join('\n- '):'')
+  +(_closeToGoal.length>0?'\n[Close to goal]\n- '+_closeToGoal.join('\n- '):'')
+  +(_bigWeekVsAvg.length>0?'\n[Big week vs personal avg]\n- '+_bigWeekVsAvg.join('\n- '):'')
+  +((_hitGoalThisWk.length+_alreadyOverGoal.length+_closeToGoal.length+_bigWeekVsAvg.length)===0?'\n(no standout milestones this week — focus the recap on team momentum and the top 3)':'')
   +'\n\nQUARTER-TO-DATE ('+weeksCompleted+' of '+qtdWeeks.length+' weeks complete, '+weeksRemaining+' remaining):'
   +'\n- QTD revenue: $'+Math.round(qtdRevTotal).toLocaleString()+' of $'+Math.round(qGoalTotal).toLocaleString()+' goal ('+Math.round(qGoalTotal>0?qtdRevTotal/qGoalTotal*100:0)+'%)'
   +'\n- Current run rate: $'+Math.round(avgWeeklyRev).toLocaleString()+'/week'
@@ -1796,7 +1826,7 @@ async function generateMeetingReport(){
   +'\n- Focus on what the team needs to do NOW and in coming weeks to close the gap or protect the lead.'
   +'\n- This report is read on Monday morning at the team meeting. The week you are recapping JUST ENDED. "This week" in the THIS WEEK\'S FOCUS section refers to the brand-new week that started today.'
   +'\n\nFORMAT (CRITICAL): Output exactly 3 sections separated by ||| (three pipe characters). Do NOT use ---, ===, asterisks, or any other separator. Do NOT write the section name (e.g., \"WEEK RECAP\") in your output. Just write the content back-to-back with ||| between each.\n\nThe 3 sections in order:'
-  +'\n1. WEEK RECAP: What happened this week. Specific numbers, top performers, momentum. Tone: energetic but honest.'
+  +'\n1. WEEK RECAP: A detailed, in-depth recap of the week. MANDATORY: name specific reps from the STANDOUT MOMENTS data above. If anyone hit their quarter goal this week, LEAD WITH THAT (e.g., "Kevin Scott hit his Q2 goal this week with $X QTD"). Call out the top 3 earners by name with their dollar numbers. Mention anyone close to goal (90%+) and anyone who had a big week vs their personal avg. Include the team total, order count, and call count. Tone: energetic but honest. Aim for 6-9 sentences with multiple named reps, not generic team-level prose.'
   +'\n2. QUARTER PACING: Where we stand right now in the quarter. Are we ahead/behind pace? What does the math say we need each remaining week? Be direct about the gap or the opportunity.'
   +'\n3. THIS WEEK\'S FOCUS: 3-4 concrete priorities for THIS WEEK (the new week that started today). Frame as "this week" — this report is read Monday morning at the team meeting kicking off the new week, so the focus is what to do over the next 5 business days. Tie back to the quarter target. Be specific and actionable.'
   +'\nReminder: Use ||| between the 3 sections. Do not write section titles. Do not mention art errors or credits.';let sections=['','',''];try{let text=await callAI(prompt);var rawSec=text.split('|||').map(function(s){return s.trim();}).filter(function(s){return s;});
