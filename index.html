@@ -6241,6 +6241,7 @@ function downloadRepSummaryPDF(repName){
     var pwRev=Math.round(pwData.revenue||0);
     var pwOrders=Math.round(pwData.orders||0);
     var pwCalls=Math.round(pwData.calls||0);
+    var pwHours=parseFloat(pwData.hours)||0;
     var pwArtErrors=(S.artErrors||[]).filter(function(a){return a.rep===repName&&a.weekKey===prevWeek.key;}).length;
     var pwCMs=(S.cms||[]).filter(function(x){return x.rep===repName&&x.weekKey===prevWeek.key;});
     var pwCMCount=pwCMs.length;
@@ -6257,6 +6258,7 @@ function downloadRepSummaryPDF(repName){
     pwRows=row('Sales','$'+pwRev.toLocaleString())
       +row('Orders',pwOrders.toLocaleString())
       +row('Calls',pwCalls.toLocaleString())
+      +row('Hours Worked',(pwHours>0?pwHours.toFixed(1)+' hrs':'—'))
       +row('Art Errors',pwArtErrors.toLocaleString(),pwArtColor)
       +row('Credit Memos',pwCMLabel,pwCMColor);
   }
@@ -6365,7 +6367,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v219</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v220</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
