@@ -6225,6 +6225,42 @@ function downloadRepSummaryPDF(repName){
   var ro=repGoalObj(repName,yr,q);
   var t=totW(repName,weeks);
 
+  // ── LAST WEEK context block ──
+  // Find the most recent completed week (if we===0, fall back to last week of previous quarter)
+  var prevWeek=null;
+  if(we>0){prevWeek=weeks[we-1];}
+  else{
+    var prevQ=q==='Q1'?'Q4':'Q'+(parseInt(q.charAt(1),10)-1);
+    var prevYr=q==='Q1'?yr-1:yr;
+    var pqw=gwq(prevYr,prevQ);
+    if(pqw.length>0)prevWeek=pqw[pqw.length-1];
+  }
+  var pwRows='';
+  if(prevWeek){
+    var pwData=gd(repName+'|'+prevWeek.key)||{};
+    var pwRev=Math.round(pwData.revenue||0);
+    var pwOrders=Math.round(pwData.orders||0);
+    var pwCalls=Math.round(pwData.calls||0);
+    var pwArtErrors=(S.artErrors||[]).filter(function(a){return a.rep===repName&&a.weekKey===prevWeek.key;}).length;
+    var pwCMs=(S.cms||[]).filter(function(x){return x.rep===repName&&x.weekKey===prevWeek.key;});
+    var pwCMCount=pwCMs.length;
+    var pwCMTotal=pwCMs.reduce(function(s,x){return s+(parseFloat(x.amount)||0);},0);
+    // Format week date range
+    function _fmtPwDate(d){if(!d)return'';try{return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'});}catch(e){return'';}}
+    var pwStart=_fmtPwDate(prevWeek.start);
+    var pwEnd=_fmtPwDate(prevWeek.end);
+    var pwYr=prevWeek.end?new Date(prevWeek.end).getFullYear():yr;
+    var pwDateRange=pwStart+' – '+pwEnd+', '+pwYr;
+    var pwCMLabel=pwCMCount===0?'0':('$'+pwCMTotal.toLocaleString()+' ('+pwCMCount+' memo'+(pwCMCount===1?'':'s')+')');
+    var pwArtColor=pwArtErrors>0?'#B91C1C':'#1A1A2E';
+    var pwCMColor=pwCMCount>0?'#B91C1C':'#1A1A2E';
+    pwRows=row('Sales','$'+pwRev.toLocaleString())
+      +row('Orders',pwOrders.toLocaleString())
+      +row('Calls',pwCalls.toLocaleString())
+      +row('Art Errors',pwArtErrors.toLocaleString(),pwArtColor)
+      +row('Credit Memos',pwCMLabel,pwCMColor);
+  }
+
   // ── SALES math ──
   var salesGoal=Math.round(ro.rev||0);
   var totalSales=Math.round(t.revenue||0);
@@ -6318,6 +6354,10 @@ function downloadRepSummaryPDF(repName){
     +'<div class="title">'+esc_html(repName)+'</div>'
     +'<div class="subtitle">'+q+' '+yr+' summary \u2014 through week '+we+' of '+weeks.length+' ('+weeksRemaining+' week'+(weeksRemaining===1?'':'s')+' remaining)</div>'
     +'<table><tbody>'
+    +(prevWeek?(
+      '<tr><td colspan="2" style="padding:14px 0 6px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;font-weight:700;border-bottom:2px solid #6b7280;">Last week ('+pwDateRange+')</td></tr>'
+      +pwRows
+    ):'')
     +sectionHeader('Sales','#1D9E75')
     +salesRows
     +sectionHeader('Calls','#534AB7')
@@ -6325,7 +6365,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v211</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v219</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
