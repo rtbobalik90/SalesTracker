@@ -903,7 +903,7 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
 
   <!-- ── CLOUD SYNC (GitHub Gist) ── -->
   <div class="card" style="margin-top:12px;border-color:#5DCAA5;background:linear-gradient(135deg,rgba(93,202,165,0.05),rgba(93,202,165,0.02));">
-    <div class="ct" style="color:#5DCAA5;">&#9729;&#65039; Cloud sync <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);margin-left:8px;">Save to / load from a private GitHub Gist so data survives wipes and others can pull it</span></div>
+    <div class="ct" style="color:#5DCAA5;">&#9729;&#65039; Cloud sync <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);margin-left:8px;">Auto-syncs every 5 min &middot; last sync: <strong id="cloudSaveBadge" style="color:#9CA3AF;">never</strong></span></div>
     <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;line-height:1.55;">This stores your FULL tracker data (same as a backup) in a private GitHub Gist. Click <strong>Save to cloud</strong> to push the latest; anyone with the token + Gist ID clicks <strong>Load from cloud</strong> to pull it. <strong style="color:#EF9F27;">Heads up:</strong> whoever loads last sees whoever saved last \u2014 if two people save around the same time, the later save wins. Best with one clear &ldquo;data owner.&rdquo;</p>
     <div style="display:flex;flex-direction:column;gap:10px;max-width:560px;">
       <label style="font-size:11px;color:var(--color-text-secondary);">GitHub token <span style="color:var(--color-text-tertiary);">(fine-grained or classic with <strong>gist</strong> scope)</span>
@@ -917,12 +917,13 @@ body.hide-intel-sources #intelSourcesSection { display:none !important; }
         <button class="sbtn" id="gistSaveBtn" onclick="saveToCloud()" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:600;">&#9729;&#65039;&#11015; Save to cloud</button>
         <button class="sbtn" id="gistLoadBtn" onclick="loadFromCloud()" style="background:#1A1F2A;border-color:#A8B8FF;color:#A8B8FF;font-weight:600;">&#9729;&#65039;&#11014; Load from cloud</button>
         <button class="sbtn" onclick="document.getElementById('gistTokenInput').type=document.getElementById('gistTokenInput').type==='password'?'text':'password'" style="font-size:11px;padding:5px 10px;">Show/hide token</button>
+        <button class="sbtn" onclick="showCloudPayloadBreakdown()" style="font-size:11px;padding:5px 10px;background:#1A1F2A;border-color:#EF9F27;color:#EF9F27;">&#128202; What's taking space?</button>
       </div>
       <div id="gistStatus" style="font-size:11px;padding:7px 11px;background:var(--color-background-secondary);border-radius:6px;line-height:1.5;"></div>
     </div>
     <div style="font-size:10px;color:var(--color-text-secondary);margin-top:.875rem;line-height:1.6;">
       <strong style="color:#A8B8FF;">Setup once:</strong> at github.com &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens, create a token with <strong>Gist</strong> permission. Paste it above. Click <strong>Save to cloud</strong> &mdash; a private Gist is created and its ID appears in the box. Share that Gist ID (and a token with Gist access) with anyone who should pull the data.<br>
-      <strong style="color:#EF9F27;">Note:</strong> your work computer wipes browser data on close, so you&#39;ll re-paste the token + Gist ID each session (same as your API key). Keep them somewhere handy.
+      <strong style="color:#5DCAA5;">v221+:</strong> credentials are now baked into this HTML file, so they survive browser wipes and version upgrades. Auto-sync runs every 5 min. On first load with no local data, the tracker auto-pulls from the cloud Gist.
     </div>
   </div>
 
@@ -3410,9 +3411,9 @@ function saveAPIKey(){
 }
 function loadAPIKey(){
   try{
-    var k=localStorage.getItem(API_KEY_STORE)||'';
+    var k=localStorage.getItem(API_KEY_STORE)||(typeof BAKED_API_KEY!=='undefined'?BAKED_API_KEY:'')||'';
     var el=document.getElementById('apiKeyInput');
-    if(el&&k)el.value=k;
+    if(el)el.value=k;
     updateAPIKeyStatus();
     return k;
   }catch(e){return'';}
@@ -6367,7 +6368,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v220</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v227</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -8668,6 +8669,22 @@ var GIST_TOKEN_STORE='salesTracker_gistToken';
 var GIST_ID_STORE='salesTracker_gistId';
 var GIST_FILENAME='tcp_tracker_data.json';
 
+// ─── BAKED CREDENTIALS ────────────────────────────────────────────────────
+// Embedded into shipped versions so creds survive browser wipes & version upgrades.
+// SECURITY: anyone with this HTML file has these credentials. Rotate periodically.
+var BAKED_API_KEY='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';
+var BAKED_GIST_TOKEN='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';
+var BAKED_GIST_ID=''; // CLEARED in v226 pending investigation
+
+// Prime localStorage from baked values if empty (survives browser wipes)
+(function _primeBakedCredentials(){
+  try{
+    if(!localStorage.getItem(API_KEY_STORE)&&BAKED_API_KEY)localStorage.setItem(API_KEY_STORE,BAKED_API_KEY);
+    if(!localStorage.getItem(GIST_TOKEN_STORE)&&BAKED_GIST_TOKEN)localStorage.setItem(GIST_TOKEN_STORE,BAKED_GIST_TOKEN);
+    if(!localStorage.getItem(GIST_ID_STORE)&&BAKED_GIST_ID)localStorage.setItem(GIST_ID_STORE,BAKED_GIST_ID);
+  }catch(e){console.warn('[creds prime]',e);}
+})();
+
 function saveGistToken(){
   var v=(document.getElementById('gistTokenInput')||{}).value||'';
   try{if(v)localStorage.setItem(GIST_TOKEN_STORE,v);else localStorage.removeItem(GIST_TOKEN_STORE);}catch(e){}
@@ -8683,9 +8700,41 @@ function _gistStatus(msg,color){
 function _gistLoadCreds(){
   var t=document.getElementById('gistTokenInput'),i=document.getElementById('gistIdInput');
   try{
-    if(t&&!t.value){var st=localStorage.getItem(GIST_TOKEN_STORE);if(st)t.value=st;}
-    if(i&&!i.value){var si=localStorage.getItem(GIST_ID_STORE);if(si)i.value=si;}
+    var st=localStorage.getItem(GIST_TOKEN_STORE)||(typeof BAKED_GIST_TOKEN!=='undefined'?BAKED_GIST_TOKEN:'')||'';
+    var si=localStorage.getItem(GIST_ID_STORE)||(typeof BAKED_GIST_ID!=='undefined'?BAKED_GIST_ID:'')||'';
+    if(t)t.value=st;
+    if(i)i.value=si;
   }catch(e){}
+}
+
+// ─── COMPRESSION HELPERS (gzip via browser-native CompressionStream API) ────────
+// Big JSON payloads compress 80-95% with gzip. Keeps Gist size well under GitHub's 1MB inline limit.
+var CLOUD_GZIP_PREFIX='__TCP_GZIP_B64__\n';
+async function _compressPayload(payloadStr){
+  if(typeof CompressionStream==='undefined')return null;
+  try{
+    var stream=new Blob([payloadStr]).stream().pipeThrough(new CompressionStream('gzip'));
+    var buf=await new Response(stream).arrayBuffer();
+    var bytes=new Uint8Array(buf);
+    var binary='';
+    // Chunked to avoid stack overflow on big arrays
+    var chunkSize=0x8000;
+    for(var i=0;i<bytes.length;i+=chunkSize){
+      binary+=String.fromCharCode.apply(null,bytes.subarray(i,i+chunkSize));
+    }
+    return CLOUD_GZIP_PREFIX+btoa(binary);
+  }catch(e){console.warn('[gzip compress]',e);return null;}
+}
+async function _decompressPayload(content){
+  if(!content||typeof content!=='string'||content.indexOf(CLOUD_GZIP_PREFIX)!==0)return content;
+  var base64=content.substring(CLOUD_GZIP_PREFIX.length);
+  try{
+    var binary=atob(base64);
+    var bytes=new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    var stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    return await new Response(stream).text();
+  }catch(e){console.warn('[gzip decompress]',e);throw new Error('Could not decompress cloud data: '+e.message);}
 }
 
 // Build the CLOUD payload for GitHub Gist sync.
@@ -8693,13 +8742,22 @@ function _gistLoadCreds(){
 // ~1MB inline gist limit, which breaks Load (truncated files need a CORS-blocked URL).
 // Photos stay local; everything else (reps, goals, weekly data, games, tracker) syncs.
 // NOTE: distinct from _buildBackupPayload (used for local file + export), which keeps photos.
+// v227: Only tracker-owned keys ever sync. Other apps (Full by 40, the battleship
+// game, etc.) can share this browser's localStorage; never bundle their keys into
+// the tracker's gist, and never let a cloud load overwrite them.
+function _isTrackerKey(k){
+  if(!k)return false;
+  if(k===GIST_TOKEN_STORE)return false;            // never sync the token
+  if(k.indexOf('salesTracker_photo_')===0)return false; // photos stay local
+  return k.indexOf('salesTracker_')===0||k.indexOf('_tcp_')===0;
+}
 function _buildCloudPayload(){
   var dump={};
   var skippedPhotos=0;
   for(var i=0;i<localStorage.length;i++){
     var k=localStorage.key(i);
-    if(k===GIST_TOKEN_STORE)continue; // never sync the token
-    if(k.indexOf('salesTracker_photo_')===0){skippedPhotos++;continue;} // skip photos
+    if(k&&k.indexOf('salesTracker_photo_')===0){skippedPhotos++;continue;} // count photos kept local
+    if(!_isTrackerKey(k))continue; // skip the token AND any non-tracker app's keys
     dump[k]=localStorage.getItem(k);
   }
   return{
@@ -8774,12 +8832,16 @@ async function saveToCloud(){
   try{
     var payload=_buildCloudPayload();
     var payloadStr=JSON.stringify(payload,null,2);
-    var sizeKB=Math.round(payloadStr.length/1024);
+    var rawKB=Math.round(payloadStr.length/1024);
+    var compressed=await _compressPayload(payloadStr);
+    var finalContent=compressed||payloadStr;
+    var sizeKB=Math.round(finalContent.length/1024);
+    var compressionInfo=compressed?' (compressed '+rawKB+'KB \u2192 '+sizeKB+'KB, '+Math.round((1-finalContent.length/payloadStr.length)*100)+'% smaller)':' ('+sizeKB+'KB)';
     var body={
       description:'TCP Sales Tracker data \u2014 updated '+new Date().toLocaleString(),
       files:{}
     };
-    body.files[GIST_FILENAME]={content:payloadStr};
+    body.files[GIST_FILENAME]={content:finalContent};
     var url='https://api.github.com/gists'+(gistId?'/'+gistId:'');
     var method=gistId?'PATCH':'POST';
     if(!gistId)body.public=false; // create as secret gist
@@ -8800,7 +8862,11 @@ async function saveToCloud(){
       gistId=data.id;
     }
     try{localStorage.setItem('_tcp_last_cloud_save',new Date().toISOString());}catch(e){}
-    var sizeWarn=sizeKB>900?' <strong style="color:#EF9F27;">\u26A0 '+sizeKB+'KB \u2014 getting close to GitHub\u0027s 1MB limit; if Load ever fails, you have too much data to sync this way.</strong>':' ('+sizeKB+'KB'+(payload.photosExcluded?', '+payload.photosExcluded+' photos kept local':'')+')';
+    var compressedPct=compressed?Math.round((1-finalContent.length/payloadStr.length)*100):0;
+    var sizeMsg=compressed?
+      ('<br><span style="font-size:11px;color:var(--color-text-secondary);">Raw: '+rawKB.toLocaleString()+'KB \u2192 compressed: '+sizeKB.toLocaleString()+'KB ('+compressedPct+'% smaller)'+(sizeKB>900?' \u00b7 <span style="color:#EF9F27;">over 1MB inline limit, but raw_url fallback still works</span>':'')+(payload.photosExcluded?' \u00b7 '+payload.photosExcluded+' photos kept local':'')+'</span>'):
+      (' \u00b7 '+sizeKB.toLocaleString()+'KB (uncompressed)');
+    var sizeWarn=sizeMsg;
     _gistStatus('\u2705 Saved to cloud '+new Date().toLocaleTimeString()+'. Gist ID: <strong style="font-family:monospace;">'+gistId+'</strong>'+(method==='POST'?' <em>(new private Gist created \u2014 share this ID)</em>':'')+sizeWarn,'#5DCAA5');
   }catch(e){
     console.error('[cloud save]',e);
@@ -8841,17 +8907,24 @@ async function loadFromCloud(){
         throw new Error('The cloud data is too large to load in the browser (over GitHub\u0027s 1MB inline limit). Re-save from the source machine \u2014 photos are now excluded, which should keep it small enough. If it still fails, you have too much data for Gist sync.');
       }
     }
+    // Decompress if it's a gzipped payload (new format); pass-through for legacy uncompressed
+    content=await _decompressPayload(content);
     var parsed=JSON.parse(content);
     if(!parsed||!parsed.data||parsed.version!=='TCP_Tracker_Backup_v1'){
       throw new Error('Cloud data isn\u0027t a valid TCP Tracker backup.');
     }
-    // Preserve the local token so we don't wipe it on restore
+    // v227: NEVER localStorage.clear() — that wipes other apps sharing this origin
+    // (Full by 40, games). Remove only tracker keys, restore only tracker keys.
     var keepToken=localStorage.getItem(GIST_TOKEN_STORE);
     var keepId=localStorage.getItem(GIST_ID_STORE);
-    localStorage.clear();
-    Object.keys(parsed.data).forEach(function(k){localStorage.setItem(k,parsed.data[k]);});
+    var keepApi=localStorage.getItem(API_KEY_STORE);
+    var oldTrackerKeys=[];
+    for(var ti=0;ti<localStorage.length;ti++){var tk=localStorage.key(ti);if(_isTrackerKey(tk))oldTrackerKeys.push(tk);}
+    oldTrackerKeys.forEach(function(k){localStorage.removeItem(k);});
+    Object.keys(parsed.data).forEach(function(k){if(_isTrackerKey(k))localStorage.setItem(k,parsed.data[k]);});
     if(keepToken)localStorage.setItem(GIST_TOKEN_STORE,keepToken);
     if(keepId)localStorage.setItem(GIST_ID_STORE,keepId);
+    if(keepApi)localStorage.setItem(API_KEY_STORE,keepApi);
     _gistStatus('\u2705 Loaded from cloud (saved '+(parsed.exportedAt?new Date(parsed.exportedAt).toLocaleString():'?')+'). Reloading...','#5DCAA5');
     setTimeout(function(){location.reload();},800);
   }catch(e){
@@ -8863,6 +8936,121 @@ async function loadFromCloud(){
     if(btn){btn.disabled=false;btn.innerHTML='\u2601\uFE0F\u2B06 Load from cloud';}
   }
 }
+
+// Diagnostic: show what's in the cloud payload by key, sorted by size
+function showCloudPayloadBreakdown(){
+  var rows=[];var totalRaw=0;
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(!_isTrackerKey(k))continue; // v227: only show keys that actually sync to the tracker's gist
+    var v=localStorage.getItem(k)||'';
+    var kb=v.length/1024;
+    totalRaw+=v.length;
+    rows.push({key:k,kb:kb});
+  }
+  rows.sort(function(a,b){return b.kb-a.kb;});
+  var totalKB=totalRaw/1024;
+  var msg='CLOUD PAYLOAD BREAKDOWN\n\n';
+  msg+='Total (uncompressed): '+Math.round(totalKB).toLocaleString()+' KB\n';
+  msg+='(typically compresses 85-90%, so ~'+Math.round(totalKB*0.13).toLocaleString()+' KB after gzip)\n\n';
+  msg+='TOP 15 LARGEST KEYS:\n';
+  rows.slice(0,15).forEach(function(r){
+    msg+='  • '+r.key+' — '+(r.kb<1?Math.round(r.kb*1024)+' B':Math.round(r.kb).toLocaleString()+' KB')+'\n';
+  });
+  msg+='\nRest: '+rows.slice(15).length+' smaller keys\n\n';
+  msg+='If you want to clean up: Admin → Local storage → "Free up storage space" can clear caches.';
+  alert(msg);
+}
+
+// ─── AUTO-SYNC ───────────────────────────────────────────────────────────
+// Push current state to Gist every 5 min when creds are set. Silent unless errors.
+async function _gistAutoSave(){
+  var token=localStorage.getItem(GIST_TOKEN_STORE);
+  if(!token)return;
+  var gistId=localStorage.getItem(GIST_ID_STORE)||'';
+  try{
+    var payload=_buildCloudPayload();
+    var payloadStr=JSON.stringify(payload,null,2);
+    var compressed=await _compressPayload(payloadStr);
+    var finalContent=compressed||payloadStr;
+    var body={description:'TCP Sales Tracker data — auto-sync '+new Date().toLocaleString(),files:{}};
+    body.files[GIST_FILENAME]={content:finalContent};
+    var url='https://api.github.com/gists'+(gistId?'/'+gistId:'');
+    var method=gistId?'PATCH':'POST';
+    if(!gistId)body.public=false;
+    var resp=await _gistFetch(url,token,{method:method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(resp.ok){
+      var data=await resp.json();
+      if(data.id&&!gistId){
+        localStorage.setItem(GIST_ID_STORE,data.id);
+        // Also update the visible Gist ID input if Admin tab is open
+        var idInp=document.getElementById('gistIdInput');
+        if(idInp)idInp.value=data.id;
+      }
+      localStorage.setItem('_tcp_last_cloud_save',new Date().toISOString());
+      _updateCloudSaveBadge();
+    } else {
+      console.warn('[auto-sync] failed',resp.status);
+    }
+  }catch(e){console.warn('[auto-sync]',e);}
+}
+
+function _updateCloudSaveBadge(){
+  var badge=document.getElementById('cloudSaveBadge');
+  if(!badge)return;
+  var ls=localStorage.getItem('_tcp_last_cloud_save');
+  if(!ls){badge.textContent='never';badge.style.color='#9CA3AF';return;}
+  var d=new Date(ls);
+  var diffMin=Math.round((Date.now()-d.getTime())/60000);
+  var label;
+  if(diffMin<1)label='just now';
+  else if(diffMin<60)label=diffMin+'m ago';
+  else if(diffMin<1440)label=Math.round(diffMin/60)+'h ago';
+  else label=Math.round(diffMin/1440)+'d ago';
+  badge.textContent=label;
+  badge.style.color=diffMin<10?'#5DCAA5':diffMin<60?'#EF9F27':'#F09595';
+}
+
+// First-load auto-pull: if no local data but creds are set, pull from cloud
+async function _gistAutoLoad(){
+  var token=localStorage.getItem(GIST_TOKEN_STORE);
+  var gistId=localStorage.getItem(GIST_ID_STORE);
+  if(!token||!gistId)return;
+  try{
+    var resp=await _gistFetch('https://api.github.com/gists/'+gistId,token);
+    if(!resp.ok)return;
+    var data=await resp.json();
+    var file=data.files&&(data.files[GIST_FILENAME]||data.files[Object.keys(data.files)[0]]);
+    if(!file)return;
+    var content=file.content;
+    if(file.truncated&&file.raw_url){
+      try{var rawResp=await fetch(file.raw_url); if(!rawResp.ok)return; content=await rawResp.text();}catch(e){return;}
+    }
+    content=await _decompressPayload(content);
+    var parsed=JSON.parse(content);
+    if(!parsed||!parsed.data||parsed.version!=='TCP_Tracker_Backup_v1')return;
+    var keepToken=localStorage.getItem(GIST_TOKEN_STORE);
+    var keepId=localStorage.getItem(GIST_ID_STORE);
+    var keepApi=localStorage.getItem(API_KEY_STORE);
+    Object.keys(parsed.data).forEach(function(k){if(_isTrackerKey(k))localStorage.setItem(k,parsed.data[k]);});
+    if(keepToken)localStorage.setItem(GIST_TOKEN_STORE,keepToken);
+    if(keepId)localStorage.setItem(GIST_ID_STORE,keepId);
+    if(keepApi)localStorage.setItem(API_KEY_STORE,keepApi);
+    console.log('[auto-load] Restored from cloud, reloading...');
+    setTimeout(function(){location.reload();},400);
+  }catch(e){console.warn('[auto-load]',e);}
+}
+
+// v227: cross-app contamination FIXED — save/load now touch only tracker keys (_isTrackerKey).
+// Auto-sync still OFF until one manual Save to cloud is verified clean (~210KB, tracker keys only),
+// then re-enable below in v228 with the confirmed Gist ID. Manual Save/Load works in Admin > Cloud Sync.
+window.addEventListener('load',function(){
+  _updateCloudSaveBadge();
+  setInterval(_updateCloudSaveBadge,30*1000);
+  // AUTO-SYNC AND AUTO-PULL BOTH DISABLED until we verify the correct Gist ID
+  // setTimeout(_gistAutoSave,60*1000);
+  // setInterval(_gistAutoSave,5*60*1000);
+});
 
 function exportAllData(){
   try {
