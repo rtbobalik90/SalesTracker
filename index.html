@@ -1731,6 +1731,182 @@ select optgroup{
 @media(max-width:900px){.reports-v278-health-strip,.reports-v278-type-grid,.reports-v278-config-grid,.reports-v278-form-grid,.reports-v278-side{grid-template-columns:1fr!important}.reports-v278-generate-card{flex-direction:column;align-items:stretch}.reports-v278-generate-btn{width:100%;}.reports-v278-generated-head{align-items:flex-start;flex-direction:column;}}
 </style>
 
+
+<style id="tcp-reports-watch-panel-fix-v280">
+/* v280 — Reports side panel readability fix */
+.reports-v278-watch-list{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+}
+.reports-v278-watch-list > div{
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  column-gap:12px!important;
+  row-gap:3px!important;
+  align-items:start!important;
+  padding:13px 14px!important;
+  min-height:auto!important;
+}
+.reports-v278-watch-list > div span{
+  grid-column:1!important;
+  grid-row:1 / span 2!important;
+  width:42px!important;
+  height:42px!important;
+  border-radius:14px!important;
+  font-size:15px!important;
+}
+.reports-v278-watch-list > div strong{
+  grid-column:2!important;
+  grid-row:1!important;
+  margin:0!important;
+  font-size:13px!important;
+  line-height:1.25!important;
+  white-space:normal!important;
+}
+.reports-v278-watch-list > div small{
+  grid-column:2!important;
+  grid-row:2!important;
+  margin:0!important;
+  font-size:11.5px!important;
+  line-height:1.45!important;
+  white-space:normal!important;
+  max-width:none!important;
+}
+.reports-v278-side-card .reports-title{
+  line-height:1.15!important;
+}
+@media(max-width:1250px){
+  .reports-v278-side .reports-v278-watch-list > div{
+    grid-template-columns:42px minmax(0,1fr)!important;
+  }
+}
+</style>
+
+<style id="tcp-notifications-command-center-v284">
+/* ===== v284 Operations Alert Center ===== */
+.notif-command{--notif-card:rgba(19,24,41,.84);--notif-line:rgba(255,255,255,.10);--notif-muted:#A8AFC3;}
+.notif-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:26px 28px;margin-bottom:16px;border:1px solid rgba(255,255,255,.10);border-radius:26px;background:radial-gradient(circle at 14% 12%,rgba(255,91,46,.18),transparent 34%),radial-gradient(circle at 82% 8%,rgba(34,211,238,.16),transparent 31%),linear-gradient(135deg,rgba(139,92,246,.22),rgba(13,17,31,.88) 48%,rgba(7,9,18,.94));box-shadow:0 24px 64px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.09);}
+.notif-hero:after{content:"";position:absolute;right:-110px;bottom:-150px;width:380px;height:380px;border-radius:999px;background:radial-gradient(circle,rgba(255,91,46,.18),transparent 68%);pointer-events:none;}
+.notif-kicker{font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.16em;color:#9DDCFF;margin-bottom:7px;}
+.notif-hero h1{margin:0 0 8px;color:#fff;font-size:30px;line-height:1;font-weight:950;letter-spacing:-.045em;}
+.notif-hero p{margin:0;color:#A8AFC3;font-size:13px;line-height:1.6;max-width:780px;}
+.notif-hero-actions{position:relative;z-index:1;display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;}
+.notif-metrics{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:12px;margin-bottom:16px;}
+.notif-metric{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025)),rgba(19,24,41,.86);box-shadow:0 16px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:15px 16px;min-height:104px;}
+.notif-metric:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--nm-color,#8B5CF6),rgba(34,211,238,.75));}
+.notif-metric:after{content:"";position:absolute;right:-26px;top:-30px;width:90px;height:90px;border-radius:999px;background:radial-gradient(circle,var(--nm-glow,rgba(139,92,246,.22)),transparent 68%);}
+.notif-metric .nm-label{position:relative;font-size:10px;text-transform:uppercase;letter-spacing:.09em;font-weight:900;color:#98A0B6;margin-bottom:8px;}
+.notif-metric .nm-value{position:relative;font-size:26px;font-weight:950;color:#fff;letter-spacing:-.04em;line-height:1;}
+.notif-metric .nm-sub{position:relative;font-size:11px;color:#8992AA;margin-top:7px;}
+.notif-toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 160px 160px auto;gap:10px;align-items:end;margin-bottom:16px;padding:14px;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),rgba(19,24,41,.74);box-shadow:0 16px 40px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.05);}
+.notif-toolbar .ig input,.notif-toolbar .ig select{min-height:40px!important;border-radius:13px!important;background:rgba(0,0,0,.22)!important;border-color:rgba(255,255,255,.11)!important;color:#fff!important;}
+.notif-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,.72fr);gap:16px;align-items:start;}
+.notif-stack{display:flex;flex-direction:column;gap:14px;}
+.notif-panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.048),rgba(255,255,255,.018)),var(--notif-card);box-shadow:0 18px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:16px;}
+.notif-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.notif-panel-title{font-size:15px;font-weight:950;color:#fff;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;}
+.notif-panel-sub{font-size:11px;color:#8F98B4;margin-top:3px;line-height:1.4;}
+.notif-count-pill{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:24px;padding:0 9px;border-radius:999px;background:rgba(139,92,246,.16);border:1px solid rgba(139,92,246,.30);color:#D8D0FF;font-size:11px;font-weight:900;}
+.notif-card{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:start;padding:13px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:rgba(255,255,255,.035);margin-bottom:9px;transition:transform .16s ease,border-color .16s ease,background .16s ease;}
+.notif-card:hover{transform:translateY(-1px);border-color:rgba(139,92,246,.34);background:rgba(139,92,246,.065);}
+.notif-card.dismissed{opacity:.45;filter:saturate(.65);}
+.notif-icon{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;font-size:18px;background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+.notif-title{font-size:13px;font-weight:900;color:#fff;margin-bottom:4px;line-height:1.25;}
+.notif-message{font-size:12px;color:#C4CAE0;line-height:1.5;}
+.notif-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:7px;color:#8E98B4;font-size:10px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;}
+.notif-badge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#DCE4FF;font-size:10px;font-weight:900;}
+.notif-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.notif-mini-btn{font-size:10px;padding:5px 8px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.055);color:#EEF2FF;cursor:pointer;font-family:inherit;font-weight:800;}
+.notif-mini-btn:hover{background:linear-gradient(135deg,var(--tcp-orange),var(--tcp-violet));color:#fff;border-color:rgba(255,255,255,.22);}
+.notif-critical .notif-icon{background:linear-gradient(135deg,rgba(255,71,126,.30),rgba(255,91,46,.12));color:#FFD3DF;}
+.notif-action .notif-icon{background:linear-gradient(135deg,rgba(255,176,32,.24),rgba(139,92,246,.10));color:#FFE1A3;}
+.notif-good .notif-icon{background:linear-gradient(135deg,rgba(71,209,108,.24),rgba(34,211,238,.11));color:#B5FFC9;}
+.notif-system .notif-icon{background:linear-gradient(135deg,rgba(34,211,238,.21),rgba(59,130,246,.12));color:#B7F1FF;}
+.notif-side-list{display:flex;flex-direction:column;gap:9px;}
+.notif-side-row{display:flex;align-items:flex-start;gap:10px;padding:11px;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:rgba(255,255,255,.035);}
+.notif-side-dot{width:10px;height:10px;border-radius:999px;margin-top:3px;background:var(--dot,#8B5CF6);box-shadow:0 0 18px var(--dot,#8B5CF6);flex-shrink:0;}
+.notif-side-title{font-size:12px;font-weight:900;color:#fff;margin-bottom:3px;}
+.notif-side-text{font-size:11px;color:#A8AFC3;line-height:1.45;}
+.notif-empty{padding:18px;border:1px dashed rgba(255,255,255,.12);border-radius:17px;color:#8F98B4;text-align:center;font-size:12px;background:rgba(255,255,255,.025);}
+@media(max-width:1180px){.notif-layout{grid-template-columns:1fr}.notif-metrics{grid-template-columns:repeat(3,1fr)}.notif-toolbar{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.notif-hero{flex-direction:column;align-items:flex-start;padding:20px}.notif-metrics{grid-template-columns:1fr}.notif-toolbar{grid-template-columns:1fr}.notif-card{grid-template-columns:38px minmax(0,1fr)}.notif-actions{grid-column:1/-1;justify-content:flex-start}}
+</style>
+
+
+<style id="tcp-company-knowledge-hub-v286">
+/* ===== v286 Company Knowledge Hub ===== */
+.cknow-hub{display:flex;flex-direction:column;gap:16px;}
+.cknow-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:24px 26px;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:radial-gradient(circle at 12% 10%,rgba(139,92,246,.32),transparent 35%),radial-gradient(circle at 86% 25%,rgba(34,211,238,.16),transparent 33%),linear-gradient(135deg,rgba(17,24,45,.96),rgba(10,15,29,.94));box-shadow:0 22px 60px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.08);}
+.cknow-eyebrow,.cknow-section-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#8EEBD1;margin-bottom:7px;}
+.cknow-hero h1{font-size:30px;line-height:1.02;color:#fff;margin:0 0 8px;font-weight:950;letter-spacing:-.045em;}
+.cknow-hero p{font-size:13px;color:#AEB8D6;line-height:1.55;max-width:840px;margin:0;}
+.cknow-hero-actions{position:relative;display:flex;gap:9px;align-items:center;justify-content:flex-end;flex-wrap:wrap;}
+.cknow-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+.cknow-kpi{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(145deg,rgba(35,48,86,.88),rgba(12,18,35,.96));box-shadow:0 18px 45px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.07);padding:16px 17px;min-height:126px;}
+.cknow-kpi:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 20% 10%,rgba(127,119,221,.27),transparent 42%);pointer-events:none;}
+.cknow-kpi .kpi-icon{position:relative;width:38px;height:38px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7F77DD,rgba(34,211,238,.18));box-shadow:0 10px 28px rgba(127,119,221,.25);margin-bottom:11px;font-size:18px;}
+.cknow-kpi .lbl{position:relative;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:#B8C4E2;margin-bottom:5px;}
+.cknow-kpi .val{position:relative;font-size:24px;line-height:1.05;font-weight:950;color:#fff;letter-spacing:-.035em;}
+.cknow-kpi .sub{position:relative;font-size:11px;color:#8D98B8;margin-top:7px;line-height:1.35;}
+.cknow-grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.55fr);gap:16px;align-items:start;}
+.cknow-main-stack,.cknow-side-stack{display:flex;flex-direction:column;gap:16px;min-width:0;}
+.cknow-panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.022)),rgba(19,24,41,.84);box-shadow:0 18px 45px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:18px;}
+.cknow-panel.side{padding:17px;}
+.cknow-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.cknow-panel h2{font-size:18px;font-weight:950;letter-spacing:-.035em;color:#fff;margin:0 0 6px;}
+.cknow-panel p,.side-help{font-size:12px;line-height:1.6;color:#A8AFC3;margin:0;}
+.prod-sheet-row{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.035);}
+.prod-url-input{flex:1;min-width:300px;}
+.prod-url-input input{min-height:38px!important;}
+.prod-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid rgba(255,255,255,.08);}
+.prod-table{width:100%;border-collapse:separate;border-spacing:0;background:rgba(0,0,0,.12);font-size:12px;}
+.prod-table th{padding:10px 12px;background:rgba(255,255,255,.055);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:#AEB8D6;text-align:left;white-space:nowrap;}
+.prod-table td{padding:10px 12px;border-top:1px solid rgba(255,255,255,.07);color:#F6F7FF;vertical-align:middle;}
+.prod-table tr:hover td{background:rgba(139,92,246,.07);}
+.prod-status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.04em;}
+.prod-status.green{background:rgba(71,209,108,.13);color:#A7FFC0;border:1px solid rgba(71,209,108,.25);}
+.prod-status.amber{background:rgba(255,176,32,.12);color:#FFD27A;border:1px solid rgba(255,176,32,.25);}
+.prod-status.red{background:rgba(255,71,126,.11);color:#FFB3C8;border:1px solid rgba(255,71,126,.25);}
+.knowledge-search-box{display:flex;gap:9px;align-items:center;margin-bottom:12px;}
+.knowledge-search-box input{flex:1;min-height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(7,9,18,.58);color:#F5F7FF;padding:10px 12px;font-size:13px;}
+.quick-answer-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.quick-answer-chips button{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.045);color:#DDE6FF;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:750;cursor:pointer;}
+.quick-answer-chips button:hover{background:rgba(139,92,246,.16);border-color:rgba(139,92,246,.40);color:#fff;}
+.knowledge-answer-box{min-height:82px;border:1px dashed rgba(139,92,246,.35);border-radius:16px;background:rgba(0,0,0,.16);padding:13px 14px;color:#C8D3EF;font-size:12px;line-height:1.65;white-space:pre-wrap;}
+.policy-grid,.resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.policy-grid button,.resource-grid div{border:1px solid rgba(255,255,255,.09);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.046),rgba(255,255,255,.018));padding:13px 14px;text-align:left;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+.policy-grid button{cursor:pointer;font-family:inherit;}
+.policy-grid button:hover{border-color:rgba(139,92,246,.42);background:rgba(139,92,246,.10);}
+.policy-grid strong,.resource-grid strong{display:block;font-size:13px;font-weight:850;color:#fff;margin-bottom:6px;}
+.policy-grid span,.resource-grid span{display:block;font-size:11px;color:#A8AFC3;line-height:1.45;}
+.ai-command-note{display:flex;align-items:flex-start;gap:12px;border:1px solid rgba(139,92,246,.20);border-left:3px solid #8B5CF6;border-radius:14px;background:rgba(139,92,246,.08);padding:11px 13px;margin-bottom:14px;font-size:11px;line-height:1.55;color:#DDE6FF;}
+.ai-command-note strong{white-space:nowrap;color:#fff;}
+.ai-command-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;}
+#pg-cknow #cknowCatGrid > div{background:linear-gradient(180deg,rgba(255,255,255,.046),rgba(255,255,255,.018))!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:18px!important;box-shadow:0 12px 32px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.05)!important;}
+#pg-cknow textarea{scrollbar-width:thin;}
+.freeform-command-card{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.035);}
+.freeform-title{font-size:11px;font-weight:900;color:#AEB8D6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.freeform-command-card textarea{width:100%;min-height:90px;padding:10px 12px;font-size:12px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(7,9,18,.58);color:#F5F7FF;font-family:inherit;resize:vertical;}
+.knowledge-action-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px;}
+.knowledge-action-row .danger{color:#FFB3C8!important;border-color:rgba(255,71,126,.28)!important;background:rgba(255,71,126,.08)!important;}
+.recommendation-list{display:flex;flex-direction:column;gap:9px;margin-top:12px;}
+.rec-card{border:1px solid rgba(255,255,255,.09);border-left:3px solid #8B5CF6;border-radius:14px;background:rgba(255,255,255,.035);padding:10px 11px;font-size:12px;line-height:1.45;color:#DDE6FF;}
+.rec-card.amber{border-left-color:#FFB020}.rec-card.green{border-left-color:#47D16C}.rec-card.red{border-left-color:#FF477E}
+.cutoff-form{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.cutoff-result{margin-top:12px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(0,0,0,.17);padding:12px;color:#DDE6FF;font-size:12px;line-height:1.55;}
+.cutoff-result.warn{border-color:rgba(255,176,32,.35);background:rgba(255,176,32,.08);color:#FFD27A;}
+.cutoff-result.good{border-color:rgba(71,209,108,.32);background:rgba(71,209,108,.08);color:#A7FFC0;}
+.cutoff-result.bad{border-color:rgba(255,71,126,.35);background:rgba(255,71,126,.08);color:#FFB3C8;}
+.recent-list,.context-health-list{display:flex;flex-direction:column;gap:9px;margin-top:12px;}
+.recent-list div,.context-health-list div{display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035);padding:10px 11px;}
+.recent-list strong,.context-health-list strong{font-size:12px;color:#fff;line-height:1.2;}
+.recent-list em,.context-health-list em{margin-left:auto;font-size:10px;color:#A8AFC3;font-style:normal;text-align:right;}
+@media(max-width:1180px){.cknow-grid-main{grid-template-columns:1fr}.cknow-side-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.cknow-metrics{grid-template-columns:repeat(2,1fr)}.policy-grid,.resource-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:780px){.cknow-hero{flex-direction:column;align-items:flex-start}.cknow-hero-actions{justify-content:flex-start}.cknow-metrics,.policy-grid,.resource-grid,.cknow-side-stack{grid-template-columns:1fr;display:grid}.prod-sheet-row,.knowledge-search-box{flex-direction:column;align-items:stretch}.prod-url-input{min-width:0;width:100%}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -2718,26 +2894,177 @@ select optgroup{
 </div>
 
 <div id="pg-cknow" class="page">
-  <div class="card" style="border-color:#534AB7;">
-    <div class="ct">&#129504; Company knowledge <button onclick="event.stopPropagation();showHelp('company-knowledge')" title="What is this?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid rgba(127,119,221,.5);background:rgba(83,74,183,.2);color:#A8B8FF;font-size:9px;font-weight:700;cursor:pointer;flex-shrink:0;margin-left:5px;vertical-align:middle;padding:0;line-height:1;">?</button></div>
-    <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6;">Teach the AI how Triple Crown Products actually works. Everything you write here gets prepended to every AI report (meeting reports, rep reviews, market intel, performance reports) so the AI's advice and commentary reflects <em>your</em> business, not generic sales-coaching boilerplate.</p>
-    <div style="background:var(--color-background-secondary);border-left:3px solid #534AB7;padding:9px 13px;border-radius:5px;font-size:11px;color:var(--color-text-primary);margin-bottom:14px;line-height:1.5;">
-      <strong>Two ways to fill this in:</strong><br>
-      &bull; <strong>Interview me</strong> &mdash; AI asks 4-6 questions per category. You type your answers, then AI structures them into clean notes.<br>
-      &bull; <strong>Edit directly</strong> &mdash; just type or paste notes into any category. No AI needed.
-    </div>
-    <div id="cknowCatGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;"></div>
-    <div style="margin-top:14px;padding:12px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);">
-      <div style="font-size:11px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Anything else &middot; Free-form notes</div>
-      <textarea id="cknowFreeform" oninput="saveCKnowFreeform()" placeholder="Anything that doesn&apos;t fit a category &mdash; quirky business rules, things to never say, things to always mention, references to specific past wins or lessons, etc." style="width:100%;min-height:80px;padding:8px 11px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit;resize:vertical;"></textarea>
-    </div>
-    <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <button onclick="previewCompanyContext()" style="padding:7px 14px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;">&#128270; Preview what AI sees</button>
-      <button onclick="exportCompanyKnowledge()" style="padding:7px 14px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;">&#11015; Export as JSON</button>
-      <label style="padding:7px 14px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;">&#11014; Import JSON<input type="file" accept=".json" onchange="importCompanyKnowledge(event)" style="display:none;"></label>
-      <button onclick="clearCompanyKnowledge()" style="padding:7px 14px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:#F09595;cursor:pointer;">&times; Clear all</button>
-      <span id="cknowStatus" style="font-size:11px;color:var(--color-text-secondary);margin-left:auto;"></span>
-    </div>
+  <div class="cknow-hub">
+    <section class="cknow-hero">
+      <div>
+        <div class="cknow-eyebrow">Company intelligence layer</div>
+        <h1>Company Knowledge Hub</h1>
+        <p>Production intelligence, AI guidance, company policies, sales resources, and operational knowledge in one command center. The AI command library below still feeds every report, review, meeting packet, and manager briefing.</p>
+      </div>
+      <div class="cknow-hero-actions">
+        <button class="dash-action-btn primary" onclick="refreshProductionTimes()">&#10227; Refresh production</button>
+        <button class="dash-action-btn" onclick="previewCompanyContext()">&#128270; Preview AI context</button>
+        <button class="dash-action-btn" onclick="exportCompanyKnowledge()">&#11015; Export knowledge</button>
+      </div>
+    </section>
+
+    <section class="cknow-metrics" id="prodMetricCards">
+      <div class="cknow-kpi"><div class="kpi-icon">&#127919;</div><div class="lbl">Decorations tracked</div><div class="val" id="prodMetricTypes">8</div><div class="sub">Live production categories</div></div>
+      <div class="cknow-kpi"><div class="kpi-icon">&#9201;</div><div class="lbl">Avg lead time</div><div class="val" id="prodMetricAvg">--</div><div class="sub">Calendar days from today</div></div>
+      <div class="cknow-kpi"><div class="kpi-icon">&#9888;</div><div class="lbl">Longest lead</div><div class="val" id="prodMetricLongest">--</div><div class="sub" id="prodMetricLongestSub">Highest-risk decoration</div></div>
+      <div class="cknow-kpi"><div class="kpi-icon">&#128260;</div><div class="lbl">Last update</div><div class="val" id="prodMetricUpdated">--</div><div class="sub">From sheet or saved snapshot</div></div>
+    </section>
+
+    <section class="cknow-grid-main">
+      <div class="cknow-main-stack">
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Live production status</div>
+              <h2>Production Status Center</h2>
+              <p>Pull current ship weeks from a published Google Sheet CSV, calculate lead time from today's date, and feed this into AI reports and forecast recommendations.</p>
+            </div>
+            <span class="entry-pill entry-pill-blue" id="prodSourceBadge">Saved snapshot</span>
+          </div>
+          <div class="prod-sheet-row">
+            <div class="ig prod-url-input">
+              <label>Published Google Sheet CSV URL</label>
+              <input id="productionSheetUrl" placeholder="Paste published CSV link here, then refresh production" oninput="saveProductionSheetUrl()" />
+            </div>
+            <button class="sbtn entry-primary" onclick="refreshProductionTimes()">Refresh</button>
+            <button class="sbtn" onclick="useSampleProductionTimes()">Use sample</button>
+          </div>
+          <div class="prod-table-wrap">
+            <table class="prod-table">
+              <thead><tr><th>Decoration</th><th>Approx. ship week</th><th>Lead time</th><th>Status</th><th>Updated</th></tr></thead>
+              <tbody id="productionRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Quick answers</div>
+              <h2>Ask Company Knowledge</h2>
+              <p>Use this for fast answers reps need before quoting, calling, or building a report.</p>
+            </div>
+          </div>
+          <div class="knowledge-search-box">
+            <input id="knowledgeAskInput" placeholder="Ask: current embroidery production, rush order options, credit memo policy..." onkeydown="if(event.key==='Enter')askCompanyKnowledge()" />
+            <button class="sbtn entry-primary" onclick="askCompanyKnowledge()">Ask</button>
+          </div>
+          <div class="quick-answer-chips">
+            <button onclick="quickKnowledge('production')">&#9889; Current production times</button>
+            <button onclick="quickKnowledge('rush')">&#128666; Rush order guidance</button>
+            <button onclick="quickKnowledge('credit')">&#128179; Credit memo policy</button>
+            <button onclick="quickKnowledge('art')">&#127912; Art requirements</button>
+            <button onclick="quickKnowledge('pricing')">&#128176; Pricing rules</button>
+          </div>
+          <div id="knowledgeAnswerBox" class="knowledge-answer-box">Ask a question or choose a quick answer. Production times and AI command notes will be summarized here.</div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Policy center</div>
+              <h2>Company Policies</h2>
+              <p>Manager-facing shortcuts for the policies and operational guardrails reps ask about most often.</p>
+            </div>
+          </div>
+          <div class="policy-grid">
+            <button onclick="quickKnowledge('credit')"><strong>&#128179; Credit Memo Policy</strong><span>Fault, customer impact, rep coaching, and quality tracking.</span></button>
+            <button onclick="quickKnowledge('art')"><strong>&#127912; Art Requirements</strong><span>Artwork quality, approvals, file specs, and production handoff.</span></button>
+            <button onclick="quickKnowledge('returns')"><strong>&#8634; Returns / Reorders</strong><span>How to think about customer fixes, credits, and replacement orders.</span></button>
+            <button onclick="quickKnowledge('customer-care')"><strong>&#9742; Customer Care</strong><span>Front-line service expectations and handoff standards.</span></button>
+            <button onclick="quickKnowledge('rush')"><strong>&#128666; Rush Orders</strong><span>How production lead times should shape what reps promise.</span></button>
+            <button onclick="quickKnowledge('remote')"><strong>&#127970; Work Standards</strong><span>Call expectations, activity standards, and manager follow-up.</span></button>
+          </div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Resource center</div>
+              <h2>Sales Resource Center</h2>
+              <p>Fast entry points for sales scripts, decoration guidance, promotions, pricing notes, vendor/process reminders, and internal resources.</p>
+            </div>
+          </div>
+          <div class="resource-grid">
+            <div><strong>&#128218; Product Guides</strong><span>Core product categories, seasonal recommendations, and common customer fits.</span></div>
+            <div><strong>&#129525; Decoration Methods</strong><span>Embroidery, screen print, heat transfer, DTF, sublimation, and production fit.</span></div>
+            <div><strong>&#127881; Promotions</strong><span>Current campaigns, upcoming holidays, forecast events, and selling windows.</span></div>
+            <div><strong>&#128181; Pricing Resources</strong><span>Margin reminders, quote framing, and pricing guardrails.</span></div>
+            <div><strong>&#128172; Sales Scripts</strong><span>Call openers, follow-up language, urgency framing, and discovery questions.</span></div>
+            <div><strong>&#128736; Process Notes</strong><span>Order flow, approvals, handoffs, and internal escalation paths.</span></div>
+          </div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">AI command library</div>
+              <h2>What teaches the AI</h2>
+              <p>These existing prompt cards are preserved. They are the instruction layer used by AI reports, reviews, forecasting, and performance commentary.</p>
+            </div>
+            <span id="cknowStatus" class="entry-pill entry-pill-purple"></span>
+          </div>
+          <div class="ai-command-note">
+            <strong>Two ways to fill this in:</strong>
+            <span><b>Interview me</b> asks guided questions and structures your answers. <b>Edit directly</b> lets you type or paste your own notes. Everything below stays part of the AI command context.</span>
+          </div>
+          <div id="cknowCatGrid" class="ai-command-grid"></div>
+          <div class="freeform-command-card">
+            <div class="freeform-title">Anything else &middot; Free-form notes</div>
+            <textarea id="cknowFreeform" oninput="saveCKnowFreeform()" placeholder="Anything that doesn't fit a category — quirky business rules, things to never say, things to always mention, references to specific past wins or lessons, etc."></textarea>
+          </div>
+          <div class="knowledge-action-row">
+            <button class="sbtn" onclick="previewCompanyContext()">&#128270; Preview what AI sees</button>
+            <button class="sbtn" onclick="exportCompanyKnowledge()">&#11015; Export as JSON</button>
+            <label class="sbtn">&#11014; Import JSON<input type="file" accept=".json" onchange="importCompanyKnowledge(event)" style="display:none;"></label>
+            <button class="sbtn danger" onclick="clearCompanyKnowledge()">&times; Clear AI command notes</button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="cknow-side-stack">
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">Production intelligence</div>
+          <h2>Manager recommendations</h2>
+          <div id="productionRecommendations" class="recommendation-list"></div>
+        </section>
+
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">Cutoff calculator</div>
+          <h2>Can we hit the date?</h2>
+          <p class="side-help">Choose an event date and decoration method. The calculator uses the current ship week to flag timing risk.</p>
+          <div class="cutoff-form">
+            <div class="ig"><label>Event date</label><input type="date" id="cutoffEventDate" onchange="calculateProductionCutoff()"></div>
+            <div class="ig"><label>Decoration</label><select id="cutoffDecoration" onchange="calculateProductionCutoff()"></select></div>
+            <button class="sbtn entry-primary" onclick="calculateProductionCutoff()">Calculate</button>
+          </div>
+          <div id="cutoffResult" class="cutoff-result">Select a date and decoration to see production risk.</div>
+        </section>
+
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">Recently updated</div>
+          <h2>Knowledge activity</h2>
+          <div id="knowledgeRecentUpdates" class="recent-list"></div>
+        </section>
+
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">AI context health</div>
+          <h2>What AI can reference</h2>
+          <div class="context-health-list">
+            <div><span>&#128994;</span><strong>Company knowledge</strong><em id="ctxCompanyHealth">Loaded</em></div>
+            <div><span>&#128994;</span><strong>Production times</strong><em id="ctxProductionHealth">Snapshot ready</em></div>
+            <div><span>&#128994;</span><strong>Forecast events</strong><em>Available</em></div>
+            <div><span>&#128994;</span><strong>Performance data</strong><em>Available</em></div>
+            <div><span>&#128993;</span><strong>Report archive</strong><em>Local history</em></div>
+          </div>
+        </section>
+      </aside>
+    </section>
   </div>
 </div>
 <div id="pg-history" class="page">
@@ -3144,19 +3471,69 @@ select optgroup{
   </div>
 
 </div>
-<div id="pg-notifs" class="page">
-  <div class="card">
-    <div class="ct" style="display:flex;align-items:center;justify-content:space-between;">
-      <span>&#x1F514; Notification log</span>
-      <div style="display:flex;gap:7px;align-items:center;">
-        <select class="nav-sel" id="notifFilter" onchange="renderNotifLog()" style="font-size:11px;"><option value="all">All types</option><option value="record">New records &#x1F3C6;</option><option value="anniv">Anniversaries &#x1F389;</option><option value="bday">Birthdays &#x1F382;</option><option value="risk">At risk &#x26A0;&#xFE0F;</option></select>
-        <button class="sbtn" style="font-size:11px;padding:3px 9px;" onclick="clearDismissed()">Clear dismissed</button>
-        <button class="sbtn" style="font-size:11px;padding:3px 9px;color:#F09595;border-color:#F09595;" onclick="clearAllNotifs()">Clear all</button>
+<div id="pg-notifs" class="page notif-command">
+  <section class="notif-hero">
+    <div>
+      <div class="notif-kicker">Operations Alert Center</div>
+      <h1>Notifications</h1>
+      <p>Stay ahead of revenue risks, call coverage gaps, recognition moments, birthdays, anniversaries, and system events from one manager-ready command center.</p>
+    </div>
+    <div class="notif-hero-actions">
+      <button class="sbtn" onclick="dismissAllAlerts()">Dismiss active alerts</button>
+      <button class="sbtn" onclick="clearDismissed()">Restore dismissed</button>
+    </div>
+  </section>
+
+  <section class="notif-metrics">
+    <div class="notif-metric" style="--nm-color:#FF477E;--nm-glow:rgba(255,71,126,.24);"><div class="nm-label">Critical</div><div class="nm-value" id="notifCriticalCount">0</div><div class="nm-sub">Revenue or pacing risk</div></div>
+    <div class="notif-metric" style="--nm-color:#FFB020;--nm-glow:rgba(255,176,32,.22);"><div class="nm-label">Action required</div><div class="nm-value" id="notifActionCount">0</div><div class="nm-sub">Needs manager attention</div></div>
+    <div class="notif-metric" style="--nm-color:#47D16C;--nm-glow:rgba(71,209,108,.22);"><div class="nm-label">Recognition</div><div class="nm-value" id="notifRecognitionCount">0</div><div class="nm-sub">Wins and milestones</div></div>
+    <div class="notif-metric" style="--nm-color:#22D3EE;--nm-glow:rgba(34,211,238,.22);"><div class="nm-label">Personal dates</div><div class="nm-value" id="notifPeopleCount">0</div><div class="nm-sub">Birthdays / anniversaries</div></div>
+    <div class="notif-metric" style="--nm-color:#8B5CF6;--nm-glow:rgba(139,92,246,.24);"><div class="nm-label">Total active</div><div class="nm-value" id="notifTotalCount">0</div><div class="nm-sub">Visible alerts</div></div>
+  </section>
+
+  <section class="notif-toolbar">
+    <div class="ig"><label>Search alerts</label><input id="notifSearch" placeholder="Search rep, alert, topic, week..." oninput="renderNotifLog()"></div>
+    <div class="ig"><label>Type</label><select id="notifFilter" onchange="renderNotifLog()"><option value="all">All types</option><option value="risk">At risk</option><option value="record">Records / wins</option><option value="anniv">Anniversaries</option><option value="bday">Birthdays</option><option value="system">System</option></select></div>
+    <div class="ig"><label>Status</label><select id="notifStatusFilter" onchange="renderNotifLog()"><option value="active">Active only</option><option value="all">All statuses</option><option value="dismissed">Dismissed only</option></select></div>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;"><button class="sbtn" onclick="clearDismissed()">Restore all</button></div>
+  </section>
+
+  <section class="notif-layout">
+    <div class="notif-stack">
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">🔴 Executive alerts</div><div class="notif-panel-sub">Highest-priority risks and business-impact items.</div></div><span class="notif-count-pill" id="notifExecPill">0</span></div>
+        <div id="notifExecutiveList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">🟡 Team action feed</div><div class="notif-panel-sub">Coaching opportunities, activity gaps, and manager follow-up items.</div></div><span class="notif-count-pill" id="notifTeamPill">0</span></div>
+        <div id="notifTeamList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">🟢 Recognition & people moments</div><div class="notif-panel-sub">Wins, records, birthdays, and anniversaries worth acknowledging.</div></div><span class="notif-count-pill" id="notifPeoplePill">0</span></div>
+        <div id="notifPeopleList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">All notifications</div><div class="notif-panel-sub">Complete filtered log for the current tracker session.</div></div><span class="notif-count-pill" id="notifAllPill">0</span></div>
+        <div id="notifLog"></div>
       </div>
     </div>
-    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">All alerts generated while using the tracker. Dismiss individual alerts on the Dashboard to hide them.</p>
-    <div id="notifLog"></div>
-  </div>
+    <aside class="notif-stack">
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">Manager watch</div><div class="notif-panel-sub">Where your attention should go first.</div></div></div>
+        <div class="notif-side-list" id="notifWatchList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">Alert playbook</div><div class="notif-panel-sub">Suggested action based on alert category.</div></div></div>
+        <div class="notif-side-list">
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#FF477E"></span><div><div class="notif-side-title">Revenue risk</div><div class="notif-side-text">Open the rep profile, review pacing, then schedule coaching or quote follow-up.</div></div></div>
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#FFB020"></span><div><div class="notif-side-title">Activity gap</div><div class="notif-side-text">Check call coverage and weekly activity before the next team huddle.</div></div></div>
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#47D16C"></span><div><div class="notif-side-title">Recognition</div><div class="notif-side-text">Celebrate publicly when appropriate. Small wins drive team adoption.</div></div></div>
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#22D3EE"></span><div><div class="notif-side-title">People moments</div><div class="notif-side-text">Use birthdays and anniversaries to personalize leadership touchpoints.</div></div></div>
+        </div>
+      </div>
+    </aside>
+  </section>
 </div>
 </div>
 <script>
@@ -3436,6 +3813,7 @@ function renderCKnow(){
   var ff=document.getElementById('cknowFreeform');
   if(ff)ff.value=ck.freeform||'';
   updateCKnowStatus();
+  renderProductionHub();
 }
 
 function saveCKnowField(catKey){
@@ -3476,10 +3854,315 @@ function updateCKnowStatus(){
   el.textContent=filled+' / '+CKNOW_CATS.length+' categories filled \u00b7 '+totalChars.toLocaleString()+' total chars';
 }
 
+
+var DEFAULT_PRODUCTION_ROWS=[
+  {decoration:'Embroidery - FLAT',shipWeek:'6/19/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'},
+  {decoration:'Embroidery - HAT',shipWeek:'6/19/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'},
+  {decoration:'Embroidery - NAMES',shipWeek:'6/19/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'},
+  {decoration:'Heat Transfer',shipWeek:'6/17/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'},
+  {decoration:'Screen Print',shipWeek:'6/16/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'},
+  {decoration:'Sublimation',shipWeek:'6/16/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'},
+  {decoration:'DTF (<500 Transfers)',shipWeek:'6/16/2026',updated:'Tue, Jun 16, 2026, 12:00 AM'},
+  {decoration:'DTF (>500 Transfers)',shipWeek:'6/23/2026',updated:'Tue, Jun 9, 2026, 5:34 PM'}
+];
+
+function ensureProductionKnowledge(){
+  if(!S.companyKnowledge)S.companyKnowledge={categories:{},freeform:'',lastUpdated:null};
+  if(!S.companyKnowledge.production)S.companyKnowledge.production={sheetUrl:'',rows:DEFAULT_PRODUCTION_ROWS.slice(),lastFetched:null};
+  if(!Array.isArray(S.companyKnowledge.production.rows)||!S.companyKnowledge.production.rows.length){
+    S.companyKnowledge.production.rows=DEFAULT_PRODUCTION_ROWS.slice();
+  }
+}
+
+function parseProductionDate(v){
+  if(!v)return null;
+  var s=String(v).trim();
+  var d=new Date(s);
+  if(!isNaN(d.getTime()))return d;
+  var m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+  if(m){
+    var y=parseInt(m[3],10); if(y<100)y+=2000;
+    return new Date(y,parseInt(m[1],10)-1,parseInt(m[2],10));
+  }
+  return null;
+}
+
+function fmtShortDate(d){
+  if(!d)return '--';
+  try{return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}catch(e){return d.toLocaleDateString();}
+}
+
+function leadDaysFromToday(shipWeek){
+  var d=parseProductionDate(shipWeek);
+  if(!d)return null;
+  var today=new Date(); today.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  return Math.round((d-today)/86400000);
+}
+
+function productionStatusClass(days){
+  if(days===null)return 'amber';
+  if(days<=10)return 'green';
+  if(days<=16)return 'amber';
+  return 'red';
+}
+
+function productionStatusLabel(days){
+  if(days===null)return 'Needs review';
+  if(days<0)return 'Past due';
+  if(days<=10)return 'Normal';
+  if(days<=16)return 'Extended';
+  return 'High risk';
+}
+
+function parseCSVLine(line){
+  var out=[],cur='',inQ=false;
+  for(var i=0;i<line.length;i++){
+    var ch=line[i];
+    if(ch==='"'){
+      if(inQ&&line[i+1]==='"'){cur+='"';i++;}
+      else inQ=!inQ;
+    }else if(ch===','&&!inQ){out.push(cur);cur='';}
+    else cur+=ch;
+  }
+  out.push(cur);
+  return out.map(function(x){return x.trim();});
+}
+
+function parseProductionCSV(csv){
+  var lines=String(csv||'').split(/\r?\n/).filter(function(l){return l.trim();});
+  if(!lines.length)return [];
+  var rows=lines.map(parseCSVLine);
+  var headerIndex=rows.findIndex(function(r){
+    return r.some(function(c){return /decoration/i.test(c);}) && r.some(function(c){return /(ship|week|range|date)/i.test(c);});
+  });
+  if(headerIndex<0)headerIndex=0;
+  var headers=rows[headerIndex].map(function(h){return String(h||'').toLowerCase();});
+  var decIdx=headers.findIndex(function(h){return h.indexOf('decoration')>=0||h.indexOf('method')>=0;});
+  var shipIdx=headers.findIndex(function(h){return h.indexOf('ship')>=0||h.indexOf('week')>=0||h.indexOf('range')>=0;});
+  var updIdx=headers.findIndex(function(h){return h.indexOf('updated')>=0||h.indexOf('update')>=0;});
+  if(decIdx<0)decIdx=0;
+  if(shipIdx<0)shipIdx=1;
+  return rows.slice(headerIndex+1).map(function(r){
+    return {decoration:r[decIdx]||'',shipWeek:r[shipIdx]||'',updated:updIdx>=0?(r[updIdx]||''):''};
+  }).filter(function(r){return r.decoration&&r.shipWeek;});
+}
+
+function saveProductionSheetUrl(){
+  ensureProductionKnowledge();
+  var el=document.getElementById('productionSheetUrl');
+  S.companyKnowledge.production.sheetUrl=el?el.value.trim():'';
+  markDirty();
+}
+
+function useSampleProductionTimes(){
+  ensureProductionKnowledge();
+  S.companyKnowledge.production.rows=DEFAULT_PRODUCTION_ROWS.slice();
+  S.companyKnowledge.production.lastFetched=Date.now();
+  markDirty();
+  renderProductionHub();
+}
+
+async function refreshProductionTimes(){
+  ensureProductionKnowledge();
+  var urlEl=document.getElementById('productionSheetUrl');
+  var url=(urlEl&&urlEl.value.trim())||S.companyKnowledge.production.sheetUrl||'';
+  if(!url){
+    useSampleProductionTimes();
+    var box=document.getElementById('knowledgeAnswerBox');
+    if(box)box.textContent='No Google Sheet CSV URL is saved yet, so I loaded the sample production schedule. Paste a published CSV link above and click Refresh to pull live production times.';
+    return;
+  }
+  try{
+    var res=await fetch(url,{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    var csv=await res.text();
+    var rows=parseProductionCSV(csv);
+    if(!rows.length)throw new Error('No production rows found');
+    S.companyKnowledge.production.sheetUrl=url;
+    S.companyKnowledge.production.rows=rows;
+    S.companyKnowledge.production.lastFetched=Date.now();
+    markDirty();
+    renderProductionHub();
+    var ans=document.getElementById('knowledgeAnswerBox');
+    if(ans)ans.textContent='Production times refreshed from Google Sheet. '+rows.length+' decoration methods loaded into Company Knowledge and AI context.';
+  }catch(err){
+    var ans2=document.getElementById('knowledgeAnswerBox');
+    if(ans2)ans2.textContent='Could not pull production times from the sheet: '+err.message+'. Check that the Google Sheet is published as CSV and available to anyone with the link.';
+  }
+}
+
+function getProductionRows(){
+  ensureProductionKnowledge();
+  return (S.companyKnowledge.production.rows||[]).slice();
+}
+
+function renderProductionHub(){
+  var page=document.getElementById('pg-cknow');
+  if(!page)return;
+  ensureProductionKnowledge();
+  var prod=S.companyKnowledge.production;
+  var url=document.getElementById('productionSheetUrl');
+  if(url)url.value=prod.sheetUrl||'';
+  var rows=getProductionRows();
+  var tbody=document.getElementById('productionRows');
+  if(tbody){
+    tbody.innerHTML=rows.map(function(r){
+      var days=leadDaysFromToday(r.shipWeek);
+      var cls=productionStatusClass(days);
+      var d=parseProductionDate(r.shipWeek);
+      return '<tr><td><strong>'+esc(r.decoration)+'</strong></td><td>'+esc(fmtShortDate(d)||r.shipWeek)+'</td><td>'+(days===null?'--':days+' days')+'</td><td><span class="prod-status '+cls+'">'+productionStatusLabel(days)+'</span></td><td>'+esc(r.updated||'--')+'</td></tr>';
+    }).join('') || '<tr><td colspan="5" style="text-align:center;color:#A8AFC3;">No production rows loaded yet.</td></tr>';
+  }
+  var daysList=rows.map(function(r){return leadDaysFromToday(r.shipWeek);}).filter(function(v){return typeof v==='number'&&!isNaN(v);});
+  var avg=daysList.length?Math.round(daysList.reduce(function(a,b){return a+b;},0)/daysList.length):null;
+  var longest=null;
+  rows.forEach(function(r){var d=leadDaysFromToday(r.shipWeek); if(typeof d==='number'&&(longest===null||d>longest.days))longest={days:d,row:r};});
+  setText('prodMetricTypes',rows.length);
+  setText('prodMetricAvg',avg===null?'--':avg+'d');
+  setText('prodMetricLongest',longest?longest.days+'d':'--');
+  setText('prodMetricLongestSub',longest?longest.row.decoration:'Highest-risk decoration');
+  setText('prodMetricUpdated',prod.lastFetched?fmtShortDate(new Date(prod.lastFetched)):'Saved');
+  var badge=document.getElementById('prodSourceBadge');
+  if(badge)badge.textContent=prod.sheetUrl?'Google Sheet source':'Saved snapshot';
+  var rec=document.getElementById('productionRecommendations');
+  if(rec)rec.innerHTML=buildProductionRecommendations(rows).map(function(x){return '<div class="rec-card '+x.tone+'">'+x.text+'</div>';}).join('');
+  var sel=document.getElementById('cutoffDecoration');
+  if(sel){
+    var current=sel.value;
+    sel.innerHTML=rows.map(function(r){return '<option value="'+escAttr(r.decoration)+'">'+esc(r.decoration)+'</option>';}).join('');
+    if(current)sel.value=current;
+  }
+  renderKnowledgeRecentUpdates();
+  renderContextHealth();
+  calculateProductionCutoff();
+}
+
+function buildProductionRecommendations(rows){
+  if(!rows.length)return [{tone:'amber',text:'No production data loaded yet. Paste a published Google Sheet CSV URL to turn this into a live production command center.'}];
+  var out=[];
+  var longest=null;
+  rows.forEach(function(r){var d=leadDaysFromToday(r.shipWeek); if(typeof d==='number'&&(longest===null||d>longest.days))longest={days:d,row:r};});
+  var quick=rows.filter(function(r){var d=leadDaysFromToday(r.shipWeek);return typeof d==='number'&&d<=10;}).map(function(r){return r.decoration;});
+  if(quick.length)out.push({tone:'green',text:'Quick-turn opportunities: '+quick.slice(0,3).join(', ')+' are currently inside a roughly 10-day production window.'});
+  if(longest)out.push({tone:longest.days>16?'red':'amber',text:'Longest lead time: '+longest.row.decoration+' is currently about '+longest.days+' days out. Quote this carefully and avoid overpromising.'});
+  var emb=rows.filter(function(r){return /embroidery/i.test(r.decoration);});
+  if(emb.length)out.push({tone:'amber',text:'Embroidery is visible in the production schedule. Use the ship week before promising decorated hats, polos, or name personalization.'});
+  out.push({tone:'green',text:'Reports and AI summaries can reference this production snapshot so selling recommendations reflect current capacity.'});
+  return out;
+}
+
+function calculateProductionCutoff(){
+  var result=document.getElementById('cutoffResult');
+  if(!result)return;
+  var eventEl=document.getElementById('cutoffEventDate');
+  var decEl=document.getElementById('cutoffDecoration');
+  var eventDate=eventEl&&eventEl.value?new Date(eventEl.value+'T00:00:00'):null;
+  var rows=getProductionRows();
+  var row=rows.find(function(r){return decEl&&r.decoration===decEl.value;})||rows[0];
+  result.className='cutoff-result';
+  if(!eventDate||!row){result.textContent='Select a date and decoration to see production risk.';return;}
+  var ship=parseProductionDate(row.shipWeek);
+  if(!ship){result.textContent='This decoration does not have a readable ship week yet.';return;}
+  ship.setHours(0,0,0,0);
+  var diff=Math.round((eventDate-ship)/86400000);
+  if(diff>=7){
+    result.classList.add('good');
+    result.textContent='Good window: '+row.decoration+' is showing a ship week of '+fmtShortDate(ship)+', about '+diff+' days before the event. This looks workable if order/art approvals are handled promptly.';
+  }else if(diff>=0){
+    result.classList.add('warn');
+    result.textContent='Tight window: '+row.decoration+' is showing a ship week of '+fmtShortDate(ship)+', only '+diff+' days before the event. Treat this as risk-sensitive and confirm production before promising delivery.';
+  }else{
+    result.classList.add('bad');
+    result.textContent='High risk: '+row.decoration+' is showing a ship week of '+fmtShortDate(ship)+', which is after the event date. Recommend a faster decoration method, stock items, or revised expectations.';
+  }
+}
+
+function quickKnowledge(topic){
+  var input=document.getElementById('knowledgeAskInput');
+  var map={
+    production:'What are the current production times?',
+    rush:'What should I recommend for a rush order?',
+    credit:'What is the credit memo policy?',
+    art:'What are the art requirements?',
+    pricing:'What pricing rules should reps remember?',
+    returns:'What should reps know about returns or replacement orders?',
+    'customer-care':'What customer care standards should reps follow?',
+    remote:'What work standards and activity expectations should reps know?'
+  };
+  if(input)input.value=map[topic]||topic;
+  askCompanyKnowledge();
+}
+
+function askCompanyKnowledge(){
+  var q=(document.getElementById('knowledgeAskInput')||{}).value||'';
+  var box=document.getElementById('knowledgeAnswerBox');
+  if(!box)return;
+  var lower=q.toLowerCase();
+  var rows=getProductionRows();
+  var prodSummary=rows.map(function(r){var d=leadDaysFromToday(r.shipWeek);return r.decoration+': '+(d===null?'ship week '+r.shipWeek:d+' days / ship week '+fmtShortDate(parseProductionDate(r.shipWeek)));}).join('\n');
+  var answer='';
+  if(lower.indexOf('production')>=0||lower.indexOf('ship')>=0||lower.indexOf('lead')>=0||lower.indexOf('rush')>=0){
+    answer='Current production snapshot:\n'+prodSummary+'\n\nManager guidance: match the product/decorating method to the required event date. For anything tight, confirm production before promising delivery.';
+  }else if(lower.indexOf('credit')>=0){
+    answer='Credit memo guidance comes from your AI Command Library. Use credit memos to track fault, customer impact, rep coaching opportunities, and quality patterns. For rep-fault issues, tie the discussion back to order accuracy and preventable breakdowns.';
+  }else if(lower.indexOf('art')>=0){
+    answer='Art guidance comes from your Art & Production notes. Confirm usable artwork, approval status, decoration method, and production handoff before setting expectations. Art delays can change the real delivery window even when production capacity looks available.';
+  }else if(lower.indexOf('price')>=0||lower.indexOf('pricing')>=0){
+    answer='Pricing guidance comes from Products & Pricing plus free-form company notes. Keep recommendations tied to margin, decoration complexity, quantity, customer relationship, and realistic production capacity.';
+  }else{
+    answer='I can answer using the AI Command Library, free-form company notes, and live production snapshot. Try asking about current production, rush orders, credit memos, art requirements, or pricing rules.';
+  }
+  box.textContent=answer;
+}
+
+function renderKnowledgeRecentUpdates(){
+  var el=document.getElementById('knowledgeRecentUpdates');
+  if(!el)return;
+  ensureProductionKnowledge();
+  var ck=S.companyKnowledge||{};
+  var prod=S.companyKnowledge.production||{};
+  var rows=[
+    ['Production Times',prod.lastFetched?fmtShortDate(new Date(prod.lastFetched)):'Saved snapshot'],
+    ['AI Command Library',ck.lastUpdated?fmtShortDate(new Date(ck.lastUpdated)):'Ready'],
+    ['Free-form Notes',(ck.freeform&&ck.freeform.trim())?'Filled':'Empty']
+  ];
+  el.innerHTML=rows.map(function(r){return '<div><strong>'+esc(r[0])+'</strong><em>'+esc(r[1])+'</em></div>';}).join('');
+}
+
+function renderContextHealth(){
+  var prod=document.getElementById('ctxProductionHealth');
+  if(prod){
+    var rows=getProductionRows();
+    prod.textContent=rows.length+' methods';
+  }
+  var company=document.getElementById('ctxCompanyHealth');
+  if(company){
+    var ck=S.companyKnowledge||{categories:{},freeform:''};
+    var filled=Object.values(ck.categories||{}).filter(function(c){return (c.content||'').trim();}).length;
+    company.textContent=filled+' categories';
+  }
+}
+
+function getProductionContext(){
+  var rows=getProductionRows();
+  if(!rows.length)return '';
+  var lines=rows.map(function(r){
+    var d=leadDaysFromToday(r.shipWeek);
+    return '- '+r.decoration+': ship week '+fmtShortDate(parseProductionDate(r.shipWeek))+(d===null?'':' ('+d+' days from today)')+', status '+productionStatusLabel(d)+(r.updated?', updated '+r.updated:'');
+  });
+  return 'CURRENT PRODUCTION TIMES (use this when recommending products, rush options, forecast opportunities, and report commentary):\n'+lines.join('\n')+'\n\n---\n\n';
+}
+
+function setText(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function escAttr(s){return esc(s).replace(/"/g,'&quot;');}
+
 function getCompanyContext(){
+  ensureProductionKnowledge();
   var ck=S.companyKnowledge;
-  if(!ck||(!ck.categories&&!ck.freeform))return '';
   var parts=[];
+  var prodCtx=getProductionContext();
   CKNOW_CATS.forEach(function(cat){
     var c=ck.categories&&ck.categories[cat.key];
     if(c&&c.content&&c.content.trim()){
@@ -3489,8 +4172,8 @@ function getCompanyContext(){
   if(ck.freeform&&ck.freeform.trim()){
     parts.push('## Additional Context\n'+ck.freeform.trim());
   }
-  if(!parts.length)return '';
-  return 'COMPANY CONTEXT (how Triple Crown Products actually operates \u2014 use this to make your advice specific and accurate to this business, not generic sales coaching):\n\n'+parts.join('\n\n')+'\n\n---\n\n';
+  var companyBlock=parts.length?'COMPANY CONTEXT (how Triple Crown Products actually operates — use this to make your advice specific and accurate to this business, not generic sales coaching):\n\n'+parts.join('\n\n')+'\n\n---\n\n':'';
+  return (prodCtx||'')+companyBlock;
 }
 
 function previewCompanyContext(){
@@ -4286,23 +4969,66 @@ async function genTeamPDF(){
 
 var notifLog=[];
 var dismissedAlerts=new Set();
-function dismissAlert(id){dismissedAlerts.add(id);renderDash();updateNotifBadge();var pg=document.getElementById('pg-notifs');if(pg&&pg.classList.contains('active'))renderNotifLog();}
-function dismissAllAlerts(){document.querySelectorAll('#dAlerts button[data-notif-id]').forEach(function(btn){dismissedAlerts.add(btn.getAttribute('data-notif-id'));});renderDash();updateNotifBadge();}
-function clearDismissed(){dismissedAlerts.clear();renderDash();}
-function clearAllNotifs(){if(confirm('Clear all notifications?')){notifLog=[];dismissedAlerts.clear();updateNotifBadge();renderNotifLog();renderDash();}}
-function updateNotifBadge(){var tab=document.getElementById('notifsTab');if(tab)tab.textContent='\uD83D\uDD14 Notifications'+(notifLog.length>0?' ('+notifLog.length+')':'');}
+function dismissAlert(id){dismissedAlerts.add(String(id));renderDash();updateNotifBadge();var pg=document.getElementById('pg-notifs');if(pg&&pg.classList.contains('active'))renderNotifLog();}
+function dismissAllAlerts(){document.querySelectorAll('#dAlerts button[data-notif-id]').forEach(function(btn){dismissedAlerts.add(String(btn.getAttribute('data-notif-id')));});notifLog.forEach(function(n){dismissedAlerts.add(String(n.id));});renderDash();updateNotifBadge();renderNotifLog();}
+function clearDismissed(){dismissedAlerts.clear();renderDash();renderNotifLog();updateNotifBadge();}
+function clearAllNotifs(){if(confirm('Clear all notifications from this browser session?')){notifLog=[];dismissedAlerts.clear();updateNotifBadge();renderNotifLog();renderDash();}}
+function updateNotifBadge(){var tab=document.getElementById('notifsTab');if(tab){var active=notifLog.filter(function(n){return !dismissedAlerts.has(String(n.id));}).length;tab.textContent='🔔 Notifications'+(active>0?' ('+active+')':'');}}
+function notifPlainText(n){var div=document.createElement('div');div.innerHTML=n.html||'';return (div.textContent||div.innerText||'').replace(/\s+/g,' ').trim();}
+function notifCategory(n){if(n.type==='risk')return 'critical';if(n.type==='record')return 'recognition';if(n.type==='bday'||n.type==='anniv')return 'people';if(n.type==='system')return 'system';return 'action';}
+function notifTypeLabel(t){return ({risk:'At risk',record:'Record / win',anniv:'Anniversary',bday:'Birthday',system:'System'}[t]||'Alert');}
+function notifIcon(n){if(n.icon)return n.icon;if(n.type==='risk')return '⚠️';if(n.type==='record')return '🏆';if(n.type==='anniv')return '🎉';if(n.type==='bday')return '🎂';if(n.type==='system')return '⚙️';return '🔔';}
+function getFilteredNotifs(){
+  var typeEl=document.getElementById('notifFilter');var statusEl=document.getElementById('notifStatusFilter');var searchEl=document.getElementById('notifSearch');
+  var type=typeEl?typeEl.value:'all';var status=statusEl?statusEl.value:'active';var q=(searchEl&&searchEl.value?searchEl.value:'').toLowerCase().trim();
+  return notifLog.filter(function(n){
+    var dismissed=dismissedAlerts.has(String(n.id));
+    if(type!=='all'&&n.type!==type)return false;
+    if(status==='active'&&dismissed)return false;
+    if(status==='dismissed'&&!dismissed)return false;
+    if(q){var hay=[notifPlainText(n),n.type,n.ts,n.week].join(' ').toLowerCase();if(hay.indexOf(q)===-1)return false;}
+    return true;
+  });
+}
+function renderNotifCard(n){
+  var dismissed=dismissedAlerts.has(String(n.id));var cat=notifCategory(n);var txt=notifPlainText(n)||'Notification';var title=notifTypeLabel(n.type);var cls=cat==='critical'?'notif-critical':cat==='recognition'||cat==='people'?'notif-good':cat==='system'?'notif-system':'notif-action';
+  var week=n.week?String(n.week).replace(/_/g,' '):'';
+  var action= dismissed ? '<span class="notif-badge">Dismissed</span>' : '<button class="notif-mini-btn" onclick="dismissAlert(\''+String(n.id).replace(/'/g,"\\'")+'\')">Dismiss</button>';
+  return '<article class="notif-card '+cls+(dismissed?' dismissed':'')+'"><div class="notif-icon">'+notifIcon(n)+'</div><div><div class="notif-title">'+esc(title)+'</div><div class="notif-message">'+(n.html||esc(txt))+'</div><div class="notif-meta"><span>'+esc(n.ts||'')+'</span>'+(week?'<span>'+esc(week)+'</span>':'')+'<span class="notif-badge">'+esc(title)+'</span></div></div><div class="notif-actions">'+action+'</div></article>';
+}
+function renderNotifBucket(id,items){var el=document.getElementById(id);if(!el)return;el.innerHTML=items.length?items.map(renderNotifCard).join(''):'<div class="notif-empty">No alerts in this category right now.</div>';}
+function renderNotifWatch(filtered){
+  var el=document.getElementById('notifWatchList');if(!el)return;
+  var active=notifLog.filter(function(n){return !dismissedAlerts.has(String(n.id));});
+  var risk=active.filter(function(n){return n.type==='risk';}).length;
+  var people=active.filter(function(n){return n.type==='bday'||n.type==='anniv';}).length;
+  var wins=active.filter(function(n){return n.type==='record';}).length;
+  var latest=active[0];
+  var rows=[];
+  rows.push('<div class="notif-side-row"><span class="notif-side-dot" style="--dot:#FF477E"></span><div><div class="notif-side-title">Risk alerts</div><div class="notif-side-text">'+risk+' active risk item'+(risk===1?'':'s')+' need review.</div></div></div>');
+  rows.push('<div class="notif-side-row"><span class="notif-side-dot" style="--dot:#47D16C"></span><div><div class="notif-side-title">Recognition queue</div><div class="notif-side-text">'+wins+' win or record moment'+(wins===1?'':'s')+' ready to acknowledge.</div></div></div>');
+  rows.push('<div class="notif-side-row"><span class="notif-side-dot" style="--dot:#22D3EE"></span><div><div class="notif-side-title">People moments</div><div class="notif-side-text">'+people+' birthday/anniversary alert'+(people===1?'':'s')+' visible.</div></div></div>');
+  rows.push('<div class="notif-side-row"><span class="notif-side-dot" style="--dot:#8B5CF6"></span><div><div class="notif-side-title">Latest alert</div><div class="notif-side-text">'+(latest?esc(notifPlainText(latest).slice(0,120)):'No active alerts yet.')+'</div></div></div>');
+  el.innerHTML=rows.join('');
+}
+function setTxt(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
 function renderNotifLog(){
-  var filter=document.getElementById('notifFilter');var fv=filter?filter.value:'all';
-  var f=fv==='all'?notifLog:notifLog.filter(function(n){return n.type===fv;});
-  var el=document.getElementById('notifLog');if(!el)return;
-  if(!f.length){el.innerHTML='<p style="font-size:12px;color:var(--color-text-secondary);padding:.5rem 0;">No notifications yet.</p>';return;}
-  var clsMap={record:'alert-record',anniv:'alert-anniv',bday:'alert-bday',risk:'alert-warn'};
-  el.innerHTML=f.map(function(n){
-    var isDismissed=dismissedAlerts.has(n.id);
-    var cls=n.cls||clsMap[n.type]||'alert-record';
-    var dimBtn=isDismissed?'<span style="font-size:10px;opacity:.6;">(dismissed)</span>':'<button data-notif-id="'+n.id+'" onclick="dismissAlert(this.dataset.nid))" style="font-size:10px;padding:1px 6px;border:0.5px solid currentColor;border-radius:4px;background:none;color:inherit;cursor:pointer;">\u2715</button>';
-    return '<div class="alert-banner '+cls+'" style="opacity:'+(isDismissed?'.45':'1')+';justify-content:space-between;margin-bottom:5px;"><span>'+(n.icon||'')+' '+n.html+'</span><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span style="font-size:10px;opacity:.7;">'+n.ts+(n.week?' \u00b7 '+n.week.replace(/_/g,' '):'')+'</span>'+dimBtn+'</div></div>';
-  }).join('');
+  var filtered=getFilteredNotifs();
+  var active=notifLog.filter(function(n){return !dismissedAlerts.has(String(n.id));});
+  var critical=filtered.filter(function(n){return notifCategory(n)==='critical';});
+  var team=filtered.filter(function(n){var c=notifCategory(n);return c==='action'||c==='system';});
+  var people=filtered.filter(function(n){var c=notifCategory(n);return c==='recognition'||c==='people';});
+  setTxt('notifCriticalCount',active.filter(function(n){return notifCategory(n)==='critical';}).length);
+  setTxt('notifActionCount',active.filter(function(n){var c=notifCategory(n);return c==='action'||c==='system';}).length);
+  setTxt('notifRecognitionCount',active.filter(function(n){return notifCategory(n)==='recognition';}).length);
+  setTxt('notifPeopleCount',active.filter(function(n){return notifCategory(n)==='people';}).length);
+  setTxt('notifTotalCount',active.length);
+  setTxt('notifExecPill',critical.length);setTxt('notifTeamPill',team.length);setTxt('notifPeoplePill',people.length);setTxt('notifAllPill',filtered.length);
+  renderNotifBucket('notifExecutiveList',critical);
+  renderNotifBucket('notifTeamList',team);
+  renderNotifBucket('notifPeopleList',people);
+  renderNotifBucket('notifLog',filtered);
+  renderNotifWatch(filtered);
 }
 function activeReps(){return S.reps.filter(function(r){return r&&!r.retired&&r.name&&typeof r.name==='string'&&r.name.trim().length>0;});}
 function toggleRetire(i){S.reps[i].retired=!S.reps[i].retired;if(S.reps[i].retired&&selectedRep===S.reps[i].name)selectedRep=activeReps()[0]&&activeReps()[0].name||null;markDirty();popSel();renderRL();renderProfileCards();}
