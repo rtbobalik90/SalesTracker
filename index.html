@@ -505,6 +505,78 @@ body{
 @media(max-width:820px){.entry-hero{flex-direction:column;align-items:flex-start;padding:20px}.entry-side-stack{display:flex}.entry-metric-grid{grid-template-columns:1fr}.entry-picker-row,.entry-tools-row,.entry-action-strip,.entry-add-row{align-items:stretch}.entry-picker-row .ig,.entry-picker-row .sbtn,.entry-tools-row .sbtn{width:100%}.entry-hero-actions{width:100%}.entry-hero-actions .sbtn{flex:1}}
 </style>
 
+
+<style id="tcp-profiles-ui-v240">
+/* ===== TCP v240 Rep Profile Redesign ===== */
+#pg-profiles{position:relative;}
+#pg-profiles #profileAlerts{margin-bottom:16px;}
+#repCards{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(165px,1fr)) !important;gap:14px !important;margin-bottom:18px !important;}
+.rep-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(20,23,38,.92),rgba(13,15,27,.96)) !important;border:1px solid rgba(255,255,255,.08) !important;border-radius:20px !important;padding:14px !important;box-shadow:0 14px 38px rgba(0,0,0,.28);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;}
+.rep-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 0%,rgba(127,119,221,.22),transparent 35%);pointer-events:none;opacity:.75;}
+.rep-card:hover{transform:translateY(-2px);border-color:rgba(127,119,221,.55) !important;box-shadow:0 18px 44px rgba(0,0,0,.36);}
+.rep-card.selected{background:linear-gradient(145deg,rgba(35,31,80,.98),rgba(16,18,35,.98)) !important;border-color:rgba(127,119,221,.95) !important;box-shadow:0 20px 58px rgba(83,74,183,.28);}
+.rep-card .av{width:48px !important;height:48px !important;font-size:14px !important;box-shadow:0 10px 25px rgba(0,0,0,.32);}
+.rc-name{position:relative;font-size:13px !important;font-weight:700 !important;color:#F8F7FF !important;margin-top:11px !important;letter-spacing:-.01em;}
+.rc-sub{position:relative;font-size:11px !important;color:#A6A5B8 !important;}
+.rep-card.selected .rc-name{color:#fff !important;}
+
+.profile-command{display:grid;grid-template-columns:minmax(250px,360px) minmax(0,1fr);gap:16px;align-items:stretch;}
+.profile-hero-card,.profile-panel,.profile-feed-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(20,23,38,.96),rgba(11,13,24,.98));border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.30);}
+.profile-hero-card{padding:22px;min-height:368px;display:flex;flex-direction:column;justify-content:space-between;}
+.profile-hero-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 10%,rgba(127,119,221,.30),transparent 36%),radial-gradient(circle at 90% 0%,rgba(48,197,255,.12),transparent 26%);pointer-events:none;}
+.profile-hero-inner{position:relative;z-index:1;}
+.profile-hero-photo{width:112px;height:112px;border-radius:30px;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;box-shadow:0 22px 50px rgba(0,0,0,.40);border:1px solid rgba(255,255,255,.12);margin-bottom:16px;}
+.profile-name{font-size:28px;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.05;margin-bottom:8px;}
+.profile-role{font-size:12px;color:#B8B6C9;text-transform:uppercase;letter-spacing:.12em;font-weight:700;}
+.profile-tenure{margin-top:14px;display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:#E7E5F8;}
+.profile-actions{position:relative;z-index:1;display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+.profile-action-btn{font-size:11px;padding:8px 11px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:#F2F1FF;cursor:pointer;font-family:inherit;font-weight:700;}
+.profile-action-btn:hover{border-color:rgba(127,119,221,.75);background:rgba(127,119,221,.18);}
+.profile-action-danger{color:#F6A5A5;}
+.profile-main{display:flex;flex-direction:column;gap:16px;min-width:0;}
+.profile-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(145px,1fr));gap:12px;}
+.profile-kpi{background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;min-height:112px;position:relative;overflow:hidden;}
+.profile-kpi:after{content:"";position:absolute;right:-28px;top:-35px;width:92px;height:92px;border-radius:999px;background:rgba(127,119,221,.13);}
+.profile-kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#9D9BAE;font-weight:800;margin-bottom:10px;}
+.profile-kpi-value{font-size:24px;font-weight:850;color:#fff;letter-spacing:-.035em;line-height:1;}
+.profile-kpi-sub{font-size:11px;color:#A8A6B9;margin-top:8px;line-height:1.35;}
+.profile-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:16px;}
+.profile-panel{padding:18px;}
+.profile-panel-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:800;color:#fff;margin-bottom:13px;letter-spacing:-.01em;}
+.profile-panel-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#8F8CA2;font-weight:800;}
+.profile-chart-box{height:225px;position:relative;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:12px;}
+.profile-goals-grid{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:10px;}
+.profile-goal-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.065);border-radius:16px;padding:13px;}
+.profile-goal-card.current{border-color:rgba(127,119,221,.60);background:rgba(127,119,221,.12);}
+.profile-goal-q{font-size:11px;color:#BAB8C8;font-weight:800;margin-bottom:8px;}
+.profile-goal-v{font-size:16px;color:#fff;font-weight:850;letter-spacing:-.02em;}
+.profile-goal-s{font-size:10px;color:#9693A8;margin-top:5px;}
+.profile-feed-card{padding:18px;}
+.profile-feed-list{display:flex;flex-direction:column;gap:10px;}
+.profile-feed-item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:11px;padding:12px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06);}
+.profile-feed-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(127,119,221,.18);color:#C9C4FF;font-size:15px;}
+.profile-feed-title{font-size:12px;color:#F1F0FA;font-weight:800;margin-bottom:3px;}
+.profile-feed-meta{font-size:10px;color:#9C9AAA;margin-bottom:6px;}
+.profile-feed-text{font-size:11px;color:#C9C7D5;line-height:1.45;}
+.profile-empty{padding:18px;border-radius:18px;background:rgba(255,255,255,.035);border:1px dashed rgba(255,255,255,.10);color:#9D9BAE;font-size:12px;text-align:center;}
+.profile-info-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+.profile-info-row{display:grid;grid-template-columns:142px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.profile-info-row:last-child{border-bottom:none;}
+.profile-info-label{font-size:11px;color:#9693A8;font-weight:750;}
+.profile-info-value{font-size:12px;color:#F1F0FA;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+.profile-info-value.empty{color:#777489;font-style:italic;}
+.profile-log-row{display:grid;grid-template-columns:70px 70px minmax(100px,1fr) minmax(80px,1fr) 80px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px;color:#D6D4E2;}
+.profile-log-row.header{font-size:10px;color:#8F8CA2;text-transform:uppercase;letter-spacing:.09em;font-weight:900;padding-top:0;}
+.profile-log-row:last-child{border-bottom:none;}
+.profile-compact-select{font-size:11px;padding:6px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:#F1F0FA;}
+.profile-pdf-callout{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:18px;background:linear-gradient(135deg,rgba(93,202,165,.11),rgba(83,74,183,.08));border:1px solid rgba(93,202,165,.24);}
+.profile-pdf-callout-title{font-size:12px;color:#EEFDF8;font-weight:850;margin-bottom:3px;}
+.profile-pdf-callout-text{font-size:11px;color:#A7B9B4;line-height:1.45;}
+.profile-subgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:1100px){.profile-command,.profile-layout{grid-template-columns:1fr;}.profile-kpi-grid{grid-template-columns:repeat(2,minmax(145px,1fr));}.profile-subgrid{grid-template-columns:1fr;}}
+@media(max-width:680px){#repCards{grid-template-columns:repeat(auto-fill,minmax(135px,1fr)) !important;}.profile-kpi-grid,.profile-goals-grid{grid-template-columns:1fr;}.profile-log-row{grid-template-columns:1fr;gap:4px;}.profile-info-row{grid-template-columns:1fr auto;}.profile-info-label{grid-column:1/-1;}.profile-name{font-size:23px;}.profile-hero-photo{width:94px;height:94px;border-radius:24px;}.profile-pdf-callout{align-items:flex-start;flex-direction:column;}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -6745,7 +6817,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v239</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v240</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -11039,6 +11111,127 @@ function buildBeautifulReport(opts){
     '<div class="footer"><span>'+_esc(footerText)+'</span>'+
       '<button class="no-print" onclick="window.print()" style="padding:5px 12px;background:#1a1a2e;color:white;border:none;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">&#128438; Save PDF</button>'+
     '</div></div>'+autoPrintScript+'</body></html>';
+}
+
+
+/* ===== TCP v240 Rep Profile Redesign Overrides ===== */
+var _tcpProfileRevenueChart=null;
+function _tcpMoney(n){n=Number(n)||0;return '$'+Math.round(n).toLocaleString();}
+function _tcpPct(n){n=Number(n)||0;return Math.round(n)+'%';}
+function _tcpEscape(s){return (typeof esc_html==='function'?esc_html(s):String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));}
+function _tcpQWeeks(yr,q){try{return gwq(Number(yr),q)||[];}catch(e){return[];}}
+function _tcpRepQuarterTotal(rep,yr,q){return totW(rep,_tcpQWeeks(yr,q));}
+function _tcpRepRecentActivity(repName){
+  var rows=[];
+  (S.coachingNotes||[]).filter(function(n){return n&&n.rep===repName;}).forEach(function(n){rows.push({date:n.date||'',icon:'✦',title:(CN_TYPES&&CN_TYPES[n.type])||'Note',meta:'Coaching / notes',text:n.note||n.desc||''});});
+  (S.hrViolations||[]).filter(function(v){return v&&v.rep===repName;}).forEach(function(v){rows.push({date:v.date||'',icon:'!',title:(HR_CATS&&HR_CATS[v.cat]?HR_CATS[v.cat].label:'HR event'),meta:'HR log',text:v.desc||v.details||''});});
+  (S.cms||[]).filter(function(c){return c&&c.rep===repName;}).forEach(function(c){rows.push({date:c.date||'',icon:'$',title:'Credit memo',meta:_tcpMoney(c.amount||0)+' · '+(c.fault||'fault'),text:(c.customerName||c.custName||c.customer||'')+(c.desc?' — '+c.desc:'')});});
+  (S.artErrors||[]).filter(function(a){return a&&a.rep===repName;}).forEach(function(a){rows.push({date:a.date||'',icon:'△',title:'Art error',meta:a.type||'Art issue',text:(a.so||a.SO||a.soNumber||'')+(a.desc?' — '+a.desc:'')});});
+  rows.sort(function(a,b){return String(b.date||'').localeCompare(String(a.date||''));});
+  return rows.slice(0,8);
+}
+function _tcpWeekDateFromKey(key){
+  if(!key)return'';
+  var parts=String(key).split('_');
+  if(parts.length<4)return'';
+  var yr=Number(parts[0]), q=parts[1], wn=parts[3];
+  var w=_tcpQWeeks(yr,q).find(function(x){return String(x.num)===String(wn)||x.key===key;});
+  return w?w.label:'';
+}
+function renderProfileCards(){
+  var el=document.getElementById('repCards');if(!el)return;
+  el.innerHTML=S.reps.filter(function(r){return r&&!r.retired&&r.name&&r.name.trim();}).map(function(r){
+    var i=S.reps.indexOf(r), yrs=r.profile&&r.profile.hireDate?yearsAgo(r.profile.hireDate):null;
+    var safeName=(r.name||'').replace(/'/g,"\\'");
+    var yr=getYr(), q=getQ(), g=getGoal(r.name,yr,q), t=_tcpRepQuarterTotal(r.name,yr,q), pct=g.rev>0?Math.round((t.revenue||0)/g.rev*100):0;
+    return '<div class="rep-card'+(selectedRep===r.name?' selected':'')+'" onclick="selectRep(\''+safeName+'\')">'
+      +avatarEl(r,i,48)
+      +'<div class="rc-name">'+_tcpEscape(r.name)+'</div>'
+      +'<div class="rc-sub">'+(yrs!==null?yrs+' year'+(yrs!==1?'s':'')+' with TCP':'Hire date not set')+'</div>'
+      +'<div style="position:relative;margin-top:10px;font-size:10px;color:#A6A5B8;display:flex;justify-content:space-between;gap:8px;"><span>Qtr revenue</span><strong style="color:#fff;">'+_tcpMoney(t.revenue||0)+'</strong></div>'
+      +'<div style="position:relative;margin-top:7px;height:5px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;"><div style="width:'+Math.max(0,Math.min(100,pct))+'%;height:100%;background:linear-gradient(90deg,#7F77DD,#30C5FF);"></div></div>'
+    +'</div>';
+  }).join('');
+}
+function _tcpRenderRevenueChart(repName,yr){
+  var canvas=document.getElementById('profileRevenueChart');
+  if(!canvas||typeof Chart==='undefined')return;
+  if(_tcpProfileRevenueChart){try{_tcpProfileRevenueChart.destroy();}catch(e){} _tcpProfileRevenueChart=null;}
+  var labels=QTRS.slice();
+  var vals=labels.map(function(q){return _tcpRepQuarterTotal(repName,yr,q).revenue||0;});
+  _tcpProfileRevenueChart=new Chart(canvas.getContext('2d'),{
+    type:'line',
+    data:{labels:labels,datasets:[{label:'Revenue',data:vals,tension:.38,fill:true,borderWidth:3,borderColor:'#7F77DD',backgroundColor:'rgba(127,119,221,.18)',pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#30C5FF',pointBorderColor:'#FFFFFF'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return _tcpMoney(ctx.parsed.y||0);}}}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#8F8CA2'}},y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#8F8CA2',callback:function(v){return '$'+Math.round(v/1000)+'k';}}}}}
+  });
+}
+function _tcpRenderProfileCMsModern(ri){
+  var r=S.reps[ri], el=document.getElementById('pf_cms_'+ri);if(!r||!el)return;
+  var val=document.getElementById('pf_cm_qtr_'+ri)?.value||'all';
+  var list=(S.cms||[]).filter(function(c){return c&&c.rep===r.name;});
+  if(val!=='all'){list=list.filter(function(c){return String(c.week||'').indexOf(val)>=0;});}
+  list=list.slice().sort(function(a,b){return String(b.date||b.week||'').localeCompare(String(a.date||a.week||''));}).slice(0,8);
+  if(!list.length){el.innerHTML='<div class="profile-empty">No credit memos found for this view.</div>';return;}
+  el.innerHTML='<div class="profile-log-row header"><span>Amount</span><span>Fault</span><span>Customer</span><span>Order</span><span>Week</span></div>'+list.map(function(c){return '<div class="profile-log-row"><span style="font-weight:800;color:#fff;">'+_tcpMoney(c.amount||0)+'</span><span>'+_tcpEscape(c.fault||'—')+'</span><span>'+_tcpEscape(c.customerName||c.custName||c.customer||'—')+'</span><span>'+_tcpEscape(c.so||c.SO||c.soNumber||'—')+'</span><span>'+_tcpEscape(_tcpWeekDateFromKey(c.week)||c.week||'—')+'</span></div>';}).join('');
+}
+function _tcpRenderProfileAEsModern(ri){
+  var r=S.reps[ri], el=document.getElementById('pf_aes_'+ri);if(!r||!el)return;
+  var val=document.getElementById('pf_ae_qtr_'+ri)?.value||'all';
+  var list=(S.artErrors||[]).filter(function(a){return a&&a.rep===r.name;});
+  if(val!=='all'){list=list.filter(function(a){return String(a.week||'').indexOf(val)>=0;});}
+  list=list.slice().sort(function(a,b){return String(b.date||b.week||'').localeCompare(String(a.date||a.week||''));}).slice(0,8);
+  if(!list.length){el.innerHTML='<div class="profile-empty">No art errors found for this view.</div>';return;}
+  el.innerHTML='<div class="profile-log-row header"><span>Type</span><span>SO #</span><span>Description</span><span>Week</span><span></span></div>'+list.map(function(a){return '<div class="profile-log-row"><span style="font-weight:800;color:#fff;">'+_tcpEscape(a.type||'—')+'</span><span>'+_tcpEscape(a.so||a.SO||a.soNumber||'—')+'</span><span>'+_tcpEscape(a.desc||'—')+'</span><span>'+_tcpEscape(_tcpWeekDateFromKey(a.week)||a.week||'—')+'</span><span></span></div>';}).join('');
+}
+function renderProfileCMs(ri){_tcpRenderProfileCMsModern(ri);}
+function renderProfileAEs(ri){_tcpRenderProfileAEsModern(ri);}
+function renderProfileDetail(ri){
+  var r=S.reps[ri];if(!r)return;
+  if(!r.profile)r.profile={hireDate:'',birthday:'',favFood:'',favCandy:'',favDrink:'',starbucks:'',favMovie:'',favBook:'',photo:null,manualBestWeek:0,manualBestWeekLabel:'',manualBestSale:0};
+  var p=r.profile, yr=getYr(), q=getQ(), weeks=_tcpQWeeks(yr,q), qt=_tcpRepQuarterTotal(r.name,yr,q), goal=getGoal(r.name,yr,q);
+  var revPct=goal.rev>0?Math.round((qt.revenue||0)/goal.rev*100):0;
+  var callPct=goal.calls>0?Math.round((qt.calls||0)/(goal.calls*Math.max(1,weeks.length))*100):0;
+  var covPct=(qt.setSize||goal.setSize)>0?Math.round((qt.acctsCalled||0)/(qt.setSize||goal.setSize)*100):0;
+  var bw=getBestWeek(r.name), bs=getBestSale(r.name), atr=getAllTimeRevenue(r.name), hrP=getHRPoints(r.name,yr,q), yrs=p.hireDate?yearsAgo(p.hireDate):null;
+  var safeName=(r.name||'').replace(/'/g,"\\'");
+  var headline=p.hireDate?'Hired '+fdfull(p.hireDate)+(yrs!==null?' · '+yrs+' year'+(yrs!==1?'s':'')+' with TCP':''):'Hire date not set';
+  var heroPhoto=avatarEl(r,ri,112).replace('class="av"','class="profile-hero-photo"');
+  var pfHtml=PROFILE_FIELDS.map(function(f){
+    var val=p[f.key]||'', displayVal=val?(f.type==='date'?fdfull(val):val):'Add '+f.label.toLowerCase();
+    var cid='pf_field_'+ri+'_'+f.key;
+    return '<div class="profile-info-row"><div class="profile-info-label">'+f.emoji+' '+_tcpEscape(f.label)+'</div><div class="profile-info-value'+(val?'':' empty')+'" id="'+cid+'">'+_tcpEscape(displayVal)+'</div><div>'+pencil('editProfileField('+ri+',\''+f.key+'\',\''+f.type+'\',\''+String(val).replace(/'/g,"\\'")+'\',\''+(f.placeholder||'').replace(/'/g,"\\'")+'\')')+'</div><div id="'+cid+'_box" style="grid-column:1/-1;"></div></div>';
+  }).join('');
+  var goalsHtml=QTRS.map(function(qr){var g=getGoal(r.name,yr,qr), tt=_tcpRepQuarterTotal(r.name,yr,qr), pct=g.rev>0?Math.round((tt.revenue||0)/g.rev*100):0;return '<div class="profile-goal-card'+(qr===q?' current':'')+'"><div class="profile-goal-q">'+qr+(qr===q?' · Current':'')+'</div><div class="profile-goal-v">'+_tcpMoney(tt.revenue||0)+'</div><div class="profile-goal-s">Goal '+_tcpMoney(g.rev||0)+' · '+pct+'%</div></div>';}).join('');
+  var yqRevs=getYQRevenues(r.name);
+  var qLog=yqRevs.length?('<div class="profile-log-row header"><span>Year</span><span>Qtr</span><span>Revenue</span><span>vs Goal</span><span>Orders</span></div>'+yqRevs.map(function(o){var tot=totW(r.name,o.weeks), ro=repGoalObj(r.name,o.yr,o.q), pct=ro.rev>0?Math.round((o.rev||0)/ro.rev*100):0;return '<div class="profile-log-row"><span>'+o.yr+'</span><span>'+o.q+'</span><span style="font-weight:800;color:#fff;">'+_tcpMoney(o.rev||0)+'</span><span>'+pct+'%</span><span>'+((tot&&tot.orders)||0)+'</span></div>';}).join('')):'<div class="profile-empty">No quarterly sales history yet.</div>';
+  var activity=_tcpRepRecentActivity(r.name);
+  var activityHtml=activity.length?activity.map(function(a){return '<div class="profile-feed-item"><div class="profile-feed-icon">'+_tcpEscape(a.icon)+'</div><div><div class="profile-feed-title">'+_tcpEscape(a.title)+'</div><div class="profile-feed-meta">'+_tcpEscape(a.date||'No date')+' · '+_tcpEscape(a.meta||'Activity')+'</div><div class="profile-feed-text">'+_tcpEscape(a.text||'No detail entered.')+'</div></div></div>';}).join(''):'<div class="profile-empty">No recent profile activity yet.</div>';
+  document.getElementById('profileDetail').innerHTML=
+    '<div class="profile-command">'
+      +'<section class="profile-hero-card"><div class="profile-hero-inner">'+heroPhoto+'<div class="profile-role">Sales Specialist</div><div class="profile-name">'+_tcpEscape(r.name)+'</div><div class="profile-tenure">'+_tcpEscape(headline)+'</div></div><div class="profile-actions"><button class="profile-action-btn" onclick="triggerPhoto('+ri+')">Change photo</button>'+(p.photo?'<button class="profile-action-btn profile-action-danger" onclick="clearPhoto(\''+safeName+'\')">Remove photo</button>':'')+'<button class="profile-action-btn" onclick="downloadRepSummaryPDF(selectedRep)">Download PDF</button></div></section>'
+      +'<div class="profile-main"><div class="profile-kpi-grid">'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Current quarter revenue</div><div class="profile-kpi-value">'+_tcpMoney(qt.revenue||0)+'</div><div class="profile-kpi-sub">'+revPct+'% of '+q+' goal</div></div>'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Orders</div><div class="profile-kpi-value">'+((qt.orders||0).toLocaleString())+'</div><div class="profile-kpi-sub">'+q+' total orders entered</div></div>'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Calls</div><div class="profile-kpi-value">'+((qt.calls||0).toLocaleString())+'</div><div class="profile-kpi-sub">'+callPct+'% of planned quarterly calls</div></div>'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Coverage</div><div class="profile-kpi-value">'+covPct+'%</div><div class="profile-kpi-sub">'+((qt.acctsCalled||0).toLocaleString())+' accounts called</div></div>'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Best week</div><div class="profile-kpi-value">'+(bw.rev>0?_tcpMoney(bw.rev):'—')+'</div><div class="profile-kpi-sub">'+_tcpEscape(bw.weekLabel||'No data yet')+'</div></div>'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">HR points</div><div class="profile-kpi-value">'+hrP.toFixed(1)+'</div><div class="profile-kpi-sub">Current '+q+' total</div></div>'
+      +'</div><div class="profile-pdf-callout"><div><div class="profile-pdf-callout-title">Sales summary handoff</div><div class="profile-pdf-callout-text">Generate the existing printable rep summary with sales, calls, goals, coverage, and weekly/daily pacing.</div></div><button class="sbtn" onclick="downloadRepSummaryPDF(selectedRep)" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:800;white-space:nowrap;">Download summary PDF</button></div></div>'
+    +'</div>'
+    +'<div class="profile-layout" style="margin-top:16px;">'
+      +'<div class="profile-main">'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>Revenue trend</span><span class="profile-panel-eyebrow">'+yr+'</span></div><div class="profile-chart-box"><canvas id="profileRevenueChart"></canvas></div></section>'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>Goals overview</span><span class="profile-panel-eyebrow">'+yr+'</span></div><div class="profile-goals-grid">'+goalsHtml+'</div></section>'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>Quarterly sales log</span><span class="profile-panel-eyebrow">History</span></div>'+qLog+'</section>'
+        +'<div class="profile-subgrid"><section class="profile-panel"><div class="profile-panel-title"><span>Credit memos</span><select id="pf_cm_qtr_'+ri+'" onchange="renderProfileCMs('+ri+')" class="profile-compact-select"><option value="all">All quarters</option>'+QTRS.map(function(qr){return '<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>';}).join('')+'</select></div><div id="pf_cms_'+ri+'"></div></section><section class="profile-panel"><div class="profile-panel-title"><span>Art errors</span><select id="pf_ae_qtr_'+ri+'" onchange="renderProfileAEs('+ri+')" class="profile-compact-select"><option value="all">All quarters</option>'+QTRS.map(function(qr){return '<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>';}).join('')+'</select></div><div id="pf_aes_'+ri+'"></div></section></div>'
+      +'</div>'
+      +'<aside class="profile-main">'
+        +'<section class="profile-feed-card"><div class="profile-panel-title"><span>Recent activity</span><span class="profile-panel-eyebrow">Latest 8</span></div><div class="profile-feed-list">'+activityHtml+'</div></section>'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>Personal snapshot</span><span class="profile-panel-eyebrow">Editable</span></div><div class="profile-info-grid">'+pfHtml+'</div><div id="pf_sum_'+ri+'" class="pf-summary" style="margin-top:14px;"></div></section>'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>All-time records</span><span class="profile-panel-eyebrow">Career</span></div><div class="profile-kpi-grid" style="grid-template-columns:1fr;"><div class="profile-kpi"><div class="profile-kpi-label">All-time revenue</div><div class="profile-kpi-value">'+_tcpMoney(atr||0)+'</div><div class="profile-kpi-sub">Tracked in this browser/cloud data</div></div><div class="profile-kpi"><div class="profile-kpi-label">Top single sale</div><div class="profile-kpi-value">'+(bs>0?_tcpMoney(bs):'—')+'</div><div class="profile-kpi-sub">'+(p.manualBestSale>0&&bs===p.manualBestSale?'Baseline record':'Highest recorded sale')+'</div></div></div></section>'
+      +'</aside>'
+    +'</div>';
+  setTimeout(function(){_tcpRenderRevenueChart(r.name,yr);_tcpRenderProfileCMsModern(ri);_tcpRenderProfileAEsModern(ri);if(typeof renderProfileSummary==='function')renderProfileSummary(ri);},0);
 }
 
 function init(){
