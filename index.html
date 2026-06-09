@@ -577,6 +577,89 @@ body{
 @media(max-width:680px){#repCards{grid-template-columns:repeat(auto-fill,minmax(135px,1fr)) !important;}.profile-kpi-grid,.profile-goals-grid{grid-template-columns:1fr;}.profile-log-row{grid-template-columns:1fr;gap:4px;}.profile-info-row{grid-template-columns:1fr auto;}.profile-info-label{grid-column:1/-1;}.profile-name{font-size:23px;}.profile-hero-photo{width:94px;height:94px;border-radius:24px;}.profile-pdf-callout{align-items:flex-start;flex-direction:column;}}
 </style>
 
+
+<style id="tcp-profile-fixes-v241">
+/* ===== TCP v241 Rep Profile Fixes ===== */
+.profile-compact-select,
+.profile-panel select.profile-compact-select{
+  background:#15182A !important;
+  color:#F7F6FF !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.26);
+  min-width:118px;
+}
+.profile-compact-select option,
+.profile-panel select option,
+.nav-sel option,
+.ig select option{
+  background:#15182A !important;
+  color:#F7F6FF !important;
+}
+.profile-info-row{
+  grid-template-columns:150px minmax(0,1fr) 62px !important;
+  transition:background .15s ease,border-color .15s ease;
+}
+.profile-info-row:hover{
+  background:rgba(127,119,221,.055);
+  border-radius:12px;
+  padding-left:10px;
+  padding-right:10px;
+}
+.profile-info-row .edit-pencil{
+  opacity:1 !important;
+  justify-self:end;
+  background:rgba(127,119,221,.16) !important;
+  border-color:rgba(127,119,221,.35) !important;
+  color:#D7D3FF !important;
+  font-weight:800;
+  padding:4px 8px !important;
+}
+.profile-info-row .edit-pencil::after{content:' Edit';}
+.profile-info-value.empty{color:#8D8A9F !important;font-style:italic;}
+.profile-add-field-btn{
+  border:1px solid rgba(127,119,221,.42);
+  background:linear-gradient(135deg,rgba(127,119,221,.24),rgba(48,197,255,.10));
+  color:#F7F6FF;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.02em;
+  cursor:pointer;
+  font-family:inherit;
+}
+.profile-add-field-btn:hover{border-color:rgba(127,119,221,.85);background:linear-gradient(135deg,rgba(127,119,221,.42),rgba(48,197,255,.16));}
+.profile-field-edit-box{
+  margin-top:8px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(127,119,221,.34);
+  background:linear-gradient(145deg,rgba(19,22,39,.98),rgba(12,14,27,.98));
+  box-shadow:0 16px 40px rgba(0,0,0,.32);
+  display:flex;
+  gap:8px;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+.profile-field-edit-box input{
+  flex:1;
+  min-width:180px;
+  background:#0D1020;
+  color:#F7F6FF;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  padding:9px 10px;
+  font-family:inherit;
+  font-size:12px;
+}
+.profile-field-edit-box label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#9FB6FF;font-weight:850;margin-bottom:5px;}
+.profile-field-edit-box .profile-field-main{flex:1;min-width:220px;}
+.profile-field-edit-box button{border-radius:12px;padding:9px 12px;font-size:11px;font-weight:850;cursor:pointer;font-family:inherit;}
+.profile-field-save{border:1px solid rgba(93,202,165,.45);background:#1C2A1A;color:#6FE4BB;}
+.profile-field-cancel{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#C8C6D4;}
+.profile-field-custom-note{font-size:10px;color:#8F8CA2;margin-top:6px;}
+@media(max-width:680px){.profile-info-row{grid-template-columns:1fr !important;}.profile-info-row .edit-pencil{justify-self:start;}.profile-info-row .edit-pencil::after{content:' Edit';}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -6817,7 +6900,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v240</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v241</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -11196,7 +11279,7 @@ function renderProfileDetail(ri){
   var safeName=(r.name||'').replace(/'/g,"\\'");
   var headline=p.hireDate?'Hired '+fdfull(p.hireDate)+(yrs!==null?' · '+yrs+' year'+(yrs!==1?'s':'')+' with TCP':''):'Hire date not set';
   var heroPhoto=avatarEl(r,ri,112).replace('class="av"','class="profile-hero-photo"');
-  var pfHtml=PROFILE_FIELDS.map(function(f){
+  var pfHtml=_tcpAllProfileFields().map(function(f){
     var val=p[f.key]||'', displayVal=val?(f.type==='date'?fdfull(val):val):'Add '+f.label.toLowerCase();
     var cid='pf_field_'+ri+'_'+f.key;
     return '<div class="profile-info-row"><div class="profile-info-label">'+f.emoji+' '+_tcpEscape(f.label)+'</div><div class="profile-info-value'+(val?'':' empty')+'" id="'+cid+'">'+_tcpEscape(displayVal)+'</div><div>'+pencil('editProfileField('+ri+',\''+f.key+'\',\''+f.type+'\',\''+String(val).replace(/'/g,"\\'")+'\',\''+(f.placeholder||'').replace(/'/g,"\\'")+'\')')+'</div><div id="'+cid+'_box" style="grid-column:1/-1;"></div></div>';
@@ -11227,11 +11310,98 @@ function renderProfileDetail(ri){
       +'</div>'
       +'<aside class="profile-main">'
         +'<section class="profile-feed-card"><div class="profile-panel-title"><span>Recent activity</span><span class="profile-panel-eyebrow">Latest 8</span></div><div class="profile-feed-list">'+activityHtml+'</div></section>'
-        +'<section class="profile-panel"><div class="profile-panel-title"><span>Personal snapshot</span><span class="profile-panel-eyebrow">Editable</span></div><div class="profile-info-grid">'+pfHtml+'</div><div id="pf_sum_'+ri+'" class="pf-summary" style="margin-top:14px;"></div></section>'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>Personal snapshot</span><button class="profile-add-field-btn" onclick="addProfileCategory()">+ Add category</button></div><div class="profile-info-grid">'+pfHtml+'</div><div id="pf_sum_'+ri+'" class="pf-summary" style="margin-top:14px;"></div></section>'
         +'<section class="profile-panel"><div class="profile-panel-title"><span>All-time records</span><span class="profile-panel-eyebrow">Career</span></div><div class="profile-kpi-grid" style="grid-template-columns:1fr;"><div class="profile-kpi"><div class="profile-kpi-label">All-time revenue</div><div class="profile-kpi-value">'+_tcpMoney(atr||0)+'</div><div class="profile-kpi-sub">Tracked in this browser/cloud data</div></div><div class="profile-kpi"><div class="profile-kpi-label">Top single sale</div><div class="profile-kpi-value">'+(bs>0?_tcpMoney(bs):'—')+'</div><div class="profile-kpi-sub">'+(p.manualBestSale>0&&bs===p.manualBestSale?'Baseline record':'Highest recorded sale')+'</div></div></div></section>'
       +'</aside>'
     +'</div>';
   setTimeout(function(){_tcpRenderRevenueChart(r.name,yr);_tcpRenderProfileCMsModern(ri);_tcpRenderProfileAEsModern(ri);if(typeof renderProfileSummary==='function')renderProfileSummary(ri);},0);
+}
+
+
+/* ===== TCP v241 Rep Profile Editable Fields + Custom Categories ===== */
+function _tcpProfileCustomFields(){
+  if(!S.companyKnowledge)S.companyKnowledge={categories:{},freeform:'',lastUpdated:null};
+  if(!Array.isArray(S.companyKnowledge.profileCustomFields))S.companyKnowledge.profileCustomFields=[];
+  S.companyKnowledge.profileCustomFields=S.companyKnowledge.profileCustomFields.filter(function(f){return f&&f.key&&f.label;});
+  return S.companyKnowledge.profileCustomFields;
+}
+function _tcpSlugFieldLabel(label){
+  var base=String(label||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+  if(!base)base='custom_field';
+  var key='custom_'+base, taken={};
+  _tcpAllProfileFields().forEach(function(f){taken[f.key]=true;});
+  if(!taken[key])return key;
+  var i=2;while(taken[key+'_'+i])i++;
+  return key+'_'+i;
+}
+function _tcpAllProfileFields(){
+  var built=(typeof PROFILE_FIELDS!=='undefined'?PROFILE_FIELDS:[]).slice();
+  return built.concat(_tcpProfileCustomFields());
+}
+function _tcpFindProfileField(key){
+  return _tcpAllProfileFields().find(function(f){return f&&f.key===key;})||{key:key,label:key,type:'text',placeholder:''};
+}
+function addProfileCategory(){
+  var label=prompt('New personal snapshot category name\n\nExample: Favorite sports team, Shirt size, Kids names, Hobby');
+  if(label===null)return;
+  label=String(label).trim();
+  if(!label)return;
+  var fields=_tcpProfileCustomFields();
+  if(_tcpAllProfileFields().some(function(f){return String(f.label||'').toLowerCase()===label.toLowerCase();})){
+    alert('That category already exists.');return;
+  }
+  var emoji=prompt('Optional emoji/icon for '+label+'\n\nLeave blank to use ✨', '✨');
+  if(emoji===null)emoji='✨';
+  emoji=String(emoji||'✨').trim()||'✨';
+  var key=_tcpSlugFieldLabel(label);
+  fields.push({key:key,label:label,emoji:emoji,type:'text',placeholder:'Add '+label.toLowerCase()});
+  (S.reps||[]).forEach(function(r){if(!r.profile)r.profile={};if(r.profile[key]===undefined)r.profile[key]='';});
+  markDirty();
+  var ri=S.reps.findIndex(function(r){return r&&r.name===selectedRep;});
+  if(ri>=0)renderProfileDetail(ri);
+}
+function editProfileField(ri,key,type,currentVal,placeholder){
+  document.querySelectorAll('.inline-edit-box,.profile-field-edit-box').forEach(function(el){el.remove();});
+  var box=document.getElementById('pf_field_'+ri+'_'+key+'_box');if(!box)return;
+  var f=_tcpFindProfileField(key);
+  type=type||f.type||'text';
+  var safeVal=String(currentVal||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  var safePh=String(placeholder||f.placeholder||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  var isCustom=String(key).indexOf('custom_')===0;
+  var boxHtml='<div class="profile-field-main"><label>'+_tcpEscape(f.label||key)+'</label><input id="ie_pf_'+ri+'_'+key+'" type="'+(type==='date'?'date':'text')+'" value="'+safeVal+'" placeholder="'+safePh+'"></div>'+
+    '<button class="profile-field-save" onclick="saveProfileField('+ri+',\''+key+'\')">Save</button>'+
+    '<button class="profile-field-cancel" onclick="document.getElementById(\'iebox_pf_'+ri+'_'+key+'\')?.remove()">Cancel</button>'+
+    (isCustom?'<div class="profile-field-custom-note">Custom category — appears on every rep profile.</div>':'');
+  var nb=document.createElement('div');nb.className='profile-field-edit-box';nb.id='iebox_pf_'+ri+'_'+key;nb.innerHTML=boxHtml;box.innerHTML='';box.appendChild(nb);
+  setTimeout(function(){var inp=document.getElementById('ie_pf_'+ri+'_'+key);if(inp){inp.focus();if(inp.type==='text')inp.select();}},50);
+}
+function pfSave(ri,field,val){
+  if(!S.reps[ri])return;
+  if(!S.reps[ri].profile)S.reps[ri].profile={};
+  S.reps[ri].profile[field]=val;
+  updateProfileSummary(ri);
+  if(field==='hireDate'){renderProfileCards();}
+  markDirty();
+}
+function saveProfileField(ri,key){
+  var inp=document.getElementById('ie_pf_'+ri+'_'+key);if(!inp)return;
+  var val=inp.value.trim();
+  pfSave(ri,key,val);
+  document.getElementById('iebox_pf_'+ri+'_'+key)?.remove();
+  var rowEl=document.getElementById('pf_field_'+ri+'_'+key);
+  if(rowEl){
+    var f=_tcpFindProfileField(key), displayVal=val?(f.type==='date'?fdfull(val):val):'Add '+String(f.label||key).toLowerCase();
+    rowEl.textContent=displayVal;
+    rowEl.classList.toggle('empty',!val);
+  }
+  var ri2=S.reps.findIndex(function(r){return r&&r.name===selectedRep;});
+  if(ri2>=0)setTimeout(function(){renderProfileDetail(ri2);},80);
+}
+function updateProfileSummary(ri){
+  var p=(S.reps[ri]&&S.reps[ri].profile)||{}, el=document.getElementById('pf_sum_'+ri);if(!el)return;
+  var items=_tcpAllProfileFields().filter(function(f){return p[f.key];}).map(function(f){return '<div class="pf-summary-item"><div>'+_tcpEscape(f.label)+'</div><div>'+_tcpEscape((f.emoji||'')+' '+(f.type==='date'?fdfull(p[f.key]):p[f.key]))+'</div></div>';});
+  el.innerHTML=items.join('')||'<span style="font-size:12px;color:var(--color-text-secondary);">Fill in info above.</span>';
+  el.style.display=items.length?'flex':'block';
 }
 
 function init(){
