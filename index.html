@@ -1358,6 +1358,379 @@ select optgroup{
 @media(max-width:720px){.credit-hero{flex-direction:column;align-items:flex-start;padding:20px}.credit-hero h1{font-size:26px}.credit-hero-actions{width:100%;justify-content:flex-start}.credit-kpi-grid,.credit-side-stack,.credit-form-grid{grid-template-columns:1fr}.credit-filter-grid{grid-template-columns:1fr}.credit-action-row{align-items:stretch}.credit-action-row .pbtn,.credit-action-row .sbtn{width:100%;justify-content:center}}
 </style>
 
+
+<style id="tcp-art-errors-ui-v268">
+/* ========== V268 ART ERRORS COMMAND CENTER ========== */
+#pg-art{position:relative;}
+.art-command-page{max-width:1500px;margin:0 auto;padding:2px 0 34px;}
+.art-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:26px 28px;margin:0 0 18px;border:1px solid rgba(255,255,255,.10);border-radius:26px;background:radial-gradient(circle at 12% 10%,rgba(255,71,126,.22),transparent 34%),radial-gradient(circle at 84% 20%,rgba(255,176,32,.14),transparent 32%),linear-gradient(135deg,rgba(23,26,45,.96),rgba(12,16,31,.94));box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);}
+.art-eyebrow,.art-section-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#9DDCFF;margin-bottom:7px;}
+.art-hero h1{font-size:31px;line-height:1;font-weight:950;letter-spacing:-.045em;margin:0 0 9px;color:#fff;}
+.art-hero p{max-width:810px;margin:0;color:#B8C4E2;font-size:13px;line-height:1.62;}
+.art-hero-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;position:relative;z-index:2;}
+.art-primary{background:linear-gradient(135deg,#FF477E,#8B5CF6 54%,#3B82F6)!important;border-color:rgba(255,255,255,.16)!important;color:#fff!important;box-shadow:0 12px 28px rgba(255,71,126,.20)!important;}
+.art-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px;}
+.art-kpi{position:relative;overflow:hidden;min-height:132px;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025)),rgba(19,24,41,.88);box-shadow:0 18px 45px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:17px;}
+.art-kpi:after{content:"";position:absolute;right:-34px;top:-34px;width:112px;height:112px;border-radius:999px;background:radial-gradient(circle,rgba(255,71,126,.24),transparent 66%);pointer-events:none;}
+.art-kpi-icon{position:relative;width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);margin-bottom:13px;font-size:17px;}
+.art-kpi-label{position:relative;font-size:10px;color:#9FAAD0;text-transform:uppercase;letter-spacing:.095em;font-weight:900;margin-bottom:7px;}
+.art-kpi-value{position:relative;font-size:25px;line-height:1.05;color:#fff;font-weight:950;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.art-kpi-sub{position:relative;font-size:11px;color:#99A4C4;margin-top:8px;line-height:1.35;}
+.art-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(315px,.72fr);gap:18px;align-items:start;}
+.art-main-stack,.art-side-stack{display:flex;flex-direction:column;gap:18px;min-width:0;}
+.art-panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(17,22,38,.90);box-shadow:0 18px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:20px;}
+.art-panel-hot{border-color:rgba(255,71,126,.26);background:linear-gradient(135deg,rgba(255,71,126,.12),rgba(139,92,246,.10) 46%,rgba(17,22,38,.92));}
+.art-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px;}
+.art-panel-head.compact{margin-bottom:12px;}
+.art-section-title{font-size:17px;font-weight:950;color:#fff;letter-spacing:-.025em;display:flex;align-items:center;gap:8px;}
+.art-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid rgba(71,209,108,.25);border-radius:999px;background:rgba(71,209,108,.10);color:#A7FFC0;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.art-pill-purple{border-color:rgba(139,92,246,.30);background:rgba(139,92,246,.12);color:#D4CAFF;}
+.art-help-btn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:999px;border:1px solid rgba(127,119,221,.50);background:rgba(83,74,183,.20);color:#A8B8FF;font-size:10px;font-weight:900;cursor:pointer;padding:0;}
+.art-entry-grid{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:12px;}
+.art-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.art-command-page .ig input,.art-command-page .ig select,.art-command-page .ig textarea{min-height:38px;border-radius:13px!important;background:rgba(0,0,0,.22)!important;border-color:rgba(255,255,255,.11)!important;color:#fff!important;}
+.art-command-page .ig textarea{min-height:86px;line-height:1.45;}
+.art-alert-note{margin-top:13px;padding:10px 12px;border-radius:15px;background:rgba(255,176,32,.10);border:1px solid rgba(255,176,32,.22);color:#FFD27A;font-size:11px;line-height:1.5;}
+.art-action-strip{display:flex;align-items:center;gap:10px;margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,.08);}
+.art-status{font-size:11px;color:#A8AFC3;min-height:16px;}
+.art-help{font-size:12px;color:#A8AFC3;line-height:1.6;margin:0 0 14px;}
+.art-icon-bubble{width:36px;height:36px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(255,71,126,.18),rgba(139,92,246,.15));border:1px solid rgba(255,255,255,.10);}
+.art-button-stack{display:flex;flex-direction:column;gap:9px;}
+.art-button-stack .sbtn{width:100%;justify-content:center;}
+.art-summary-chips{margin:0 0 14px!important;}
+.art-log-list .log-row{padding:13px 12px!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:16px!important;margin-bottom:10px!important;background:rgba(255,255,255,.035)!important;transition:transform .15s ease,border-color .15s ease,background .15s ease;}
+.art-log-list .log-row:hover{transform:translateY(-1px);border-color:rgba(255,71,126,.30)!important;background:rgba(255,71,126,.055)!important;}
+.art-log-list .editable-row{gap:12px;}
+.art-quality-note{font-size:12px;color:#C8D0EA;line-height:1.6;padding:13px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.075);}
+.art-command-page select option{background:#111827;color:#F7F8FF;}
+@media(max-width:1180px){.art-kpi-grid{grid-template-columns:repeat(2,1fr)}.art-layout{grid-template-columns:1fr}.art-side-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}.art-side-stack .art-panel:last-child{grid-column:1/-1}.art-entry-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.art-hero{flex-direction:column;align-items:flex-start;padding:20px}.art-kpi-grid,.art-entry-grid,.art-filter-grid{grid-template-columns:1fr}.art-side-stack{display:flex}.art-hero-actions{width:100%}.art-hero-actions .sbtn{flex:1}}
+</style>
+
+<style id="tcp-meeting-ui-v272">
+/* ===== v273 Meeting Report Command Center ===== */
+.meeting-command{position:relative;}
+.meeting-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:26px 28px;margin:4px 0 18px;border:1px solid rgba(255,255,255,.10);border-radius:26px;background:radial-gradient(circle at 14% 0%,rgba(139,92,246,.30),transparent 34%),radial-gradient(circle at 88% 24%,rgba(34,211,238,.16),transparent 34%),linear-gradient(135deg,rgba(20,24,42,.94),rgba(10,16,30,.96));box-shadow:0 22px 60px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.08);}
+.meeting-eyebrow,.meeting-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.15em;color:#8FF3E5;margin-bottom:8px;}
+.meeting-hero h1{font-size:30px;line-height:1;font-weight:950;letter-spacing:-.045em;color:#fff;margin:0 0 9px;}
+.meeting-hero p,.meeting-help{max-width:820px;color:#AEB8D6;font-size:13px;line-height:1.65;margin:0;}
+.meeting-help.small{font-size:11px;color:#8F99B8;}
+.meeting-hero-actions{display:flex;gap:9px;align-items:center;justify-content:flex-end;flex-wrap:wrap;position:relative;z-index:1;}
+.meeting-btn{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#ECF2FF;border-radius:14px;padding:10px 14px;font-size:12px;font-weight:850;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:all .16s ease;}
+.meeting-btn:hover{transform:translateY(-1px);background:rgba(139,92,246,.18);border-color:rgba(139,92,246,.45);}
+.meeting-btn.primary{background:linear-gradient(135deg,#8B5CF6,#3B82F6);border-color:rgba(255,255,255,.16);box-shadow:0 12px 30px rgba(59,130,246,.28);color:#fff;}
+.meeting-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.65fr);gap:18px;align-items:start;}
+.meeting-main,.meeting-side{display:flex;flex-direction:column;gap:16px;}
+.meeting-panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.022)),rgba(18,23,39,.86);box-shadow:0 18px 45px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06);padding:18px;}
+.meeting-panel-hot{border-color:rgba(139,92,246,.28);background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(34,211,238,.05) 45%,rgba(19,24,41,.92));}
+.meeting-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px;}
+.meeting-panel-head.compact{margin-bottom:12px;}
+.meeting-title{font-size:17px;font-weight:950;color:#fff;letter-spacing:-.025em;margin-bottom:6px;}
+.meeting-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid rgba(71,209,108,.25);border-radius:999px;background:rgba(71,209,108,.10);color:#A7FFC0;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.meeting-pill-purple{border-color:rgba(139,92,246,.32);background:rgba(139,92,246,.12);color:#D0C4FF;}
+.meeting-picker-row{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.035);}
+.meeting-week-field{min-width:280px;flex:1;}
+.meeting-week-field select{width:100%;min-height:40px;background:rgba(7,9,18,.62)!important;border:1px solid rgba(255,255,255,.12)!important;color:#fff!important;border-radius:13px!important;padding:9px 12px!important;}
+.meeting-week-field select option{background:#111827;color:#F7FAFF;}
+.meeting-week-chip{min-width:190px;padding:10px 13px;border-radius:13px;border:1px solid rgba(34,211,238,.18);background:rgba(34,211,238,.08);color:#BDEFFF;font-size:12px;font-weight:850;}
+.meeting-status-row{margin-top:12px;min-height:20px;}
+.meeting-mini{padding:17px;}
+.meeting-icon-bubble{width:38px;height:38px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);margin-bottom:12px;}
+.meeting-checklist{display:flex;flex-direction:column;gap:9px;margin-top:12px;}
+.meeting-checklist div{font-size:12px;color:#DDE6FF;padding:9px 10px;border:1px solid rgba(255,255,255,.075);border-radius:13px;background:rgba(255,255,255,.035);}
+.meeting-checklist div:before{content:'✓';color:#47D16C;font-weight:900;margin-right:7px;}
+#pg-meeting #projectsUiContainer .card,#pg-meeting #mtgPreview .card,#pg-meeting #mtgResultBox{background:rgba(255,255,255,.035)!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;box-shadow:none!important;}
+@media(max-width:1120px){.meeting-layout{grid-template-columns:1fr}.meeting-side{display:grid;grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.meeting-hero{flex-direction:column;align-items:flex-start;padding:20px}.meeting-hero-actions{width:100%;justify-content:flex-start}.meeting-btn{flex:1}.meeting-side{display:flex}.meeting-picker-row{align-items:stretch}.meeting-week-field,.meeting-week-chip{width:100%;min-width:0}}
+</style>
+
+
+
+<style id="tcp-games-ui-v273">
+/* ===== TCP v273 Games Command Center ===== */
+#pg-games{position:relative;max-width:1500px;margin:0 auto;padding-bottom:34px;}
+#pg-games > .card{border-radius:24px!important;border:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(145deg,rgba(24,29,48,.94),rgba(12,16,29,.96))!important;box-shadow:0 22px 58px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.07)!important;overflow:hidden;}
+#pg-games > .card:nth-of-type(1){padding:24px 26px!important;margin-bottom:18px!important;background:radial-gradient(circle at 18% 0%,rgba(255,176,32,.22),transparent 31%),radial-gradient(circle at 82% 0%,rgba(139,92,246,.20),transparent 32%),linear-gradient(135deg,rgba(42,30,66,.95),rgba(10,20,35,.96))!important;border-color:rgba(255,176,32,.30)!important;}
+#pg-games > .card:nth-of-type(1) .ct{font-size:28px!important;line-height:1.05!important;text-transform:none!important;letter-spacing:-.04em!important;color:#fff!important;margin-bottom:9px!important;}
+#pg-games > .card:nth-of-type(1) .ct:before{content:"Sales Game Command Center";display:block;width:100%;height:auto;background:none!important;box-shadow:none!important;color:#9DEBFF;font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:900;margin-bottom:8px;border-radius:0;}
+#pg-games > .card:nth-of-type(1) p{max-width:860px;font-size:13px!important;line-height:1.65!important;color:#C8D0EA!important;margin-bottom:18px!important;}
+#pg-games > .card:nth-of-type(1)>div:last-child{display:grid!important;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px!important;align-items:end!important;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px!important;}
+#pg-games > .card:nth-of-type(1) label{display:flex;flex-direction:column;gap:6px;font-size:10px!important;text-transform:uppercase;letter-spacing:.08em;font-weight:850;color:#95A0C1!important;}
+#pg-games > .card:nth-of-type(1) label select{margin-left:0!important;width:100%;min-width:0!important;}
+#pg-games .nav-sel,#pg-games select{background:#0E1323!important;color:#F7F9FF!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:12px!important;min-height:38px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;}
+#pg-games select option{background:#111827!important;color:#F7F9FF!important;}
+#pg-games .pbtn,#pg-games .sbtn{min-height:39px;border-radius:13px!important;font-weight:850!important;}
+#gamesGenBtn{background:linear-gradient(135deg,#FFB020,#FF5B2E)!important;border-color:rgba(255,255,255,.14)!important;color:#fff!important;box-shadow:0 14px 32px rgba(255,91,46,.23)!important;}
+#gamesRefreshDataBtn,#gamesRefreshBtn,#gamesPrintBtn,#gamesSimulateBtn,#gamesClearRulebookBtn{background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.14)!important;color:#EEF2FF!important;}
+#gamesStatus{grid-column:1/-1;margin-left:0!important;padding:8px 10px;border-radius:12px;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.07);}
+#gamesError{border-radius:14px!important;padding:12px 14px!important;border:1px solid rgba(255,71,126,.30)!important;background:rgba(255,71,126,.10)!important;color:#FFB3C8!important;}
+#pg-games > .card:nth-of-type(2),#pg-games > .card:nth-of-type(3){display:inline-block;vertical-align:top;width:calc(50% - 9px);min-height:230px;margin-bottom:18px!important;}
+#pg-games > .card:nth-of-type(2){margin-right:14px!important;border-color:rgba(139,92,246,.26)!important;}
+#pg-games > .card:nth-of-type(3){border-color:rgba(34,211,238,.20)!important;}
+#pg-games > .card:nth-of-type(2) .ct,#pg-games > .card:nth-of-type(3) .ct{font-size:16px!important;text-transform:none!important;letter-spacing:-.01em!important;color:#fff!important;}
+#pg-games > .card:nth-of-type(2) .ct:before,#pg-games > .card:nth-of-type(3) .ct:before{width:10px;height:10px;border-radius:4px;background:linear-gradient(135deg,#8B5CF6,#22D3EE);}
+#pg-games > .card:nth-of-type(2) p,#pg-games > .card:nth-of-type(3) p{font-size:12px!important;line-height:1.65!important;color:#AEB8D6!important;}
+#pg-games input[type="file"]{width:100%;padding:12px;border:1px dashed rgba(139,92,246,.40);border-radius:14px;background:rgba(139,92,246,.08);color:#DDE6FF!important;}
+#gamesRulebookPreview,#gamesRosterBody{margin-top:12px;border-radius:16px;background:rgba(0,0,0,.14);border:1px solid rgba(255,255,255,.07);padding:12px;}
+#gamesRosterBody:empty{display:none;}
+#pg-games button[onclick="addExternalToRoster()"]{width:100%;margin-top:12px!important;border-radius:14px!important;padding:11px 14px!important;background:rgba(34,211,238,.08)!important;border-color:rgba(34,211,238,.32)!important;color:#9DEBFF!important;font-weight:850!important;}
+#gamesContent,#gamesSimulation{clear:both;display:block;}
+#gamesContent .card,#gamesSimulation .card{border-radius:22px!important;border:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(145deg,rgba(24,29,48,.94),rgba(12,16,29,.96))!important;box-shadow:0 20px 52px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.06)!important;overflow:hidden;}
+#gamesContent .ct,#gamesSimulation .ct{font-size:16px!important;color:#fff!important;text-transform:none!important;letter-spacing:-.01em!important;}
+#gamesContent .ct:before,#gamesSimulation .ct:before{width:10px!important;height:10px!important;border-radius:4px!important;background:linear-gradient(135deg,#FFB020,#8B5CF6)!important;}
+#gamesContent table,#gamesSimulation table{border-collapse:separate!important;border-spacing:0!important;overflow:hidden;border-radius:14px;background:rgba(0,0,0,.12);}
+#gamesContent th,#gamesSimulation th{background:rgba(255,255,255,.055)!important;color:#AEB8D6!important;}
+#gamesContent td,#gamesSimulation td{border-color:rgba(255,255,255,.07)!important;}
+#gamesContent tr:hover td,#gamesSimulation tr:hover td{background:rgba(139,92,246,.06)!important;}
+#gamesContent [style*="background:var(--color-background-secondary)"],#gamesSimulation [style*="background:var(--color-background-secondary)"]{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025))!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:18px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;}
+#gamesContent [style*="border-top:4px solid"],#gamesSimulation [style*="border-top:4px solid"]{border-top-width:3px!important;}
+#gamesContent select,#gamesSimulation select{min-height:28px!important;font-size:10px!important;}
+@media(max-width:1100px){#pg-games > .card:nth-of-type(1)>div:last-child{grid-template-columns:repeat(2,minmax(160px,1fr));}#pg-games > .card:nth-of-type(2),#pg-games > .card:nth-of-type(3){width:100%;margin-right:0!important;display:block;}}
+@media(max-width:720px){#pg-games > .card:nth-of-type(1)>div:last-child{grid-template-columns:1fr;}#pg-games > .card:nth-of-type(1) .ct{font-size:24px!important;}}
+</style>
+
+<style id="tcp-reviews-ui-v274">
+/* ===== TCP v274 Reviews Command Center ===== */
+.reviews-command{position:relative;}
+.reviews-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:24px 26px;margin-bottom:16px;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(34,211,238,.10) 50%,rgba(255,91,46,.11)),rgba(13,17,31,.86);box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.09);}
+.reviews-hero:before{content:"";position:absolute;right:-120px;bottom:-160px;width:390px;height:390px;border-radius:999px;background:radial-gradient(circle,rgba(34,211,238,.22),transparent 66%);pointer-events:none;}
+.reviews-eyebrow,.reviews-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#9DDCFF;margin-bottom:7px;}
+.reviews-hero h1{font-size:30px;line-height:1;font-weight:950;letter-spacing:-.045em;margin:0 0 8px;color:#fff;}
+.reviews-hero p{max-width:780px;margin:0;color:#C6D0EE;font-size:13px;line-height:1.65;}
+.reviews-hero-actions{position:relative;display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;}
+.reviews-btn{border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px 14px;color:#F7F8FF;background:rgba(255,255,255,.055);font-weight:850;font-size:12px;cursor:pointer;font-family:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:all .16s ease;}
+.reviews-btn:hover{transform:translateY(-1px);border-color:rgba(139,92,246,.60);background:rgba(139,92,246,.16);}
+.reviews-btn.primary{background:linear-gradient(135deg,#8B5CF6,#3B82F6);border-color:rgba(255,255,255,.16);box-shadow:0 12px 28px rgba(80,95,255,.28);}
+.reviews-btn.subtle{color:#C9D2EE;}
+.reviews-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr);gap:16px;align-items:stretch;margin-bottom:16px;}
+.reviews-panel,.reviews-output-shell{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.024)),rgba(18,23,40,.88);box-shadow:0 18px 45px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06);padding:18px;}
+.reviews-panel:after{content:"";position:absolute;right:-34px;top:-42px;width:115px;height:115px;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.20),transparent 70%);pointer-events:none;}
+.reviews-panel-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.reviews-panel-head.compact{margin-bottom:10px;}
+.reviews-title{font-size:18px;font-weight:950;color:#fff;letter-spacing:-.025em;}
+.reviews-help{font-size:12px;color:#AEB8D6;line-height:1.6;margin:7px 0 0;}
+.reviews-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid rgba(71,209,108,.26);border-radius:999px;background:rgba(71,209,108,.10);color:#A7FFC0;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.reviews-pill.purple{border-color:rgba(139,92,246,.34);background:rgba(139,92,246,.13);color:#D7CCFF;}
+.reviews-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,rgba(139,92,246,.22),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.10);}
+.reviews-select-grid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:12px;margin-bottom:14px;}
+.reviews-rep-field{grid-column:span 1;}
+.reviews-command .ig label{font-size:10px!important;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#95A2C6!important;}
+.reviews-command .ig select{min-height:42px;border-radius:14px!important;background:rgba(7,9,18,.58)!important;border:1px solid rgba(255,255,255,.13)!important;color:#fff!important;padding:9px 12px!important;font-weight:800;}
+.reviews-command .ig select option{background:#111827;color:#F8FAFC;}
+.reviews-command .ig select:focus{border-color:rgba(139,92,246,.9)!important;box-shadow:0 0 0 3px rgba(139,92,246,.16)!important;outline:none;}
+.reviews-status-row{display:flex;align-items:center;gap:9px;padding:11px 12px;border:1px solid rgba(255,255,255,.08);border-radius:15px;background:rgba(255,255,255,.035);margin-bottom:12px;}
+.reviews-status-dot{width:9px;height:9px;border-radius:50%;background:#47D16C;box-shadow:0 0 14px rgba(71,209,108,.65);flex:0 0 auto;}
+.reviews-note-card{border:1px solid rgba(34,211,238,.15);border-left:3px solid #22D3EE;border-radius:14px;background:rgba(34,211,238,.06);padding:12px 14px;color:#BFD0F2;font-size:12px;line-height:1.65;}
+.reviews-note-card strong{color:#EAF2FF;}
+.reviews-checklist{display:grid;gap:9px;position:relative;z-index:1;}
+.reviews-checklist div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#D5DDF5;font-size:12px;}
+.reviews-checklist div:before{content:"✓";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-right:8px;border-radius:50%;background:rgba(71,209,108,.14);color:#A7FFC0;font-size:11px;font-weight:900;}
+.reviews-output-shell{padding:20px;min-height:220px;}
+.reviews-preview-empty{border:1px dashed rgba(255,255,255,.13);border-radius:18px;background:rgba(255,255,255,.03);padding:28px;color:#8F9BB8;text-align:center;font-size:13px;}
+#rvPreview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#rvPreview:empty{display:block;}
+#rvPreview .rv-section{border:1px solid rgba(255,255,255,.09)!important;border-radius:18px!important;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.024)),rgba(15,20,36,.92)!important;padding:15px!important;margin:0!important;box-shadow:0 12px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.05);}
+#rvPreview .rv-section-hdr,#rvPreview .rv-sec-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;}
+#rvPreview .rv-section-title,#rvPreview .rv-sec-title{font-size:12px!important;font-weight:900!important;color:#F4F7FF!important;text-transform:uppercase;letter-spacing:.06em;}
+#rvPreview .rv-section-body,#rvPreview .rv-sec-body{font-size:12px!important;line-height:1.75!important;color:#C9D2EA!important;}
+#rvPreview .rv-section:nth-last-child(-n+2){grid-column:span 2;}
+#rvResultBox.report-result{margin-top:14px!important;border-radius:18px!important;background:linear-gradient(135deg,rgba(71,209,108,.12),rgba(34,211,238,.06))!important;border:1px solid rgba(71,209,108,.24)!important;}
+@media(max-width:1100px){.reviews-grid{grid-template-columns:1fr}.reviews-select-grid{grid-template-columns:repeat(2,1fr)}#rvPreview{grid-template-columns:1fr}#rvPreview .rv-section:nth-last-child(-n+2){grid-column:auto}}
+@media(max-width:720px){.reviews-hero{flex-direction:column;align-items:flex-start;padding:20px}.reviews-hero-actions{width:100%}.reviews-btn{flex:1}.reviews-select-grid{grid-template-columns:1fr}.reviews-output-shell,.reviews-panel{padding:16px}}
+</style>
+
+<style id="tcp-reports-ui-v277">
+/* ===== V275 Reports Command Center ===== */
+.reports-command-page{position:relative;}
+.reports-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:0 0 18px;padding:24px 26px;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(34,211,238,.10) 46%,rgba(255,91,46,.12)),rgba(13,17,31,.86);box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.09);}
+.reports-hero:before{content:"";position:absolute;inset:auto -120px -160px auto;width:380px;height:380px;border-radius:999px;background:radial-gradient(circle,rgba(34,211,238,.22),transparent 68%);pointer-events:none;}
+.reports-eyebrow,.reports-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.15em;color:#9DDCFF;margin-bottom:7px;}
+.reports-hero h1{font-size:30px;line-height:1;font-weight:950;letter-spacing:-.045em;color:#fff;margin:0 0 9px;}
+.reports-hero p{max-width:760px;margin:0;color:#B8C4E2;font-size:13px;line-height:1.6;}
+.reports-hero-actions{position:relative;display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;}
+.reports-action,.reports-btn{border:1px solid rgba(255,255,255,.13);border-radius:13px;background:rgba(255,255,255,.06);color:#EEF4FF;font-size:12px;font-weight:850;padding:10px 13px;cursor:pointer;font-family:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:transform .16s ease,background .16s ease,border-color .16s ease;}
+.reports-action:hover,.reports-btn:hover{transform:translateY(-1px);background:rgba(139,92,246,.18);border-color:rgba(139,92,246,.52);}
+.reports-action.primary,.reports-btn.primary{background:linear-gradient(135deg,#8B5CF6,#3B82F6);border-color:rgba(255,255,255,.16);color:#fff;box-shadow:0 12px 28px rgba(59,130,246,.25),inset 0 1px 0 rgba(255,255,255,.08);}
+.reports-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px;}
+.reports-kpi-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(145deg,rgba(31,38,65,.86),rgba(13,17,31,.96));padding:17px;box-shadow:0 16px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);}
+.reports-kpi-card:after{content:"";position:absolute;right:-30px;top:-36px;width:104px;height:104px;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.24),transparent 66%);}
+.reports-kpi-icon{position:relative;width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.30),rgba(34,211,238,.14));border:1px solid rgba(255,255,255,.10);margin-bottom:12px;}
+.reports-kpi-label{position:relative;font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#9EA9C9;font-weight:900;margin-bottom:5px;}
+.reports-kpi-value{position:relative;font-size:23px;font-weight:950;letter-spacing:-.035em;color:#fff;}
+.reports-kpi-sub{position:relative;font-size:11px;color:#A8AFC3;margin-top:6px;line-height:1.45;}
+.reports-workspace{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,.55fr);gap:16px;align-items:start;}
+.reports-main-stack,.reports-side-stack{display:flex;flex-direction:column;gap:16px;}
+.reports-panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(16,21,38,.88);box-shadow:0 18px 46px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.06);padding:18px;}
+.reports-ai-panel{border-color:rgba(139,92,246,.24);}
+.reports-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px;}
+.reports-panel-head.compact{margin-bottom:12px;}
+.reports-title{font-size:17px;font-weight:950;color:#fff;letter-spacing:-.03em;}
+.reports-panel p{margin:6px 0 0;color:#A8AFC3;font-size:12px;line-height:1.55;}
+.reports-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;border:1px solid rgba(255,255,255,.12);}
+.reports-pill.purple{background:rgba(139,92,246,.13);color:#CFC7FF;border-color:rgba(139,92,246,.30);}
+.reports-pill.green{background:rgba(71,209,108,.11);color:#A7FFC0;border-color:rgba(71,209,108,.28);}
+.reports-control-row{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.reports-control-row.compact{margin:14px 0 10px;}
+.reports-field{display:flex;flex-direction:column;gap:5px;min-width:220px;}
+.reports-field.grow{flex:1;min-width:190px;}
+.reports-field label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#8F9AB8;}
+.reports-field select,.reports-command-page select{min-height:38px;border-radius:12px!important;background:#0B1020!important;color:#F6F7FF!important;border:1px solid rgba(255,255,255,.14)!important;padding:8px 34px 8px 11px!important;font-weight:750;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;}
+.reports-command-page select option{background:#111827!important;color:#F6F7FF!important;}
+.reports-output-box{min-height:160px;border:1px dashed rgba(255,255,255,.12);border-radius:18px;background:rgba(0,0,0,.16);padding:16px;color:#9EA9C9;font-size:12px;line-height:1.65;}
+.reports-output-box .aib,.reports-command-page #aiOut .aib{background:rgba(0,0,0,.16)!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:17px!important;box-shadow:none!important;color:#E8ECFF!important;}
+.reports-builder-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.reports-build-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.085);border-radius:18px;background:rgba(255,255,255,.035);padding:16px;}
+.reports-build-card.accent{background:linear-gradient(145deg,rgba(139,92,246,.10),rgba(34,211,238,.04));border-color:rgba(139,92,246,.20);}
+.reports-build-icon{width:40px;height:40px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.10);margin-bottom:12px;}
+.reports-build-title{font-size:15px;font-weight:950;color:#fff;margin-bottom:7px;}
+.reports-build-copy{font-size:12px;color:#A8AFC3;line-height:1.55;}
+.reports-btn.wide{width:100%;margin-top:16px;}
+.reports-status{font-size:11px;color:#A8AFC3;min-height:16px;margin-top:8px;}
+.reports-result-box{margin-top:9px;padding:11px;border-radius:14px;border:1px solid rgba(71,209,108,.20);background:rgba(71,209,108,.07);}
+.reports-guide-list{display:flex;flex-direction:column;gap:10px;}
+.reports-guide-item{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;padding:11px;border-radius:15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);color:#B8C4E2;font-size:11px;line-height:1.45;}
+.reports-guide-item span{width:30px;height:30px;border-radius:11px;display:grid;place-items:center;background:rgba(139,92,246,.15);color:#D7D1FF;font-weight:950;}
+.reports-guide-item strong{color:#fff;font-size:12px;}
+.reports-mini-list{display:flex;flex-direction:column;gap:9px;}
+.reports-mini-list div{padding:11px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);}
+.reports-mini-list strong{display:block;color:#fff;font-size:12px;margin-bottom:3px;}
+.reports-mini-list span{display:block;color:#A8AFC3;font-size:11px;line-height:1.4;}
+@media(max-width:1180px){.reports-workspace{grid-template-columns:1fr}.reports-side-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.reports-kpi-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:820px){.reports-hero{flex-direction:column;align-items:flex-start}.reports-hero-actions,.reports-action{width:100%}.reports-kpi-grid,.reports-builder-grid,.reports-side-stack{grid-template-columns:1fr}.reports-field,.reports-btn{width:100%}}
+</style>
+
+
+<style id="tcp-reports-command-center-v277">
+/* ===== v277 Reports Command Center: layout-only, no data logic changes ===== */
+.reports-intel-center{position:relative;}
+.reports-command-hero{margin-bottom:18px!important;align-items:center!important;}
+.reports-hero-status{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid rgba(71,209,108,.22);border-radius:999px;background:rgba(71,209,108,.08);color:#A7FFC0;font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.reports-live-dot{width:8px;height:8px;border-radius:999px;background:#47D16C;box-shadow:0 0 18px rgba(71,209,108,.75);}
+.reports-snapshot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 18px;}
+.reports-snapshot-card{position:relative;overflow:hidden;display:flex;gap:13px;align-items:flex-start;min-height:118px;padding:17px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(31,38,65,.82),rgba(13,17,31,.96));box-shadow:0 16px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);}
+.reports-snapshot-card:after{content:"";position:absolute;right:-35px;top:-42px;width:118px;height:118px;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.24),transparent 66%);pointer-events:none;}
+.reports-card-icon{position:relative;z-index:1;width:40px;height:40px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.30),rgba(34,211,238,.14));border:1px solid rgba(255,255,255,.10);flex:0 0 auto;}
+.reports-card-label{position:relative;z-index:1;font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:#9EA9C9;font-weight:900;margin-bottom:5px;}
+.reports-card-value{position:relative;z-index:1;font-size:21px;font-weight:950;letter-spacing:-.035em;color:#fff;}
+.reports-card-sub{position:relative;z-index:1;font-size:11px;color:#A8AFC3;margin-top:6px;line-height:1.45;}
+.reports-command-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);gap:18px;align-items:start;}
+.reports-command-main,.reports-command-side{display:flex;flex-direction:column;gap:18px;}
+.reports-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;}
+.reports-type-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.085);border-radius:20px;background:rgba(255,255,255,.035);padding:18px;min-height:260px;display:flex;flex-direction:column;}
+.reports-type-card.featured{border-color:rgba(139,92,246,.30);background:linear-gradient(145deg,rgba(139,92,246,.13),rgba(34,211,238,.04));}
+.reports-type-card:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#FF5B2E,#8B5CF6,#22D3EE);opacity:.9;}
+.reports-type-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.reports-type-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;border:1px solid rgba(71,209,108,.25);background:rgba(71,209,108,.10);color:#A7FFC0;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;}
+.reports-type-badge.blue{border-color:rgba(34,211,238,.25);background:rgba(34,211,238,.10);color:#9DDCFF;}
+.reports-type-card h3{font-size:18px;font-weight:950;color:#fff;letter-spacing:-.035em;margin:0 0 8px;}
+.reports-type-card p{color:#A8AFC3;font-size:12px;line-height:1.6;margin:0 0 15px;}
+.reports-type-card .reports-control-row{margin-top:auto;}
+.reports-check-list{display:flex;flex-direction:column;gap:9px;}
+.reports-check-list div{display:flex;align-items:flex-start;gap:9px;padding:11px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);color:#B8C4E2;font-size:12px;line-height:1.35;}
+.reports-check-list span{display:grid;place-items:center;width:20px;height:20px;border-radius:8px;background:rgba(71,209,108,.12);color:#A7FFC0;font-weight:950;flex:0 0 auto;}
+.reports-template-list{display:flex;flex-direction:column;gap:10px;}
+.reports-template-list div{padding:12px;border-radius:15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);}
+.reports-template-list strong{display:block;color:#fff;font-size:12px;margin-bottom:4px;}
+.reports-template-list span{display:block;color:#A8AFC3;font-size:11px;line-height:1.45;}
+.reports-output-box{min-height:190px!important;}
+.reports-intel-center select{min-height:40px!important;border-radius:12px!important;background:#0B1020!important;color:#F6F7FF!important;border:1px solid rgba(255,255,255,.14)!important;padding:8px 34px 8px 11px!important;font-weight:750!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;}
+.reports-intel-center select option{background:#111827!important;color:#F6F7FF!important;}
+@media(max-width:1180px){.reports-command-layout{grid-template-columns:1fr}.reports-command-side{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.reports-snapshot-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:860px){.reports-command-hero{align-items:flex-start!important;flex-direction:column!important}.reports-snapshot-grid,.reports-type-grid,.reports-command-side{grid-template-columns:1fr}.reports-field,.reports-btn{width:100%}.reports-type-card{min-height:auto}}
+</style>
+
+
+<style id="tcp-reports-v277-polish">
+/* ===== v277 Reports tab build-out: layout only, existing JS functions preserved ===== */
+.reports-v277 .reports-v277-hero{margin-bottom:18px!important;}
+.reports-v277-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 18px;}
+.reports-v277-mini{position:relative;overflow:hidden;display:flex;gap:13px;align-items:center;min-height:108px;padding:17px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(31,38,65,.82),rgba(13,17,31,.96));box-shadow:0 16px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);}
+.reports-v277-mini:after{content:"";position:absolute;right:-38px;top:-44px;width:120px;height:120px;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.24),transparent 66%);pointer-events:none;}
+.reports-v277-mini-icon{position:relative;z-index:1;width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.30),rgba(34,211,238,.14));border:1px solid rgba(255,255,255,.10);flex:0 0 auto;}
+.reports-v277-mini strong{position:relative;z-index:1;display:block;color:#fff;font-size:14px;font-weight:950;margin-bottom:4px;letter-spacing:-.02em;}
+.reports-v277-mini small{position:relative;z-index:1;display:block;color:#A8AFC3;font-size:11px;line-height:1.4;}
+.reports-v277-layout{grid-template-columns:minmax(0,1.48fr) minmax(310px,.52fr)!important;gap:18px!important;}
+.reports-v277-builder{padding:20px!important;}
+.reports-v277-steps{display:flex;flex-direction:column;gap:16px;}
+.reports-v277-step{display:grid;grid-template-columns:48px minmax(0,1fr);gap:15px;padding:16px;border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(255,255,255,.032);}
+.reports-v277-step-ai{background:linear-gradient(145deg,rgba(139,92,246,.10),rgba(34,211,238,.035));border-color:rgba(139,92,246,.18);}
+.reports-v277-step-num{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:rgba(139,92,246,.16);border:1px solid rgba(139,92,246,.28);color:#D8D1FF;font-weight:950;font-size:12px;letter-spacing:.06em;}
+.reports-v277-step-title{font-size:18px;font-weight:950;letter-spacing:-.035em;color:#fff;margin-bottom:6px;}
+.reports-v277-step-body p{font-size:12px;color:#A8AFC3;line-height:1.6;margin:0 0 14px;}
+.reports-v277-output-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.reports-v277-output-card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:270px;padding:17px;border:1px solid rgba(255,255,255,.085);border-radius:19px;background:rgba(255,255,255,.035);}
+.reports-v277-output-card.featured{border-color:rgba(139,92,246,.30);background:linear-gradient(145deg,rgba(139,92,246,.12),rgba(34,211,238,.04));}
+.reports-v277-output-card:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#FF5B2E,#8B5CF6,#22D3EE);opacity:.92;}
+.reports-v277-output-head{display:flex;align-items:center;gap:10px;margin:4px 0 9px;color:#fff;font-size:15px;}
+.reports-v277-output-head span{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.10);}
+.reports-v277-output-head strong{font-weight:950;letter-spacing:-.025em;}
+.reports-v277-output-card p{font-size:12px;color:#A8AFC3;line-height:1.55;margin:0 0 12px;}
+.reports-v277-output-card .reports-btn.wide{margin-top:auto!important;}
+.reports-v277-simple-list{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:8px;color:#B8C4E2;font-size:12px;}
+.reports-v277-simple-list li{padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);}
+.reports-v277-simple-list li:before{content:"✓";color:#A7FFC0;font-weight:900;margin-right:7px;}
+.reports-v277-ai-output{min-height:170px!important;}
+.reports-v277 select{background:#0B1020!important;color:#F6F7FF!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:12px!important;}
+.reports-v277 select option{background:#111827!important;color:#F6F7FF!important;}
+@media(max-width:1180px){.reports-v277-layout{grid-template-columns:1fr!important}.reports-v277-strip{grid-template-columns:1fr 1fr 1fr}.reports-command-side{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.reports-v277-strip,.reports-v277-output-grid,.reports-command-side{grid-template-columns:1fr!important}.reports-v277-step{grid-template-columns:1fr}.reports-v277-step-num{width:40px;height:40px}.reports-v277 .reports-control-row{align-items:stretch}.reports-v277 .reports-field,.reports-v277 .reports-btn{width:100%}}
+</style>
+
+
+<style id="tcp-reports-builder-v278">
+/* ===== v278 Reports Builder: configurable command center, stable existing output functions ===== */
+.reports-v278 .reports-v278-hero{margin-bottom:18px!important;}
+.reports-v278-health-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 18px;}
+.reports-v278-health-card{position:relative;overflow:hidden;display:flex;gap:13px;align-items:center;min-height:98px;padding:16px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(31,38,65,.82),rgba(13,17,31,.96));box-shadow:0 16px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);}
+.reports-v278-health-card:after{content:"";position:absolute;right:-42px;top:-52px;width:130px;height:130px;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 66%);pointer-events:none;}
+.reports-v278-health-card>span{position:relative;z-index:1;width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.30),rgba(34,211,238,.14));border:1px solid rgba(255,255,255,.10);flex:0 0 auto;}
+.reports-v278-health-card strong{position:relative;z-index:1;display:block;color:#fff;font-size:14px;font-weight:950;margin-bottom:4px;letter-spacing:-.02em;}
+.reports-v278-health-card small{position:relative;z-index:1;display:block;color:#A8AFC3;font-size:11px;line-height:1.4;}
+.reports-v278-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,.55fr);gap:18px;align-items:start;}
+.reports-v278-main,.reports-v278-side{display:flex;flex-direction:column;gap:18px;}
+.reports-v278-builder-card,.reports-v278-config-card,.reports-v278-generate-card{padding:20px!important;}
+.reports-v278-type-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:15px;}
+.reports-v278-type-card{position:relative;min-height:160px;text-align:left;padding:16px;border:1px solid rgba(255,255,255,.085);border-radius:20px;background:rgba(255,255,255,.035);color:#F6F7FF;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;gap:9px;transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;}
+.reports-v278-type-card:hover{transform:translateY(-2px);border-color:rgba(139,92,246,.45);background:rgba(139,92,246,.075);}
+.reports-v278-type-card.active{border-color:rgba(139,92,246,.78);background:linear-gradient(145deg,rgba(139,92,246,.18),rgba(34,211,238,.055));box-shadow:0 18px 42px rgba(109,93,251,.18),inset 0 1px 0 rgba(255,255,255,.08);}
+.reports-v278-type-card.active:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#FF5B2E,#8B5CF6,#22D3EE);}
+.reports-v278-type-icon{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,92,246,.28),rgba(34,211,238,.13));border:1px solid rgba(255,255,255,.10);font-size:18px;}
+.reports-v278-type-card strong{font-size:14px;font-weight:950;letter-spacing:-.02em;color:#fff;}
+.reports-v278-type-card small{font-size:11.5px;line-height:1.48;color:#A8AFC3;}
+.reports-v278-config-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;align-items:start;}
+.reports-v278-scope-panel,.reports-v278-section-panel{border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(255,255,255,.032);padding:16px;}
+.reports-v278-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#9DDCFF;font-weight:950;margin-bottom:12px;}
+.reports-v278-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px;}
+.reports-v278 .reports-field label{display:block;margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#929BB2;}
+.reports-v278 .reports-field select{width:100%;min-height:40px;border-radius:13px!important;background:#0B1020!important;color:#F6F7FF!important;border:1px solid rgba(255,255,255,.14)!important;padding:9px 36px 9px 12px!important;font-weight:800;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;}
+.reports-v278 .reports-field select option{background:#111827!important;color:#F6F7FF!important;}
+.reports-v278-generated-box{margin-top:14px;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:rgba(0,0,0,.13);overflow:hidden;}
+.reports-v278-generated-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.07);}
+.reports-v278-generated-head span{font-size:12px;font-weight:950;color:#fff;}
+.reports-v278-generated-head small{font-size:10.5px;color:#8F9AB8;}
+.reports-v278-ai-output{min-height:180px!important;margin:0!important;border:0!important;border-radius:0!important;background:rgba(255,255,255,.025)!important;color:#C9D2EA!important;}
+.reports-v278-check-grid{display:grid;gap:9px;}
+.reports-v278-check-grid label{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.034);color:#DDE6FF;font-size:12px;font-weight:750;cursor:pointer;}
+.reports-v278-check-grid input{accent-color:#8B5CF6;}
+.reports-v278-note{margin-top:12px;padding:10px 12px;border-radius:13px;background:rgba(255,176,32,.075);border:1px solid rgba(255,176,32,.16);font-size:10.8px;line-height:1.45;color:#FFD27A;}
+.reports-v278-generate-card{display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(34,211,238,.055),rgba(255,91,46,.08))!important;}
+.reports-v278-generate-card p{margin:6px 0 0;color:#A8AFC3;font-size:12px;line-height:1.45;}
+.reports-v278-generate-btn{min-height:48px;padding:12px 20px!important;font-size:13px!important;border-radius:16px!important;white-space:nowrap;}
+.reports-v278-side-card{padding:17px!important;}
+.reports-v278-watch-list,.reports-v278-template-list,.reports-v278-output-guide{display:grid;gap:10px;}
+.reports-v278-watch-list div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.032);}
+.reports-v278-watch-list span{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(139,92,246,.16);border:1px solid rgba(139,92,246,.26);color:#D8D1FF;font-weight:950;}
+.reports-v278-watch-list strong,.reports-v278-output-guide b{display:block;color:#fff;font-size:12px;margin-bottom:3px;}
+.reports-v278-watch-list small,.reports-v278-output-guide span{display:block;color:#A8AFC3;font-size:11px;line-height:1.4;}
+.reports-v278-template-list button{width:100%;text-align:left;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(255,255,255,.034);padding:12px;color:#F6F7FF;cursor:pointer;font-family:inherit;}
+.reports-v278-template-list button:hover{border-color:rgba(139,92,246,.45);background:rgba(139,92,246,.08);}
+.reports-v278-template-list strong{display:block;font-size:12px;margin-bottom:4px;}
+.reports-v278-template-list span{display:block;font-size:11px;color:#A8AFC3;line-height:1.4;}
+.reports-v278-output-guide div{padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.032);}
+@media(max-width:1250px){.reports-v278-type-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.reports-v278-health-strip{grid-template-columns:repeat(2,minmax(0,1fr));}.reports-v278-layout{grid-template-columns:1fr}.reports-v278-side{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:900px){.reports-v278-health-strip,.reports-v278-type-grid,.reports-v278-config-grid,.reports-v278-form-grid,.reports-v278-side{grid-template-columns:1fr!important}.reports-v278-generate-card{flex-direction:column;align-items:stretch}.reports-v278-generate-btn{width:100%;}.reports-v278-generated-head{align-items:flex-start;flex-direction:column;}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -1834,32 +2207,99 @@ select optgroup{
   </div>
 </div>
 <div id="pg-art" class="page">
-  <div class="card">
-    <div class="ct">Log an art error <button onclick="event.stopPropagation();showHelp('art-errors')" title="What is this?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid rgba(127,119,221,.5);background:rgba(83,74,183,.2);color:#A8B8FF;font-size:9px;font-weight:700;cursor:pointer;flex-shrink:0;position:relative;z-index:5;margin-left:5px;vertical-align:middle;padding:0;line-height:1;">?</button></div>
-    <div class="igrid">
-      <div class="ig"><label>Rep</label><select id="aeRep"></select></div>
-      <div class="ig"><label>Week</label><select id="aeWeek"></select></div>
-      <div class="ig"><label>SO number</label><input type="text" id="aeSO" placeholder="e.g. SO-12345"></div>
-      <div class="ig"><label>Issue type</label><select id="aeType"><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select></div>
+  <div class="art-command-page">
+    <div class="art-hero">
+      <div>
+        <div class="art-eyebrow">Quality control command center</div>
+        <h1>Art Errors</h1>
+        <p>Track rep-owned art issues, monitor recurring error types, and keep order-entry quality visible without changing the existing art-error logic.</p>
+      </div>
+      <div class="art-hero-actions">
+        <button class="sbtn art-primary" onclick="document.getElementById('aeSO').focus()">+ Log error</button>
+        <button class="sbtn" onclick="downloadAETemplate()">↓ Template</button>
+      </div>
     </div>
-    <div class="ig" style="margin-bottom:.875rem;"><label>Description</label><textarea id="aeDesc" placeholder="Describe the art error..."></textarea></div>
-    <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:7px 10px;margin-bottom:.875rem;font-size:11px;color:#633806;">Art errors always count against the rep.</div>
-    <div style="display:flex;align-items:center;gap:9px;"><button class="sbtn" onclick="saveAE()">Log art error</button><span id="aeMsg" style="display:none;font-size:12px;color:#3B6D11;">&#10003; Logged!</span></div>
-  </div>
-  <div class="card" style="border-color:#C05800;background:var(--color-background-secondary);">
-    <div class="ct" style="margin-bottom:7px;">&#128196; Bulk art error entry</div>
-    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Download the template, add one row per art error (multiple rows per rep is fine), then upload.</p>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <button class="sbtn" onclick="downloadAETemplate()" style="background:#2A1A00;border-color:#C05800;color:#FAC775;font-weight:500;">&#8595; Download art error template</button>
-      <button class="sbtn" onclick="document.getElementById('aeBulkFile').click()" style="background:#1D4A2A;border-color:#1D9E75;color:#5DCAA5;font-weight:500;">&#8593; Upload filled sheet</button>
-      <input type="file" id="aeBulkFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadAESheet(event)">
-      <span id="aeBulkMsg" style="font-size:11px;color:var(--color-text-secondary);"></span>
+
+    <div class="art-kpi-grid">
+      <div class="art-kpi"><div class="art-kpi-icon">⚠️</div><div class="art-kpi-label">Filtered errors</div><div class="art-kpi-value" id="aeKpiTotal">0</div><div class="art-kpi-sub">Current view</div></div>
+      <div class="art-kpi"><div class="art-kpi-icon">🎯</div><div class="art-kpi-label">Top issue</div><div class="art-kpi-value" id="aeKpiTopType">—</div><div class="art-kpi-sub" id="aeKpiTopTypeSub">No errors found</div></div>
+      <div class="art-kpi"><div class="art-kpi-icon">👤</div><div class="art-kpi-label">Most impacted rep</div><div class="art-kpi-value" id="aeKpiRepImpact">—</div><div class="art-kpi-sub" id="aeKpiRepImpactSub">No rep impact</div></div>
+      <div class="art-kpi"><div class="art-kpi-icon">📅</div><div class="art-kpi-label">Quarter</div><div class="art-kpi-value" id="aeKpiQuarter">0</div><div class="art-kpi-sub" id="aeKpiQuarterSub">Selected filters</div></div>
     </div>
-  </div>
-  <div class="card">
-    <div class="ct">Art error log <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);">&#8212; hover to edit</span></div>
-    <div class="filter-row"><label>Rep:</label><select id="aeFR" onchange="renderAEL()"><option value="all">All reps</option></select><label>Type:</label><select id="aeFT" onchange="renderAEL()"><option value="all">All types</option><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select><label>Year:</label><select id="aeFYr" onchange="aeFilterYrChange()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select><label>Quarter:</label><select id="aeFQ" onchange="aeFilterQChange()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select><label>Month:</label><select id="aeFM" onchange="aeFilterMChange()"><option value="all">All</option></select><label>Week:</label><select id="aeFW" onchange="renderAEL()"><option value="all">All</option></select></div>
-    <div class="chips" id="aeSum"></div><div id="aeLog"></div>
+
+    <div class="art-layout">
+      <div class="art-main-stack">
+        <div class="art-panel art-panel-hot">
+          <div class="art-panel-head">
+            <div>
+              <div class="art-section-kicker">Manual intake</div>
+              <div class="art-section-title">Log an art error <button onclick="event.stopPropagation();showHelp('art-errors')" title="What is this?" class="art-help-btn">?</button></div>
+            </div>
+            <span class="art-pill">Rep accountable</span>
+          </div>
+          <div class="art-entry-grid">
+            <div class="ig"><label>Rep</label><select id="aeRep"></select></div>
+            <div class="ig"><label>Week</label><select id="aeWeek"></select></div>
+            <div class="ig"><label>SO number</label><input type="text" id="aeSO" placeholder="e.g. SO-12345"></div>
+            <div class="ig"><label>Issue type</label><select id="aeType"><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select></div>
+          </div>
+          <div class="ig" style="margin-top:12px;"><label>Description</label><textarea id="aeDesc" placeholder="Describe the art issue, what was missed, and what needs to be corrected..."></textarea></div>
+          <div class="art-alert-note">Art errors always count against the rep. This page is focused on visibility, correction, and prevention.</div>
+          <div class="art-action-strip"><button class="sbtn art-primary" onclick="saveAE()">Log art error</button><span id="aeMsg" class="art-status" style="display:none;">✓ Logged!</span></div>
+        </div>
+
+        <div class="art-panel">
+          <div class="art-panel-head">
+            <div>
+              <div class="art-section-kicker">Error log</div>
+              <div class="art-section-title">Art error history</div>
+            </div>
+            <span class="art-pill art-pill-purple">Hover to edit</span>
+          </div>
+          <div class="chips art-summary-chips" id="aeSum"></div>
+          <div id="aeLog" class="art-log-list"></div>
+        </div>
+      </div>
+
+      <div class="art-side-stack">
+        <div class="art-panel art-mini-panel">
+          <div class="art-panel-head compact">
+            <div><div class="art-section-kicker">Bulk update</div><div class="art-section-title">Team sheet</div></div>
+            <div class="art-icon-bubble">📄</div>
+          </div>
+          <p class="art-help">Download the template, add one row per art error, then upload. Multiple rows per rep are fine.</p>
+          <div class="art-button-stack">
+            <button class="sbtn" onclick="downloadAETemplate()">↓ Download art error template</button>
+            <button class="sbtn art-primary" onclick="document.getElementById('aeBulkFile').click()">↑ Upload filled sheet</button>
+            <input type="file" id="aeBulkFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadAESheet(event)">
+            <span id="aeBulkMsg" class="art-status"></span>
+          </div>
+        </div>
+
+        <div class="art-panel art-mini-panel">
+          <div class="art-panel-head compact">
+            <div><div class="art-section-kicker">Filters</div><div class="art-section-title">Narrow the view</div></div>
+            <div class="art-icon-bubble">🔎</div>
+          </div>
+          <div class="art-filter-grid">
+            <div class="ig"><label>Rep</label><select id="aeFR" onchange="renderAEL()"><option value="all">All reps</option></select></div>
+            <div class="ig"><label>Type</label><select id="aeFT" onchange="renderAEL()"><option value="all">All types</option><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select></div>
+            <div class="ig"><label>Year</label><select id="aeFYr" onchange="aeFilterYrChange()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+            <div class="ig"><label>Quarter</label><select id="aeFQ" onchange="aeFilterQChange()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
+            <div class="ig"><label>Month</label><select id="aeFM" onchange="aeFilterMChange()"><option value="all">All</option></select></div>
+            <div class="ig"><label>Week</label><select id="aeFW" onchange="renderAEL()"><option value="all">All</option></select></div>
+          </div>
+        </div>
+
+        <div class="art-panel art-mini-panel">
+          <div class="art-panel-head compact">
+            <div><div class="art-section-kicker">Quality snapshot</div><div class="art-section-title">What to watch</div></div>
+            <div class="art-icon-bubble">🧭</div>
+          </div>
+          <div id="aeQualityNote" class="art-quality-note">No filtered art errors yet. Use this panel to spot repeated issue types and rep coaching opportunities.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div id="pg-score" class="page score-command-page">
@@ -1943,66 +2383,340 @@ select optgroup{
   </div>
 </div>
 <div id="pg-meeting" class="page">
-  <div class="card">
-    <div class="ct">Weekly sales meeting report <button onclick="event.stopPropagation();showHelp('market-intel')" title="What is this?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid rgba(127,119,221,.5);background:rgba(83,74,183,.2);color:#A8B8FF;font-size:9px;font-weight:700;cursor:pointer;flex-shrink:0;position:relative;z-index:5;margin-left:5px;vertical-align:middle;padding:0;line-height:1;">?</button></div>
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.875rem;">
-      <span style="font-size:12px;color:var(--color-text-secondary);">Report for week:</span>
-      <select class="nav-sel" id="mtgWeekSel" onchange="updateMtgWeekLabel();renderWeeklyProjectsUI();" style="font-size:12px;padding:5px 10px;min-width:220px;"></select>
-      <span id="mtgWeekRange" style="font-size:11px;color:var(--color-text-secondary);padding:3px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);"></span>
+  <div class="meeting-command">
+    <div class="meeting-hero">
+      <div>
+        <div class="meeting-eyebrow">Sales meeting command center</div>
+        <h1>Weekly meeting report</h1>
+        <p>Generate a manager-ready weekly packet with team KPIs, rep rankings, pacing, call coverage, AI talking points, and forecast opportunities.</p>
+      </div>
+      <div class="meeting-hero-actions">
+        <button class="meeting-btn primary" id="genMtgBtn" onclick="generateMeetingReport()">✦ Generate report</button>
+        <button class="meeting-btn" id="genRepVersionBtn" onclick="generateRepVersionReport()">⭐ Rep-friendly</button>
+        <button class="meeting-btn" id="genPrintVersionBtn" onclick="generatePrintVersionReport()">🖨 Print/PDF</button>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:.875rem;">
-      <button class="pbtn" id="genMtgBtn" onclick="generateMeetingReport()">&#10022; Generate meeting report</button>
-      <button class="sbtn" id="genRepVersionBtn" onclick="generateRepVersionReport()" style="background:#1A2A1E;border-color:#1D9E75;color:#5DCAA5;">&#127775; Rep-friendly version</button>
-      <button class="sbtn" id="genPrintVersionBtn" onclick="generatePrintVersionReport()" style="background:#2A1A2A;border-color:#9F77DD;color:#C8A8FF;">&#128438; Print version (ink-friendly)</button>
-      <div class="status" id="mtgSt"></div>
+
+    <div class="meeting-layout">
+      <div class="meeting-main">
+        <div class="meeting-panel meeting-panel-hot">
+          <div class="meeting-panel-head">
+            <div>
+              <div class="meeting-kicker">Step 01</div>
+              <div class="meeting-title">Choose report week</div>
+              <p class="meeting-help">Pick the completed week you want to recap. The report keeps the same data math and pulls the same weekly, QTD, credit memo, art error, and forecast inputs.</p>
+            </div>
+            <span class="meeting-pill">Current workflow</span>
+          </div>
+          <div class="meeting-picker-row">
+            <div class="ig meeting-week-field"><label>Report for week</label><select class="nav-sel" id="mtgWeekSel" onchange="updateMtgWeekLabel();renderWeeklyProjectsUI();"></select></div>
+            <div class="meeting-week-chip" id="mtgWeekRange"></div>
+          </div>
+          <div class="meeting-status-row">
+            <div class="status" id="mtgSt"></div>
+          </div>
+        </div>
+
+        <div class="meeting-panel">
+          <div class="meeting-panel-head compact">
+            <div>
+              <div class="meeting-kicker">Step 02</div>
+              <div class="meeting-title">Weekly projects & callouts</div>
+              <p class="meeting-help">Add any special projects, focus items, or manager notes before generating the packet.</p>
+            </div>
+            <span class="meeting-pill meeting-pill-purple">Optional</span>
+          </div>
+          <div id="projectsUiContainer"></div>
+        </div>
+
+        <div class="meeting-panel">
+          <div class="meeting-panel-head compact">
+            <div>
+              <div class="meeting-kicker">Output preview</div>
+              <div class="meeting-title">Generated report</div>
+            </div>
+          </div>
+          <div id="mtgPreview"></div>
+          <div id="mtgResultBox" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="meeting-side">
+        <div class="meeting-panel meeting-mini">
+          <div class="meeting-icon-bubble">📊</div>
+          <div class="meeting-title">What it includes</div>
+          <div class="meeting-checklist">
+            <div>Team KPIs and weekly revenue</div>
+            <div>QTD forecast and projected finish</div>
+            <div>Rep rankings and pace tables</div>
+            <div>AI recap, focus, and pitch of week</div>
+            <div>Upcoming focus events and downtime industries</div>
+          </div>
+        </div>
+        <div class="meeting-panel meeting-mini">
+          <div class="meeting-icon-bubble">🖨</div>
+          <div class="meeting-title">Report format upgrade</div>
+          <p class="meeting-help small">The Print/PDF version has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+        </div>
+        <div class="meeting-panel meeting-mini">
+          <div class="meeting-icon-bubble">🔑</div>
+          <div class="meeting-title">AI note</div>
+          <p class="meeting-help small">If the AI key is invalid, the report will still generate with your core data. The AI cards will show the error instead of blocking the whole packet.</p>
+        </div>
+      </div>
     </div>
-    <div id="projectsUiContainer" style="margin-bottom:.875rem;"></div>
-    <div id="mtgPreview"></div>
-    <div id="mtgResultBox" style="display:none;"></div>
   </div>
 </div>
-<div id="pg-review" class="page">
-  <div class="card">
-    <div class="ct">Generate performance review <button onclick="event.stopPropagation();showHelp('performance-review')" title="What is this?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid rgba(127,119,221,.5);background:rgba(83,74,183,.2);color:#A8B8FF;font-size:9px;font-weight:700;cursor:pointer;flex-shrink:0;position:relative;z-index:5;margin-left:5px;vertical-align:middle;padding:0;line-height:1;">?</button></div>
-    <div class="igrid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:.875rem;">
-      <div class="ig"><label>Year</label><select id="rvYr"><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
-      <div class="ig"><label>Quarter</label><select id="rvQ"><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
-      <div class="ig"><label>Rep</label><select id="rvRep"></select></div>
+<div id="pg-review" class="page reviews-command">
+  <div class="reviews-hero">
+    <div>
+      <div class="reviews-eyebrow">Performance Review Command Center</div>
+      <h1>Reviews</h1>
+      <p>Generate manager-ready performance reviews using the existing rep scorecard logic, quarter metrics, HR points, coaching notes, and AI-written development guidance.</p>
     </div>
-    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:1.1rem;">
-      <button class="pbtn" id="genRevBtn" onclick="generateReview()">&#10022; Generate AI review</button>
-      <div class="status" id="rvSt"></div>
+    <div class="reviews-hero-actions">
+      <button class="reviews-btn subtle" onclick="event.stopPropagation();showHelp('performance-review')">? What is this?</button>
+      <button class="reviews-btn primary" id="genRevBtn" onclick="generateReview()">✦ Generate AI review</button>
     </div>
-    <div id="rvPreview"></div>
+  </div>
+
+  <div class="reviews-grid">
+    <section class="reviews-panel reviews-builder">
+      <div class="reviews-panel-head">
+        <div>
+          <div class="reviews-kicker">Step 01</div>
+          <div class="reviews-title">Build review</div>
+          <p class="reviews-help">Choose the review window and rep. The output still uses your current scorecard math and report-generation logic.</p>
+        </div>
+        <span class="reviews-pill">AI assisted</span>
+      </div>
+      <div class="reviews-select-grid">
+        <div class="ig"><label>Year</label><select id="rvYr"><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+        <div class="ig"><label>Quarter</label><select id="rvQ"><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
+        <div class="ig reviews-rep-field"><label>Rep</label><select id="rvRep"></select></div>
+      </div>
+      <div class="reviews-status-row">
+        <div class="reviews-status-dot"></div>
+        <div class="status" id="rvSt">Ready to generate.</div>
+      </div>
+      <div class="reviews-note-card">
+        <strong>What gets used:</strong> revenue pace, calls, art errors, credit memos, hours, HR points, coaching notes, and the current quarter timing. No scoring logic is changed here.
+      </div>
+    </section>
+
+    <aside class="reviews-panel reviews-side">
+      <div class="reviews-panel-head compact">
+        <div>
+          <div class="reviews-kicker">Output</div>
+          <div class="reviews-title">Review packet</div>
+        </div>
+        <span class="reviews-icon">📄</span>
+      </div>
+      <div class="reviews-checklist">
+        <div>8 structured review sections</div>
+        <div>Score badges by category</div>
+        <div>Data analysis + growth plan</div>
+        <div>HR and coaching context</div>
+        <div>Printable report opens in a new tab</div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="reviews-output-shell">
+    <div class="reviews-panel-head">
+      <div>
+        <div class="reviews-kicker">Step 02</div>
+        <div class="reviews-title">Generated review preview</div>
+      </div>
+      <span class="reviews-pill purple">Manager ready</span>
+    </div>
+    <div id="rvPreview" class="reviews-preview-empty">Generate a review to preview the sections here.</div>
     <div id="rvResultBox" style="display:none;"></div>
   </div>
 </div>
-<div id="pg-reports" class="page">
-  <div class="card">
-    <div class="ct">AI analysis preview</div>
-    <div style="display:flex;gap:7px;align-items:center;margin-bottom:.875rem;flex-wrap:wrap;">
-      <select id="aiR"></select>
-      <button class="sbtn" onclick="runAI()">&#10022; Generate</button>
+
+<div id="pg-reports" class="page reports-command-page reports-intel-center reports-v278">
+  <section class="reports-hero reports-command-hero reports-v278-hero">
+    <div>
+      <div class="reports-eyebrow">Reporting Intelligence Center</div>
+      <h1>Reports</h1>
+      <p>Build the exact management document you need: AI brief, weekly meeting packet, rep performance packet, or team leadership report.</p>
     </div>
-    <div id="aiOut"></div>
-  </div>
-  <div class="card">
-    <div class="ct">Performance reports</div>
-    <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);">
-      <div style="font-size:12px;font-weight:500;margin-bottom:7px;">Individual rep report</div>
-      <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;"><select id="prRep"></select><button class="gbtn" id="repBtn" onclick="genRepPDF()">&#10022; Generate rep report</button></div>
-      <div class="status" id="repSt"></div>
-      <div id="repResultBox" style="display:none;margin-top:9px;"></div>
+    <div class="reports-hero-status">
+      <span class="reports-live-dot"></span>
+      <span id="reportsBuilderStatus">Builder ready</span>
     </div>
-    <div style="padding-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);">
-      <div style="font-size:12px;font-weight:500;margin-bottom:7px;">Full team report</div>
-      <button class="gbtn" id="teamBtn" onclick="genTeamPDF()">&#10022; Generate team report</button>
-      <div class="status" id="teamSt"></div>
-      <div id="teamResultBox" style="display:none;margin-top:9px;"></div>
+  </section>
+
+  <section class="reports-v278-health-strip" aria-label="Report workspace overview">
+    <div class="reports-v278-health-card">
+      <span>✦</span><div><strong>AI Brief</strong><small>Quick manager summary</small></div>
     </div>
-    <div class="open-hint" style="margin-top:.875rem;">Reports open in a new tab &#8212; Ctrl+P to save as PDF.</div>
-  </div>
+    <div class="reports-v278-health-card">
+      <span>📄</span><div><strong>PDF Packets</strong><small>Meeting, rep, and team outputs</small></div>
+    </div>
+    <div class="reports-v278-health-card">
+      <span>⚙</span><div><strong>Template Controls</strong><small>Select scope and sections</small></div>
+    </div>
+    <div class="reports-v278-health-card">
+      <span>✓</span><div><strong>Manager Ready</strong><small>Built from current tracker data</small></div>
+    </div>
+  </section>
+
+  <section class="reports-v278-layout">
+    <main class="reports-v278-main">
+      <div class="reports-panel reports-v278-builder-card">
+        <div class="reports-panel-head">
+          <div>
+            <div class="reports-kicker">Step 01</div>
+            <div class="reports-title">Choose the report type</div>
+            <p>Select what you are trying to create. The builder below changes based on your output.</p>
+          </div>
+          <span class="reports-pill green">Single workflow</span>
+        </div>
+
+        <div class="reports-v278-type-grid" role="radiogroup" aria-label="Report type">
+          <button type="button" class="reports-v278-type-card active" data-report-type="brief" onclick="reportsSetType('brief')">
+            <span class="reports-v278-type-icon">✦</span>
+            <strong>AI Manager Brief</strong>
+            <small>Fast read before coaching, meetings, or leadership updates.</small>
+          </button>
+          <button type="button" class="reports-v278-type-card" data-report-type="meeting" onclick="reportsSetType('meeting')">
+            <span class="reports-v278-type-icon">📊</span>
+            <strong>Weekly Meeting Packet</strong>
+            <small>Full sales meeting packet using the current week and quarter.</small>
+          </button>
+          <button type="button" class="reports-v278-type-card" data-report-type="rep" onclick="reportsSetType('rep')">
+            <span class="reports-v278-type-icon">👤</span>
+            <strong>Rep Performance Packet</strong>
+            <small>Single-rep PDF for coaching, reviews, and follow-up.</small>
+          </button>
+          <button type="button" class="reports-v278-type-card" data-report-type="team" onclick="reportsSetType('team')">
+            <span class="reports-v278-type-icon">👥</span>
+            <strong>Team Leadership Report</strong>
+            <small>Management-ready team report for leadership or planning.</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-config-card">
+        <div class="reports-panel-head compact">
+          <div>
+            <div class="reports-kicker">Step 02</div>
+            <div class="reports-title">Configure the output</div>
+          </div>
+          <span class="reports-pill purple" id="reportsTypePill">AI Manager Brief</span>
+        </div>
+
+        <div class="reports-v278-config-grid">
+          <div class="reports-v278-scope-panel">
+            <div class="reports-v278-subtitle">Scope</div>
+            <div class="reports-v278-form-grid">
+              <div class="reports-field reports-rep-scope">
+                <label>Rep</label>
+                <select id="aiR"></select>
+              </div>
+              <div class="reports-field reports-rep-output" style="display:none;">
+                <label>Rep for PDF</label>
+                <select id="prRep"></select>
+              </div>
+              <div class="reports-field">
+                <label>Quarter</label>
+                <select id="reportsBuilderQuarter">
+                  <option value="current">Current selected quarter</option>
+                  <option value="year">Full year view</option>
+                </select>
+              </div>
+              <div class="reports-field">
+                <label>Tone</label>
+                <select id="reportsBuilderTone">
+                  <option value="manager">Manager ready</option>
+                  <option value="direct">Direct / no fluff</option>
+                  <option value="coaching">Coaching focused</option>
+                  <option value="executive">Executive summary</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="reports-v278-generated-box">
+              <div class="reports-v278-generated-head">
+                <span>Output preview</span>
+                <small id="reportsOutputHint">Run the builder to generate the selected output.</small>
+              </div>
+              <div id="aiOut" class="reports-output-box reports-v278-ai-output">Choose a report type, confirm the scope, then click Generate.</div>
+              <div class="status reports-status" id="repSt"></div>
+              <div id="repResultBox" class="reports-result-box" style="display:none;"></div>
+              <div class="status reports-status" id="teamSt"></div>
+              <div id="teamResultBox" class="reports-result-box" style="display:none;"></div>
+            </div>
+          </div>
+
+          <aside class="reports-v278-section-panel">
+            <div class="reports-v278-subtitle">Included sections</div>
+            <div class="reports-v278-check-grid">
+              <label><input type="checkbox" checked data-report-section="revenue"> <span>Revenue summary</span></label>
+              <label><input type="checkbox" checked data-report-section="rankings"> <span>Rep rankings</span></label>
+              <label><input type="checkbox" checked data-report-section="pacing"> <span>Goal pacing</span></label>
+              <label><input type="checkbox" checked data-report-section="calls"> <span>Call coverage</span></label>
+              <label><input type="checkbox" checked data-report-section="quality"> <span>Credit memos / art errors</span></label>
+              <label><input type="checkbox" checked data-report-section="forecast"> <span>Forecast / selling focus</span></label>
+              <label><input type="checkbox" checked data-report-section="coaching"> <span>Coaching / HR context</span></label>
+              <label><input type="checkbox" checked data-report-section="ai"> <span>AI analysis</span></label>
+            </div>
+            <div class="reports-v278-note">These selections guide the report workflow. Current legacy PDF generators still use their standard complete templates.</div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-generate-card">
+        <div>
+          <div class="reports-kicker">Step 03</div>
+          <div class="reports-title">Generate the report</div>
+          <p id="reportsGenerateHelp">Create an AI manager brief for the selected rep.</p>
+        </div>
+        <button class="reports-btn primary reports-v278-generate-btn" id="reportsMainGenerateBtn" onclick="reportsRunSelected()">🚀 Generate AI Brief</button>
+      </div>
+    </main>
+
+    <aside class="reports-v278-side">
+      <div class="reports-panel reports-v278-side-card">
+        <div class="reports-panel-head compact">
+          <div><div class="reports-kicker">Manager watch</div><div class="reports-title">What this page is for</div></div>
+        </div>
+        <div class="reports-v278-watch-list">
+          <div><span>1</span><strong>Brief</strong><small>Use AI to understand the situation before talking.</small></div>
+          <div><span>2</span><strong>Build</strong><small>Select a rep/team output and generate the PDF.</small></div>
+          <div><span>3</span><strong>Use</strong><small>Open, print, save, or bring into a meeting.</small></div>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-side-card">
+        <div class="reports-panel-head compact">
+          <div><div class="reports-kicker">Templates</div><div class="reports-title">Best-use shortcuts</div></div>
+        </div>
+        <div class="reports-v278-template-list">
+          <button type="button" onclick="reportsSetType('meeting')"><strong>Weekly Sales Meeting</strong><span>Rankings, pacing, calls, forecast</span></button>
+          <button type="button" onclick="reportsSetType('rep')"><strong>Rep Coaching Packet</strong><span>Single rep, scorecard, notes, quality</span></button>
+          <button type="button" onclick="reportsSetType('team')"><strong>Leadership Team Report</strong><span>Full team performance snapshot</span></button>
+          <button type="button" onclick="reportsSetType('brief')"><strong>Quick AI Brief</strong><span>Fast manager readout</span></button>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-side-card">
+        <div class="reports-panel-head compact">
+          <div><div class="reports-kicker">Output guide</div><div class="reports-title">What generates where</div></div>
+        </div>
+        <div class="reports-v278-output-guide">
+          <div><b>AI Brief</b><span>Appears directly on this page.</span></div>
+          <div><b>Meeting Packet</b><span>Opens the Weekly Meeting PDF/print view.</span></div>
+          <div><b>Rep Packet</b><span>Opens the selected rep PDF/print view.</span></div>
+          <div><b>Team Report</b><span>Opens the full team report.</span></div>
+        </div>
+      </div>
+    </aside>
+  </section>
 </div>
+
 <div id="pg-cknow" class="page">
   <div class="card" style="border-color:#534AB7;">
     <div class="ct">&#129504; Company knowledge <button onclick="event.stopPropagation();showHelp('company-knowledge')" title="What is this?" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid rgba(127,119,221,.5);background:rgba(83,74,183,.2);color:#A8B8FF;font-size:9px;font-weight:700;cursor:pointer;flex-shrink:0;margin-left:5px;vertical-align:middle;padding:0;line-height:1;">?</button></div>
@@ -2475,130 +3189,34 @@ function showResultBox(boxId,reportId,label){let r=reportHistory.find(x=>x.id===
 
 
 function buildReportCSSPrint(){
-  return `:root{--color-background-primary:#ffffff;--color-background-secondary:#f5f5f7;--color-background-info:#EEF4FF;--color-text-primary:#111111;--color-text-secondary:#555555;--color-text-info:#1a4fa0;--color-border-secondary:#cccccc;--color-border-tertiary:#e0e0e0;--border-radius-md:6px;--border-radius-lg:10px;}
+  return `:root{--ink:#111827;--muted:#667085;--line:#E5E7EB;--soft:#F8FAFC;--panel:#FFFFFF;--navy:#111B2E;--blue:#2563EB;--cyan:#06B6D4;--purple:#7C3AED;--green:#059669;--amber:#D97706;--red:#DC2626;--radius:10px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{background:#fff;color:#111;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;padding:18px 22px;font-size:12px;line-height:1.5;}
-.wrap{max-width:960px;margin:0 auto;}
-.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding:14px 18px;background:#fff;border-radius:var(--border-radius-lg);border:1.5px solid #111;}
-.title{font-size:18px;font-weight:700;color:#111;}
-.sub{font-size:11px;color:#555;margin-top:3px;}
-.qbadge{font-size:11px;padding:3px 10px;border-radius:var(--border-radius-md);background:#111;color:#fff;font-weight:600;}
-.card{background:#fff;border:0.5px solid #ddd;border-radius:var(--border-radius-lg);padding:14px 18px;margin-bottom:10px;}
-.ct{font-size:13px;font-weight:600;color:#111;margin-bottom:10px;padding-bottom:7px;border-bottom:1.5px solid #111;}
-.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:12px;}
-.mc{background:#f5f5f7;border-radius:var(--border-radius-md);padding:10px 12px;border:0.5px solid #e0e0e0;}
-.mc .lbl{font-size:10px;color:#555;margin-bottom:3px;font-weight:500;text-transform:uppercase;letter-spacing:.03em;}
-.mc .val{font-size:17px;font-weight:700;color:#111;}
-.mc .sub{font-size:10px;color:#555;margin-top:2px;}
-.rb{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;}
-.r5{background:#EAF3DE;color:#1a5c00;}
-.r4{background:#E1F5EE;color:#085041;}
-.r3{background:#EEF4FF;color:#1a4fa0;}
-.r2{background:#FFF3E0;color:#7a3b00;}
-.r1{background:#FFEBEE;color:#7a0000;}
-.msr{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid #e0e0e0;}
-.msr:last-child{border-bottom:none;}
-.ai-box{background:#f5f5f7;border-left:3px solid #534AB7;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:8px;font-size:12px;line-height:1.8;color:#111;}
-.ai-lbl{font-size:10px;font-weight:700;color:#534AB7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
-.ai-box-green{background:#f5f5f7;border-left:3px solid #1D9E75;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:8px;font-size:12px;line-height:1.8;color:#111;}
-.ai-lbl-green{font-size:10px;font-weight:700;color:#1D9E75;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
-.ai-box-amber{background:#f5f5f7;border-left:3px solid #BA7517;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:8px;font-size:12px;line-height:1.8;color:#111;}
-.ai-lbl-amber{font-size:10px;font-weight:700;color:#BA7517;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
-.rep-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid #e0e0e0;}
-.rep-row:last-child{border-bottom:none;}
-.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
-.fcard{background:#f5f5f7;border-radius:var(--border-radius-md);padding:12px 14px;border:0.5px solid #e0e0e0;}
-.fcard-lbl{font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px;}
-.fcard-val{font-size:18px;font-weight:700;color:#111;}
-.fcard-sub{font-size:10px;color:#555;margin-top:2px;}
-.progress-bar{height:6px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:5px;}
-.progress-fill{height:100%;border-radius:4px;}
-.fcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px;}
-.data-table{width:100%;border-collapse:collapse;font-size:11px;}
-.data-table th{background:#f5f5f7;color:#333;padding:7px 9px;text-align:left;font-weight:600;border-bottom:1.5px solid #999;font-size:11px;}
-.data-table td{padding:7px 9px;border-bottom:0.5px solid #e0e0e0;color:#111;}
-.data-table tr:last-child td{border-bottom:none;}
-.data-table tr:nth-child(even) td{background:#fafafa;}
-.rv-section{background:#f5f5f7;border-radius:6px;padding:10px 13px;margin-bottom:7px;border:0.5px solid #e0e0e0;}
-.rv-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
-.rv-sec-title{font-size:12px;font-weight:600;color:#111;}
-.rv-sec-body{font-size:12px;color:#333;line-height:1.7;}
-.sec-analysis{background:#f5f5f7;border-left:3px solid #534AB7;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:7px;}
-.sec-growth{background:#f5f5f7;border-left:3px solid #1D9E75;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:7px;}
-.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:20px;}
-.sig-line{border-top:1px solid #999;padding-top:5px;font-size:11px;color:#555;}
-.hrf{display:inline-block;font-size:11px;padding:2px 7px;border-radius:20px;background:#FFF3E0;color:#7a3b00;margin-left:4px;}
-.hr-box{background:#FFF3E0;border-left:3px solid #BA7517;border-radius:0 6px 6px 0;padding:9px 13px;margin-bottom:9px;font-size:12px;color:#7a3b00;}
-.notes-box{background:#EEF4FF;border-left:3px solid #3B82F6;border-radius:0 6px 6px 0;padding:9px 13px;margin-bottom:9px;}
-.footer{text-align:center;font-size:10px;color:#888;margin-top:18px;padding-top:10px;border-top:1px solid #ddd;}
-.dr,.da,.dg{height:3px;border-radius:2px;margin-top:5px;}
-.dr{background:#FFCDD2;}.da{background:#FFE0B2;}.dg{background:#C8E6C9;}
-@media print{
-  html,body{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:8px;}
-}
-
-.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:2px solid #e5e7eb;}
-.kpi-cell{padding:10px 14px;border-right:1px solid #e5e7eb;}
-.kpi-cell:last-child{border-right:none;}
-.kv{font-size:18px;font-weight:800;color:#1a1a1a;line-height:1.1;}
-.kl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;margin-bottom:3px;}
-.ks{font-size:9px;color:#6b7280;margin-top:2px;}
-.section{padding:11px 18px;border-bottom:1px solid #e5e7eb;margin-bottom:2px;}@media print{.section{padding:9px 14px;}.sec-title{margin-bottom:8px;}}
-.section.no-break{page-break-inside:avoid;break-inside:avoid;}.section.keep-with-content{page-break-after:avoid;break-after:avoid;}.sec-title{page-break-after:avoid;break-after:avoid;}.intel-card,.fc-card,.rep-card,.ai-card{page-break-inside:avoid;break-inside:avoid;}.intel-grid,.fc-grid,.rep-grid,.ai-grid{page-break-inside:auto;}.proj-card{page-break-inside:avoid;break-inside:avoid;}.kpi-strip{page-break-inside:avoid;break-inside:avoid;page-break-after:avoid;}
-.sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#374151;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.sec-title::after{content:'';flex:1;height:1px;background:#e5e7eb;}
-.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.intel-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;padding:10px 12px;}
-.intel-card.pitch{grid-column:1/-1;background:#EEF2FF;border-color:#c7d2fe;}
-.ic-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
-.ic-body{font-size:11px;color:#374151;line-height:1.7;}
-.ic-item{display:flex;gap:7px;padding:5px 0;border-bottom:1px solid #e5e7eb;}
-.ic-item:last-child{border-bottom:none;}.ic-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.data-tbl{width:100%;border-collapse:collapse;font-size:11px;}
-.data-tbl th{background:#f5f5f7;color:#374151;padding:6px 9px;text-align:left;font-weight:600;font-size:10px;border-bottom:1.5px solid #d1d5db;}
-.data-tbl th.r,.data-tbl td.r{text-align:right;}
-.data-tbl td{padding:5px 9px;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
-.data-tbl tr:last-child td{border-bottom:none;}.data-tbl tr:nth-child(even) td{background:#fafafa;}
-.data-tbl tr{page-break-inside:avoid;break-inside:avoid;}thead{display:table-header-group;}
-.evt-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-top:4px;}
-.evt-tbl th{background:#f5f5f7;color:#374151;padding:8px 12px;text-align:left;font-weight:600;font-size:10px;border-bottom:1.5px solid #d1d5db;}
-.evt-tbl td{padding:9px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top;line-height:1.5;}
-.evt-tbl td:first-child{white-space:nowrap;font-weight:600;width:110px;}
-.evt-tbl td:nth-child(2){font-weight:600;color:#1f2937;min-width:200px;}
-.evt-tbl td:nth-child(3){color:#6b7280;}
-.evt-tbl tr:last-child td{border-bottom:none;}
-.evt-tbl tr:nth-child(even) td{background:#fafafa;}
-.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.proj-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;padding:11px 14px;}
-.proj-card.this-week{background:#FFFBEB;border-color:#FDE68A;}
-.proj-card.last-week{background:#F0F9FF;border-color:#BAE6FD;}
-.proj-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-.proj-list{margin:0;padding-left:18px;font-size:11px;color:#374151;line-height:1.7;}
-.proj-list li{margin-bottom:4px;}
-.proj-list li.empty{color:#9ca3af;font-style:italic;list-style:none;padding-left:0;margin-left:-12px;}
-.bar{width:70px;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;}
-.bar-fill{height:100%;border-radius:3px;}
-.ai-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
-.ai-card{border-radius:7px;padding:11px 13px;page-break-inside:avoid;break-inside:avoid;}
-.ai-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.ai-body{font-size:11px;color:#374151;line-height:1.75;}
-.fc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.fc-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;padding:10px 13px;}
-.fc-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;margin-bottom:4px;}
-.fc-val{font-size:18px;font-weight:800;color:#1a1a1a;}.fc-sub{font-size:9px;color:#6b7280;margin-top:2px;}
-.fc-bar{height:4px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:6px;}.fc-fill{height:100%;border-radius:3px;}
-.rep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
-.rep-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;padding:9px 10px;display:flex;align-items:flex-start;gap:8px;}
-.rep-card.gold{background:#FFFBEB;border-color:#fcd34d;}.rep-card.silver{background:#f8fafc;border-color:#cbd5e1;}.rep-card.bronze{background:#fff7ed;border-color:#fed7aa;}
-.rep-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
-.rep-info{flex:1;min-width:0;}.rep-medal{font-size:13px;line-height:1;}
-.rep-name{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rep-stats{font-size:9px;color:#6b7280;margin-top:1px;}.rep-rev{font-size:13px;font-weight:800;color:#1a1a1a;margin-top:2px;}.rep-pct{font-size:9px;color:#6b7280;}
-.report-header{background:linear-gradient(135deg,#0f1729 0%,#1a2744 60%,#0d3060 100%);color:white;padding:18px 24px 16px;display:flex;align-items:center;justify-content:space-between;}
-.rh-left{display:flex;align-items:center;gap:12px;}.rh-coname{font-size:15px;font-weight:700;}.rh-cosub{font-size:9px;opacity:.55;}
-.rh-right{text-align:right;}.rh-type{font-size:9px;opacity:.55;text-transform:uppercase;}.rh-title{font-size:20px;font-weight:800;margin-top:2px;}.rh-date{font-size:10px;opacity:.6;margin-top:2px;}
-.report-footer{padding:9px 20px;display:flex;justify-content:space-between;font-size:9px;color:#9ca3af;background:#f9fafb;}
-@media print{@page{margin:.5cm .5cm .5cm .5cm;size:letter;}body{orphans:3;widows:3;}.page-break-after{page-break-after:always !important;break-after:always !important;}.section.intel-section{page-break-before:always;break-before:always;}.section{page-break-inside:auto;break-inside:auto;}.section.no-break{page-break-inside:avoid;break-inside:avoid;}.intel-grid{display:grid !important;grid-template-columns:1fr 1fr !important;}.fc-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;}.rep-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;}.proj-grid{display:grid !important;grid-template-columns:1fr 1fr !important;}.evt-tbl{page-break-inside:auto;}.evt-tbl tr{page-break-inside:avoid;}.data-tbl{page-break-inside:auto;}.data-tbl tr{page-break-inside:avoid;}}`;
+html,body{background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;padding:18px 22px;font-size:11.5px;line-height:1.45;}
+.wrap{max-width:980px;margin:0 auto;background:#fff;}
+.top-bar,.rpt-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px;padding:18px 20px;border-radius:14px;background:linear-gradient(135deg,#111B2E 0%,#17284B 58%,#0E5663 100%);color:#fff;box-shadow:0 12px 28px rgba(17,24,39,.12);}
+.title,.rpt-title{font-size:22px;font-weight:900;letter-spacing:-.03em;color:#fff;}
+.sub,.rpt-cosub,.rpt-date{font-size:10.5px;color:rgba(255,255,255,.72);margin-top:3px;}
+.qbadge{font-size:11px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.13);color:#fff;font-weight:800;border:1px solid rgba(255,255,255,.18);}
+.rpt-brand{display:flex;align-items:center;gap:11px;}.rpt-logo{width:34px;height:34px;object-fit:contain;}.rpt-co{font-size:16px;font-weight:900;color:#fff;}.rpt-type{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.64);text-align:right;font-weight:800}.rpt-right{text-align:right;}.rpt-footer,.footer{display:flex;justify-content:space-between;gap:20px;font-size:9.5px;color:#98A2B3;margin-top:14px;padding:10px 12px;border-top:1px solid var(--line);background:#FAFAFB;}
+.card,.section{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px;page-break-inside:auto;break-inside:auto;}
+.ct,.sec-title{font-size:10px;font-weight:900;color:#344054;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #EEF2F6;padding-bottom:8px;}
+.sec-title::after{content:'';height:1px;background:#EEF2F6;flex:1;}
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px;page-break-inside:avoid;break-inside:avoid;}
+.kpi-cell,.mc,.fcard,.fc-card{background:linear-gradient(180deg,#fff,#F8FAFC);border:1px solid #E6EAF0;border-radius:12px;padding:11px 12px;page-break-inside:avoid;break-inside:avoid;box-shadow:0 6px 14px rgba(15,23,42,.04);}
+.kl,.mc .lbl,.fcard-lbl,.fc-label{font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#667085;margin-bottom:5px;}
+.kv,.mc .val,.fcard-val,.fc-val{font-size:18px;font-weight:950;color:#111827;line-height:1.05;letter-spacing:-.025em;}
+.ks,.mc .sub,.fcard-sub,.fc-sub{font-size:9.2px;color:#667085;margin-top:4px;}
+.mgrid,.fcgrid,.fc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-bottom:12px;}
+.fc-grid{grid-template-columns:repeat(3,1fr);}
+.fc-bar,.progress-bar{height:6px;background:#EEF2F6;border-radius:999px;overflow:hidden;margin-top:8px;}.fc-fill,.progress-fill{height:100%;border-radius:999px;}
+.rep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}.rep-card{border:1px solid #E6EAF0;border-radius:12px;background:#fff;padding:10px;display:flex;gap:9px;align-items:flex-start;page-break-inside:avoid;break-inside:avoid;box-shadow:0 6px 14px rgba(15,23,42,.035);}.rep-card.gold{border-color:#FDE68A;background:#FFFBEB;}.rep-card.silver{border-color:#E5E7EB;background:#F9FAFB;}.rep-card.bronze{border-color:#FED7AA;background:#FFF7ED;}.rep-av,.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0;object-fit:cover;}.rep-medal{font-size:10px;color:#667085;font-weight:800}.rep-name{font-size:11.5px;font-weight:900;color:#111827;}.rep-stats,.rep-pct{font-size:9.5px;color:#667085;}.rep-rev{font-size:16px;font-weight:950;color:#111827;margin-top:4px;}
+.data-tbl,.data-table,.evt-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:10.4px;border:1px solid #E6EAF0;border-radius:10px;overflow:hidden;}.data-tbl th,.data-table th,.evt-tbl th{background:#F2F4F7;color:#475467;padding:7px 8px;text-align:left;font-weight:900;font-size:9px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #D0D5DD;}.data-tbl td,.data-table td,.evt-tbl td{padding:6px 8px;border-bottom:1px solid #EEF2F6;vertical-align:middle;}.data-tbl tr:nth-child(even) td,.data-table tr:nth-child(even) td,.evt-tbl tr:nth-child(even) td{background:#FAFAFB;}.data-tbl tr:last-child td,.data-table tr:last-child td,.evt-tbl tr:last-child td{border-bottom:none}.data-tbl th.r,.data-tbl td.r{text-align:right}.bar{width:78px;height:6px;background:#EEF2F6;border-radius:999px;overflow:hidden;display:inline-block;}.bar-fill{height:100%;border-radius:999px;}
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}.ai-card,.ai-box,.ai-box-green,.ai-box-amber{border-radius:12px;padding:12px 13px;font-size:10.6px;line-height:1.6;border:1px solid #E6EAF0;background:#F8FAFC;page-break-inside:avoid;break-inside:avoid;}.ai-card:nth-child(1),.ai-box{border-left:4px solid var(--blue);}.ai-card:nth-child(2),.ai-box-green{border-left:4px solid var(--green);}.ai-card:nth-child(3),.ai-box-amber{border-left:4px solid var(--amber);}.ai-label,.ai-lbl,.ai-lbl-green,.ai-lbl-amber{font-size:8.8px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;color:#475467}.ai-body{font-size:10.6px;color:#344054;line-height:1.65;}
+.intel-grid,.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}.intel-card,.proj-card{border:1px solid #E6EAF0;border-radius:12px;background:#fff;padding:11px 13px;page-break-inside:avoid;break-inside:avoid;}.intel-card.pitch,.proj-card.this-week{grid-column:1/-1;background:#EEF4FF;border-color:#C7D2FE}.ic-label,.proj-label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;color:#475467}.ic-body,.proj-list{font-size:10.5px;color:#344054;line-height:1.65}.proj-list{padding-left:18px;}
+.rv-section{background:#F8FAFC;border:1px solid #E6EAF0;border-radius:10px;padding:10px 12px;margin-bottom:8px;}.rv-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}.rv-sec-title{font-size:11px;font-weight:800;color:#111827}.rv-sec-body{font-size:10.8px;color:#344054;line-height:1.65}.rb{display:inline-block;font-size:9px;font-weight:800;padding:2px 8px;border-radius:999px}.r5{background:#ECFDF3;color:#027A48}.r4{background:#E1F5EE;color:#067647}.r3{background:#EFF8FF;color:#175CD3}.r2{background:#FFFAEB;color:#B54708}.r1{background:#FEF3F2;color:#B42318}.hrf{font-size:9px;padding:2px 7px;border-radius:999px;background:#FFFAEB;color:#B54708;margin-left:4px}.hr-box{background:#FFFAEB;border-left:4px solid var(--amber);border-radius:8px;padding:9px 11px;margin-bottom:9px;font-size:10.8px;color:#7A2E0E}.notes-box{background:#EFF8FF;border-left:4px solid #3B82F6;border-radius:8px;padding:9px 11px;margin-bottom:9px;}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:20px}.sig-line{border-top:1px solid #98A2B3;padding-top:5px;font-size:10px;color:#667085}.dr,.da,.dg{height:4px;border-radius:999px;margin-top:6px}.dr{background:#FECACA}.da{background:#FED7AA}.dg{background:#BBF7D0}thead{display:table-header-group}tr,.rep-card,.intel-card,.fc-card,.fcard,.ai-card{page-break-inside:avoid;break-inside:avoid}.page-break-after{page-break-after:always;break-after:page}.keep-together{page-break-inside:avoid;break-inside:avoid}
+@media print{html,body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:8px;}@page{margin:.65cm;size:letter}.wrap{max-width:none}.card,.section{margin-bottom:9px}.rep-grid{gap:7px}.kpi-strip{gap:6px}}
+`;
 }
 
 function buildReportPrint(title,sub,badgeText,bHtml){
@@ -3103,23 +3721,7 @@ function renderHRSummaryByRep(){let yr=getYr(),q=getQ();let el=document.getEleme
 function saveCM(){let rep=document.getElementById('cmRep').value,wk=document.getElementById('cmWeek').value,amt=parseFloat(document.getElementById('cmAmt').value)||0,fault=(document.getElementById('cmFault').value||'').toLowerCase(),custId=document.getElementById('cmCustId').value.trim(),custName=document.getElementById('cmCustName').value.trim(),soNum=document.getElementById('cmSO').value.trim(),invNum=document.getElementById('cmInv').value.trim(),desc=document.getElementById('cmDesc').value.trim();if(!amt)return;let parts=wk.split('_');S.cms.push({id:Date.now(),rep,weekKey:wk,yr:parts[0],q:parts[1],amount:amt,fault,custId,custName,soNum,invNum,desc,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});['cmAmt','cmCustId','cmCustName','cmSO','cmInv','cmDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('cmFault').value='screen_print';updateFN();let m=document.getElementById('cmMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);renderCML();}
 function deleteCM(id){S.cms=S.cms.filter(c=>c.id!==id);renderCML();markDirty();}
 function faultBadge(fault){if(fault==='rep')return'<span class="fault-rep">Rep</span>';if(fault==='customer')return'<span class="fault-cust">Customer</span>';return'<span class="fault-other">'+(FL[fault]||fault)+'</span>';}
-function renderCML(){let fr=document.getElementById('cmFR')?.value||'all',ff=document.getElementById('cmFF')?.value||'all',fyr=document.getElementById('cmFYr')?.value||'all',fq=document.getElementById('cmFQ')?.value||'all';let f=S.cms.filter(c=>(fr==='all'||c.rep===fr)&&(ff==='all'||c.fault===ff)&&(fyr==='all'||c.yr==fyr)&&(fq==='all'||c.q===fq));let tot=f.reduce((s,c)=>s+c.amount,0),rtRep=f.filter(c=>c.fault==='rep').reduce((s,c)=>s+c.amount,0),rtCust=f.filter(c=>c.fault==='customer').reduce((s,c)=>s+c.amount,0);
-  let avg=f.length?tot/f.length:0;
-  let setTxt=(id,txt)=>{let node=document.getElementById(id);if(node)node.textContent=txt;};
-  setTxt('cmKpiTotal','$'+tot.toFixed(2));
-  setTxt('cmKpiCount',f.length+' memo'+(f.length===1?'':'s')+' in current view');
-  setTxt('cmKpiRep','$'+rtRep.toFixed(2));
-  setTxt('cmKpiRepSub',tot?Math.round((rtRep/tot)*100)+'% of filtered dollars':'0% of filtered dollars');
-  setTxt('cmKpiCust','$'+rtCust.toFixed(2));
-  setTxt('cmKpiCustSub',tot?Math.round((rtCust/tot)*100)+'% of filtered dollars':'0% of filtered dollars');
-  setTxt('cmKpiAvg','$'+avg.toFixed(2));
-  let qro=document.getElementById('cmQualityReadout');
-  if(qro){
-    let topFault='None';
-    if(f.length){let buckets={};f.forEach(c=>{buckets[c.fault]=(buckets[c.fault]||0)+c.amount;});let top=Object.entries(buckets).sort((a,b)=>b[1]-a[1])[0];topFault=(FL[top[0]]||top[0])+' ($'+top[1].toFixed(2)+')';}
-    qro.innerHTML=f.length?'<strong>'+f.length+'</strong> memos totaling <strong>$'+tot.toFixed(2)+'</strong>. Top dollar driver: <strong>'+topFault+'</strong>. Rep-fault dollars are <strong>$'+rtRep.toFixed(2)+'</strong>; customer-fault dollars are <strong>$'+rtCust.toFixed(2)+'</strong>.':'No credit memos in the current view.';
-  }
-  document.getElementById('cmSum').innerHTML=f.length?'<div class="chip"><div class="cv">$'+tot.toFixed(2)+'</div><div class="cl">Total ('+f.length+')</div></div>'+(rtRep>0?'<div class="chip" style="border-left:3px solid #E24B4A;"><div class="cv" style="color:#E24B4A;">$'+rtRep.toFixed(2)+'</div><div class="cl">Rep fault</div></div>':'')+(rtCust>0?'<div class="chip" style="border-left:3px solid #D4537E;"><div class="cv" style="color:#D4537E;">$'+rtCust.toFixed(2)+'</div><div class="cl">Customer fault</div></div>':''):'';let el=document.getElementById('cmLog');if(!f.length){el.innerHTML='<div class="profile-empty">No credit memos found for this view.</div>';return;}el.innerHTML=f.slice().reverse().map(c=>'<div class="log-row" id="cm_row_'+c.id+'"><div class="editable-row"><div style="flex:1;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px;"><span style="font-size:12px;font-weight:500;">'+c.rep+'</span>'+faultBadge(c.fault)+'<span style="font-size:12px;font-weight:500;color:'+(c.fault==='rep'?'#E24B4A':c.fault==='customer'?'#D4537E':'var(--color-text-primary)')+';">$'+c.amount.toFixed(2)+'</span><span style="font-size:11px;color:var(--color-text-secondary);">'+c.weekKey.replace(/_/g,' ')+'</span></div><div class="cm-detail">'+(c.custId?'<span><strong>Cust ID:</strong> '+c.custId+'</span>':'')+(c.custName?'<span><strong>Customer:</strong> '+c.custName+'</span>':'')+(c.soNum?'<span><strong>SO:</strong> '+c.soNum+'</span>':'')+(c.invNum?'<span><strong>Invoice:</strong> '+c.invNum+'</span>':'')+(c.desc?'<span>'+c.desc+'</span>':'')+'</div></div><div style="display:flex;gap:5px;flex-shrink:0;">'+pencil('editCM('+c.id+')')+'<button class="rbtn" onclick="deleteCM('+c.id+')" style="font-size:10px;padding:2px 5px;">✕</button></div></div><div id="cm_edit_'+c.id+'"></div></div>').join('');}
+function renderCML(){let fr=document.getElementById('cmFR')?.value||'all',ff=document.getElementById('cmFF')?.value||'all',fyr=document.getElementById('cmFYr')?.value||'all',fq=document.getElementById('cmFQ')?.value||'all';let f=S.cms.filter(c=>(fr==='all'||c.rep===fr)&&(ff==='all'||c.fault===ff)&&(fyr==='all'||c.yr==fyr)&&(fq==='all'||c.q===fq));let tot=f.reduce((s,c)=>s+c.amount,0),rtRep=f.filter(c=>c.fault==='rep').reduce((s,c)=>s+c.amount,0),rtCust=f.filter(c=>c.fault==='customer').reduce((s,c)=>s+c.amount,0);document.getElementById('cmSum').innerHTML=f.length?'<div class="chip"><div class="cv">$'+tot.toFixed(2)+'</div><div class="cl">Total ('+f.length+')</div></div>'+(rtRep>0?'<div class="chip" style="border-left:3px solid #E24B4A;"><div class="cv" style="color:#E24B4A;">$'+rtRep.toFixed(2)+'</div><div class="cl">Rep fault</div></div>':'')+(rtCust>0?'<div class="chip" style="border-left:3px solid #D4537E;"><div class="cv" style="color:#D4537E;">$'+rtCust.toFixed(2)+'</div><div class="cl">Customer fault</div></div>':''):'';let el=document.getElementById('cmLog');if(!f.length){el.innerHTML='<p style="font-size:12px;color:var(--color-text-secondary);padding:.4rem 0;">No credit memos found.</p>';return;}el.innerHTML=f.slice().reverse().map(c=>'<div class="log-row" id="cm_row_'+c.id+'"><div class="editable-row"><div style="flex:1;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px;"><span style="font-size:12px;font-weight:500;">'+c.rep+'</span>'+faultBadge(c.fault)+'<span style="font-size:12px;font-weight:500;color:'+(c.fault==='rep'?'#E24B4A':c.fault==='customer'?'#D4537E':'var(--color-text-primary)')+';">$'+c.amount.toFixed(2)+'</span><span style="font-size:11px;color:var(--color-text-secondary);">'+c.weekKey.replace(/_/g,' ')+'</span></div><div class="cm-detail">'+(c.custId?'<span><strong>Cust ID:</strong> '+c.custId+'</span>':'')+(c.custName?'<span><strong>Customer:</strong> '+c.custName+'</span>':'')+(c.soNum?'<span><strong>SO:</strong> '+c.soNum+'</span>':'')+(c.invNum?'<span><strong>Invoice:</strong> '+c.invNum+'</span>':'')+(c.desc?'<span>'+c.desc+'</span>':'')+'</div></div><div style="display:flex;gap:5px;flex-shrink:0;">'+pencil('editCM('+c.id+')')+'<button class="rbtn" onclick="deleteCM('+c.id+')" style="font-size:10px;padding:2px 5px;">✕</button></div></div><div id="cm_edit_'+c.id+'"></div></div>').join('');}
 function editCM(id){let c=S.cms.find(x=>x.id===id);if(!c)return;document.querySelectorAll('.inline-edit-box').forEach(el=>el.remove());let box=document.getElementById('cm_edit_'+id);if(!box)return;let faultOpts=Object.entries(FL).map(([k,l])=>'<option value="'+k+'"'+(c.fault===k?' selected':'')+'>'+l+'</option>').join('');let weekOpts=gwq(parseInt(c.yr),c.q).map(w=>'<option value="'+w.key+'"'+(c.weekKey===w.key?' selected':'')+'>'+w.label+'</option>').join('');box.innerHTML='<div class="inline-edit-box"><div class="ig"><label>Rep</label><select id="cmie_rep_'+id+'">'+S.reps.map(r=>'<option'+(c.rep===r.name?' selected':'')+'>'+r.name+'</option>').join('')+'</select></div><div class="ig"><label>Week</label><select id="cmie_wk_'+id+'">'+weekOpts+'</select></div><div class="ig"><label>Amount ($)</label><input id="cmie_amt_'+id+'" type="number" value="'+c.amount+'" min="0" step="0.01" style="width:80px;"></div><div class="ig"><label>Fault</label><select id="cmie_flt_'+id+'">'+faultOpts+'</select></div><div class="ig"><label>Customer ID</label><input id="cmie_cid_'+id+'" type="text" value="'+(c.custId||'')+'" style="width:90px;"></div><div class="ig"><label>Customer name</label><input id="cmie_cname_'+id+'" type="text" value="'+(c.custName||'')+'" style="min-width:130px;"></div><div class="ig"><label>Sales order #</label><input id="cmie_so_'+id+'" type="text" value="'+(c.soNum||'')+'" style="width:110px;"></div><div class="ig"><label>Invoice #</label><input id="cmie_inv_'+id+'" type="text" value="'+(c.invNum||'')+'" style="width:110px;"></div><div class="ig" style="flex:1;min-width:200px;"><label>Description</label><textarea id="cmie_desc_'+id+'">'+(c.desc||'')+'</textarea></div><div style="display:flex;gap:6px;width:100%;margin-top:4px;"><button class="ie-save" onclick="saveCMEdit('+id+')">✓ Save</button><button class="ie-cancel" onclick="document.getElementById(\'cm_edit_'+id+'\').innerHTML=\'\'">Cancel</button></div></div>';}
 function saveCMEdit(id){let c=S.cms.find(x=>x.id===id);if(!c)return;c.rep=document.getElementById('cmie_rep_'+id)?.value||c.rep;c.weekKey=document.getElementById('cmie_wk_'+id)?.value||c.weekKey;c.amount=parseFloat(document.getElementById('cmie_amt_'+id)?.value)||c.amount;c.fault=(document.getElementById('cmie_flt_'+id)?.value||c.fault).toLowerCase();c.custId=document.getElementById('cmie_cid_'+id)?.value||'';c.custName=document.getElementById('cmie_cname_'+id)?.value||'';c.soNum=document.getElementById('cmie_so_'+id)?.value||'';c.invNum=document.getElementById('cmie_inv_'+id)?.value||'';c.desc=document.getElementById('cmie_desc_'+id)?.value||'';let parts=c.weekKey.split('_');c.yr=parts[0];c.q=parts[1];renderCML();}
 
@@ -7874,7 +8476,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v267</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v278</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -13284,6 +13886,94 @@ function toggleWidgetSize(wid){
   cfg.grid[wid]={w:(g.w>=8?4:8),h:g.h};saveDashWidgets(cfg);renderDashWidgets();
 }
 
+
+
+/* ===== TCP v273 Meeting Report PDF Print Overhaul =====
+   Purpose: rebuild the printable meeting packet styling so it is brand-aligned,
+   readable, and print friendly without changing the meeting-report data logic. */
+function buildReportCSSPrint(){
+  return `:root{--tcp-navy:#111B2E;--tcp-blue:#2563EB;--tcp-cyan:#06B6D4;--tcp-orange:#F97316;--tcp-gold:#F59E0B;--tcp-green:#059669;--tcp-red:#DC2626;--tcp-purple:#6D5DFB;--ink:#111827;--muted:#667085;--soft:#F8FAFC;--line:#E4E7EC;--line2:#EAECF0;--panel:#FFFFFF;--shade:#F2F4F7;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#E9EDF5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:10.6px;line-height:1.34;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.report-shell{width:8.5in;max-width:100%;margin:0 auto;background:#fff;box-shadow:0 18px 55px rgba(15,23,42,.12);min-height:100vh;}
+.report-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:18px 22px 16px;background:linear-gradient(135deg,#0E172A 0%,#17284B 58%,#0E5663 100%);color:#fff;border-bottom:4px solid var(--tcp-orange);}
+.rh-left{display:flex;align-items:center;gap:12px;min-width:0}.rh-left img{width:36px;height:36px;object-fit:contain}.rh-coname{font-size:16px;font-weight:900;letter-spacing:-.02em}.rh-cosub{font-size:9px;color:rgba(255,255,255,.68);margin-top:2px}.rh-right{text-align:right;min-width:190px}.rh-type{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;color:#A7F3D0}.rh-title{font-size:20px;font-weight:950;letter-spacing:-.04em;line-height:1.05;margin-top:3px}.rh-date{font-size:9.5px;color:rgba(255,255,255,.70);margin-top:5px}
+.report-body{padding:14px 20px 16px;background:#fff;}
+.report-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 20px 10px;border-top:1px solid var(--line);font-size:8.5px;color:#98A2B3;background:#FCFCFD;}
+.kpi-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:0 0 10px;page-break-inside:avoid;break-inside:avoid;}
+.kpi-cell,.fc-card,.fcard{background:linear-gradient(180deg,#fff 0%,#F8FAFC 100%);border:1px solid #E6EAF0;border-radius:10px;padding:9px 10px;box-shadow:0 4px 10px rgba(15,23,42,.035);page-break-inside:avoid;break-inside:avoid;}
+.kl,.fc-label,.fcard-lbl{font-size:7.8px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;color:#667085;margin-bottom:4px;white-space:nowrap}.kv,.fc-val,.fcard-val{font-size:17px;font-weight:950;color:#111827;line-height:1.05;letter-spacing:-.035em}.ks,.fc-sub,.fcard-sub{font-size:8.4px;color:#667085;margin-top:4px}.fc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.fc-bar,.bar{height:5px;background:#EEF2F6;border-radius:999px;overflow:hidden;margin-top:7px}.fc-fill,.bar-fill{height:100%;border-radius:999px}.bar{width:58px;display:inline-block;vertical-align:middle;margin:0;}
+.section{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 10px;page-break-inside:auto;break-inside:auto;}.section.compact{padding:9px 10px}.keep-together,.fc-card,.rep-card,.ai-card,.intel-card,.fcard{page-break-inside:avoid;break-inside:avoid;}.page-break-after{page-break-after:auto!important;break-after:auto!important;}
+.sec-title{font-size:9px;font-weight:950;color:#344054;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:7px;padding-bottom:7px;border-bottom:1px solid #EEF2F6;}.sec-title::after{content:'';height:1px;background:#F2F4F7;flex:1;}
+.rep-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.rep-card{border:1px solid #E6EAF0;border-radius:11px;background:#fff;padding:8px 9px;display:flex;gap:8px;align-items:flex-start;min-height:78px;box-shadow:0 3px 8px rgba(15,23,42,.03)}.rep-card.gold{border-color:#FDE68A;background:#FFFBEB}.rep-card.silver{border-color:#E5E7EB;background:#F9FAFB}.rep-card.bronze{border-color:#FED7AA;background:#FFF7ED}.rep-av,.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:950;flex-shrink:0;object-fit:cover}.rep-medal{font-size:9px;color:#667085;font-weight:900}.rep-name{font-size:10px;font-weight:950;color:#111827;line-height:1.1}.rep-stats,.rep-pct{font-size:8.2px;color:#667085;line-height:1.25}.rep-rev{font-size:14px;font-weight:950;color:#111827;margin-top:3px;letter-spacing:-.03em}
+.data-tbl,.data-table,.evt-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:9.2px;border:1px solid #E6EAF0;border-radius:9px;overflow:hidden;table-layout:fixed}.data-tbl th,.data-table th,.evt-tbl th{background:#F2F4F7;color:#475467;padding:5px 6px;text-align:left;font-weight:950;font-size:7.8px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #D0D5DD}.data-tbl td,.data-table td,.evt-tbl td{padding:4.7px 6px;border-bottom:1px solid #EEF2F6;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.data-tbl tr:nth-child(even) td,.data-table tr:nth-child(even) td,.evt-tbl tr:nth-child(even) td{background:#FAFAFB}.data-tbl tr:last-child td,.data-table tr:last-child td,.evt-tbl tr:last-child td{border-bottom:none}.data-tbl th:nth-child(1),.data-tbl td:nth-child(1){width:23%}.data-tbl th:last-child,.data-tbl td:last-child{width:11%}.r{text-align:right!important}.ai-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ai-card{border-radius:11px;border:1px solid #E6EAF0;padding:10px;min-height:72px}.ai-label{font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.ai-body{font-size:9.3px;color:#344054;line-height:1.42}.intel-grid,.focus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.intel-card{border-radius:11px;border:1px solid #E6EAF0;background:#fff;padding:10px 11px;box-shadow:0 3px 8px rgba(15,23,42,.03)}.ic-title{font-size:10px;font-weight:950;color:#111827;margin-bottom:4px}.ic-body{font-size:9.5px;color:#344054;line-height:1.45}.pill{display:inline-block;font-size:7.5px;font-weight:900;padding:2px 6px;border-radius:999px;margin-left:4px;text-transform:uppercase;letter-spacing:.04em}.quote-box{border-left:3px solid var(--tcp-purple);background:#F4F3FF;border-radius:0 8px 8px 0;padding:7px 9px;margin-top:7px;font-size:9px;color:#344054;font-style:italic}.pitch{background:#EEF2FF!important;border-color:#C7D2FE!important}.no-print{display:inline-block}.print-note{display:none}.force-page{page-break-before:always!important;break-before:page!important;}.avoid-break{break-inside:avoid;page-break-inside:avoid;}
+@page{size:letter;margin:.45in .42in;}@media print{html,body{background:#fff!important;padding:0!important}.report-shell{width:auto;max-width:none;margin:0;box-shadow:none;min-height:0}.report-body{padding:12px 0 0}.report-header{margin:0 0 12px;padding:15px 17px 13px;border-radius:0}.report-footer{padding:8px 0 0;margin-top:8px}.no-print{display:none!important}.print-note{display:block}.section{margin-bottom:9px}.kpi-strip{gap:6px}.rep-grid{gap:6px}.rep-card{min-height:72px;padding:7px 8px}.data-tbl td,.data-table td,.evt-tbl td{padding-top:4.3px;padding-bottom:4.3px}thead{display:table-header-group}tr{page-break-inside:avoid;break-inside:avoid}.force-page{page-break-before:always!important;break-before:page!important;}.section:has(.rep-grid){break-inside:avoid;page-break-inside:avoid}}`;
+}
+
+function buildReportPrint(title,sub,badgeText,bHtml){
+  var ds=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  var wk=(String(sub||'').split('·')[0]||'').trim();
+  var cleanHtml=String(bHtml||'')
+    .replace(/page-break-after/g,'')
+    .replace('&#128222; Call coverage','<span class="print-note"></span>&#128222; Call coverage')
+    .replace('<div class="section"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128222; Call coverage','<div class="section force-page"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128222; Call coverage')
+    .replace('<div class="section "><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128222; Call coverage','<div class="section force-page"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128222; Call coverage');
+  var logoSrc='data:image/png;base64,'+(typeof TCP_LOGO_B64!=='undefined'?TCP_LOGO_B64:'');
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>'+String(title||'Weekly Sales Meeting').replace(/</g,'&lt;')+'</title><style>'+buildReportCSSPrint()+'</style></head><body>'+
+    '<div class="report-shell">'+
+      '<div class="report-header">'+
+        '<div class="rh-left"><img src="'+logoSrc+'" alt="TCP"><div><div class="rh-coname">Triple Crown Products</div><div class="rh-cosub">triplecrownproducts.com &middot; Mukwonago, WI</div></div></div>'+
+        '<div class="rh-right"><div class="rh-type">Weekly Sales Meeting</div><div class="rh-title">'+String(wk||badgeText||'Q2 2026').replace(/</g,'&lt;')+'</div><div class="rh-date">'+ds+'</div><button class="no-print" onclick="window.print()" style="margin-top:8px;padding:6px 12px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:white;border-radius:999px;font-size:10px;font-weight:800;cursor:pointer;">Save PDF</button></div>'+
+      '</div>'+
+      '<div class="report-body">'+cleanHtml+'</div>'+ 
+      '<div class="report-footer"><span>Triple Crown Products &middot; Confidential</span><span>'+ds+'</span></div>'+ 
+    '</div></body></html>';
+}
+
+
+// ===== v278 Reports Builder helpers (safe wrappers around existing report functions) =====
+let _reportsSelectedType = 'brief';
+function reportsSetType(type){
+  _reportsSelectedType = type || 'brief';
+  document.querySelectorAll('.reports-v278-type-card').forEach(function(btn){
+    btn.classList.toggle('active', btn.getAttribute('data-report-type') === _reportsSelectedType);
+  });
+  var pill = document.getElementById('reportsTypePill');
+  var help = document.getElementById('reportsGenerateHelp');
+  var btn = document.getElementById('reportsMainGenerateBtn');
+  var status = document.getElementById('reportsBuilderStatus');
+  var repBrief = document.querySelectorAll('.reports-rep-scope');
+  var repPdf = document.querySelectorAll('.reports-rep-output');
+  var cfg = {
+    brief: {label:'AI Manager Brief', help:'Create an AI manager brief for the selected rep.', btn:'🚀 Generate AI Brief', status:'AI brief selected'},
+    meeting: {label:'Weekly Meeting Packet', help:'Open the weekly sales meeting packet for the selected week/quarter.', btn:'🚀 Build Meeting Packet', status:'Meeting packet selected'},
+    rep: {label:'Rep Performance Packet', help:'Generate a PDF packet for the selected rep.', btn:'🚀 Generate Rep Packet', status:'Rep packet selected'},
+    team: {label:'Team Leadership Report', help:'Generate a full team leadership report.', btn:'🚀 Generate Team Report', status:'Team report selected'}
+  }[_reportsSelectedType] || {label:'AI Manager Brief', help:'Create an AI manager brief for the selected rep.', btn:'🚀 Generate AI Brief', status:'AI brief selected'};
+  if(pill) pill.textContent = cfg.label;
+  if(help) help.textContent = cfg.help;
+  if(btn) btn.textContent = cfg.btn;
+  if(status) status.textContent = cfg.status;
+  repBrief.forEach(function(el){ el.style.display = (_reportsSelectedType==='brief') ? '' : 'none'; });
+  repPdf.forEach(function(el){ el.style.display = (_reportsSelectedType==='rep') ? '' : 'none'; });
+  var hint = document.getElementById('reportsOutputHint');
+  if(hint) hint.textContent = _reportsSelectedType==='brief' ? 'AI brief appears here.' : 'PDF/print view opens in a new tab.';
+}
+function reportsRunSelected(){
+  try{
+    if(_reportsSelectedType === 'meeting' && typeof generateMeetingReport === 'function') return generateMeetingReport();
+    if(_reportsSelectedType === 'rep' && typeof genRepPDF === 'function') return genRepPDF();
+    if(_reportsSelectedType === 'team' && typeof genTeamPDF === 'function') return genTeamPDF();
+    if(typeof runAI === 'function') return runAI();
+  }catch(e){
+    var out=document.getElementById('aiOut');
+    if(out) out.innerHTML='<div class="aib">Report generation error: '+esc(e.message||e)+'</div>';
+    console.error('Reports builder error:',e);
+  }
+}
+window.addEventListener('load', function(){
+  setTimeout(function(){ if(document.getElementById('pg-reports')) reportsSetType(_reportsSelectedType); }, 0);
+});
 </script>
 
 
