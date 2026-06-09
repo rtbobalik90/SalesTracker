@@ -6900,7 +6900,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v241</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v242</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -11248,23 +11248,42 @@ function _tcpRenderRevenueChart(repName,yr){
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return _tcpMoney(ctx.parsed.y||0);}}}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#8F8CA2'}},y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#8F8CA2',callback:function(v){return '$'+Math.round(v/1000)+'k';}}}}}
   });
 }
+function _tcpProfileHRHtml(rep,yr,q){
+  var hrV=(S.hrViolations||[]).filter(function(v){return v&&v.rep===rep&&String(v.yr)===String(yr)&&v.q===q;});
+  var notes=(S.coachingNotes||[]).filter(function(n){return n&&n.rep===rep&&String(n.yr)===String(yr)&&n.q===q;});
+  var pts=getHRPoints(rep,yr,q);
+  var capLbl=(typeof rfrom==='function'&&typeof hrcap==='function')?rfrom(hrcap(pts)).l:'\u2014';
+  var h='<div class="profile-kpi-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px;">'
+    +'<div class="profile-kpi"><div class="profile-kpi-label">HR points</div><div class="profile-kpi-value" style="color:'+(pts>=3?'#DC2626':pts>0?'#D97706':'#059669')+';">'+pts.toFixed(1)+'</div><div class="profile-kpi-sub">Score cap: '+capLbl+'</div></div>'
+    +'<div class="profile-kpi"><div class="profile-kpi-label">Logged this quarter</div><div class="profile-kpi-value">'+(hrV.length+notes.length)+'</div><div class="profile-kpi-sub">'+hrV.length+' violation'+(hrV.length!==1?'s':'')+' &middot; '+notes.length+' note'+(notes.length!==1?'s':'')+'</div></div>'
+    +'</div>';
+  h+='<div style="font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:6px 0 4px;">HR violations</div>';
+  if(hrV.length){
+    h+='<div class="profile-log-row header"><span>Date</span><span>Type</span><span>Pts</span><span>Note</span><span></span></div>'+hrV.slice().reverse().map(function(v){return '<div class="profile-log-row"><span>'+_tcpEscape(v.date||'\u2014')+'</span><span>'+_tcpEscape((HR_CATS[v.cat]&&HR_CATS[v.cat].label)||v.cat||'\u2014')+'</span><span style="font-weight:800;color:#DC2626;">'+(v.pts!=null?v.pts:((HR_CATS[v.cat]&&HR_CATS[v.cat].pts)||'\u2014'))+'</span><span>'+_tcpEscape(v.desc||'\u2014')+'</span><span></span></div>';}).join('');
+  } else { h+='<div class="profile-empty">No HR violations this quarter.</div>'; }
+  h+='<div style="font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 4px;">Coaching notes</div>';
+  if(notes.length){
+    h+='<div class="profile-log-row header"><span>Date</span><span>Type</span><span>Note</span><span></span><span></span></div>'+notes.slice().reverse().map(function(n){return '<div class="profile-log-row"><span>'+_tcpEscape(n.date||'\u2014')+'</span><span>'+_tcpEscape((CN_TYPES[n.type])||n.type||'\u2014')+'</span><span>'+_tcpEscape(n.note||'\u2014')+'</span><span></span><span></span></div>';}).join('');
+  } else { h+='<div class="profile-empty">No coaching notes this quarter.</div>'; }
+  return h;
+}
 function _tcpRenderProfileCMsModern(ri){
   var r=S.reps[ri], el=document.getElementById('pf_cms_'+ri);if(!r||!el)return;
   var val=document.getElementById('pf_cm_qtr_'+ri)?.value||'all';
   var list=(S.cms||[]).filter(function(c){return c&&c.rep===r.name;});
-  if(val!=='all'){list=list.filter(function(c){return String(c.week||'').indexOf(val)>=0;});}
+  if(val!=='all'){list=list.filter(function(c){return String(c.weekKey||c.week||'').indexOf(val)>=0;});}
   list=list.slice().sort(function(a,b){return String(b.date||b.week||'').localeCompare(String(a.date||a.week||''));}).slice(0,8);
   if(!list.length){el.innerHTML='<div class="profile-empty">No credit memos found for this view.</div>';return;}
-  el.innerHTML='<div class="profile-log-row header"><span>Amount</span><span>Fault</span><span>Customer</span><span>Order</span><span>Week</span></div>'+list.map(function(c){return '<div class="profile-log-row"><span style="font-weight:800;color:#fff;">'+_tcpMoney(c.amount||0)+'</span><span>'+_tcpEscape(c.fault||'—')+'</span><span>'+_tcpEscape(c.customerName||c.custName||c.customer||'—')+'</span><span>'+_tcpEscape(c.so||c.SO||c.soNumber||'—')+'</span><span>'+_tcpEscape(_tcpWeekDateFromKey(c.week)||c.week||'—')+'</span></div>';}).join('');
+  el.innerHTML='<div class="profile-log-row header"><span>Amount</span><span>Fault</span><span>Customer</span><span>Order #</span><span>Week</span></div>'+list.map(function(c){return '<div class="profile-log-row"><span style="font-weight:800;color:#fff;">'+_tcpMoney(c.amount||0)+'</span><span>'+_tcpEscape(c.fault||'—')+'</span><span>'+_tcpEscape(c.customerName||c.custName||c.customer||'—')+'</span><span>'+_tcpEscape(c.soNum||c.so||c.SO||c.soNumber||'—')+'</span><span>'+_tcpEscape(_tcpWeekDateFromKey(c.weekKey||c.week)||c.weekKey||c.week||'—')+'</span></div>';}).join('');
 }
 function _tcpRenderProfileAEsModern(ri){
   var r=S.reps[ri], el=document.getElementById('pf_aes_'+ri);if(!r||!el)return;
   var val=document.getElementById('pf_ae_qtr_'+ri)?.value||'all';
   var list=(S.artErrors||[]).filter(function(a){return a&&a.rep===r.name;});
-  if(val!=='all'){list=list.filter(function(a){return String(a.week||'').indexOf(val)>=0;});}
+  if(val!=='all'){list=list.filter(function(a){return String(a.weekKey||a.week||'').indexOf(val)>=0;});}
   list=list.slice().sort(function(a,b){return String(b.date||b.week||'').localeCompare(String(a.date||a.week||''));}).slice(0,8);
   if(!list.length){el.innerHTML='<div class="profile-empty">No art errors found for this view.</div>';return;}
-  el.innerHTML='<div class="profile-log-row header"><span>Type</span><span>SO #</span><span>Description</span><span>Week</span><span></span></div>'+list.map(function(a){return '<div class="profile-log-row"><span style="font-weight:800;color:#fff;">'+_tcpEscape(a.type||'—')+'</span><span>'+_tcpEscape(a.so||a.SO||a.soNumber||'—')+'</span><span>'+_tcpEscape(a.desc||'—')+'</span><span>'+_tcpEscape(_tcpWeekDateFromKey(a.week)||a.week||'—')+'</span><span></span></div>';}).join('');
+  el.innerHTML='<div class="profile-log-row header"><span>Type</span><span>SO #</span><span>Description</span><span>Week</span><span></span></div>'+list.map(function(a){return '<div class="profile-log-row"><span style="font-weight:800;color:#fff;">'+_tcpEscape(a.type||'—')+'</span><span>'+_tcpEscape(a.so||a.SO||a.soNumber||'—')+'</span><span>'+_tcpEscape(a.desc||'—')+'</span><span>'+_tcpEscape(_tcpWeekDateFromKey(a.weekKey||a.week)||a.weekKey||a.week||'—')+'</span><span></span></div>';}).join('');
 }
 function renderProfileCMs(ri){_tcpRenderProfileCMsModern(ri);}
 function renderProfileAEs(ri){_tcpRenderProfileAEsModern(ri);}
@@ -11303,10 +11322,11 @@ function renderProfileDetail(ri){
     +'</div>'
     +'<div class="profile-layout" style="margin-top:16px;">'
       +'<div class="profile-main">'
+        +'<section class="profile-panel"><div class="profile-panel-title"><span>Pace vs goal</span><span class="profile-panel-eyebrow">'+q+' '+yr+'</span></div>'+buildPaceTrackerHTML(r.name,qt,repGoalObj(r.name,yr,q),weeks,weeksElapsed(yr,q),null)+'</section>'
         +'<section class="profile-panel"><div class="profile-panel-title"><span>Revenue trend</span><span class="profile-panel-eyebrow">'+yr+'</span></div><div class="profile-chart-box"><canvas id="profileRevenueChart"></canvas></div></section>'
         +'<section class="profile-panel"><div class="profile-panel-title"><span>Goals overview</span><span class="profile-panel-eyebrow">'+yr+'</span></div><div class="profile-goals-grid">'+goalsHtml+'</div></section>'
         +'<section class="profile-panel"><div class="profile-panel-title"><span>Quarterly sales log</span><span class="profile-panel-eyebrow">History</span></div>'+qLog+'</section>'
-        +'<div class="profile-subgrid"><section class="profile-panel"><div class="profile-panel-title"><span>Credit memos</span><select id="pf_cm_qtr_'+ri+'" onchange="renderProfileCMs('+ri+')" class="profile-compact-select"><option value="all">All quarters</option>'+QTRS.map(function(qr){return '<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>';}).join('')+'</select></div><div id="pf_cms_'+ri+'"></div></section><section class="profile-panel"><div class="profile-panel-title"><span>Art errors</span><select id="pf_ae_qtr_'+ri+'" onchange="renderProfileAEs('+ri+')" class="profile-compact-select"><option value="all">All quarters</option>'+QTRS.map(function(qr){return '<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>';}).join('')+'</select></div><div id="pf_aes_'+ri+'"></div></section></div>'
+        +'<div class="profile-subgrid"><section class="profile-panel"><div class="profile-panel-title"><span>Credit memos</span><select id="pf_cm_qtr_'+ri+'" onchange="renderProfileCMs('+ri+')" class="profile-compact-select"><option value="all">All quarters</option>'+QTRS.map(function(qr){return '<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>';}).join('')+'</select></div><div id="pf_cms_'+ri+'"></div></section><section class="profile-panel"><div class="profile-panel-title"><span>Art errors</span><select id="pf_ae_qtr_'+ri+'" onchange="renderProfileAEs('+ri+')" class="profile-compact-select"><option value="all">All quarters</option>'+QTRS.map(function(qr){return '<option value="'+yr+'_'+qr+'"'+(qr===q?' selected':'')+'>'+yr+' '+qr+'</option>';}).join('')+'</select></div><div id="pf_aes_'+ri+'"></div></section></div>'+'<section class="profile-panel"><div class="profile-panel-title"><span>Calls &amp; HR</span><span class="profile-panel-eyebrow">'+q+' '+yr+'</span></div>'+_tcpProfileHRHtml(r.name,yr,q)+'</section>'
       +'</div>'
       +'<aside class="profile-main">'
         +'<section class="profile-feed-card"><div class="profile-panel-title"><span>Recent activity</span><span class="profile-panel-eyebrow">Latest 8</span></div><div class="profile-feed-list">'+activityHtml+'</div></section>'
