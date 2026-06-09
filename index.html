@@ -661,8 +661,8 @@ body{
 @media(max-width:680px){.profile-info-row{grid-template-columns:1fr !important;}.profile-info-row .edit-pencil{justify-self:start;}.profile-info-row .edit-pencil::after{content:' Edit';}}
 </style>
 
-<style id="tcp-profile-pace-ui-v244">
-/* ===== TCP v244 Rep Profile Quarter Progress polish ===== */
+<style id="tcp-profile-pace-ui-v245">
+/* ===== TCP v245 Rep Profile Quarter Progress polish ===== */
 .profile-pace-wrap{margin-top:4px;}
 .profile-pace-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;}
 .profile-pace-header h3{font-size:18px;font-weight:900;color:#fff;letter-spacing:-.025em;margin:4px 0 0;}
@@ -692,6 +692,67 @@ body{
 .profile-pace-mini em{display:block;font-size:10px;color:#8C95B2;font-style:normal;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 @media(max-width:980px){.profile-pace-grid{grid-template-columns:1fr}.profile-pace-mini-grid{grid-template-columns:repeat(2,1fr)}.profile-pace-meta{white-space:normal;}}
 @media(max-width:620px){.profile-pace-header{flex-direction:column}.profile-pace-meta{text-align:left}.profile-pace-card-head{flex-direction:column}.profile-pace-mini-grid{grid-template-columns:1fr}.profile-pace-stats{grid-template-columns:1fr}}
+</style>
+
+
+
+<style id="tcp-profile-movable-ui-v245">
+/* ===== TCP v245 Movable Rep Profile Sections ===== */
+.profile-layout-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 10px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.035);color:#8F9AB8;font-size:11px;}
+.profile-layout-toolbar strong{color:#F5F7FF;font-size:12px;}
+.profile-layout-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.profile-layout-btn{font-size:11px;padding:6px 10px;border:1px solid rgba(127,119,221,.38);border-radius:12px;background:rgba(127,119,221,.12);color:#C8B9FF;font-weight:800;cursor:pointer;}
+.profile-layout-btn:hover{background:linear-gradient(135deg,#8B5CF6,#3B82F6);color:#fff;border-color:rgba(255,255,255,.20);}
+.profile-section-handle{display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:rgba(255,255,255,.055);color:#AEB8D6;cursor:grab;font-size:14px;margin-right:8px;user-select:none;}
+.profile-section-handle:active{cursor:grabbing;}
+.profile-movable{position:relative;transition:transform .16s ease,border-color .16s ease,opacity .16s ease;}
+.profile-movable:hover{border-color:rgba(139,92,246,.46)!important;}
+.profile-movable.profile-dragging{opacity:.48;transform:scale(.992);}
+.profile-dropzone{min-height:90px;border-radius:20px;transition:background .16s ease,outline .16s ease;}
+.profile-dropzone.profile-drag-over{outline:1px dashed rgba(34,211,238,.65);background:rgba(34,211,238,.055);}
+.profile-section-title-text{display:inline-flex;align-items:center;gap:6px;}
+@media(max-width:900px){.profile-layout-toolbar{align-items:flex-start;flex-direction:column}.profile-layout-actions{width:100%}.profile-layout-btn{flex:1}.profile-section-handle{display:none}}
+</style>
+
+
+<style id="tcp-dashboard-movable-ui-v246">
+/* ===== TCP v246 Dashboard Movement Refresh ===== */
+#dashWidgetContainer.dash-command-grid{gap:16px!important;align-items:start;}
+.dash-layout-toolbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 2px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.035);color:#8F9AB8;font-size:11px;box-shadow:0 12px 28px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.05);}
+.dash-layout-toolbar strong{color:#F5F7FF;font-size:12px;letter-spacing:.01em;}
+.dash-layout-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.dash-layout-btn{font-size:11px;padding:6px 10px;border:1px solid rgba(127,119,221,.38);border-radius:12px;background:rgba(127,119,221,.12);color:#C8B9FF;font-weight:800;cursor:pointer;font-family:inherit;}
+.dash-layout-btn:hover{background:linear-gradient(135deg,#8B5CF6,#3B82F6);color:#fff;border-color:rgba(255,255,255,.20);}
+#dashLayoutMsg{min-width:76px;text-align:right;font-size:11px;font-weight:750;}
+.dash-widget-shell{position:relative;}
+.dash-widget-shell.dash-movable{transition:transform .16s ease,border-color .16s ease,opacity .16s ease,filter .16s ease;}
+.dash-widget-shell.dash-movable:hover{filter:brightness(1.04);}
+.dash-widget-shell.dash-dragging{opacity:.48;transform:scale(.992);}
+.dash-drop-target{outline:1px dashed rgba(34,211,238,.72)!important;outline-offset:4px;background:rgba(34,211,238,.045);border-radius:20px;}
+.dash-section-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px;padding:8px 10px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.032);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+.dash-section-title{display:flex;align-items:center;gap:8px;min-width:0;color:#E9EEFF;font-size:12px;font-weight:850;letter-spacing:-.01em;}
+.dash-section-title .dash-section-icon{display:inline-grid;place-items:center;width:25px;height:25px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:linear-gradient(135deg,rgba(139,92,246,.20),rgba(34,211,238,.10));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
+.dash-section-handle{display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:rgba(255,255,255,.055);color:#AEB8D6;cursor:grab;font-size:14px;user-select:none;flex:0 0 auto;}
+.dash-section-handle:active{cursor:grabbing;}
+.dash-section-controls{display:flex;align-items:center;gap:6px;flex:0 0 auto;}
+.dash-control-btn{font-size:11px;line-height:1;padding:6px 8px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:rgba(255,255,255,.045);color:#AEB8D6;cursor:pointer;font-family:inherit;font-weight:850;}
+.dash-control-btn:hover{background:rgba(139,92,246,.18);border-color:rgba(139,92,246,.45);color:#fff;}
+.dash-control-btn.danger{color:#FFB3C8;}
+.dash-control-btn.danger:hover{background:rgba(255,71,126,.12);border-color:rgba(255,71,126,.35);color:#FFC9D8;}
+.dash-widget-shell .card,.dash-widget-shell .dash-kpi-grid{margin-bottom:0!important;}
+@media(max-width:900px){.dash-layout-toolbar{align-items:flex-start;flex-direction:column}.dash-layout-actions{width:100%}.dash-layout-btn{flex:1}.dash-section-handle{display:none}.dash-section-topbar{padding:7px 8px}.dash-section-title{font-size:11px}}
+</style>
+
+
+<style id="tcp-dashboard-movable-ui-v249">
+/* ===== TCP v249 Dashboard drag behavior polish ===== */
+.dash-movable{cursor:grab;}
+.dash-movable:active{cursor:grabbing;}
+.dash-section-topbar{cursor:grab;user-select:none;}
+.dash-section-handle{display:inline-flex!important;align-items:center;justify-content:center;cursor:grab!important;opacity:1!important;}
+.dash-dragging{opacity:.48!important;transform:scale(.992);}
+#dashWidgetContainer.dash-drag-over{outline:1px dashed rgba(34,211,238,.45);outline-offset:6px;border-radius:20px;}
+@media(max-width:900px){.dash-section-handle{display:inline-flex!important;}}
 </style>
 
 </head>
@@ -764,6 +825,7 @@ body{
       <p>Live quarterly performance, pacing, risk signals, and team momentum in one view.</p>
     </div>
     <div class="dash-hero-actions">
+      <button onclick="toggleDashEdit()" id="dashEditBtn" class="dash-action-btn">&#9999;&#65039; Edit layout</button>
       <button onclick="printDashboard()" class="dash-action-btn primary">&#128438; Print / PDF</button>
       <button onclick="gt('entry',document.querySelector('[onclick*=\'entry\']'))" class="dash-action-btn">&#10133; Add weekly data</button>
       <button onclick="gt('admin',document.querySelector('[onclick*=\'admin\']'))" class="dash-action-btn">&#9729; Cloud / Admin</button>
@@ -6934,7 +6996,7 @@ function downloadRepSummaryPDF(repName){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v244</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v253</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -10177,10 +10239,11 @@ function renderDashWidgets(){
   });
   setTimeout(function(){renderDashCharts(yr,q,weeks,we);},50);
 }
-function buildWidget(wid,yr,q,weeks,we){
+function buildWidget(wid,yr,q,weeks,we,g){
   var div=document.createElement('div');
+  var _dens=(typeof _dashDensity==='function')?_dashDensity(g):'lg';
   switch(wid){
-    case 'kpiCards':div.innerHTML=buildKPICards(yr,q,weeks,we);break;
+    case 'kpiCards':div.innerHTML=buildKPICards(yr,q,weeks,we,_dens);break;
     case 'pacingHealth':div.innerHTML=buildPacingWidget(yr,q,weeks,we);break;
     case 'topRep':div.innerHTML=buildTopRepWidget(yr,q,weeks,we);break;
     case 'atRiskReps':div.innerHTML=buildAtRiskWidget(yr,q,weeks,we);break;
@@ -10211,7 +10274,7 @@ function buildWidget(wid,yr,q,weeks,we){
   }
   return div;
 }
-function buildKPICards(yr,q,weeks,we){
+function buildKPICards(yr,q,weeks,we,dens){
   var tR=0,tO=0,tC=0,tArt=0,tCr=0,tGR=0;
   activeReps().forEach(function(r){var t=totW(r.name,weeks),ro=repGoalObj(r.name,yr,q);tR+=t.revenue;tO+=t.orders;tC+=t.calls;tArt+=t.art;tCr+=t.credits;tGR+=ro.rev;});
   var pct=tGR>0?Math.round(tR/tGR*100):0,ap=tO>0?((tArt/tO)*100).toFixed(1):0,crp=tR>0?((tCr/tR)*100).toFixed(1):0,roi=tGR>0?(((tR-tGR)/tGR)*100).toFixed(1):0;
@@ -10224,14 +10287,16 @@ function buildKPICards(yr,q,weeks,we){
     return '<div class="dash-kpi '+cls+'" style="--kpi-color:'+color+';--kpi-shadow:'+shadow+';--kpi-glow:'+shadow+';">'
       +'<div class="kpi-icon">'+icon+'</div><div class="lbl">'+label+'</div><div class="val">'+val+'</div><div class="sub">'+sub+'</div><div class="mini-bar" style="--pct:'+w+'%;"><span></span></div></div>';
   }
-  return '<div class="dash-kpi-grid" id="dCards">'
-    +kpi('sales','&#128176;','Total revenue','$'+Math.round(tR).toLocaleString(),pct+'% of '+q+' goal',pct,'#8B5CF6','rgba(139,92,246,.36)')
-    +kpi('pace','&#127919;','Goal pace',pct+'%','QTD revenue progress',pct,'#257BFF','rgba(37,123,255,.34)')
-    +kpi('orders','&#128230;','Orders',tO,'Orders booked this quarter',Math.min(100,tO/Math.max(1,activeReps().length*we)*100),'#1D9E75','rgba(29,158,117,.30)')
-    +kpi('score','&#11088;','Avg score',avgScore+' / 5','Team scorecard average',parseFloat(avgScore)*20,'#F6B91A','rgba(246,185,26,.32)')
-    +kpi('quality','&#127912;','Art error rate',ap+'%',tArt+' errors against '+tO+' orders',Math.max(0,100-(parseFloat(ap)*18)),'#F05287','rgba(240,82,135,.28)')
-    +kpi('risk','&#9888;','At risk',dr,dr?'needs attention':'all clear',dr?100:0,dr?'#F05287':'#1D9E75',dr?'rgba(240,82,135,.28)':'rgba(29,158,117,.30)')
-    +'</div>';
+  var T={
+    sales:kpi('sales','&#128176;','Total revenue','$'+Math.round(tR).toLocaleString(),pct+'% of '+q+' goal',pct,'#8B5CF6','rgba(139,92,246,.36)'),
+    pace:kpi('pace','&#127919;','Goal pace',pct+'%','QTD revenue progress',pct,'#257BFF','rgba(37,123,255,.34)'),
+    orders:kpi('orders','&#128230;','Orders',tO,'Orders booked this quarter',Math.min(100,tO/Math.max(1,activeReps().length*we)*100),'#1D9E75','rgba(29,158,117,.30)'),
+    score:kpi('score','&#11088;','Avg score',avgScore+' / 5','Team scorecard average',parseFloat(avgScore)*20,'#F6B91A','rgba(246,185,26,.32)'),
+    quality:kpi('quality','&#127912;','Art error rate',ap+'%',tArt+' errors against '+tO+' orders',Math.max(0,100-(parseFloat(ap)*18)),'#F05287','rgba(240,82,135,.28)'),
+    risk:kpi('risk','&#9888;','At risk',dr,dr?'needs attention':'all clear',dr?100:0,dr?'#F05287':'#1D9E75',dr?'rgba(240,82,135,.28)':'rgba(29,158,117,.30)')
+  };
+  var ord=dens==='sm'?['sales','pace','risk']:dens==='md'?['sales','pace','orders','risk']:['sales','pace','orders','score','quality','risk'];
+  return '<div class="dash-kpi-grid" id="dCards" data-density="'+(dens||'lg')+'">'+ord.map(function(k){return T[k];}).join('')+'</div>';
 }
 
 function buildPacingWidget(yr,q,weeks,we){
@@ -11803,6 +11868,543 @@ function closeWeeklyCallsBreakdown(){
   document.removeEventListener('keydown', _cCBreakdownEscHandler);
 }
 
+
+/* ===== TCP v245 Movable Rep Profile Sections ===== */
+var PROFILE_LAYOUT_STORE='salesTracker_profileLayout_v1';
+var _tcpProfileDragId=null;
+var _tcpProfileDragFrom=null;
+var _tcpProfileDragBound=false;
+var _tcpProfileRenderBase=renderProfileDetail;
+renderProfileDetail=function(ri){
+  _tcpProfileRenderBase(ri);
+  setTimeout(function(){_tcpInitProfileMovableLayout(ri);},30);
+};
+function _tcpProfileSectionIdFromTitle(t){
+  t=String(t||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+  if(t==='hr_coaching')return 'hr_and_coaching';
+  return t||'section';
+}
+function _tcpProfileSectionLabel(id){
+  var map={quarter_progress:'Quarter Progress',revenue_trend:'Revenue trend',goals_overview:'Goals overview',quarterly_sales_log:'Quarterly sales log',credit_memos_art_errors:'Credit memos + Art errors',calls:'Calls',hr_and_coaching:'HR & coaching',recent_activity:'Recent activity',personal_snapshot:'Personal snapshot',all_time_records:'All-time records'};
+  return map[id]||String(id||'Section').replace(/_/g,' ');
+}
+function _tcpGetProfileLayout(){
+  try{var raw=localStorage.getItem(PROFILE_LAYOUT_STORE);var cfg=raw?JSON.parse(raw):null;if(cfg&&cfg.main&&cfg.side)return cfg;}catch(e){}
+  return null;
+}
+function _tcpSaveProfileLayout(){
+  var layout=document.querySelector('#profileDetail .profile-layout');if(!layout)return;
+  var main=layout.querySelector('.profile-main.profile-dropzone[data-zone="main"]');
+  var side=layout.querySelector('.profile-main.profile-dropzone[data-zone="side"]');
+  var cfg={main:[],side:[],updatedAt:new Date().toISOString()};
+  if(main)main.querySelectorAll(':scope > [data-profile-section]').forEach(function(el){cfg.main.push(el.dataset.profileSection);});
+  if(side)side.querySelectorAll(':scope > [data-profile-section]').forEach(function(el){cfg.side.push(el.dataset.profileSection);});
+  try{localStorage.setItem(PROFILE_LAYOUT_STORE,JSON.stringify(cfg));}catch(e){}
+  var msg=document.getElementById('profileLayoutMsg');
+  if(msg){msg.textContent='Layout saved';msg.style.color='#5DCAA5';setTimeout(function(){msg.textContent='';},1600);}
+}
+function resetProfileLayout(){
+  if(!confirm('Reset the rep profile section layout back to the default order?'))return;
+  try{localStorage.removeItem(PROFILE_LAYOUT_STORE);}catch(e){}
+  var ri=S.reps.findIndex(function(r){return r&&r.name===selectedRep;});
+  if(ri>=0)renderProfileDetail(ri);
+}
+function _tcpMarkProfileSections(layout){
+  var main=layout.children[0], side=layout.children[1];
+  if(!main||!side)return;
+  main.classList.add('profile-dropzone');main.dataset.zone='main';
+  side.classList.add('profile-dropzone');side.dataset.zone='side';
+  function markBlock(el,forcedId){
+    if(!el)return;
+    var title=forcedId?forcedId:'';
+    if(!title){
+      var sp=el.querySelector(':scope > .profile-panel-title span:first-child');
+      title=sp?sp.textContent:'';
+    }
+    var id=forcedId||_tcpProfileSectionIdFromTitle(title);
+    if(el.classList.contains('profile-subgrid'))id='credit_memos_art_errors';
+    el.dataset.profileSection=id;
+    el.classList.add('profile-movable');
+    el.setAttribute('draggable','true');
+    var titleRow=el.querySelector(':scope > .profile-panel-title')||el.querySelector(':scope .profile-panel-title');
+    if(titleRow&&!titleRow.querySelector('.profile-section-handle')){
+      var handle=document.createElement('span');handle.className='profile-section-handle';handle.title='Drag this section';handle.innerHTML='&#9776;';
+      titleRow.insertBefore(handle,titleRow.firstChild);
+    }
+  }
+  main.querySelectorAll(':scope > section.profile-panel, :scope > .profile-subgrid').forEach(function(el){markBlock(el);});
+  side.querySelectorAll(':scope > section.profile-panel, :scope > section.profile-feed-card').forEach(function(el){markBlock(el);});
+}
+function _tcpApplyProfileLayout(layout){
+  var cfg=_tcpGetProfileLayout();if(!cfg)return;
+  var main=layout.querySelector('.profile-main.profile-dropzone[data-zone="main"]');
+  var side=layout.querySelector('.profile-main.profile-dropzone[data-zone="side"]');
+  if(!main||!side)return;
+  var all={};layout.querySelectorAll('[data-profile-section]').forEach(function(el){all[el.dataset.profileSection]=el;});
+  (cfg.main||[]).forEach(function(id){if(all[id])main.appendChild(all[id]);});
+  (cfg.side||[]).forEach(function(id){if(all[id])side.appendChild(all[id]);});
+}
+function _tcpInitProfileMovableLayout(ri){
+  var pd=document.getElementById('profileDetail');if(!pd)return;
+  var layout=pd.querySelector('.profile-layout');if(!layout)return;
+  var existing=pd.querySelector('.profile-layout-toolbar');
+  if(!existing){
+    var bar=document.createElement('div');bar.className='profile-layout-toolbar';
+    bar.innerHTML='<div><strong>Rep profile layout</strong><span style="margin-left:8px;">Drag sections to rearrange. Save once and every rep profile uses that layout.</span></div><div class="profile-layout-actions"><span id="profileLayoutMsg"></span><button class="profile-layout-btn" onclick="_tcpSaveProfileLayout()">Save layout</button><button class="profile-layout-btn" onclick="resetProfileLayout()">Reset</button></div>';
+    layout.parentNode.insertBefore(bar,layout);
+  }
+  _tcpMarkProfileSections(layout);
+  _tcpApplyProfileLayout(layout);
+  layout.querySelectorAll('[data-profile-section]').forEach(function(el){
+    el.ondragstart=function(e){_tcpProfileDragId=el.dataset.profileSection;_tcpProfileDragFrom=el.parentElement;el.classList.add('profile-dragging');e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',_tcpProfileDragId);}catch(_){}};
+    el.ondragend=function(){el.classList.remove('profile-dragging');document.querySelectorAll('.profile-drag-over').forEach(function(z){z.classList.remove('profile-drag-over');});_tcpProfileDragId=null;_tcpProfileDragFrom=null;};
+  });
+  layout.querySelectorAll('.profile-dropzone').forEach(function(zone){
+    zone.ondragover=function(e){e.preventDefault();zone.classList.add('profile-drag-over');var dragging=layout.querySelector('.profile-dragging');if(!dragging)return;var after=_tcpProfileDragAfterElement(zone,e.clientY);if(after==null)zone.appendChild(dragging);else zone.insertBefore(dragging,after);};
+    zone.ondragleave=function(e){if(!zone.contains(e.relatedTarget))zone.classList.remove('profile-drag-over');};
+    zone.ondrop=function(e){e.preventDefault();zone.classList.remove('profile-drag-over');_tcpSaveProfileLayout();};
+  });
+}
+function _tcpProfileDragAfterElement(container,y){
+  var els=[].slice.call(container.querySelectorAll(':scope > [data-profile-section]:not(.profile-dragging)'));
+  return els.reduce(function(closest,child){var box=child.getBoundingClientRect();var offset=y-box.top-box.height/2;if(offset<0&&offset>closest.offset)return {offset:offset,element:child};else return closest;},{offset:Number.NEGATIVE_INFINITY}).element;
+}
+
+
+/* ===== TCP v246 Dashboard Movement Refresh ===== */
+var _tcpDashDragId=null;
+function _tcpDashWidgetLabel(id){var d=ALL_WIDGETS.find(function(w){return w.id===id;});return d?d.label:String(id||'Widget').replace(/([A-Z])/g,' $1').replace(/^./,function(c){return c.toUpperCase();});}
+function _tcpDashWidgetIcon(id){var d=ALL_WIDGETS.find(function(w){return w.id===id;});return d?d.icon:'&#9723;';}
+function renderDashWidgets(){
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  var cfg=loadDashWidgets();if(!cfg.sizes)cfg.sizes={};
+  var yr=getYr(),q=getQ(),weeks=gwq(yr,q),we=weeksElapsed(yr,q);
+  container.innerHTML='';
+  var tb=document.createElement('div');tb.className='dash-layout-toolbar';
+  tb.innerHTML='<div><strong>Dashboard layout</strong><span style="margin-left:8px;">Drag cards to rearrange. Resize or hide cards from each section header.</span></div><div class="dash-layout-actions"><span id="dashLayoutMsg"></span><button class="dash-layout-btn" onclick="saveDashOrder()">Save layout</button><button class="dash-layout-btn" onclick="resetDashLayout()">Reset</button></div>';
+  container.appendChild(tb);
+  cfg.order.forEach(function(wid){
+    if(!cfg.visible.includes(wid))return;
+    var def=ALL_WIDGETS.find(function(w){return w.id===wid;});if(!def)return;
+    var sz=(cfg.sizes&&cfg.sizes[wid])||def.sz;
+    var el=buildWidget(wid,yr,q,weeks,we);if(!el)return;
+    container.appendChild(wrapWidgetShell(wid,el,sz));
+  });
+  _tcpInitDashboardDrop(container);
+  setTimeout(function(){renderDashCharts(yr,q,weeks,we);},50);
+}
+function wrapWidgetShell(wid,el,size){
+  var shell=document.createElement('div');
+  shell.className='dash-widget-shell dash-movable';
+  shell.dataset.wid=wid;
+  shell.dataset.size=size;
+  shell.setAttribute('draggable','true');
+  var bar=document.createElement('div');bar.className='dash-section-topbar';
+  bar.innerHTML='<div class="dash-section-title"><span class="dash-section-handle" title="Drag this dashboard card">&#9776;</span><span class="dash-section-icon">'+_tcpDashWidgetIcon(wid)+'</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_tcpDashWidgetLabel(wid)+'</span></div><div class="dash-section-controls"><button class="dash-control-btn" onclick="event.stopPropagation();toggleWidgetSize(\''+wid+'\')" title="Toggle width">&#8596;</button><button class="dash-control-btn danger" onclick="event.stopPropagation();removeWidgetFromDash(\''+wid+'\')" title="Hide widget">&times;</button></div>';
+  shell.appendChild(bar);shell.appendChild(el);
+  shell.ondragstart=function(e){
+    if(!e.target.closest('.dash-section-handle')){e.preventDefault();return;}
+    _tcpDashDragId=wid;shell.classList.add('dash-dragging');e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',wid);}catch(_){}
+  };
+  shell.ondragend=function(){shell.classList.remove('dash-dragging');document.querySelectorAll('.dash-drop-target').forEach(function(z){z.classList.remove('dash-drop-target');});_tcpDashDragId=null;};
+  return shell;
+}
+function _tcpInitDashboardDrop(container){
+  container.ondragover=function(e){
+    e.preventDefault();
+    var dragging=container.querySelector('.dash-dragging');if(!dragging)return;
+    var after=_tcpDashDragAfterElement(container,e.clientX,e.clientY);
+    document.querySelectorAll('.dash-drop-target').forEach(function(z){z.classList.remove('dash-drop-target');});
+    if(after){after.classList.add('dash-drop-target');container.insertBefore(dragging,after);}else{container.appendChild(dragging);}
+  };
+  container.ondrop=function(e){e.preventDefault();document.querySelectorAll('.dash-drop-target').forEach(function(z){z.classList.remove('dash-drop-target');});_tcpSaveDashboardOrderFromDOM();};
+}
+function _tcpDashDragAfterElement(container,x,y){
+  var els=[].slice.call(container.querySelectorAll(':scope > .dash-widget-shell:not(.dash-dragging)'));
+  var sameRow=els.filter(function(el){var b=el.getBoundingClientRect();return y>=b.top-8 && y<=b.bottom+8;});
+  var candidates=sameRow.length?sameRow:els;
+  return candidates.reduce(function(closest,child){
+    var box=child.getBoundingClientRect();
+    var rowOffset=y-box.top-box.height/2;
+    var colOffset=x-box.left-box.width/2;
+    var offset=sameRow.length?colOffset:rowOffset;
+    if(offset<0&&offset>closest.offset)return{offset:offset,element:child};
+    return closest;
+  },{offset:Number.NEGATIVE_INFINITY}).element;
+}
+function _tcpSaveDashboardOrderFromDOM(){
+  var cfg=loadDashWidgets();if(!cfg.sizes)cfg.sizes={};
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  var domOrder=[].slice.call(container.querySelectorAll(':scope > .dash-widget-shell[data-wid]')).map(function(el){return el.dataset.wid;});
+  if(domOrder.length){
+    var hidden=(cfg.order||[]).filter(function(id){return domOrder.indexOf(id)<0;});
+    cfg.order=domOrder.concat(hidden);
+    saveDashWidgets(cfg);
+  }
+}
+function saveDashOrder(){
+  _tcpSaveDashboardOrderFromDOM();
+  var msg=document.getElementById('dashLayoutMsg')||document.getElementById('saveStatus');
+  if(msg){msg.textContent='Layout saved';msg.style.color='#5DCAA5';setTimeout(function(){msg.textContent='';},1600);}
+}
+function resetDashLayout(){
+  if(!confirm('Reset the dashboard layout back to the default order?'))return;
+  try{localStorage.removeItem(DASH_WIDGET_STORE);}catch(e){}
+  renderDashWidgets();
+  var msg=document.getElementById('dashLayoutMsg');
+  if(msg){msg.textContent='Reset';msg.style.color='#9DDCFF';setTimeout(function(){msg.textContent='';},1400);}
+}
+function toggleWidgetSize(wid){
+  var cfg=loadDashWidgets();if(!cfg.sizes)cfg.sizes={};var def=ALL_WIDGETS.find(function(w){return w.id===wid;});var cur=cfg.sizes[wid]||(def?def.sz:'full');
+  var next=cur==='full'?'half':cur==='half'?'third':'full';
+  cfg.sizes[wid]=next;saveDashWidgets(cfg);renderDashWidgets();
+}
+
+
+
+/* ===== TCP v249 Dashboard Drag Fix - match Rep Profile movement ===== */
+function _tcpDashLabel(id){
+  var d=(typeof ALL_WIDGETS!=='undefined'?ALL_WIDGETS:[]).find(function(w){return w.id===id;});
+  return d?d.label:String(id||'Widget').replace(/([A-Z])/g,' $1').replace(/^./,function(c){return c.toUpperCase();});
+}
+function _tcpDashIcon(id){
+  var d=(typeof ALL_WIDGETS!=='undefined'?ALL_WIDGETS:[]).find(function(w){return w.id===id;});
+  return d?d.icon:'&#9723;';
+}
+function renderDashWidgets(){
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  var cfg=loadDashWidgets();if(!cfg.sizes)cfg.sizes={};
+  var yr=getYr(),q=getQ(),weeks=gwq(yr,q),we=weeksElapsed(yr,q);
+  container.innerHTML='';
+  var tb=document.createElement('div');tb.className='dash-layout-toolbar';
+  tb.innerHTML='<div><strong>Dashboard layout</strong><span style="margin-left:8px;">Drag section headers to rearrange. Resize or hide cards from each section header.</span></div><div class="dash-layout-actions"><span id="dashLayoutMsg"></span><button class="dash-layout-btn" onclick="saveDashOrder()">Save layout</button><button class="dash-layout-btn" onclick="resetDashLayout()">Reset</button></div>';
+  container.appendChild(tb);
+  (cfg.order||[]).forEach(function(wid){
+    if((cfg.visible||[]).indexOf(wid)<0)return;
+    var def=ALL_WIDGETS.find(function(w){return w.id===wid;});if(!def)return;
+    var sz=(cfg.sizes&&cfg.sizes[wid])||def.sz;
+    var el=buildWidget(wid,yr,q,weeks,we);if(!el)return;
+    container.appendChild(wrapWidgetShell(wid,el,sz));
+  });
+  _tcpInitDashboardMovable(container);
+  setTimeout(function(){renderDashCharts(yr,q,weeks,we);},50);
+}
+function wrapWidgetShell(wid,el,size){
+  var shell=document.createElement('div');
+  shell.className='dash-widget-shell dash-movable';
+  shell.dataset.wid=wid;
+  shell.dataset.size=size;
+  shell.setAttribute('draggable','true');
+  var bar=document.createElement('div');bar.className='dash-section-topbar';
+  bar.innerHTML='<div class="dash-section-title"><span class="dash-section-handle" title="Drag this dashboard section">&#9776;</span><span class="dash-section-icon">'+_tcpDashIcon(wid)+'</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_tcpDashLabel(wid)+'</span></div><div class="dash-section-controls"><button class="dash-control-btn" onclick="event.stopPropagation();toggleWidgetSize(\''+wid+'\')" title="Toggle width">&#8596;</button><button class="dash-control-btn danger" onclick="event.stopPropagation();removeWidgetFromDash(\''+wid+'\')" title="Hide widget">&times;</button></div>';
+  shell.appendChild(bar);
+  shell.appendChild(el);
+  shell.ondragstart=function(e){
+    if(e.target && e.target.closest && e.target.closest('button,input,select,textarea,a')){e.preventDefault();return;}
+    _tcpDashDragId=wid;
+    shell.classList.add('dash-dragging');
+    e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',wid);}catch(_){}
+  };
+  shell.ondragend=function(){
+    shell.classList.remove('dash-dragging');
+    document.querySelectorAll('.dash-drag-over,.dash-drop-target').forEach(function(z){z.classList.remove('dash-drag-over');z.classList.remove('dash-drop-target');});
+    _tcpDashDragId=null;
+  };
+  return shell;
+}
+function _tcpInitDashboardMovable(container){
+  container.ondragover=function(e){
+    e.preventDefault();
+    var dragging=container.querySelector('.dash-dragging');if(!dragging)return;
+    container.classList.add('dash-drag-over');
+    var after=_tcpDashDragAfterElement(container,e.clientY);
+    if(after==null)container.appendChild(dragging);else container.insertBefore(dragging,after);
+  };
+  container.ondragleave=function(e){
+    if(!container.contains(e.relatedTarget))container.classList.remove('dash-drag-over');
+  };
+  container.ondrop=function(e){
+    e.preventDefault();
+    container.classList.remove('dash-drag-over');
+    document.querySelectorAll('.dash-drag-over,.dash-drop-target').forEach(function(z){z.classList.remove('dash-drag-over');z.classList.remove('dash-drop-target');});
+    _tcpSaveDashboardOrderFromDOM();
+  };
+}
+function _tcpDashDragAfterElement(container,y){
+  var els=[].slice.call(container.querySelectorAll(':scope > .dash-widget-shell:not(.dash-dragging)'));
+  return els.reduce(function(closest,child){
+    var box=child.getBoundingClientRect();
+    var offset=y-box.top-box.height/2;
+    if(offset<0&&offset>closest.offset)return{offset:offset,element:child};
+    return closest;
+  },{offset:Number.NEGATIVE_INFINITY}).element;
+}
+function _tcpSaveDashboardOrderFromDOM(){
+  var cfg=loadDashWidgets();if(!cfg.sizes)cfg.sizes={};
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  var domOrder=[].slice.call(container.querySelectorAll(':scope > .dash-widget-shell[data-wid]')).map(function(el){return el.dataset.wid;});
+  if(domOrder.length){
+    var hidden=(cfg.order||[]).filter(function(id){return domOrder.indexOf(id)<0;});
+    cfg.order=domOrder.concat(hidden);
+    saveDashWidgets(cfg);
+  }
+}
+function saveDashOrder(){
+  _tcpSaveDashboardOrderFromDOM();
+  var msg=document.getElementById('dashLayoutMsg')||document.getElementById('saveStatus');
+  if(msg){msg.textContent='Layout saved ✓';msg.style.color='#5DCAA5';setTimeout(function(){msg.textContent='';},1600);}
+}
+function resetDashLayout(){
+  if(!confirm('Reset the dashboard layout back to the default order?'))return;
+  try{localStorage.removeItem(DASH_WIDGET_STORE);}catch(e){}
+  renderDashWidgets();
+  var msg=document.getElementById('dashLayoutMsg');
+  if(msg){msg.textContent='Reset';msg.style.color='#9DDCFF';setTimeout(function(){msg.textContent='';},1400);}
+}
+function toggleWidgetSize(wid){
+  var cfg=loadDashWidgets();if(!cfg.sizes)cfg.sizes={};
+  var def=ALL_WIDGETS.find(function(w){return w.id===wid;});
+  var cur=cfg.sizes[wid]||(def?def.sz:'full');
+  var next=cur==='full'?'half':cur==='half'?'third':'full';
+  cfg.sizes[wid]=next;saveDashWidgets(cfg);renderDashWidgets();
+}
+
+/* ===== TCP v251 Dashboard Grid Engine (Phase 1: move / resize / snap / auto-fit) ===== */
+var _dashEditMode=false;
+var DASH_COLS=8, DASH_ROW_H=64, DASH_GAP=12;
+function _dashSzToGrid(sz){
+  if(sz==='full')return{w:8,h:4};
+  if(sz==='twoThird')return{w:5,h:4};
+  if(sz==='half')return{w:4,h:4};
+  if(sz==='third')return{w:3,h:4};
+  return{w:4,h:4};
+}
+function _dashGridFor(cfg,wid){
+  var g=(cfg.grid&&cfg.grid[wid])||null;
+  if(g&&g.w)return{w:Math.min(DASH_COLS,Math.max(1,g.w|0)),h:Math.max(1,g.h|0)};
+  var def=ALL_WIDGETS.find(function(w){return w.id===wid;});
+  return _dashSzToGrid(def?def.sz:'half');
+}
+function _dashDensity(g){if(!g||!g.w)return 'lg';if(g.w<=3)return 'sm';if(g.w<=5)return 'md';return 'lg';}
+var DASH_CHARTABLE={
+  pacingHealth:{metric:'revenue',by:'rep',fmt:'money',title:'Revenue by rep'},
+  chartRevWeek:{metric:'revenue',by:'rep',fmt:'money',title:'Revenue by rep'},
+  miniLeaderboard:{metric:'revenue',by:'rep',fmt:'money',title:'Revenue by rep'},
+  topRep:{metric:'revenue',by:'rep',fmt:'money',title:'Revenue by rep'},
+  callCoverage:{metric:'accts',by:'rep',fmt:'num',title:'Accounts called by rep'},
+  repScoreGrid:{metric:'score',by:'rep',fmt:'num',title:'Score by rep'},
+  chartSalesGoal:{metric:'revenue',by:'rep',fmt:'money',title:'Revenue by rep'},
+  chartHours:{metric:'hours',by:'rep',fmt:'num',title:'Hours by rep'},
+  chartCalls:{metric:'calls',by:'week',fmt:'num',title:'Calls by week'},
+  chartOrders:{metric:'orders',by:'week',fmt:'num',title:'Orders by week'}
+};
+function _dashIsChartable(wid){return !!DASH_CHARTABLE[wid];}
+function _dashRepSeries(weeks,yr,q,we,metric){
+  var arr=activeReps().map(function(r){
+    var t=totW(r.name,weeks),v;
+    if(metric==='calls')v=t.calls||0;
+    else if(metric==='hours')v=t.hours||0;
+    else if(metric==='orders')v=t.orders||0;
+    else if(metric==='accts')v=t.acctsCalled||t.calls||0;
+    else if(metric==='score'){var hrP=getHRPoints(r.name,yr,q),ro=repGoalObj(r.name,yr,q);v=calcSc(r.name,t,ro,weeks.length,hrP,we).fin;}
+    else v=t.revenue||0;
+    return{name:(r.name||'').split(' ')[0],v:v};
+  }).sort(function(a,b){return b.v-a.v;});
+  return{labels:arr.map(function(x){return x.name;}),values:arr.map(function(x){return x.v;})};
+}
+function _dashWeekSeries(weeks,metric){
+  return{labels:weeks.map(function(w){return w.label.split(':')[0];}),
+    values:weeks.map(function(w){var t=0,has=false;S.reps.forEach(function(r){var d=gd(r.name+'|'+w.key);var mv=metric==='calls'?(d.calls||0):metric==='orders'?(d.orders||0):metric==='hours'?(d.hours||0):(d.revenue||0);t+=mv;if((d.calls||d.revenue||d.orders||d.hours||0)>0)has=true;});return has?t:0;})};
+}
+function _dashSeries(wid,yr,q,weeks,we){
+  var d=DASH_CHARTABLE[wid];if(!d)return null;
+  var s=d.by==='week'?_dashWeekSeries(weeks,d.metric):_dashRepSeries(weeks,yr,q,we,d.metric);
+  s.title=d.title;s.fmt=d.fmt;return s;
+}
+function setDashView(wid,view){var cfg=loadDashWidgets();if(!cfg.view)cfg.view={};cfg.view[wid]=view;saveDashWidgets(cfg);renderDashWidgets();}
+function _dashRenderChartViews(yr,q,weeks,we){
+  if(typeof Chart==='undefined')return;
+  var pal=['#7F77DD','#5DCAA5','#85B7EB','#F6B91A','#F05287','#257BFF','#1D9E75','#EF9F27','#A78BFA','#22D3EE','#FB923C','#34D399'];
+  document.querySelectorAll('#dashWidgetContainer [data-dash-chart]').forEach(function(box){
+    var wid=box.dataset.dashChart, view=box.dataset.dashView;
+    var s=_dashSeries(wid,yr,q,weeks,we);if(!s)return;
+    var cv=box.querySelector('canvas');if(!cv)return;
+    var key='dashview_'+wid;
+    if(ch[key]){try{ch[key].destroy();}catch(e){}delete ch[key];}
+    var pie=view==='donut';
+    var ds=pie?{data:s.values,backgroundColor:s.labels.map(function(_,i){return pal[i%pal.length];}),borderWidth:0}
+      :{label:s.title,data:s.values,backgroundColor:view==='line'?'rgba(127,119,221,.18)':s.labels.map(function(_,i){return pal[i%pal.length];}),borderColor:'#7F77DD',borderWidth:view==='line'?2:0,borderRadius:view==='bar'?4:0,fill:view==='line',tension:.3,pointRadius:view==='line'?2:0};
+    try{
+      ch[key]=new Chart(cv,{type:view==='bar'?'bar':view==='line'?'line':'doughnut',
+        data:{labels:s.labels,datasets:[ds]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:pie,position:'right',labels:{color:'#8B8A94',font:{size:10},boxWidth:10}},
+            tooltip:{callbacks:{label:function(ctx){var v=pie?ctx.parsed:ctx.parsed.y;return s.fmt==='money'?'$'+Math.round(v).toLocaleString():v;}}}},
+          scales:pie?{}:{x:{grid:{display:false},ticks:{color:'#8B8A94',font:{size:10},maxRotation:0,autoSkip:true}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#8B8A94',callback:function(v){return s.fmt==='money'?'$'+Math.round(v/1000)+'K':v;}}}}
+        }});
+    }catch(e){}
+  });
+}
+function _dashLabel(id){var d=ALL_WIDGETS.find(function(w){return w.id===id;});return d?d.label:id;}
+function _dashIcon(id){var d=ALL_WIDGETS.find(function(w){return w.id===id;});return d?d.icon:'&#9723;';}
+function _dashEnsureCss(){
+  if(document.getElementById('dashGridCss'))return;
+  var s=document.createElement('style');s.id='dashGridCss';
+  s.textContent=
+   '.dash-widget-shell{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--color-background-secondary,#15132A);border:0.5px solid var(--color-border-secondary,#2A2750);border-radius:14px;overflow:hidden;}'
+  +'.dash-widget-shell>.dash-widget-body{flex:1;min-height:0;overflow:auto;}'
+  +'.dash-section-topbar{display:none;align-items:center;justify-content:space-between;gap:8px;padding:5px 8px;background:rgba(83,74,183,.18);border-bottom:0.5px solid var(--color-border-secondary,#2A2750);font-size:11px;color:var(--color-text-secondary,#9a96c0);}'
+  +'#dashWidgetContainer.dash-grid-edit .dash-section-topbar{display:flex;}'
+  +'#dashWidgetContainer.dash-grid-edit{border:1px dashed rgba(125,116,221,.35);border-radius:16px;padding:6px;background:rgba(125,116,221,.04);}'
+  +'#dashWidgetContainer.dash-grid-edit .dash-widget-shell{cursor:grab;outline:1px solid rgba(125,116,221,.4);}'
+  +'.dash-widget-shell.dash-dragging{opacity:.4;}'
+  +'.dash-section-handle{cursor:grab;}'
+  +'.dash-control-btn{background:var(--color-background-secondary,#1A1A2E);border:0.5px solid var(--color-border-secondary,#2A2750);color:var(--color-text-secondary,#9a96c0);border-radius:5px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:4px;}'
+  +'.dash-control-btn.danger{color:#F09595;}'
+  +'.dash-resize-handle{display:none;position:absolute;right:3px;bottom:3px;width:16px;height:16px;cursor:nwse-resize;border-right:2.5px solid rgba(125,116,221,.85);border-bottom:2.5px solid rgba(125,116,221,.85);border-bottom-right-radius:4px;z-index:5;touch-action:none;}'
+  +'#dashWidgetContainer.dash-grid-edit .dash-resize-handle{display:block;}'
+  +'.dash-layout-toolbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--color-text-secondary,#9a96c0);}'
+  +'.dash-layout-btn{background:var(--color-background-secondary,#1A1A2E);border:0.5px solid var(--color-border-secondary,#2A2750);color:var(--color-text-primary,#E8E6F5);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;}'
+  +'.dash-view-sel{position:absolute;top:6px;right:8px;z-index:6;font-size:10px;padding:1px 4px;border-radius:5px;background:rgba(20,18,40,.88);color:var(--color-text-secondary,#9a96c0);border:0.5px solid var(--color-border-secondary,#2A2750);cursor:pointer;}'
+  +'#dashWidgetContainer.dash-grid-edit .dash-view-sel{display:none;}';
+  document.head.appendChild(s);
+}
+function _dashApplyGridStyle(container){
+  container.style.setProperty('display','grid','important');
+  container.style.setProperty('grid-template-columns','repeat('+DASH_COLS+',minmax(0,1fr))','important');
+  container.style.setProperty('grid-auto-rows',DASH_ROW_H+'px','important');
+  container.style.setProperty('gap',DASH_GAP+'px','important');
+  container.style.setProperty('align-items','stretch','important');
+}
+function renderDashWidgets(){
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  _dashEnsureCss();_dashApplyGridStyle(container);
+  Object.keys(ch).forEach(function(k){if(k.indexOf('dashview_')===0){try{ch[k].destroy();}catch(e){}delete ch[k];}});
+  var cfg=loadDashWidgets();if(!cfg.grid)cfg.grid={};if(!cfg.view)cfg.view={};
+  var yr=getYr(),q=getQ(),weeks=gwq(yr,q),we=weeksElapsed(yr,q);
+  container.className='dash-command-grid'+(_dashEditMode?' dash-grid-edit':'');
+  container.innerHTML='';
+  if(_dashEditMode){
+    var tb=document.createElement('div');tb.className='dash-layout-toolbar';
+    tb.innerHTML='<span><strong>Edit mode</strong> &middot; drag a card to move it, drag its bottom-right corner to resize. Grid is 8 columns wide.</span><span><button class="dash-layout-btn" onclick="resetDashLayout()">Reset</button> <button class="dash-layout-btn" onclick="toggleDashEdit()">Done</button></span>';
+    container.appendChild(tb);
+  }
+  (cfg.order||[]).forEach(function(wid){
+    if((cfg.visible||[]).indexOf(wid)<0)return;
+    var def=ALL_WIDGETS.find(function(w){return w.id===wid;});if(!def)return;
+    var g=_dashGridFor(cfg,wid);
+    var view=(cfg.view&&cfg.view[wid])||'standard';
+    var el;
+    if(_dashIsChartable(wid)&&view!=='standard'){
+      var ser=_dashSeries(wid,yr,q,weeks,we);
+      el=document.createElement('div');el.className='card';el.style.height='100%';el.style.display='flex';el.style.flexDirection='column';
+      el.innerHTML='<div class="ct" style="flex:0 0 auto;">'+(ser?ser.title:_dashLabel(wid))+'</div><div style="position:relative;flex:1;min-height:110px;"><canvas></canvas></div>';
+      el.dataset.dashChart=wid;el.dataset.dashView=view;
+    } else { el=buildWidget(wid,yr,q,weeks,we,g); }
+    if(!el)return;
+    container.appendChild(_dashWrapShell(wid,el,g));
+  });
+  _dashInitDnD(container);
+  setTimeout(function(){try{renderDashCharts(yr,q,weeks,we);}catch(e){} try{_dashRenderChartViews(yr,q,weeks,we);}catch(e){}},60);
+}
+function _dashWrapShell(wid,el,g){
+  var shell=document.createElement('div');
+  shell.className='dash-widget-shell';
+  shell.dataset.wid=wid;
+  shell.style.gridColumn='span '+g.w;
+  shell.style.gridRow='span '+g.h;
+  shell.setAttribute('draggable',_dashEditMode?'true':'false');
+  var bar=document.createElement('div');bar.className='dash-section-topbar';
+  bar.innerHTML='<span style="display:flex;align-items:center;gap:6px;min-width:0;"><span class="dash-section-handle">&#9776;</span><span>'+_dashIcon(wid)+'</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_dashLabel(wid)+'</span></span><span style="white-space:nowrap;display:flex;align-items:center;"><span style="opacity:.7;">'+g.w+'&times;'+g.h+'</span><button class="dash-control-btn danger" title="Hide widget" onclick="event.stopPropagation();removeWidgetFromDash(\''+wid+'\')">&times;</button></span>';
+  var body=document.createElement('div');body.className='dash-widget-body';
+  el.style.height='100%';body.appendChild(el);
+  shell.appendChild(bar);shell.appendChild(body);
+  var rh=document.createElement('div');rh.className='dash-resize-handle';rh.title='Drag to resize';
+  shell.appendChild(rh);
+  shell.ondragstart=function(e){
+    if(!_dashEditMode){e.preventDefault();return;}
+    if(e.target&&e.target.closest&&e.target.closest('button,select,input,.dash-resize-handle')){e.preventDefault();return;}
+    shell.classList.add('dash-dragging');e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',wid);}catch(_){}
+  };
+  shell.ondragend=function(){shell.classList.remove('dash-dragging');};
+  rh.addEventListener('pointerdown',function(e){_dashStartResize(e,shell,wid,_dashGridFor(loadDashWidgets(),wid));});
+  if(_dashIsChartable(wid)){var vs=document.createElement('select');vs.className='dash-view-sel';vs.innerHTML='<option value="standard">Standard</option><option value="bar">Bar</option><option value="donut">Donut</option><option value="line">Line</option>';vs.value=((loadDashWidgets().view||{})[wid]||'standard');vs.onchange=function(e){e.stopPropagation();setDashView(wid,vs.value);};vs.addEventListener('pointerdown',function(e){e.stopPropagation();});shell.appendChild(vs);}
+  return shell;
+}
+function _dashInitDnD(container){
+  container.ondragover=function(e){
+    if(!_dashEditMode)return;
+    var dragging=container.querySelector('.dash-dragging');if(!dragging)return;
+    e.preventDefault();
+    var target=_dashAfterEl(container,e.clientX,e.clientY);
+    if(target==null)container.appendChild(dragging);
+    else if(target!==dragging)container.insertBefore(dragging,target);
+  };
+  container.ondrop=function(e){if(!_dashEditMode)return;e.preventDefault();_dashSaveOrderFromDOM();};
+}
+function _dashAfterEl(container,x,y){
+  var shells=[].slice.call(container.querySelectorAll(':scope > .dash-widget-shell:not(.dash-dragging)'));
+  var best=null,bestD=Infinity,after=false;
+  shells.forEach(function(s){
+    var b=s.getBoundingClientRect();var cx=b.left+b.width/2,cy=b.top+b.height/2;
+    var d=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy));
+    if(d<bestD){bestD=d;best=s;after=(x>cx);}
+  });
+  if(!best)return null;
+  return after?best.nextElementSibling:best;
+}
+function _dashSaveOrderFromDOM(){
+  var cfg=loadDashWidgets();if(!cfg.grid)cfg.grid={};
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  var dom=[].slice.call(container.querySelectorAll(':scope > .dash-widget-shell[data-wid]')).map(function(el){return el.dataset.wid;});
+  if(dom.length){
+    var hidden=(cfg.order||[]).filter(function(id){return dom.indexOf(id)<0;});
+    cfg.order=dom.concat(hidden);
+    saveDashWidgets(cfg);
+  }
+}
+function _dashStartResize(e,shell,wid,g){
+  if(!_dashEditMode)return;
+  e.preventDefault();e.stopPropagation();
+  var container=document.getElementById('dashWidgetContainer');if(!container)return;
+  var cw=container.clientWidth;
+  var cellW=(cw-DASH_GAP*(DASH_COLS-1))/DASH_COLS;
+  var pitchX=cellW+DASH_GAP, pitchY=DASH_ROW_H+DASH_GAP;
+  var sx=e.clientX, sy=e.clientY, sw=g.w, sh=g.h, curW=sw, curH=sh;
+  function mv(ev){
+    var dC=Math.round((ev.clientX-sx)/pitchX), dR=Math.round((ev.clientY-sy)/pitchY);
+    curW=Math.min(DASH_COLS,Math.max(1,sw+dC));
+    curH=Math.max(1,sh+dR);
+    shell.style.gridColumn='span '+curW;shell.style.gridRow='span '+curH;
+  }
+  function up(){
+    document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);
+    var cfg=loadDashWidgets();if(!cfg.grid)cfg.grid={};
+    cfg.grid[wid]={w:curW,h:curH};saveDashWidgets(cfg);
+    renderDashWidgets();
+  }
+  document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);
+}
+function toggleDashEdit(){
+  _dashEditMode=!_dashEditMode;
+  var b=document.getElementById('dashEditBtn');
+  if(b)b.innerHTML=_dashEditMode?'&#10003; Done editing':'&#9999;&#65039; Edit layout';
+  renderDashWidgets();
+}
+function saveDashOrder(){_dashSaveOrderFromDOM();}
+function resetDashLayout(){
+  if(!confirm('Reset the dashboard layout (positions and sizes) back to default?'))return;
+  var cfg=loadDashWidgets();cfg.grid={};saveDashWidgets(cfg);
+  renderDashWidgets();
+}
+function toggleWidgetSize(wid){
+  var cfg=loadDashWidgets();if(!cfg.grid)cfg.grid={};
+  var g=_dashGridFor(cfg,wid);
+  cfg.grid[wid]={w:(g.w>=8?4:8),h:g.h};saveDashWidgets(cfg);renderDashWidgets();
+}
 </script>
 
 
