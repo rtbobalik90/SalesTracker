@@ -3901,6 +3901,13 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
 .inb-chart-title{font-size:12px;font-weight:800;color:#EEF2FF;}
 .inb-chart-title span{font-weight:600;color:#9BA6C4;font-size:11px;}
 .inb-chart-peak{font-size:10px;font-weight:800;color:#8EEBD1;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.25);border-radius:999px;padding:3px 9px;}
+.inb-yearbar{display:flex;align-items:center;gap:8px;margin:0 0 10px;flex-wrap:wrap;}
+.inb-yb-l{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#8EEBD1;}
+.inb-yb-add{font-size:11px;font-weight:800;padding:7px 12px;border-radius:10px;border:1px dashed rgba(255,255,255,.22);background:rgba(255,255,255,.04);color:#DAD1FF;cursor:pointer;font-family:inherit;}
+.inb-yb-add:hover{border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.12);}
+.inb-leg{font-size:10px;color:#9BA6C4;display:inline-flex;align-items:center;gap:4px;}
+.inb-leg i{display:inline-block;width:15px;height:0;border-top:3px solid #22D3EE;border-radius:2px;margin:0 3px 0 9px;}
+.inb-leg .inb-leg-b{border-top:3px dashed #FFB020;}
 @media(max-width:760px){.inb-kpis{grid-template-columns:1fr;}}
 </style>
 <div id="pg-inbound" class="page">
@@ -3908,6 +3915,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
     <div class="inb-kicker">&#128229; Inbound Intelligence</div>
     <h1>Inbound Leads &amp; Activity</h1>
     <p>Live inbound counts &mdash; calls, web orders, quotes, walk-ins and more &mdash; pulled straight from your published Google Sheet. Slice by week, quarter, or full year.</p>
+    <div id="inbYearBar" class="inb-yearbar"></div>
     <div class="inb-conn">
       <input id="inbSheetUrl" type="url" placeholder="Paste published Google Sheet CSV link (File &rarr; Share &rarr; Publish to web &rarr; CSV)" oninput="saveInboundSheetUrl()">
       <button class="inb-btn" onclick="refreshInbound()">&#8635; Refresh</button>
@@ -4363,17 +4371,29 @@ let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
 function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,mgr:renderManagerCommandCenter,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
-/* ===== v343 Inbound Leads — Google Sheet CSV intelligence (week / quarter / year) ===== */
+/* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
-var _inbState=null, _inbView='week', _inbWeek=null, _inbQuarter=null, _inbChannel=-1;
+var _inbState=null, _inbView='week', _inbWeek=null, _inbQuarter=null, _inbChannel=-1, _inbCompare='none';
 function _inbEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function _inbInit(){
   if(_inbState)return _inbState;
-  try{var raw=localStorage.getItem(INBOUND_STORE);_inbState=raw?JSON.parse(raw):null;}catch(e){_inbState=null;}
-  if(!_inbState)_inbState={sheetUrl:'',categories:[],rows:[],lastFetched:null,year:(new Date()).getFullYear()};
+  var raw=null;try{raw=JSON.parse(localStorage.getItem(INBOUND_STORE)||'null');}catch(e){raw=null;}
+  if(raw&&raw.years){_inbState=raw;}
+  else if(raw&&(raw.sheetUrl!==undefined||raw.rows||raw.categories)){
+    var y=String(raw.year||(new Date()).getFullYear());
+    _inbState={activeYear:Number(y),years:{}};
+    _inbState.years[y]={sheetUrl:raw.sheetUrl||'',categories:raw.categories||[],rows:raw.rows||[],lastFetched:raw.lastFetched||null};
+  } else {_inbState={activeYear:(new Date()).getFullYear(),years:{}};}
+  if(!_inbState.years)_inbState.years={};
+  if(!_inbState.activeYear)_inbState.activeYear=(new Date()).getFullYear();
+  var ay=String(_inbState.activeYear);
+  if(!_inbState.years[ay])_inbState.years[ay]={sheetUrl:'',categories:[],rows:[],lastFetched:null};
   return _inbState;
 }
 function _inbSaveState(){try{localStorage.setItem(INBOUND_STORE,JSON.stringify(_inbState));}catch(e){}}
+function _inbActive(){var inb=_inbInit();return inb.years[String(inb.activeYear)]||{sheetUrl:'',categories:[],rows:[],lastFetched:null};}
+function _inbYearData(yr){var inb=_inbInit();return inb.years[String(yr)]||null;}
+function _inbYears(){var inb=_inbInit();var ks=Object.keys(inb.years).map(Number);if(ks.indexOf(inb.activeYear)<0)ks.push(inb.activeYear);return ks.sort(function(a,b){return b-a;});}
 function _inbQuarterOf(w){w=Number(w);if(w<=13)return 'Q1';if(w<=26)return 'Q2';if(w<=39)return 'Q3';return 'Q4';}
 function _inbWeeksInQuarter(q){var s={Q1:1,Q2:14,Q3:27,Q4:40}[q]||1,e={Q1:13,Q2:26,Q3:39,Q4:52}[q]||13,a=[];for(var i=s;i<=e;i++)a.push(i);return a;}
 function parseInboundCSV(text){
@@ -4397,7 +4417,7 @@ function parseInboundCSV(text){
     cats.forEach(function(cat,ci){
       var wk=parseInt(String(row[cat.weekCol]==null?'':row[cat.weekCol]).trim(),10);
       if(isNaN(wk))return;
-      var q=parseFloat(String(row[cat.qtyCol]==null?'':row[cat.qtyCol]).replace(/[^0-9.\-]/g,''));
+      var q=parseFloat(String(row[cat.qtyCol]==null?'':row[cat.qtyCol]).replace(/[^0-9.-]/g,''));
       if(isNaN(q))q=0;
       if(!weekMap[wk])weekMap[wk]=new Array(cats.length).fill(0);
       weekMap[wk][ci]=q;
@@ -4406,7 +4426,7 @@ function parseInboundCSV(text){
   var weeks=Object.keys(weekMap).map(Number).sort(function(a,b){return a-b;});
   return {categories:cats.map(function(c){return c.name;}),rows:weeks.map(function(w){return {week:w,vals:weekMap[w]};})};
 }
-function saveInboundSheetUrl(){var inb=_inbInit();var el=document.getElementById('inbSheetUrl');inb.sheetUrl=el?el.value.trim():'';_inbSaveState();}
+function saveInboundSheetUrl(){var ay=_inbActive();var el=document.getElementById('inbSheetUrl');ay.sheetUrl=el?el.value.trim():'';_inbSaveState();}
 var INBOUND_PROXIES=[
   function(u){return u;},
   function(u){return 'https://corsproxy.io/?url='+encodeURIComponent(u);},
@@ -4428,55 +4448,86 @@ async function _inbFetchCSV(url){
   throw lastErr||new Error('All fetch attempts failed');
 }
 async function refreshInbound(){
-  var inb=_inbInit(), el=document.getElementById('inbSheetUrl'), st=document.getElementById('inbStatus');
-  var url=(el&&el.value.trim())||inb.sheetUrl||'';
-  if(!url){if(st){st.textContent='Paste your published Google Sheet CSV link above, then click Refresh.';st.style.color='#EF9F27';}return;}
-  if(st){st.textContent='Refreshing from Google Sheet\u2026';st.style.color='#EF9F27';}
+  var inb=_inbInit(), ay=_inbActive(), el=document.getElementById('inbSheetUrl'), st=document.getElementById('inbStatus');
+  var url=(el&&el.value.trim())||ay.sheetUrl||'';
+  if(!url){if(st){st.textContent='Paste the published Google Sheet CSV link for '+inb.activeYear+' above, then click Refresh.';st.style.color='#EF9F27';}return;}
+  if(st){st.textContent='Refreshing '+inb.activeYear+' from Google Sheet…';st.style.color='#EF9F27';}
   try{
     var got=await _inbFetchCSV(url);
     var parsed=parseInboundCSV(got.text);
-    inb.sheetUrl=url;inb.categories=parsed.categories;inb.rows=parsed.rows;inb.lastFetched=new Date().toISOString();
+    ay.sheetUrl=url;ay.categories=parsed.categories;ay.rows=parsed.rows;ay.lastFetched=new Date().toISOString();
     _inbSaveState();
-    if(st){st.textContent='Connected \u2014 '+parsed.categories.length+' channels, '+parsed.rows.length+' weeks loaded'+(got.via>0?' (via fetch relay)':'')+'.';st.style.color='#5DCAA5';}
+    if(st){st.textContent='Connected — '+inb.activeYear+': '+parsed.categories.length+' channels, '+parsed.rows.length+' weeks loaded'+(got.via>0?' (via fetch relay)':'')+'.';st.style.color='#5DCAA5';}
     _inbWeek=null;_inbQuarter=null;
     renderInbound();
   }catch(err){
     var m=/failed to fetch|load failed|networkerror|all fetch attempts/i.test(String(err.message))
-      ? 'the browser blocked the request and the backup relays did not answer. Quick check: open your published link in a new browser tab \u2014 if it downloads a CSV, the link is good; then click Refresh again (relays can be briefly busy). If it keeps failing, hosting the tracker on a web URL instead of a local file is the permanent fix.'
+      ? 'the browser blocked the request and the backup relays did not answer. Open your published link in a new browser tab — if it downloads a CSV, the link is good; then click Refresh again. Hosting the tracker on a web URL instead of a local file is the permanent fix.'
       : err.message;
     if(st){st.textContent='Could not pull the sheet: '+m;st.style.color='#F09595';}
   }
 }
-function _inbTotalsByCat(weekFilter){
-  var inb=_inbInit(), tot=new Array(inb.categories.length).fill(0);
-  inb.rows.forEach(function(row){if(weekFilter(row.week))row.vals.forEach(function(v,i){tot[i]+=Number(v)||0;});});
-  return tot;
-}
+function _inbAddYear(){var inb=_inbInit();var lo=Math.min.apply(null,_inbYears());var def=lo-1;var ans=prompt('Add a year to track for year-over-year (e.g. '+def+'):',String(def));if(ans==null)return;var y=parseInt(String(ans).trim(),10);if(isNaN(y)||y<2000||y>2100){alert('Please enter a valid year between 2000 and 2100.');return;}if(!inb.years[String(y)])inb.years[String(y)]={sheetUrl:'',categories:[],rows:[],lastFetched:null};inb.activeYear=y;_inbWeek=null;_inbQuarter=null;_inbSaveState();renderInbound();}
+function _inbSetActiveYear(y){var inb=_inbInit();inb.activeYear=Number(y);_inbWeek=null;_inbQuarter=null;_inbSaveState();renderInbound();}
 function _inbSetView(v){_inbView=v;renderInbound();}
 function _inbSetWeek(w){_inbWeek=Number(w);renderInbound();}
 function _inbSetQuarter(q){_inbQuarter=q;renderInbound();}
 function _inbSetChannel(v){_inbChannel=Number(v);renderInbound();}
-function _inbWeekVal(week,chIdx){var inb=_inbInit(),row=null;for(var i=0;i<inb.rows.length;i++){if(inb.rows[i].week===week){row=inb.rows[i];break;}}if(!row)return 0;if(chIdx<0)return row.vals.reduce(function(a,b){return a+(Number(b)||0);},0);return Number(row.vals[chIdx])||0;}
-function _inbRenderChart(){
-  var inb=_inbInit(), ch=_inbChannel, chLabel=(ch<0?'All channels':(inb.categories[ch]||'Channel'));
-  var weeks, highlight=null, scopeLabel;
-  if(_inbView==='year'){var ws=inb.rows.map(function(r){return r.week;}),maxW=ws.length?Math.max.apply(null,ws):1;weeks=[];for(var w=1;w<=maxW;w++)weeks.push(w);scopeLabel=inb.year+' full year';}
-  else if(_inbView==='quarter'){weeks=_inbWeeksInQuarter(_inbQuarter);scopeLabel=_inbQuarter+' '+inb.year;}
-  else{weeks=_inbWeeksInQuarter(_inbQuarterOf(_inbWeek));highlight=_inbWeek;scopeLabel='Week '+_inbWeek+' in context ('+_inbQuarterOf(_inbWeek)+' '+inb.year+')';}
-  var data=weeks.map(function(w){return {w:w,v:_inbWeekVal(w,ch)};});
-  var peak=data.reduce(function(m,d){return d.v>m.v?d:m;},{w:null,v:-1});
-  var head='<div class="inb-chart-head"><div class="inb-chart-title">Weekly trend <span>\u00b7 '+_inbEsc(chLabel)+' \u00b7 '+_inbEsc(scopeLabel)+'</span></div>'+(peak.w!=null&&peak.v>0?'<div class="inb-chart-peak">Peak: W'+peak.w+' ('+peak.v.toLocaleString()+')</div>':'')+'</div>';
-  return '<div class="inb-chart">'+head+_inbChartSVG(data,highlight)+'</div>';
+function _inbSetCompare(v){_inbCompare=v;renderInbound();}
+function _inbCurWeek(){try{var n=getWN();if(!isNaN(n)&&n>0)return n;}catch(e){}var d=new Date(),s=new Date(d.getFullYear(),0,1);return Math.max(1,Math.min(52,Math.ceil(((d-s)/86400000+s.getDay()+1)/7)));}
+function _inbCurQuarter(){try{var q=getQ();if(/^Q[1-4]$/.test(q))return q;}catch(e){}return _inbQuarterOf(_inbCurWeek());}
+function _inbRowOf(yr,week){var yd=_inbYearData(yr);if(!yd)return null;for(var i=0;i<yd.rows.length;i++){if(yd.rows[i].week===week)return yd.rows[i];}return null;}
+function _inbValByName(yr,week,chName){var yd=_inbYearData(yr);if(!yd)return null;var row=_inbRowOf(yr,week);if(!row)return 0;if(chName==null)return row.vals.reduce(function(a,b){return a+(Number(b)||0);},0);var ci=yd.categories.indexOf(chName);if(ci<0)return 0;return Number(row.vals[ci])||0;}
+function _inbWeekVal(week,chIdx){var yd=_inbActive(),row=null;for(var i=0;i<yd.rows.length;i++){if(yd.rows[i].week===week){row=yd.rows[i];break;}}if(!row)return 0;if(chIdx<0)return row.vals.reduce(function(a,b){return a+(Number(b)||0);},0);return Number(row.vals[chIdx])||0;}
+function _inbTotalsByCat(weekFilter){var yd=_inbActive(),cats=yd.categories||[],tot=new Array(cats.length).fill(0);(yd.rows||[]).forEach(function(row){if(weekFilter(row.week))row.vals.forEach(function(v,i){tot[i]+=Number(v)||0;});});return tot;}
+function _inbCmpSpec(){
+  if(_inbCompare==='none')return null;
+  var inb=_inbInit(),AY=inb.activeYear,mode=_inbCompare;
+  if(_inbView==='week'){
+    var W=_inbWeek;
+    if(mode==='yoy')return {year:AY-1,mapWeek:function(w){return w;},periodWeeks:[W],label:'Wk '+W+' '+(AY-1),overlay:true,available:(_inbYearData(AY-1)!=null)};
+    return {year:AY,mapWeek:function(w){return w;},periodWeeks:(W-1>=1?[W-1]:[]),label:(W-1>=1?'Wk '+(W-1):'previous'),overlay:false,available:(W-1>=1)};
+  }
+  if(_inbView==='quarter'){
+    var Q=_inbQuarter,order=['Q1','Q2','Q3','Q4'],qi=order.indexOf(Q);
+    if(mode==='yoy')return {year:AY-1,mapWeek:function(w){return w;},periodWeeks:_inbWeeksInQuarter(Q),label:Q+' '+(AY-1),overlay:true,available:(_inbYearData(AY-1)!=null)};
+    if(qi>0){var pQ=order[qi-1],disp=_inbWeeksInQuarter(Q),prev=_inbWeeksInQuarter(pQ),map={};disp.forEach(function(w,i){map[w]=prev[i];});return {year:AY,mapWeek:function(w){return map[w];},periodWeeks:prev,label:pQ+' '+AY,overlay:true,available:(_inbYearData(AY)!=null)};}
+    var d1=_inbWeeksInQuarter('Q1'),p4=_inbWeeksInQuarter('Q4'),m4={};d1.forEach(function(w,i){m4[w]=p4[i];});return {year:AY-1,mapWeek:function(w){return m4[w];},periodWeeks:p4,label:'Q4 '+(AY-1),overlay:true,available:(_inbYearData(AY-1)!=null)};
+  }
+  return {year:AY-1,mapWeek:function(w){return w;},periodWeeks:null,label:String(AY-1),overlay:true,available:(_inbYearData(AY-1)!=null)};
 }
-function _inbChartSVG(data,highlight){
+function _inbCmpTotal(spec,chName){if(!spec||!spec.available)return null;var yd=_inbYearData(spec.year);if(!yd)return null;var weeks=spec.periodWeeks!=null?spec.periodWeeks:yd.rows.map(function(r){return r.week;});var t=0;weeks.forEach(function(w){var v=_inbValByName(spec.year,w,chName);if(v!=null)t+=v;});return t;}
+function _inbDeltaCell(cur,cmp){
+  if(cmp==null)return '<td style="text-align:right;color:#6b7280;">n/a</td>';
+  if(cmp===0)return '<td style="text-align:right;color:#8EEBD1;font-weight:700;">'+(cur>0?'new':'—')+'</td>';
+  var pct=(cur-cmp)/cmp*100,up=pct>=0,col=up?'#47D16C':'#F08C8C';
+  return '<td style="text-align:right;font-weight:700;color:'+col+';" title="prior: '+cmp.toLocaleString()+'">'+(up?'▲':'▼')+' '+Math.abs(pct).toFixed(0)+'%</td>';
+}
+function _inbRenderChart(spec){
+  var inb=_inbInit(),ay=_inbActive(),ch=_inbChannel,chName=(ch<0?null:(ay.categories[ch]||null)),chLabel=(ch<0?'All channels':(ay.categories[ch]||'Channel'));
+  var weeks,highlight=null,scopeLabel;
+  if(_inbView==='year'){var ws=(ay.rows||[]).map(function(r){return r.week;}),maxW=ws.length?Math.max.apply(null,ws):1;weeks=[];for(var w=1;w<=maxW;w++)weeks.push(w);scopeLabel=inb.activeYear+' full year';}
+  else if(_inbView==='quarter'){weeks=_inbWeeksInQuarter(_inbQuarter);scopeLabel=_inbQuarter+' '+inb.activeYear;}
+  else{weeks=_inbWeeksInQuarter(_inbQuarterOf(_inbWeek));highlight=_inbWeek;scopeLabel='Week '+_inbWeek+' in context ('+_inbQuarterOf(_inbWeek)+' '+inb.activeYear+')';}
+  var data=weeks.map(function(w){return {w:w,v:_inbWeekVal(w,ch)};});
+  var cmp=null;
+  if(spec&&spec.overlay&&spec.available){var cvals=weeks.map(function(w){var mw=spec.mapWeek(w);if(mw==null)return null;var v=_inbValByName(spec.year,mw,chName);return v==null?null:v;});cmp={values:cvals,label:spec.label};}
+  var peak=data.reduce(function(m,d){return d.v>m.v?d:m;},{w:null,v:-1});
+  var legend=cmp?'<span class="inb-leg"><i></i>'+inb.activeYear+'<i class="inb-leg-b"></i>'+_inbEsc(cmp.label)+'</span>':'';
+  var head='<div class="inb-chart-head"><div class="inb-chart-title">Weekly trend <span>· '+_inbEsc(chLabel)+' · '+_inbEsc(scopeLabel)+'</span></div>'+legend+(peak.w!=null&&peak.v>0?'<div class="inb-chart-peak">Peak: W'+peak.w+' ('+peak.v.toLocaleString()+')</div>':'')+'</div>';
+  return '<div class="inb-chart">'+head+_inbChartSVG(data,highlight,cmp)+'</div>';
+}
+function _inbChartSVG(data,highlight,cmp){
   var W=760,H=210,padL=42,padR=14,padT=14,padB=26,plotW=W-padL-padR,plotH=H-padT-padB;
-  var maxV=1;data.forEach(function(d){if(d.v>maxV)maxV=d.v;});
+  var maxV=1;data.forEach(function(d){if(d.v>maxV)maxV=d.v;});if(cmp)cmp.values.forEach(function(v){if(v!=null&&v>maxV)maxV=v;});
   var pow=Math.pow(10,Math.floor(Math.log10(maxV))),n=maxV/pow,f=(n<=1?1:n<=1.5?1.5:n<=2?2:n<=3?3:n<=5?5:n<=7?7:10),niceMax=f*pow;if(niceMax<4)niceMax=4;
   function X(i){return data.length>1?(padL+i/(data.length-1)*plotW):(padL+plotW/2);}
   function Y(v){return padT+plotH-(v/niceMax)*plotH;}
   var pts=data.map(function(d,i){return X(i).toFixed(1)+','+Y(d.v).toFixed(1);});
   var line=pts.length?('M'+pts.join(' L')):'';
   var area=pts.length?('M'+X(0).toFixed(1)+','+(padT+plotH)+' L'+pts.join(' L')+' L'+X(data.length-1).toFixed(1)+','+(padT+plotH)+' Z'):'';
+  var cmpLine='';
+  if(cmp){var cp=[];cmp.values.forEach(function(v,i){if(v!=null)cp.push(X(i).toFixed(1)+','+Y(v).toFixed(1));});cmpLine=cp.length>1?('<path d="M'+cp.join(' L')+'" fill="none" stroke="#FFB020" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round" stroke-linecap="round" opacity=".92"/>'):'';}
   var grid='',ylabels='';for(var g=0;g<=4;g++){var gv=niceMax*g/4,gy=Y(gv).toFixed(1);grid+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.07)" stroke-width="1"/>';ylabels+='<text x="'+(padL-6)+'" y="'+(parseFloat(gy)+3)+'" text-anchor="end" font-size="9" fill="#7E8AA8">'+Math.round(gv).toLocaleString()+'</text>';}
   var step=Math.max(1,Math.ceil(data.length/8)),xlabels='';data.forEach(function(d,i){if(i%step===0||i===data.length-1){xlabels+='<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9" fill="#7E8AA8">W'+d.w+'</text>';}});
   var dots=data.map(function(d,i){var hl=(highlight!=null&&d.w===highlight);return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(d.v).toFixed(1)+'" r="'+(hl?5:2.6)+'" fill="'+(hl?'#FF5B2E':'#22D3EE')+'"'+(hl?' stroke="#fff" stroke-width="1.5"':'')+'><title>Week '+d.w+': '+d.v.toLocaleString()+'</title></circle>';}).join('');
@@ -4485,50 +4536,61 @@ function _inbChartSVG(data,highlight){
     +grid+ylabels
     +(area?'<path d="'+area+'" fill="url(#inbArea)"/>':'')
     +(line?'<path d="'+line+'" fill="none" stroke="url(#inbLine)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>':'')
-    +dots+xlabels+'</svg>';
+    +cmpLine+dots+xlabels+'</svg>';
 }
 function renderInbound(){
-  var inb=_inbInit(), host=document.getElementById('inbBody');if(!host)return;
-  var urlEl=document.getElementById('inbSheetUrl');if(urlEl&&document.activeElement!==urlEl)urlEl.value=inb.sheetUrl||'';
-  var lastEl=document.getElementById('inbLastFetched');if(lastEl)lastEl.textContent=inb.lastFetched?('Last refreshed '+new Date(inb.lastFetched).toLocaleString()):'Not connected yet';
-  if(!inb.rows.length){host.innerHTML='<div class="inb-empty">No data yet. Paste your published Google Sheet CSV link above and click <strong>Refresh</strong> to pull your inbound activity.</div>';return;}
-  var weeksWithData=inb.rows.map(function(r){return r.week;});
-  if(_inbWeek==null||weeksWithData.indexOf(_inbWeek)<0)_inbWeek=weeksWithData[weeksWithData.length-1];
-  if(_inbQuarter==null)_inbQuarter=_inbQuarterOf(_inbWeek);
-  var cats=inb.categories, html='';
+  var inb=_inbInit(), ay=_inbActive(), host=document.getElementById('inbBody');if(!host)return;
+  var urlEl=document.getElementById('inbSheetUrl');if(urlEl&&document.activeElement!==urlEl)urlEl.value=ay.sheetUrl||'';
+  var lastEl=document.getElementById('inbLastFetched');if(lastEl)lastEl.textContent=(ay.lastFetched?('Last refreshed '+new Date(ay.lastFetched).toLocaleString()):'Not connected yet')+' · year '+inb.activeYear;
+  var yearBar=document.getElementById('inbYearBar');
+  if(yearBar){var ys=_inbYears();yearBar.innerHTML='<span class="inb-yb-l">Year</span><select class="inb-sel" onchange="_inbSetActiveYear(this.value)">'+ys.map(function(y){var yd=_inbYearData(y);var has=yd&&yd.rows&&yd.rows.length;return '<option value="'+y+'"'+(y===inb.activeYear?' selected':'')+'>'+y+(has?'':' (empty)')+'</option>';}).join('')+'</select><button class="inb-yb-add" onclick="_inbAddYear()">+ Add year</button>';}
+  if(!ay.rows.length){host.innerHTML='<div class="inb-empty">No data yet for '+inb.activeYear+'. Paste the published Google Sheet CSV link above and click <strong>Refresh</strong>. Use <strong>+ Add year</strong> to track more years for year-over-year comparisons.</div>';return;}
+  var cats=ay.categories, weeksWithData=ay.rows.map(function(r){return r.week;});
+  if(_inbWeek==null){var cw=_inbCurWeek();if(weeksWithData.indexOf(cw)>=0){_inbWeek=cw;}else{var leq=weeksWithData.filter(function(w){return w<=cw;});_inbWeek=leq.length?leq[leq.length-1]:weeksWithData[weeksWithData.length-1];}}
+  if(weeksWithData.indexOf(_inbWeek)<0)_inbWeek=weeksWithData[weeksWithData.length-1];
+  if(_inbQuarter==null)_inbQuarter=_inbCurQuarter();
+  var html='';
   html+='<div class="inb-toolbar"><div class="inb-toggle">'+['week','quarter','year'].map(function(v){return '<button type="button" class="inb-tab'+(_inbView===v?' active':'')+'" onclick="_inbSetView(\''+v+'\')">'+v.charAt(0).toUpperCase()+v.slice(1)+'</button>';}).join('')+'</div>';
-  if(_inbView==='week'){html+='<select class="inb-sel" onchange="_inbSetWeek(this.value)">'+weeksWithData.map(function(w){return '<option value="'+w+'"'+(w===_inbWeek?' selected':'')+'>Week '+w+' \u00b7 '+_inbQuarterOf(w)+'</option>';}).join('')+'</select>';}
-  else if(_inbView==='quarter'){html+='<select class="inb-sel" onchange="_inbSetQuarter(this.value)">'+['Q1','Q2','Q3','Q4'].map(function(q){return '<option value="'+q+'"'+(q===_inbQuarter?' selected':'')+'>'+q+' '+inb.year+'</option>';}).join('')+'</select>';}
-  else{html+='<span class="inb-yearlbl">'+inb.year+' \u00b7 full year</span>';}
+  if(_inbView==='week'){html+='<select class="inb-sel" onchange="_inbSetWeek(this.value)">'+weeksWithData.map(function(w){return '<option value="'+w+'"'+(w===_inbWeek?' selected':'')+'>Week '+w+' · '+_inbQuarterOf(w)+'</option>';}).join('')+'</select>';}
+  else if(_inbView==='quarter'){html+='<select class="inb-sel" onchange="_inbSetQuarter(this.value)">'+['Q1','Q2','Q3','Q4'].map(function(q){return '<option value="'+q+'"'+(q===_inbQuarter?' selected':'')+'>'+q+' '+inb.activeYear+'</option>';}).join('')+'</select>';}
+  else{html+='<span class="inb-yearlbl">'+inb.activeYear+' · full year</span>';}
   html+='<select class="inb-sel" onchange="_inbSetChannel(this.value)"><option value="-1"'+(_inbChannel<0?' selected':'')+'>All channels (total)</option>'+cats.map(function(c,i){return '<option value="'+i+'"'+(_inbChannel===i?' selected':'')+'>'+_inbEsc(c)+'</option>';}).join('')+'</select>';
+  html+='<select class="inb-sel" onchange="_inbSetCompare(this.value)"><option value="none"'+(_inbCompare==='none'?' selected':'')+'>Compare: off</option><option value="prev"'+(_inbCompare==='prev'?' selected':'')+'>vs previous period</option><option value="yoy"'+(_inbCompare==='yoy'?' selected':'')+'>vs same period last year</option></select>';
   html+='</div>';
   var periodFilter, periodLabel;
   if(_inbView==='week'){var wsel=_inbWeek;periodFilter=function(x){return x===wsel;};periodLabel='Week '+wsel+' ('+_inbQuarterOf(wsel)+')';}
-  else if(_inbView==='quarter'){var qsel=_inbQuarter;periodFilter=function(x){return _inbQuarterOf(x)===qsel;};periodLabel=qsel+' '+inb.year;}
-  else{periodFilter=function(){return true;};periodLabel=inb.year+' full year';}
+  else if(_inbView==='quarter'){var qsel=_inbQuarter;periodFilter=function(x){return _inbQuarterOf(x)===qsel;};periodLabel=qsel+' '+inb.activeYear;}
+  else{periodFilter=function(){return true;};periodLabel=inb.activeYear+' full year';}
   var totals=_inbTotalsByCat(periodFilter), grand=totals.reduce(function(a,b){return a+b;},0), maxCat=0, maxIdx=-1;
   totals.forEach(function(v,i){if(v>maxCat){maxCat=v;maxIdx=i;}});
+  var spec=_inbCmpSpec();
+  var kpiDeltaSub='';
+  if(spec){if(spec.available){var cg=_inbCmpTotal(spec,null);if(cg!=null){if(cg===0){kpiDeltaSub=' · '+(grand>0?'new vs ':'— vs ')+_inbEsc(spec.label);}else{var pp=(grand-cg)/cg*100,uu=pp>=0;kpiDeltaSub=' · <span style="color:'+(uu?'#47D16C':'#F08C8C')+';font-weight:800;">'+(uu?'▲':'▼')+' '+Math.abs(pp).toFixed(0)+'%</span> vs '+_inbEsc(spec.label);}}}else{kpiDeltaSub=' · <span style="color:#9BA6C4;">no '+_inbEsc(spec.label)+' data</span>';}}
   html+='<div class="inb-kpis">'
-    +'<div class="inb-kpi"><div class="inb-kpi-l">Total inbound</div><div class="inb-kpi-v">'+grand.toLocaleString()+'</div><div class="inb-kpi-s">'+_inbEsc(periodLabel)+'</div></div>'
-    +'<div class="inb-kpi"><div class="inb-kpi-l">Top channel</div><div class="inb-kpi-v" style="font-size:17px;line-height:1.25;">'+(maxIdx>=0?_inbEsc(cats[maxIdx]):'\u2014')+'</div><div class="inb-kpi-s">'+(maxIdx>=0?(maxCat.toLocaleString()+' \u00b7 '+(grand>0?Math.round(maxCat/grand*100):0)+'% of total'):'')+'</div></div>'
-    +'<div class="inb-kpi"><div class="inb-kpi-l">Channels tracked</div><div class="inb-kpi-v">'+cats.length+'</div><div class="inb-kpi-s">from your sheet</div></div>'
+    +'<div class="inb-kpi"><div class="inb-kpi-l">Total inbound</div><div class="inb-kpi-v">'+grand.toLocaleString()+'</div><div class="inb-kpi-s">'+_inbEsc(periodLabel)+kpiDeltaSub+'</div></div>'
+    +'<div class="inb-kpi"><div class="inb-kpi-l">Top channel</div><div class="inb-kpi-v" style="font-size:17px;line-height:1.25;">'+(maxIdx>=0?_inbEsc(cats[maxIdx]):'—')+'</div><div class="inb-kpi-s">'+(maxIdx>=0?(maxCat.toLocaleString()+' · '+(grand>0?Math.round(maxCat/grand*100):0)+'% of total'):'')+'</div></div>'
+    +'<div class="inb-kpi"><div class="inb-kpi-l">Channels tracked</div><div class="inb-kpi-v">'+cats.length+'</div><div class="inb-kpi-s">'+inb.activeYear+' sheet</div></div>'
     +'</div>';
-  html+=_inbRenderChart();
+  html+=_inbRenderChart(spec);
+  var cmpHdr=spec?('<th style="text-align:right;'+(spec.available?'':'color:#9BA6C4;')+'">vs '+_inbEsc(spec.label)+'</th>'):'';
   if(_inbView==='week'){
-    var bodyW=cats.map(function(c,i){var v=totals[i],pct=maxCat>0?(v/maxCat*100):0;return '<tr><td>'+_inbEsc(c)+'</td><td style="text-align:right;font-weight:700;">'+v.toLocaleString()+'</td><td class="inb-barcell"><span class="inb-bar" style="width:'+pct+'%"></span></td></tr>';}).join('');
-    html+='<div class="inb-tablewrap"><table class="inb-table"><thead><tr><th>Channel</th><th style="text-align:right;">Quantity</th><th>Share</th></tr></thead><tbody>'+bodyW+'<tr class="inb-total"><td>Total</td><td style="text-align:right;">'+grand.toLocaleString()+'</td><td></td></tr></tbody></table></div>';
+    var bodyW=cats.map(function(c,i){var v=totals[i],pct=maxCat>0?(v/maxCat*100):0;var dc=spec?_inbDeltaCell(v,_inbCmpTotal(spec,c)):'';return '<tr><td>'+_inbEsc(c)+'</td><td style="text-align:right;font-weight:700;">'+v.toLocaleString()+'</td><td class="inb-barcell"><span class="inb-bar" style="width:'+pct+'%"></span></td>'+dc+'</tr>';}).join('');
+    var totDc=spec?_inbDeltaCell(grand,_inbCmpTotal(spec,null)):'';
+    html+='<div class="inb-tablewrap"><table class="inb-table"><thead><tr><th>Channel</th><th style="text-align:right;">Quantity</th><th>Share</th>'+cmpHdr+'</tr></thead><tbody>'+bodyW+'<tr class="inb-total"><td>Total</td><td style="text-align:right;">'+grand.toLocaleString()+'</td><td></td>'+totDc+'</tr></tbody></table></div>';
   }else{
     var cols, colLabel, colFilter;
     if(_inbView==='quarter'){cols=_inbWeeksInQuarter(_inbQuarter);colLabel=function(w){return 'W'+w;};colFilter=function(w){return function(x){return x===w;};};}
     else{cols=['Q1','Q2','Q3','Q4'];colLabel=function(q){return q;};colFilter=function(q){return function(x){return _inbQuarterOf(x)===q;};};}
     var perCol=cols.map(function(co){return _inbTotalsByCat(colFilter(co));});
-    var head='<tr><th>Channel</th>'+cols.map(function(co){return '<th style="text-align:right;">'+colLabel(co)+'</th>';}).join('')+'<th style="text-align:right;">Total</th></tr>';
+    var head='<tr><th>Channel</th>'+cols.map(function(co){return '<th style="text-align:right;">'+colLabel(co)+'</th>';}).join('')+'<th style="text-align:right;">Total</th>'+cmpHdr+'</tr>';
     var bodyM=cats.map(function(c,ci){
-      var rowTot=0, cells=cols.map(function(co,coi){var t=perCol[coi][ci];rowTot+=t;return '<td style="text-align:right;'+(t===0?'color:#6b7280;':'')+'">'+(t?t.toLocaleString():'\u2013')+'</td>';}).join('');
-      return '<tr><td>'+_inbEsc(c)+'</td>'+cells+'<td style="text-align:right;font-weight:700;">'+rowTot.toLocaleString()+'</td></tr>';
+      var rowTot=0, cells=cols.map(function(co,coi){var t=perCol[coi][ci];rowTot+=t;return '<td style="text-align:right;'+(t===0?'color:#6b7280;':'')+'">'+(t?t.toLocaleString():'–')+'</td>';}).join('');
+      var dc=spec?_inbDeltaCell(rowTot,_inbCmpTotal(spec,c)):'';
+      return '<tr><td>'+_inbEsc(c)+'</td>'+cells+'<td style="text-align:right;font-weight:700;">'+rowTot.toLocaleString()+'</td>'+dc+'</tr>';
     }).join('');
     var colTot=cols.map(function(co,coi){return perCol[coi].reduce(function(a,b){return a+b;},0);});
-    var foot='<tr class="inb-total"><td>Total</td>'+colTot.map(function(t){return '<td style="text-align:right;">'+t.toLocaleString()+'</td>';}).join('')+'<td style="text-align:right;">'+grand.toLocaleString()+'</td></tr>';
+    var totDc2=spec?_inbDeltaCell(grand,_inbCmpTotal(spec,null)):'';
+    var foot='<tr class="inb-total"><td>Total</td>'+colTot.map(function(t){return '<td style="text-align:right;">'+t.toLocaleString()+'</td>';}).join('')+'<td style="text-align:right;">'+grand.toLocaleString()+'</td>'+totDc2+'</tr>';
     html+='<div class="inb-tablewrap"><table class="inb-table"><thead>'+head+'</thead><tbody>'+bodyM+foot+'</tbody></table></div>';
   }
   host.innerHTML=html;
