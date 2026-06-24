@@ -2401,6 +2401,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
   <button class="tab" onclick="gt('reports',this)">Reports</button>
   <button class="tab" onclick="gt('prodintel',this)">&#128202; Production intelligence</button>
   <button class="tab" onclick="gt('cknow',this)">&#129504; Company knowledge</button>
+  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>
   <button class="tab" onclick="gt('history',this)" id="historyTab">&#x1F4CB; Report history</button>
   <button class="tab" onclick="gt('lb',this)">Leaderboard</button>
   <button class="tab" onclick="gt('daily',this)">&#128197; Daily sales</button>
@@ -3864,6 +3865,58 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
 </div>
 
 
+<style>
+.inb-hero{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:radial-gradient(circle at 10% 0%,rgba(34,211,238,.20),transparent 38%),linear-gradient(135deg,rgba(22,26,46,.96),rgba(10,16,31,.94));box-shadow:0 18px 50px rgba(0,0,0,.26);padding:22px 24px;margin-bottom:16px;}
+.inb-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;color:#8EEBD1;margin-bottom:7px;}
+.inb-hero h1{margin:0 0 6px;color:#fff;font-size:26px;font-weight:950;letter-spacing:-.04em;}
+.inb-hero p{margin:0;color:#A8B5D9;font-size:12.5px;line-height:1.5;max-width:700px;}
+.inb-conn{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px;}
+.inb-conn input{flex:1;min-width:280px;font-size:12px;padding:9px 12px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(0,0,0,.25);color:#fff;font-family:inherit;}
+.inb-btn{font-size:12px;font-weight:800;padding:9px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(135deg,#22D3EE,#8B5CF6);color:#fff;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.inb-btn:hover{filter:brightness(1.08);}
+.inb-status{font-size:11px;color:#A8B5D9;margin-top:8px;min-height:14px;}
+.inb-panel{border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02)),rgba(19,24,41,.82);box-shadow:0 18px 45px rgba(0,0,0,.22);padding:18px;}
+.inb-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.inb-toggle{display:inline-flex;border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;background:rgba(0,0,0,.2);}
+.inb-tab{font-size:12px;font-weight:800;padding:8px 16px;border:0;background:transparent;color:#A8B5D9;cursor:pointer;font-family:inherit;}
+.inb-tab.active{background:linear-gradient(135deg,#FF5B2E,#8B5CF6);color:#fff;}
+.inb-sel{font-size:12px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(0,0,0,.25);color:#fff;font-family:inherit;cursor:pointer;}
+.inb-yearlbl{font-size:12px;color:#DAD1FF;font-weight:700;}
+.inb-kpis{display:grid;grid-template-columns:repeat(3,minmax(140px,1fr));gap:12px;margin-bottom:16px;}
+.inb-kpi{border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.035);padding:14px 16px;}
+.inb-kpi-l{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:#A8B5D9;margin-bottom:7px;}
+.inb-kpi-v{font-size:24px;font-weight:950;color:#fff;letter-spacing:-.03em;line-height:1.1;}
+.inb-kpi-s{font-size:11px;color:#9BA6C4;margin-top:4px;}
+.inb-tablewrap{overflow-x:auto;}
+.inb-table{width:100%;border-collapse:collapse;font-size:12px;}
+.inb-table th{font-size:10px;text-align:left;text-transform:uppercase;letter-spacing:.07em;color:#A8B5D9;background:rgba(255,255,255,.04);padding:9px 11px;border-bottom:1px solid rgba(255,255,255,.10);white-space:nowrap;}
+.inb-table td{padding:9px 11px;border-bottom:1px solid rgba(255,255,255,.06);color:#EEF2FF;white-space:nowrap;}
+.inb-table tr:hover td{background:rgba(139,92,246,.07);}
+.inb-table .inb-total td{font-weight:900;color:#fff;background:rgba(139,92,246,.10);border-top:1px solid rgba(255,255,255,.14);}
+.inb-barcell{width:42%;}
+.inb-bar{display:block;height:9px;border-radius:999px;background:linear-gradient(90deg,#22D3EE,#8B5CF6);min-width:2px;}
+.inb-empty{padding:34px;text-align:center;color:#A8B5D9;font-size:13px;border:1px dashed rgba(255,255,255,.14);border-radius:16px;}
+.inb-chart{margin-bottom:18px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.025);padding:14px 14px 6px;}
+.inb-chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.inb-chart-title{font-size:12px;font-weight:800;color:#EEF2FF;}
+.inb-chart-title span{font-weight:600;color:#9BA6C4;font-size:11px;}
+.inb-chart-peak{font-size:10px;font-weight:800;color:#8EEBD1;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.25);border-radius:999px;padding:3px 9px;}
+@media(max-width:760px){.inb-kpis{grid-template-columns:1fr;}}
+</style>
+<div id="pg-inbound" class="page">
+  <div class="inb-hero">
+    <div class="inb-kicker">&#128229; Inbound Intelligence</div>
+    <h1>Inbound Leads &amp; Activity</h1>
+    <p>Live inbound counts &mdash; calls, web orders, quotes, walk-ins and more &mdash; pulled straight from your published Google Sheet. Slice by week, quarter, or full year.</p>
+    <div class="inb-conn">
+      <input id="inbSheetUrl" type="url" placeholder="Paste published Google Sheet CSV link (File &rarr; Share &rarr; Publish to web &rarr; CSV)" oninput="saveInboundSheetUrl()">
+      <button class="inb-btn" onclick="refreshInbound()">&#8635; Refresh</button>
+    </div>
+    <div class="inb-status" id="inbStatus"></div>
+    <div class="inb-status" id="inbLastFetched" style="margin-top:2px;"></div>
+  </div>
+  <div class="inb-panel"><div id="inbBody"></div></div>
+</div>
 <div id="pg-admin" class="page admin-system-page">
   <section class="admin-sys-hero">
     <div>
@@ -4308,8 +4361,178 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,mgr:renderManagerCommandCenter,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,mgr:renderManagerCommandCenter,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
+/* ===== v343 Inbound Leads — Google Sheet CSV intelligence (week / quarter / year) ===== */
+var INBOUND_STORE='salesTracker_inbound_v1';
+var _inbState=null, _inbView='week', _inbWeek=null, _inbQuarter=null, _inbChannel=-1;
+function _inbEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function _inbInit(){
+  if(_inbState)return _inbState;
+  try{var raw=localStorage.getItem(INBOUND_STORE);_inbState=raw?JSON.parse(raw):null;}catch(e){_inbState=null;}
+  if(!_inbState)_inbState={sheetUrl:'',categories:[],rows:[],lastFetched:null,year:(new Date()).getFullYear()};
+  return _inbState;
+}
+function _inbSaveState(){try{localStorage.setItem(INBOUND_STORE,JSON.stringify(_inbState));}catch(e){}}
+function _inbQuarterOf(w){w=Number(w);if(w<=13)return 'Q1';if(w<=26)return 'Q2';if(w<=39)return 'Q3';return 'Q4';}
+function _inbWeeksInQuarter(q){var s={Q1:1,Q2:14,Q3:27,Q4:40}[q]||1,e={Q1:13,Q2:26,Q3:39,Q4:52}[q]||13,a=[];for(var i=s;i<=e;i++)a.push(i);return a;}
+function parseInboundCSV(text){
+  var raw=String(text).split(/\r?\n/).map(function(l){return parseCSVLine(l);});
+  var subIdx=-1;
+  for(var i=0;i<raw.length;i++){var low=raw[i].map(function(x){return String(x).trim().toLowerCase();});if(low.indexOf('week')>=0&&low.indexOf('quantity')>=0){subIdx=i;break;}}
+  if(subIdx<0)throw new Error('Could not find a "Week / Quantity" header row in the sheet.');
+  var nameRow=subIdx>0?raw[subIdx-1]:[], sub=raw[subIdx].map(function(x){return String(x).trim().toLowerCase();}), cats=[];
+  for(var c=0;c<sub.length;c++){
+    if(sub[c]==='quantity'){
+      var weekCol=c-1, name='';
+      for(var k=weekCol;k>=0;k--){if(nameRow[k]!=null&&String(nameRow[k]).trim()){name=String(nameRow[k]).trim();break;}}
+      if(!name)name='Category '+(cats.length+1);
+      cats.push({name:name,weekCol:weekCol<0?c:weekCol,qtyCol:c});
+    }
+  }
+  if(!cats.length)throw new Error('No "Quantity" columns found — check the sheet layout.');
+  var weekMap={};
+  for(var r=subIdx+1;r<raw.length;r++){
+    var row=raw[r];if(!row)continue;
+    cats.forEach(function(cat,ci){
+      var wk=parseInt(String(row[cat.weekCol]==null?'':row[cat.weekCol]).trim(),10);
+      if(isNaN(wk))return;
+      var q=parseFloat(String(row[cat.qtyCol]==null?'':row[cat.qtyCol]).replace(/[^0-9.\-]/g,''));
+      if(isNaN(q))q=0;
+      if(!weekMap[wk])weekMap[wk]=new Array(cats.length).fill(0);
+      weekMap[wk][ci]=q;
+    });
+  }
+  var weeks=Object.keys(weekMap).map(Number).sort(function(a,b){return a-b;});
+  return {categories:cats.map(function(c){return c.name;}),rows:weeks.map(function(w){return {week:w,vals:weekMap[w]};})};
+}
+function saveInboundSheetUrl(){var inb=_inbInit();var el=document.getElementById('inbSheetUrl');inb.sheetUrl=el?el.value.trim():'';_inbSaveState();}
+var INBOUND_PROXIES=[
+  function(u){return u;},
+  function(u){return 'https://corsproxy.io/?url='+encodeURIComponent(u);},
+  function(u){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u);}
+];
+async function _inbFetchCSV(url){
+  var lastErr=null, fallback=null;
+  for(var i=0;i<INBOUND_PROXIES.length;i++){
+    try{
+      var res=await fetch(INBOUND_PROXIES[i](url));
+      if(!res.ok)throw new Error('HTTP '+res.status);
+      var text=await res.text();
+      if(!text||!text.trim())throw new Error('empty response');
+      if(/quantity/i.test(text))return {text:text,via:i};
+      if(!fallback)fallback={text:text,via:i};
+    }catch(e){lastErr=e;}
+  }
+  if(fallback)return fallback;
+  throw lastErr||new Error('All fetch attempts failed');
+}
+async function refreshInbound(){
+  var inb=_inbInit(), el=document.getElementById('inbSheetUrl'), st=document.getElementById('inbStatus');
+  var url=(el&&el.value.trim())||inb.sheetUrl||'';
+  if(!url){if(st){st.textContent='Paste your published Google Sheet CSV link above, then click Refresh.';st.style.color='#EF9F27';}return;}
+  if(st){st.textContent='Refreshing from Google Sheet\u2026';st.style.color='#EF9F27';}
+  try{
+    var got=await _inbFetchCSV(url);
+    var parsed=parseInboundCSV(got.text);
+    inb.sheetUrl=url;inb.categories=parsed.categories;inb.rows=parsed.rows;inb.lastFetched=new Date().toISOString();
+    _inbSaveState();
+    if(st){st.textContent='Connected \u2014 '+parsed.categories.length+' channels, '+parsed.rows.length+' weeks loaded'+(got.via>0?' (via fetch relay)':'')+'.';st.style.color='#5DCAA5';}
+    _inbWeek=null;_inbQuarter=null;
+    renderInbound();
+  }catch(err){
+    var m=/failed to fetch|load failed|networkerror|all fetch attempts/i.test(String(err.message))
+      ? 'the browser blocked the request and the backup relays did not answer. Quick check: open your published link in a new browser tab \u2014 if it downloads a CSV, the link is good; then click Refresh again (relays can be briefly busy). If it keeps failing, hosting the tracker on a web URL instead of a local file is the permanent fix.'
+      : err.message;
+    if(st){st.textContent='Could not pull the sheet: '+m;st.style.color='#F09595';}
+  }
+}
+function _inbTotalsByCat(weekFilter){
+  var inb=_inbInit(), tot=new Array(inb.categories.length).fill(0);
+  inb.rows.forEach(function(row){if(weekFilter(row.week))row.vals.forEach(function(v,i){tot[i]+=Number(v)||0;});});
+  return tot;
+}
+function _inbSetView(v){_inbView=v;renderInbound();}
+function _inbSetWeek(w){_inbWeek=Number(w);renderInbound();}
+function _inbSetQuarter(q){_inbQuarter=q;renderInbound();}
+function _inbSetChannel(v){_inbChannel=Number(v);renderInbound();}
+function _inbWeekVal(week,chIdx){var inb=_inbInit(),row=null;for(var i=0;i<inb.rows.length;i++){if(inb.rows[i].week===week){row=inb.rows[i];break;}}if(!row)return 0;if(chIdx<0)return row.vals.reduce(function(a,b){return a+(Number(b)||0);},0);return Number(row.vals[chIdx])||0;}
+function _inbRenderChart(){
+  var inb=_inbInit(), ch=_inbChannel, chLabel=(ch<0?'All channels':(inb.categories[ch]||'Channel'));
+  var weeks, highlight=null, scopeLabel;
+  if(_inbView==='year'){var ws=inb.rows.map(function(r){return r.week;}),maxW=ws.length?Math.max.apply(null,ws):1;weeks=[];for(var w=1;w<=maxW;w++)weeks.push(w);scopeLabel=inb.year+' full year';}
+  else if(_inbView==='quarter'){weeks=_inbWeeksInQuarter(_inbQuarter);scopeLabel=_inbQuarter+' '+inb.year;}
+  else{weeks=_inbWeeksInQuarter(_inbQuarterOf(_inbWeek));highlight=_inbWeek;scopeLabel='Week '+_inbWeek+' in context ('+_inbQuarterOf(_inbWeek)+' '+inb.year+')';}
+  var data=weeks.map(function(w){return {w:w,v:_inbWeekVal(w,ch)};});
+  var peak=data.reduce(function(m,d){return d.v>m.v?d:m;},{w:null,v:-1});
+  var head='<div class="inb-chart-head"><div class="inb-chart-title">Weekly trend <span>\u00b7 '+_inbEsc(chLabel)+' \u00b7 '+_inbEsc(scopeLabel)+'</span></div>'+(peak.w!=null&&peak.v>0?'<div class="inb-chart-peak">Peak: W'+peak.w+' ('+peak.v.toLocaleString()+')</div>':'')+'</div>';
+  return '<div class="inb-chart">'+head+_inbChartSVG(data,highlight)+'</div>';
+}
+function _inbChartSVG(data,highlight){
+  var W=760,H=210,padL=42,padR=14,padT=14,padB=26,plotW=W-padL-padR,plotH=H-padT-padB;
+  var maxV=1;data.forEach(function(d){if(d.v>maxV)maxV=d.v;});
+  var pow=Math.pow(10,Math.floor(Math.log10(maxV))),n=maxV/pow,f=(n<=1?1:n<=1.5?1.5:n<=2?2:n<=3?3:n<=5?5:n<=7?7:10),niceMax=f*pow;if(niceMax<4)niceMax=4;
+  function X(i){return data.length>1?(padL+i/(data.length-1)*plotW):(padL+plotW/2);}
+  function Y(v){return padT+plotH-(v/niceMax)*plotH;}
+  var pts=data.map(function(d,i){return X(i).toFixed(1)+','+Y(d.v).toFixed(1);});
+  var line=pts.length?('M'+pts.join(' L')):'';
+  var area=pts.length?('M'+X(0).toFixed(1)+','+(padT+plotH)+' L'+pts.join(' L')+' L'+X(data.length-1).toFixed(1)+','+(padT+plotH)+' Z'):'';
+  var grid='',ylabels='';for(var g=0;g<=4;g++){var gv=niceMax*g/4,gy=Y(gv).toFixed(1);grid+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.07)" stroke-width="1"/>';ylabels+='<text x="'+(padL-6)+'" y="'+(parseFloat(gy)+3)+'" text-anchor="end" font-size="9" fill="#7E8AA8">'+Math.round(gv).toLocaleString()+'</text>';}
+  var step=Math.max(1,Math.ceil(data.length/8)),xlabels='';data.forEach(function(d,i){if(i%step===0||i===data.length-1){xlabels+='<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9" fill="#7E8AA8">W'+d.w+'</text>';}});
+  var dots=data.map(function(d,i){var hl=(highlight!=null&&d.w===highlight);return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(d.v).toFixed(1)+'" r="'+(hl?5:2.6)+'" fill="'+(hl?'#FF5B2E':'#22D3EE')+'"'+(hl?' stroke="#fff" stroke-width="1.5"':'')+'><title>Week '+d.w+': '+d.v.toLocaleString()+'</title></circle>';}).join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">'
+    +'<defs><linearGradient id="inbArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(34,211,238,.34)"/><stop offset="100%" stop-color="rgba(139,92,246,.02)"/></linearGradient><linearGradient id="inbLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22D3EE"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>'
+    +grid+ylabels
+    +(area?'<path d="'+area+'" fill="url(#inbArea)"/>':'')
+    +(line?'<path d="'+line+'" fill="none" stroke="url(#inbLine)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>':'')
+    +dots+xlabels+'</svg>';
+}
+function renderInbound(){
+  var inb=_inbInit(), host=document.getElementById('inbBody');if(!host)return;
+  var urlEl=document.getElementById('inbSheetUrl');if(urlEl&&document.activeElement!==urlEl)urlEl.value=inb.sheetUrl||'';
+  var lastEl=document.getElementById('inbLastFetched');if(lastEl)lastEl.textContent=inb.lastFetched?('Last refreshed '+new Date(inb.lastFetched).toLocaleString()):'Not connected yet';
+  if(!inb.rows.length){host.innerHTML='<div class="inb-empty">No data yet. Paste your published Google Sheet CSV link above and click <strong>Refresh</strong> to pull your inbound activity.</div>';return;}
+  var weeksWithData=inb.rows.map(function(r){return r.week;});
+  if(_inbWeek==null||weeksWithData.indexOf(_inbWeek)<0)_inbWeek=weeksWithData[weeksWithData.length-1];
+  if(_inbQuarter==null)_inbQuarter=_inbQuarterOf(_inbWeek);
+  var cats=inb.categories, html='';
+  html+='<div class="inb-toolbar"><div class="inb-toggle">'+['week','quarter','year'].map(function(v){return '<button type="button" class="inb-tab'+(_inbView===v?' active':'')+'" onclick="_inbSetView(\''+v+'\')">'+v.charAt(0).toUpperCase()+v.slice(1)+'</button>';}).join('')+'</div>';
+  if(_inbView==='week'){html+='<select class="inb-sel" onchange="_inbSetWeek(this.value)">'+weeksWithData.map(function(w){return '<option value="'+w+'"'+(w===_inbWeek?' selected':'')+'>Week '+w+' \u00b7 '+_inbQuarterOf(w)+'</option>';}).join('')+'</select>';}
+  else if(_inbView==='quarter'){html+='<select class="inb-sel" onchange="_inbSetQuarter(this.value)">'+['Q1','Q2','Q3','Q4'].map(function(q){return '<option value="'+q+'"'+(q===_inbQuarter?' selected':'')+'>'+q+' '+inb.year+'</option>';}).join('')+'</select>';}
+  else{html+='<span class="inb-yearlbl">'+inb.year+' \u00b7 full year</span>';}
+  html+='<select class="inb-sel" onchange="_inbSetChannel(this.value)"><option value="-1"'+(_inbChannel<0?' selected':'')+'>All channels (total)</option>'+cats.map(function(c,i){return '<option value="'+i+'"'+(_inbChannel===i?' selected':'')+'>'+_inbEsc(c)+'</option>';}).join('')+'</select>';
+  html+='</div>';
+  var periodFilter, periodLabel;
+  if(_inbView==='week'){var wsel=_inbWeek;periodFilter=function(x){return x===wsel;};periodLabel='Week '+wsel+' ('+_inbQuarterOf(wsel)+')';}
+  else if(_inbView==='quarter'){var qsel=_inbQuarter;periodFilter=function(x){return _inbQuarterOf(x)===qsel;};periodLabel=qsel+' '+inb.year;}
+  else{periodFilter=function(){return true;};periodLabel=inb.year+' full year';}
+  var totals=_inbTotalsByCat(periodFilter), grand=totals.reduce(function(a,b){return a+b;},0), maxCat=0, maxIdx=-1;
+  totals.forEach(function(v,i){if(v>maxCat){maxCat=v;maxIdx=i;}});
+  html+='<div class="inb-kpis">'
+    +'<div class="inb-kpi"><div class="inb-kpi-l">Total inbound</div><div class="inb-kpi-v">'+grand.toLocaleString()+'</div><div class="inb-kpi-s">'+_inbEsc(periodLabel)+'</div></div>'
+    +'<div class="inb-kpi"><div class="inb-kpi-l">Top channel</div><div class="inb-kpi-v" style="font-size:17px;line-height:1.25;">'+(maxIdx>=0?_inbEsc(cats[maxIdx]):'\u2014')+'</div><div class="inb-kpi-s">'+(maxIdx>=0?(maxCat.toLocaleString()+' \u00b7 '+(grand>0?Math.round(maxCat/grand*100):0)+'% of total'):'')+'</div></div>'
+    +'<div class="inb-kpi"><div class="inb-kpi-l">Channels tracked</div><div class="inb-kpi-v">'+cats.length+'</div><div class="inb-kpi-s">from your sheet</div></div>'
+    +'</div>';
+  html+=_inbRenderChart();
+  if(_inbView==='week'){
+    var bodyW=cats.map(function(c,i){var v=totals[i],pct=maxCat>0?(v/maxCat*100):0;return '<tr><td>'+_inbEsc(c)+'</td><td style="text-align:right;font-weight:700;">'+v.toLocaleString()+'</td><td class="inb-barcell"><span class="inb-bar" style="width:'+pct+'%"></span></td></tr>';}).join('');
+    html+='<div class="inb-tablewrap"><table class="inb-table"><thead><tr><th>Channel</th><th style="text-align:right;">Quantity</th><th>Share</th></tr></thead><tbody>'+bodyW+'<tr class="inb-total"><td>Total</td><td style="text-align:right;">'+grand.toLocaleString()+'</td><td></td></tr></tbody></table></div>';
+  }else{
+    var cols, colLabel, colFilter;
+    if(_inbView==='quarter'){cols=_inbWeeksInQuarter(_inbQuarter);colLabel=function(w){return 'W'+w;};colFilter=function(w){return function(x){return x===w;};};}
+    else{cols=['Q1','Q2','Q3','Q4'];colLabel=function(q){return q;};colFilter=function(q){return function(x){return _inbQuarterOf(x)===q;};};}
+    var perCol=cols.map(function(co){return _inbTotalsByCat(colFilter(co));});
+    var head='<tr><th>Channel</th>'+cols.map(function(co){return '<th style="text-align:right;">'+colLabel(co)+'</th>';}).join('')+'<th style="text-align:right;">Total</th></tr>';
+    var bodyM=cats.map(function(c,ci){
+      var rowTot=0, cells=cols.map(function(co,coi){var t=perCol[coi][ci];rowTot+=t;return '<td style="text-align:right;'+(t===0?'color:#6b7280;':'')+'">'+(t?t.toLocaleString():'\u2013')+'</td>';}).join('');
+      return '<tr><td>'+_inbEsc(c)+'</td>'+cells+'<td style="text-align:right;font-weight:700;">'+rowTot.toLocaleString()+'</td></tr>';
+    }).join('');
+    var colTot=cols.map(function(co,coi){return perCol[coi].reduce(function(a,b){return a+b;},0);});
+    var foot='<tr class="inb-total"><td>Total</td>'+colTot.map(function(t){return '<td style="text-align:right;">'+t.toLocaleString()+'</td>';}).join('')+'<td style="text-align:right;">'+grand.toLocaleString()+'</td></tr>';
+    html+='<div class="inb-tablewrap"><table class="inb-table"><thead>'+head+'</thead><tbody>'+bodyM+foot+'</tbody></table></div>';
+  }
+  host.innerHTML=html;
+}
 const CKNOW_CATS=[
   {key:'sales_process',title:'Sales Process',icon:'\ud83d\udcde',desc:'How leads come in, how reps qualify and close',questions:['How do reps typically find new leads (cold calls, referrals, trade shows, online, walk-ins)?','What does the typical sales cycle look like from first contact to closed order? How long does it usually take?','How do reps qualify prospects? What questions do you teach them to ask early?','What objections come up most often, and how do you handle them?','What deal sizes do you consider small, medium, large? What\'s the average order value?']},
   {key:'order_processing',title:'Order Processing',icon:'\ud83d\udccb',desc:'From quote through art approval to production',questions:['Walk me through how an order goes from quote to production. Who is involved at each step?','Who approves art proofs, and what is the typical turnaround?','What is the standard lead time for orders? When is rush available and how does that work?','How are credit and payment terms set for new customers?','What gets flagged for management review during processing?']},
@@ -15516,7 +15739,7 @@ window.addEventListener('load', function(){
     {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['mgr','Manager Center','🎯'],['year','Year Overview','🗓️'],['lb','Leaderboard','🏆'],['notifs','Notifications','🔔']]},
     {key:'team',icon:'👥',label:'Team Management',open:true,items:[['profiles','Rep Profiles','👤'],['score','Scorecards','⭐'],['perf','Performance','📈'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
     {key:'ops',icon:'📊',label:'Sales Operations',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['art','Art Errors','🎨'],]},
-    {key:'intel',icon:'🧠',label:'Intelligence & Reporting',open:true,items:[['reports','Reports','📄'],['history','Report History','🗂️'],['meeting','Meeting Report','🤝'],['cknow','Company Knowledge','🧠'],['prodintel','Production Intelligence','📊']]},
+    {key:'intel',icon:'🧠',label:'Intelligence & Reporting',open:true,items:[['inbound','Inbound Leads','📥'],['reports','Reports','📄'],['history','Report History','🗂️'],['meeting','Meeting Report','🤝'],['cknow','Company Knowledge','🧠'],['prodintel','Production Intelligence','📊']]},
     {key:'engage',icon:'🎮',label:'Engagement',open:false,items:[['games','Games','🎮'],['gtrack','Game Tracker','📊']]},
     {key:'system',icon:'⚙️',label:'System Control',open:false,items:[['admin','Admin','⚙️']]}
   ];
