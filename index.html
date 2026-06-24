@@ -4268,7 +4268,7 @@ let S={reps:[{name:'Alex M',profile:{hireDate:'2022-03-15',birthday:'1990-07-22'
 let selectedRep=S.reps[0].name;
 
 function gd(k){return S.data[k]||{hours:0,calls:0,orders:0,revenue:0,setSize:0,acctsCalled:0,topSale:0,topSaleCustomer:'',art:0};}
-function sd(k,d){S.data[k]=d;}
+function sd(k,d){if(d&&typeof d==='object'&&d.enteredAt==null)d.enteredAt=Date.now();S.data[k]=d;}
 function repCr(rep,weeks){return S.cms.filter(c=>c.rep===rep&&c.fault==='rep'&&weeks.some(w=>w.key===c.weekKey)).reduce((s,c)=>s+c.amount,0);}
 function repArt(rep,weeks){return S.artErrors.filter(a=>a.rep===rep&&weeks.some(w=>w.key===a.weekKey)).length;}
 function totW(rep,weeks){let t={hours:0,calls:0,orders:0,revenue:0,setSize:0,acctsCalled:0,topSale:0,topSaleCustomer:''},sw=0;weeks.forEach(w=>{let d=gd(rep+'|'+w.key);t.hours+=d.hours||0;t.calls+=d.calls||0;t.orders+=d.orders||0;t.revenue+=d.revenue||0;t.setSize+=d.setSize||0;t.acctsCalled+=d.acctsCalled||0;if((d.topSale||0)>t.topSale){t.topSale=d.topSale||0;t.topSaleCustomer=d.topSaleCustomer||'';}if(d.setSize>0)sw++;});if(sw>0)t.setSize=t.setSize/sw;
@@ -15617,6 +15617,7 @@ window.addEventListener('load', function(){
     var memos=(S.cms||[]).filter(function(c){return c&&reps.has(c.rep)&&weekKeys.has(c.weekKey)&&c.fault==='rep';});
     return {cases:memos.length,cost:memos.reduce(function(sum,c){return sum+Number(c.amount||0);},0)};
   }
+  /* ===== v342 Snapshot card: Live data / Data Entered + timestamp / N-A ===== */
   function renderHero(ctx,totals){
     var revP=pctVal(totals.rev,totals.revGoal);
     var callsActual=Number(totals.calls||0);
@@ -15631,6 +15632,15 @@ window.addEventListener('load', function(){
     var viewCopy=ctx.isFuture?'No data should display until this week occurs.':(ctx.isCurrent?'Current week view.':'Historical snapshot through the selected week.');
     function fval(v){return ctx.isFuture?'—':v;}
     function fsub(v){return ctx.isFuture?'No data yet':v;}
+    // v342 — snapshot status for the SELECTED week: Live data / Data Entered + when / N/A
+    var _snapKey=ctx.key, _snapAny=false, _snapTimes=[];
+    activeReps().forEach(function(r){var e=S.data[r.name+'|'+_snapKey];if(e){_snapAny=true;if(e.enteredAt)_snapTimes.push(Number(e.enteredAt));}});
+    function _snapStamp(ms){try{return new Date(ms).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});}catch(e){return String(new Date(ms));}}
+    var snapVal,snapSub;
+    if(ctx.isFuture){snapVal='Future Week';snapSub='Future week selected';}
+    else if(ctx.isCurrent){snapVal='Live Preview';snapSub='Live data';}
+    else if(_snapAny){snapVal='Data Entered';snapSub=_snapTimes.length?_snapStamp(Math.max.apply(null,_snapTimes)):'Date not recorded';}
+    else{snapVal='N/A';snapSub='No data entered';}
     document.getElementById('wkExecHero').innerHTML='<div class="wk-hero-main"><div class="wk-kicker">Weekly Executive Dashboard</div><h1>'+safe(ctx.q+' '+ctx.yr+' • Week '+ctx.weekNo)+'</h1><p><strong>'+safe(dateLabel)+'</strong> • '+safe(viewLabel)+'. Quarter week '+safe(ctx.quarterWeek)+' of '+safe(ctx.totalWeeks)+'. This dashboard uses weekly uploads, forecast updates, production feed, and management records.</p></div>'+ 
       metric('Revenue',fval(fmtMoney(totals.rev)),fsub(revP+'% of '+fmtMoney(totals.revGoal)),'rgba(139,92,246,.24)','Revenue booked through the selected week from weekly Data Entry compared to the full quarter revenue goal.','metricRevenue')+
       metric('Orders',fval(fmtNum(totals.orders)),fsub('Through selected week'),'rgba(34,211,238,.16)','Total orders from weekly Data Entry through the selected week.','metricOrders')+
@@ -15638,7 +15648,7 @@ window.addEventListener('load', function(){
       metric('Coverage',fval(totals.setSize>0?(coverageP+'%'):fmtNum(totals.accts)),fsub(coverageSub),'rgba(71,209,108,.18)','Customer-set coverage: unique accounts contacted through the selected week divided by assigned customer-set size.','metricCoverage')+
       metric('Art Errors',fval(artRate.toFixed(1)+'%'),fsub(fmtNum(totals.art)+' total errors'),'rgba(255,176,32,.20)','Art errors logged through the selected week divided by orders through the selected week.','metricArtErrors')+
       metric('Credit Memo Cost',fval(fmtMoney(cm.cost)),fsub(cm.cases+' rep-fault cases • '+crRate.toFixed(2)+'% revenue impact'),'rgba(255,91,46,.18)','Rep-fault credit memo dollars from the Credit Memos tab through the selected week. Customer/vendor fault credits are tracked elsewhere but are not counted here for coaching impact.','metricCreditMemos')+
-      metric('Snapshot',viewLabel,ctx.isFuture?'Future week selected':(ctx.isCurrent?'Live data':'Week '+ctx.weekNo+' view'),'rgba(255,71,126,.20)','Shows whether the dashboard is using the current week, a historical week, or a future week. Future weeks intentionally show blank data.','metricSnapshot');
+      metric('Snapshot',snapVal,snapSub,'rgba(255,71,126,.20)','Shows the data status for the selected week: live (current week), previously entered data with the date it was saved, or N/A when no data exists. Future weeks intentionally show blank data.','metricSnapshot');
   }
 
   function renderTimeline(ctx){
@@ -15724,7 +15734,7 @@ window.addEventListener('load', function(){
     metricCoverage:{title:'Coverage',sub:'Executive KPI',body:'<p><strong>What it shows:</strong> percent of assigned customer set contacted through the selected week.</p><ul><li><strong>Source:</strong> <code>acctsCalled</code> and <code>setSize</code> from weekly Data Entry.</li><li><strong>Calculation:</strong> accounts called ÷ assigned customer-set size.</li><li><strong>Use:</strong> customer-base penetration and follow-up discipline.</li></ul>'},
     metricArtErrors:{title:'Art Errors',sub:'Executive KPI',body:'<p><strong>What it shows:</strong> quality risk from the Art Errors tab.</p><ul><li><strong>Source:</strong> <code>S.artErrors</code> matching active reps and selected weeks.</li><li><strong>Calculation:</strong> art errors ÷ orders.</li><li><strong>Use:</strong> identify quality/process coaching opportunities.</li></ul>'},
     metricCreditMemos:{title:'Credit Memo Cost',sub:'Executive KPI',body:'<p><strong>What it shows:</strong> rep-fault credit memo dollars and case count through the selected week.</p><ul><li><strong>Source:</strong> Credit Memos tab, <code>S.cms</code>.</li><li><strong>Calculation:</strong> sum of credit memo amounts where fault is rep and week is included in the selected snapshot.</li><li><strong>Use:</strong> coaching on avoidable mistakes. Customer/vendor fault credits are not counted here.</li></ul>'},
-    metricSnapshot:{title:'Snapshot Status',sub:'Executive KPI',body:'<p><strong>What it shows:</strong> whether the dashboard is live, historical, or future.</p><ul><li><strong>Live Preview:</strong> selected week is the current week.</li><li><strong>Historical Snapshot:</strong> selected week is before the current week.</li><li><strong>Future Week:</strong> selected week has not occurred yet, so dashboard data intentionally shows blank.</li></ul>'},
+    metricSnapshot:{title:'Snapshot Status',sub:'Executive KPI',body:'<p><strong>What it shows:</strong> the data status for the selected week.</p><ul><li><strong>Live data:</strong> the selected week is the current week (live preview).</li><li><strong>Data Entered:</strong> a past week that has saved data, shown with the date and time it was last entered.</li><li><strong>N/A:</strong> a past week with no data entered.</li><li><strong>Future Week:</strong> the week has not occurred yet, so data intentionally shows blank.</li></ul><p style="margin-top:6px;color:var(--color-text-secondary);">Note: weeks last saved before this feature will show "Data Entered - date not recorded" until they are re-saved.</p>'},
     quarterHealth:{title:'Current State of the Business',sub:'Quarter Health',body:'<p>This section converts the scoreboard into color-coded health signals.</p><ul><li><strong>Revenue Health:</strong> revenue compared to paced revenue goal for the selected week.</li><li><strong>Call Health:</strong> logged calls compared to paced call goal.</li><li><strong>Coverage Health:</strong> customer-set coverage through selected week.</li><li><strong>Forecast Health:</strong> projected finish based on selected-week run rate.</li><li><strong>Quality Health:</strong> quality signal driven primarily by art error rate.</li></ul><p>Use this as the quick executive read before coaching conversations.</p>'},
     teamPace:{title:'Team Pace Center',sub:'Team Management',body:'<p>This is the main coaching table. Each row is calculated through the selected week.</p><ul><li><strong>Revenue:</strong> QTD revenue through selected week.</li><li><strong>Revenue Pace:</strong> revenue compared to where the rep should be by this week.</li><li><strong>Calls:</strong> logged calls vs weekly call goal × selected quarter weeks.</li><li><strong>Coverage:</strong> accounts called ÷ assigned set size.</li><li><strong>Score:</strong> existing scorecard model using revenue, coverage, credits, art errors, hours, and HR cap.</li></ul><p>Click a row to open that rep’s profile.</p>'},
     forecastCenter:{title:'Forecast Center',sub:'Forecast',body:'<p>This section estimates where the quarter is headed based on the selected week.</p><ul><li><strong>Projection:</strong> current QTD revenue divided by quarter progress, projected over the full quarter.</li><li><strong>Gap:</strong> full quarter goal minus projected finish.</li><li><strong>Need / Week:</strong> remaining dollars required per remaining week to hit goal.</li><li><strong>Highest/Lowest Forecast Rep:</strong> projected percent to goal for each rep using selected-week run rate.</li></ul><p>This should be treated as a management forecast, not a guarantee.</p>'},
