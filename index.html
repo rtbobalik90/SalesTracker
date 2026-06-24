@@ -553,6 +553,25 @@ body{
 .profile-hero-photo{width:112px;height:112px;border-radius:30px;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;box-shadow:0 22px 50px rgba(0,0,0,.40);border:1px solid rgba(255,255,255,.12);margin-bottom:16px;}
 .profile-name{font-size:28px;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.05;margin-bottom:8px;}
 .profile-role{font-size:12px;color:#B8B6C9;text-transform:uppercase;letter-spacing:.12em;font-weight:700;}
+.profile-role-row{margin-bottom:6px;}
+.profile-role-select{font-size:12px;color:#D7D5E6;text-transform:uppercase;letter-spacing:.1em;font-weight:800;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:5px 11px;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.profile-role-select:hover{border-color:rgba(139,92,246,.55);background:rgba(139,92,246,.12);}
+.profile-role-note{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:10px 14px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(255,255,255,.035);font-size:12px;color:#C7CEE4;line-height:1.45;}
+.profile-role-note.team{border-color:rgba(71,209,108,.28);background:rgba(71,209,108,.07);}
+.prn-badge{flex:none;font-size:10px;font-weight:900;letter-spacing:.06em;padding:3px 8px;border-radius:999px;border:1px solid;}
+.rc-role-badge{margin-top:5px;display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border:1px solid;border-radius:999px;}
+.team-panel{border-color:rgba(71,209,108,.25)!important;}
+.tp-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 12px;}
+.tp-kpi{border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.035);padding:11px 13px;}
+.tp-kpi-l{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#8EEBD1;margin-bottom:5px;}
+.tp-kpi-v{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.02em;}
+.tp-kpi-s{font-size:10.5px;color:#9BA6C4;margin-top:3px;}
+.tp-goal-edit{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 12px;}
+.tp-ge label{display:block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#A8B5D9;margin-bottom:4px;}
+.tp-ge input{width:100%;font-size:12px;padding:7px 9px;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:rgba(0,0,0,.22);color:#fff;font-family:inherit;}
+.tp-lead td{background:rgba(239,159,39,.07);}
+.tp-leadtag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#EF9F27;border:1px solid rgba(239,159,39,.4);border-radius:999px;padding:1px 6px;margin-left:6px;}
+@media(max-width:760px){.tp-kpis,.tp-goal-edit{grid-template-columns:1fr 1fr;}}
 .profile-tenure{margin-top:14px;display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:#E7E5F8;}
 .profile-actions{position:relative;z-index:1;display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
 .profile-action-btn{font-size:11px;padding:8px 11px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:#F2F1FF;cursor:pointer;font-family:inherit;font-weight:700;}
@@ -5474,7 +5493,7 @@ async function generateMeetingReport(){
   let prev=null;
   for(let yr2 of YEARS){if(prev)break;for(let q2 of QTRS){if(prev)break;let wks=gwq(yr2,q2);let w=wks.find(x=>x.key===weekKey);if(w)prev={...w,key:weekKey};}}
   if(!prev){document.getElementById('mtgSt').textContent='Week not found.';return;}
-  let yr=parseInt(prev.key.split('_')[0]),q=prev.key.split('_')[1];let btn=document.getElementById('genMtgBtn'),st=document.getElementById('mtgSt'),preview=document.getElementById('mtgPreview');btn.disabled=true;st.textContent='Gathering data...';document.getElementById('mtgResultBox').style.display='none';let repData=activeReps().map((r)=>{let ri=S.reps.findIndex(x=>x.name===r.name);let d=gd(r.name+'|'+prev.key),aes=S.artErrors.filter(a=>a.rep===r.name&&a.weekKey===prev.key),cms=S.cms.filter(c=>c.rep===r.name&&c.weekKey===prev.key),ro=repGoalObj(r.name,yr,q);return{name:r.name,revenue:d.revenue||0,calls:d.calls||0,orders:d.orders||0,art:aes.length,credits:cms.filter(c=>c.fault==='rep').reduce((s,c)=>s+c.amount,0),topSale:d.topSale||0,topSaleCustomer:d.topSaleCustomer||'',goalRev:ro.rev,idx:ri};});let tRev=repData.reduce((s,r)=>s+r.revenue,0),tOrders=repData.reduce((s,r)=>s+r.orders,0),tCalls=repData.reduce((s,r)=>s+r.calls,0),tArt=repData.reduce((s,r)=>s+r.art,0),tCredits=repData.reduce((s,r)=>s+r.credits,0),weeklyGoal=repData.reduce((s,r)=>s+r.goalRev/13,0),artPct=tOrders>0?((tArt/tOrders)*100).toFixed(1):0;let qtdWeeks=gwq(yr,q),prevIdx=qtdWeeks.findIndex(w=>w.key===prev.key),weeksCompleted=prevIdx+1,weeksRemaining=qtdWeeks.length-weeksCompleted,qtdRevTotal=0;activeReps().forEach(r=>{qtdWeeks.slice(0,weeksCompleted).forEach(w=>{qtdRevTotal+=gd(r.name+'|'+w.key).revenue||0;});});let qtdRevByRep={};activeReps().forEach(r=>{qtdRevByRep[r.name]=0;qtdWeeks.slice(0,weeksCompleted).forEach(w=>{qtdRevByRep[r.name]+=(gd(r.name+'|'+w.key).revenue||0);});});let _qtdOrdersTotal=0;activeReps().forEach(r=>{qtdWeeks.slice(0,weeksCompleted).forEach(w=>{_qtdOrdersTotal+=(gd(r.name+'|'+w.key).orders||0);});});let _activeRepNames=new Set(activeReps().map(r=>r.name));let _qtdArtTotal=S.artErrors.filter(a=>a.yr==yr&&a.q===q&&_activeRepNames.has(a.rep)&&qtdWeeks.slice(0,weeksCompleted).some(w=>w.key===a.weekKey)).length;let _qtdArtPct=_qtdOrdersTotal>0?((_qtdArtTotal/_qtdOrdersTotal)*100).toFixed(1):'0.0';let _qtdCreditsTotal=S.cms.filter(c=>c.yr==yr&&c.q===q&&c.fault==='rep'&&_activeRepNames.has(c.rep)&&qtdWeeks.slice(0,weeksCompleted).some(w=>w.key===c.weekKey)).reduce((s,c)=>s+c.amount,0);let _qtdCreditPct=qtdRevTotal>0?((_qtdCreditsTotal/qtdRevTotal)*100).toFixed(2):'0.00';let qGoalTotal=activeReps().reduce((s,r)=>s+repGoalObj(r.name,yr,q).rev,0),avgWeeklyRev=weeksCompleted>0?qtdRevTotal/weeksCompleted:0,projectedQRev=qtdRevTotal+(avgWeeklyRev*weeksRemaining),projectedPct=qGoalTotal>0?Math.round(projectedQRev/qGoalTotal*100):0;
+  let yr=parseInt(prev.key.split('_')[0]),q=prev.key.split('_')[1];let btn=document.getElementById('genMtgBtn'),st=document.getElementById('mtgSt'),preview=document.getElementById('mtgPreview');btn.disabled=true;st.textContent='Gathering data...';document.getElementById('mtgResultBox').style.display='none';let repData=activeReps().map((r)=>{let ri=S.reps.findIndex(x=>x.name===r.name);let d=gd(r.name+'|'+prev.key),aes=S.artErrors.filter(a=>a.rep===r.name&&a.weekKey===prev.key),cms=S.cms.filter(c=>c.rep===r.name&&c.weekKey===prev.key),ro=repGoalObj(r.name,yr,q);return{name:r.name,revenue:d.revenue||0,calls:d.calls||0,orders:d.orders||0,art:aes.length,credits:cms.filter(c=>c.fault==='rep').reduce((s,c)=>s+c.amount,0),topSale:d.topSale||0,topSaleCustomer:d.topSaleCustomer||'',goalRev:ro.rev,idx:ri};});let tRev=repData.reduce((s,r)=>s+r.revenue,0),tOrders=repData.reduce((s,r)=>s+r.orders,0),tCalls=repData.reduce((s,r)=>s+r.calls,0),tArt=repData.reduce((s,r)=>s+r.art,0),tCredits=repData.reduce((s,r)=>s+r.credits,0),weeklyGoal=repData.reduce((s,r)=>s+r.goalRev/(gwq(yr,q).length||13),0),artPct=tOrders>0?((tArt/tOrders)*100).toFixed(1):0;let qtdWeeks=gwq(yr,q),prevIdx=qtdWeeks.findIndex(w=>w.key===prev.key),weeksCompleted=prevIdx+1,weeksRemaining=qtdWeeks.length-weeksCompleted,qtdRevTotal=0;activeReps().forEach(r=>{qtdWeeks.slice(0,weeksCompleted).forEach(w=>{qtdRevTotal+=gd(r.name+'|'+w.key).revenue||0;});});let qtdRevByRep={};activeReps().forEach(r=>{qtdRevByRep[r.name]=0;qtdWeeks.slice(0,weeksCompleted).forEach(w=>{qtdRevByRep[r.name]+=(gd(r.name+'|'+w.key).revenue||0);});});let _qtdOrdersTotal=0;activeReps().forEach(r=>{qtdWeeks.slice(0,weeksCompleted).forEach(w=>{_qtdOrdersTotal+=(gd(r.name+'|'+w.key).orders||0);});});let _activeRepNames=new Set(activeReps().map(r=>r.name));let _qtdArtTotal=S.artErrors.filter(a=>a.yr==yr&&a.q===q&&_activeRepNames.has(a.rep)&&qtdWeeks.slice(0,weeksCompleted).some(w=>w.key===a.weekKey)).length;let _qtdArtPct=_qtdOrdersTotal>0?((_qtdArtTotal/_qtdOrdersTotal)*100).toFixed(1):'0.0';let _qtdCreditsTotal=S.cms.filter(c=>c.yr==yr&&c.q===q&&c.fault==='rep'&&_activeRepNames.has(c.rep)&&qtdWeeks.slice(0,weeksCompleted).some(w=>w.key===c.weekKey)).reduce((s,c)=>s+c.amount,0);let _qtdCreditPct=qtdRevTotal>0?((_qtdCreditsTotal/qtdRevTotal)*100).toFixed(2):'0.00';let qGoalTotal=activeReps().reduce((s,r)=>s+repGoalObj(r.name,yr,q).rev,0),avgWeeklyRev=weeksCompleted>0?qtdRevTotal/weeksCompleted:0,projectedQRev=qtdRevTotal+(avgWeeklyRev*weeksRemaining),projectedPct=qGoalTotal>0?Math.round(projectedQRev/qGoalTotal*100):0;
   // Compute adjusted weekly goal (catch-up rate) AT START of reported week
   let qtdRevPriorWeek=0;activeReps().forEach(r=>{qtdWeeks.slice(0,prevIdx).forEach(w=>{qtdRevPriorWeek+=gd(r.name+'|'+w.key).revenue||0;});});
   let weeksLeftIncludingReported=qtdWeeks.length-prevIdx;
@@ -5942,6 +5961,53 @@ function renderNotifLog(){
   renderNotifWatch(filtered);
 }
 function activeReps(){return S.reps.filter(function(r){return r&&!r.retired&&r.name&&typeof r.name==='string'&&r.name.trim().length>0;});}
+/* ===== v348 Role classifications (Phase 1: assignment + role-aware profile) ===== */
+var ROLES=[
+  {key:'SS',  name:'Sales Specialist',         abbr:'SS',   color:'#8B5CF6', salesGoal:'individual', customerSet:'individual', callGoal:'weekly', team:null,
+     note:'Standard individual rep \u2014 own customer set, own sales goal, and a weekly call goal.'},
+  {key:'SRSS',name:'Sr. Sales Specialist',     abbr:'SRSS', color:'#22D3EE', salesGoal:'individual', customerSet:'individual', callGoal:'weekly', team:null,
+     note:'Senior individual rep \u2014 own customer set and goals (typically higher targets).'},
+  {key:'SSS', name:'Sales Support',            abbr:'SSS',  color:'#47D16C', salesGoal:'team', customerSet:'shared', callGoal:'daily', team:'sales_support',
+     note:'Team role \u2014 shares ONE Sales Support sales goal and customer set. Individual hours & calls are tracked against a daily call goal; the team sales goal is counted once, not multiplied per person.'},
+  {key:'SSL', name:'Sales Support Lead',       abbr:'SSL',  color:'#EF9F27', salesGoal:'individual', customerSet:'individual', callGoal:'weekly', team:'sales_support',
+     note:'Leads the Sales Support team but carries their own individual goals, shown separately from the shared team goal.'},
+  {key:'CCS', name:'Customer Care Specialist', abbr:'CCS',  color:'#F08C8C', salesGoal:'none', customerSet:'none', callGoal:'daily', team:null,
+     note:'Customer care focus. (Exact rules to be confirmed.)'}
+];
+function roleDef(key){for(var i=0;i<ROLES.length;i++){if(ROLES[i].key===key)return ROLES[i];}return ROLES[0];}
+function repRole(r){return (r&&r.role&&roleDef(r.role).key===r.role)?r.role:'SS';}
+function setRepRole(ri,key){if(!S.reps[ri])return;S.reps[ri].role=key;markDirty();if(typeof renderProfileDetail==='function')renderProfileDetail(ri);if(typeof renderProfileCards==='function')renderProfileCards();}
+function roleOptionsHTML(cur){return ROLES.map(function(rl){return '<option value="'+rl.key+'"'+(rl.key===cur?' selected':'')+'>'+_tcpEscape(rl.name)+'</option>';}).join('');}
+function roleNoteHTML(r){var rd=roleDef(repRole(r));var team=(rd.salesGoal==='team');return '<div class="profile-role-note'+(team?' team':'')+'"><span class="prn-badge" style="background:'+rd.color+'22;border-color:'+rd.color+'66;color:'+rd.color+';">'+_tcpEscape(rd.abbr)+'</span><span>'+_tcpEscape(rd.note)+'</span></div>';}
+function teamMembers(teamKey){return activeReps().filter(function(r){return roleDef(repRole(r)).team===teamKey;});}
+function teamGoalMembers(teamKey){return activeReps().filter(function(r){var d=roleDef(repRole(r));return d.team===teamKey&&d.salesGoal==='team';});}
+function teamGoal(teamKey,yr,q){if(!S.teamGoals)S.teamGoals={};var y=String(yr);if(!S.teamGoals[teamKey])S.teamGoals[teamKey]={};if(!S.teamGoals[teamKey][y])S.teamGoals[teamKey][y]={};if(!S.teamGoals[teamKey][y][q])S.teamGoals[teamKey][y][q]={salesGoal:0,setSize:0,dailyCallGoal:0,workDays:5};var g=S.teamGoals[teamKey][y][q];['salesGoal','setSize','dailyCallGoal'].forEach(function(k){if(typeof g[k]!=='number')g[k]=0;});if(typeof g.workDays!=='number'||!g.workDays)g.workDays=5;return g;}
+function setTeamGoal(teamKey,yr,q,field,val){var g=teamGoal(teamKey,yr,q);g[field]=Number(val)||0;markDirty();_tcpUpdateTeamDerived(teamKey,yr,q);}
+function _teamSummary(teamKey,yr,q){var g=teamGoal(teamKey,yr,q),members=teamGoalMembers(teamKey),we=weeksElapsed(yr,q)||0,rev=0,calls=0,hours=0,accts=0;var rows=members.map(function(r){var t=_tcpRepQuarterTotal(r.name,yr,q);rev+=t.revenue||0;calls+=t.calls||0;hours+=t.hours||0;accts+=t.acctsCalled||0;return {name:r.name,t:t};});var callExp=members.length*(g.dailyCallGoal||0)*(g.workDays||5)*we;return {g:g,members:rows,rev:rev,calls:calls,hours:hours,accts:accts,callExp:callExp,we:we,count:members.length};}
+function _tcpUpdateTeamDerived(teamKey,yr,q){var s=_teamSummary(teamKey,yr,q),g=s.g;var rp=g.salesGoal>0?Math.round(s.rev/g.salesGoal*100):0,cp=s.callExp>0?Math.round(s.calls/s.callExp*100):0;var e1=document.getElementById('tpRevPct_'+teamKey);if(e1)e1.textContent=rp;var e2=document.getElementById('tpCallPct_'+teamKey);if(e2)e2.textContent=cp;var e3=document.getElementById('tpCallExp_'+teamKey);if(e3)e3.textContent=s.callExp.toLocaleString();}
+function renderTeamPanel(teamKey,yr,q){
+  var s=_teamSummary(teamKey,yr,q),g=s.g;
+  var revPct=g.salesGoal>0?Math.round(s.rev/g.salesGoal*100):0,callPct=s.callExp>0?Math.round(s.calls/s.callExp*100):0;
+  var lead=teamMembers(teamKey).filter(function(r){return roleDef(repRole(r)).salesGoal!=='team';});
+  if(!s.count&&!lead.length)return '';
+  var memberRows=s.members.map(function(m){return '<tr><td>'+_tcpEscape(m.name)+'</td><td style="text-align:right;">'+(m.t.hours||0).toFixed(1)+'</td><td style="text-align:right;">'+((m.t.calls||0).toLocaleString())+'</td><td style="text-align:right;">'+_tcpMoney(m.t.revenue||0)+'</td></tr>';}).join('');
+  var leadRows=lead.map(function(r){var t=_tcpRepQuarterTotal(r.name,yr,q);return '<tr class="tp-lead"><td>'+_tcpEscape(r.name)+'<span class="tp-leadtag">Lead · own goals</span></td><td style="text-align:right;">'+(t.hours||0).toFixed(1)+'</td><td style="text-align:right;">'+((t.calls||0).toLocaleString())+'</td><td style="text-align:right;">'+_tcpMoney(t.revenue||0)+'</td></tr>';}).join('');
+  return '<section class="profile-panel team-panel">'
+    +'<div class="profile-panel-title"><span>🤝 Sales Support Team</span><span class="profile-panel-eyebrow">'+q+' '+yr+' · '+s.count+' on shared goal</span></div>'
+    +'<div class="tp-kpis">'
+      +'<div class="tp-kpi"><div class="tp-kpi-l">Team revenue</div><div class="tp-kpi-v">'+_tcpMoney(s.rev)+'</div><div class="tp-kpi-s"><span id="tpRevPct_'+teamKey+'">'+revPct+'</span>% of the one team goal</div></div>'
+      +'<div class="tp-kpi"><div class="tp-kpi-l">Team calls</div><div class="tp-kpi-v">'+s.calls.toLocaleString()+'</div><div class="tp-kpi-s"><span id="tpCallPct_'+teamKey+'">'+callPct+'</span>% of <span id="tpCallExp_'+teamKey+'">'+s.callExp.toLocaleString()+'</span> expected</div></div>'
+      +'<div class="tp-kpi"><div class="tp-kpi-l">Team hours</div><div class="tp-kpi-v">'+s.hours.toFixed(1)+'</div><div class="tp-kpi-s">'+s.count+' members · '+s.we+' wks elapsed</div></div>'
+    +'</div>'
+    +'<div class="tp-goal-edit">'
+      +'<div class="tp-ge"><label>Team sales goal / qtr ($)</label><input type="number" min="0" step="500" value="'+(g.salesGoal||0)+'" oninput="setTeamGoal(\''+teamKey+'\','+yr+',\''+q+'\',\'salesGoal\',this.value)"></div>'
+      +'<div class="tp-ge"><label>Shared customer set</label><input type="number" min="0" step="1" value="'+(g.setSize||0)+'" oninput="setTeamGoal(\''+teamKey+'\','+yr+',\''+q+'\',\'setSize\',this.value)"></div>'
+      +'<div class="tp-ge"><label>Daily call goal / person</label><input type="number" min="0" step="1" value="'+(g.dailyCallGoal||0)+'" oninput="setTeamGoal(\''+teamKey+'\','+yr+',\''+q+'\',\'dailyCallGoal\',this.value)"></div>'
+      +'<div class="tp-ge"><label>Work days / wk</label><input type="number" min="1" max="7" step="1" value="'+(g.workDays||5)+'" oninput="setTeamGoal(\''+teamKey+'\','+yr+',\''+q+'\',\'workDays\',this.value)"></div>'
+    +'</div>'
+    +'<div class="tp-tablewrap"><table class="inb-table tp-table"><thead><tr><th>Member</th><th style="text-align:right;">Hours</th><th style="text-align:right;">Calls</th><th style="text-align:right;">Revenue</th></tr></thead><tbody>'+memberRows+leadRows+'</tbody></table></div>'
+    +'</section>';
+}
 function toggleRetire(i){S.reps[i].retired=!S.reps[i].retired;if(S.reps[i].retired&&selectedRep===S.reps[i].name)selectedRep=activeReps()[0]&&activeReps()[0].name||null;markDirty();popSel();renderRL();renderProfileCards();}
 var PHOTO_KEY_PREFIX='salesTracker_photo_';
 function _lsAvailable(){try{localStorage.setItem('__t__','1');localStorage.removeItem('__t__');return true;}catch(e){return false;}}
@@ -5949,7 +6015,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
 // beforeunload: not needed in artifact sandbox
@@ -5970,6 +6036,7 @@ function loadFromStorage(){
     S.coachingNotes=saved.coachingNotes||[];
     S.dailySales=saved.dailySales||[];
     S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};
+    S.teamGoals=saved.teamGoals||{};
     S.reps.forEach(function(r){if(!r.profile)r.profile={};if(r.retired===undefined)r.retired=false;});
     loadPhotos();
     return true;
@@ -6072,13 +6139,17 @@ function renderSetSizes(){
     var cur=parseInt(g.setSize)||0;
     var avEl=(typeof avatarEl==='function')?avatarEl(r,ri,28):'';
     var safeName=(r.name||'').replace(/'/g,"\\'");
-    html+='<div style="display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:6px;">'
+    var _wk=[]; try{gwq(yr,q).forEach(function(w){var d=gd(r.name+'|'+w.key); if(d&&d.setSize>0)_wk.push(d.setSize);});}catch(e){}
+    var _ref=0; if(_wk.length){_wk.sort(function(a,b){return a-b;}); _ref=Math.round(_wk[Math.floor(_wk.length/2)]);}
+    var _flag=(cur>0&&_ref>0&&(cur>_ref*2.5||cur<_ref/2.5));
+    html+='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:7px 9px;background:var(--color-background-primary);border:0.5px solid '+(_flag?'rgba(240,149,39,.55)':'var(--color-border-tertiary)')+';border-radius:6px;">'
       +avEl
       +'<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc_html(r.name)+'</div></div>'
       +'<input type="number" min="0" step="1" value="'+cur+'" '
       +'oninput="setGoal(\''+safeName+'\','+yr+',\''+q+'\',\'setSize\',parseInt(this.value)||0);_ssDirtyBlip(this);" '
       +'style="width:78px;font-size:13px;font-weight:600;text-align:right;padding:5px 7px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:5px;color:var(--color-text-primary);">'
       +'<span style="font-size:10px;color:var(--color-text-secondary);">accts</span>'
+      +(_flag?'<div style="flex-basis:100%;font-size:10.5px;color:#EF9F27;display:flex;align-items:center;gap:6px;margin-top:2px;">\u26A0 weekly set ~'+_ref+'/wk \u2014 quarterly value looks off <button type="button" onclick="setGoal(\''+safeName+'\','+yr+',\''+q+'\',\'setSize\','+_ref+');renderSetSizes();" style="font-size:10px;font-weight:700;padding:2px 7px;border:1px solid #EF9F27;border-radius:999px;background:rgba(239,159,39,.12);color:#EF9F27;cursor:pointer;">Use '+_ref+'</button></div>':'')
       +'</div>';
   });
   html+='</div>';
@@ -14398,6 +14469,7 @@ function renderProfileCards(){
     return '<div class="rep-card'+(selectedRep===r.name?' selected':'')+'" onclick="selectRep(\''+safeName+'\')">'
       +avatarEl(r,i,48)
       +'<div class="rc-name">'+_tcpEscape(r.name)+'</div>'
+      +'<div class="rc-role-badge" style="color:'+roleDef(repRole(r)).color+';border-color:'+roleDef(repRole(r)).color+'55;">'+_tcpEscape(roleDef(repRole(r)).name)+'</div>'
       +'<div class="rc-sub">'+(yrs!==null?yrs+' year'+(yrs!==1?'s':'')+' with TCP':'Hire date not set')+'</div>'
       +'<div style="position:relative;margin-top:10px;font-size:10px;color:#A6A5B8;display:flex;justify-content:space-between;gap:8px;"><span>Qtr revenue</span><strong style="color:#fff;">'+_tcpMoney(t.revenue||0)+'</strong></div>'
       +'<div style="position:relative;margin-top:7px;height:5px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;"><div style="width:'+Math.max(0,Math.min(100,pct))+'%;height:100%;background:linear-gradient(90deg,#7F77DD,#30C5FF);"></div></div>'
@@ -14500,11 +14572,11 @@ function renderProfileDetail(ri){
   var activityHtml=activity.length?activity.map(function(a){return '<div class="profile-feed-item"><div class="profile-feed-icon">'+_tcpEscape(a.icon)+'</div><div><div class="profile-feed-title">'+_tcpEscape(a.title)+'</div><div class="profile-feed-meta">'+_tcpEscape(a.date||'No date')+' · '+_tcpEscape(a.meta||'Activity')+'</div><div class="profile-feed-text">'+_tcpEscape(a.text||'No detail entered.')+'</div></div></div>';}).join(''):'<div class="profile-empty">No recent profile activity yet.</div>';
   document.getElementById('profileDetail').innerHTML=
     '<div class="profile-command">'
-      +'<section class="profile-hero-card"><div class="profile-hero-inner">'+heroPhoto+'<div class="profile-role">Sales Specialist</div><div class="profile-name">'+_tcpEscape(r.name)+'</div><div class="profile-tenure">'+_tcpEscape(headline)+'</div></div><div class="profile-actions"><button class="profile-action-btn" onclick="triggerPhoto('+ri+')">Change photo</button>'+(p.photo?'<button class="profile-action-btn profile-action-danger" onclick="clearPhoto(\''+safeName+'\')">Remove photo</button>':'')+'<button class="profile-action-btn" onclick="downloadRepSummaryPDF(selectedRep)">Download PDF</button></div></section>'
-      +'<div class="profile-main"><div class="profile-kpi-grid">'
-        +'<div class="profile-kpi"><div class="profile-kpi-label">Current quarter revenue</div><div class="profile-kpi-value">'+_tcpMoney(qt.revenue||0)+'</div><div class="profile-kpi-sub">'+revPct+'% of '+q+' goal</div></div>'
+      +'<section class="profile-hero-card"><div class="profile-hero-inner">'+heroPhoto+'<div class="profile-role-row"><select class="profile-role-select" onchange="setRepRole('+ri+',this.value)" title="Set this rep&apos;s classification">'+roleOptionsHTML(repRole(r))+'</select></div><div class="profile-name">'+_tcpEscape(r.name)+'</div><div class="profile-tenure">'+_tcpEscape(headline)+'</div></div><div class="profile-actions"><button class="profile-action-btn" onclick="triggerPhoto('+ri+')">Change photo</button>'+(p.photo?'<button class="profile-action-btn profile-action-danger" onclick="clearPhoto(\''+safeName+'\')">Remove photo</button>':'')+'<button class="profile-action-btn" onclick="downloadRepSummaryPDF(selectedRep)">Download PDF</button></div></section>'
+      +'<div class="profile-main">'+roleNoteHTML(r)+(roleDef(repRole(r)).salesGoal==='team'?renderTeamPanel(roleDef(repRole(r)).team,yr,q):'')+'<div class="profile-kpi-grid">'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Current quarter revenue</div><div class="profile-kpi-value">'+_tcpMoney(qt.revenue||0)+'</div><div class="profile-kpi-sub">'+(roleDef(repRole(r)).salesGoal==='team'?'Individual contribution to team goal':revPct+'% of '+q+' goal')+'</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">Orders</div><div class="profile-kpi-value">'+((qt.orders||0).toLocaleString())+'</div><div class="profile-kpi-sub">'+q+' total orders entered</div></div>'
-        +'<div class="profile-kpi"><div class="profile-kpi-label">Calls</div><div class="profile-kpi-value">'+((qt.calls||0).toLocaleString())+'</div><div class="profile-kpi-sub">'+callPct+'% of planned quarterly calls</div></div>'
+        +'<div class="profile-kpi"><div class="profile-kpi-label">Calls</div><div class="profile-kpi-value">'+((qt.calls||0).toLocaleString())+'</div><div class="profile-kpi-sub">'+(roleDef(repRole(r)).salesGoal==='team'?'Individual calls · team goal in panel':callPct+'% of planned quarterly calls')+'</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">Coverage</div><div class="profile-kpi-value">'+covPct+'%</div><div class="profile-kpi-sub">'+((qt.acctsCalled||0).toLocaleString())+' accounts called</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">Best week</div><div class="profile-kpi-value">'+(bw.rev>0?_tcpMoney(bw.rev):'—')+'</div><div class="profile-kpi-sub">'+_tcpEscape(bw.weekLabel||'No data yet')+'</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">HR points</div><div class="profile-kpi-value">'+hrP.toFixed(1)+'</div><div class="profile-kpi-sub">Current '+q+' total</div></div>'
@@ -15640,7 +15712,7 @@ window.addEventListener('load', function(){
       var callGoal=(ro.calls||0)*ctx.through.length;
       var callPct=pct(tot.calls,callGoal);
       var covPct=totalSet>0?pct(tot.acctsCalled,totalSet):0;
-      var score=0; try{score=calcSc(name,tot,ro,ctx.total,0,ctx.through.length).score||0;}catch(e){}
+      var score=0; try{score=calcSc(name,tot,ro,ctx.total,getHRPoints(name,ctx.yr,ctx.q),ctx.through.length).fin||0;}catch(e){}
       var forecast=ctx.through.length>0?(tot.revenue/ctx.through.length)*ctx.total:0;
       var art=(S.artErrors||[]).filter(function(a){return a.rep===name&&ctx.through.some(function(w){return w.key===a.weekKey;});}).length;
       var cm=(S.cms||[]).filter(function(c){return c.rep===name&&c.fault==='rep'&&ctx.through.some(function(w){return w.key===c.weekKey;});}).reduce(function(s,c){return s+Number(c.amount||0);},0);
@@ -15869,13 +15941,14 @@ window.addEventListener('load', function(){
       var pacedRev=revGoal*weekFraction;
       var callGoal=Math.round(Number(goal.calls||0)*ctx.quarterWeek); // goal.calls is weekly call expectation
       var score=null;
-      try{score=calcSc(r.name,t,goal,ctx.totalWeeks,getHRPoints(r.name,ctx.yr,ctx.q));}catch(e){score={fin:0};}
+      try{score=calcSc(r.name,t,goal,ctx.totalWeeks,getHRPoints(r.name,ctx.yr,ctx.q),ctx.quarterWeek);}catch(e){score={fin:0};}
       var actualCalls=Number(t.calls||0);
       var accountsCalled=Number(t.acctsCalled||0);
       var setSize=Number(t.setSize||0);
       var coverageP=setSize>0?pctVal(accountsCalled,setSize):(accountsCalled>0?100:0);
       var projectedRev=weekFraction>0?Number(t.revenue||0)/weekFraction:0;
-      return {name:r.name,t:t,goal:goal,revGoal:revGoal,pacedRev:pacedRev,revP:pctVal(t.revenue,revGoal),pacedRevP:pctVal(t.revenue,pacedRev),projectedRev:projectedRev,projectedP:pctVal(projectedRev,revGoal),callGoal:callGoal,actualCalls:actualCalls,callP:pctVal(actualCalls,callGoal),accountsCalled:accountsCalled,setSize:setSize,coverageP:coverageP,score:score};
+      var gaps=0; (ctx.through||[]).forEach(function(w){var dd=gd(r.name+'|'+w.key); if((dd.revenue||0)>0&&(dd.calls||0)===0&&(dd.acctsCalled||0)===0)gaps++;});
+      return {name:r.name,t:t,goal:goal,revGoal:revGoal,pacedRev:pacedRev,revP:pctVal(t.revenue,revGoal),pacedRevP:pctVal(t.revenue,pacedRev),projectedRev:projectedRev,projectedP:pctVal(projectedRev,revGoal),callGoal:callGoal,actualCalls:actualCalls,callP:pctVal(actualCalls,callGoal),accountsCalled:accountsCalled,setSize:setSize,coverageP:coverageP,score:score,gaps:gaps};
     }).sort(function(a,b){return Number(b.t.revenue||0)-Number(a.t.revenue||0);});
   }
   function teamTotals(rows){
@@ -15959,7 +16032,7 @@ window.addEventListener('load', function(){
   function renderTeam(ctx,rows){
     document.getElementById('wkTeamCount').textContent=rows.length+' active reps';
     var html='<table class="wk-table"><thead><tr><th>Rep</th><th>Revenue</th><th>Revenue Pace</th><th>Calls</th><th>Coverage</th><th>Orders</th><th>Score</th><th>Status</th></tr></thead><tbody>';
-    rows.forEach(function(r){var s=Math.min(r.pacedRevP||0,r.callP||0,r.coverageP||0);html+='<tr onclick="try{selectRep(\''+safe(r.name).replace(/&#39;/g,"\'")+'\');gt(\'profiles\',document.querySelector(\'[onclick*=profiles]\'));}catch(e){}" style="cursor:pointer"><td>'+safe(r.name)+'</td><td>'+fmtMoney(r.t.revenue)+'</td><td><span class="wk-status '+cls(r.pacedRevP)+'">'+r.pacedRevP+'%</span></td><td>'+fmtNum(r.actualCalls)+' / '+fmtNum(r.callGoal)+' <span class="wk-muted">('+r.callP+'%)</span></td><td>'+fmtNum(r.accountsCalled)+' / '+fmtNum(r.setSize)+' <span class="wk-muted">('+r.coverageP+'%)</span></td><td>'+fmtNum(r.t.orders)+'</td><td>'+(r.score&&r.score.fin?Number(r.score.fin).toFixed(1):'—')+'</td><td><span class="wk-status '+cls(s)+'">'+statusText(s)+'</span></td></tr>';});
+    rows.forEach(function(r){var s=Math.min(r.pacedRevP||0,r.callP||0,r.coverageP||0);html+='<tr onclick="try{selectRep(\''+safe(r.name).replace(/&#39;/g,"\'")+'\');gt(\'profiles\',document.querySelector(\'[onclick*=profiles]\'));}catch(e){}" style="cursor:pointer"><td>'+safe(r.name)+(r.gaps>0?' <span title="'+r.gaps+' week(s) have revenue but no calls/accounts logged \u2014 totals may understate activity" style="color:#EF9F27;cursor:help;">\u26A0</span>':'')+'</td><td>'+fmtMoney(r.t.revenue)+'</td><td><span class="wk-status '+cls(r.pacedRevP)+'">'+r.pacedRevP+'%</span></td><td>'+fmtNum(r.actualCalls)+' / '+fmtNum(r.callGoal)+' <span class="wk-muted">('+r.callP+'%)</span></td><td>'+fmtNum(r.accountsCalled)+' / '+fmtNum(r.setSize)+' <span class="wk-muted">('+r.coverageP+'%)</span></td><td>'+fmtNum(r.t.orders)+'</td><td>'+(r.score&&r.score.fin?Number(r.score.fin).toFixed(1):'—')+'</td><td><span class="wk-status '+cls(s)+'">'+statusText(s)+'</span></td></tr>';});
     html+='</tbody></table>'; document.getElementById('wkTeamPace').innerHTML=html;
   }
   function renderForecast(ctx,rows,totals){
