@@ -2130,8 +2130,6 @@ body.nav-rail .tabs#tabBar{width:var(--tcp-nav-rail)!important;padding-left:10px
 </style>
 
 <style id="tcp-manager-command-center-v312">
-#pg-mgr.manager-command-page{display:none;}
-#pg-mgr.manager-command-page.active{display:flex!important;flex-direction:column;gap:16px;}
 .mgr-hero{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:radial-gradient(circle at 12% 0%,rgba(139,92,246,.30),transparent 34%),radial-gradient(circle at 92% 10%,rgba(34,211,238,.16),transparent 30%),linear-gradient(135deg,rgba(22,26,46,.96),rgba(10,16,31,.94));box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);padding:20px;display:grid;grid-template-columns:minmax(260px,1.25fr) repeat(6,minmax(130px,.7fr));gap:12px;align-items:stretch;}
 .mgr-hero-main{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:4px;}
 .mgr-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#8EEBD1;margin-bottom:7px;}
@@ -2463,7 +2461,6 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
 </div>
 <div class="tabs" id="tabBar">
   <button class="tab active" onclick="gt('dash',this)">Dashboard</button>
-  <button class="tab" onclick="gt('mgr',this)">🎯 Manager Center</button>
   <button class="tab" onclick="gt('year',this)">🗓️ Year Overview</button>
   <button class="tab" onclick="gt('entry',this)">Data entry</button>
   <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>
@@ -2539,6 +2536,20 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
       <div id="wkProductionPulse"></div>
     </section>
   </div>
+  <section class="wk-panel">
+    <div class="wk-section-head"><div><div class="wk-kicker">Manager action</div><h2>Coaching Queue</h2></div><span id="wkCoachPill" class="wk-pill">0 open</span></div>
+    <div class="mgr-queue" id="wkCoachingQueue"></div>
+  </section>
+  <div class="wk-main-grid">
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">This week</div><h2>Manager Priorities</h2></div></div>
+      <div class="mgr-queue" id="wkMgrPriorities"></div>
+    </section>
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">People rhythm</div><h2>Reviews &amp; Notes</h2></div></div>
+      <div class="mgr-queue" id="wkUpcomingNotes"></div>
+    </section>
+  </div>
   <div class="wk-main-grid wk-main-grid-secondary">
     <section class="wk-panel">
       <div class="wk-section-head"><div><div class="wk-kicker">Historical memory</div><h2>Manager Notes <button class="wk-help-btn" onclick="showDashHelp('managerNotes')">?</button></h2></div><span id="wkNotesLabel" class="wk-muted"></span></div>
@@ -2557,58 +2568,6 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
     <div class="wk-help-sub" id="wkHelpSub">Dashboard guide</div>
     <h3 class="wk-help-title" id="wkHelpTitle">Dashboard Help</h3>
     <div class="wk-help-body" id="wkHelpBody"></div>
-  </div>
-</div>
-
-<div id="pg-mgr" class="page manager-command-page">
-  <section class="mgr-hero" id="mgrHero"></section>
-  <div class="mgr-grid">
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">Manager action</div><h2>Coaching Queue</h2></div><span class="mgr-pill" id="mgrCoachPill">Priority</span></div>
-      <div class="mgr-queue" id="mgrCoachingQueue"></div>
-    </section>
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">Recognition</div><h2>Recognition Queue</h2></div><span class="mgr-pill">Wins</span></div>
-      <div class="mgr-queue" id="mgrRecognitionQueue"></div>
-    </section>
-  </div>
-  <div class="mgr-grid mgr-grid-balanced">
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">Team control</div><h2>Team Rankings</h2></div><span class="mgr-muted" id="mgrTeamCount"></span></div>
-      <div class="mgr-table-wrap" id="mgrTeamRankings"></div>
-    </section>
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">Strategy</div><h2>Strategic Watchlist</h2></div><span class="mgr-muted">Quarter signals</span></div>
-      <div class="mgr-queue" id="mgrWatchlist"></div>
-    </section>
-  </div>
-  <div class="mgr-grid mgr-grid-balanced">
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">This week</div><h2>Manager Priorities</h2></div><span class="mgr-pill">Action plan</span></div>
-      <div class="mgr-queue" id="mgrPriorities"></div>
-    </section>
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">People rhythm</div><h2>Upcoming Reviews & Notes</h2></div><span class="mgr-muted">Reviews / HR / coaching</span></div>
-      <div class="mgr-queue" id="mgrUpcoming"></div>
-    </section>
-  </div>
-  <div class="mgr-grid mgr-grid-balanced">
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">Quick actions</div><h2>Manager Shortcuts</h2></div><span class="mgr-muted">Jump to key tools</span></div>
-      <div class="mgr-action-grid">
-        <button class="sbtn" onclick="gt('profiles',document.querySelector('[onclick*=profiles]'))">Open Rep Profiles</button>
-        <button class="sbtn" onclick="gt('review',document.querySelector('[onclick*=review]'))">Start Review</button>
-        <button class="sbtn" onclick="gt('reports',document.querySelector('[onclick*=reports]'))">Generate Report</button>
-        <button class="sbtn" onclick="gt('meeting',document.querySelector('[onclick*=meeting]'))">Meeting Report</button>
-        <button class="sbtn" onclick="gt('credits',document.querySelector('[onclick*=credits]'))">Credit Memos</button>
-        <button class="sbtn" onclick="gt('art',document.querySelector('[onclick*=art]'))">Art Errors</button>
-      </div>
-    </section>
-    <section class="mgr-panel">
-      <div class="mgr-section-head"><div><div class="mgr-kicker">Historical memory</div><h2>Manager Notes</h2></div><span class="mgr-muted" id="mgrNotesLabel"></span></div>
-      <textarea id="mgrManagerNotes" class="mgr-notes" placeholder="Add manager notes for the selected week: coaching focus, staffing context, major wins, production issues, forecast concerns..."></textarea>
-      <div class="mgr-actions"><button class="sbtn" onclick="saveManagerCommandNotes()">Save Manager Notes</button><span id="mgrNotesStatus" class="mgr-muted"></span></div>
-    </section>
   </div>
 </div>
 
@@ -4446,7 +4405,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,mgr:renderManagerCommandCenter,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},score:()=>{renderScore();renderTR();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -14583,140 +14542,7 @@ window.addEventListener('load', function(){
 
 
 
-<script id="tcp-manager-command-center-v312-js">
-(function(){
-  function fmtMoney(v){v=Number(v||0);return '$'+Math.round(v).toLocaleString();}
-  function fmtNum(v){return Math.round(Number(v||0)).toLocaleString();}
-  function safe(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-  function pct(a,b){return b>0?Math.round((Number(a||0)/Number(b||0))*100):0;}
-  function clamp(v){return Math.max(0,Math.min(100,Number(v||0)));}
-  function status(p){p=Number(p||0);return p>=100?'green':p>=85?'amber':'red';}
-  function statusText(p){p=Number(p||0);return p>=100?'Ahead':p>=85?'Watch':'Risk';}
-  function active(){try{return (typeof activeReps==='function'?activeReps():S.reps.filter(function(r){return !r.retired;}));}catch(e){return (S.reps||[]).filter(function(r){return !r.retired;});}}
-  function selectedWeeks(){
-    var yr=getYr(), q=getQ(), weeks=gwq(yr,q), key=(typeof getCWK==='function'?getCWK():'');
-    var idx=weeks.findIndex(function(w){return w.key===key;});
-    if(idx<0)idx=Math.max(0,(typeof weeksElapsed==='function'?weeksElapsed(yr,q):1)-1);
-    return {yr:yr,q:q,weeks:weeks,idx:idx,wk:weeks[idx]||weeks[0]||{},through:weeks.slice(0,idx+1),total:weeks.length||13,weekNo:idx+1};
-  }
-  function repRows(ctx){
-    var reps=active();
-    return reps.map(function(r){
-      var name=r.name, ro=repGoalObj(name,ctx.yr,ctx.q), tot=totW(name,ctx.through), totalSet=tot.setSize||0;
-      var revPct=pct(tot.revenue,ro.rev*(ctx.through.length/ctx.total));
-      var callGoal=(ro.calls||0)*ctx.through.length;
-      var callPct=pct(tot.calls,callGoal);
-      var covPct=totalSet>0?pct(tot.acctsCalled,totalSet):0;
-      var score=0; try{score=calcSc(name,tot,ro,ctx.total,getHRPoints(name,ctx.yr,ctx.q),ctx.through.length).fin||0;}catch(e){}
-      var forecast=ctx.through.length>0?(tot.revenue/ctx.through.length)*ctx.total:0;
-      var art=(S.artErrors||[]).filter(function(a){return a.rep===name&&ctx.through.some(function(w){return w.key===a.weekKey;});}).length;
-      var cm=(S.cms||[]).filter(function(c){return c.rep===name&&c.fault==='rep'&&ctx.through.some(function(w){return w.key===c.weekKey;});}).reduce(function(s,c){return s+Number(c.amount||0);},0);
-      var overall=Math.min(revPct||0, callPct||0, covPct||0);
-      return {name:name, revenue:tot.revenue||0, revPct:revPct, calls:tot.calls||0, callPct:callPct, covPct:covPct, score:score, forecast:forecast, art:art, cm:cm, overall:overall};
-    }).sort(function(a,b){return b.revenue-a.revenue;});
-  }
-  function card(icon,title,copy,action,level){return '<div class="mgr-card '+(level||'')+'"><div class="mgr-icon">'+icon+'</div><div><div class="mgr-card-title">'+safe(title)+'</div><div class="mgr-card-copy">'+copy+'</div>'+(action?'<div class="mgr-card-action">'+safe(action)+'</div>':'')+'</div></div>';}
-  function metric(label,value,sub,glow){return '<div class="mgr-metric" style="--glow:'+glow+'"><div class="mgr-metric-label">'+safe(label)+'</div><div class="mgr-metric-value">'+value+'</div><div class="mgr-metric-sub">'+sub+'</div></div>';}
-  function renderHero(ctx,rows){
-    var totalRev=rows.reduce(function(s,r){return s+r.revenue;},0), totalCalls=rows.reduce(function(s,r){return s+r.calls;},0), avgCov=rows.length?Math.round(rows.reduce(function(s,r){return s+r.covPct;},0)/rows.length):0;
-    var risk=rows.filter(function(r){return r.revPct<85||r.callPct<85||r.covPct<70;}).length;
-    var ahead=rows.filter(function(r){return r.revPct>=100||r.callPct>=100||r.covPct>=90;}).length;
-    var proj=rows.reduce(function(s,r){return s+r.forecast;},0);
-    var hero=document.getElementById('mgrHero'); if(!hero)return;
-    hero.innerHTML='<div class="mgr-hero-main"><div class="mgr-kicker">Sales manager command center</div><h1>'+safe(ctx.q)+' '+ctx.yr+' • Week '+ctx.weekNo+'</h1><p>Manager cockpit for coaching, recognition, risk, priorities, and team follow-up based on the selected week and quarter data.</p></div>'
-      +metric('Team revenue',fmtMoney(totalRev),'Through selected week','rgba(139,92,246,.26)')
-      +metric('Forecast finish',fmtMoney(proj),'Projected quarter finish','rgba(34,211,238,.22)')
-      +metric('Calls',fmtNum(totalCalls),'Through selected week','rgba(71,209,108,.22)')
-      +metric('Avg coverage',avgCov+'%','Average rep coverage','rgba(71,209,108,.22)')
-      +metric('Reps at risk',risk,'Need manager attention','rgba(255,71,126,.22)')
-      +metric('Reps ahead',ahead,'Recognition opportunities','rgba(255,176,32,.22)');
-  }
-  function renderCoaching(rows){
-    var q=document.getElementById('mgrCoachingQueue'); if(!q)return;
-    var needs=[];
-    rows.forEach(function(r){
-      var issues=[];
-      if(r.revPct<85)issues.push('revenue pace '+r.revPct+'%');
-      if(r.callPct<85)issues.push('call pace '+r.callPct+'%');
-      if(r.covPct<70)issues.push('coverage '+r.covPct+'%');
-      if(r.art>=3)issues.push(r.art+' art errors');
-      if(r.cm>0)issues.push(fmtMoney(r.cm)+' rep-fault credits');
-      if(issues.length)needs.push({r:r,issues:issues,sev:(r.revPct<70||r.callPct<70||r.covPct<55)?'red':'amber'});
-    });
-    needs.sort(function(a,b){return a.r.overall-b.r.overall;});
-    document.getElementById('mgrCoachPill').textContent=needs.length+' open';
-    q.innerHTML=needs.length?needs.slice(0,6).map(function(x){return card(x.sev==='red'?'🔴':'🟡',x.r.name,x.issues.join(' • '), 'Recommended: review rep profile and set one measurable next step.',x.sev);}).join(''):'<div class="mgr-muted">No urgent coaching risks based on the selected week.</div>';
-  }
-  function renderRecognition(rows){
-    var el=document.getElementById('mgrRecognitionQueue'); if(!el)return;
-    var topRev=rows.slice().sort(function(a,b){return b.revenue-a.revenue;})[0];
-    var topCalls=rows.slice().sort(function(a,b){return b.calls-a.calls;})[0];
-    var topCov=rows.slice().sort(function(a,b){return b.covPct-a.covPct;})[0];
-    var topScore=rows.slice().sort(function(a,b){return b.score-a.score;})[0];
-    var html='';
-    if(topRev)html+=card('🏆','Top revenue: '+topRev.name,fmtMoney(topRev.revenue)+' booked through selected week.','Recognize revenue leadership.','green');
-    if(topCalls)html+=card('☎️','Top calls: '+topCalls.name,fmtNum(topCalls.calls)+' calls through selected week.','Recognize activity discipline.','green');
-    if(topCov)html+=card('✅','Coverage leader: '+topCov.name,topCov.covPct+'% coverage.','Call out customer set execution.','green');
-    if(topScore)html+=card('⭐','Highest score: '+topScore.name,(Number(topScore.score)||0).toFixed(1)+' / 5.','Recognize balanced performance.','green');
-    el.innerHTML=html||'<div class="mgr-muted">Recognition will appear once weekly data is entered.</div>';
-  }
-  function renderRankings(rows){
-    var el=document.getElementById('mgrTeamRankings'); if(!el)return;
-    document.getElementById('mgrTeamCount').textContent=rows.length+' active reps';
-    el.innerHTML='<table class="mgr-table"><thead><tr><th>Rep</th><th>Revenue</th><th>Rev Pace</th><th>Calls</th><th>Coverage</th><th>Score</th><th>Status</th></tr></thead><tbody>'+
-      rows.map(function(r){var st=status(Math.min(r.revPct,r.callPct,r.covPct||100));return '<tr><td>'+safe(r.name)+'</td><td>'+fmtMoney(r.revenue)+'</td><td><div>'+r.revPct+'%</div><div class="mgr-bar" style="--bar:#8B5CF6"><span style="--w:'+clamp(r.revPct)+'%"></span></div></td><td><div>'+r.callPct+'%</div><div class="mgr-bar" style="--bar:#47D16C"><span style="--w:'+clamp(r.callPct)+'%"></span></div></td><td><div>'+r.covPct+'%</div><div class="mgr-bar" style="--bar:#22D3EE"><span style="--w:'+clamp(r.covPct)+'%"></span></div></td><td>'+(Number(r.score)||0).toFixed(1)+'</td><td><span class="mgr-status '+st+'">'+statusText(Math.min(r.revPct,r.callPct,r.covPct||100))+'</span></td></tr>';}).join('')+
-      '</tbody></table>';
-  }
-  function renderWatch(ctx,rows){
-    var el=document.getElementById('mgrWatchlist'); if(!el)return;
-    var totalGoal=rows.reduce(function(s,r){return s+(repGoalObj(r.name,ctx.yr,ctx.q).rev||0);},0);
-    var projection=rows.reduce(function(s,r){return s+r.forecast;},0);
-    var gap=projection-totalGoal;
-    var worstRev=rows.slice().sort(function(a,b){return a.revPct-b.revPct;})[0];
-    var worstCov=rows.slice().sort(function(a,b){return a.covPct-b.covPct;})[0];
-    var artTotal=rows.reduce(function(s,r){return s+r.art;},0);
-    var cmTotal=rows.reduce(function(s,r){return s+r.cm;},0);
-    var html='';
-    html+=card(gap>=0?'🟢':'🔴',gap>=0?'Forecast opportunity':'Forecast risk',(gap>=0?'Projected ahead by ':'Projected gap of ')+fmtMoney(Math.abs(gap))+'.','Review Forecast Center for close strategy.',gap>=0?'green':'red');
-    if(worstRev)html+=card('📉','Revenue coaching focus',safe(worstRev.name)+' is pacing at '+worstRev.revPct+'% of expected revenue pace.','Pipeline and quote follow-up review.',worstRev.revPct<70?'red':'amber');
-    if(worstCov)html+=card('📞','Coverage coaching focus',safe(worstCov.name)+' is at '+worstCov.covPct+'% coverage.','Customer set execution follow-up.',worstCov.covPct<55?'red':'amber');
-    html+=card(artTotal>0?'🎨':'✅','Quality signal',artTotal+' art error'+(artTotal===1?'':'s')+' and '+fmtMoney(cmTotal)+' rep-fault credit impact through selected week.','Use Art Errors/Credit Memos for pattern coaching.',artTotal>5||cmTotal>2500?'red':(artTotal>0||cmTotal>0?'amber':'green'));
-    el.innerHTML=html;
-  }
-  function renderPriorities(rows){
-    var el=document.getElementById('mgrPriorities'); if(!el)return;
-    var revRisk=rows.filter(function(r){return r.revPct<85;}).length;
-    var callRisk=rows.filter(function(r){return r.callPct<85;}).length;
-    var covRisk=rows.filter(function(r){return r.covPct<70;}).length;
-    var html='';
-    html+=card('1','Revenue focus',revRisk+' rep'+(revRisk===1?'':'s')+' below revenue pace.','Run pipeline/quote review with the lowest pace reps.',revRisk?'amber':'green');
-    html+=card('2','Activity focus',callRisk+' rep'+(callRisk===1?'':'s')+' below call pace.','Check call plan and schedule follow-up.',callRisk?'amber':'green');
-    html+=card('3','Coverage focus',covRisk+' rep'+(covRisk===1?'':'s')+' below coverage target.','Confirm customer set progress and blockers.',covRisk?'amber':'green');
-    el.innerHTML=html;
-  }
-  function renderUpcoming(ctx){
-    var el=document.getElementById('mgrUpcoming'); if(!el)return;
-    var rows=[];
-    (S.coachingNotes||[]).slice(-5).reverse().forEach(function(n){rows.push(card('📝','Coaching note: '+(n.rep||'Rep'),safe(n.type||'note')+(n.note?': '+safe(String(n.note).slice(0,120)):''),'Review in rep profile.','amber'));});
-    (S.hrViolations||[]).slice(-3).reverse().forEach(function(n){rows.push(card('⚠️','HR follow-up: '+(n.rep||'Rep'),safe((n.category||n.type||'HR note'))+(n.note?': '+safe(String(n.note).slice(0,100)):''),'Review HR & Notes.','red'));});
-    el.innerHTML=rows.length?rows.slice(0,6).join(''):'<div class="mgr-muted">No recent coaching or HR notes logged. Use this area to prep weekly follow-ups.</div>';
-  }
-  window.saveManagerCommandNotes=function(){
-    var ctx=selectedWeeks(), key='mgr_'+ctx.wk.key;
-    if(!S.managerCommandNotes)S.managerCommandNotes={};
-    S.managerCommandNotes[key]=document.getElementById('mgrManagerNotes').value||'';
-    try{markDirty();}catch(e){}
-    var st=document.getElementById('mgrNotesStatus'); if(st){st.textContent='Saved';setTimeout(function(){st.textContent='';},1600);}
-  };
-  window.renderManagerCommandCenter=function(){
-    if(!document.getElementById('pg-mgr'))return;
-    var ctx=selectedWeeks(), rows=repRows(ctx);
-    renderHero(ctx,rows); renderCoaching(rows); renderRecognition(rows); renderRankings(rows); renderWatch(ctx,rows); renderPriorities(rows); renderUpcoming(ctx);
-    var lab=document.getElementById('mgrNotesLabel'); if(lab)lab.textContent=(ctx.wk.label||('Week '+ctx.weekNo));
-    var ta=document.getElementById('mgrManagerNotes'); if(ta){var key='mgr_'+ctx.wk.key;ta.value=(S.managerCommandNotes&&S.managerCommandNotes[key])||'';}
-  };
-})();
-</script>
+
 
 <script id="tcp-year-overview-v313-js">
 /* ===== v313 Year Overview only — built on v312 base ===== */
@@ -14765,7 +14591,7 @@ window.addEventListener('load', function(){
 <script id="tcp-grouped-collapsible-nav-v292-script">
 (function(){
   var NAV_GROUPS=[
-    {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['mgr','Manager Center','🎯'],['year','Year Overview','🗓️'],['lb','Leaderboard','🏆'],['notifs','Notifications','🔔']]},
+    {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['year','Year Overview','🗓️'],['lb','Leaderboard','🏆'],['notifs','Notifications','🔔']]},
     {key:'team',icon:'👥',label:'Team Management',open:true,items:[['profiles','Rep Profiles','👤'],['score','Scorecards','⭐'],['perf','Performance','📈'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
     {key:'ops',icon:'📊',label:'Sales Operations',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['art','Art Errors','🎨'],]},
     {key:'intel',icon:'🧠',label:'Intelligence & Reporting',open:true,items:[['inbound','Inbound Leads','📥'],['reports','Reports','📄'],['history','Report History','🗂️'],['meeting','Meeting Report','🤝'],['cknow','Company Knowledge','🧠'],['prodintel','Production Intelligence','📊']]},
@@ -15058,6 +14884,39 @@ window.addEventListener('load', function(){
   window.hideDashHelp=function(){var pop=document.getElementById('wkHelpPop');if(pop)pop.classList.remove('open');};
   document.addEventListener('keydown',function(e){if(e.key==='Escape')hideDashHelp();});
   window.setDashboardWeek=function(key){var sel=document.getElementById('selW'); if(sel){sel.value=key; if(typeof onWChange==='function')onWChange();} else {try{localStorage.setItem('cwk',key);}catch(e){} if(window.renderDash)window.renderDash();}};
+  function actionCard(icon,title,copy,action,level){return '<div class="mgr-card '+(level||'')+'"><div class="mgr-icon">'+icon+'</div><div><div class="mgr-card-title">'+safe(title)+'</div><div class="mgr-card-copy">'+copy+'</div>'+(action?'<div class="mgr-card-action">'+safe(action)+'</div>':'')+'</div></div>';}
+  function renderCoachingQueue(rows){
+    var q=document.getElementById('wkCoachingQueue'); if(!q)return;
+    var needs=[];
+    (rows||[]).forEach(function(r){
+      var issues=[];
+      if(r.pacedRevP<85)issues.push('revenue pace '+r.pacedRevP+'%');
+      if(r.coverageP<70)issues.push('customers called '+r.coverageP+'%');
+      if((r.t.art||0)>=3)issues.push((r.t.art||0)+' art errors');
+      if((r.t.credits||0)>0)issues.push(fmtMoney(r.t.credits)+' rep-fault credits');
+      if(issues.length)needs.push({r:r,issues:issues,sev:(r.pacedRevP<70||r.coverageP<55)?'red':'amber'});
+    });
+    needs.sort(function(a,b){return (Number(a.r.score&&a.r.score.fin||0))-(Number(b.r.score&&b.r.score.fin||0));});
+    var pill=document.getElementById('wkCoachPill'); if(pill)pill.textContent=needs.length+' open';
+    q.innerHTML=needs.length?needs.slice(0,6).map(function(x){return actionCard(x.sev==='red'?'\uD83D\uDD34':'\uD83D\uDFE1',x.r.name,x.issues.join(' \u2022 '),'Recommended: review rep profile and set one measurable next step.',x.sev);}).join(''):'<div class="wk-empty">No urgent coaching risks based on the selected week.</div>';
+  }
+  function renderMgrPriorities(rows){
+    var el=document.getElementById('wkMgrPriorities'); if(!el)return;
+    var revRisk=(rows||[]).filter(function(r){return r.pacedRevP<85;}).length;
+    var covRisk=(rows||[]).filter(function(r){return r.coverageP<70;}).length;
+    var artRisk=(rows||[]).filter(function(r){return (r.t.art||0)>=3;}).length;
+    el.innerHTML=
+      actionCard('1','Revenue focus',revRisk+' rep'+(revRisk===1?'':'s')+' below revenue pace.','Run pipeline/quote review with the lowest-pace reps.',revRisk?'amber':'green')+
+      actionCard('2','Customers-called focus',covRisk+' rep'+(covRisk===1?'':'s')+' below customer-set coverage.','Confirm customer-set progress and blockers.',covRisk?'amber':'green')+
+      actionCard('3','Quality focus',artRisk+' rep'+(artRisk===1?'':'s')+' with 3+ art errors.','Review art-error patterns and root causes.',artRisk?'amber':'green');
+  }
+  function renderUpcomingNotes(ctx){
+    var el=document.getElementById('wkUpcomingNotes'); if(!el)return;
+    var items=[];
+    (S.coachingNotes||[]).slice(-5).reverse().forEach(function(n){items.push(actionCard('\uD83D\uDCDD','Coaching note: '+(n.rep||'Rep'),safe(n.type||'note')+(n.note?': '+safe(String(n.note).slice(0,120)):''),'Review in rep profile.','amber'));});
+    (S.hrViolations||[]).slice(-3).reverse().forEach(function(n){items.push(actionCard('\u26A0\uFE0F','HR follow-up: '+(n.rep||'Rep'),safe((n.category||n.type||'HR note'))+(n.note?': '+safe(String(n.note).slice(0,100)):''),'Review HR & Notes.','red'));});
+    el.innerHTML=items.length?items.slice(0,6).join(''):'<div class="wk-empty">No recent coaching or HR notes logged.</div>';
+  }
   window.renderDash=function(){
     try{
       var ctx=weekContext(), rows=repRows(ctx), totals=teamTotals(rows);
@@ -15065,14 +14924,14 @@ window.addEventListener('load', function(){
       renderPulse(ctx,rows,totals);
       if(ctx.isFuture){
         var badge=document.getElementById('wkSnapshotBadge'); if(badge)badge.textContent='Future Week • No Data';
-        ['wkQuarterHealth','wkTeamPace','wkForecastCenter','wkStrategicWatchlist','wkProductionPulse','wkWinsBoard'].forEach(function(id){var el=document.getElementById(id); if(el)el.innerHTML='<div class="wk-empty">No data is available for this future week yet.</div>';});
+        ['wkQuarterHealth','wkTeamPace','wkForecastCenter','wkStrategicWatchlist','wkProductionPulse','wkWinsBoard','wkCoachingQueue','wkMgrPriorities','wkUpcomingNotes'].forEach(function(id){var el=document.getElementById(id); if(el)el.innerHTML='<div class="wk-empty">No data is available for this future week yet.</div>';});
         var tc=document.getElementById('wkTeamCount'); if(tc)tc.textContent='Future week';
         var pb=document.getElementById('wkProdBadge'); if(pb){pb.textContent='No data'; pb.className='wk-pill';}
         renderNotes(ctx);
         var alF=document.getElementById('dAlerts'); if(alF)alF.innerHTML='';
         return;
       }
-      renderHealth(ctx,rows,totals);renderTeam(ctx,rows);renderForecast(ctx,rows,totals);renderWatch(ctx,rows,totals);renderProduction();renderNotes(ctx);renderWins(rows);
+      renderHealth(ctx,rows,totals);renderTeam(ctx,rows);renderForecast(ctx,rows,totals);renderWatch(ctx,rows,totals);renderProduction();renderNotes(ctx);renderWins(rows);renderCoachingQueue(rows);renderMgrPriorities(rows);renderUpcomingNotes(ctx);
       var al=document.getElementById('dAlerts'); if(al)al.innerHTML='';
     }catch(e){console.error('Dashboard render failed',e);var d=document.getElementById('wkExecHero'); if(d)d.innerHTML='<div class="wk-empty">Dashboard could not render: '+safe(e.message)+'</div>';}
   };
