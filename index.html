@@ -2012,6 +2012,41 @@ body.nav-rail .tabs#tabBar{width:var(--tcp-nav-rail)!important;padding-left:10px
 .wk-metric-label{position:relative;z-index:1;font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#98A0B6;font-weight:900;margin-bottom:8px;}
 .wk-metric-value{position:relative;z-index:1;color:#fff;font-size:22px;font-weight:950;letter-spacing:-.035em;line-height:1.05;}
 .wk-metric-sub{position:relative;z-index:1;color:#A8AFC3;font-size:11px;line-height:1.35;margin-top:6px;}
+.wk-pulse-row{margin-bottom:15px;}
+.wk-pulse-row:last-child{margin-bottom:0;}
+.wk-pulse-row.live{border-left:3px solid rgba(71,209,108,.55);padding-left:13px;}
+.wk-pulse-row.qtd{border-left:3px solid rgba(139,92,246,.55);padding-left:13px;}
+.wk-pulse-rowlabel{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:#8EEBD1;margin:0 0 9px;}
+.wk-pulse-row.qtd .wk-pulse-rowlabel{color:#C3B5FF;}
+.wk-pulse-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.wk-pulse-tile{border:1px solid rgba(255,255,255,.09);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));padding:11px 13px;}
+.wk-pulse-label{font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#98A0B6;font-weight:900;margin-bottom:6px;}
+.wk-pulse-value{color:#fff;font-size:24px;font-weight:950;letter-spacing:-.035em;line-height:1.04;}
+.wk-pulse-sub{color:#A8AFC3;font-size:10.5px;line-height:1.3;margin-top:5px;}
+@media(max-width:720px){.wk-pulse-tiles{grid-template-columns:repeat(2,1fr);}}
+.wk-bd-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:720px){.wk-bd-wrap{grid-template-columns:1fr;}}
+.wk-bd-card{border:1px solid rgba(255,255,255,.09);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));padding:15px 16px;}
+.wk-bd-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px;}
+.wk-bd-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#8EEBD1;}
+.wk-bd-actual{color:#fff;font-size:26px;font-weight:950;letter-spacing:-.035em;line-height:1.02;}
+.wk-bd-actlabel{font-size:11px;font-weight:800;color:#98A0B6;letter-spacing:.04em;text-transform:uppercase;}
+.wk-bd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px;}
+.wk-bd-k{font-size:9.5px;text-transform:uppercase;letter-spacing:.07em;color:#98A0B6;font-weight:900;margin-bottom:3px;}
+.wk-bd-v{font-size:14px;font-weight:900;color:#E7EAF3;letter-spacing:-.02em;}
+.wk-bd-table-wrap{overflow-x:auto;margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:6px;}
+.wk-bd-table{width:100%;border-collapse:collapse;font-size:11px;min-width:780px;}
+.wk-bd-table th{font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:#98A0B6;font-weight:900;padding:7px 8px;text-align:right;white-space:nowrap;}
+.wk-bd-table th.grp{text-align:center;color:#8EEBD1;font-size:10px;letter-spacing:.12em;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:5px;}
+.wk-bd-table th.grp.calls{color:#C3B5FF;}
+.wk-bd-table th:first-child,.wk-bd-table td:first-child{text-align:left;}
+.wk-bd-table td{padding:8px;text-align:right;white-space:nowrap;color:#D7DBE8;font-weight:800;border-top:1px solid rgba(255,255,255,.05);}
+.wk-bd-table td.rep{font-weight:900;color:#fff;}
+.wk-bd-table td.wk-bd-muted{color:#5A6378;}
+.wk-bd-table .wk-bd-sep{border-left:1px solid rgba(255,255,255,.1);}
+.wk-bd-mini{position:relative;height:7px;width:78px;border-radius:999px;background:rgba(255,255,255,.1);overflow:visible;display:inline-block;vertical-align:middle;}
+.wk-bd-mini>i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;display:block;}
+.wk-bd-mini>span{position:absolute;top:-3px;bottom:-3px;width:2px;background:#F6F7FF;transform:translateX(-50%);border-radius:2px;box-shadow:0 0 4px rgba(0,0,0,.5);}
 .wk-help{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#AEB7D1;font-size:10px;font-weight:900;margin-left:6px;cursor:help;vertical-align:middle;}
 .wk-help:hover{border-color:rgba(139,92,246,.55);color:#fff;background:rgba(139,92,246,.18);}
 .wk-help-btn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:999px;border:1px solid rgba(139,92,246,.42);background:rgba(139,92,246,.14);color:#D7CEFF;font-size:10px;font-weight:950;cursor:pointer;margin-left:7px;vertical-align:middle;transition:all .15s ease;}
@@ -2467,6 +2502,10 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
 
 <div id="pg-dash" class="page active dash-weekly-exec-v298">
   <section class="wk-exec-hero" id="wkExecHero"></section>
+  <section class="wk-panel" id="wkPulsePanel">
+    <div class="wk-section-head"><div><div class="wk-kicker">Actual vs goal</div><h2>Sales &amp; Calls Breakdown</h2></div><span id="wkPulseBadge" class="wk-pill">This Quarter</span></div>
+    <div id="wkLiveNumbers"></div>
+  </section>
   <div style="display:flex;justify-content:flex-end;margin:0 0 12px;"><button class="dash-action-btn" onclick="printDashboard()">&#128424; Print dashboard</button></div>
   <section class="wk-health-panel">
     <div class="wk-section-head"><div><div class="wk-kicker">Quarter health</div><h2>Current State of the Business <button class="wk-help-btn" onclick="showDashHelp('quarterHealth')">?</button></h2></div><span id="wkSnapshotBadge" class="wk-pill">Week Snapshot</span></div>
@@ -14869,6 +14908,52 @@ window.addEventListener('load', function(){
     html+='</div>'; document.getElementById('wkQuarterTimeline').innerHTML=html;
   }
   function healthCard(label,pct,copy){return '<div class="wk-health-card"><div class="wk-health-top"><div class="wk-health-label">'+safe(label)+'</div><span class="wk-status '+cls(pct)+'">'+statusText(pct)+'</span></div><div class="wk-health-value">'+Math.round(pct)+'%</div><div class="wk-health-copy">'+safe(copy)+'</div><div class="wk-bar" style="--w:'+clampPct(pct)+'%"><span></span></div></div>';}
+  function renderPulse(ctx,rows,totals){
+    var host=document.getElementById('wkLiveNumbers'); if(!host)return;
+    var badge=document.getElementById('wkPulseBadge'); if(badge)badge.textContent=ctx.isFuture?'Future Week':(ctx.isCurrent?'Live • This Quarter':'Selected Week');
+    if(ctx.isFuture){host.innerHTML='<div class="wk-pulse-sub" style="padding:6px 2px;">No data yet \u2014 this week hasn\u2019t happened.</div>';return;}
+    var wePct=ctx.totalWeeks>0?ctx.quarterWeek/ctx.totalWeeks:0;
+    var wr=Math.max(0,ctx.totalWeeks-ctx.quarterWeek);
+    var fullCallGoal=ctx.quarterWeek>0?totals.callGoal*(ctx.totalWeeks/ctx.quarterWeek):0;
+    function card(label,actual,goal,money){
+      var m=paceModel(actual,goal,wePct);
+      var shouldBe=m.pacedTarget, diff=actual-shouldBe;
+      var perWk=wr>0?Math.max(0,(goal-actual)/wr):Math.max(0,goal-actual);
+      var fmt=money?fmtMoney:function(x){return fmtNum(Math.round(x));};
+      var diffStr=(diff>=0?'+':'\u2212')+fmt(Math.abs(diff));
+      var statusStr=(diff>=0?'Ahead by ':'Behind by ')+fmt(Math.abs(diff));
+      return '<div class="wk-bd-card">'+
+        '<div class="wk-bd-head"><div class="wk-bd-title">'+safe(label)+'</div><span style="'+paceToneCss(m.tone)+'border-radius:999px;padding:3px 9px;font-size:10px;font-weight:850;white-space:nowrap;">'+safe(statusStr)+'</span></div>'+
+        '<div class="wk-bd-actual">'+safe(fmt(actual))+' <span class="wk-bd-actlabel">actual</span></div>'+
+        '<div class="profile-pace-bar" style="--fill:'+m.fillPct+'%;--notch:'+m.notchPct+'%;--barcolor:'+m.color+';margin:24px 0 11px;"><div class="profile-pace-fill"></div><div class="profile-pace-notch" title="Where pace says you should be by now"><span>should be</span></div></div>'+
+        '<div class="wk-bd-grid">'+
+          '<div><div class="wk-bd-k">Goal</div><div class="wk-bd-v">'+safe(fmt(goal))+'</div></div>'+
+          '<div><div class="wk-bd-k">Weekly-adjusted</div><div class="wk-bd-v">'+safe(fmt(shouldBe))+'</div></div>'+
+          '<div><div class="wk-bd-k">Difference</div><div class="wk-bd-v" style="color:'+m.color+'">'+safe(diffStr)+'</div></div>'+
+          '<div><div class="wk-bd-k">Need / wk left</div><div class="wk-bd-v">'+safe(fmt(perWk))+'</div></div>'+
+        '</div></div>';
+    }
+    var teamWrap='<div class="wk-bd-wrap">'+card('Sales',totals.rev,totals.revGoal,true)+card('Calls',totals.calls,fullCallGoal,false)+'</div>';
+    function miniBar(fillPct,notchPct,color){return '<div class="wk-bd-mini"><i style="width:'+Math.max(0,Math.min(100,fillPct))+'%;background:'+color+'"></i><span style="left:'+Math.max(0,Math.min(100,notchPct))+'%"></span></div>';}
+    function cells(actual,goal,m,money,lead){
+      var fmt=money?fmtMoney:function(x){return fmtNum(Math.round(x));};
+      var lc=lead?' class="wk-bd-sep"':'';
+      if(!(goal>0)){return '<td'+lc+'>'+safe(fmt(actual))+'</td><td class="wk-bd-muted">\u2014</td><td class="wk-bd-muted">\u2014</td><td class="wk-bd-muted">\u2014</td><td></td>';}
+      var diff=actual-m.pacedTarget;
+      return '<td'+lc+'>'+safe(fmt(actual))+'</td><td>'+safe(fmt(goal))+'</td><td>'+safe(fmt(m.pacedTarget))+'</td><td style="color:'+m.color+'">'+(diff>=0?'+':'\u2212')+safe(fmt(Math.abs(diff)))+'</td><td>'+miniBar(m.fillPct,m.notchPct,m.color)+'</td>';
+    }
+    var bodyRows=(rows||[]).map(function(r){
+      var sM=paceModel(r.t.revenue,r.revGoal,wePct);
+      var fcg=ctx.quarterWeek>0?(r.callGoal*(ctx.totalWeeks/ctx.quarterWeek)):0;
+      var cM=paceModel(r.actualCalls,fcg,wePct);
+      return '<tr><td class="rep">'+safe(r.name)+'</td>'+cells(r.t.revenue,r.revGoal,sM,true,false)+cells(r.actualCalls,fcg,cM,false,true)+'</tr>';
+    }).join('');
+    var tbl='<div class="wk-bd-table-wrap"><table class="wk-bd-table"><thead>'+
+      '<tr><th></th><th class="grp" colspan="5">Sales</th><th class="grp calls" colspan="5">Calls</th></tr>'+
+      '<tr><th>Rep</th><th>Actual</th><th>Goal</th><th>Weekly-adj</th><th>Diff</th><th>Pace</th><th class="wk-bd-sep">Actual</th><th>Goal</th><th>Weekly-adj</th><th>Diff</th><th>Pace</th></tr>'+
+      '</thead><tbody>'+bodyRows+'</tbody></table></div>';
+    host.innerHTML=teamWrap+tbl;
+  }
   // ===== Unified pace model (mirrors the rep-profile pace tracker) =====
   function paceModel(actual,fullGoal,wePct){actual=Number(actual)||0;fullGoal=Number(fullGoal)||0;wePct=Number(wePct)||0;var pacedTarget=fullGoal*wePct,gap=pacedTarget-actual;var fillPct=fullGoal>0?Math.min(100,(actual/fullGoal)*100):0;var notchPct=fullGoal>0?Math.min(100,(pacedTarget/fullGoal)*100):0;var pacedPct=pacedTarget>0?(actual/pacedTarget)*100:(actual>0?100:0);var color=pacedPct>=95?'#47D16C':pacedPct>=80?'#FFB020':'#FF477E';var tone=gap<=0?'good':(pacedPct>=80?'warn':'bad');return{pacedTarget:pacedTarget,gap:gap,fillPct:fillPct,notchPct:notchPct,pacedPct:pacedPct,color:color,tone:tone};}
   function paceToneCss(t){return t==='good'?'background:rgba(71,209,108,.13);color:#9CFFC0;border:1px solid rgba(71,209,108,.35);':t==='warn'?'background:rgba(255,176,32,.14);color:#FFD27A;border:1px solid rgba(255,176,32,.34);':'background:rgba(255,71,126,.14);color:#FFB3C8;border:1px solid rgba(255,71,126,.34);';}
@@ -14971,6 +15056,7 @@ window.addEventListener('load', function(){
     try{
       var ctx=weekContext(), rows=repRows(ctx), totals=teamTotals(rows);
       renderHero(ctx,totals);
+      renderPulse(ctx,rows,totals);
       if(ctx.isFuture){
         var badge=document.getElementById('wkSnapshotBadge'); if(badge)badge.textContent='Future Week • No Data';
         ['wkQuarterHealth','wkTeamPace','wkForecastCenter','wkStrategicWatchlist','wkProductionPulse','wkWinsBoard'].forEach(function(id){var el=document.getElementById(id); if(el)el.innerHTML='<div class="wk-empty">No data is available for this future week yet.</div>';});
