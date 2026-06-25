@@ -2047,6 +2047,14 @@ body.nav-rail .tabs#tabBar{width:var(--tcp-nav-rail)!important;padding-left:10px
 .wk-bd-mini{position:relative;height:7px;width:78px;border-radius:999px;background:rgba(255,255,255,.1);overflow:visible;display:inline-block;vertical-align:middle;}
 .wk-bd-mini>i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;display:block;}
 .wk-bd-mini>span{position:absolute;top:-3px;bottom:-3px;width:2px;background:#F6F7FF;transform:translateX(-50%);border-radius:2px;box-shadow:0 0 4px rgba(0,0,0,.5);}
+.wk-dots{display:inline-flex;gap:5px;align-items:center;}
+.wk-dot{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#0A0E1A;cursor:help;flex:none;}
+.wk-dot.green{background:#47D16C;}
+.wk-dot.amber{background:#FFB020;}
+.wk-dot.red{background:#FF477E;}
+.wk-dot-sm{width:11px;height:11px;font-size:0;}
+.wk-dots-legend{margin-top:11px;font-size:10.5px;color:#98A0B6;display:flex;align-items:center;gap:3px;flex-wrap:wrap;}
+.wk-dots-legend b{color:#C7CDDC;font-weight:900;}
 .wk-help{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#AEB7D1;font-size:10px;font-weight:900;margin-left:6px;cursor:help;vertical-align:middle;}
 .wk-help:hover{border-color:rgba(139,92,246,.55);color:#fff;background:rgba(139,92,246,.18);}
 .wk-help-btn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:999px;border:1px solid rgba(139,92,246,.42);background:rgba(139,92,246,.14);color:#D7CEFF;font-size:10px;font-weight:950;cursor:pointer;margin-left:7px;vertical-align:middle;transition:all .15s ease;}
@@ -2503,7 +2511,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
 <div id="pg-dash" class="page active dash-weekly-exec-v298">
   <section class="wk-exec-hero" id="wkExecHero"></section>
   <section class="wk-panel" id="wkPulsePanel">
-    <div class="wk-section-head"><div><div class="wk-kicker">Actual vs goal</div><h2>Sales &amp; Calls Breakdown</h2></div><span id="wkPulseBadge" class="wk-pill">This Quarter</span></div>
+    <div class="wk-section-head"><div><div class="wk-kicker">Actual vs goal</div><h2>Sales &amp; Customers Breakdown</h2></div><span id="wkPulseBadge" class="wk-pill">This Quarter</span></div>
     <div id="wkLiveNumbers"></div>
   </section>
   <div style="display:flex;justify-content:flex-end;margin:0 0 12px;"><button class="dash-action-btn" onclick="printDashboard()">&#128424; Print dashboard</button></div>
@@ -14895,8 +14903,7 @@ window.addEventListener('load', function(){
     document.getElementById('wkExecHero').innerHTML='<div class="wk-hero-main"><div class="wk-kicker">Weekly Executive Dashboard</div><h1>'+safe(ctx.q+' '+ctx.yr+' • Week '+ctx.weekNo)+'</h1><p><strong>'+safe(dateLabel)+'</strong> • '+safe(viewLabel)+'. Quarter week '+safe(ctx.quarterWeek)+' of '+safe(ctx.totalWeeks)+'. This dashboard uses weekly uploads, forecast updates, production feed, and management records.</p></div>'+ 
       metric('Revenue',fval(fmtMoney(totals.rev)),fsub(revP+'% of '+fmtMoney(totals.revGoal)+' • '+paceStatus(_revMH.gap,'',true)),'rgba(139,92,246,.24)','Revenue booked through the selected week from weekly Data Entry compared to the full quarter revenue goal.','metricRevenue')+
       metric('Orders',fval(fmtNum(totals.orders)),fsub('Through selected week'),'rgba(34,211,238,.16)','Total orders from weekly Data Entry through the selected week.','metricOrders')+
-      metric('Calls',fval(fmtNum(callsActual)),fsub(_fullCallGoalH>0?(_callsFullP+'% of '+fmtNum(Math.round(_fullCallGoalH))+' goal • '+paceStatus(_callMH.gap,'calls',false)):'Through selected week'),'rgba(71,209,108,.18)','Total calls from weekly Data Entry through the selected week compared to the full-quarter call goal, with the paced marker showing where you should be by now.','metricCalls')+
-      metric('Coverage',fval(totals.setSize>0?(coverageP+'%'):fmtNum(totals.accts)),fsub(totals.setSize>0?(coverageSub+' • '+paceStatus(_covMH.gap,'accts',false)):coverageSub),'rgba(71,209,108,.18)','Customer-set coverage: unique accounts contacted through the selected week divided by assigned customer-set size, with the paced marker showing where you should be by now.','metricCoverage')+
+      metric('Customers Called',fval(totals.setSize>0?(coverageP+'%'):fmtNum(totals.accts)),fsub(totals.setSize>0?(coverageSub+' • '+paceStatus(_covMH.gap,'accts',false)):coverageSub),'rgba(71,209,108,.18)','Customers called this quarter: unique accounts contacted through the selected week divided by your customer-set size (the goal is to reach every customer once). The marker shows where you should be by now.','metricCoverage')+
       metric('Art Errors',fval(artRate.toFixed(1)+'%'),fsub(fmtNum(totals.art)+' total errors'),'rgba(255,176,32,.20)','Art errors logged through the selected week divided by orders through the selected week.','metricArtErrors')+
       metric('Credit Memo Cost',fval(fmtMoney(cm.cost)),fsub(cm.cases+' rep-fault cases • '+crRate.toFixed(2)+'% revenue impact'),'rgba(255,91,46,.18)','Rep-fault credit memo dollars from the Credit Memos tab through the selected week. Customer/vendor fault credits are tracked elsewhere but are not counted here for coaching impact.','metricCreditMemos')+
       metric('Snapshot',snapVal,snapSub,'rgba(255,71,126,.20)','Shows the data status for the selected week: live (current week), previously entered data with the date it was saved, or N/A when no data exists. Future weeks intentionally show blank data.','metricSnapshot');
@@ -14914,11 +14921,12 @@ window.addEventListener('load', function(){
     if(ctx.isFuture){host.innerHTML='<div class="wk-pulse-sub" style="padding:6px 2px;">No data yet \u2014 this week hasn\u2019t happened.</div>';return;}
     var wePct=ctx.totalWeeks>0?ctx.quarterWeek/ctx.totalWeeks:0;
     var wr=Math.max(0,ctx.totalWeeks-ctx.quarterWeek);
+    var weeksLeft=Math.max(1,ctx.totalWeeks-ctx.quarterWeek);
     var fullCallGoal=ctx.quarterWeek>0?totals.callGoal*(ctx.totalWeeks/ctx.quarterWeek):0;
     function card(label,actual,goal,money){
       var m=paceModel(actual,goal,wePct);
       var shouldBe=m.pacedTarget, diff=actual-shouldBe;
-      var perWk=wr>0?Math.max(0,(goal-actual)/wr):Math.max(0,goal-actual);
+      var perWk=Math.max(0,goal-actual)/weeksLeft;
       var fmt=money?fmtMoney:function(x){return fmtNum(Math.round(x));};
       var diffStr=(diff>=0?'+':'\u2212')+fmt(Math.abs(diff));
       var statusStr=(diff>=0?'Ahead by ':'Behind by ')+fmt(Math.abs(diff));
@@ -14928,29 +14936,28 @@ window.addEventListener('load', function(){
         '<div class="profile-pace-bar" style="--fill:'+m.fillPct+'%;--notch:'+m.notchPct+'%;--barcolor:'+m.color+';margin:24px 0 11px;"><div class="profile-pace-fill"></div><div class="profile-pace-notch" title="Where pace says you should be by now"><span>should be</span></div></div>'+
         '<div class="wk-bd-grid">'+
           '<div><div class="wk-bd-k">Goal</div><div class="wk-bd-v">'+safe(fmt(goal))+'</div></div>'+
-          '<div><div class="wk-bd-k">Weekly-adjusted</div><div class="wk-bd-v">'+safe(fmt(shouldBe))+'</div></div>'+
-          '<div><div class="wk-bd-k">Difference</div><div class="wk-bd-v" style="color:'+m.color+'">'+safe(diffStr)+'</div></div>'+
-          '<div><div class="wk-bd-k">Need / wk left</div><div class="wk-bd-v">'+safe(fmt(perWk))+'</div></div>'+
+          '<div><div class="wk-bd-k">Still needed</div><div class="wk-bd-v">'+safe(fmt(Math.max(0,goal-actual)))+'</div></div>'+
+          '<div><div class="wk-bd-k">Per wk left</div><div class="wk-bd-v">'+safe(fmt(perWk))+'</div></div>'+
+          '<div><div class="wk-bd-k">Vs pace</div><div class="wk-bd-v" style="color:'+m.color+'">'+safe(diffStr)+'</div></div>'+
         '</div></div>';
     }
-    var teamWrap='<div class="wk-bd-wrap">'+card('Sales',totals.rev,totals.revGoal,true)+card('Calls',totals.calls,fullCallGoal,false)+'</div>';
+    var teamWrap='<div class="wk-bd-wrap">'+card('Sales',totals.rev,totals.revGoal,true)+card('Customers Called',totals.accts,totals.setSize,false)+'</div>';
     function miniBar(fillPct,notchPct,color){return '<div class="wk-bd-mini"><i style="width:'+Math.max(0,Math.min(100,fillPct))+'%;background:'+color+'"></i><span style="left:'+Math.max(0,Math.min(100,notchPct))+'%"></span></div>';}
     function cells(actual,goal,m,money,lead){
       var fmt=money?fmtMoney:function(x){return fmtNum(Math.round(x));};
       var lc=lead?' class="wk-bd-sep"':'';
       if(!(goal>0)){return '<td'+lc+'>'+safe(fmt(actual))+'</td><td class="wk-bd-muted">\u2014</td><td class="wk-bd-muted">\u2014</td><td class="wk-bd-muted">\u2014</td><td></td>';}
       var diff=actual-m.pacedTarget;
-      return '<td'+lc+'>'+safe(fmt(actual))+'</td><td>'+safe(fmt(goal))+'</td><td>'+safe(fmt(m.pacedTarget))+'</td><td style="color:'+m.color+'">'+(diff>=0?'+':'\u2212')+safe(fmt(Math.abs(diff)))+'</td><td>'+miniBar(m.fillPct,m.notchPct,m.color)+'</td>';
+      return '<td'+lc+'>'+safe(fmt(actual))+'</td><td>'+safe(fmt(goal))+'</td><td>'+safe(fmt(Math.max(0,goal-actual)/weeksLeft))+'</td><td style="color:'+m.color+'">'+(diff>=0?'+':'\u2212')+safe(fmt(Math.abs(diff)))+'</td><td>'+miniBar(m.fillPct,m.notchPct,m.color)+'</td>';
     }
     var bodyRows=(rows||[]).map(function(r){
       var sM=paceModel(r.t.revenue,r.revGoal,wePct);
-      var fcg=ctx.quarterWeek>0?(r.callGoal*(ctx.totalWeeks/ctx.quarterWeek)):0;
-      var cM=paceModel(r.actualCalls,fcg,wePct);
-      return '<tr><td class="rep">'+safe(r.name)+'</td>'+cells(r.t.revenue,r.revGoal,sM,true,false)+cells(r.actualCalls,fcg,cM,false,true)+'</tr>';
+      var cM=paceModel(r.accountsCalled,r.setSize,wePct);
+      return '<tr><td class="rep">'+safe(r.name)+'</td>'+cells(r.t.revenue,r.revGoal,sM,true,false)+cells(r.accountsCalled,r.setSize,cM,false,true)+'</tr>';
     }).join('');
     var tbl='<div class="wk-bd-table-wrap"><table class="wk-bd-table"><thead>'+
-      '<tr><th></th><th class="grp" colspan="5">Sales</th><th class="grp calls" colspan="5">Calls</th></tr>'+
-      '<tr><th>Rep</th><th>Actual</th><th>Goal</th><th>Weekly-adj</th><th>Diff</th><th>Pace</th><th class="wk-bd-sep">Actual</th><th>Goal</th><th>Weekly-adj</th><th>Diff</th><th>Pace</th></tr>'+
+      '<tr><th></th><th class="grp" colspan="5">Sales</th><th class="grp calls" colspan="5">Customers Called</th></tr>'+
+      '<tr><th>Rep</th><th>Actual</th><th>Goal</th><th>Per Wk Left</th><th>Vs Pace</th><th>Pace</th><th class="wk-bd-sep">Actual</th><th>Goal</th><th>Per Wk Left</th><th>Vs Pace</th><th>Pace</th></tr>'+
       '</thead><tbody>'+bodyRows+'</tbody></table></div>';
     host.innerHTML=teamWrap+tbl;
   }
@@ -14971,16 +14978,15 @@ window.addEventListener('load', function(){
     var _sb=document.getElementById('wkSnapshotBadge'); if(_sb)_sb.textContent=ctx.isCurrent?'Current Week':'Historical Snapshot';
     document.getElementById('wkQuarterHealth').innerHTML=
       paceCard('Revenue Pace',fmtMoney(totals.rev),Math.round(revM.fillPct)+'% of '+fmtMoney(totals.revGoal)+' goal',revM,paceStatus(revM.gap,'',true))+
-      paceCard('Call Pace',fmtNum(totals.calls),Math.round(callM.fillPct)+'% of '+fmtNum(Math.round(fullCallGoal))+' call goal',callM,paceStatus(callM.gap,'calls',false))+
-      paceCard('Coverage Pace',fmtNum(totals.accts)+' / '+fmtNum(totals.setSize),Math.round(covM.fillPct)+'% of set covered',covM,paceStatus(covM.gap,'accts',false))+
+      paceCard('Customers Called',fmtNum(totals.accts)+' / '+fmtNum(totals.setSize),Math.round(covM.fillPct)+'% of customers reached',covM,paceStatus(covM.gap,'accts',false))+
       barCard('Forecast Health',fmtMoney(projected),Math.round(forecastP)+'% of '+fmtMoney(totals.revGoal)+' at current run rate',Math.min(100,forecastP),100,'goal',(forecastP>=100?'#47D16C':forecastP>=85?'#FFB020':'#FF477E'),(projected>=totals.revGoal?('On track +'+fmtMoney(projected-totals.revGoal)):('Projected '+fmtMoney(totals.revGoal-projected)+' short')),(forecastP>=100?'good':forecastP>=85?'warn':'bad'))+
       barCard('Quality Health',Math.round(qualityP)+'%',fmtNum(totals.art)+' art errors on '+fmtNum(totals.orders)+' orders',qualityP,null,'',(qualityP>=85?'#47D16C':qualityP>=70?'#FFB020':'#FF477E'),(artRate.toFixed(1)+'% art rate'),(qualityP>=85?'good':qualityP>=70?'warn':'bad'));
   }
   function renderTeam(ctx,rows){
     document.getElementById('wkTeamCount').textContent=rows.length+' active reps';
-    var html='<table class="wk-table"><thead><tr><th>Rep</th><th>Revenue</th><th>Revenue Pace</th><th>Calls</th><th>Coverage</th><th>Orders</th><th>Score</th><th>Status</th></tr></thead><tbody>';
-    rows.forEach(function(r){var s=Math.min(r.pacedRevP||0,r.callP||0,r.coverageP||0);html+='<tr onclick="try{selectRep(\''+safe(r.name).replace(/&#39;/g,"\'")+'\');gt(\'profiles\',document.querySelector(\'[onclick*=profiles]\'));}catch(e){}" style="cursor:pointer"><td>'+safe(r.name)+(r.gaps>0?' <span title="'+r.gaps+' week(s) have revenue but no calls/accounts logged \u2014 totals may understate activity" style="color:#EF9F27;cursor:help;">\u26A0</span>':'')+'</td><td>'+fmtMoney(r.t.revenue)+'</td><td><span class="wk-status '+cls(r.pacedRevP)+'">'+r.pacedRevP+'%</span></td><td>'+fmtNum(r.actualCalls)+' / '+fmtNum(r.callGoal)+' <span class="wk-muted">('+r.callP+'%)</span></td><td>'+fmtNum(r.accountsCalled)+' / '+fmtNum(r.setSize)+' <span class="wk-muted">('+r.coverageP+'%)</span></td><td>'+fmtNum(r.t.orders)+'</td><td>'+(r.score&&r.score.fin?Number(r.score.fin).toFixed(1):'—')+'</td><td><span class="wk-status '+cls(s)+'">'+statusText(s)+'</span></td></tr>';});
-    html+='</tbody></table>'; document.getElementById('wkTeamPace').innerHTML=html;
+    var html='<table class="wk-table"><thead><tr><th>Rep</th><th>Revenue</th><th>Revenue Pace</th><th>Customers Called</th><th>Orders</th><th>Score</th><th>Status</th></tr></thead><tbody>';
+    rows.forEach(function(r){var s=Math.min(r.pacedRevP||0,r.callP||0,r.coverageP||0);html+='<tr onclick="try{selectRep(\''+safe(r.name).replace(/&#39;/g,"\'")+'\');gt(\'profiles\',document.querySelector(\'[onclick*=profiles]\'));}catch(e){}" style="cursor:pointer"><td>'+safe(r.name)+(r.gaps>0?' <span title="'+r.gaps+' week(s) have revenue but no calls/accounts logged \u2014 totals may understate activity" style="color:#EF9F27;cursor:help;">\u26A0</span>':'')+'</td><td>'+fmtMoney(r.t.revenue)+'</td><td><span class="wk-status '+cls(r.pacedRevP)+'">'+r.pacedRevP+'%</span></td><td>'+fmtNum(r.accountsCalled)+' / '+fmtNum(r.setSize)+' <span class="wk-muted">('+r.coverageP+'%)</span></td><td>'+fmtNum(r.t.orders)+'</td><td>'+(r.score&&r.score.fin?Number(r.score.fin).toFixed(1):'—')+'</td><td><span class="wk-dots"><span class="wk-dot '+cls(r.pacedRevP)+'" title="Revenue pace '+Math.round(r.pacedRevP||0)+'%">R</span><span class="wk-dot '+cls(r.coverageP)+'" title="Customers called '+Math.round(r.coverageP||0)+'%">C</span></span></td></tr>';});
+    html+='</tbody></table>'; html+='<div class="wk-dots-legend"><b>R</b> Revenue&nbsp;&nbsp;<b>C</b> Customers Called&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span class="wk-dot green wk-dot-sm"></span> on pace (100%+)&nbsp;&nbsp;<span class="wk-dot amber wk-dot-sm"></span> behind (85\u201399%)&nbsp;&nbsp;<span class="wk-dot red wk-dot-sm"></span> well behind (&lt;85%)</div>'; document.getElementById('wkTeamPace').innerHTML=html;
   }
   function renderForecast(ctx,rows,totals){
     var projected=ctx.quarterWeek>0?totals.rev/(ctx.quarterWeek/ctx.totalWeeks):0, gap=Math.max(0,totals.revGoal-projected), weeksRemain=Math.max(0,ctx.totalWeeks-ctx.quarterWeek), need=weeksRemain>0?Math.max(0,(totals.revGoal-totals.rev)/weeksRemain):0;
