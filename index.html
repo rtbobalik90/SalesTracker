@@ -3243,7 +3243,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v388 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v389 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -4394,45 +4394,38 @@ async function buildRepQuarterReport(repName){
     var cmCost=0,cmCases=0,cmList=[];
     (S.cms||[]).forEach(function(c){if(c&&c.rep===repName&&c.fault==='rep'&&inQ(c.weekKey)){cmCost+=Number(c.amount||0);cmCases++;cmList.push(c);}});
     var aeList=(S.artErrors||[]).filter(function(a){return a&&a.rep===repName&&inQ(a.weekKey);});
-    // team rank
     var ranked=[]; try{ranked=activeReps().map(function(r){var tt=totW(r.name,weeks)||{};var gg=getGoal(r.name,yr,q)||{};var s={};try{s=calcSc(r.name,tt,gg,totalWeeks,(typeof getHRPoints==='function'?getHRPoints(r.name,yr,q):0),totalWeeks);}catch(e){}return {name:r.name,rev:Number(tt.revenue||0),fin:Number((s&&s.fin)||0)};});}catch(e){}
     ranked.sort(function(a,b){return (b.fin-a.fin)||(b.rev-a.rev);});
     var rank=ranked.findIndex(function(x){return x.name===repName;})+1; var teamN=ranked.length||1;
     var teamAvgRev=ranked.length?ranked.reduce(function(s,x){return s+x.rev;},0)/ranked.length:0;
-    // weekly series + top order
-    var revSeries=[],artSeries=[],cmSeries=[],callSeries=[],topSale=0,topCust='',topWk='';
+    var revSeries=[],artSeries=[],cmSeries=[],topSale=0,topCust='',topWk='';
     weeks.forEach(function(wk){
       var d=(typeof gd==='function')?gd(repName+'|'+wk.key):{};
-      revSeries.push(Number(d.revenue||0)); callSeries.push(Number(d.calls||0));
+      revSeries.push(Number(d.revenue||0));
       artSeries.push((S.artErrors||[]).filter(function(a){return a&&a.rep===repName&&a.weekKey===wk.key;}).length);
       cmSeries.push((S.cms||[]).filter(function(c){return c&&c.rep===repName&&c.fault==='rep'&&c.weekKey===wk.key;}).reduce(function(s,c){return s+Number(c.amount||0);},0));
       if(Number(d.topSale||0)>topSale){topSale=Number(d.topSale||0);topCust=d.topSaleCustomer||'';topWk=wk.label||('Wk '+(wk.num||''));}
     });
-    function trendDir(a){if(a.length<4)return 'steady';var h=a.length>>1;var f=a.slice(0,h).reduce(function(s,v){return s+v;},0)/Math.max(1,h);var l=a.slice(h).reduce(function(s,v){return s+v;},0)/Math.max(1,a.length-h);if(l>f*1.12)return 'rising';if(l<f*0.88)return 'falling';return 'steady';}
-    function spark(vals,color){var n=vals.length;if(!n)return '';var max=Math.max.apply(null,vals.concat([1]));var W=240,H=46,pad=4;var pts=vals.map(function(v,i){var x=pad+(n>1?i*(W-2*pad)/(n-1):0);var y=H-pad-(max>0?(v/max)*(H-2*pad):0);return x.toFixed(1)+','+y.toFixed(1);}).join(' ');var dots=vals.map(function(v,i){var x=pad+(n>1?i*(W-2*pad)/(n-1):0);var y=H-pad-(max>0?(v/max)*(H-2*pad):0);return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="1.5" fill="'+color+'"/>';}).join('');return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="46" preserveAspectRatio="none"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.6"/>'+dots+'</svg>';}
-    // scorecard
+    function trendDir(a){var nz=a.filter(function(v){return v>0;});if(nz.length<3)return '';var h=a.length>>1;var f=a.slice(0,h).reduce(function(s,v){return s+v;},0)/Math.max(1,h);var l=a.slice(h).reduce(function(s,v){return s+v;},0)/Math.max(1,a.length-h);if(l>f*1.15)return 'trending up';if(l<f*0.85)return 'trending down';return 'steady';}
+    function barChart(vals,color){var max=Math.max.apply(null,vals.concat([1]));return '<div class="bc">'+vals.map(function(v,i){var h=max>0?Math.max(2,Math.round((v/max)*50)):2;var wn=(weeks[i]&&weeks[i].num)?('w'+weeks[i].num):(i+1);return '<div class="bc-col"><div class="bc-bar" style="height:'+h+'px;background:'+color+';opacity:'+(v>0?1:.18)+';"></div><div class="bc-x">'+wn+'</div></div>';}).join('')+'</div>';}
     function grade(s){s=Number(s)||0;return s>=5?'Excellent':s>=4?'Strong':s>=3?'Solid':s>=2?'Needs work':'Critical';}
     function gcls(s){s=Number(s)||0;return s>=4?'good':s>=3?'warn':'bad';}
     function dots5(s){s=Math.max(0,Math.min(5,Math.round(Number(s)||0)));var o='';for(var i=1;i<=5;i++){o+='<i class="qd '+(i<=s?'on':'')+'"></i>';}return '<div class="qdots">'+o+'</div>';}
-    var cats=[
-      {k:'Revenue vs goal',s:sc.ss,m:Math.round(sc.sp||attain)+'% of goal'},
-      {k:'Customer coverage',s:sc.cs,m:cover+'% of set called'},
-      {k:'Art quality',s:sc.as2,m:artRate.toFixed(1)+'% error rate'},
-      {k:'Credit discipline',s:sc.crs,m:(rev>0?(cmCost/rev*100).toFixed(2):'0.00')+'% of revenue'},
-      {k:'Hours discipline',s:sc.hs,m:hrPctV+'% of expected'}
-    ];
+    var cats=[{k:'Revenue vs goal',s:sc.ss,m:Math.round(sc.sp||attain)+'% of goal'},{k:'Customer coverage',s:sc.cs,m:cover+'% of set called'},{k:'Art quality',s:sc.as2,m:artRate.toFixed(1)+'% error rate'},{k:'Credit discipline',s:sc.crs,m:(rev>0?(cmCost/rev*100).toFixed(2):'0.00')+'% of revenue'},{k:'Hours discipline',s:sc.hs,m:hrPctV+'% of expected'}];
     var scoreRows=cats.map(function(c){return '<div class="qsc-row"><div class="qsc-k">'+c.k+'</div>'+dots5(c.s)+'<div class="qsc-g '+gcls(c.s)+'">'+grade(c.s)+'</div><div class="qsc-m">'+c.m+'</div></div>';}).join('');
-    // detail lists
-    var aeDetail = aeList.length ? ('<ul class="qlist">'+aeList.slice(0,8).map(function(a){return '<li>SO '+esc(a.so||a.soNum||'\u2014')+' <span class="muted">('+esc((weeks.filter(function(w2){return w2.key===a.weekKey;})[0]||{}).label||a.weekKey||'')+')</span></li>';}).join('')+(aeList.length>8?'<li class="muted">+'+(aeList.length-8)+' more</li>':'')+'</ul>') : '<div class="muted sm">No art errors logged this quarter \u2014 clean record.</div>';
+    function wkLabelFor(k){var ww=weeks.filter(function(w2){return w2.key===k;})[0];return ww?(ww.label||('Wk '+ww.num)):k;}
+    var aeDetail = aeList.length ? ('<ul class="qlist">'+aeList.slice(0,8).map(function(a){return '<li>SO '+esc(a.so||a.soNum||'\u2014')+' <span class="muted">('+esc(wkLabelFor(a.weekKey))+')</span></li>';}).join('')+(aeList.length>8?'<li class="muted">+'+(aeList.length-8)+' more</li>':'')+'</ul>') : '<div class="muted sm">No art errors logged this quarter \u2014 clean record.</div>';
     var cmDetail = cmList.length ? ('<ul class="qlist">'+cmList.slice(0,8).map(function(c){return '<li>'+money(c.amount)+' <span class="muted">'+esc(c.custName||c.custId||'')+(c.soNum?(' \u00b7 SO '+esc(c.soNum)):'')+'</span></li>';}).join('')+(cmList.length>8?'<li class="muted">+'+(cmList.length-8)+' more</li>':'')+'</ul>') : '<div class="muted sm">No rep-fault credit memos this quarter.</div>';
-    // AI
-    var aiRaw='';
+    var ai={};
     try{
-      var prompt='You are a sales manager writing a quarter-end coaching document a rep will read on their own. Be direct, specific, and use the actual numbers. No markdown, no bullet symbols.\n\nRep: '+repName+' | Quarter: Q'+qn+' '+yr+' ('+totalWeeks+' weeks) | Team rank: '+rank+' of '+teamN+'.\nRevenue '+money(rev)+' vs '+money(revGoal)+' goal ('+attain+'%). Team avg revenue '+money(teamAvgRev)+'.\nCoverage '+cover+'% ('+accts+' of '+setSize+' customers), '+num(calls)+' calls.\nOrders '+orders+'. Art errors '+art+' ('+artRate.toFixed(1)+'% rate). Hours '+Math.round(hours)+' of ~'+Math.round(hrGoal)+' expected ('+hrPctV+'%).\nRep-fault credit memos '+money(cmCost)+' / '+cmCases+' cases.\nScorecard 1-5: revenue '+(sc.ss||0)+', coverage '+(sc.cs||0)+', art '+(sc.as2||0)+', credit '+(sc.crs||0)+', hours '+(sc.hs||0)+', overall '+(sc.fin||0)+'.\nWeekly revenue ['+revSeries.map(function(v){return Math.round(v);}).join(', ')+'] ('+trendDir(revSeries)+'). Weekly art errors ['+artSeries.join(', ')+'] ('+trendDir(artSeries)+').\n\nRespond in EXACTLY these four labeled sections, each 2-4 full sentences of plain prose:\nSUMMARY: overall verdict on the quarter, naming the rep.\nWENT_WELL: the genuine strengths, with numbers.\nWATCH: the real risks or weak spots, with numbers, said honestly but supportively.\nFOCUS: 2-3 concrete, measurable targets for next quarter (give specific numbers, e.g. cut art error rate to X%, reach Y% coverage, hit $Z revenue).';
-      aiRaw=String(await callAI(prompt,{maxTokens:1100,skipCompanyContext:true})||'');
-    }catch(e){aiRaw='';}
-    function aiSec(label){var re=new RegExp(label+'\\s*:\\s*([\\s\\S]*?)(?:\\n\\s*(?:SUMMARY|WENT_WELL|WATCH|FOCUS)\\s*:|$)','i');var m=aiRaw.match(re);return m?esc(m[1].trim()).replace(/\n+/g,'<br>'):'';}
-    var aiSummary=aiSec('SUMMARY'),aiWell=aiSec('WENT_WELL'),aiWatch=aiSec('WATCH'),aiFocus=aiSec('FOCUS');
+      var prompt='You are a sales manager writing a quarter-end coaching note that '+repName+' will read on their own. Be direct, specific, supportive, and use the real numbers. Refer to timing as early, mid, or late quarter \u2014 never invent week numbers.\n\nRep: '+repName+' | Q'+qn+' '+yr+' ('+totalWeeks+' weeks) | Team rank '+rank+' of '+teamN+'.\nRevenue '+money(rev)+' vs '+money(revGoal)+' goal ('+attain+'%); team average '+money(teamAvgRev)+'.\nCoverage '+cover+'% ('+accts+' of '+setSize+' customers), '+num(calls)+' calls. Orders '+orders+'. Art errors '+art+' ('+artRate.toFixed(1)+'% rate). Hours '+Math.round(hours)+' of '+Math.round(hrGoal)+' expected ('+hrPctV+'%). Rep-fault credit memos '+money(cmCost)+' across '+cmCases+' cases.\nScorecard 1-5: revenue '+(sc.ss||0)+', coverage '+(sc.cs||0)+', art quality '+(sc.as2||0)+', credit '+(sc.crs||0)+', hours '+(sc.hs||0)+', overall '+(sc.fin||0)+'.\nRevenue trend across the quarter: '+(trendDir(revSeries)||'steady')+'. Art-error trend: '+(trendDir(artSeries)||'steady')+'.\n\nReturn ONLY a JSON object (no code fences, no extra text) with exactly these keys: "summary", "went_well", "watch", "focus". Each value is 2 to 4 sentences of plain prose written directly to '+repName+', no markdown, no bullet characters. summary = the overall verdict on the quarter. went_well = the genuine strengths with numbers. watch = the real risks or weak spots with numbers, honest but supportive. focus = 2 to 3 concrete measurable targets for next quarter with specific numbers.';
+      var raw=String(await callAI(prompt,{maxTokens:1100,skipCompanyContext:true})||'');
+      raw=raw.replace(/```json/gi,'').replace(/```/g,'').trim();
+      var a0=raw.indexOf('{'),b0=raw.lastIndexOf('}');
+      if(a0>=0&&b0>a0)ai=JSON.parse(raw.slice(a0,b0+1));
+    }catch(e){ai={};}
+    function aiv(k){return ai&&ai[k]?esc(String(ai[k])).replace(/\n+/g,'<br>'):'';}
+    var aiSummary=aiv('summary'),aiWell=aiv('went_well'),aiWatch=aiv('watch'),aiFocus=aiv('focus');
     var aiParsed=(aiSummary||aiWell||aiWatch||aiFocus);
     var genDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
     var attCls=attain>=100?'good':attain>=80?'warn':'bad';
@@ -4444,7 +4437,8 @@ async function buildRepQuarterReport(repName){
       (aiWatch?'<div class="qa-card watch"><div class="qa-h">What to watch</div><div>'+aiWatch+'</div></div>':'')+
       '</div>'+
       (aiFocus?'<div class="qa-card focus"><div class="qa-h">Your focus for next quarter</div><div>'+aiFocus+'</div></div>':'')
-    ) : (aiRaw? '<p class="qa-lead">'+esc(aiRaw).replace(/\n+/g,'<br>')+'</p>' : '<div class="muted">AI coaching unavailable \u2014 add your API key in settings to enable the written summary.</div>');
+    ) : '<div class="muted">AI coaching unavailable \u2014 add your API key in settings to enable the written summary.</div>';
+    function tl(a){var d=trendDir(a);return d?'<span class="muted">'+d+'</span>':'';}
     var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>'+esc(repName)+' Q'+qn+' '+yr+' Quarter Report</title><style>'+
       '@page{margin:0.5in;}*{box-sizing:border-box;}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;color:#15182a;margin:0;padding:30px 34px;background:#fff;line-height:1.45;}'+
       '.qr-top{border-bottom:3px solid #15182a;padding-bottom:13px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;}'+
@@ -4458,7 +4452,8 @@ async function buildRepQuarterReport(repName){
       '.qdots{display:flex;gap:4px;}.qd{width:11px;height:11px;border-radius:50%;background:#e5e7eb;display:inline-block;}.qd.on{background:#15182a;}'+
       '.qr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}.qr-stat{border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;}.qr-stat .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:700;}.qr-stat .v{font-size:19px;font-weight:800;margin-top:3px;}.qr-stat .s{font-size:11px;color:#6b7280;margin-top:1px;}'+
       '.qr-top-order{border:1px solid #fde68a;background:#fffbeb;border-radius:10px;padding:11px 14px;margin-top:12px;font-size:13px;}'+
-      '.qr-trends{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}.qr-trend{border:1px solid #eef0f3;border-radius:10px;padding:12px 14px;}.qr-trend .tl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;}.qr-trend .tv{font-size:11px;color:#6b7280;margin-top:4px;}'+
+      '.qr-trends{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}.qr-trend{border:1px solid #eef0f3;border-radius:10px;padding:12px 14px;}.qr-trend .tl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}.qr-trend .tv{font-size:11px;color:#6b7280;margin-top:7px;}'+
+      '.bc{display:flex;align-items:flex-end;gap:2px;height:60px;}.bc-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}.bc-bar{width:78%;border-radius:2px 2px 0 0;min-height:2px;}.bc-x{font-size:6px;color:#b6bac4;margin-top:3px;line-height:1;transform:scale(.92);}'+
       '.qr-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}.qpanel{border:1px solid #eef0f3;border-radius:10px;padding:13px 15px;}.qlist{margin:6px 0 0;padding-left:18px;font-size:12.5px;}.qlist li{margin:2px 0;}'+
       '.qa-wrap{border:1px solid #c7d2fe;background:#f5f7ff;border-radius:12px;padding:18px 20px;margin-top:10px;}.qa-lead{font-size:14px;line-height:1.6;color:#1e1b4b;margin:0 0 14px;font-weight:500;}'+
       '.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.qa-card{border-radius:10px;padding:13px 15px;font-size:12.5px;line-height:1.55;}.qa-card .qa-h{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;margin-bottom:6px;}'+
@@ -4468,7 +4463,7 @@ async function buildRepQuarterReport(repName){
       '<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>'+
       '<div class="qr-top"><div><div class="qr-kicker">Triple Crown Products &middot; Rep Quarter Report</div><div class="qr-name">'+esc(repName)+'</div></div><div class="qr-meta">Q'+qn+' '+yr+'<br>Generated '+genDate+'<br>'+totalWeeks+' weeks</div></div>'+
       '<div class="qr-hero"><div class="qr-score"><div class="n">'+fin.toFixed(1)+'</div><div class="l">Overall / 5</div></div><div class="qr-hero-main"><div class="big">'+attain+'% to revenue goal</div><div class="sub">'+money(rev)+' of '+money(revGoal)+(rev>=revGoal?(' &middot; +'+money(rev-revGoal)+' over'):(' &middot; '+money(revGoal-rev)+' short'))+'</div><div class="rank">Team rank '+rank+' of '+teamN+' &middot; team avg '+money(teamAvgRev)+'</div></div></div>'+
-      '<div class="qa-wrap">'+aiHtml+'</div>'+
+      '<div class="qr-h2">Coaching breakdown</div><div class="qa-wrap">'+aiHtml+'</div>'+
       '<div class="qr-h2">Scorecard breakdown</div>'+scoreRows+
       '<div class="qr-h2">The numbers</div><div class="qr-stats">'+
         '<div class="qr-stat"><div class="l">Revenue</div><div class="v">'+money(rev)+'</div><div class="s '+attCls+'">'+attain+'% of goal</div></div>'+
@@ -4480,12 +4475,12 @@ async function buildRepQuarterReport(repName){
       '</div>'+
       (topSale>0?('<div class="qr-top-order"><strong>Top order this quarter:</strong> '+money(topSale)+(topCust?(' &mdash; '+esc(topCust)):'')+(topWk?(' <span style="color:#92400e;">('+esc(topWk)+')</span>'):'')+'</div>'):'')+
       '<div class="qr-h2">Trends by week</div><div class="qr-trends">'+
-        '<div class="qr-trend"><div class="tl"><span>Revenue</span><span class="muted">'+trendDir(revSeries)+'</span></div>'+spark(revSeries,'#2563eb')+'<div class="tv">Total '+money(rev)+'</div></div>'+
-        '<div class="qr-trend"><div class="tl"><span>Art errors</span><span class="muted">'+trendDir(artSeries)+'</span></div>'+spark(artSeries,'#dc2626')+'<div class="tv">'+num(art)+' total</div></div>'+
-        '<div class="qr-trend"><div class="tl"><span>Credit memos</span><span class="muted">'+trendDir(cmSeries)+'</span></div>'+spark(cmSeries,'#d97706')+'<div class="tv">'+money(cmCost)+' total</div></div>'+
+        '<div class="qr-trend"><div class="tl"><span>Revenue / week</span>'+tl(revSeries)+'</div>'+barChart(revSeries,'#2563eb')+'<div class="tv">Total '+money(rev)+' &middot; best week '+money(Math.max.apply(null,revSeries.concat([0])))+'</div></div>'+
+        '<div class="qr-trend"><div class="tl"><span>Art errors / week</span>'+tl(artSeries)+'</div>'+barChart(artSeries,'#dc2626')+'<div class="tv">'+num(art)+' total &middot; worst week '+Math.max.apply(null,artSeries.concat([0]))+'</div></div>'+
+        '<div class="qr-trend"><div class="tl"><span>Credit memos / week</span>'+tl(cmSeries)+'</div>'+barChart(cmSeries,'#d97706')+'<div class="tv">'+money(cmCost)+' total</div></div>'+
       '</div>'+
       '<div class="qr-h2">Quality detail</div><div class="qr-two"><div class="qpanel"><strong class="sm">Art errors ('+aeList.length+')</strong>'+aeDetail+'</div><div class="qpanel"><strong class="sm">Rep-fault credit memos ('+cmCases+')</strong>'+cmDetail+'</div></div>'+
-            '</body></html>';
+      '</body></html>';
     if(w){w.document.open();w.document.write(html);w.document.close();w.focus();}
   }catch(e){ if(w){try{w.document.body.innerHTML='Report error: '+String((e&&e.message)||e);}catch(_){}} else alert('Quarter report error: '+((e&&e.message)||e)); }
 }
