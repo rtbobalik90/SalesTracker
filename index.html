@@ -3243,7 +3243,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v386 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v387 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -4370,6 +4370,89 @@ function makeReportEditable(html){
   if(html.indexOf('</body>')>=0)return html.replace('</body>',injection+'</body>');
   return html+injection;
 }
+async function buildRepQuarterReport(repName){
+  if(!repName){alert('Open a rep profile first.');return;}
+  var w=window.open('','_blank');
+  if(w){w.document.write('<!doctype html><meta charset="utf-8"><title>Quarter report</title><body style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:48px;color:#555;background:#fff;font-size:15px;">Generating '+String(repName).replace(/[<>]/g,'')+' quarter report&hellip;<br><br>Writing the AI summary &mdash; this takes a few seconds.</body>');w.document.close();}
+  try{
+    var yr=getYr(), q=getQ();
+    var weeks=(typeof gwq==='function')?(gwq(yr,q)||[]):[];
+    var totalWeeks=weeks.length||13;
+    var t=(typeof totW==='function')?(totW(repName,weeks)||{}):{};
+    var goal=(typeof getGoal==='function')?(getGoal(repName,yr,q)||{}):{};
+    function money(n){return '$'+Math.round(Number(n)||0).toLocaleString();}
+    function num(n){return Math.round(Number(n)||0).toLocaleString();}
+    function pct(a,b){return b>0?Math.round((a/b)*100):0;}
+    function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+    var qn=String(q).replace(/^Q/,'');
+    var rev=Number(t.revenue||0), revGoal=Number(goal.rev||0), attain=pct(rev,revGoal);
+    var calls=Number(t.calls||0), setSize=Number(t.setSize||0), accts=Number(t.acctsCalled||0), cover=setSize>0?pct(accts,setSize):0;
+    var orders=Number(t.orders||0), art=Number(t.art||0), artRate=orders>0?(art/orders*100):0;
+    var hours=Number(t.hours||0), hrGoal=Number(goal.hrs||0)*totalWeeks;
+    var cmCost=0,cmCases=0;
+    (S.cms||[]).forEach(function(c){if(c&&c.rep===repName&&c.fault==='rep'&&weeks.some(function(w2){return w2.key===c.weekKey;})){cmCost+=Number(c.amount||0);cmCases++;}});
+    var revSeries=[],artSeries=[],cmSeries=[],topSale=0,topCust='',topWk='';
+    weeks.forEach(function(wk){
+      var d=(typeof gd==='function')?gd(repName+'|'+wk.key):{};
+      revSeries.push(Number(d.revenue||0));
+      artSeries.push((S.artErrors||[]).filter(function(a){return a&&a.rep===repName&&a.weekKey===wk.key;}).length);
+      cmSeries.push((S.cms||[]).filter(function(c){return c&&c.rep===repName&&c.fault==='rep'&&c.weekKey===wk.key;}).reduce(function(s,c){return s+Number(c.amount||0);},0));
+      if(Number(d.topSale||0)>topSale){topSale=Number(d.topSale||0);topCust=d.topSaleCustomer||'';topWk=wk.label||('Wk '+(wk.num||''));}
+    });
+    function spark(vals,color){
+      var n=vals.length; if(!n)return '';
+      var max=Math.max.apply(null,vals.concat([1])); var W=240,H=46,pad=4;
+      var pts=vals.map(function(v,i){var x=pad+(n>1?i*(W-2*pad)/(n-1):0);var y=H-pad-(max>0?(v/max)*(H-2*pad):0);return x.toFixed(1)+','+y.toFixed(1);}).join(' ');
+      var dots=vals.map(function(v,i){var x=pad+(n>1?i*(W-2*pad)/(n-1):0);var y=H-pad-(max>0?(v/max)*(H-2*pad):0);return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="1.5" fill="'+color+'"/>';}).join('');
+      return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="46" preserveAspectRatio="none"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.6"/>'+dots+'</svg>';
+    }
+    var aiText='';
+    try{
+      var prompt='You are a sales manager writing a short quarter-end note about one rep. Rep: '+repName+'. Quarter: Q'+qn+' '+yr+'. Revenue '+money(rev)+' of '+money(revGoal)+' goal ('+attain+'%). Customers called '+accts+' of '+setSize+' ('+cover+'% coverage), '+num(calls)+' calls. Orders '+orders+'. Art errors '+art+' ('+artRate.toFixed(1)+'% of orders). Hours '+Math.round(hours)+' of ~'+Math.round(hrGoal)+' expected. Rep-fault credit memos '+money(cmCost)+' across '+cmCases+' cases. Weekly revenue: ['+revSeries.map(function(v){return Math.round(v);}).join(', ')+']. Write 3 to 4 short sentences: what went well, what to watch, one focus for next quarter. Direct, specific, no preamble, no markdown, no bullet points.';
+      aiText=await callAI(prompt,{maxTokens:400,skipCompanyContext:true});
+    }catch(e){aiText='';}
+    var aiBlock=aiText?('<div class="qr-ai-text">'+esc(aiText).replace(/\n+/g,'<br><br>')+'</div>'):'<div class="qr-ai-text muted">AI breakdown unavailable &mdash; add your API key in settings to enable the written summary.</div>';
+    var genDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    var attCls=attain>=100?'good':attain>=80?'warn':'bad';
+    var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>'+esc(repName)+' Q'+qn+' '+yr+' Quarter Report</title><style>'+
+      '@page{margin:0.5in;}*{box-sizing:border-box;}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;color:#15182a;margin:0;padding:28px 30px;background:#fff;}'+
+      '.qr-top{border-bottom:3px solid #15182a;padding-bottom:12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-end;}'+
+      '.qr-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6b7280;font-weight:700;}.qr-name{font-size:26px;font-weight:900;margin:2px 0 0;letter-spacing:-.02em;}.qr-meta{font-size:11px;color:#6b7280;text-align:right;}'+
+      '.qr-headline{display:flex;gap:16px;align-items:baseline;margin-bottom:16px;}.qr-headline .big{font-size:34px;font-weight:900;line-height:1;}'+
+      '.qr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:6px;}.qr-stat{border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;}'+
+      '.qr-stat .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:700;}.qr-stat .v{font-size:19px;font-weight:800;margin-top:3px;}.qr-stat .s{font-size:11px;color:#6b7280;margin-top:1px;}'+
+      '.good{color:#16a34a;}.warn{color:#d97706;}.bad{color:#dc2626;}'+
+      '.qr-section-t{font-size:12px;font-weight:800;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.06em;color:#374151;}'+
+      '.qr-trends{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}.qr-trend{border:1px solid #eef0f3;border-radius:10px;padding:12px 14px;}'+
+      '.qr-trend .tl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:700;margin-bottom:6px;}.qr-trend .tv{font-size:11px;color:#6b7280;margin-top:4px;}'+
+      '.qr-top-order{border:1px solid #fde68a;background:#fffbeb;border-radius:10px;padding:11px 14px;margin-top:14px;font-size:13px;}'+
+      '.qr-ai{border:1px solid #c7d2fe;background:#eef2ff;border-radius:10px;padding:14px 16px;margin-top:16px;}.qr-ai-h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#4f46e5;font-weight:800;margin-bottom:6px;}.qr-ai-text{font-size:12.5px;line-height:1.55;color:#1e1b4b;}.muted{color:#9ca3af;}'+
+      '.print-btn{position:fixed;top:14px;right:14px;background:#15182a;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;}@media print{.print-btn{display:none;}}'+
+      '</style></head><body>'+
+      '<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>'+
+      '<div class="qr-top"><div><div class="qr-kicker">Triple Crown Products &middot; Rep Quarter Report</div><div class="qr-name">'+esc(repName)+'</div></div><div class="qr-meta">Q'+qn+' '+yr+'<br>Generated '+genDate+'<br>'+totalWeeks+' weeks</div></div>'+
+      '<div class="qr-headline"><div class="big '+attCls+'">'+attain+'%</div><div><div style="font-weight:700;">'+money(rev)+' of '+money(revGoal)+' revenue goal</div><div style="font-size:11px;color:#6b7280;">'+(rev>=revGoal?('+'+money(rev-revGoal)+' over goal'):(money(revGoal-rev)+' to goal'))+'</div></div></div>'+
+      '<div class="qr-stats">'+
+        '<div class="qr-stat"><div class="l">Calls &amp; Coverage</div><div class="v">'+cover+'%</div><div class="s">'+num(accts)+' / '+num(setSize)+' called &middot; '+num(calls)+' calls</div></div>'+
+        '<div class="qr-stat"><div class="l">Orders</div><div class="v">'+num(orders)+'</div><div class="s">entered this quarter</div></div>'+
+        '<div class="qr-stat"><div class="l">Art Errors</div><div class="v">'+num(art)+'</div><div class="s">'+artRate.toFixed(1)+'% of orders</div></div>'+
+        '<div class="qr-stat"><div class="l">Hours</div><div class="v">'+num(hours)+'</div><div class="s">of ~'+num(hrGoal)+' expected</div></div>'+
+        '<div class="qr-stat"><div class="l">Credit Memos</div><div class="v">'+money(cmCost)+'</div><div class="s">'+cmCases+' rep-fault case'+(cmCases===1?'':'s')+'</div></div>'+
+        '<div class="qr-stat"><div class="l">CM Revenue Impact</div><div class="v">'+(rev>0?(cmCost/rev*100).toFixed(2):'0.00')+'%</div><div class="s">of revenue</div></div>'+
+      '</div>'+
+      (topSale>0?('<div class="qr-top-order"><strong>Top order this quarter:</strong> '+money(topSale)+(topCust?(' &mdash; '+esc(topCust)):'')+(topWk?(' <span style="color:#92400e;">('+esc(topWk)+')</span>'):'')+'</div>'):'')+
+      '<div class="qr-section-t">Trends by week</div>'+
+      '<div class="qr-trends">'+
+        '<div class="qr-trend"><div class="tl">Revenue</div>'+spark(revSeries,'#2563eb')+'<div class="tv">Total '+money(rev)+'</div></div>'+
+        '<div class="qr-trend"><div class="tl">Art errors</div>'+spark(artSeries,'#dc2626')+'<div class="tv">'+num(art)+' total</div></div>'+
+        '<div class="qr-trend"><div class="tl">Credit memos ($)</div>'+spark(cmSeries,'#d97706')+'<div class="tv">'+money(cmCost)+' total</div></div>'+
+      '</div>'+
+      '<div class="qr-ai"><div class="qr-ai-h">AI quarter breakdown</div>'+aiBlock+'</div>'+
+      '</body></html>';
+    if(w){w.document.open();w.document.write(html);w.document.close();w.focus();}
+  }catch(e){ if(w){try{w.document.body.innerHTML='Report error: '+String((e&&e.message)||e);}catch(_){}} else alert('Quarter report error: '+((e&&e.message)||e)); }
+}
+
 function buildQuarterEndReport(){
   try{
     var yr=getYr(), q=getQ();
@@ -13582,7 +13665,7 @@ function renderProfileDetail(ri){
         +'<div class="profile-kpi"><div class="profile-kpi-label">Customers Called</div><div class="profile-kpi-value">'+covPct+'%</div><div class="profile-kpi-sub">'+((qt.acctsCalled||0).toLocaleString())+' accounts called</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">Best week</div><div class="profile-kpi-value">'+(bw.rev>0?_tcpMoney(bw.rev):'—')+'</div><div class="profile-kpi-sub">'+_tcpEscape(bw.weekLabel||'No data yet')+'</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">HR points</div><div class="profile-kpi-value">'+hrP.toFixed(1)+'</div><div class="profile-kpi-sub">Current '+q+' total</div></div>'
-      +'</div><div class="profile-pdf-callout"><div><div class="profile-pdf-callout-title">Sales summary handoff</div><div class="profile-pdf-callout-text">Generate the existing printable rep summary with sales, calls, goals, coverage, and weekly/daily pacing.</div></div><button class="sbtn" onclick="downloadRepSummaryPDF(selectedRep)" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:800;white-space:nowrap;">Download summary PDF</button></div></div>'
+      +'</div><div class="profile-pdf-callout"><div><div class="profile-pdf-callout-title">Sales summary handoff</div><div class="profile-pdf-callout-text">Generate the existing printable rep summary with sales, calls, goals, coverage, and weekly/daily pacing.</div></div><button class="sbtn" onclick="buildRepQuarterReport(selectedRep)" style="background:#1A2230;border-color:#4F46E5;color:#A5B4FC;font-weight:800;white-space:nowrap;margin-right:8px;">Quarter report</button><button class="sbtn" onclick="downloadRepSummaryPDF(selectedRep)" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:800;white-space:nowrap;">Download summary PDF</button></div></div>'
     +'</div>'
     +'<div class="profile-layout" style="margin-top:16px;">'
       +'<div class="profile-main">'
