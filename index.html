@@ -2595,7 +2595,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
     <div class="wk-section-head"><div><div class="wk-kicker">Actual vs goal</div><h2>Sales &amp; Customers Breakdown</h2></div><span id="wkPulseBadge" class="wk-pill">This Quarter</span></div>
     <div id="wkLiveNumbers"></div>
   </section>
-  <div style="display:flex;justify-content:flex-end;gap:8px;margin:0 0 12px;"><button class="dash-action-btn" onclick="buildQuarterEndReport()">&#128202; Quarter-end report</button><button class="dash-action-btn" onclick="printDashboard()">&#128424; Print dashboard</button></div>
+  <div style="display:flex;justify-content:flex-end;gap:8px;margin:0 0 12px;"><button class="dash-action-btn" onclick="buildQuarterEndReport()">&#128202; Executive quarter packet</button><button class="dash-action-btn" onclick="printDashboard()">&#128424; Print dashboard</button></div>
   <section class="wk-health-panel">
     <div class="wk-section-head"><div><div class="wk-kicker">Quarter health</div><h2>Current State of the Business <button class="wk-help-btn" onclick="showDashHelp('quarterHealth')">?</button></h2></div><span id="wkSnapshotBadge" class="wk-pill">Week Snapshot</span></div>
     <div class="wk-health-grid" id="wkQuarterHealth"></div>
@@ -4621,7 +4621,7 @@ async function buildRepQuarterReport(repName){
   }catch(e){ if(w){try{w.document.body.innerHTML='Report error: '+String((e&&e.message)||e);}catch(_){}} else alert('Quarter review packet error: '+((e&&e.message)||e)); }
 }
 
-function buildQuarterEndReport(){
+async function buildQuarterEndReport(){
   try{
     var yr=getYr(), q=getQ();
     var weeks=(typeof gwq==='function')?(gwq(yr,q)||[]):[];
@@ -4629,73 +4629,214 @@ function buildQuarterEndReport(){
     var weekKeys={}; weeks.forEach(function(w){weekKeys[w.key]=1;});
     var reps=(typeof activeReps==='function')?activeReps():[];
     if(!reps.length){alert('No active reps to report on.');return;}
-    function money(n){return '$'+Math.round(Number(n)||0).toLocaleString();}
+    var packetWindow=window.open('','_blank');
+    if(packetWindow){
+      packetWindow.document.write('<!doctype html><meta charset="utf-8"><title>Building Executive Quarter Packet</title><body style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:44px;color:#1f2937;background:#f8fafc;"><h2 style="margin:0 0 8px;">Building executive quarter packet...</h2><p style="color:#667085;">Analyzing completed quarter results and writing the MGMT Q3 focus brief.</p></body>');
+      packetWindow.document.close();
+    }
+
+    function money(n){var v=Math.round(Number(n)||0);return (v<0?'-$':'$')+Math.abs(v).toLocaleString();}
     function num(n){return Math.round(Number(n)||0).toLocaleString();}
-    function pct(a,b){return b>0?Math.round((a/b)*100):0;}
-    function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-    var qn=String(q).replace(/^Q/,'');
-    var rows=reps.map(function(r){
-      var t=(typeof totW==='function')?(totW(r.name,weeks)||{}):{};
-      var goal=(typeof getGoal==='function')?(getGoal(r.name,yr,q)||{}):{};
-      var revGoal=Number(goal.rev||0), rev=Number(t.revenue||0);
-      var orders=Number(t.orders||0), calls=Number(t.calls||0);
-      var setSize=Number(t.setSize||0), accts=Number(t.acctsCalled||0), art=Number(t.art||0);
-      var cmCost=0,cmCases=0;
-      (S.cms||[]).forEach(function(c){if(c&&c.rep===r.name&&c.fault==='rep'&&weekKeys[c.weekKey]){cmCost+=Number(c.amount||0);cmCases++;}});
+    function pct(a,b){return b>0?Math.round((Number(a)||0)/(Number(b)||0)*100):0;}
+    function pct1(n){return (Number(n)||0).toFixed(1)+'%';}
+    function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
+    function cls(kind){return kind==='good'?'good':kind==='bad'?'bad':kind==='watch'?'watch':kind==='warn'?'watch':'info';}
+    function attainClass(p){p=Number(p)||0;return p>=100?'good':p>=85?'watch':'bad';}
+    function signedMoney(n){n=Number(n)||0;return (n>=0?'+':'')+money(n);}
+    function shortWeek(w){return w?(('Wk '+(w.num||'')).trim()):'—';}
+    function maxOf(arr,min){return Math.max.apply(null,(arr||[]).concat([min||1]));}
+    function trend(vals,invert){
+      vals=(vals||[]).map(function(v){return Number(v)||0;});
+      var nz=vals.filter(function(v){return v>0;});
+      if(nz.length<3)return 'limited data';
+      var h=vals.length>>1;
+      var first=vals.slice(0,h).reduce(function(s,v){return s+v;},0)/Math.max(1,h);
+      var last=vals.slice(h).reduce(function(s,v){return s+v;},0)/Math.max(1,vals.length-h);
+      if(last>first*1.15)return invert?'risk rising':'momentum rising';
+      if(last<first*0.85)return invert?'risk improving':'momentum softening';
+      return 'steady';
+    }
+    function barMini(value,max,kind,label){
+      var p=max>0?Math.max(2,Math.min(100,Math.round(Math.abs(Number(value)||0)/max*100))):2;
+      return '<div class="barline '+cls(kind)+'"><i style="width:'+p+'%"></i><span>'+esc(label||'')+'</span></div>';
+    }
+    function spark(vals,max,kind){
+      return '<div class="sparkline">'+(vals||[]).map(function(v){var h=max>0?Math.max(5,Math.round((Number(v)||0)/max*54)):5;return '<i class="'+cls(kind)+'" style="height:'+h+'px"></i>';}).join('')+'</div>';
+    }
+    function badge(text,kind){return '<span class="badge '+cls(kind)+'">'+esc(text)+'</span>';}
+    function riskFlags(r){
+      var out=[];
+      if(r.attain<80)out.push({label:'Revenue Gap',kind:'bad',detail:r.attain+'% to goal'}); else if(r.attain<100)out.push({label:'Revenue Watch',kind:'watch',detail:r.attain+'% to goal'});
+      if(r.coverage<80)out.push({label:'Coverage Gap',kind:'bad',detail:r.coverage+'% coverage'}); else if(r.coverage<95)out.push({label:'Coverage Watch',kind:'watch',detail:r.coverage+'% coverage'});
+      if(r.artRate>8)out.push({label:'Quality Critical',kind:'bad',detail:pct1(r.artRate)}); else if(r.artRate>4)out.push({label:'Quality Watch',kind:'watch',detail:pct1(r.artRate)});
+      if(r.creditPct>1)out.push({label:'Credit Exposure',kind:'watch',detail:pct1(r.creditPct)+' of revenue'});
+      if(r.hrPct && r.hrPct<95)out.push({label:'Hours Watch',kind:'watch',detail:r.hrPct+'% of expected'});
+      if(r.hrPts>0)out.push({label:'HR / Coaching',kind:'bad',detail:Number(r.hrPts).toFixed(1)+' pts'});
+      if(!out.length)out.push({label:'Clean Operating Profile',kind:'good',detail:'No major flags'});
+      return out;
+    }
+    function repCategory(r){
+      if(r.attain>=100 && r.coverage>=95 && r.artRate<=4 && r.creditPct<=1)return {name:'Scale / Model',short:'Scale',kind:'good',read:'Above goal with healthy operating discipline.'};
+      if(r.attain>=100 && (r.artRate>4 || r.coverage<95 || r.creditPct>1))return {name:'Protect the Win',short:'Protect',kind:'watch',read:'Revenue is strong, but management should protect the result by correcting risk.'};
+      if(r.attain<80 || r.coverage<80 || r.artRate>8 || r.creditPct>1)return {name:'Intervention Lane',short:'Intervene',kind:'bad',read:'Needs a direct Q3 recovery plan and weekly management attention.'};
+      if(r.coverage>=95 && r.attain<100)return {name:'Convert Activity',short:'Convert',kind:'watch',read:'Activity is present; conversion, order value, or customer mix needs coaching.'};
+      return {name:'Develop / Watch',short:'Develop',kind:'info',read:'Mixed result; set one tight Q3 improvement target.'};
+    }
+    function primaryAction(r){
+      if(r.category.short==='Scale')return 'Use as a model. Protect habits, recognize performance, and look for stretch-account opportunities.';
+      if(r.category.short==='Protect')return 'Praise the revenue result, then lock in one risk correction so the win is repeatable.';
+      if(r.category.short==='Intervene')return 'Create a written Q3 recovery plan with weekly checkpoints, target metrics, and a clear owner.';
+      if(r.category.short==='Convert')return 'Coach conversion: quotes, account mix, order value, and follow-up quality rather than more raw calls.';
+      return 'Set one measurable improvement lane and review every two weeks until trend changes.';
+    }
+
+    var rows=reps.map(function(rep){
+      var t=(typeof totW==='function')?(totW(rep.name,weeks)||{}):{};
+      var goal=(typeof getGoal==='function')?(getGoal(rep.name,yr,q)||{}):{};
+      var rev=Number(t.revenue||0), revGoal=Number(goal.rev||0), orders=Number(t.orders||0), calls=Number(t.calls||0), setSize=Number(t.setSize||0), accts=Number(t.acctsCalled||0), hours=Number(t.hours||0), art=Number(t.art||0);
+      var cmCost=0, cmCases=0;
+      (S.cms||[]).forEach(function(c){if(c&&c.rep===rep.name&&String(c.fault||'').toLowerCase()==='rep'&&weekKeys[c.weekKey]){cmCost+=Number(c.amount||0);cmCases++;}});
+      var hrPts=(typeof getHRPoints==='function')?Number(getHRPoints(rep.name,yr,q)||0):0;
+      var hrGoal=Number(goal.hrs||0)*totalWeeks;
       var score=0;
-      try{var sc=calcSc(r.name,t,goal,totalWeeks,(typeof getHRPoints==='function'?getHRPoints(r.name,yr,q):0),totalWeeks);score=Number((sc&&sc.fin)||0);}catch(e){score=0;}
-      return {name:r.name,rev:rev,revGoal:revGoal,attain:pct(rev,revGoal),calls:calls,setSize:setSize,accts:accts,coverage:setSize>0?pct(accts,setSize):0,orders:orders,art:art,artRate:orders>0?(art/orders*100):0,cmCost:cmCost,cmCases:cmCases,score:score};
+      try{var sc=calcSc(rep.name,t,goal,totalWeeks,hrPts,totalWeeks);score=Number((sc&&sc.fin)||0);}catch(e){score=0;}
+      var r={name:rep.name,rev:rev,revGoal:revGoal,gap:rev-revGoal,attain:pct(rev,revGoal),orders:orders,calls:calls,setSize:setSize,accts:accts,coverage:setSize>0?pct(accts,setSize):0,hours:hours,hrGoal:hrGoal,hrPct:hrGoal>0?pct(hours,hrGoal):0,art:art,artRate:orders>0?(art/orders*100):0,cmCost:cmCost,cmCases:cmCases,creditPct:rev>0?(cmCost/rev*100):0,score:score,aov:orders>0?rev/orders:0,hrPts:hrPts};
+      r.flags=riskFlags(r); r.category=repCategory(r); r.action=primaryAction(r);
+      return r;
     });
     rows.sort(function(a,b){return (b.score-a.score)||(b.rev-a.rev);});
     rows.forEach(function(r,i){r.rank=i+1;});
-    var team=rows.reduce(function(a,r){a.rev+=r.rev;a.revGoal+=r.revGoal;a.calls+=r.calls;a.setSize+=r.setSize;a.accts+=r.accts;a.orders+=r.orders;a.art+=r.art;a.cmCost+=r.cmCost;a.cmCases+=r.cmCases;return a;},{rev:0,revGoal:0,calls:0,setSize:0,accts:0,orders:0,art:0,cmCost:0,cmCases:0});
+
+    var team=rows.reduce(function(a,r){a.rev+=r.rev;a.revGoal+=r.revGoal;a.gap+=r.gap;a.calls+=r.calls;a.setSize+=r.setSize;a.accts+=r.accts;a.orders+=r.orders;a.art+=r.art;a.cmCost+=r.cmCost;a.cmCases+=r.cmCases;a.hours+=r.hours;a.hrGoal+=r.hrGoal;return a;},{rev:0,revGoal:0,gap:0,calls:0,setSize:0,accts:0,orders:0,art:0,cmCost:0,cmCases:0,hours:0,hrGoal:0});
+    team.attain=pct(team.rev,team.revGoal); team.coverage=team.setSize>0?pct(team.accts,team.setSize):0; team.artRate=team.orders>0?(team.art/team.orders*100):0; team.creditPct=team.rev>0?(team.cmCost/team.rev*100):0; team.hrPct=team.hrGoal>0?pct(team.hours,team.hrGoal):0;
+
+    var overGoal=rows.filter(function(r){return r.attain>=100;}).length;
+    var below80=rows.filter(function(r){return r.attain<80;}).length;
+    var qualityRisk=rows.filter(function(r){return r.artRate>4;}).length;
+    var criticalQuality=rows.filter(function(r){return r.artRate>8;}).length;
+    var creditRisk=rows.filter(function(r){return r.creditPct>1;}).length;
+    var lowCoverage=rows.filter(function(r){return r.coverage<80;}).length;
+    var protectWins=rows.filter(function(r){return r.category.short==='Protect';}).length;
+    var interventions=rows.filter(function(r){return r.category.short==='Intervene';}).length;
+    var scaleReps=rows.filter(function(r){return r.category.short==='Scale';}).length;
+
+    var buckets={scale:[],protect:[],convert:[],intervene:[],develop:[]};
+    rows.forEach(function(r){if(r.category.short==='Scale')buckets.scale.push(r);else if(r.category.short==='Protect')buckets.protect.push(r);else if(r.category.short==='Convert')buckets.convert.push(r);else if(r.category.short==='Intervene')buckets.intervene.push(r);else buckets.develop.push(r);});
+
+    var revSeries=[],callSeries=[],orderSeries=[],artSeries=[],creditSeries=[],weekRows=[];
+    weeks.forEach(function(wk){
+      var wr={week:wk,label:wk.label||shortWeek(wk),revenue:0,calls:0,orders:0,art:0,credits:0};
+      rows.forEach(function(r){var d=(typeof gd==='function')?gd(r.name+'|'+wk.key):{};wr.revenue+=Number(d.revenue||0);wr.calls+=Number(d.calls||0);wr.orders+=Number(d.orders||0);});
+      wr.art=(S.artErrors||[]).filter(function(a){return a&&a.weekKey===wk.key;}).length;
+      wr.credits=(S.cms||[]).filter(function(c){return c&&String(c.fault||'').toLowerCase()==='rep'&&c.weekKey===wk.key;}).reduce(function(s,c){return s+Number(c.amount||0);},0);
+      weekRows.push(wr); revSeries.push(wr.revenue); callSeries.push(wr.calls); orderSeries.push(wr.orders); artSeries.push(wr.art); creditSeries.push(wr.credits);
+    });
+    var bestWeek=weekRows.slice().sort(function(a,b){return b.revenue-a.revenue;})[0]||{};
+    var weakestWeek=weekRows.slice().sort(function(a,b){return a.revenue-b.revenue;})[0]||{};
+    var maxRev=maxOf(revSeries), maxArt=maxOf(artSeries), maxCredit=maxOf(creditSeries), maxGap=maxOf(rows.map(function(r){return Math.abs(r.gap);}),1);
+    var qn=String(q).replace(/^Q/,'');
     var genDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-    var teamAttain=pct(team.rev,team.revGoal), teamCoverage=team.setSize>0?pct(team.accts,team.setSize):0, teamArtRate=team.orders>0?(team.art/team.orders*100):0;
-    function cls(p){return p>=100?'good':p>=80?'warn':'bad';}
-    function bar(p){var w=Math.max(0,Math.min(100,p));var col=p>=100?'#16a34a':p>=80?'#d97706':'#dc2626';return '<div class="qe-bar"><i style="width:'+w+'%;background:'+col+';"></i></div>';}
-    var lb=rows.map(function(r){return '<tr><td class="rk">'+r.rank+'</td><td class="nm">'+esc(r.name)+'</td><td>'+money(r.rev)+'</td><td>'+money(r.revGoal)+'</td><td class="'+cls(r.attain)+'">'+r.attain+'%</td><td>'+num(r.calls)+'</td><td>'+r.coverage+'%</td><td>'+num(r.orders)+'</td><td>'+r.artRate.toFixed(1)+'%</td><td>'+money(r.cmCost)+'</td><td class="sc">'+r.score.toFixed(1)+'</td></tr>';}).join('');
-    var sheets=rows.map(function(r){return '<section class="qe-rep">'+
-      '<div class="qe-rep-head"><div><div class="qe-rep-rank">Rank #'+r.rank+' of '+rows.length+'</div><h2>'+esc(r.name)+'</h2><div class="qe-rep-period">Q'+qn+' '+yr+' &middot; Quarter-End Recap</div></div><div class="qe-rep-score"><div class="qe-rep-score-num">'+r.score.toFixed(1)+'</div><div class="qe-rep-score-lbl">Score</div></div></div>'+
-      '<div class="qe-grid">'+
-        '<div class="qe-block"><div class="qe-block-t">Revenue vs Goal</div><div class="qe-big">'+money(r.rev)+'</div><div class="qe-sub">of '+money(r.revGoal)+' goal</div>'+bar(r.attain)+'<div class="qe-attain '+cls(r.attain)+'">'+r.attain+'% attainment</div></div>'+
-        '<div class="qe-block"><div class="qe-block-t">Customer Coverage</div><div class="qe-big">'+r.coverage+'%</div><div class="qe-sub">'+num(r.accts)+' of '+num(r.setSize)+' customers called</div>'+bar(r.coverage)+'<div class="qe-sub">'+num(r.calls)+' total calls logged</div></div>'+
-        '<div class="qe-block"><div class="qe-block-t">Orders &amp; Art Quality</div><div class="qe-big">'+num(r.orders)+'</div><div class="qe-sub">orders this quarter</div><div class="qe-kv"><span>Art errors</span><b>'+num(r.art)+'</b></div><div class="qe-kv"><span>Art error rate</span><b>'+r.artRate.toFixed(1)+'%</b></div></div>'+
-        '<div class="qe-block"><div class="qe-block-t">Credit Memos (rep-fault)</div><div class="qe-big">'+money(r.cmCost)+'</div><div class="qe-sub">'+r.cmCases+' case'+(r.cmCases===1?'':'s')+'</div><div class="qe-kv"><span>Revenue impact</span><b>'+(r.rev>0?(r.cmCost/r.rev*100).toFixed(2):'0.00')+'%</b></div></div>'+
-      '</div></section>';}).join('');
-    var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Q'+qn+' '+yr+' Quarter-End Breakdown</title><style>'+
-      '@page{margin:0.5in;}*{box-sizing:border-box;}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;color:#15182a;margin:0;padding:28px 30px;background:#fff;}'+
-      'h1{font-size:24px;margin:0 0 2px;letter-spacing:-.02em;}.qe-top{border-bottom:3px solid #15182a;padding-bottom:12px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;}'+
-      '.qe-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6b7280;font-weight:700;}.qe-meta{font-size:11px;color:#6b7280;text-align:right;}'+
-      '.qe-summary{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;}.qe-card{flex:1;min-width:120px;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;}'+
-      '.qe-card .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;font-weight:700;}.qe-card .v{font-size:20px;font-weight:800;margin-top:3px;}.qe-card .s{font-size:11px;color:#6b7280;}'+
-      '.qe-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:8px;}.qe-table th{text-align:right;padding:8px 9px;border-bottom:2px solid #15182a;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#374151;}'+
-      '.qe-table th:nth-child(2){text-align:left;}.qe-table td{text-align:right;padding:7px 9px;border-bottom:1px solid #eef0f3;}.qe-table td.nm{text-align:left;font-weight:700;}.qe-table td.rk{color:#9ca3af;font-weight:700;}.qe-table td.sc{font-weight:800;}'+
-      '.good{color:#16a34a;}.warn{color:#d97706;}.bad{color:#dc2626;}.qe-foot{font-size:10px;color:#9ca3af;margin-top:6px;}'+
-      '.qe-rep{page-break-before:always;border:1px solid #e5e7eb;border-radius:12px;padding:20px 22px;margin-top:18px;}.qe-rep-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #15182a;padding-bottom:10px;}.qe-rep-head h2{font-size:22px;margin:2px 0 0;}'+
-      '.qe-rep-rank{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;font-weight:700;}.qe-rep-score{text-align:center;}.qe-rep-score-num{font-size:26px;font-weight:900;line-height:1;}.qe-rep-score-lbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;}'+
-      '.qe-rep-period{font-size:11px;color:#6b7280;margin:6px 0 0;}.qe-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}.qe-block{border:1px solid #eef0f3;border-radius:10px;padding:13px 15px;}'+
-      '.qe-block-t{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:700;margin-bottom:5px;}.qe-big{font-size:23px;font-weight:800;line-height:1;}.qe-sub{font-size:11px;color:#6b7280;margin-top:2px;}'+
-      '.qe-bar{height:7px;border-radius:5px;background:#eef0f3;overflow:hidden;margin:9px 0 6px;}.qe-bar i{display:block;height:100%;}.qe-attain{font-size:12px;font-weight:700;}'+
-      '.qe-kv{display:flex;justify-content:space-between;font-size:11.5px;margin-top:6px;border-top:1px solid #f3f4f6;padding-top:5px;}.qe-kv b{font-weight:700;}'+
-      '.print-btn{position:fixed;top:14px;right:14px;background:#15182a;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;}@media print{.print-btn{display:none;}}'+
-      '</style></head><body>'+
-      '<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>'+
-      '<div class="qe-top"><div><div class="qe-kicker">Triple Crown Products &middot; Quarter-End Breakdown</div><h1>Q'+qn+' '+yr+' Results</h1></div><div class="qe-meta">Generated '+genDate+'<br>'+rows.length+' active reps &middot; '+totalWeeks+' weeks</div></div>'+
-      '<div class="qe-summary">'+
-        '<div class="qe-card"><div class="l">Team Revenue</div><div class="v">'+money(team.rev)+'</div><div class="s">of '+money(team.revGoal)+' goal</div></div>'+
-        '<div class="qe-card"><div class="l">Attainment</div><div class="v '+cls(teamAttain)+'">'+teamAttain+'%</div><div class="s">'+money(Math.max(0,team.revGoal-team.rev))+' to goal</div></div>'+
-        '<div class="qe-card"><div class="l">Customer Coverage</div><div class="v">'+teamCoverage+'%</div><div class="s">'+num(team.accts)+' / '+num(team.setSize)+' called</div></div>'+
-        '<div class="qe-card"><div class="l">Orders</div><div class="v">'+num(team.orders)+'</div><div class="s">'+teamArtRate.toFixed(1)+'% art error rate</div></div>'+
-        '<div class="qe-card"><div class="l">Credit Memos</div><div class="v">'+money(team.cmCost)+'</div><div class="s">'+team.cmCases+' rep-fault cases</div></div>'+
-      '</div>'+
-      '<h2 style="font-size:14px;margin:0 0 8px;">Team Leaderboard</h2>'+
-      '<table class="qe-table"><thead><tr><th>#</th><th>Rep</th><th>Revenue</th><th>Goal</th><th>Attain</th><th>Calls</th><th>Cover</th><th>Orders</th><th>Art%</th><th>Credits</th><th>Score</th></tr></thead><tbody>'+lb+'</tbody></table>'+
-      '<div class="qe-foot">Attainment = revenue / quarterly goal. Coverage = customers called / customers in set. Art% = art errors / orders. Credits = rep-fault credit-memo cost. Score = overall scorecard rating.</div>'+
-      sheets+'</body></html>';
-    var w=window.open('','_blank');
-    if(w){w.document.write(html);w.document.close();w.focus();}
-    else{alert('Pop-up blocked. Allow pop-ups for this site, then click Quarter-end report again.');}
-  }catch(e){alert('Quarter-end report error: '+((e&&e.message)||e));}
+
+    var verdictKind=team.attain>=100?'good':team.attain>=90?'watch':'bad';
+    var teamVerdict=(team.attain>=100?'The team finished above goal. The management focus for next quarter is protecting the operating profile while scaling the repeatable wins.':team.attain>=90?'The team finished within striking distance of goal, but the shortfall requires focused Q3 management action. Coverage is strong enough to support a rebound, so the work is conversion, quality control, and targeted recovery.':'The team missed goal by a meaningful margin. Q3 needs a tighter management operating rhythm around revenue recovery, account conversion, and risk containment.');
+    var leadershipRead='Revenue finished at '+team.attain+'% of goal with '+overGoal+' of '+rows.length+' reps at or above goal. Coverage finished at '+team.coverage+'%, which means the larger issue is not basic account touch alone. Quality needs attention: '+qualityRisk+' reps are above a 4.0% art-error watch line and '+criticalQuality+' are above 8.0%.';
+
+    function metricCard(label,value,sub,kind,icon){return '<div class="metric '+cls(kind)+'"><div class="mi">'+esc(icon||'')+'</div><div><div class="ml">'+esc(label)+'</div><div class="mv">'+esc(value)+'</div><div class="ms">'+esc(sub||'')+'</div></div></div>';}
+    function briefCard(title,value,sub,kind,body){return '<div class="brief '+cls(kind)+'"><div class="brief-top"><span>'+esc(title)+'</span><b>'+esc(value)+'</b></div><p>'+esc(sub||'')+'</p><div class="brief-body">'+esc(body||'')+'</div></div>';}
+    function laneCard(title,items,kind,why,next){
+      return '<div class="lane '+cls(kind)+'"><div class="lane-head"><div><span>'+esc(title)+'</span><small>'+esc(why||'')+'</small></div><b>'+items.length+'</b></div><div class="lane-next">MGMT move: '+esc(next||'')+'</div>'+(items.length?'<div class="lane-reps">'+items.map(function(r){return '<div class="lane-rep"><strong>'+esc(r.name)+'</strong><span>'+r.attain+'% goal · '+r.coverage+'% cover · '+pct1(r.artRate)+' art</span></div>';}).join('')+'</div>':'<div class="empty">No reps in this lane.</div>')+'</div>';
+    }
+    function gapRows(list){return list.map(function(r){return '<div class="gap-row"><div><strong>'+esc(r.name)+'</strong><span>'+r.attain+'% to goal · '+r.category.short+'</span></div><div class="gap-track"><i class="'+(r.gap>=0?'good':'bad')+'" style="width:'+(Math.max(3,Math.round(Math.abs(r.gap)/maxGap*100)))+'%"></i></div><b class="'+(r.gap>=0?'pos':'neg')+'">'+signedMoney(r.gap)+'</b></div>';}).join('');}
+    function tableRows(){return rows.map(function(r){var pf=r.flags[0]||{label:'',kind:'info',detail:''};return '<tr><td class="rank">'+r.rank+'</td><td><strong>'+esc(r.name)+'</strong><div class="muted">'+esc(r.category.name)+'</div></td><td>'+money(r.rev)+'</td><td>'+money(r.revGoal)+'</td><td class="'+attainClass(r.attain)+'">'+r.attain+'%</td><td class="'+(r.gap>=0?'pos':'neg')+'">'+signedMoney(r.gap)+'</td><td>'+r.coverage+'%</td><td>'+num(r.orders)+'</td><td class="'+(r.artRate>8?'bad':r.artRate>4?'watch':'good')+'">'+pct1(r.artRate)+'</td><td>'+money(r.cmCost)+'</td><td><span class="badge '+cls(pf.kind)+'">'+esc(pf.label)+'</span></td><td><b>'+Number(r.score||0).toFixed(1)+'</b></td></tr>';}).join('');}
+    function weekTable(){return '<table class="mgmt-table"><thead><tr><th>Week</th><th>Revenue</th><th>Calls</th><th>Orders</th><th>Art Errors</th><th>Credits</th><th>Mgmt Read</th></tr></thead><tbody>'+weekRows.map(function(w){var read=(w.revenue===(bestWeek.revenue||-1))?'Best revenue week':(w.revenue===(weakestWeek.revenue||-2)?'Lowest revenue week':(w.art>maxArt*.75?'Quality pressure':'Normal pulse'));return '<tr><td><strong>'+esc(shortWeek(w.week))+'</strong><div class="muted">'+esc(w.label)+'</div></td><td>'+money(w.revenue)+'</td><td>'+num(w.calls)+'</td><td>'+num(w.orders)+'</td><td class="'+(w.art>0?'watch':'good')+'">'+num(w.art)+'</td><td>'+money(w.credits)+'</td><td>'+esc(read)+'</td></tr>';}).join('')+'</tbody></table>';}
+    function actionMatrix(){return '<table class="mgmt-table action-table"><thead><tr><th>Rep</th><th>Lane</th><th>Primary Flag</th><th>Q3 Management Move</th><th>Q3 Follow-Up Cadence</th></tr></thead><tbody>'+rows.map(function(r){var pf=r.flags[0]||{label:'Clean',kind:'good',detail:''};var check=r.category.short==='Scale'?'Protect performance and quality':r.category.short==='Protect'?'Review risk metric weekly':r.category.short==='Intervene'?'Formal weekly recovery check':r.category.short==='Convert'?'Review quote/order conversion':'Biweekly metric review';return '<tr><td><strong>'+esc(r.name)+'</strong><div class="muted">Rank '+r.rank+' · Score '+Number(r.score||0).toFixed(1)+'</div></td><td>'+badge(r.category.name,r.category.kind)+'</td><td>'+badge(pf.label,pf.kind)+'<div class="muted">'+esc(pf.detail)+'</div></td><td>'+esc(r.action)+'</td><td>'+esc(check)+'</td></tr>';}).join('')+'</tbody></table>';}
+    function riskTable(kind){var data=kind==='quality'?rows.slice().sort(function(a,b){return b.artRate-a.artRate;}).slice(0,7):rows.slice().sort(function(a,b){return b.cmCost-a.cmCost;}).slice(0,7);return '<table class="mgmt-table"><thead><tr><th>Rep</th><th>'+esc(kind==='quality'?'Art Rate':'Credit Cost')+'</th><th>Context</th><th>Mgmt Read</th></tr></thead><tbody>'+data.map(function(r){var val=kind==='quality'?pct1(r.artRate):money(r.cmCost);var ctx=kind==='quality'?num(r.art)+' errors / '+num(r.orders)+' orders':r.cmCases+' cases · '+pct1(r.creditPct)+' of revenue';var read=kind==='quality'?(r.artRate>8?'Immediate quality intervention':r.artRate>4?'Q3 quality watch':'Controlled'):(r.creditPct>1?'Credit exposure watch':r.cmCost>0?'Monitor':'Clean');return '<tr><td><strong>'+esc(r.name)+'</strong></td><td class="'+(kind==='quality'?(r.artRate>8?'bad':r.artRate>4?'watch':'good'):(r.creditPct>1?'watch':'good'))+'">'+val+'</td><td>'+esc(ctx)+'</td><td>'+esc(read)+'</td></tr>';}).join('')+'</tbody></table>';}
+    function repCard(r){var pf=r.flags[0]||{label:'Clean',kind:'good',detail:''};return '<div class="rep-card '+cls(r.category.kind)+'"><div class="rep-top"><div><div class="rankline">Rank '+r.rank+' · Score '+Number(r.score||0).toFixed(1)+'</div><h3>'+esc(r.name)+'</h3></div>'+badge(r.category.short,r.category.kind)+'</div><div class="rep-metrics"><span>'+money(r.rev)+'<small>Revenue</small></span><span>'+r.attain+'%<small>Goal</small></span><span>'+r.coverage+'%<small>Cover</small></span><span>'+pct1(r.artRate)+'<small>Art</small></span></div><p>'+esc(r.category.read)+'</p><div class="rep-flag">'+badge(pf.label,pf.kind)+' <span>'+esc(pf.detail)+'</span></div><div class="rep-action"><strong>Q3:</strong> '+esc(r.action)+'</div></div>';}
+
+    var shortfalls=rows.filter(function(r){return r.gap<0;}).sort(function(a,b){return a.gap-b.gap;}).slice(0,7);
+    var positives=rows.filter(function(r){return r.gap>0;}).sort(function(a,b){return b.gap-a.gap;}).slice(0,7);
+
+    function arrayify(v){if(Array.isArray(v))return v.filter(Boolean).map(function(x){return String(x);}); if(v==null)return []; return String(v).split(/\n+|;+/).map(function(x){return x.trim();}).filter(Boolean);}
+    function aiFallback(){
+      var largestGap=shortfalls[0], largestWin=positives[0];
+      return {
+        executive_summary: teamVerdict,
+        quarter_story: 'The completed quarter ended at '+team.attain+'% of goal with '+overGoal+' of '+rows.length+' reps at or above goal. Coverage closed at '+team.coverage+'%, so the management read is not simply a lack of customer touch; Q3 should focus on conversion, order quality, and targeted recovery for the largest shortfalls.',
+        root_causes: [
+          (largestGap?largestGap.name+' created the largest dollar shortfall at '+money(Math.abs(largestGap.gap))+' below goal.':'No major individual shortfall was isolated.'),
+          qualityRisk+' reps finished above the 4.0% art-error watch line, which makes quality a management priority for Q3.',
+          'The strongest positive contributor '+(largestWin?('was '+largestWin.name+' at '+signedMoney(largestWin.gap)+' over goal.'):'was not clearly isolated from the data.')
+        ],
+        q3_management_focus: 'Q3 should be managed around three lanes: recover the revenue gap, tighten quality control, and convert existing account coverage into stronger order volume and revenue per order.',
+        q3_actions: [
+          'Set rep-specific Q3 recovery targets for every rep below 80% to goal or in the Intervention lane.',
+          'Review art-error rate weekly for every rep above 4.0%, with immediate coaching for any repeat patterns.',
+          'Use the Scale / Model reps to identify repeatable behaviors the team can copy in outreach, quote follow-up, and account management.',
+          'Inspect conversion quality for reps with strong coverage but revenue below goal.'
+        ],
+        risks: [
+          interventions+' reps require direct management intervention.',
+          qualityRisk+' reps carry a quality watch flag and '+criticalQuality+' are critical quality risks.',
+          creditRisk+' reps show credit exposure above the review line.'
+        ],
+        meeting_prompts: [
+          'Which shortfalls were goal-size issues versus execution issues?',
+          'Which quality problems are repeatable process failures that can be trained out?',
+          'Which rep habits from the Scale / Model lane should become team standards in Q3?'
+        ]
+      };
+    }
+    var ai=aiFallback(), aiStatus='Baseline analysis generated from tracker data.';
+    try{
+      if(typeof callAI==='function'){
+        var aiRows=rows.map(function(r){return {name:r.name,rank:r.rank,lane:r.category.name,revenue:Math.round(r.rev),goal:Math.round(r.revGoal),gap:Math.round(r.gap),attain:r.attain,coverage:r.coverage,orders:r.orders,artErrors:r.art,artRate:Number(r.artRate.toFixed(1)),creditCost:Math.round(r.cmCost),creditPct:Number(r.creditPct.toFixed(2)),score:Number(r.score||0),primaryFlag:(r.flags[0]&&r.flags[0].label)||'Clean'};});
+        var aiPrompt='You are writing an end-of-quarter management analysis for Triple Crown Products sales leadership. This report is run only after the quarter is complete. Do NOT discuss pacing, projected finish, weeks remaining, or mid-quarter pace. Analyze what happened in the completed quarter and what management should focus on going into the next quarter. Be direct, useful, and leadership-ready. Return ONLY valid JSON with these exact keys: executive_summary (2-3 sentences), quarter_story (3-5 sentences), root_causes (array of 3-5 strings), q3_management_focus (2-3 sentences), q3_actions (array of 4-6 concrete management actions), risks (array of 3-5 strings), meeting_prompts (array of 3-5 questions for the MGMT meeting). Data: '+JSON.stringify({year:yr,quarter:q,totalWeeks:totalWeeks,team:{revenue:Math.round(team.rev),goal:Math.round(team.revGoal),gap:Math.round(team.gap),attainment:team.attain,coverage:team.coverage,orders:team.orders,artErrors:team.art,artRate:Number(team.artRate.toFixed(1)),creditCost:Math.round(team.cmCost),creditCases:team.cmCases,overGoal:overGoal,below80:below80,qualityRisk:qualityRisk,criticalQuality:criticalQuality,creditRisk:creditRisk,lowCoverage:lowCoverage},topPositive:positives.map(function(r){return {name:r.name,gap:Math.round(r.gap),attain:r.attain};}),largestShortfalls:shortfalls.map(function(r){return {name:r.name,gap:Math.round(r.gap),attain:r.attain};}),reps:aiRows});
+        var raw=String(await callAI(aiPrompt,{maxTokens:2200,skipCompanyContext:false})||'').replace(/```json/gi,'').replace(/```/g,'').trim();
+        var a0=raw.indexOf('{'), b0=raw.lastIndexOf('}');
+        if(a0>=0&&b0>a0){var parsed=JSON.parse(raw.slice(a0,b0+1)); if(parsed&&typeof parsed==='object'){ai=Object.assign(ai,parsed); aiStatus='AI analysis included.';}}
+      } else {aiStatus='AI engine unavailable — using data-driven baseline analysis.';}
+    }catch(aiErr){aiStatus='AI unavailable — using data-driven baseline analysis: '+((aiErr&&aiErr.message)||aiErr);}
+    ai.root_causes=arrayify(ai.root_causes); ai.q3_actions=arrayify(ai.q3_actions); ai.risks=arrayify(ai.risks); ai.meeting_prompts=arrayify(ai.meeting_prompts);
+    function aiList(items){items=arrayify(items);return items.length?'<ul>'+items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'<div class="muted">No items generated.</div>';}
+    function aiBox(title,body,items,kind){return '<div class="ai-card '+cls(kind||'info')+'"><h3>'+esc(title)+'</h3>'+(body?'<p>'+esc(body)+'</p>':'')+(items?aiList(items):'')+'</div>';}
+
+    var html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Q${qn} ${yr} MGMT Executive Quarter Review Packet</title><style>
+      @page{margin:.42in;}*{box-sizing:border-box}body{margin:0;padding:28px 32px;background:#f3f6fb;color:#101828;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.45}.print-btn{position:fixed;right:18px;top:18px;z-index:99;border:0;border-radius:999px;background:#111827;color:#fff;padding:11px 18px;font-weight:900;box-shadow:0 18px 36px rgba(15,23,42,.24);cursor:pointer}.cover{position:relative;overflow:hidden;border-radius:30px;padding:34px 38px 28px;margin-bottom:18px;color:#fff;background:radial-gradient(circle at 12% 0%,rgba(249,115,22,.90),transparent 26%),radial-gradient(circle at 90% 12%,rgba(34,211,238,.65),transparent 30%),linear-gradient(135deg,#101828,#1e1b4b 55%,#461c48);box-shadow:0 24px 70px rgba(15,23,42,.25)}.cover:after{content:"";position:absolute;inset:auto -120px -160px auto;width:360px;height:360px;border-radius:999px;background:rgba(255,255,255,.10)}.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.18em;font-weight:950;color:#bae6fd}.cover h1{font-size:43px;line-height:1;margin:12px 0 10px;letter-spacing:-.05em}.cover-meta{display:flex;gap:10px;flex-wrap:wrap;color:#dbeafe;font-size:13px}.cover-chip{border:1px solid rgba(255,255,255,.20);background:rgba(255,255,255,.10);border-radius:999px;padding:6px 11px;font-weight:800}.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-bottom:16px}.verdict,.command-card,.panel,.brief,.lane,.rep-card{background:#fff;border:1px solid #e3e8f2;border-radius:22px;box-shadow:0 18px 42px rgba(16,24,40,.08)}.verdict{padding:24px 25px}.verdict h2{margin:0 0 8px;font-size:24px;letter-spacing:-.035em}.verdict p{font-size:15px;color:#475467;margin:0}.command-card{padding:20px}.command-card h3,.panel h3{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#667085;margin:0 0 12px}.command-card p{font-size:13px;color:#475467;margin:0}.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin:0 0 16px}.metric{position:relative;overflow:hidden;padding:15px 14px;border-radius:20px;background:#fff;border:1px solid #e3e8f2;min-height:126px;box-shadow:0 15px 34px rgba(16,24,40,.07)}.metric:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:#64748b}.metric.good:before{background:linear-gradient(90deg,#16a34a,#22c55e)}.metric.watch:before{background:linear-gradient(90deg,#f59e0b,#f97316)}.metric.bad:before{background:linear-gradient(90deg,#e11d48,#dc2626)}.metric.info:before{background:linear-gradient(90deg,#2563eb,#06b6d4)}.mi{font-size:22px;margin-bottom:7px}.ml{font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:#667085;font-weight:950}.mv{font-size:22px;font-weight:950;letter-spacing:-.04em;margin-top:2px}.ms{font-size:10.5px;color:#667085;margin-top:2px}.brief-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.brief{padding:15px 16px;border-left:6px solid #64748b}.brief.good{border-left-color:#16a34a}.brief.watch{border-left-color:#f59e0b}.brief.bad{border-left-color:#dc2626}.brief.info{border-left-color:#2563eb}.brief-top{display:flex;justify-content:space-between;gap:14px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:950;color:#667085}.brief-top b{font-size:22px;color:#101828;letter-spacing:-.04em}.brief p{font-weight:850;margin:7px 0 5px}.brief-body{font-size:11.5px;color:#667085}.section{page-break-before:always;margin-top:18px}.section.no-break{page-break-before:auto}.section-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid #101828;margin-bottom:14px;padding-bottom:10px}.section h2{margin:0;font-size:27px;letter-spacing:-.04em}.section-sub{font-size:12px;color:#667085}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.panel{padding:17px 18px}.sparkline{height:64px;display:flex;gap:4px;align-items:flex-end}.sparkline i{flex:1;border-radius:6px 6px 0 0;background:#2563eb;opacity:.86}.sparkline i.good{background:linear-gradient(180deg,#22c55e,#15803d)}.sparkline i.watch{background:linear-gradient(180deg,#f59e0b,#f97316)}.sparkline i.bad{background:linear-gradient(180deg,#fb7185,#dc2626)}.ai-section{page-break-before:auto}.ai-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}.ai-card{background:#fff;border:1px solid #dbe5f4;border-radius:22px;padding:18px 20px;box-shadow:0 16px 36px rgba(16,24,40,.08);border-left:6px solid #2563eb}.ai-card.good{border-left-color:#16a34a}.ai-card.watch{border-left-color:#f59e0b}.ai-card.bad{border-left-color:#dc2626}.ai-card h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#475467}.ai-card p{margin:0;color:#344054;font-size:13px;line-height:1.6}.ai-card ul{margin:8px 0 0 18px;padding:0;color:#344054;font-size:12.5px;line-height:1.55}.ai-card li{margin:4px 0}.ai-status{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:950;color:#2563eb;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:5px 10px}.footer-note{font-size:11px;color:#667085;margin-top:10px}.lane{overflow:hidden;border-top:7px solid #64748b;break-inside:avoid}.lane.good{border-top-color:#16a34a}.lane.watch{border-top-color:#f59e0b}.lane.bad{border-top-color:#dc2626}.lane.info{border-top-color:#2563eb}.lane-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:15px 16px 10px}.lane-head span{font-size:15px;font-weight:950}.lane-head small{display:block;color:#667085;margin-top:2px}.lane-head b{font-size:31px;line-height:1;letter-spacing:-.06em}.lane-next{margin:0 16px 10px;padding:9px 10px;border-radius:13px;background:#f8fafc;font-size:11.5px;color:#344054}.lane-reps{padding:0 16px 14px}.lane-rep{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid #eef2f7;font-size:12px}.lane-rep span{color:#667085}.empty{font-size:12px;color:#98a2b3;padding:0 16px 15px}.gap-row{display:grid;grid-template-columns:1.4fr 1fr 95px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #eef2f7}.gap-row strong{display:block}.gap-row span,.muted{display:block;color:#667085;font-size:10.5px}.gap-track{height:9px;border-radius:999px;background:#eef2f7;overflow:hidden}.gap-track i{display:block;height:100%;border-radius:999px}.gap-track i.good{background:linear-gradient(90deg,#16a34a,#86efac)}.gap-track i.bad{background:linear-gradient(90deg,#dc2626,#fda4af)}.pos{color:#15803d}.neg,.bad{color:#dc2626}.good{color:#15803d}.watch{color:#d97706}.info{color:#2563eb}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:950;background:#eef2f7;color:#344054;white-space:nowrap}.badge.good{background:#dcfce7;color:#166534}.badge.watch{background:#ffedd5;color:#9a3412}.badge.bad{background:#fee2e2;color:#991b1b}.badge.info{background:#dbeafe;color:#1e40af}.mgmt-table{width:100%;border-collapse:separate;border-spacing:0;font-size:11px;background:#fff;border:1px solid #e3e8f2;border-radius:18px;overflow:hidden;box-shadow:0 16px 34px rgba(16,24,40,.06)}.mgmt-table th{background:#111827;color:#fff;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.10em;padding:10px 10px}.mgmt-table td{padding:9px 10px;border-bottom:1px solid #eef2f7;vertical-align:top}.mgmt-table tr:last-child td{border-bottom:0}.mgmt-table td:not(:first-child),.mgmt-table th:not(:first-child){text-align:right}.action-table td:nth-child(4),.action-table th:nth-child(4),.action-table td:nth-child(5),.action-table th:nth-child(5){text-align:left}.rank{font-weight:950;color:#98a2b3}.rep-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.rep-card{padding:15px 16px;border-top:7px solid #64748b;break-inside:avoid}.rep-card.good{border-top-color:#16a34a}.rep-card.watch{border-top-color:#f59e0b}.rep-card.bad{border-top-color:#dc2626}.rep-card.info{border-top-color:#2563eb}.rep-top{display:flex;justify-content:space-between;gap:12px}.rankline{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#667085;font-weight:950}.rep-card h3{font-size:18px;margin:2px 0 10px}.rep-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.rep-metrics span{border-radius:14px;background:#f8fafc;padding:8px;font-size:13px;font-weight:950}.rep-metrics small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#667085;margin-top:2px}.rep-card p,.rep-action,.rep-flag{font-size:11.5px;color:#475467;margin:7px 0}.rep-action{border-top:1px solid #eef2f7;padding-top:8px}.source-note{margin-top:16px;padding:12px 14px;border-radius:16px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;font-size:12px}@media print{body{background:#fff;padding:0}.print-btn{display:none}.cover{box-shadow:none}.metric,.verdict,.command-card,.panel,.brief,.lane,.rep-card,.mgmt-table{box-shadow:none}.section{page-break-before:always}.metrics{grid-template-columns:repeat(3,1fr)}.brief-grid{grid-template-columns:repeat(2,1fr)}}
+      </style></head><body>
+      <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+      <div class="cover"><div class="kicker">Triple Crown Products · End-of-Quarter MGMT Command Brief</div><h1>Q${qn} ${yr}<br>Executive Quarter Review</h1><div class="cover-meta"><span class="cover-chip">Generated ${esc(genDate)}</span><span class="cover-chip">${rows.length} active reps</span><span class="cover-chip">${totalWeeks} completed weeks</span><span class="cover-chip">Q3 focus plan</span></div></div>
+      <div class="hero-grid"><div class="verdict"><div style="margin-bottom:10px">${badge(team.attain+'% attainment',verdictKind)} ${badge((team.gap>=0?'Over goal':'Short to goal')+' · '+(team.gap>=0?signedMoney(team.gap):money(Math.abs(team.gap))),team.gap>=0?'good':'bad')}</div><h2>Executive Verdict</h2><p>${esc(teamVerdict)}</p></div><div class="command-card"><h3>Leadership Read</h3><p>${esc(leadershipRead)}</p></div></div>
+      <div class="metrics">${metricCard('Team Revenue',money(team.rev),'of '+money(team.revGoal)+' goal',verdictKind,'$')}${metricCard('Revenue Gap',team.gap>=0?signedMoney(team.gap):money(Math.abs(team.gap)),team.gap>=0?'over goal':'short to goal',team.gap>=0?'good':'bad','↕')}${metricCard('Coverage',team.coverage+'%',num(team.accts)+' / '+num(team.setSize)+' customers','info','◎')}${metricCard('Orders',num(team.orders),pct1(team.artRate)+' team art-error rate',team.artRate>6?'bad':team.artRate>4?'watch':'good','▦')}${metricCard('Credit Exposure',money(team.cmCost),team.cmCases+' rep-fault cases',team.creditPct>1?'watch':'info','!')}${metricCard('Rep Mix',overGoal+'/'+rows.length,below80+' below 80% to goal',below80>0?'watch':'good','👥')}</div>
+      <div class="brief-grid">${briefCard('Scale',scaleReps,'Top performers','good','Protect their rhythm and use their habits as the standard.')}${briefCard('Protect',protectWins,'Revenue wins with risk','watch','Do not let strong revenue hide quality, coverage, or credit exposure.')}${briefCard('Intervene',interventions,'Needs direct plan','bad','Use weekly Q3 checkpoints with measurable recovery targets.')}${briefCard('Quality Watch',qualityRisk,'Reps above 4.0% art rate',qualityRisk>0?'watch':'good','Quality needs to be managed as an operating metric, not a footnote.')}</div>
+      <div class="source-note"><strong>Source-data note:</strong> If a number does not match another tracker, verify the exact weekly entry under Data Entry → Entry Template Audit before using this packet in a management meeting.</div>
+
+      <section class="section no-break ai-section"><div class="section-head"><div><h2>AI Quarter Analysis & Q3 Focus</h2><div class="section-sub">End-of-quarter readout for the MGMT team — no pacing, no projections, only completed-quarter results and Q3 priorities.</div></div><span class="ai-status">${esc(aiStatus)}</span></div><div class="ai-grid">${aiBox('Executive Summary',ai.executive_summary,null,verdictKind)}${aiBox('Quarter Story',ai.quarter_story,null,'info')}${aiBox('Likely Drivers / Root Causes','',ai.root_causes,'watch')}${aiBox('Q3 Management Focus',ai.q3_management_focus,ai.q3_actions,'good')}${aiBox('Risks to Control','',ai.risks,'bad')}${aiBox('MGMT Meeting Questions','',ai.meeting_prompts,'info')}</div></section>
+
+      <section class="section"><div class="section-head"><div><h2>Management Decision Board</h2><div class="section-sub">Grouped by the action the MGMT team should take next, not just by rank.</div></div></div><div class="grid2">${laneCard('Scale / Model',buckets.scale,'good','Above goal with controlled risk','Recognize, protect rhythm, and document the behaviors worth copying.')}${laneCard('Protect the Win',buckets.protect,'watch','Revenue win with a risk flag','Praise revenue, then assign one risk correction target.')}${laneCard('Convert Activity',buckets.convert,'watch','Coverage is there; revenue did not fully follow','Coach conversion, AOV, quotes, and follow-up quality.')}${laneCard('Intervention Lane',buckets.intervene,'bad','Meaningful revenue, coverage, quality, or credit risk','Create a Q3 recovery plan and inspect weekly.')}</div>${buckets.develop.length?'<div style="margin-top:15px">'+laneCard('Develop / Watch',buckets.develop,'info','Mixed profile','Set one measurable improvement target and review every two weeks.')+'</div>':''}</section>
+
+      <section class="section"><div class="section-head"><div><h2>Revenue Gap Board</h2><div class="section-sub">Where the quarter was won or lost in dollars.</div></div><div>${badge('Team gap '+(team.gap>=0?signedMoney(team.gap):money(Math.abs(team.gap))),team.gap>=0?'good':'bad')}</div></div><div class="grid2"><div class="panel"><h3>Positive Contributors</h3>${gapRows(positives)}</div><div class="panel"><h3>Largest Shortfalls</h3>${gapRows(shortfalls)}</div></div></section>
+
+      <section class="section"><div class="section-head"><div><h2>Operating Pulse</h2><div class="section-sub">Trend view for revenue, quality, and credit exposure.</div></div></div><div class="grid3"><div class="panel"><h3>Revenue Momentum</h3>${spark(revSeries,maxRev,'good')}<div class="footer-note">${esc(trend(revSeries,false))} · best week ${esc(bestWeek.label||'—')} at ${money(bestWeek.revenue||0)}</div></div><div class="panel"><h3>Quality Pressure</h3>${spark(artSeries,maxArt,'bad')}<div class="footer-note">${esc(trend(artSeries,true))} · ${criticalQuality} critical quality reps</div></div><div class="panel"><h3>Credit Exposure</h3>${spark(creditSeries,maxCredit,'watch')}<div class="footer-note">${esc(trend(creditSeries,true))} · ${creditRisk} credit-risk reps</div></div></div></section>
+
+      <section class="section"><div class="section-head"><div><h2>Team Scoreboard With Context</h2><div class="section-sub">Score, rank, operating lane, and primary risk in one view.</div></div></div><table class="mgmt-table"><thead><tr><th>#</th><th>Rep / Lane</th><th>Revenue</th><th>Goal</th><th>Attain</th><th>Gap</th><th>Coverage</th><th>Orders</th><th>Art%</th><th>Credits</th><th>Primary Flag</th><th>Score</th></tr></thead><tbody>${tableRows()}</tbody></table></section>
+
+      <section class="section"><div class="section-head"><div><h2>Risk Radar</h2><div class="section-sub">Quality and credit are promoted to management-level review items.</div></div></div><div class="grid2"><div class="panel"><h3>Highest Art-Error Rates</h3>${riskTable('quality')}</div><div class="panel"><h3>Highest Credit Exposure</h3>${riskTable('credit')}</div></div></section>
+
+      <section class="section"><div class="section-head"><div><h2>Completed Quarter Timeline</h2><div class="section-sub">Week-by-week source data for the completed quarter.</div></div></div>${weekTable()}</section>
+
+      <section class="section"><div class="section-head"><div><h2>Q3 Management Action Matrix</h2><div class="section-sub">Clear next-quarter ownership lane for every rep.</div></div></div>${actionMatrix()}</section>
+
+      <section class="section"><div class="section-head"><div><h2>Rep Coaching Appendix</h2><div class="section-sub">Compact rep cards for prep, one-on-ones, and manager follow-up.</div></div></div><div class="rep-grid">${rows.map(repCard).join('')}</div></section>
+      </body></html>`;
+
+    var finalHtml=(typeof makeReportEditable==='function')?makeReportEditable(html):html;
+    if(packetWindow){packetWindow.document.open();packetWindow.document.write(finalHtml);packetWindow.document.close();packetWindow.focus();}
+    else if(typeof openInNewTab==='function'){openInNewTab(html);}
+    else{var w=window.open('','_blank');if(w){w.document.write(finalHtml);w.document.close();w.focus();}else{alert('Pop-up blocked. Allow pop-ups for this site, then click the quarter packet again.');}}
+  }catch(e){
+    if(typeof packetWindow!=='undefined'&&packetWindow){try{packetWindow.document.body.innerHTML='Executive quarter packet error: '+String((e&&e.message)||e);}catch(_){}}
+    else alert('Executive quarter packet error: '+((e&&e.message)||e));
+  }
 }
 
 function openInNewTab(html){html=makeReportEditable(html);let w=window.open('','_blank');if(w){w.document.write(html);w.document.close();}else alert('Please allow pop-ups.');}
