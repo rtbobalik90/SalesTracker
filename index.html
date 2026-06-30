@@ -3243,7 +3243,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v390 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v391 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -7144,18 +7144,23 @@ function getDailySales(){
   // Returns array of { date, runningTotal, dailySales, corpSales, smbSales } sorted by date.
   initDailySales();
   var entries=S.dailySales.slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+  var corpRun=0;
   return entries.map(function(e,i){
     var prev=i>0?Number(entries[i-1].runningTotal||0):0;
     var running=Number(e.runningTotal||0);
     var totalDaily=Math.max(0,running-prev);
     var corp=Number(e.corpSales||0);
     var smb=Math.max(0,totalDaily-corp);
+    corpRun+=corp;
+    var smbCumulative=Math.max(0,running-corpRun);
     return{
       date:e.date,
       runningTotal:running,
       dailySales:totalDaily,
       corpSales:corp,
-      smbSales:smb
+      smbSales:smb,
+      corpCumulative:corpRun,
+      smbCumulative:smbCumulative
     };
   });
 }
@@ -7229,8 +7234,8 @@ function renderDailyLog(){
       +'<div class="daily-day-num">'+day+(isToday?' ●':'')+'</div>'
       +(entry
         ?'<div class="daily-day-sale">Total +$'+Math.round(entry.dailySales).toLocaleString()+'</div>'
-         +'<div class="daily-day-total">CORP $'+Math.round(entry.corpSales||0).toLocaleString()+'</div>'
-         +'<div class="daily-day-total">SMB $'+Math.round(entry.smbSales||0).toLocaleString()+'</div>'
+         +'<div class="daily-day-total">CORP $'+Math.round(entry.corpCumulative||0).toLocaleString()+'</div>'
+         +'<div class="daily-day-total">SMB $'+Math.round(entry.smbCumulative||0).toLocaleString()+'</div>'
          +'<div class="daily-day-total">Σ $'+Math.round(entry.runningTotal).toLocaleString()+'</div>'
          +'<button class="daily-delete-btn" onclick="deleteDailyEntry(&quot;'+dateStr+'&quot;)" title="Remove">×</button>'
         :'')
