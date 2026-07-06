@@ -3243,7 +3243,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v393 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v394 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -6021,7 +6021,7 @@ function buildReportCSSPrintV2(){
   +'.hero-band .hb-cell{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:8px 10px;}'
   +'.hero-band .hb-l{font-size:7.6px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.75);}.hero-band .hb-v{font-size:16px;font-weight:950;margin-top:2px;}'
   +'.print-btn{position:fixed;top:12px;right:12px;background:#111B2E;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:800;cursor:pointer;z-index:50;box-shadow:0 6px 18px rgba(15,23,42,.25);}'
-  +'@media print{.print-btn{display:none!important;}html,body{background:#fff;}.shell{box-shadow:none;width:auto;}}';
+  +'.sec-h,.sec-title{break-after:avoid;page-break-after:avoid;}'+'.intel-section,.intel-section.section{break-inside:auto!important;page-break-inside:auto!important;}'+'@media print{.print-btn{display:none!important;}html,body{background:#fff;}.shell{box-shadow:none;width:auto;}.tri{grid-template-columns:1fr!important;}.intel-grid{grid-template-columns:1fr!important;}.proj-grid{grid-template-columns:1fr 1fr;}}';
 }
 function buildReportPrintV2(title,sub,badgeText,bodyHtml){
   var ds=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -6074,7 +6074,7 @@ function buildMgrMeetingBody(E,ai,depth,X){
       +'</div></div>';
   }
   // 4. Wins / Risks / Watch
-  out+='<div class="sec"><div class="sec-h"><span>&#128161; Wins, risks &amp; what to watch</span><span class="tag">AI analysis</span></div><div class="tri">'
+  out+='<div class="sec flow"><div class="sec-h"><span>&#128161; Wins, risks &amp; what to watch</span><span class="tag">AI analysis</span></div><div class="tri">'
     +'<div class="bcard"><div class="bl" style="color:#059669;">&#127881; Wins</div>'+bl(ai&&ai.wins,'win')+'</div>'
     +'<div class="bcard"><div class="bl" style="color:#DC2626;">&#9888;&#65039; Risks &amp; watchouts</div>'+bl(ai&&ai.risks,'risk')+'</div>'
     +'<div class="bcard"><div class="bl" style="color:#D97706;">&#128064; Watch next</div>'+bl(ai&&ai.watch,'watch')+'</div>'
@@ -6159,13 +6159,13 @@ function buildMgrMeetingBody(E,ai,depth,X){
     out+='</div>';
   }
   // 13. Talking points + coaching
-  out+='<div class="sec"><div class="sec-h"><span>&#128483;&#65039; Management talking points</span><span class="tag">read these in the meeting</span></div><div class="tri" style="grid-template-columns:1.2fr 1fr;">'
+  out+='<div class="sec flow"><div class="sec-h"><span>&#128483;&#65039; Management talking points</span><span class="tag">read these in the meeting</span></div><div class="tri" style="grid-template-columns:1.2fr 1fr;">'
     +'<div class="bcard"><div class="bl" style="color:#4F46E5;">Talking points</div>'+bl(ai&&ai.talking_points,'tp')+'</div>'
     +'<div class="bcard"><div class="bl" style="color:#D97706;">Rep coaching recommendations</div>'
     +((ai&&ai.coaching&&ai.coaching.length)?('<ul class="bullets watch">'+ai.coaching.map(function(c){return '<li><strong>'+_m2esc(c.name||'')+':</strong> '+_m2esc(c.note||'')+'</li>';}).join('')+'</ul>'):'<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable)</div>')
     +'</div></div></div>';
   // 14. Recommended actions
-  out+='<div class="sec"><div class="sec-h"><span>&#9989; Recommended actions this week</span></div>'
+  out+='<div class="sec flow"><div class="sec-h"><span>&#9989; Recommended actions this week</span></div>'
     +((ai&&ai.actions&&ai.actions.length)?('<ol style="font-size:10.4px;line-height:1.55;padding-left:18px;">'+ai.actions.map(function(x){return '<li style="margin:4px 0;">'+_m2esc(x)+'</li>';}).join('')+'</ol>'):'<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable)</div>')
     +'</div>';
   // 15. Pitch / intel
