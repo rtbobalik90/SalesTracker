@@ -3178,7 +3178,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
         <p>Generate a manager-ready weekly packet with team KPIs, rep rankings, pacing, call coverage, AI talking points, and forecast opportunities.</p>
       </div>
       <div class="meeting-hero-actions">
-        <button class="meeting-btn primary" id="genMtgBtn" onclick="generateMeetingReport()">✦ Generate report</button>
+        <select class="nav-sel" id="mtgDepth" title="Report depth" style="min-width:150px;"><option value="executive">Executive brief</option><option value="standard">Standard</option><option value="comprehensive" selected>Comprehensive</option></select><button class="meeting-btn primary" id="genMtgBtn" onclick="generateMeetingReport()">✦ Generate report</button>
         <button class="meeting-btn" id="genRepVersionBtn" onclick="generateRepVersionReport()">⭐ Rep-friendly</button>
         <button class="meeting-btn" id="genPrintVersionBtn" onclick="generatePrintVersionReport()">🖨 Print/PDF</button>
       </div>
@@ -3243,7 +3243,7 @@ html,body,.tabs,.coach-timeline,.prod-intel-card-row,.prod-card-row,textarea{
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v391 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v393 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -5823,109 +5823,386 @@ async function callAI(p, opts){
   return d.content?.[0]?.text||'';
 }
 
-async function generateMeetingReport(){
-  let sel=document.getElementById('mtgWeekSel');
-  let weekKey=sel?sel.value:'';
-  if(!weekKey){document.getElementById('mtgSt').textContent='Please select a week.';return;}
-  let prev=null;
-  for(let yr2 of YEARS){if(prev)break;for(let q2 of QTRS){if(prev)break;let wks=gwq(yr2,q2);let w=wks.find(x=>x.key===weekKey);if(w)prev={...w,key:weekKey};}}
-  if(!prev){document.getElementById('mtgSt').textContent='Week not found.';return;}
-  let yr=parseInt(prev.key.split('_')[0]),q=prev.key.split('_')[1];let btn=document.getElementById('genMtgBtn'),st=document.getElementById('mtgSt'),preview=document.getElementById('mtgPreview');btn.disabled=true;st.textContent='Gathering data...';document.getElementById('mtgResultBox').style.display='none';let repData=activeReps().map((r)=>{let ri=S.reps.findIndex(x=>x.name===r.name);let d=gd(r.name+'|'+prev.key),aes=S.artErrors.filter(a=>a.rep===r.name&&a.weekKey===prev.key),cms=S.cms.filter(c=>c.rep===r.name&&c.weekKey===prev.key),ro=repGoalObj(r.name,yr,q);return{name:r.name,revenue:d.revenue||0,calls:d.calls||0,orders:d.orders||0,art:aes.length,credits:cms.filter(c=>c.fault==='rep').reduce((s,c)=>s+c.amount,0),topSale:d.topSale||0,topSaleCustomer:d.topSaleCustomer||'',goalRev:ro.rev,idx:ri};});let tRev=repData.reduce((s,r)=>s+r.revenue,0),tOrders=repData.reduce((s,r)=>s+r.orders,0),tCalls=repData.reduce((s,r)=>s+r.calls,0),tArt=repData.reduce((s,r)=>s+r.art,0),tCredits=repData.reduce((s,r)=>s+r.credits,0),weeklyGoal=repData.reduce((s,r)=>s+r.goalRev/(gwq(yr,q).length||13),0),artPct=tOrders>0?((tArt/tOrders)*100).toFixed(1):0;let qtdWeeks=gwq(yr,q),prevIdx=qtdWeeks.findIndex(w=>w.key===prev.key),weeksCompleted=prevIdx+1,weeksRemaining=qtdWeeks.length-weeksCompleted,qtdRevTotal=0;activeReps().forEach(r=>{qtdWeeks.slice(0,weeksCompleted).forEach(w=>{qtdRevTotal+=gd(r.name+'|'+w.key).revenue||0;});});let qtdRevByRep={};activeReps().forEach(r=>{qtdRevByRep[r.name]=0;qtdWeeks.slice(0,weeksCompleted).forEach(w=>{qtdRevByRep[r.name]+=(gd(r.name+'|'+w.key).revenue||0);});});let _qtdOrdersTotal=0;activeReps().forEach(r=>{qtdWeeks.slice(0,weeksCompleted).forEach(w=>{_qtdOrdersTotal+=(gd(r.name+'|'+w.key).orders||0);});});let _activeRepNames=new Set(activeReps().map(r=>r.name));let _qtdArtTotal=S.artErrors.filter(a=>a.yr==yr&&a.q===q&&_activeRepNames.has(a.rep)&&qtdWeeks.slice(0,weeksCompleted).some(w=>w.key===a.weekKey)).length;let _qtdArtPct=_qtdOrdersTotal>0?((_qtdArtTotal/_qtdOrdersTotal)*100).toFixed(1):'0.0';let _qtdCreditsTotal=S.cms.filter(c=>c.yr==yr&&c.q===q&&c.fault==='rep'&&_activeRepNames.has(c.rep)&&qtdWeeks.slice(0,weeksCompleted).some(w=>w.key===c.weekKey)).reduce((s,c)=>s+c.amount,0);let _qtdCreditPct=qtdRevTotal>0?((_qtdCreditsTotal/qtdRevTotal)*100).toFixed(2):'0.00';let qGoalTotal=activeReps().reduce((s,r)=>s+repGoalObj(r.name,yr,q).rev,0),avgWeeklyRev=weeksCompleted>0?qtdRevTotal/weeksCompleted:0,projectedQRev=qtdRevTotal+(avgWeeklyRev*weeksRemaining),projectedPct=qGoalTotal>0?Math.round(projectedQRev/qGoalTotal*100):0;
-  // Compute adjusted weekly goal (catch-up rate) AT START of reported week
-  let qtdRevPriorWeek=0;activeReps().forEach(r=>{qtdWeeks.slice(0,prevIdx).forEach(w=>{qtdRevPriorWeek+=gd(r.name+'|'+w.key).revenue||0;});});
-  let weeksLeftIncludingReported=qtdWeeks.length-prevIdx;
-  let adjWeeklyForReportedWeek=weeksLeftIncludingReported>0?Math.max(0,(qGoalTotal-qtdRevPriorWeek)/weeksLeftIncludingReported):weeklyGoal;
-  let forwardCatchupWeekly=weeksRemaining>0?Math.max(0,(qGoalTotal-qtdRevTotal)/weeksRemaining):0;
-  let weeklyVsAdjPct=adjWeeklyForReportedWeek>0?Math.round(tRev/adjWeeklyForReportedWeek*100):0;
-  let weeklyVsStaticPct=weeklyGoal>0?Math.round(tRev/weeklyGoal*100):0;
-  
-  // Per-rep QTD up through PRIOR week (so we can detect "just hit goal this week")
-  let _qtdRevByRepPrior={};activeReps().forEach(r=>{_qtdRevByRepPrior[r.name]=0;qtdWeeks.slice(0,prevIdx).forEach(w=>{_qtdRevByRepPrior[r.name]+=(gd(r.name+'|'+w.key).revenue||0);});});
-  // Build standout moments — to be quoted in WEEK RECAP
-  let _hitGoalThisWk=[],_alreadyOverGoal=[],_closeToGoal=[],_bigWeekVsAvg=[];
-  repData.forEach(function(r){
-    var priorQTD=_qtdRevByRepPrior[r.name]||0;
-    var currQTD=qtdRevByRep[r.name]||0;
-    var pct=r.goalRev>0?(currQTD/r.goalRev*100):0;
-    var priorPct=r.goalRev>0?(priorQTD/r.goalRev*100):0;
-    if(priorPct<100 && pct>=100){
-      _hitGoalThisWk.push(r.name+' HIT '+q+' GOAL this week (QTD $'+Math.round(currQTD).toLocaleString()+' vs $'+Math.round(r.goalRev).toLocaleString()+' goal = '+Math.round(pct)+'%)');
-    } else if(priorPct>=100){
-      _alreadyOverGoal.push(r.name+' already over '+q+' goal — now at '+Math.round(pct)+'% ($'+Math.round(currQTD).toLocaleString()+' QTD)');
-    } else if(pct>=90){
-      _closeToGoal.push(r.name+' at '+Math.round(pct)+'% of '+q+' goal — needs $'+Math.round(r.goalRev-currQTD).toLocaleString()+' more');
-    }
-    var avgWk=weeksCompleted>0?(qtdRevByRep[r.name]||0)/weeksCompleted:0;
-    if(avgWk>1000 && r.revenue>=avgWk*1.5){
-      _bigWeekVsAvg.push(r.name+' had a standout week: $'+Math.round(r.revenue).toLocaleString()+' vs $'+Math.round(avgWk).toLocaleString()+' personal weekly avg');
-    }
-  });
-  let sorted=[...repData].sort((a,b)=>b.revenue-a.revenue),topRep=sorted[0];st.textContent='Building market intel from forecast...';let intelData=null;try{intelData=generateIntelForMeeting();}catch(e){console.warn('Intel error:',e);}st.textContent='Generating AI analysis...';const prompt='You are a sales manager writing the weekly team meeting report for Triple Crown Products (custom branded apparel, workwear, hi-vis safety gear, Mukwonago WI).'
-  +'\n\nTODAY: '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})
-  +'\nQUARTER IN PROGRESS: '+q+' '+yr+' — Week '+weeksCompleted+' of '+qtdWeeks.length+' ('+weeksRemaining+' weeks remaining)'
-  +'\n\nWEEK '+prev.label+' RESULTS:'
-  +'\n- Revenue: $'+Math.round(tRev).toLocaleString()
-  +'\n- Static weekly goal (qtr goal/13): $'+Math.round(weeklyGoal).toLocaleString()+' ('+weeklyVsStaticPct+'% of static)'
-  +'\n- ADJUSTED weekly target for this week (catch-up rate going in): $'+Math.round(adjWeeklyForReportedWeek).toLocaleString()+' ('+weeklyVsAdjPct+'% of adjusted target — this is the REAL target the team needed to hit)'
-  +'\n- Orders: '+tOrders+' | Customers called: '+tCalls
-  +'\n- Top rep this week: '+(topRep?topRep.name+' $'+Math.round(topRep.revenue||0).toLocaleString():'-')
-  +'\n\nTOP 3 BY REVENUE THIS WEEK (use real numbers):'
-  +sorted.slice(0,3).filter(function(r){return r.revenue>0;}).map(function(r,i){return '\n'+(i+1)+'. '+r.name+' — $'+Math.round(r.revenue).toLocaleString()+' ('+r.orders+' orders, '+r.calls+' customers called'+(r.goalRev>0?', '+Math.round((qtdRevByRep[r.name]||0)/r.goalRev*100)+'% of Q goal':'')+')';}).join('')
-  +'\n\nSTANDOUT MOMENTS — YOU MUST CALL THESE OUT BY NAME IN THE WEEK RECAP:'
-  +(_hitGoalThisWk.length>0?'\n[GOAL HIT THIS WEEK — LEAD WITH THIS]\n- '+_hitGoalThisWk.join('\n- '):'')
-  +(_alreadyOverGoal.length>0?'\n[Already over goal — keep mentioning]\n- '+_alreadyOverGoal.join('\n- '):'')
-  +(_closeToGoal.length>0?'\n[Close to goal]\n- '+_closeToGoal.join('\n- '):'')
-  +(_bigWeekVsAvg.length>0?'\n[Big week vs personal avg]\n- '+_bigWeekVsAvg.join('\n- '):'')
-  +((_hitGoalThisWk.length+_alreadyOverGoal.length+_closeToGoal.length+_bigWeekVsAvg.length)===0?'\n(no standout milestones this week — focus the recap on team momentum and the top 3)':'')
-  +'\n\nQUARTER-TO-DATE ('+weeksCompleted+' of '+qtdWeeks.length+' weeks complete, '+weeksRemaining+' remaining):'
-  +'\n- QTD revenue: $'+Math.round(qtdRevTotal).toLocaleString()+' of $'+Math.round(qGoalTotal).toLocaleString()+' goal ('+Math.round(qGoalTotal>0?qtdRevTotal/qGoalTotal*100:0)+'%)'
-  +'\n- Current run rate: $'+Math.round(avgWeeklyRev).toLocaleString()+'/week'
-  +'\n- Projected quarter end at current pace: $'+Math.round(projectedQRev).toLocaleString()+' ('+projectedPct+'% of goal)'
-  +'\n- Forward catch-up rate (remaining weeks): $'+Math.round(forwardCatchupWeekly).toLocaleString()+'/week needed'
-  +'\n\nIMPORTANT INSTRUCTIONS:'
-  +'\n- The quarter IS STILL IN PROGRESS with '+weeksRemaining+' weeks left. Do NOT write as if the quarter is over.'
-  +'\n- When you mention the weekly target/goal, use the ADJUSTED weekly target ($'+Math.round(adjWeeklyForReportedWeek).toLocaleString()+'), NOT the static one. The adjusted target factors in QTD performance — if the team was behind, the bar was raised; if ahead, the bar was lowered.'
-  +'\n- For "what we need going forward" guidance, use the Forward catch-up rate ($'+Math.round(forwardCatchupWeekly).toLocaleString()+'/wk).'
-  +'\n- Focus on what the team needs to do NOW and in coming weeks to close the gap or protect the lead.'
-  +'\n- This report is read on Monday morning at the team meeting. The week you are recapping JUST ENDED. "This week" in the THIS WEEK\'S FOCUS section refers to the brand-new week that started today.'
-  +'\n\nFORMAT (CRITICAL): Output exactly 3 sections separated by ||| (three pipe characters). Do NOT use ---, ===, asterisks, or any other separator. Do NOT write the section name (e.g., \"WEEK RECAP\") in your output. Just write the content back-to-back with ||| between each.\n\nThe 3 sections in order:'
-  +'\n1. WEEK RECAP: An in-depth recap (8-12 sentences). RULES:\n   a. If any rep is in [GOAL HIT THIS WEEK], LEAD WITH THAT - name them and say they hit their quarter goal this week. Multiple reps? Name them all.\n   b. If any rep is in [Already over goal], mention them by name.\n   c. Name the TOP 3 by revenue this week with their exact dollar figures and what they did (orders, calls).\n   d. Name anyone [Close to goal] (90%+) - they could cross this week.\n   e. Name anyone in [Big week vs personal avg] explicitly.\n   f. State team totals (revenue, orders, calls).\n   g. NO generic phrases like the team or several reps without naming who. Every claim must attach to a name or a number.\n   h. If a category is empty, do not invent - but cover the other categories that do have data.'
-  +'\n2. QUARTER PACING: Where we stand right now in the quarter. Are we ahead/behind pace? What does the math say we need each remaining week? Be direct about the gap or the opportunity.'
-  +'\n3. THIS WEEK\'S FOCUS: 3-4 concrete priorities for THIS WEEK (the new week that started today). Frame as "this week" — this report is read Monday morning at the team meeting kicking off the new week, so the focus is what to do over the next 5 business days. Tie back to the quarter target. Be specific and actionable.'
-  +'\nReminder: Use ||| between the 3 sections. Do not write section titles. Do not mention art errors or credits.\n\nABSOLUTELY NO MARKDOWN: Do not use ** for bold, ## for headers, * for italics, or any asterisks/pound signs. Output plain prose only. The display already styles the boxes; markdown shows up as literal junk characters.';let sections=['','',''];try{let text=await callAI(prompt);var rawSec=text.split('|||').map(function(s){return s.trim();}).filter(function(s){return s;});
-if(rawSec.length<3){
-  // AI didn't use |||  - try --- or === markdown separators
-  rawSec=text.split(/\n\s*[-=]{3,}\s*\n/).map(function(s){return s.trim();}).filter(function(s){return s;});
+/* ===== Weekly Meeting Report v2 — data engine + manager/rep renderers + print-safe wrapper ===== */
+function _m2$(n){return '$'+Math.round(Number(n)||0).toLocaleString();}
+function _m2n(n){return Math.round(Number(n)||0).toLocaleString();}
+function _m2esc(s){return (typeof esc_html==='function')?esc_html(s):String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+function _m2init(name){var p=String(name||'').trim().split(/\s+/);return ((p[0]||' ')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+function _m2delta(cur,prv){
+  if(prv==null||prv===0)return '<span style="color:#98A2B3;font-size:9px;">no prior</span>';
+  var pct=(cur-prv)/prv*100,up=pct>=0;
+  return '<span style="font-weight:800;color:'+(up?'#059669':'#DC2626')+';font-size:10px;">'+(up?'&#9650;':'&#9660;')+' '+Math.abs(pct).toFixed(0)+'%</span>';
 }
-if(rawSec.length<3){
-  // Still not enough - split by section header names
-  var _hn=['WEEK RECAP','QUARTER PACING','THIS WEEK[\u2019\\\']S FOCUS','THIS WEEK FOCUS','WEEK FOCUS'];
-  var _hr=new RegExp('(?:^|\\n)\\s*(?:#{1,3}\\s*)?(?:\\d+\\.\\s*)?(?:'+_hn.join('|')+')\\s*:?\\s*\\n','gi');
-  var _parts=[],_li=0,_m;
-  while((_m=_hr.exec(text))!==null){
-    if(_parts.length>0||_m.index>0)_parts.push(text.slice(_li,_m.index));
-    _li=_m.index+_m[0].length;
+function _m2spark(vals,labels,color){
+  var max=Math.max.apply(null,vals.concat([1]));
+  return '<div class="spk">'+vals.map(function(v,i){
+    var h=max>0?Math.max(2,Math.round((v/max)*40)):2;
+    return '<div class="spk-c"><div class="spk-b" style="height:'+h+'px;background:'+(color||'#2563EB')+';opacity:'+(v>0?1:.16)+';"></div><div class="spk-x">'+(labels&&labels[i]!=null?labels[i]:'')+'</div></div>';
+  }).join('')+'</div>';
+}
+function buildMtgEngine(prev,yr,q){
+  var qtdWeeks=gwq(yr,q);
+  var prevIdx=qtdWeeks.findIndex(function(w){return w.key===prev.key;});if(prevIdx<0)prevIdx=0;
+  var weeksCompleted=prevIdx+1,weeksRemaining=qtdWeeks.length-weeksCompleted;
+  var qWeeks=qtdWeeks.slice(0,weeksCompleted);
+  var order=['Q1','Q2','Q3','Q4'],qi=order.indexOf(q);
+  var prevWkObj=null;
+  if(prevIdx>0)prevWkObj=qtdWeeks[prevIdx-1];
+  else if(qi>0){var pwq=gwq(yr,order[qi-1]);prevWkObj=pwq[pwq.length-1]||null;}
+  else if(typeof YEARS!=='undefined'&&YEARS.indexOf(yr-1)>=0){var pw4=gwq(yr-1,'Q4');prevWkObj=pw4[pw4.length-1]||null;}
+  var ytdWeeks=[];
+  for(var oi=0;oi<order.length;oi++){
+    if(order[oi]===q){ytdWeeks=ytdWeeks.concat(qWeeks);break;}
+    ytdWeeks=ytdWeeks.concat(gwq(yr,order[oi]));
   }
-  _parts.push(text.slice(_li));
-  // Drop preamble if there's an extra leading chunk
-  if(_parts.length===4)_parts.shift();
-  if(_parts.length>=3)rawSec=_parts;
+  var reps=activeReps().map(function(r){
+    var ri=S.reps.findIndex(function(x){return x.name===r.name;});
+    var d=gd(r.name+'|'+prev.key);
+    var art=S.artErrors.filter(function(a){return a.rep===r.name&&a.weekKey===prev.key;}).length;
+    var credits=S.cms.filter(function(c){return c.rep===r.name&&c.weekKey===prev.key&&c.fault==='rep';}).reduce(function(s,c){return s+Number(c.amount||0);},0);
+    var pd=prevWkObj?gd(r.name+'|'+prevWkObj.key):null;
+    var qt=totW(r.name,qWeeks),yt=totW(r.name,ytdWeeks),ro=repGoalObj(r.name,yr,q);
+    var series=qWeeks.map(function(w){return Number(gd(r.name+'|'+w.key).revenue||0);});
+    var qTop=0,qTopCust='',qTopWk='';
+    qWeeks.forEach(function(w){var dd=gd(r.name+'|'+w.key);if(Number(dd.topSale||0)>qTop){qTop=Number(dd.topSale||0);qTopCust=dd.topSaleCustomer||'';qTopWk=w.label||('Wk '+w.num);}});
+    var wkOrders=Number(d.orders||0),wkRev=Number(d.revenue||0);
+    return {name:r.name,idx:ri,
+      wkRev:wkRev,wkOrders:wkOrders,wkCalls:Number(d.calls||0),art:art,credits:credits,
+      topSale:Number(d.topSale||0),topSaleCustomer:d.topSaleCustomer||'',
+      pwRev:pd?Number(pd.revenue||0):null,pwOrders:pd?Number(pd.orders||0):null,
+      qtdRev:Number(qt.revenue||0),qtdOrders:Number(qt.orders||0),qtdCalls:Number(qt.calls||0),qtdArt:Number(qt.art||0),
+      setSize:Number(qt.setSize||0),accts:Number(qt.acctsCalled||0),
+      ytdRev:Number(yt.revenue||0),ytdOrders:Number(yt.orders||0),
+      goalRev:Number(ro.rev||0),series:series,
+      qTop:qTop,qTopCust:qTopCust,qTopWk:qTopWk,
+      aov:wkOrders>0?wkRev/wkOrders:0};
+  });
+  var byWk=reps.slice().sort(function(a,b){return b.wkRev-a.wkRev;});
+  function sum(k){return reps.reduce(function(s,r){return s+(Number(r[k])||0);},0);}
+  var pwKnown=reps.some(function(r){return r.pwRev!=null;});
+  var team={wkRev:sum('wkRev'),wkOrders:sum('wkOrders'),wkCalls:sum('wkCalls'),art:sum('art'),credits:sum('credits'),
+    pwRev:pwKnown?reps.reduce(function(s,r){return s+(Number(r.pwRev)||0);},0):null,
+    pwOrders:pwKnown?reps.reduce(function(s,r){return s+(Number(r.pwOrders)||0);},0):null,
+    qtdRev:sum('qtdRev'),qtdOrders:sum('qtdOrders'),qtdCalls:sum('qtdCalls'),qtdArt:sum('qtdArt'),
+    ytdRev:sum('ytdRev'),ytdOrders:sum('ytdOrders'),
+    goalRev:sum('goalRev'),setSize:sum('setSize'),accts:sum('accts')};
+  team.aov=team.wkOrders>0?team.wkRev/team.wkOrders:0;
+  team.qtdAov=team.qtdOrders>0?team.qtdRev/team.qtdOrders:0;
+  var teamSeries=qWeeks.map(function(w){return reps.reduce(function(s,r){return s+Number(gd(r.name+'|'+w.key).revenue||0);},0);});
+  var wkLabels=qWeeks.map(function(w){return 'w'+(w.num!=null?w.num:'');});
+  var earlyQuarter=weeksCompleted<=3;
+  var qtdPct=team.goalRev>0?Math.round(team.qtdRev/team.goalRev*100):0;
+  var avgWeekly=weeksCompleted>0?team.qtdRev/weeksCompleted:0;
+  var projected=avgWeekly*qtdWeeks.length;
+  var projectedPct=team.goalRev>0?Math.round(projected/team.goalRev*100):0;
+  var forwardNeed=weeksRemaining>0?Math.max(0,(team.goalRev-team.qtdRev)/weeksRemaining):0;
+  var topSales=reps.filter(function(r){return r.topSale>0;}).sort(function(a,b){return b.topSale-a.topSale;});
+  var qTopSales=reps.filter(function(r){return r.qTop>0;}).sort(function(a,b){return b.qTop-a.qTop;});
+  var qtdArtPct=team.qtdOrders>0?(team.qtdArt/team.qtdOrders*100):0;
+  var qtdCreditsTotal=0;S.cms.forEach(function(c){if(c&&c.fault==='rep'&&qWeeks.some(function(w){return w.key===c.weekKey;}))qtdCreditsTotal+=Number(c.amount||0);});
+  var qtdCreditPct=team.qtdRev>0?(qtdCreditsTotal/team.qtdRev*100):0;
+  return {prev:prev,yr:yr,q:q,qtdWeeks:qtdWeeks,qWeeks:qWeeks,prevIdx:prevIdx,weeksCompleted:weeksCompleted,weeksRemaining:weeksRemaining,
+    prevWkObj:prevWkObj,ytdWeeks:ytdWeeks,reps:reps,byWk:byWk,team:team,teamSeries:teamSeries,wkLabels:wkLabels,
+    earlyQuarter:earlyQuarter,qtdPct:qtdPct,avgWeekly:avgWeekly,projected:projected,projectedPct:projectedPct,forwardNeed:forwardNeed,
+    topSales:topSales,qTopSales:qTopSales,qtdArtPct:qtdArtPct,qtdCreditsTotal:qtdCreditsTotal,qtdCreditPct:qtdCreditPct,
+    weekNum:(prev.num!=null?Number(prev.num):0)};
 }
-sections=rawSec.map(function(s){
-  var t=(s||'').trim();
-  // Strip any leading section name the AI may have included
-  t=t.replace(/^(?:#{1,3}\s*)?(?:\d+\.\s*)?(?:WEEK RECAP|QUARTER PACING|THIS WEEK[\u2019']?S? FOCUS|WEEK FOCUS)\s*:?\s*\n?/i,'');
-  // Strip any markdown the AI included despite instructions
-  t=t.replace(/^#{1,6}\s+.*$/gm,'');                    // drop ### header lines entirely
-  t=t.replace(/\*\*([^*\n]+?)\*\*/g,'<strong>$1</strong>'); // **bold** -> <strong>
-  t=t.replace(/__([^_\n]+?)__/g,'<strong>$1</strong>');         // __bold__ -> <strong>
-  t=t.replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g,'$1<em>$2</em>'); // *italic* -> <em>
-  t=t.replace(/^[-*]\s+/gm,'&bull; ');                  // bullet markers -> bullet char
-  t=t.replace(/\n{2,}/g,'<br><br>');                    // paragraph breaks
-  t=t.replace(/\n/g,' ');                               // soft wraps -> spaces
-  return t.trim();
-});
-while(sections.length<3)sections.push('');}catch(e){sections=['AI error: '+e.message,'',''];console.error('Meeting AI error:',e);}preview.innerHTML='<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;margin-bottom:.625rem;border:0.5px solid var(--color-border-tertiary);"><div style="font-size:10px;font-weight:600;color:#7F77DD;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Week Recap</div><div style="font-size:12px;color:var(--color-text-primary);line-height:1.7;">'+sections[0]+'</div></div><div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;margin-bottom:.625rem;border:0.5px solid var(--color-border-tertiary);"><div style="font-size:10px;font-weight:600;color:#1D9E75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Quarter Pacing</div><div style="font-size:12px;color:var(--color-text-primary);line-height:1.7;">'+sections[1]+'</div></div><div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;border:0.5px solid var(--color-border-tertiary);"><div style="font-size:10px;font-weight:600;color:#BA7517;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">This Week&#39;s Focus</div><div style="font-size:12px;color:var(--color-text-primary);line-height:1.7;">'+sections[2]+'</div></div>';let qtdPct=qGoalTotal>0?Math.min(100,Math.round(qtdRevTotal/qGoalTotal*100)):0;let repRows=sorted.map((r,i)=>{let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';let artColor=r.art>3?'#F09595':r.art>0?'#EF9F27':'#5DCAA5';let pct=r.goalRev>0?Math.round(r.revenue/r.goalRev*100):0;return'<div class="rep-row">'+rAv(r.name,r.idx)+'<div style="flex:1;"><div style="font-size:13px;font-weight:500;">'+medal+' '+r.name+'</div><div style="font-size:11px;color:#8B8A94;margin-top:1px;">'+r.calls+' calls · '+r.orders+' orders · <span style="color:'+artColor+';">'+r.art+' art err</span>'+(r.credits>0?' · <span style="color:#F09595;">$'+r.credits.toFixed(2)+' credits</span>':'')+'</div></div><div style="text-align:right;"><div style="font-size:14px;font-weight:600;">$'+Math.round(r.revenue).toLocaleString()+'</div><div style="font-size:11px;color:#8B8A94;">'+pct+'% of goal</div></div></div>';}).join('');let   intelHtml='';
+async function fetchMtgAI(E){
+  if(window._mtgAiCache&&window._mtgAiCache.key===E.prev.key)return window._mtgAiCache.ai;
+  var t=E.team;
+  var lb=E.byWk.map(function(r,i){
+    return (i+1)+'. '+r.name+' | wk '+_m2$(r.wkRev)+' ('+r.wkOrders+' ord, '+r.wkCalls+' calls'+(r.art?', '+r.art+' art err':'')+(r.credits?', '+_m2$(r.credits)+' credits':'')+')'
+      +' | prev wk '+(r.pwRev!=null?_m2$(r.pwRev):'n/a')+' | QTD '+_m2$(r.qtdRev)+' ('+r.qtdOrders+' ord) | YTD '+_m2$(r.ytdRev)
+      +(r.topSale>0?' | top sale '+_m2$(r.topSale)+(r.topSaleCustomer?' to '+r.topSaleCustomer:''):'')
+      +' | coverage '+(r.setSize>0?Math.round(r.accts/r.setSize*100):0)+'% ('+r.accts+'/'+r.setSize+')';
+  }).join('\n');
+  var paceLine=E.earlyQuarter
+    ? 'EARLY QUARTER: only week '+E.weeksCompleted+' of '+E.qtdWeeks.length+' is complete. Treat pace as directional only. Do NOT frame the team or reps as failing versus quarter goals; focus on actuals, week-over-week movement, activity and momentum.'
+    : 'Week '+E.weeksCompleted+' of '+E.qtdWeeks.length+' ('+E.weeksRemaining+' remaining). QTD '+_m2$(t.qtdRev)+' of '+_m2$(t.goalRev)+' goal ('+E.qtdPct+'%). Run rate '+_m2$(E.avgWeekly)+'/wk, projecting '+_m2$(E.projected)+' ('+E.projectedPct+'%). Forward need '+_m2$(E.forwardNeed)+'/wk.';
+  var wow=(t.pwRev!=null&&t.pwRev>0)?('Team week revenue '+_m2$(t.wkRev)+' vs prior week '+_m2$(t.pwRev)+' ('+((t.wkRev-t.pwRev)/t.pwRev*100).toFixed(0)+'%).'):('Team week revenue '+_m2$(t.wkRev)+' (no prior-week data).');
+  var prompt='You are an elite sales analyst preparing the weekly management meeting report for Triple Crown Products (custom branded apparel: screen printing, embroidery, DTF; ~'+E.reps.length+' reps).\n'
+    +'\nREPORTED WEEK: '+E.prev.label+' '+E.yr+' ('+E.q+', week '+E.weeksCompleted+' of '+E.qtdWeeks.length+').\n'
+    +wow+'\nWeek orders: '+_m2n(t.wkOrders)+' (prior wk '+(t.pwOrders!=null?_m2n(t.pwOrders):'n/a')+'). Week AOV: '+_m2$(t.aov)+'. Calls: '+_m2n(t.wkCalls)+'.\n'
+    +'CUMULATIVE: QTD '+_m2$(t.qtdRev)+' / '+_m2n(t.qtdOrders)+' orders (AOV '+_m2$(t.qtdAov)+'). YTD '+_m2$(t.ytdRev)+' / '+_m2n(t.ytdOrders)+' orders.\n'
+    +'Quality QTD: art error rate '+E.qtdArtPct.toFixed(1)+'%, rep-fault credits '+_m2$(E.qtdCreditsTotal)+' ('+E.qtdCreditPct.toFixed(2)+'% of QTD rev).\n'
+    +paceLine+'\nWeekly team revenue series: ['+E.teamSeries.map(function(v){return Math.round(v);}).join(', ')+']\n'
+    +'\nREPS (ranked by week revenue):\n'+lb+'\n'
+    +'\nWrite management-ready analysis. Be specific with names and numbers. Explain what happened, why it matters, what to watch, what to do. Short punchy bullets (max ~22 words each). Never generic filler. '+(E.earlyQuarter?'Remember: early quarter — no failure framing on pace.':'')
+    +'\nReturn ONLY a JSON object, no code fences, with EXACTLY these keys:'
+    +'\n"exec": string, 4-6 sentence executive summary telling the story of the week (cumulative first, then movement, then what it means).'
+    +'\n"wins": array of 3-5 bullet strings (what went well, with names/numbers).'
+    +'\n"risks": array of 3-5 bullet strings (risks and watchouts: dips, low activity, concentration, data gaps, quality).'
+    +'\n"watch": array of 2-4 bullet strings (leading indicators to watch next week).'
+    +'\n"talking_points": array of 5-8 bullet strings the manager can read aloud in the meeting.'
+    +'\n"coaching": array of 3-5 objects {"name","note"} - specific reps needing coaching and exactly what to coach.'
+    +'\n"rep_lines": array with ONE object {"name","note"} for EVERY rep listed above - one insightful sentence each (strength + what to improve, use their numbers).'
+    +'\n"actions": array of 4-6 specific recommended action strings for management this week.'
+    +'\n"rep_recap": array of 3-5 celebratory bullet strings for the team-facing version - ONLY name the top 3 reps ('+E.byWk.slice(0,3).map(function(r){return r.name;}).join(', ')+'); keep all other datapoints nameless (e.g. "one rep landed a $12K single order").'
+    +'\n"focus": array of 3-4 motivational, specific priorities for the new week, safe to show all reps (no goals, no shaming).';
+  var ai=null;
+  try{
+    var raw=await callAI(prompt,{maxTokens:4500});
+    raw=String(raw||'').replace(/```json/gi,'').replace(/```/g,'').trim();
+    var a=raw.indexOf('{'),b=raw.lastIndexOf('}');
+    if(a>=0&&b>a)ai=JSON.parse(raw.slice(a,b+1));
+  }catch(e){console.warn('Meeting AI error:',e);ai=null;}
+  window._mtgAiCache={key:E.prev.key,ai:ai};
+  return ai;
+}
+function buildReportCSSPrintV2(){
+  return '@page{size:letter;margin:0.45in;}*{box-sizing:border-box;margin:0;padding:0;}'
+  +'html,body{background:#EDF1F7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:10.6px;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
+  +'.shell{width:8.5in;max-width:100%;margin:0 auto;background:#fff;box-shadow:0 18px 55px rgba(15,23,42,.12);}'
+  +'.hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:18px 22px 15px;background:linear-gradient(135deg,#0E172A 0%,#17284B 58%,#0E5663 100%);color:#fff;border-bottom:4px solid #F97316;break-inside:avoid;page-break-inside:avoid;}'
+  +'.hdr-l{display:flex;align-items:center;gap:12px;}.hdr-l img{width:36px;height:36px;object-fit:contain;}.hdr-co{font-size:16px;font-weight:900;letter-spacing:-.02em;}.hdr-sub{font-size:9px;color:rgba(255,255,255,.68);margin-top:2px;}'
+  +'.hdr-r{text-align:right;min-width:190px;}.hdr-type{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;color:#A7F3D0;}.hdr-title{font-size:20px;font-weight:950;letter-spacing:-.03em;line-height:1.08;margin-top:3px;}.hdr-date{font-size:9.5px;color:rgba(255,255,255,.70);margin-top:5px;}'
+  +'.bod{padding:14px 20px 16px;}'
+  +'.ftr{display:flex;justify-content:space-between;align-items:center;padding:9px 20px 10px;border-top:1px solid #E4E7EC;font-size:8.5px;color:#98A2B3;background:#FCFCFD;}'
+  +'.sec,.section{background:#fff;border:1px solid #E4E7EC;border-radius:12px;padding:11px 13px;margin:0 0 10px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.sec.flow{break-inside:auto;page-break-inside:auto;}'
+  +'.sec-h,.sec-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.09em;color:#334155;border-bottom:2px solid #111827;padding-bottom:5px;margin-bottom:8px;}'
+  +'.sec-h .tag{font-size:8px;background:#EEF2FF;color:#4F46E5;padding:2px 8px;border-radius:20px;letter-spacing:.06em;}'
+  +'.pb{break-before:page;page-break-before:always;height:1px;}'
+  +'.exec-box{background:linear-gradient(135deg,#0F1424,#1A2440);color:#EEF1FB;border-radius:12px;padding:14px 17px;font-size:11.6px;line-height:1.65;break-inside:avoid;page-break-inside:avoid;margin:0 0 10px;}'
+  +'.exec-box .eyebrow{font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:#7DD3FC;margin-bottom:6px;}'
+  +'.kgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;}'
+  +'.k{background:linear-gradient(180deg,#fff,#F8FAFC);border:1px solid #E6EAF0;border-radius:10px;padding:8px 10px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.k .kl{font-size:7.6px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;color:#667085;margin-bottom:3px;white-space:nowrap;}'
+  +'.k .kv{font-size:15.5px;font-weight:950;letter-spacing:-.03em;line-height:1.05;}'
+  +'.k .ks{font-size:8.3px;color:#667085;margin-top:3px;}'
+  +'.note{border:1px solid #BFDBFE;background:#EFF6FF;border-radius:10px;padding:10px 13px;font-size:10.6px;color:#1E3A8A;line-height:1.6;break-inside:avoid;page-break-inside:avoid;}'
+  +'.fc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}'
+  +'.fc-card{background:linear-gradient(180deg,#fff,#F8FAFC);border:1px solid #E6EAF0;border-radius:10px;padding:9px 10px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.fc-label{font-size:7.8px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;color:#667085;margin-bottom:4px;}.fc-val{font-size:16px;font-weight:950;letter-spacing:-.03em;}.fc-sub{font-size:8.4px;color:#667085;margin-top:4px;}'
+  +'.fc-bar{height:5px;background:#EEF2F6;border-radius:999px;overflow:hidden;margin-top:6px;}.fc-fill{height:100%;border-radius:999px;}'
+  +'.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}'
+  +'.bcard{border:1px solid #E4E7EC;border-radius:10px;padding:9px 11px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.bcard .bl{font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}'
+  +'.bullets{list-style:none;}.bullets li{position:relative;padding-left:12px;font-size:10.2px;line-height:1.5;margin:4px 0;break-inside:avoid;}'
+  +'.bullets li:before{content:"";position:absolute;left:0;top:6px;width:5px;height:5px;border-radius:50%;background:#94A3B8;}'
+  +'.bullets.win li:before{background:#059669;}.bullets.risk li:before{background:#DC2626;}.bullets.watch li:before{background:#D97706;}.bullets.tp li:before{background:#4F46E5;}'
+  +'table.t,table.data-tbl{width:100%;border-collapse:collapse;font-size:9.8px;}'
+  +'table.t thead,table.data-tbl thead{display:table-header-group;}'
+  +'table.t th,table.data-tbl th{text-align:right;padding:6px 7px;border-bottom:2px solid #111827;font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#334155;background:#F8FAFC;}'
+  +'table.t th:first-child,table.data-tbl th:first-child{text-align:left;}table.t th.r,table.data-tbl th.r{text-align:right;}'
+  +'table.t td,table.data-tbl td{text-align:right;padding:5.5px 7px;border-bottom:1px solid #EEF0F3;}'
+  +'table.t td:first-child,table.data-tbl td:first-child{text-align:left;font-weight:700;}'
+  +'table.t tr,table.data-tbl tr{break-inside:avoid;page-break-inside:avoid;}'
+  +'.bar{width:56px;height:5px;background:#EEF2F6;border-radius:999px;overflow:hidden;display:inline-block;vertical-align:middle;}.bar-fill{height:100%;border-radius:999px;display:block;}'
+  +'.spk{display:flex;align-items:flex-end;gap:2px;height:52px;margin-top:4px;}.spk-c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}.spk-b{width:76%;border-radius:2px 2px 0 0;min-height:2px;}.spk-x{font-size:5.6px;color:#B6BAC4;margin-top:2px;line-height:1;}'
+  +'.pod-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;}'
+  +'.pod{border:1px solid #E4E7EC;border-radius:12px;padding:12px;text-align:center;break-inside:avoid;page-break-inside:avoid;background:linear-gradient(180deg,#fff,#F8FAFC);}'
+  +'.pod.g1{border-color:#F59E0B;background:linear-gradient(180deg,#FFFBEB,#fff);}.pod.g2{border-color:#94A3B8;}.pod.g3{border-color:#FB923C;}'
+  +'.pod .medal{font-size:19px;}.pod .pname{font-size:12.5px;font-weight:900;margin-top:3px;}.pod .prev{font-size:17px;font-weight:950;letter-spacing:-.03em;margin-top:4px;}.pod .psub{font-size:8.8px;color:#667085;margin-top:3px;}'
+  +'.rb-av{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#111B2E;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.02em;flex:none;}'
+  +'.rep-block{border:1px solid #E4E7EC;border-left:3px solid #2563EB;border-radius:10px;padding:10px 12px;margin:0 0 9px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.rep-block .rb-hdr{display:flex;align-items:center;gap:8px;margin-bottom:7px;}'
+  +'.rep-block .rb-name{font-size:12px;font-weight:900;}.rep-block .rb-rank{font-size:8px;font-weight:900;background:#EEF2FF;color:#4F46E5;padding:2px 8px;border-radius:20px;}'
+  +'.rep-block .rb-rev{margin-left:auto;font-size:14px;font-weight:950;letter-spacing:-.02em;}'
+  +'.rb-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:6px;}'
+  +'.rb-cell{background:#F8FAFC;border:1px solid #EEF1F5;border-radius:8px;padding:6px 8px;}'
+  +'.rb-cell .l{font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;color:#667085;}.rb-cell .v{font-size:11px;font-weight:900;margin-top:2px;}.rb-cell .s{font-size:7.6px;color:#8A94A6;margin-top:1px;}'
+  +'.rb-ai{font-size:9.8px;line-height:1.55;background:#EEF2FF;border-left:2px solid #4F46E5;border-radius:0 8px 8px 0;padding:6px 9px;margin-top:5px;color:#1E1B4B;}'
+  +'.rb-coach{font-size:9.8px;line-height:1.55;background:#FFFBEB;border-left:2px solid #D97706;border-radius:0 8px 8px 0;padding:6px 9px;margin-top:5px;color:#78350F;}'
+  +'.ts-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;}'
+  +'.ts{border:1px solid #E4E7EC;border-radius:10px;padding:8px 10px;break-inside:avoid;page-break-inside:avoid;background:linear-gradient(180deg,#fff,#FEFCE8);}'
+  +'.ts .tsv{font-size:13.5px;font-weight:950;letter-spacing:-.02em;}.ts .tsn{font-size:9px;font-weight:800;margin-top:2px;}.ts .tsc{font-size:8px;color:#667085;margin-top:1px;}'
+  +'.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}'
+  +'.intel-card{border:1px solid #E4E7EC;border-radius:10px;padding:10px 12px;break-inside:avoid;page-break-inside:avoid;font-size:10px;background:#fff;}'
+  +'.intel-card.pitch{font-size:10.6px;line-height:1.6;}'
+  +'.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}'
+  +'.proj-card{border:1px solid #E4E7EC;border-radius:10px;padding:9px 11px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.proj-label{font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}'
+  +'.proj-list{list-style:none;font-size:9.8px;}.proj-list li{position:relative;padding-left:11px;margin:3px 0;line-height:1.45;}.proj-list li:before{content:"";position:absolute;left:0;top:5px;width:4px;height:4px;border-radius:50%;background:#94A3B8;}.proj-list li.empty{color:#98A2B3;}'
+  +'.hero-band{background:linear-gradient(135deg,#065F46,#0E7490 60%,#1D4ED8);color:#fff;border-radius:14px;padding:16px 18px;margin:0 0 10px;break-inside:avoid;page-break-inside:avoid;}'
+  +'.hero-band .hb-eyebrow{font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.13em;color:#A7F3D0;}'
+  +'.hero-band .hb-title{font-size:18px;font-weight:950;letter-spacing:-.02em;margin-top:2px;}'
+  +'.hero-band .hb-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px;}'
+  +'.hero-band .hb-cell{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:8px 10px;}'
+  +'.hero-band .hb-l{font-size:7.6px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.75);}.hero-band .hb-v{font-size:16px;font-weight:950;margin-top:2px;}'
+  +'.print-btn{position:fixed;top:12px;right:12px;background:#111B2E;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:800;cursor:pointer;z-index:50;box-shadow:0 6px 18px rgba(15,23,42,.25);}'
+  +'@media print{.print-btn{display:none!important;}html,body{background:#fff;}.shell{box-shadow:none;width:auto;}}';
+}
+function buildReportPrintV2(title,sub,badgeText,bodyHtml){
+  var ds=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  var logoSrc='data:image/png;base64,'+(typeof TCP_LOGO_B64!=='undefined'?TCP_LOGO_B64:'');
+  var clean=String(bodyHtml||'').replace(/page-break-after/g,'');
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+String(title||'Report').replace(/</g,'&lt;')+'</title><style>'+buildReportCSSPrintV2()+'</style></head><body>'
+    +'<button class="print-btn" onclick="window.print()">&#128424; Print / Save PDF</button>'
+    +'<div class="shell">'
+    +'<div class="hdr"><div class="hdr-l">'+(typeof TCP_LOGO_B64!=='undefined'?'<img src="'+logoSrc+'" alt="">':'')+'<div><div class="hdr-co">Triple Crown Products</div><div class="hdr-sub">triplecrownproducts.com &middot; Mukwonago, WI</div></div></div>'
+    +'<div class="hdr-r"><div class="hdr-type">'+_m2esc(badgeText||'')+'</div><div class="hdr-title">'+String(title||'')+'</div><div class="hdr-date">'+_m2esc(sub||'')+'<br>'+ds+'</div></div></div>'
+    +'<div class="bod">'+clean+'</div>'
+    +'<div class="ftr"><span>Triple Crown Products &middot; Confidential</span><span>'+ds+'</span></div>'
+    +'</div></body></html>';
+}
+function buildMgrMeetingBody(E,ai,depth,X){
+  X=X||{};var lvl=depth==='executive'?1:depth==='standard'?2:3;
+  var t=E.team,out='';
+  function bl(arr,cls){if(!arr||!arr.length)return '<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable)</div>';return '<ul class="bullets '+(cls||'')+'">'+arr.map(function(x){return '<li>'+_m2esc(x)+'</li>';}).join('')+'</ul>';}
+  // 1. Executive summary
+  var execTxt=(ai&&ai.exec)?_m2esc(ai.exec):('The team closed '+_m2$(t.wkRev)+' across '+_m2n(t.wkOrders)+' orders in '+E.prev.label+'. Cumulative '+E.q+' revenue stands at '+_m2$(t.qtdRev)+' with '+_m2n(t.qtdOrders)+' orders; YTD '+_m2$(t.ytdRev)+'. (Add an API key for full written analysis.)');
+  out+='<div class="exec-box"><div class="eyebrow">Executive summary &middot; '+_m2esc(E.prev.label)+' '+E.yr+'</div>'+execTxt+'</div>';
+  // 2. Team snapshot
+  out+='<div class="sec"><div class="sec-h"><span>&#128202; Team snapshot</span><span class="tag">actuals first</span></div><div class="kgrid">'
+    +'<div class="k"><div class="kl">Week revenue</div><div class="kv">'+_m2$(t.wkRev)+'</div><div class="ks">'+(t.pwRev!=null?'vs '+_m2$(t.pwRev)+' prior wk &nbsp;':'')+_m2delta(t.wkRev,t.pwRev)+'</div></div>'
+    +'<div class="k"><div class="kl">Week orders</div><div class="kv">'+_m2n(t.wkOrders)+'</div><div class="ks">'+(t.pwOrders!=null?'vs '+_m2n(t.pwOrders)+' prior wk &nbsp;':'')+_m2delta(t.wkOrders,t.pwOrders)+'</div></div>'
+    +'<div class="k"><div class="kl">Avg order value (wk)</div><div class="kv">'+_m2$(t.aov)+'</div><div class="ks">QTD AOV '+_m2$(t.qtdAov)+'</div></div>'
+    +'<div class="k"><div class="kl">Calls (wk)</div><div class="kv">'+_m2n(t.wkCalls)+'</div><div class="ks">'+_m2n(t.qtdCalls)+' QTD</div></div>'
+    +'<div class="k"><div class="kl">QTD revenue</div><div class="kv">'+_m2$(t.qtdRev)+'</div><div class="ks">'+_m2n(t.qtdOrders)+' orders &middot; wk '+E.weeksCompleted+'/'+E.qtdWeeks.length+'</div></div>'
+    +'<div class="k"><div class="kl">YTD revenue</div><div class="kv">'+_m2$(t.ytdRev)+'</div><div class="ks">'+_m2n(t.ytdOrders)+' orders &middot; '+E.yr+'</div></div>'
+    +'<div class="k"><div class="kl">Art errors</div><div class="kv">'+_m2n(t.art)+'</div><div class="ks">'+E.qtdArtPct.toFixed(1)+'% QTD rate</div></div>'
+    +'<div class="k"><div class="kl">Credits (rep-fault)</div><div class="kv">'+_m2$(t.credits)+'</div><div class="ks">'+_m2$(E.qtdCreditsTotal)+' QTD ('+E.qtdCreditPct.toFixed(2)+'%)</div></div>'
+    +'</div>';
+  // team trend chart (visual-heavy)
+  if(E.teamSeries.length>1)out+='<div style="margin-top:8px;"><div style="font-size:7.8px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;color:#667085;">Team revenue by week ('+E.q+')</div>'+_m2spark(E.teamSeries,E.wkLabels,'#2563EB')+'</div>';
+  out+='</div>';
+  // 3. Pace context
+  if(E.earlyQuarter){
+    out+='<div class="sec"><div class="sec-h"><span>&#129518; Pace context</span><span class="tag">week '+E.weeksCompleted+' of '+E.qtdWeeks.length+'</span></div>'
+      +'<div class="note"><strong>Early-quarter read:</strong> only '+E.weeksCompleted+' of '+E.qtdWeeks.length+' weeks are complete, so pace math is directional &mdash; not a verdict. What actually happened: <strong>'+_m2$(t.qtdRev)+'</strong> cumulative across <strong>'+_m2n(t.qtdOrders)+' orders</strong>'
+      +(t.pwRev!=null&&t.pwRev>0?', and week revenue moved '+((t.wkRev-t.pwRev)/t.pwRev*100).toFixed(0)+'% vs the prior week':'')
+      +'. Goal projections unlock at week 4. Judge this week on activity, movement, and order flow.</div></div>';
+  } else {
+    var pc=E.qtdPct>=100?'#059669':E.qtdPct>=70?'#D97706':'#DC2626';
+    var jc=E.projectedPct>=100?'#059669':E.projectedPct>=70?'#D97706':'#DC2626';
+    out+='<div class="sec"><div class="sec-h"><span>&#129518; QTD forecast &mdash; '+E.q+' '+E.yr+'</span></div><div class="fc-grid">'
+      +'<div class="fc-card"><div class="fc-label">QTD revenue</div><div class="fc-val">'+_m2$(t.qtdRev)+'</div><div class="fc-sub">'+E.qtdPct+'% of '+_m2$(t.goalRev)+' goal</div><div class="fc-bar"><div class="fc-fill" style="width:'+Math.min(100,E.qtdPct)+'%;background:'+pc+';"></div></div></div>'
+      +'<div class="fc-card"><div class="fc-label">Projected quarter end</div><div class="fc-val" style="color:'+jc+';">'+_m2$(E.projected)+'</div><div class="fc-sub">'+E.projectedPct+'% of goal at current pace</div><div class="fc-bar"><div class="fc-fill" style="width:'+Math.min(100,E.projectedPct)+'%;background:'+jc+';"></div></div></div>'
+      +'<div class="fc-card"><div class="fc-label">Weekly run rate</div><div class="fc-val" style="color:#4F46E5;">~'+_m2$(E.avgWeekly)+'</div><div class="fc-sub">'+E.weeksRemaining+' wks remain</div></div>'
+      +'<div class="fc-card"><div class="fc-label">Need per week</div><div class="fc-val" style="color:'+(E.forwardNeed>E.avgWeekly?'#D97706':'#059669')+';">'+_m2$(E.forwardNeed)+'</div><div class="fc-sub">to close the quarter at goal</div></div>'
+      +'</div></div>';
+  }
+  // 4. Wins / Risks / Watch
+  out+='<div class="sec"><div class="sec-h"><span>&#128161; Wins, risks &amp; what to watch</span><span class="tag">AI analysis</span></div><div class="tri">'
+    +'<div class="bcard"><div class="bl" style="color:#059669;">&#127881; Wins</div>'+bl(ai&&ai.wins,'win')+'</div>'
+    +'<div class="bcard"><div class="bl" style="color:#DC2626;">&#9888;&#65039; Risks &amp; watchouts</div>'+bl(ai&&ai.risks,'risk')+'</div>'
+    +'<div class="bcard"><div class="bl" style="color:#D97706;">&#128064; Watch next</div>'+bl(ai&&ai.watch,'watch')+'</div>'
+    +'</div></div>';
+  // 5. Leaderboard
+  var rows='';
+  E.byWk.forEach(function(r,i){
+    rows+='<tr><td>'+(i+1)+'. '+_m2esc(r.name)+'</td>'
+      +'<td style="font-weight:800;">'+_m2$(r.wkRev)+'</td>'
+      +'<td>'+_m2delta(r.wkRev,r.pwRev)+'</td>'
+      +'<td>'+_m2n(r.wkOrders)+'</td>'
+      +'<td>'+_m2$(r.aov)+'</td>'
+      +'<td>'+(r.topSale>0?('<span style="font-weight:800;color:#B45309;">'+_m2$(r.topSale)+'</span>'+(r.topSaleCustomer?'<br><span style="font-size:8px;color:#8A94A6;">'+_m2esc(r.topSaleCustomer)+'</span>':'')):'<span style="color:#C0C4CC;">&mdash;</span>')+'</td>'
+      +'<td>'+_m2$(r.qtdRev)+'</td><td>'+_m2$(r.ytdRev)+'</td></tr>';
+  });
+  out+='<div class="sec flow"><div class="sec-h"><span>&#127942; Rep leaderboard &mdash; '+_m2esc(E.prev.label)+' '+E.yr+'</span><span class="tag">ranked by week revenue</span></div>'
+    +'<table class="t"><thead><tr><th>Rep</th><th>Wk revenue</th><th>vs prev wk</th><th>Orders</th><th>AOV</th><th>Top sale</th><th>QTD</th><th>YTD</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  // 6. Top sales spotlight (Standard+)
+  if(lvl>=2){
+    var ts='';E.topSales.slice(0,5).forEach(function(r){ts+='<div class="ts"><div class="tsv">'+_m2$(r.topSale)+'</div><div class="tsn">'+_m2esc(r.name)+'</div><div class="tsc">'+_m2esc(r.topSaleCustomer||'')+'</div></div>';});
+    var qs='';E.qTopSales.slice(0,3).forEach(function(r,i){qs+=(i>0?' &nbsp;&middot;&nbsp; ':'')+'<strong>'+_m2$(r.qTop)+'</strong> '+_m2esc(r.name)+(r.qTopCust?' ('+_m2esc(r.qTopCust)+')':'')+(r.qTopWk?' &middot; '+_m2esc(r.qTopWk):'');});
+    if(ts||qs){
+      out+='<div class="sec"><div class="sec-h"><span>&#128176; Top sales spotlight</span></div>'
+        +(ts?('<div class="ts-grid">'+ts+'</div>'):'<div style="font-size:9.6px;color:#98A2B3;">No top sales entered for this week.</div>')
+        +(qs?('<div style="font-size:9.6px;color:#334155;margin-top:8px;"><span style="font-weight:950;text-transform:uppercase;font-size:7.8px;letter-spacing:.07em;color:#667085;">Quarter best:</span> '+qs+'</div>'):'')
+        +'</div>';
+    }
+  }
+  // 7. Pacing vs goal table (Standard+, hidden early)
+  if(lvl>=2&&!E.earlyQuarter){
+    var pr='';E.reps.slice().sort(function(a,b){var pa=a.goalRev>0?a.qtdRev/a.goalRev:0,pb=b.goalRev>0?b.qtdRev/b.goalRev:0;return pa-pb;}).forEach(function(r){
+      var pct=r.goalRev>0?Math.round(r.qtdRev/r.goalRev*100):0;
+      var need=E.weeksRemaining>0?Math.max(0,Math.round((r.goalRev-r.qtdRev)/E.weeksRemaining)):0;
+      var col=pct>=100?'#059669':pct>=70?'#D97706':'#DC2626';
+      pr+='<tr><td>'+_m2esc(r.name)+'</td><td>'+_m2$(r.qtdRev)+'</td><td style="color:#667085;">'+_m2$(r.goalRev)+'</td><td style="font-weight:800;color:'+col+';">'+pct+'%</td><td style="color:'+(need>0?'#D97706':'#059669')+';">'+(need>0?_m2$(need)+'/wk':'&#10003; at goal')+'</td><td><span class="bar"><span class="bar-fill" style="width:'+Math.min(100,pct)+'%;background:'+col+';"></span></span></td></tr>';
+    });
+    out+='<div class="sec flow"><div class="sec-h"><span>&#127919; Pacing vs goal &mdash; '+E.q+' '+E.yr+'</span></div><table class="t"><thead><tr><th>Rep</th><th>QTD rev</th><th>Qtr goal</th><th>Goal %</th><th>Need/wk</th><th>Progress</th></tr></thead><tbody>'+pr+'</tbody></table></div>';
+  }
+  // 8. Customers called (Standard+)
+  if(lvl>=2){
+    var cc='';E.reps.slice().sort(function(a,b){var ca=a.setSize>0?a.accts/a.setSize:0,cb=b.setSize>0?b.accts/b.setSize:0;return ca-cb;}).forEach(function(r){
+      var covP=r.setSize>0?Math.round(r.accts/r.setSize*100):0;
+      var need=r.setSize>0&&E.weeksRemaining>0?Math.ceil(Math.max(0,r.setSize-r.accts)/E.weeksRemaining):0;
+      var col=covP>=66?'#059669':covP>=33?'#D97706':'#DC2626';
+      cc+='<tr><td>'+_m2esc(r.name)+'</td><td>'+_m2n(r.setSize)+'</td><td>'+_m2n(r.accts)+'</td><td style="font-weight:800;color:'+col+';">'+covP+'%</td><td style="color:'+(need>0?'#D97706':'#059669')+';">'+(r.setSize>0?(need>0?need+'/wk':'Done!'):'&mdash;')+'</td><td><span class="bar"><span class="bar-fill" style="width:'+Math.min(100,covP)+'%;background:'+col+';"></span></span></td></tr>';
+    });
+    out+='<div class="sec flow"><div class="sec-h"><span>&#128222; Customers called &mdash; '+E.q+' '+E.yr+'</span><span class="tag">quarter coverage</span></div><table class="t"><thead><tr><th>Rep</th><th>Set size</th><th>Reached</th><th>% Reached</th><th>Need/wk</th><th>Progress</th></tr></thead><tbody>'+cc+'</tbody></table></div>';
+  }
+  // 9. Inbound (Standard+)
+  if(lvl>=2&&X.inboundHtml)out+=X.inboundHtml;
+  // 10. Projects (Standard+)
+  if(lvl>=2&&X.projectsHtml)out+=X.projectsHtml;
+  // 11. Cadence (Comprehensive)
+  if(lvl>=3&&X.cadenceHtml)out+=X.cadenceHtml;
+  // 12. Per-rep detail blocks (Comprehensive)
+  if(lvl>=3){
+    var coachMap={};(ai&&ai.coaching||[]).forEach(function(c){if(c&&c.name)coachMap[String(c.name).toLowerCase()]=c.note||'';});
+    var lineMap={};(ai&&ai.rep_lines||[]).forEach(function(c){if(c&&c.name)lineMap[String(c.name).toLowerCase()]=c.note||'';});
+    out+='<div class="pb"></div><div class="sec flow" style="border:0;padding:0;"><div class="sec-h" style="border-bottom:2px solid #111827;"><span>&#128100; Rep detail &mdash; every rep, full picture</span><span class="tag">'+E.reps.length+' reps</span></div>';
+    E.byWk.forEach(function(r,i){
+      var key=String(r.name).toLowerCase();
+      out+='<div class="rep-block"><div class="rb-hdr"><span class="rb-av">'+_m2esc(_m2init(r.name))+'</span><span class="rb-name">'+_m2esc(r.name)+'</span><span class="rb-rank">#'+(i+1)+' this week</span><span class="rb-rev">'+_m2$(r.wkRev)+'</span></div>'
+        +'<div class="rb-grid">'
+        +'<div class="rb-cell"><div class="l">Week</div><div class="v">'+_m2$(r.wkRev)+'</div><div class="s">'+_m2n(r.wkOrders)+' ord &middot; '+_m2n(r.wkCalls)+' calls</div></div>'
+        +'<div class="rb-cell"><div class="l">Prev week</div><div class="v">'+(r.pwRev!=null?_m2$(r.pwRev):'&mdash;')+'</div><div class="s">'+_m2delta(r.wkRev,r.pwRev)+'</div></div>'
+        +'<div class="rb-cell"><div class="l">QTD</div><div class="v">'+_m2$(r.qtdRev)+'</div><div class="s">'+_m2n(r.qtdOrders)+' orders</div></div>'
+        +'<div class="rb-cell"><div class="l">YTD</div><div class="v">'+_m2$(r.ytdRev)+'</div><div class="s">'+_m2n(r.ytdOrders)+' orders</div></div>'
+        +'<div class="rb-cell"><div class="l">Top sale</div><div class="v">'+(r.topSale>0?_m2$(r.topSale):'&mdash;')+'</div><div class="s">'+_m2esc(r.topSaleCustomer||(r.qTop>0?('Qtr best '+_m2$(r.qTop)):''))+'</div></div>'
+        +'</div>'
+        +'<div class="rb-grid" style="grid-template-columns:repeat(5,minmax(0,1fr));">'
+        +'<div class="rb-cell"><div class="l">AOV (wk)</div><div class="v">'+(r.wkOrders>0?_m2$(r.aov):'&mdash;')+'</div></div>'
+        +'<div class="rb-cell"><div class="l">Coverage</div><div class="v">'+(r.setSize>0?Math.round(r.accts/r.setSize*100)+'%':'&mdash;')+'</div><div class="s">'+_m2n(r.accts)+'/'+_m2n(r.setSize)+'</div></div>'
+        +'<div class="rb-cell"><div class="l">Art (wk)</div><div class="v" style="color:'+(r.art>0?'#D97706':'#059669')+';">'+r.art+'</div><div class="s">'+_m2n(r.qtdArt)+' QTD</div></div>'
+        +'<div class="rb-cell"><div class="l">Credits (wk)</div><div class="v" style="color:'+(r.credits>0?'#DC2626':'#059669')+';">'+_m2$(r.credits)+'</div></div>'
+        +'<div class="rb-cell"><div class="l">Qtr best sale</div><div class="v">'+(r.qTop>0?_m2$(r.qTop):'&mdash;')+'</div><div class="s">'+_m2esc(r.qTopCust||'')+'</div></div>'
+        +'</div>'
+        +(r.series.length>1?('<div style="margin-top:4px;"><div style="font-size:6.8px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;color:#8A94A6;">Weekly revenue &middot; '+E.q+'</div>'+_m2spark(r.series,E.wkLabels,'#2563EB')+'</div>'):'')
+        +(lineMap[key]?('<div class="rb-ai">&#128161; '+_m2esc(lineMap[key])+'</div>'):'')
+        +(coachMap[key]?('<div class="rb-coach">&#127919; Coaching: '+_m2esc(coachMap[key])+'</div>'):'')
+        +'</div>';
+    });
+    out+='</div>';
+  }
+  // 13. Talking points + coaching
+  out+='<div class="sec"><div class="sec-h"><span>&#128483;&#65039; Management talking points</span><span class="tag">read these in the meeting</span></div><div class="tri" style="grid-template-columns:1.2fr 1fr;">'
+    +'<div class="bcard"><div class="bl" style="color:#4F46E5;">Talking points</div>'+bl(ai&&ai.talking_points,'tp')+'</div>'
+    +'<div class="bcard"><div class="bl" style="color:#D97706;">Rep coaching recommendations</div>'
+    +((ai&&ai.coaching&&ai.coaching.length)?('<ul class="bullets watch">'+ai.coaching.map(function(c){return '<li><strong>'+_m2esc(c.name||'')+':</strong> '+_m2esc(c.note||'')+'</li>';}).join('')+'</ul>'):'<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable)</div>')
+    +'</div></div></div>';
+  // 14. Recommended actions
+  out+='<div class="sec"><div class="sec-h"><span>&#9989; Recommended actions this week</span></div>'
+    +((ai&&ai.actions&&ai.actions.length)?('<ol style="font-size:10.4px;line-height:1.55;padding-left:18px;">'+ai.actions.map(function(x){return '<li style="margin:4px 0;">'+_m2esc(x)+'</li>';}).join('')+'</ol>'):'<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable)</div>')
+    +'</div>';
+  // 15. Pitch / intel
+  if(X.pitchHtml)out+=X.pitchHtml;
+  if(X.intelHtml)out+=X.intelHtml;
+  return out;
+}
+function buildRepFriendlyBody(E,ai,X){
+  X=X||{};var t=E.team,out='';
+  var top3=E.byWk.slice(0,3);
+  out+='<div class="hero-band"><div class="hb-eyebrow">Team week in review</div><div class="hb-title">'+_m2esc(E.prev.label)+' '+E.yr+' &mdash; here&#39;s what WE did</div>'
+    +'<div class="hb-grid">'
+    +'<div class="hb-cell"><div class="hb-l">Team revenue</div><div class="hb-v">'+_m2$(t.wkRev)+'</div></div>'
+    +'<div class="hb-cell"><div class="hb-l">Orders written</div><div class="hb-v">'+_m2n(t.wkOrders)+'</div></div>'
+    +'<div class="hb-cell"><div class="hb-l">Customer calls</div><div class="hb-v">'+_m2n(t.wkCalls)+'</div></div>'
+    +'<div class="hb-cell"><div class="hb-l">'+E.q+' so far</div><div class="hb-v">'+_m2$(t.qtdRev)+'</div></div>'
+    +'</div></div>';
+  var medals=['&#129351;','&#129352;','&#129353;'],pc=['g1','g2','g3'];
+  out+='<div class="sec"><div class="sec-h"><span>&#127942; This week&#39;s podium</span></div><div class="pod-grid">'
+    +top3.map(function(r,i){return '<div class="pod '+pc[i]+'"><div class="medal">'+medals[i]+'</div><div class="pname">'+_m2esc(r.name)+'</div><div class="prev">'+_m2$(r.wkRev)+'</div><div class="psub">'+_m2n(r.wkOrders)+' orders'+(r.topSale>0?' &middot; top sale '+_m2$(r.topSale)+(r.topSaleCustomer?' ('+_m2esc(r.topSaleCustomer)+')':''):'')+'</div></div>';}).join('')
+    +'</div></div>';
+  var hl=[];
+  var big=E.topSales[0];
+  if(big){var isTop3=top3.some(function(r){return r.name===big.name;});hl.push('Biggest single sale of the week: <strong>'+_m2$(big.topSale)+'</strong>'+(isTop3?' by '+_m2esc(big.name):' by one of our reps')+(big.topSaleCustomer&&isTop3?' ('+_m2esc(big.topSaleCustomer)+')':'')+'.');}
+  if(t.aov>0)hl.push('Team average order value: <strong>'+_m2$(t.aov)+'</strong>.');
+  var beat=E.reps.filter(function(r){return r.pwRev!=null&&r.pwRev>0&&r.wkRev>r.pwRev;}).length;
+  if(beat>0)hl.push('<strong>'+beat+' reps</strong> beat their own prior week.');
+  hl.push('Cumulative '+E.q+' team revenue: <strong>'+_m2$(t.qtdRev)+'</strong> and climbing.');
+  (ai&&ai.rep_recap||[]).forEach(function(x){hl.push(_m2esc(x));});
+  out+='<div class="sec"><div class="sec-h"><span>&#127881; Team highlights</span></div><ul class="bullets win">'+hl.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+  if(ai&&ai.focus&&ai.focus.length)out+='<div class="sec"><div class="sec-h"><span>&#128640; This week&#39;s focus</span></div><ul class="bullets tp">'+ai.focus.map(function(x){return '<li>'+_m2esc(x)+'</li>';}).join('')+'</ul></div>';
+  if(X.pitchHtml)out+=X.pitchHtml;
+  if(X.intelHtml)out+=X.intelHtml;
+  return out;
+}
+function buildMtgIntelBlocks(intelData){
+  var intelHtml='';
   let pitchHtml='';
   if(intelData){
     var _sm=function(t){if(!t)return'';return t.replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/^#{1,6}\s*/gm,'').replace(/^[-*]\s+/gm,'').replace(/^SECTION\s*\d+[:\s]*/gi,'').trim();};
@@ -5973,7 +6250,10 @@ while(sections.length<3)sections.push('');}catch(e){sections=['AI error: '+e.mes
       intelHtml+='</div>';
     }
   }
-  let cadenceSection=buildCallCadenceMeetingSection(yr,q);
+  
+  return {pitchHtml:pitchHtml,intelHtml:intelHtml};
+}
+function buildMtgProjectsBlock(prev){
   // Build weekly project oversight section.
   // The dropdown-selected week IS "this week" for project items; the week before is "last week".
   var _thisWkItems=getWeeklyProjects(prev.key);
@@ -5992,11 +6272,95 @@ while(sections.length<3)sections.push('');}catch(e){sections=['AI error: '+e.mes
       '<div class="proj-card this-week"><div class="proj-label" style="color:#d97706;">&#127919; Happening this week &middot; '+esc_html(_thisWkLabel)+'</div><ul class="proj-list">'+_itemList(_thisWkItems)+'</ul></div>'+
     '</div></div>';
   }
-let bodyHtml='<div class="kpi-strip">'+rKPI2('$'+Math.round(tRev).toLocaleString(),'Week revenue',weeklyGoal>0?Math.round(tRev/weeklyGoal*100)+'% of weekly goal':'',tRev>=weeklyGoal?'#059669':'#dc2626')+rKPI2(tOrders,'Orders','week total','')+rKPI2(tCalls,'Calls made','QTD','')+rKPI2(_qtdArtPct+'%','Art error rate (QTD)',_qtdArtTotal+' QTD &middot; '+tArt+' this wk',parseFloat(_qtdArtPct)>4?'#dc2626':parseFloat(_qtdArtPct)>2?'#d97706':'#059669')+rKPI2(_qtdCreditPct+'%','Credit rate (QTD)','$'+_qtdCreditsTotal.toFixed(0)+' QTD &middot; $'+tCredits.toFixed(0)+' this wk',parseFloat(_qtdCreditPct)>3?'#dc2626':parseFloat(_qtdCreditPct)>1?'#d97706':'#059669')+'</div>'+weeklyProjectsHtml+'<div class="section"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128302; QTD Forecast &mdash; '+q+' '+yr+' '+helpBtn('qtd-forecast')+'</span></div><div class="fc-grid"><div class="fc-card"><div class="fc-label">QTD Revenue</div><div class="fc-val">$'+Math.round(qtdRevTotal).toLocaleString()+'</div><div class="fc-sub">'+qtdPct+'% of $'+Math.round(qGoalTotal).toLocaleString()+' goal</div><div class="fc-bar"><div class="fc-fill" style="width:'+Math.min(100,qtdPct)+'%;background:'+(qtdPct>=100?'#059669':qtdPct>=70?'#d97706':'#dc2626')+';"></div></div></div><div class="fc-card"><div class="fc-label">Projected quarter end</div><div class="fc-val" style="color:'+(projectedPct>=100?'#059669':projectedPct>=70?'#d97706':'#dc2626')+';">$'+Math.round(projectedQRev).toLocaleString()+'</div><div class="fc-sub">'+projectedPct+'% of goal at current pace</div><div class="fc-bar"><div class="fc-fill" style="width:'+Math.min(100,projectedPct)+'%;background:'+(projectedPct>=100?'#059669':projectedPct>=70?'#d97706':'#dc2626')+';"></div></div></div><div class="fc-card"><div class="fc-label">Weekly run rate</div><div class="fc-val" style="color:#6366f1;">~$'+Math.round(avgWeeklyRev).toLocaleString()+'</div><div class="fc-sub">'+weeksRemaining+' wks remain &middot; Wk '+weeksCompleted+'/'+qtdWeeks.length+'</div></div></div></div>'+'<div class="section keep-together page-break-after"><div class="sec-title"><span>&#127942; Rep rankings &mdash; '+prev.label+' '+yr+'</span></div><div class="rep-grid">'+sorted.map(function(r,ri2){var medal=ri2===0?'&#129351;':ri2===1?'&#129352;':ri2===2?'&#129353;':(ri2+1)+'.';var cls=ri2===0?' gold':ri2===1?' silver':ri2===2?' bronze':'';var p2=r.goalRev>0?Math.round(r.revenue/(r.goalRev/qtdWeeks.length)*100):0;var ac=r.art>3?'#dc2626':r.art>0?'#d97706':'#059669';return'<div class="rep-card'+cls+'">'+avHtml(r.name,r.idx,{className:'rep-av'})+'<div class="rep-info"><div class="rep-medal">'+medal+'</div><div class="rep-name">'+r.name+'</div><div class="rep-stats">'+r.calls+' calls &middot; '+r.orders+' orders &middot; <span style="color:'+ac+';">'+r.art+' art</span></div><div class="rep-rev">$'+Math.round(r.revenue).toLocaleString()+'</div><div class="rep-pct">'+p2+'% of weekly goal</div></div></div>';}).join('')+'</div></div>'+(()=>{var rows='';[...repData].sort((a,b)=>{var ga=repGoalObj(a.name,yr,q).rev,gb=repGoalObj(b.name,yr,q).rev;return(ga>0?(qtdRevByRep[a.name]||0)/ga:0)-(gb>0?(qtdRevByRep[b.name]||0)/gb:0);}).forEach(function(r){var qr=qtdRevByRep[r.name]||0,ro=repGoalObj(r.name,yr,q),pct=ro.rev>0?Math.round(qr/ro.rev*100):0,paced=ro.rev>0?Math.round(ro.rev*(weeksCompleted/qtdWeeks.length)):0,pPct=paced>0?Math.round(qr/paced*100):0,wkN=weeksRemaining>0?Math.max(0,Math.round((ro.rev-qr)/weeksRemaining)):0,col=pct>=100?'#059669':pct>=70?'#d97706':'#dc2626',pCol=pPct>=100?'#059669':pPct>=80?'#d97706':'#dc2626';rows+='<tr><td>'+r.name+'</td><td class="r">$'+Math.round(qr).toLocaleString()+'</td><td class="r" style="color:#6b7280;">$'+Math.round(ro.rev/1000)+'K</td><td class="r" style="font-weight:700;color:'+col+';">'+pct+'%</td><td class="r" style="font-weight:700;color:'+pCol+';">'+pPct+'%</td><td class="r" style="color:'+(wkN>0?'#d97706':'#059669')+';">'+( wkN>0?'$'+Math.round(wkN).toLocaleString()+'/wk':'&#10003;')+'</td><td class="r"><div class="bar"><div class="bar-fill" style="width:'+Math.min(100,pct)+'%;background:'+col+';"></div></div></td></tr>';});return'<div class="section"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#127919; Pacing vs goal &mdash; '+q+' '+yr+' '+helpBtn('pacing')+'</span></div><table class="data-tbl"><thead><tr><th>Rep</th><th class="r">QTD Rev</th><th class="r">Qtr Goal</th><th class="r">Goal %</th><th class="r">Pacing %</th><th class="r">Need/wk</th><th class="r">Progress</th></tr></thead><tbody>'+rows+'</tbody></table></div>';})()+(()=>{var td=new Date(),mths={Q1:[0,1,2],Q2:[3,4,5],Q3:[6,7,8],Q4:[9,10,11]},mo=(mths[q]||[0,1,2]).indexOf(td.getMonth());if(mo<0)mo=0;var pM=mo===0?0:mo===1?0.33:0.66,cM=mo===0?0.33:mo===1?0.66:1.0,aP=pM+(cM-pM)*Math.min(1,(Math.ceil(td.getDate()/7)-1)/3),miL=mo===0?'Month 1 (33%)':mo===1?'Month 2 (66%)':'Month 3 (100%)';var rows='';[...repData].sort(function(a,b){var ta=totW(a.name,qtdWeeks.slice(0,weeksCompleted)),tb=totW(b.name,qtdWeeks.slice(0,weeksCompleted));return(ta.setSize>0?ta.acctsCalled/ta.setSize:0)-(tb.setSize>0?tb.acctsCalled/tb.setSize:0);}).forEach(function(r){var t=totW(r.name,qtdWeeks.slice(0,weeksCompleted)),ss=Math.round(t.setSize||0),cal=Math.round(t.acctsCalled||0),covP=ss>0?Math.round(cal/ss*100):0,aG=ss>0?Math.round(ss*aP):0,vsA=cal-aG,ro=repGoalObj(r.name,yr,q),wkG=ro.calls||60,adjW=ss>0&&weeksRemaining>0?Math.ceil((ss-cal)/weeksRemaining):0,col=covP>=66?'#059669':covP>=33?'#d97706':'#dc2626';rows+='<tr><td>'+r.name+'</td><td class="r">'+ss+'</td><td class="r">'+cal+'</td><td class="r" style="font-weight:700;color:'+col+';">'+covP+'%</td><td class="r" style="color:'+(vsA>=0?'#059669':'#dc2626')+';">'+aG+' ('+(vsA>=0?'+':'')+vsA+')</td><td class="r" style="color:'+(adjW>wkG?'#dc2626':adjW>0?'#d97706':'#059669')+';">'+( ss>0?(adjW>0?adjW+'/wk':'Done!'):'&mdash;')+'</td><td class="r"><div class="bar"><div class="bar-fill" style="width:'+Math.min(100,covP)+'%;background:'+col+';"></div></div></td></tr>';});return'<div class="section page-break-after"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128222; Customers Called &mdash; '+q+' '+yr+' &middot; Target: '+miL+' '+helpBtn('call-coverage')+'</span></div><table class="data-tbl"><thead><tr><th>Rep</th><th class="r">Set size</th><th class="r">Reached</th><th class="r">% Reached</th><th class="r">Adj. target</th><th class="r">Need/wk</th><th class="r">Progress</th></tr></thead><tbody>'+rows+'</tbody></table></div>';})()+'<div class="section"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128161; AI analysis</span></div><div class="ai-grid"><div class="ai-card" style="background:#EEF2FF;"><div class="ai-label" style="color:#6366f1;">Week recap</div><div class="ai-body">'+sections[0]+'</div></div><div class="ai-card" style="background:#F0FDF4;"><div class="ai-label" style="color:#059669;">Quarter pacing</div><div class="ai-body">'+sections[1]+'</div></div><div class="ai-card" style="background:#FFFBEB;"><div class="ai-label" style="color:#d97706;">This week&#39;s focus</div><div class="ai-body">'+sections[2]+'</div></div></div></div>'+pitchHtml+intelHtml;let html=buildReportPrint('Weekly Sales Meeting — '+prev.label+' '+yr,q+' '+yr+' · '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),q+' '+yr,bodyHtml);let reportId=saveReport('meeting','Meeting — '+prev.label+' '+yr,q+' '+yr,html);openInNewTab(html);
-  // Store data for rep version
-  window._lastMtgData={prev,yr,q,tRev,tOrders,tCalls,tArt,artPct,qtdArtPct:_qtdArtPct,qtdArtTotal:_qtdArtTotal,tCredits,qtdCreditsTotal:_qtdCreditsTotal,qtdCreditPct:_qtdCreditPct,sorted,weeklyGoal,qtdRevTotal,qGoalTotal,projectedQRev,projectedPct,weeksCompleted,weeksRemaining,sections,intelData};
-  btn.disabled=false;st.textContent='Report ready.';showResultBox('mtgResultBox',reportId,'Meeting report — '+prev.label+' '+prev.key.split('_')[0]);
+
+  return weeklyProjectsHtml;
 }
+function buildMtgInboundBlock(yr,q,prev){
+  var inboundHtml=(function(){
+  try{
+    var esc=(typeof esc_html==='function')?esc_html:function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});};
+    if(typeof _inbYearData!=='function'||typeof _inbQuarterOf!=='function')return '';
+    var iy=_inbYearData(yr);
+    if(!iy||!iy.rows||!iy.rows.length||!iy.categories||!iy.categories.length){
+      return '<div class="section"><div class="sec-title"><span>&#128231; Inbound Leads &amp; Activity</span></div><div style="font-size:12px;color:#6b7280;padding:8px 2px;">No inbound data loaded for '+yr+'. Open the <strong>Inbound Leads</strong> page and click Refresh to pull the published Google Sheet, then regenerate this report.</div></div>';
+    }
+    var cats=iy.categories, order=['Q1','Q2','Q3','Q4'], curQ=q;
+    var weekNum=(prev.num!=null&&!isNaN(Number(prev.num)))?Number(prev.num):0;
+    var wkRow=null;for(var wi=0;wi<iy.rows.length;wi++){if(Number(iy.rows[wi].week)===weekNum){wkRow=iy.rows[wi];break;}}
+    var thisWk=wkRow?wkRow.vals:[];
+    function qTot(Q){var t=new Array(cats.length).fill(0);iy.rows.forEach(function(row){if(_inbQuarterOf(row.week)===Q){(row.vals||[]).forEach(function(v,ci){t[ci]+=Number(v)||0;});}});return t;}
+    var qt={Q1:qTot('Q1'),Q2:qTot('Q2'),Q3:qTot('Q3'),Q4:qTot('Q4')};
+    var yrTot=new Array(cats.length).fill(0);iy.rows.forEach(function(row){(row.vals||[]).forEach(function(v,ci){yrTot[ci]+=Number(v)||0;});});
+    var rowsHtml='';
+    cats.forEach(function(cn,ci){
+      var tw=Number(thisWk[ci]||0);
+      rowsHtml+='<tr><td>'+esc(cn)+'</td>'+
+        '<td class="r" style="font-weight:700;color:'+(tw>0?'#1a1a1a':'#c0c4cc')+';">'+tw.toLocaleString()+'</td>'+
+        order.map(function(Q){var val=Number(qt[Q][ci]||0);var isCur=(Q===curQ);return '<td class="r" style="'+(isCur?'font-weight:800;color:#4f46e5;background:#EEF2FF;':'color:#4b5563;')+'">'+val.toLocaleString()+'</td>';}).join('')+
+        '<td class="r" style="font-weight:700;color:#111827;">'+Number(yrTot[ci]||0).toLocaleString()+'</td></tr>';
+    });
+    var twSum=thisWk.reduce(function(a,v){return a+(Number(v)||0);},0);
+    var qSum={};order.forEach(function(Q){qSum[Q]=qt[Q].reduce(function(a,v){return a+(Number(v)||0);},0);});
+    var ySum=yrTot.reduce(function(a,v){return a+(Number(v)||0);},0);
+    rowsHtml+='<tr style="border-top:2px solid #111827;font-weight:800;background:#f9fafb;"><td>All channels</td>'+
+      '<td class="r">'+twSum.toLocaleString()+'</td>'+
+      order.map(function(Q){var isCur=(Q===curQ);return '<td class="r" style="'+(isCur?'color:#4f46e5;background:#E0E7FF;':'')+'">'+qSum[Q].toLocaleString()+'</td>';}).join('')+
+      '<td class="r">'+ySum.toLocaleString()+'</td></tr>';
+    return '<div class="section keep-together"><div class="sec-title"><span style="display:flex;align-items:center;gap:5px;">&#128231; Inbound Leads &amp; Activity &mdash; Wk '+weekNum+' &middot; '+curQ+' '+yr+'</span></div>'+
+      '<table class="data-tbl"><thead><tr><th>Channel</th><th class="r">This wk</th>'+
+      order.map(function(Q){var isCur=(Q===curQ);return '<th class="r"'+(isCur?' style="color:#4f46e5;"':'')+'>'+Q+(isCur?' &bull;':'')+'</th>';}).join('')+
+      '<th class="r">Year</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>'+
+      '<div style="font-size:10px;color:#9ca3af;margin-top:6px;">This week = Wk '+weekNum+'. Current quarter ('+curQ+') highlighted. Pulled from the published inbound Google Sheet for '+yr+'.</div></div>';
+  }catch(e){return '<div class="section"><div style="font-size:12px;color:#dc2626;">Inbound section error: '+((e&&e.message)||e)+'</div></div>';}
+})();
+
+  return inboundHtml;
+}
+async function generateMeetingReport(){
+  let sel=document.getElementById('mtgWeekSel');
+  let weekKey=sel?sel.value:'';
+  if(!weekKey){document.getElementById('mtgSt').textContent='Please select a week.';return;}
+  let prev=null;
+  for(let yr2 of YEARS){if(prev)break;for(let q2 of QTRS){if(prev)break;let wks=gwq(yr2,q2);let w=wks.find(x=>x.key===weekKey);if(w)prev={...w,key:weekKey};}}
+  if(!prev){document.getElementById('mtgSt').textContent='Week not found.';return;}
+  let yr=parseInt(prev.key.split('_')[0]),q=prev.key.split('_')[1];
+  let btn=document.getElementById('genMtgBtn'),st=document.getElementById('mtgSt'),preview=document.getElementById('mtgPreview');
+  btn.disabled=true;st.textContent='Gathering data...';st.style.color='';
+  var rb=document.getElementById('mtgResultBox');if(rb)rb.style.display='none';
+  try{
+    var E=buildMtgEngine(prev,yr,q);
+    st.textContent='Building market intel from forecast...';
+    var intelData=null;try{intelData=generateIntelForMeeting();}catch(e){console.warn('Intel error:',e);}
+    var blocks=buildMtgIntelBlocks(intelData);
+    var projectsHtml=buildMtgProjectsBlock(prev);
+    var inboundHtml=buildMtgInboundBlock(yr,q,prev);
+    var cadenceHtml='';try{cadenceHtml=buildCallCadenceMeetingSection(yr,q)||'';}catch(e){}
+    st.textContent='Generating AI analysis (this can take ~20s)...';
+    var ai=await fetchMtgAI(E);
+    var depthEl=document.getElementById('mtgDepth');
+    var depth=(depthEl&&depthEl.value)||'comprehensive';
+    var body=buildMgrMeetingBody(E,ai,depth,{pitchHtml:blocks.pitchHtml,intelHtml:blocks.intelHtml,projectsHtml:projectsHtml,inboundHtml:inboundHtml,cadenceHtml:cadenceHtml});
+    var depthLabel=depth==='executive'?'Executive brief':depth==='standard'?'Standard':'Comprehensive';
+    var html=buildReportPrintV2('Weekly Sales Meeting &mdash; '+_m2esc(prev.label)+' '+yr, q+' '+yr+' &middot; '+depthLabel, 'Weekly Sales Meeting', body);
+    window._lastMtgEngine={key:prev.key,E:E,ai:ai,pitchHtml:blocks.pitchHtml,intelHtml:blocks.intelHtml};
+    window._lastMtgHtml=html;
+    let reportId=saveReport('meeting','Meeting &mdash; '+prev.label+' '+yr+' ('+depthLabel+')',q+' '+yr,html);
+    openInNewTab(html);
+    if(preview){
+      preview.innerHTML='<div style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:12px;padding:14px 16px;">'
+        +'<div style="font-size:11px;font-weight:700;color:#5DCAA5;margin-bottom:6px;">&#10003; '+depthLabel+' manager report generated &mdash; opened in a new tab</div>'
+        +'<div style="font-size:12px;line-height:1.7;color:var(--color-text-primary);">'+((ai&&ai.exec)?_m2esc(ai.exec):'AI summary unavailable &mdash; data sections rendered from entered numbers.')+'</div>'
+        +'<div style="font-size:10px;color:var(--color-text-secondary);margin-top:8px;">Use <strong>Rep-friendly</strong> for the team-facing version, or <strong>Print/PDF</strong> to reopen this report.</div></div>';
+    }
+    btn.disabled=false;st.textContent='Report ready.';st.style.color='#5DCAA5';
+    showResultBox('mtgResultBox',reportId,'Meeting report &mdash; '+prev.label+' '+prev.key.split('_')[0]);
+  }catch(e){
+    btn.disabled=false;st.textContent='Error: '+((e&&e.message)||e);st.style.color='#F09595';
+    console.error('Meeting report error:',e);
+  }
+}
+
+
 
 async function generateReview(){let rep=document.getElementById('rvRep').value,q=document.getElementById('rvQ').value,yr=parseInt(document.getElementById('rvYr').value);if(!rep)return;let ri=S.reps.findIndex(r=>r.name===rep),ro=repGoalObj(rep,yr,q),weeks=gwq(yr,q),we=weeksElapsed(yr,q),tot=totW(rep,weeks),hrP=getHRPoints(rep,yr,q),sc=calcSc(rep,tot,ro,weeks.length,hrP,we),rt=rfrom(sc.fin);let sss=RVSECTIONS.map(s=>({section:s,score:secScore(s,sc)}));let hrV=S.hrViolations.filter(v=>v.rep===rep&&v.yr==yr&&v.q===q),notes=S.coachingNotes.filter(n=>n.rep===rep&&n.yr==yr&&n.q===q);let btn=document.getElementById('genRevBtn'),st=document.getElementById('rvSt'),prev=document.getElementById('rvPreview');btn.disabled=true;document.getElementById('rvResultBox').style.display='none';prev.innerHTML='<div class="rv-section pulse"><div class="rv-section-body">Generating 8-section review...</div></div>';st.textContent='Generating...';const prompt='Sales manager '+q+' '+yr+' quarterly review for '+rep+'. Rating: '+rt.l+' ('+sc.fin+'/5)'+(sc.capped?' — HR cap, raw '+sc.raw+'/5':'')+'. '+(we>0&&we<weeks.length?'MID-QUARTER (Wk '+we+'/'+weeks.length+'): scoring is PACED — % values are against paced targets (what should be achieved by this point), not full-quarter goals. ':we>=weeks.length?'QUARTER COMPLETE: scoring against full-quarter targets. ':'NO DATA YET. ')+'Revenue: $'+Math.round(tot.revenue).toLocaleString()+' vs $'+Math.round(ro.rev).toLocaleString()+' qtr goal'+(we>0&&we<weeks.length?' (paced $'+Math.round(sc.revGoalPaced||ro.rev).toLocaleString()+')':'')+' ('+sc.sp.toFixed(1)+'%'+(we>0&&we<weeks.length?' of paced':'')+'). Customers Called: '+sc.cp.toFixed(1)+'%, Art: '+sc.ap.toFixed(1)+'%, Credits(rep): '+sc.crp.toFixed(1)+'%, Hours: '+sc.hp.toFixed(1)+'%, HR pts: '+hrP.toFixed(1)+'. Violations: '+(hrV.length>0?hrV.map(v=>HR_CATS[v.cat]?.label+' ('+v.pts+'pts)').join(', '):'none')+'. '+(notes.length>0?'Notes: '+notes.map(n=>n.date+' ['+CN_TYPES[n.type]+']: '+n.note).join(' | '):'')+'. Write EXACTLY 8 sections ||| separated: 1.Job Knowledge('+rfrom(sss[0].score).l+') 2.Work Quality('+rfrom(sss[1].score).l+') 3.Attendance/Punctuality('+rfrom(sss[2].score).l+') 4.Initiative('+rfrom(sss[3].score).l+') 5.Communication('+rfrom(sss[4].score).l+') 6.Dependability('+rfrom(sss[5].score).l+') 7.Data Analysis (5-7 sentences) 8.Next Quarter Growth Plan (5-7 sentences). No headers inside sections.';let paragraphs=[];try{let text=await callAI(prompt);paragraphs=text.split('|||').map(p=>p.trim()).filter(p=>p.length>0);while(paragraphs.length<8)paragraphs.push('Content unavailable.');}catch(e){paragraphs=Array(8).fill('AI error: '+e.message);console.error('Review AI error:',e);}const labels=[...RVSECTIONS,'Data Analysis','Next Quarter Growth Plan'];prev.innerHTML=labels.map((s,i)=>{let ss=sss[i],r2=ss?rfrom(ss.score):null;let isA=i===6,isG=i===7;return'<div class="rv-section" style="border-left:3px solid '+(isG?'#1D9E75':isA?'#534AB7':'var(--color-border-tertiary)')+';'+(isG?'background:var(--color-background-primary);':'')+'"><div class="rv-section-hdr"><span class="rv-section-title" style="'+(isG?'color:#1D9E75;':isA?'color:#7F77DD;':'')+'">'+(isA?'📊 '+s:isG?'🎯 '+s:s)+'</span>'+(r2?'<span class="rb '+r2.c+'">'+r2.l+'</span>':'')+'</div><div class="rv-section-body" style="margin-top:7px;'+(isA||isG?'color:var(--color-text-primary);':'')+'">'+( paragraphs[i]||'—')+'</div></div>';}).join('');let hrBoxHtml=hrV.length>0?'<div class="hr-box"><strong>HR violations ('+hrP.toFixed(1)+' pts):</strong><br>'+hrV.map(v=>fds(v.date)+' — '+(HR_CATS[v.cat]?.label||v.cat)+' ('+v.pts+' pts)'+(v.desc?': '+v.desc:'')).join('<br>')+'</div>':'';let notesBoxHtml=notes.length>0?'<div class="notes-box"><div style="font-size:10px;font-weight:600;color:#7F77DD;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Coaching Notes</div>'+notes.map(n=>'<div style="font-size:12px;margin-bottom:5px;color:var(--color-text-primary);"><strong>'+fds(n.date)+'</strong> ['+(CN_TYPES[n.type]||n.type)+']: '+n.note+'</div>').join('')+'</div>':'';let sectionCards=RVSECTIONS.map((s,i)=>{let ss=sss[i],r2=rfrom(ss.score);return'<div class="rv-section"><div class="rv-sec-hdr"><span class="rv-sec-title">'+s+'</span><span class="rb '+r2.c+'">'+r2.l+'</span></div><div class="rv-sec-body">'+(paragraphs[i]||'—')+'</div></div>';}).join('');let bodyHtml='<div class="mgrid">'+rKPI(sc.fin+'/5','Final score',rt.l,'#7F77DD')+rKPI('$'+Math.round(tot.revenue/1000)+'K','Revenue',sc.sp.toFixed(0)+'% of '+q+' goal',sc.sp>=100?'#5DCAA5':sc.sp>=85?'#EF9F27':'#F09595')+rKPI(sc.ap.toFixed(1)+'%','Art error %',tot.art+' errors',sc.ap<=1?'#5DCAA5':sc.ap<=4?'#EF9F27':'#F09595')+rKPI(sc.cp.toFixed(0)+'%','Customers Called','of set',sc.cp>=100?'#5DCAA5':sc.cp>=85?'#EF9F27':'#F09595')+rKPI(hrP.toFixed(1),'HR points',q+' total',hrP>=3?'#F09595':hrP>0?'#EF9F27':'#5DCAA5')+(tot.topSale>0?rKPI('$'+Math.round(tot.topSale).toLocaleString(),'Top sale',tot.topSaleCustomer||'','#7F77DD'):'')+'</div>'+hrBoxHtml+notesBoxHtml+'<div class="card"><div class="ct">Performance sections</div>'+sectionCards+'</div><div class="sec-analysis"><div style="font-size:10px;font-weight:600;color:#7F77DD;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">📊 Data Analysis</div><div style="font-size:12px;line-height:1.8;color:var(--color-text-primary);">'+(paragraphs[6]||'—')+'</div></div><div class="sec-growth"><div style="font-size:10px;font-weight:600;color:#1D9E75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">🎯 Next Quarter Growth Plan</div><div style="font-size:12px;line-height:1.8;color:var(--color-text-primary);">'+(paragraphs[7]||'—')+'</div></div><div class="card" style="display:flex;align-items:center;gap:14px;">'+rAv(rep,ri)+'<div><div style="font-size:22px;font-weight:700;color:#7F77DD;">'+sc.fin+'<span style="font-size:14px;color:var(--color-text-secondary);">/5</span></div><div style="margin-top:4px;"><span class="rb '+rt.c+'">'+rt.l+'</span>'+(sc.capped?'<span class="hrf">HR cap — raw '+sc.raw+'/5</span>':'')+'</div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:5px;">'+q+' '+yr+' goal: $'+Math.round(ro.rev).toLocaleString()+' · '+ro.hrs+' hrs/wk · '+ro.calls+' customers/wk</div></div></div><div class="sig-grid"><div><div style="height:44px;"></div><div class="sig-line">Employee signature &amp; date</div></div><div><div style="height:44px;"></div><div class="sig-line">Manager signature &amp; date</div></div></div>';let html=buildReport(rep+' — '+q+' '+yr+' Performance Review','Prepared '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),rt.l+' · '+sc.fin+'/5',bodyHtml);let reportId=saveReport('review',rep+' — '+q+' '+yr+' Review',rep,html);openInNewTab(html);btn.disabled=false;st.textContent='Review ready.';showResultBox('rvResultBox',reportId,rep+' — '+q+' '+yr+' Performance Review');}
 
@@ -10858,25 +11222,31 @@ function generateIntelForMeeting(){
 
 
 async function generateRepVersionReport(){
-  // Generate meeting data first if not available
-  if(!window._lastMtgData){
-    var st=document.getElementById('mtgSt');
-    if(st)st.textContent='Generating data first...';
-    await generateMeetingReport();
-    return;
-  }
-  var d=window._lastMtgData;
   var st=document.getElementById('mtgSt');
-  if(st){st.textContent='Building rep version...';st.style.color='#5DCAA5';}
+  var sel=document.getElementById('mtgWeekSel');
+  var weekKey=sel?sel.value:'';
+  if(!weekKey){if(st)st.textContent='Please select a week.';return;}
+  var prev=null;
+  for(var yi=0;yi<YEARS.length&&!prev;yi++){for(var qi2=0;qi2<QTRS.length&&!prev;qi2++){var wks=gwq(YEARS[yi],QTRS[qi2]);var w=wks.find(function(x){return x.key===weekKey;});if(w){prev=Object.assign({},w,{key:weekKey});}}}
+  if(!prev){if(st)st.textContent='Week not found.';return;}
+  var yr=parseInt(prev.key.split('_')[0]),q=prev.key.split('_')[1];
+  if(st){st.textContent='Building rep-friendly version...';st.style.color='#5DCAA5';}
   try{
-    var html=buildRepVersionHTML(d);
-    var w=window.open('','_blank');
-    if(w){w.document.write(makeReportEditable(html));w.document.close();w.focus();}
-    else alert('Allow pop-ups to open the rep version.');
-    if(st){st.textContent='Rep version ready!';st.style.color='#5DCAA5';}
+    var stash=window._lastMtgEngine;
+    var E=(stash&&stash.key===prev.key&&stash.E)?stash.E:buildMtgEngine(prev,yr,q);
+    var pitchHtml='',intelHtml='';
+    if(stash&&stash.key===prev.key){pitchHtml=stash.pitchHtml||'';intelHtml=stash.intelHtml||'';}
+    else{var intelData=null;try{intelData=generateIntelForMeeting();}catch(e){}var blocks=buildMtgIntelBlocks(intelData);pitchHtml=blocks.pitchHtml;intelHtml=blocks.intelHtml;}
+    var ai=await fetchMtgAI(E);
+    var body=buildRepFriendlyBody(E,ai,{pitchHtml:pitchHtml,intelHtml:intelHtml});
+    var html=buildReportPrintV2('Team Week in Review &mdash; '+_m2esc(prev.label)+' '+yr, q+' '+yr+' &middot; Team edition', 'Team Week in Review', body);
+    var reportId=saveReport('meeting','Team version &mdash; '+prev.label+' '+yr,q+' '+yr,html);
+    openInNewTab(html);
+    if(st){st.textContent='Rep-friendly version ready.';st.style.color='#5DCAA5';}
+    showResultBox('mtgResultBox',reportId,'Team version &mdash; '+prev.label);
   }catch(e){
-    if(st){st.textContent='Error: '+e.message;st.style.color='#F09595';}
-    console.error(e);
+    if(st){st.textContent='Error: '+((e&&e.message)||e);st.style.color='#F09595';}
+    console.error('Rep version error:',e);
   }
 }
 
@@ -11183,120 +11553,8 @@ function uploadGoalsSheet(event){
 }
 
 function generatePrintVersionReport(){
-  if(!window._lastMtgData){
-    alert('Generate a meeting report first, then click Print version.');
-    return;
-  }
-  var d=window._lastMtgData;
-  var st=document.getElementById('mtgSt');
-  if(st){st.textContent='Opening print version...';st.style.color='#C8A8FF';}
-
-  // Build the same body HTML as the meeting report but use the light CSS
-  var weeklyGoal=d.weeklyGoal,tRev=d.tRev,tOrders=d.tOrders,tCalls=d.tCalls,tArt=d.tArt,artPct=d.artPct,qtdArtPct=d.qtdArtPct||artPct,qtdArtTotal=d.qtdArtTotal||tArt,tCredits=d.tCredits,qtdCreditsTotal=d.qtdCreditsTotal||tCredits,qtdCreditPct=d.qtdCreditPct||(d.qtdRevTotal>0?((d.qtdCreditsTotal||tCredits)/d.qtdRevTotal*100).toFixed(2):'0.00');
-  var qtdRevTotal=d.qtdRevTotal,qGoalTotal=d.qGoalTotal,projectedQRev=d.projectedQRev,projectedPct=d.projectedPct;
-  var weeksCompleted=d.weeksCompleted,weeksRemaining=d.weeksRemaining,q=d.q,yr=d.yr,prev=d.prev;
-  var sections=d.sections||['','',''];
-  var sorted=d.sorted||[];
-  var intelData=d.intelData;
-  var avgWeeklyRev=weeksCompleted>0?qtdRevTotal/weeksCompleted:0;
-
-  // Intel section for print
-  var intelHtml='';
-  if(intelData){
-    var upcomingPrint=(intelData.upcoming||[]).slice(0,6);
-    var dtPrint=(intelData.downtime||[]).slice(0,5);
-    var _catColPrint={holiday:'#dc2626',awareness:'#6366f1',employee:'#059669',industry:'#d97706',seasonal:'#7c3aed',sports:'#0284c7'};
-    var _catLblPrint={holiday:'Holiday',awareness:'Awareness',employee:'Employee Appreciation',industry:'Industry Event',seasonal:'Seasonal',sports:'Sports'};
-    var eventCards='';
-    upcomingPrint.forEach(function(ev){
-      var col=_catColPrint[ev.category]||'#7c3aed';
-      var lbl=_catLblPrint[ev.category]||(ev.category||'').toUpperCase();
-      var daysBadge=ev.days<=0?'TODAY':ev.days===1?'TOMORROW':'in '+ev.days+' days';
-      eventCards+='<div style="border-left:3px solid '+col+';background:#fafafa;padding:10px 13px;margin-bottom:8px;page-break-inside:avoid;">'
-        +'<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;">'
-        +'<div style="display:flex;align-items:center;gap:6px;"><strong style="font-size:12px;color:#1a1a1a;">'+ev.name+'</strong>'
-        +(lbl?'<span style="font-size:8px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:8px;background:'+col+'22;color:'+col+';">'+lbl+'</span>':'')+'</div>'
-        +'<span style="font-size:10px;color:'+col+';font-weight:600;">'+ev.date+' &middot; '+daysBadge+'</span>'
-        +'</div>'
-        +(ev.pitch?'<div style="font-size:11px;color:#333;line-height:1.55;margin-bottom:4px;">'+ev.pitch+'</div>':'')
-        +(ev.products&&ev.products.length?'<div style="font-size:10px;color:#059669;margin-bottom:4px;"><strong>Sell:</strong> '+ev.products.slice(0,3).join(' &middot; ')+'</div>':'')
-        +(ev.leadTime?'<div style="font-size:10px;color:#d97706;margin-bottom:4px;"><strong>Lead time:</strong> '+ev.leadTime+'</div>':'')
-        +(ev.callOpener?'<div style="font-size:10px;background:rgba(99,102,241,0.06);border-left:2px solid #6366f1;padding:4px 8px;color:#1a1a1a;font-style:italic;">&ldquo;'+ev.callOpener+'&rdquo;</div>':'')
-      +'</div>';
-    });
-    var downtimeCards='';
-    dtPrint.forEach(function(d){
-      downtimeCards+='<div style="border-left:3px solid #7c3aed;background:#faf9ff;padding:10px 13px;margin-bottom:8px;page-break-inside:avoid;">'
-        +'<div style="font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:4px;">'+(d.icon||'')+' '+d.industry+'</div>'
-        +(d.whyAnswerNow?'<div style="font-size:10px;color:#374151;margin-bottom:4px;"><strong>Why they\'ll answer:</strong> '+d.whyAnswerNow+'</div>':'')
-        +(d.pitchFor?'<div style="font-size:10px;color:#059669;margin-bottom:4px;"><strong>Pitch for:</strong> '+d.pitchFor+'</div>':'')
-        +(d.busySeasonStarts?'<div style="font-size:10px;color:#d97706;margin-bottom:4px;"><strong>Busy season starts:</strong> '+d.busySeasonStarts+'</div>':'')
-        +(d.callOpener?'<div style="font-size:10px;background:rgba(124,58,237,0.06);border-left:2px solid #7c3aed;padding:4px 8px;color:#1a1a1a;font-style:italic;">&ldquo;'+d.callOpener+'&rdquo;</div>':'')
-      +'</div>';
-    });
-    if(eventCards||downtimeCards||intelData.pitchOfWeek){
-      intelHtml='<div class="card" style="border-left:3px solid #6366f1;">'
-        +'<div class="ct" style="color:#6366f1;border-color:#c7d2fe;">&#128197; Market forecast</div>'
-        +(intelData.pitchOfWeek?'<div style="background:#FFF3E0;border-left:3px solid #BA7517;border-radius:0 6px 6px 0;padding:9px 13px;margin-bottom:12px;">'
-          +'<div style="font-size:10px;font-weight:700;color:#BA7517;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">&#9889; Pitch of the week</div>'
-          +'<div style="font-size:12px;color:#111;line-height:1.6;white-space:pre-wrap;">'+intelData.pitchOfWeek+'</div></div>':'')
-        +(eventCards?'<div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;">Upcoming focus events &mdash; actionable lead time</div>'+eventCards:'')
-        +(downtimeCards?'<div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 7px;">&#128222; Industries in downtime &mdash; call them now</div>'+downtimeCards:'')
-      +'</div>';
-    }
-  }
-
-  // Rep rankings
-  var repRows=sorted.map(function(r,i){
-    var medal=i===0?'\uD83E\uDD47':i===1?'\uD83E\uDD48':i===2?'\uD83E\uDD49':(i+1)+'.';
-    var artColor=r.art>3?'#DC2626':r.art>0?'#D97706':'#059669';
-    var pct=r.goalRev>0?Math.round(r.revenue/r.goalRev*100):0;
-    var ri=S.reps.findIndex(function(rep){return rep.name===r.name;});
-    return'<div class="rep-row">'
-      +''+avHtml(r.name,ri,{})+''
-      +'<div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+medal+' '+r.name+'</div>'
-      +'<div style="font-size:11px;color:#555;margin-top:1px;">'+r.calls+' calls &middot; '+r.orders+' orders &middot; <span style="color:'+artColor+';">'+r.art+' art err</span>'+(r.credits>0?' &middot; <span style="color:#DC2626;">$'+r.credits.toFixed(2)+' credits</span>':'')+'</div></div>'
-      +'<div style="text-align:right;"><div style="font-size:14px;font-weight:700;">$'+Math.round(r.revenue).toLocaleString()+'</div>'
-      +'<div style="font-size:11px;color:'+(pct>=100?'#059669':pct>=70?'#D97706':'#DC2626')+';">'+pct+'% of goal</div></div>'
-      +'</div>';
-  }).join('');
-
-  var qtdPct=qGoalTotal>0?Math.min(100,Math.round(qtdRevTotal/qGoalTotal*100)):0;
-
-  var bodyHtml='<div class="mgrid">'
-    +rKPI('$'+Math.round(tRev).toLocaleString(),'Week revenue',weeklyGoal>0?Math.round(tRev/weeklyGoal*100)+'% of weekly goal':'',tRev>=weeklyGoal?'#059669':'')
-    +rKPI(tOrders,'Orders',q+' week','')
-    +rKPI(tCalls,'Calls made','','')
-    +rKPI(qtdArtPct+'%','Art error rate (QTD)',qtdArtTotal+' QTD &middot; '+tArt+' this wk',parseFloat(qtdArtPct)>4?'#DC2626':parseFloat(qtdArtPct)>2?'#D97706':'#059669')
-    +rKPI(qtdCreditPct+'%','Credit rate (QTD)','$'+Math.round(qtdCreditsTotal)+' QTD &middot; $'+Math.round(tCredits)+' this wk',parseFloat(qtdCreditPct)>3?'#DC2626':parseFloat(qtdCreditPct)>1?'#D97706':'#059669')
-    +'</div>'
-    
-    +cadenceSection
-    +'<div class="card"><div class="ct">AI Analysis</div>'
-    +'<div class="ai-box"><div class="ai-lbl">Week Recap</div>'+sections[0]+'</div>'
-    +'<div class="ai-box-green"><div class="ai-lbl-green">Quarter Pacing</div>'+sections[1]+'</div>'
-    +'<div class="ai-box-amber"><div class="ai-lbl-amber">This Week&#39;s Focus</div>'+sections[2]+'</div>'
-    +'</div>'
-    +intelHtml
-    +'<div class="card"><div class="ct">QTD Forecast &mdash; '+q+' '+yr+'</div>'
-    +'<div class="fcgrid">'
-    +'<div class="fcard"><div class="fcard-lbl">QTD Revenue</div><div class="fcard-val">$'+Math.round(qtdRevTotal).toLocaleString()+'</div><div class="fcard-sub">'+qtdPct+'% of $'+Math.round(qGoalTotal).toLocaleString()+' goal</div><div class="progress-bar"><div class="progress-fill" style="width:'+Math.min(100,qtdPct)+'%;background:'+(qtdPct>=100?'#059669':qtdPct>=70?'#D97706':'#3B82F6')+'"></div></div></div>'
-    +'<div class="fcard"><div class="fcard-lbl">Projected Quarter End</div><div class="fcard-val" style="color:'+(projectedPct>=100?'#059669':projectedPct>=70?'#D97706':'#DC2626')+';">$'+Math.round(projectedQRev).toLocaleString()+'</div><div class="fcard-sub">'+projectedPct+'% of goal at current pace</div><div class="progress-bar"><div class="progress-fill" style="width:'+Math.min(100,projectedPct)+'%;background:'+(projectedPct>=100?'#059669':projectedPct>=70?'#D97706':'#DC2626')+'"></div></div></div>'
-    +'<div class="fcard"><div class="fcard-lbl">Next Week Forecast</div><div class="fcard-val" style="color:#534AB7;">~$'+Math.round(avgWeeklyRev).toLocaleString()+'</div><div class="fcard-sub">'+weeksRemaining+' wks remain &middot; Wk '+weeksCompleted+'/'+(weeksCompleted+weeksRemaining)+'</div></div>'
-    +'</div></div>'
-    +'<div class="card"><div class="ct">Rep Rankings &mdash; '+(prev?prev.label+' '+yr:'')+'</div>'+repRows+'</div>';
-
-  var html=buildReportPrint(
-    'Weekly Sales Meeting \u2014 '+(prev?prev.label+' '+yr:''),
-    q+' '+yr+' \u00b7 '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
-    q+' '+yr,
-    bodyHtml
-  );
-
-  var w=window.open('','_blank');
-  if(w){w.document.write(makeReportEditable(html));w.document.close();w.focus();}
-  else alert('Allow pop-ups to open the print version.');
-  if(st){st.textContent='Print version ready!';st.style.color='#C8A8FF';}
+  if(window._lastMtgHtml){openInNewTab(window._lastMtgHtml);return;}
+  alert('Generate a meeting report first \u2014 the new reports are already print-ready (use the Print / Save PDF button in the report tab).');
 }
 
 var CUST_STORE_PREFIX='salesTracker_custList_';
