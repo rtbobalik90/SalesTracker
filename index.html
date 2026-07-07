@@ -1621,6 +1621,30 @@ select optgroup{
 .art-log-list .editable-row{gap:12px;}
 .art-quality-note{font-size:12px;color:#C8D0EA;line-height:1.6;padding:13px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.075);}
 .art-command-page select option{background:#111827;color:#F7F8FF;}
+
+/* ===== v429 Art Errors Google CSV sync ===== */
+.art-csv-card{display:flex;flex-direction:column;gap:13px;position:relative;z-index:1;}
+.art-csv-row{display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:10px;align-items:end;}
+.art-csv-field label{display:block;font-size:10px!important;text-transform:uppercase;letter-spacing:.085em!important;font-weight:900!important;color:#93A0C1!important;margin-bottom:6px;}
+.art-csv-field input{width:100%;min-height:40px;border-radius:14px!important;background:rgba(4,7,14,.48)!important;border:1px solid rgba(255,255,255,.12)!important;color:#F8FAFF!important;padding:10px 12px!important;font-size:12px;}
+.art-csv-field input:focus{outline:none!important;border-color:rgba(139,92,246,.88)!important;box-shadow:0 0 0 3px rgba(139,92,246,.16)!important;}
+.art-csv-status{min-height:18px;font-size:11px;color:#A8AFC3;line-height:1.45;}
+.art-csv-status.ok{color:#A7FFC0;}
+.art-csv-status.warn{color:#FFD27A;}
+.art-csv-status.bad{color:#FFB3C8;}
+.art-csv-map{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-top:3px;}
+.art-csv-map span{display:block;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.035);padding:9px 10px;font-size:10.5px;color:#B9C4E2;line-height:1.35;}
+.art-csv-map strong{display:block;color:#8EEBD1;font-size:9px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.art-source-badge{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:999px;border:1px solid rgba(34,211,238,.30);background:rgba(34,211,238,.08);color:#9DEBFF;}
+.art-unmatched-badge{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,176,32,.34);background:rgba(255,176,32,.10);color:#FFD27A;}
+.art-delete-note{font-size:10.5px;color:#AAB5D5;line-height:1.45;margin-top:3px;}
+.art-sync-readout{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px;}
+.art-sync-readout .art-sync-metric{border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.035);padding:9px 10px;}
+.art-sync-readout .art-sync-metric div:first-child{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#8F99B6;font-weight:900;margin-bottom:4px;}
+.art-sync-readout .art-sync-metric div:last-child{font-size:14px;color:#fff;font-weight:950;}
+@media(max-width:960px){.art-csv-row{grid-template-columns:1fr}.art-csv-map,.art-sync-readout{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.art-csv-map,.art-sync-readout{grid-template-columns:1fr;}}
+
 @media(max-width:1180px){.art-kpi-grid{grid-template-columns:repeat(2,1fr)}.art-layout{grid-template-columns:1fr}.art-side-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}.art-side-stack .art-panel:last-child{grid-column:1/-1}.art-entry-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.art-hero{flex-direction:column;align-items:flex-start;padding:20px}.art-kpi-grid,.art-entry-grid,.art-filter-grid{grid-template-columns:1fr}.art-side-stack{display:flex}.art-hero-actions{width:100%}.art-hero-actions .sbtn{flex:1}}
 </style>
@@ -3925,7 +3949,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       <div>
         <div class="art-eyebrow">Quality control command center</div>
         <h1>Art Errors</h1>
-        <p>Track rep-owned art issues, monitor recurring error types, and keep order-entry quality visible without changing the existing art-error logic.</p>
+        <p>Sync rep-owned art issues from the published Google Sheet CSV, monitor recurring error types, and remove any row that should not count against a rep.</p>
       </div>
     </div>
 
@@ -3941,20 +3965,33 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="art-panel art-panel-hot">
           <div class="art-panel-head">
             <div>
-              <div class="art-section-kicker">Manual intake</div>
-              <div class="art-section-title">Log an art error <button onclick="event.stopPropagation();showHelp('art-errors')" title="What is this?" class="art-help-btn">?</button></div>
+              <div class="art-section-kicker">Google CSV intake</div>
+              <div class="art-section-title">Sync art errors from web CSV <button onclick="event.stopPropagation();showHelp('art-errors')" title="What is this?" class="art-help-btn">?</button></div>
+              <p class="art-help">Paste the published Google Sheet CSV link. The tracker reads date, sales order number, sales rep, issue explanation, and issue type, then matches the rep to the tracker roster.</p>
             </div>
-            <span class="art-pill">Rep accountable</span>
+            <span class="art-pill">Source synced</span>
           </div>
-          <div class="art-entry-grid">
-            <div class="ig"><label>Rep</label><select id="aeRep"></select></div>
-            <div class="ig"><label>Week</label><select id="aeWeek"></select></div>
-            <div class="ig"><label>SO number</label><input type="text" id="aeSO" placeholder="e.g. SO-12345"></div>
-            <div class="ig"><label>Issue type</label><select id="aeType"><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select></div>
+          <div class="art-csv-card">
+            <div class="art-csv-row">
+              <div class="art-csv-field"><label>Published Google CSV URL</label><input type="url" id="aeCsvUrl" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"></div>
+              <button class="sbtn" onclick="aeSaveCsvUrl()">Save URL</button>
+              <button class="sbtn art-primary" onclick="aeSyncCsv()">Sync CSV</button>
+            </div>
+            <div class="art-csv-map">
+              <span><strong>Date</strong> Finds Date / Timestamp columns and assigns the tracker week.</span>
+              <span><strong>SO number</strong> Finds Sales Order Number / SO / Order #.</span>
+              <span><strong>Sales rep</strong> Matches to the tracker roster by rep name.</span>
+              <span><strong>Explain issue</strong> Pulls the issue explanation/description.</span>
+              <span><strong>Issue type</strong> Maps type/category; unknown labels stay visible.</span>
+            </div>
+            <div id="aeCsvReadout" class="art-sync-readout"></div>
+            <div id="aeCsvStatus" class="art-csv-status">Not synced yet. Deleted synced rows stay ignored on future syncs so they do not keep dinging the rep.</div>
+            <div class="art-action-strip" style="margin-top:0;">
+              <button class="sbtn" onclick="aeSyncCsv()">Refresh from Google CSV</button>
+              <button class="sbtn credit-danger" onclick="aeClearIgnoredRows()">Restore deleted CSV rows</button>
+              <span id="aeMsg" class="art-status" style="display:none;">✓ Synced!</span>
+            </div>
           </div>
-          <div class="ig" style="margin-top:12px;"><label>Description</label><textarea id="aeDesc" placeholder="Describe the art issue, what was missed, and what needs to be corrected..."></textarea></div>
-          <div class="art-alert-note">Art errors always count against the rep. This page is focused on visibility, correction, and prevention.</div>
-          <div class="art-action-strip"><button class="sbtn art-primary" onclick="saveAE()">Log art error</button><span id="aeMsg" class="art-status" style="display:none;">✓ Logged!</span></div>
         </div>
 
         <div class="art-panel">
@@ -3973,14 +4010,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       <div class="art-side-stack">
         <div class="art-panel art-mini-panel">
           <div class="art-panel-head compact">
-            <div><div class="art-section-kicker">Bulk update</div><div class="art-section-title">Team sheet</div></div>
-            <div class="art-icon-bubble">📄</div>
+            <div><div class="art-section-kicker">Sync controls</div><div class="art-section-title">CSV health</div></div>
+            <div class="art-icon-bubble">🔄</div>
           </div>
-          <p class="art-help">Download the template, add one row per art error, then upload. Multiple rows per rep are fine.</p>
+          <p class="art-help">Use the Google CSV as the source of truth. If a row should not count against a rep, delete it from the tracker log; the source row is remembered as ignored and will not return on the next sync.</p>
           <div class="art-button-stack">
-            <button class="sbtn" onclick="downloadAETemplate()">↓ Download art error template</button>
-            <button class="sbtn art-primary" onclick="document.getElementById('aeBulkFile').click()">↑ Upload filled sheet</button>
-            <input type="file" id="aeBulkFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadAESheet(event)">
+            <button class="sbtn art-primary" onclick="aeSyncCsv()">Sync now</button>
+            <button class="sbtn" onclick="aeDownloadIgnoredList()">Download ignored-row list</button>
             <span id="aeBulkMsg" class="art-status"></span>
           </div>
         </div>
@@ -7606,7 +7642,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
 // beforeunload: not needed in artifact sandbox
@@ -7623,6 +7659,8 @@ function loadFromStorage(){
     S.data=saved.data||{};
     S.cms=saved.cms||[];
     S.artErrors=saved.artErrors||[];
+    S.artErrorSource=saved.artErrorSource||S.artErrorSource||{url:"",lastSync:null,lastCount:0};
+    S.artErrorIgnored=saved.artErrorIgnored||S.artErrorIgnored||[];
     S.hrViolations=(saved.hrViolations||[]).map(function(v){if(v.points!==undefined&&v.pts===undefined)v.pts=v.points;return v;});
     S.coachingNotes=saved.coachingNotes||[];
     S.dailySales=saved.dailySales||[];
@@ -7640,8 +7678,8 @@ function loadFromStorage(){
   }
 }
 function exportData(){var blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sales_tracker_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);}
-function importData(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var saved=JSON.parse(e.target.result);if(!saved.reps)throw new Error('Invalid file');if(!confirm('Replace ALL current data?'))return;S.reps=saved.reps||S.reps;S.reps=S.reps.filter(function(r){return r&&typeof r.name==='string'&&r.name.trim().length>0;});S.goals=saved.goals||{};S.data=saved.data||{};S.cms=saved.cms||[];S.artErrors=saved.artErrors||[];S.hrViolations=(saved.hrViolations||[]).map(function(v){if(v.points!==undefined&&v.pts===undefined)v.pts=v.points;return v;});S.coachingNotes=saved.coachingNotes||[];S.dailySales=saved.dailySales||[];S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};S.reps.forEach(function(r){if(!r.profile)r.profile={};if(r.retired===undefined)r.retired=false;});(function(){var rn=S.reps.map(function(r){return r.name;});Object.keys(S.goals).forEach(function(n){if(!rn.includes(n))delete S.goals[n];});})();if(_lsAvailable()){S.reps.forEach(function(r){persistPhoto(r.name,r.profile&&r.profile.photo||null);});}persist();popSel();renderDash();renderRL();var el=document.getElementById('saveStatus');if(el){el.textContent='Imported \u2713';el.style.color='#5DCAA5';}}catch(err){alert('Import failed: '+err.message);}event.target.value='';};reader.readAsText(file);}
-function confirmClearData(){if(confirm('Reset all data for this session?')){S.reps=[];S.goals={};S.data={};S.cms=[];S.artErrors=[];S.hrViolations=[];S.coachingNotes=[];popSel();renderDash();renderRL();var el=document.getElementById('saveStatus');if(el){el.textContent='Session cleared';el.style.color='#EF9F27';}}}
+function importData(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var saved=JSON.parse(e.target.result);if(!saved.reps)throw new Error('Invalid file');if(!confirm('Replace ALL current data?'))return;S.reps=saved.reps||S.reps;S.reps=S.reps.filter(function(r){return r&&typeof r.name==='string'&&r.name.trim().length>0;});S.goals=saved.goals||{};S.data=saved.data||{};S.cms=saved.cms||[];S.artErrors=saved.artErrors||[];S.artErrorSource=saved.artErrorSource||S.artErrorSource||{url:"",lastSync:null,lastCount:0};S.artErrorIgnored=saved.artErrorIgnored||S.artErrorIgnored||[];S.hrViolations=(saved.hrViolations||[]).map(function(v){if(v.points!==undefined&&v.pts===undefined)v.pts=v.points;return v;});S.coachingNotes=saved.coachingNotes||[];S.dailySales=saved.dailySales||[];S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};S.reps.forEach(function(r){if(!r.profile)r.profile={};if(r.retired===undefined)r.retired=false;});(function(){var rn=S.reps.map(function(r){return r.name;});Object.keys(S.goals).forEach(function(n){if(!rn.includes(n))delete S.goals[n];});})();if(_lsAvailable()){S.reps.forEach(function(r){persistPhoto(r.name,r.profile&&r.profile.photo||null);});}persist();popSel();renderDash();renderRL();var el=document.getElementById('saveStatus');if(el){el.textContent='Imported \u2713';el.style.color='#5DCAA5';}}catch(err){alert('Import failed: '+err.message);}event.target.value='';};reader.readAsText(file);}
+function confirmClearData(){if(confirm('Reset all data for this session?')){S.reps=[];S.goals={};S.data={};S.cms=[];S.artErrors=[];S.artErrorSource={url:"",lastSync:null,lastCount:0};S.artErrorIgnored=[];S.hrViolations=[];S.coachingNotes=[];popSel();renderDash();renderRL();var el=document.getElementById('saveStatus');if(el){el.textContent='Session cleared';el.style.color='#EF9F27';}}}
 function weeksElapsed(yr,q){
   // Count weeks where data has been entered (matches your workflow: enter previous
   // week's data on Monday morning). A week is "elapsed" only once its numbers exist —
@@ -17768,7 +17806,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:416,phase:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:431,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -18392,6 +18430,270 @@ try{ if(typeof injectThemeCSS==='function') injectThemeCSS(loadTheme()); }catch(
   }
   window.addEventListener('load',function(){setTimeout(hook,250);});
 })();
+
+/* ===== v429 Art Errors Google CSV Sync ===== */
+(function(){
+  var AE_SYNC_VERSION='v429';
+  function aeEnsureStore(){
+    if(!S.artErrorSource)S.artErrorSource={url:'',lastSync:null,lastCount:0,lastImported:0,lastUpdated:0,lastSkipped:0,lastUnmatched:0,lastError:''};
+    if(!Array.isArray(S.artErrorIgnored))S.artErrorIgnored=[];
+    if(!Array.isArray(S.artErrors))S.artErrors=[];
+    return S.artErrorSource;
+  }
+  function aeEsc(v){return (v==null?'':String(v)).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function aeNorm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
+  function aeCompact(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,'').trim();}
+  function aeClean(v){return String(v==null?'':v).replace(/^\s+|\s+$/g,'');}
+  function aeFetchCSV(url){
+    var AE_PROXIES=[function(u){return u;},function(u){return 'https://corsproxy.io/?url='+encodeURIComponent(u);},function(u){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u);}];
+    var bust=url+(url.indexOf('?')>=0?'&':'?')+'_ts='+Date.now();
+    return (async function(){
+      var lastErr=null;
+      for(var i=0;i<AE_PROXIES.length;i++){
+        try{
+          var res=await fetch(AE_PROXIES[i](bust),{cache:'no-store'});
+          if(!res.ok)throw new Error('HTTP '+res.status);
+          var text=await res.text();
+          if(!text||!text.trim())throw new Error('empty response');
+          var t=text.replace(/^\uFEFF/,'').trim();
+          if(t.charAt(0)==='<')throw new Error('got a login/error page, not CSV \u2014 check the sheet is Published to web as CSV and shared to anyone');
+          return text;
+        }catch(e){lastErr=e;}
+      }
+      throw lastErr||new Error('All fetch routes failed');
+    })();
+  }
+  function aeParseCSV(text){
+    var rows=[],row=[],field='',i=0,q=false;
+    text=String(text||'').replace(/^\ufeff/,'');
+    while(i<text.length){
+      var c=text[i];
+      if(q){
+        if(c==='"'){
+          if(text[i+1]==='"'){field+='"';i++;}
+          else q=false;
+        }else field+=c;
+      }else{
+        if(c==='"')q=true;
+        else if(c===','){row.push(field);field='';}
+        else if(c==='\n'){row.push(field);rows.push(row);row=[];field='';}
+        else if(c==='\r'){}
+        else field+=c;
+      }
+      i++;
+    }
+    row.push(field);rows.push(row);
+    return rows.filter(function(r){return r.some(function(c){return aeClean(c)!=='';});});
+  }
+  function aeFindHeader(rows){
+    var best=0,bscore=-1;
+    rows.slice(0,12).forEach(function(r,idx){
+      var h=r.map(aeNorm).join(' | '),score=0;
+      ['date','sales order','order number','so number','sales rep','rep','explain issue','issue type','issue'].forEach(function(k){if(h.indexOf(k)>=0)score++;});
+      if(score>bscore){bscore=score;best=idx;}
+    });
+    return best;
+  }
+  function aeIndex(headers,groups){
+    var norm=headers.map(aeNorm),compact=headers.map(aeCompact);
+    for(var g=0;g<groups.length;g++){
+      for(var i=0;i<headers.length;i++){
+        if(norm[i]===groups[g]||compact[i]===aeCompact(groups[g]))return i;
+      }
+    }
+    for(var g2=0;g2<groups.length;g2++){
+      for(var j=0;j<headers.length;j++){
+        if(norm[j].indexOf(groups[g2])>=0||compact[j].indexOf(aeCompact(groups[g2]))>=0)return j;
+      }
+    }
+    return -1;
+  }
+  function aeParseDate(v){
+    if(v instanceof Date&&!isNaN(v))return v;
+    var s=aeClean(v); if(!s)return null;
+    if(/^\d+(\.\d+)?$/.test(s)){
+      var n=parseFloat(s);
+      if(n>20000&&n<80000){var d0=new Date(Math.round((n-25569)*86400*1000));d0.setHours(12,0,0,0);return d0;}
+    }
+    var d=new Date(s);
+    if(!isNaN(d)){d.setHours(12,0,0,0);return d;}
+    var m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+    if(m){var yy=parseInt(m[3],10);if(yy<100)yy+=2000;var dd=new Date(yy,parseInt(m[1],10)-1,parseInt(m[2],10),12,0,0,0);if(!isNaN(dd))return dd;}
+    return null;
+  }
+  function aeISO(d){return d?d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'):'';}
+  function aeWeekForDate(d){
+    if(!d)return null;
+    var yr=d.getFullYear();
+    for(var yi=yr-1;yi<=yr+1;yi++){
+      for(var qi=0;qi<QTRS.length;qi++){
+        var q=QTRS[qi],weeks=gwq(yi,q)||[];
+        for(var wi=0;wi<weeks.length;wi++){
+          var s=new Date(weeks[wi].start),e=new Date(weeks[wi].end);s.setHours(0,0,0,0);e.setHours(23,59,59,999);
+          if(d>=s&&d<=e)return weeks[wi];
+        }
+      }
+    }
+    var qFallback='Q'+(Math.floor(d.getMonth()/3)+1);
+    return {key:yr+'_'+qFallback+'_'+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+'_0',yr:yr,q:qFallback,month:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()],label:'Unmapped week'};
+  }
+  function aeMatchRep(raw){
+    var src=aeClean(raw),c=aeCompact(src),active=(typeof activeReps==='function'?activeReps():S.reps)||[],all=(S.reps||[]);
+    var exact=active.concat(all).find(function(r){return aeCompact(r&&r.name)===c;});
+    if(exact)return {name:exact.name,matched:true,source:src};
+    var srcParts=aeNorm(src).split(' ').filter(Boolean);
+    if(srcParts.length>=2){
+      var loose=active.concat(all).find(function(r){var np=aeNorm(r&&r.name).split(' ').filter(Boolean);return np[0]===srcParts[0]&&np[np.length-1]===srcParts[srcParts.length-1];});
+      if(loose)return {name:loose.name,matched:true,source:src};
+    }
+    return {name:src||'Unmatched',matched:false,source:src};
+  }
+  function aeMapType(raw){
+    var s=aeNorm(raw),c=aeCompact(raw);
+    var map={
+      colortype:'color_type',color:'color_type',colorway:'color_type',threadcolor:'color_type',
+      incompleteart:'incomplete_art',incompleteartsheet:'incomplete_art',artincomplete:'incomplete_art',
+      location:'location',placement:'location',logoapplicationlocation:'location',
+      missinginfo:'missing_info',missinginformation:'missing_info',missing:'missing_info',
+      orderentry:'order_entry',entry:'order_entry',salesorderentry:'order_entry',
+      size:'size',sizing:'size'
+    };
+    if(map[c])return {type:map[c],label:AET[map[c]],source:aeClean(raw)};
+    Object.keys(AET).forEach(function(k){if(aeCompact(AET[k])===c)map[c]=k;});
+    if(map[c])return {type:map[c],label:AET[map[c]],source:aeClean(raw)};
+    return {type:c?('custom_'+c.slice(0,36)):'missing_info',label:aeClean(raw)||'Missing information',source:aeClean(raw)};
+  }
+  function aeSourceKey(o){return ['artcsv',o.dateISO||'',aeCompact(o.so||''),aeCompact(o.sourceRep||o.rep||''),aeCompact(o.sourceType||o.issueTypeLabel||''),aeCompact((o.desc||'').slice(0,120))].join('|');}
+  function aeIgnored(key){aeEnsureStore();return S.artErrorIgnored.indexOf(key)>=0;}
+  function aeAddIgnored(key){aeEnsureStore();if(key&&S.artErrorIgnored.indexOf(key)<0)S.artErrorIgnored.push(key);}
+  function aeStatus(msg,cls){var el=document.getElementById('aeCsvStatus');if(el){el.className='art-csv-status '+(cls||'');el.innerHTML=msg;}var b=document.getElementById('aeBulkMsg');if(b)b.innerHTML=msg.replace(/<[^>]+>/g,'');}
+  function aeReadout(){
+    aeEnsureStore();var s=S.artErrorSource||{},host=document.getElementById('aeCsvReadout');if(!host)return;
+    var imported=(S.artErrors||[]).filter(function(a){return a&&a.source==='google_csv';}).length;
+    host.innerHTML='<div class="art-sync-metric"><div>Synced rows</div><div>'+imported.toLocaleString()+'</div></div>'
+      +'<div class="art-sync-metric"><div>Last import</div><div>'+(s.lastImported||0).toLocaleString()+'</div></div>'
+      +'<div class="art-sync-metric"><div>Updated</div><div>'+(s.lastUpdated||0).toLocaleString()+'</div></div>'
+      +'<div class="art-sync-metric"><div>Ignored</div><div>'+((S.artErrorIgnored||[]).length).toLocaleString()+'</div></div>';
+  }
+  window.aeSaveCsvUrl=function(){aeEnsureStore();var el=document.getElementById('aeCsvUrl');S.artErrorSource.url=aeClean(el&&el.value||'');markDirty();aeStatus(S.artErrorSource.url?'CSV URL saved. Click <strong>Sync CSV</strong> to import rows.':'CSV URL cleared.','ok');aeReadout();};
+  window.aeSyncCsv=async function(){
+    aeEnsureStore();var urlEl=document.getElementById('aeCsvUrl');var url=aeClean((urlEl&&urlEl.value)||S.artErrorSource.url||'');
+    if(!url){aeStatus('Paste a published Google Sheet CSV URL first.','bad');return;}
+    S.artErrorSource.url=url;
+    aeStatus('Syncing Google CSV…','warn');
+    try{
+      var txt=await aeFetchCSV(url);
+      var rows=aeParseCSV(txt); if(!rows.length)throw new Error('CSV is empty.');
+      var hi=aeFindHeader(rows),headers=rows[hi].map(aeClean),dataRows=rows.slice(hi+1).filter(function(r){return r.some(function(c){return aeClean(c)!=='';});});
+      var idx={
+        date:aeIndex(headers,['date','created date','timestamp','submitted date','date sales happened']),
+        so:aeIndex(headers,['sales order number','sales order #','sales order','so number','so #','order number','order #','sales order no']),
+        rep:aeIndex(headers,['sales rep','rep name','rep','salesperson','sales person']),
+        desc:aeIndex(headers,['explain issue','explain the issue','issue explanation','description','issue description','what happened','details']),
+        type:aeIndex(headers,['issue type','type','issue category','category','error type'])
+      };
+      var missing=[]; if(idx.date<0)missing.push('date'); if(idx.so<0)missing.push('sales order number'); if(idx.rep<0)missing.push('sales rep'); if(idx.desc<0)missing.push('explain issue'); if(idx.type<0)missing.push('issue type');
+      if(missing.length)throw new Error('Missing required column(s): '+missing.join(', ')+'. Headers found: '+headers.join(' | '));
+      var stats={imported:0,updated:0,skipped:0,ignored:0,unmatched:0,badDate:0};
+      var existing={};(S.artErrors||[]).forEach(function(a){if(a&&a.sourceKey)existing[a.sourceKey]=a;});
+      dataRows.forEach(function(r){
+        var d=aeParseDate(r[idx.date]); if(!d){stats.badDate++;return;}
+        var w=aeWeekForDate(d),mr=aeMatchRep(r[idx.rep]),mt=aeMapType(r[idx.type]); if(!mr.matched)stats.unmatched++;
+        var rec={dateISO:aeISO(d),date:fds(aeISO(d)),sourceDate:aeClean(r[idx.date]),so:aeClean(r[idx.so]),sourceRep:aeClean(r[idx.rep]),rep:mr.name,repMatched:mr.matched,type:mt.type,issueTypeLabel:mt.label,sourceType:mt.source,desc:aeClean(r[idx.desc]),weekKey:w&&w.key||'',yr:String((w&&w.key||'').split('_')[0]||d.getFullYear()),q:String((w&&w.key||'').split('_')[1]||('Q'+(Math.floor(d.getMonth()/3)+1))),source:'google_csv',syncVersion:AE_SYNC_VERSION};
+        rec.sourceKey=aeSourceKey(rec);
+        if(aeIgnored(rec.sourceKey)){stats.ignored++;return;}
+        if(!rec.so&&!rec.desc){stats.skipped++;return;}
+        if(existing[rec.sourceKey]){Object.assign(existing[rec.sourceKey],rec,{id:existing[rec.sourceKey].id||Date.now()+Math.random()});stats.updated++;}
+        else{rec.id=Date.now()+Math.floor(Math.random()*1000000);S.artErrors.push(rec);existing[rec.sourceKey]=rec;stats.imported++;}
+      });
+      S.artErrorSource.lastSync=new Date().toISOString();S.artErrorSource.lastCount=dataRows.length;S.artErrorSource.lastImported=stats.imported;S.artErrorSource.lastUpdated=stats.updated;S.artErrorSource.lastSkipped=stats.skipped+stats.ignored+stats.badDate;S.artErrorSource.lastUnmatched=stats.unmatched;S.artErrorSource.lastError='';
+      markDirty();aePopulateMWeek();renderAEL();aeReadout();
+      aeStatus('✓ Synced '+dataRows.length.toLocaleString()+' CSV row(s): <strong>'+stats.imported+'</strong> new, <strong>'+stats.updated+'</strong> updated, <strong>'+stats.ignored+'</strong> ignored, <strong>'+stats.unmatched+'</strong> unmatched rep name(s).',stats.unmatched?'warn':'ok');
+    }catch(e){S.artErrorSource.lastError=e&&e.message?e.message:String(e);aeStatus('❌ '+aeEsc(S.artErrorSource.lastError),'bad');aeReadout();}
+  };
+  window.aeClearIgnoredRows=function(){aeEnsureStore();var n=S.artErrorIgnored.length;if(!n){aeStatus('No deleted CSV rows are currently ignored.','warn');return;}if(!confirm('Restore '+n+' ignored CSV row(s)? They may return on the next sync.'))return;S.artErrorIgnored=[];markDirty();aeStatus('Ignored-row list cleared. Click Sync CSV to bring source rows back.','ok');aeReadout();};
+  window.aeDownloadIgnoredList=function(){aeEnsureStore();var rows=(S.artErrorIgnored||[]).map(function(k){return '"'+String(k).replace(/"/g,'""')+'"';});var blob=new Blob(['source_key\n'+rows.join('\n')],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='art_error_ignored_rows.csv';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);};
+  var _oldDeleteAE=deleteAE;
+  deleteAE=function(id){
+    var a=(S.artErrors||[]).find(function(x){return x.id===id;});
+    if(a&&a.source==='google_csv'&&a.sourceKey){
+      var ok=confirm('Remove this synced CSV row from the tracker and keep it ignored on future syncs?\n\nUse this when the issue should not ding the rep.');
+      if(!ok)return;
+      aeAddIgnored(a.sourceKey);
+    }
+    S.artErrors=(S.artErrors||[]).filter(function(x){return x.id!==id;});
+    markDirty();renderAEL();aeReadout();
+  };
+  function aeTypeLabel(a){return aeEsc((a&&a.issueTypeLabel)||(AET[a&&a.type]||a&&a.type)||'—');}
+  function aeDynamicTypeOptions(selected){
+    var opts=Object.keys(AET).map(function(k){return '<option value="'+aeEsc(k)+'"'+(selected===k?' selected':'')+'>'+aeEsc(AET[k])+'</option>';});
+    var customs=[];(S.artErrors||[]).forEach(function(a){if(a&&a.type&&String(a.type).indexOf('custom_')===0&&customs.indexOf(a.type)<0)customs.push(a.type);});
+    customs.forEach(function(k){var lab=((S.artErrors||[]).find(function(a){return a.type===k;})||{}).issueTypeLabel||k;opts.push('<option value="'+aeEsc(k)+'"'+(selected===k?' selected':'')+'>'+aeEsc(lab)+'</option>');});
+    return opts.join('');
+  }
+  var _oldAePopulate=aePopulateMWeek;
+  aePopulateMWeek=function(){_oldAePopulate();var ft=document.getElementById('aeFT');if(ft){var old=ft.value||'all';ft.innerHTML='<option value="all">All types</option>'+aeDynamicTypeOptions(old);if([].slice.call(ft.options).some(function(o){return o.value===old;}))ft.value=old;else ft.value='all';}};
+  renderAEL=function(){
+    aeEnsureStore();var urlEl=document.getElementById('aeCsvUrl');if(urlEl&&document.activeElement!==urlEl)urlEl.value=(S.artErrorSource&&S.artErrorSource.url)||'';aeReadout();
+    var f=aeFilteredList();
+    var orders=aeFilteredOrders(f);
+    var rate=orders>0?(f.length/orders*100):0;
+    var byType={},byRep={},unmatched=0;
+    f.forEach(function(a){var tk=a.type||'unknown';byType[tk]=(byType[tk]||0)+1;byRep[a.rep]=(byRep[a.rep]||0)+1;if(a.repMatched===false)unmatched++;});
+    var tp=Object.entries(byType).sort(function(a,b){return b[1]-a[1];})[0];
+    var rp=Object.entries(byRep).sort(function(a,b){return b[1]-a[1];})[0];
+    aeSetText('aeKpiTotal',f.length.toLocaleString());
+    var totalSub=document.querySelector('#aeKpiTotal')&&document.querySelector('#aeKpiTotal').parentElement?document.querySelector('#aeKpiTotal').parentElement.querySelector('.art-kpi-sub'):null; if(totalSub)totalSub.textContent=orders?rate.toFixed(1)+'% of '+orders.toLocaleString()+' filtered orders':((S.artErrorSource&&S.artErrorSource.lastSync)?'Synced CSV source':'No filtered order base');
+    aeSetText('aeKpiTopType',tp?(((S.artErrors||[]).find(function(a){return a.type===tp[0];})||{}).issueTypeLabel||AET[tp[0]]||tp[0]):'—'); aeSetText('aeKpiTopTypeSub',tp?tp[1]+' errors in filtered view':'No errors found');
+    aeSetText('aeKpiRepImpact',rp?rp[0]:'—'); aeSetText('aeKpiRepImpactSub',rp?rp[1]+' errors in filtered view'+(unmatched?' · '+unmatched+' unmatched':''):'No rep impact');
+    aeSetText('aeKpiQuarter',rate.toFixed(1)+'%'); aeSetText('aeKpiQuarterSub',orders?f.length+' errors ÷ '+orders.toLocaleString()+' orders':'Selected filters');
+    var sum=document.getElementById('aeSum');
+    if(sum){sum.innerHTML=f.length?'<div class="chip"><div class="cv">'+f.length+'</div><div class="cl">filtered errors</div></div><div class="chip"><div class="cv">'+rate.toFixed(1)+'%</div><div class="cl">filtered error rate</div></div>'+(tp?'<div class="chip" style="border-left:3px solid #E24B4A;"><div class="cv" style="color:#E24B4A;">'+tp[1]+'</div><div class="cl">top: '+aeTypeLabel({type:tp[0],issueTypeLabel:((S.artErrors||[]).find(function(a){return a.type===tp[0];})||{}).issueTypeLabel})+'</div></div>':'')+(rp?'<div class="chip"><div class="cv">'+aeEsc(rp[0])+'</div><div class="cl">most impacted rep</div></div>':'')+(unmatched?'<div class="chip"><div class="cv" style="color:#FFD27A;">'+unmatched+'</div><div class="cl">unmatched rep names</div></div>':''):'';}
+    var note=document.getElementById('aeQualityNote');
+    if(note){
+      if(!f.length) note.innerHTML='No filtered art errors yet. Sync the Google CSV or adjust filters to spot repeated issue types and rep coaching opportunities.';
+      else note.innerHTML='<strong>Manager readout:</strong><br>'+f.length+' art error'+(f.length===1?'':'s')+' found in the current filtered view. '+(orders?('Filtered error rate is <strong>'+rate.toFixed(1)+'%</strong> across '+orders.toLocaleString()+' orders. '):'No matching order total is available for this filter. ')+(tp?('Top issue: <strong>'+aeTypeLabel({type:tp[0],issueTypeLabel:((S.artErrors||[]).find(function(a){return a.type===tp[0];})||{}).issueTypeLabel})+'</strong> ('+tp[1]+'). '):'')+(rp?('Most impacted rep: <strong>'+aeEsc(rp[0])+'</strong> ('+rp[1]+'). '):'')+(unmatched?('<br><br><strong style="color:#FFD27A;">'+unmatched+' row(s) have rep names that do not exactly match the tracker roster.</strong> Edit those rows or correct the Google Sheet spelling.'):'' );
+    }
+    var el=document.getElementById('aeLog'); if(!el)return;
+    if(!f.length){el.innerHTML='<p style="font-size:12px;color:var(--color-text-secondary);padding:.4rem 0;">No art errors found.</p>';return;}
+    el.innerHTML=f.slice().sort(function(a,b){return String(b.dateISO||'').localeCompare(String(a.dateISO||'')) || ((b.id||0)-(a.id||0));}).map(function(a){
+      return '<div class="log-row" id="ae_row_'+a.id+'"><div class="editable-row"><div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px;"><span style="font-size:12px;font-weight:700;">'+aeEsc(a.rep)+'</span>'+(a.repMatched===false?'<span class="art-unmatched-badge">Unmatched</span>':'')+'<span style="font-weight:700;color:#9DEBFF;font-size:12px;">'+aeEsc(a.so||'No SO')+'</span><span class="it-badge">'+aeTypeLabel(a)+'</span><span style="font-size:11px;color:var(--color-text-secondary);">'+aeEsc(a.date||a.dateISO||'')+'</span><span style="font-size:11px;color:var(--color-text-secondary);">'+aeEsc(String(a.weekKey||'').replace(/_/g,' '))+'</span>'+(a.source==='google_csv'?'<span class="art-source-badge">CSV</span>':'')+'</div>'+(a.sourceRep&&a.sourceRep!==a.rep?'<div style="font-size:10.5px;color:#FFD27A;margin-bottom:4px;">Source rep: '+aeEsc(a.sourceRep)+'</div>':'')+(a.desc?'<div style="font-size:11.5px;color:#C8D0EA;line-height:1.5;">'+aeEsc(a.desc)+'</div>':'')+(a.source==='google_csv'?'<div class="art-delete-note">Delete this row if it should not count against the rep; synced rows stay ignored on future imports.</div>':'')+'</div><div style="display:flex;gap:5px;flex-shrink:0;">'+pencil('editAE('+a.id+')')+'<button class="rbtn" onclick="deleteAE('+a.id+')" style="font-size:10px;padding:2px 6px;" title="Remove from tracker">✕</button></div></div><div id="ae_edit_'+a.id+'"></div></div>';
+    }).join('');
+  };
+  editAE=function(id){
+    var a=(S.artErrors||[]).find(function(x){return x.id===id;});if(!a)return;document.querySelectorAll('.inline-edit-box').forEach(function(el){el.remove();});var box=document.getElementById('ae_edit_'+id);if(!box)return;
+    var weekOpts=gwq(parseInt(a.yr||getYr(),10),a.q||getQ()).map(function(w){return '<option value="'+aeEsc(w.key)+'"'+(a.weekKey===w.key?' selected':'')+'>'+aeEsc(w.label)+'</option>';}).join('');
+    box.innerHTML='<div class="inline-edit-box"><div class="ig"><label>Rep</label><select id="aeie_rep_'+id+'">'+(S.reps||[]).filter(function(r){return r&&r.name;}).map(function(r){return '<option'+(a.rep===r.name?' selected':'')+'>'+aeEsc(r.name)+'</option>';}).join('')+'</select></div><div class="ig"><label>SO number</label><input id="aeie_so_'+id+'" type="text" value="'+aeEsc(a.so||'')+'" style="width:120px;"></div><div class="ig"><label>Week</label><select id="aeie_wk_'+id+'">'+weekOpts+'</select></div><div class="ig"><label>Issue type</label><select id="aeie_type_'+id+'">'+aeDynamicTypeOptions(a.type)+'</select></div><div class="ig" style="flex:1;min-width:220px;"><label>Explanation</label><textarea id="aeie_desc_'+id+'">'+aeEsc(a.desc||'')+'</textarea></div><div style="display:flex;gap:6px;width:100%;margin-top:4px;"><button class="ie-save" onclick="saveAEEdit('+id+')">✓ Save</button><button class="ie-cancel" onclick="document.getElementById(\'ae_edit_'+id+'\').innerHTML=\'\'">Cancel</button></div></div>';
+  };
+  saveAEEdit=function(id){
+    var a=(S.artErrors||[]).find(function(x){return x.id===id;});if(!a)return;
+    var oldRep=a.rep;
+    a.rep=document.getElementById('aeie_rep_'+id)&&document.getElementById('aeie_rep_'+id).value||a.rep;
+    a.repMatched=true;
+    a.so=document.getElementById('aeie_so_'+id)&&document.getElementById('aeie_so_'+id).value||a.so;
+    a.weekKey=document.getElementById('aeie_wk_'+id)&&document.getElementById('aeie_wk_'+id).value||a.weekKey;
+    a.type=document.getElementById('aeie_type_'+id)&&document.getElementById('aeie_type_'+id).value||a.type;
+    a.issueTypeLabel=AET[a.type]||a.issueTypeLabel||a.type;
+    a.desc=document.getElementById('aeie_desc_'+id)&&document.getElementById('aeie_desc_'+id).value||'';
+    var parts=String(a.weekKey||'').split('_');a.yr=parts[0]||a.yr;a.q=parts[1]||a.q;
+    markDirty();aePopulateMWeek();renderAEL();
+  };
+  var _oldSaveAE=saveAE;
+  saveAE=function(){
+    if(document.getElementById('aeSO'))return _oldSaveAE();
+    aeStatus('Manual art-error entry is no longer the primary workflow. Paste the Google CSV URL and click Sync CSV.','warn');
+  };
+  var oldPopSel=popSel;
+  popSel=function(){var res=oldPopSel.apply(this,arguments);setTimeout(function(){aePopulateMWeek();renderAEL();},0);return res;};
+  var oldGt=window.gt;
+  if(typeof oldGt==='function'&&!oldGt.__artCsv429){
+    var wrapped=function(page,btn){var res=oldGt.apply(this,arguments);if(page==='art')setTimeout(function(){aeEnsureStore();var u=document.getElementById('aeCsvUrl');if(u)u.value=(S.artErrorSource&&S.artErrorSource.url)||'';aePopulateMWeek();renderAEL();},60);return res;};
+    wrapped.__artCsv429=true;window.gt=wrapped;
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){aeEnsureStore();aePopulateMWeek();renderAEL();},250);});
+  else setTimeout(function(){aeEnsureStore();aePopulateMWeek();renderAEL();},250);
+})();
+
 </script>
 
 
@@ -19410,3 +19712,103 @@ body.coach-seated #pg-coach .coach-panel-head,
 })();
 </script>
 
+<style id="tcp-sales-slides-ai-suggestions-v428">
+/* ===== v428 Sales Slides AI Suggested Slides ===== */
+#pg-slides .sm-ai-panel{border-color:rgba(251,191,36,.25)!important;background:radial-gradient(circle at 92% 5%,rgba(251,191,36,.14),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.022)),rgba(17,22,38,.90)!important;}
+#pg-slides .sm-ai-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;}
+#pg-slides .sm-ai-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
+#pg-slides .sm-ai-card{position:relative;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.04);padding:14px;min-width:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.045);}
+#pg-slides .sm-ai-card:hover{border-color:rgba(251,191,36,.32);background:rgba(251,191,36,.055);}
+#pg-slides .sm-ai-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
+#pg-slides .sm-ai-type{font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:950;color:#FFD27A;margin-bottom:5px;}
+#pg-slides .sm-ai-title{font-size:13px;font-weight:950;color:#fff;line-height:1.25;}
+#pg-slides .sm-ai-include{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;border:1px solid rgba(71,209,108,.28);background:rgba(71,209,108,.10);color:#A7FFC0;font-size:10px;font-weight:950;white-space:nowrap;}
+#pg-slides .sm-ai-include input{accent-color:#34D399;}
+#pg-slides .sm-ai-card textarea,#pg-slides .sm-ai-card input[type=text]{width:100%;border-radius:12px!important;background:rgba(0,0,0,.22)!important;border:1px solid rgba(255,255,255,.12)!important;color:#fff!important;padding:9px 10px!important;font-family:inherit;font-size:12px!important;line-height:1.5;}
+#pg-slides .sm-ai-card textarea{min-height:178px;resize:vertical;}
+#pg-slides .sm-ai-card label{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:950;color:#9EA8C4;margin:8px 0 5px;}
+#pg-slides .sm-ai-note{font-size:11px;line-height:1.55;color:#C8D4F2;padding:10px 12px;border-radius:14px;background:rgba(34,211,238,.065);border:1px solid rgba(34,211,238,.18);}
+#pg-slides .sm-ai-note strong{color:#9DDCFF;}
+#pg-slides .sm-ai-mini{font-size:10.5px;color:#98A7C9;line-height:1.45;margin-top:8px;}
+@media(max-width:1180px){#pg-slides .sm-ai-grid{grid-template-columns:1fr;}}
+</style>
+
+<script id="tcp-sales-slides-ai-suggestions-v428-js">
+(function(){
+  var STORE='tcp_sales_slides_ai_suggestions_v428';
+  var originalInit=null, originalRender=null, originalGenerate=null;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function money(v){return '$'+Math.round(Number(v||0)).toLocaleString();}
+  function num(v){return Number(v||0)||0;}
+  function qtrs(){return (typeof QTRS!=='undefined'&&QTRS&&QTRS.length)?QTRS:['Q1','Q2','Q3','Q4'];}
+  function reps(){try{return (typeof activeReps==='function'?activeReps():(S.reps||[])).filter(function(r){return r&&r.name;});}catch(e){return (S&&S.reps)||[];}}
+  function weekContext(){
+    var y=parseInt((document.getElementById('smYear')||{}).value,10)||(typeof getYr==='function'?getYr():new Date().getFullYear());
+    var q=(document.getElementById('smQuarter')||{}).value||(typeof getQ==='function'?getQ():'Q1');
+    var wn=parseInt((document.getElementById('smWeek')||{}).value,10)||(typeof getWN==='function'?getWN():1);
+    var list=[];qtrs().forEach(function(qq){try{list=list.concat(gwq(y,qq));}catch(e){}});
+    var idx=list.findIndex(function(w){return Number(w.num)===Number(wn)&&(!q||w.key.indexOf('_'+q+'_')>-1);});
+    if(idx<0)idx=list.findIndex(function(w){return Number(w.num)===Number(wn);});
+    var selected=list[idx]||{num:wn,key:y+'_'+q+'_Wk_'+wn,label:'Wk '+wn,start:new Date(y,0,1),end:new Date(y,0,7)};
+    var prev=list[idx-1]||selected;
+    return {year:y,quarter:q,selected:selected,week:prev};
+  }
+  function inRange(dateStr,w){if(!dateStr||!w||!w.start||!w.end)return false;var d=new Date(String(dateStr).slice(0,10)+'T12:00:00');var s=new Date(w.start);s.setHours(0,0,0,0);var e=new Date(w.end);e.setHours(23,59,59,999);return d>=s&&d<=e;}
+  function weekMetrics(){
+    var ctx=weekContext(), w=ctx.week, rows=[], salesTotal=0,calls=0,orders=0;
+    reps().forEach(function(r){var key=r.name+'|'+w.key;var d={};try{d=(typeof gd==='function'?gd(key):(S.data&&S.data[key])||{});}catch(e){d=(S.data&&S.data[key])||{};}var rev=num(d.revenue), ca=num(d.calls), ord=num(d.orders);if(rev||ca||ord)rows.push({name:r.name,revenue:rev,calls:ca,orders:ord});salesTotal+=rev;calls+=ca;orders+=ord;});
+    rows.sort(function(a,b){return b.revenue-a.revenue;});
+    var art=(S.artErrors||[]).filter(function(a){return a&&a.weekKey===w.key;});
+    var cms=(S.cms||[]).filter(function(c){return c&&c.weekKey===w.key;});
+    var repFaultCms=cms.filter(function(c){return String(c.fault||'').toLowerCase()==='rep';});
+    var cmCost=repFaultCms.reduce(function(s,c){return s+num(c.amount);},0);
+    var daily=(S.dailySales||[]).filter(function(d){return inRange(d.date,w);});
+    var dailyTotal=daily.reduce(function(s,d){return s+num(d.dailySales||d.totalDay);},0);
+    if(!salesTotal&&dailyTotal)salesTotal=dailyTotal;
+    var bestDay=daily.slice().sort(function(a,b){return num(b.dailySales||b.totalDay)-num(a.dailySales||a.totalDay);})[0]||null;
+    return {ctx:ctx,week:w,rows:rows,salesTotal:salesTotal,calls:calls,orders:orders,art:art,cms:cms,repFaultCms:repFaultCms,cmCost:cmCost,daily:daily,bestDay:bestDay};
+  }
+  function topIssue(list,field){var counts={};list.forEach(function(x){var k=String(x&&x[field]||'Other').replace(/_/g,' ');counts[k]=(counts[k]||0)+1;});var best=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a];})[0]||'No repeat issue';return {name:best,count:counts[best]||0};}
+  function seasonalCopy(w){var m=(w&&w.start)?w.start.getMonth():new Date().getMonth();
+    if(m===0||m===1)return {focus:'Q1 Pipeline Reset',tip:'Use the start of the year to reactivate dormant accounts, confirm budget timing, and turn “checking in” calls into calendar-driven reorder conversations.'};
+    if(m>=2&&m<=4)return {focus:'Spring Event Push',tip:'Lean into spring events, school programs, golf outings, team gear, and early summer planning. The team should lead with deadline protection and bundle suggestions.'};
+    if(m>=5&&m<=7)return {focus:'Late Summer / Back-to-School Push',tip:'This is a strong window for reorder reminders, staff apparel, school-year planning, and event supplies. Reps should create urgency around production capacity and delivery dates.'};
+    if(m>=8&&m<=10)return {focus:'Fall + Holiday Ordering',tip:'Push holiday gifts, employee appreciation, year-end client touches, and inventory planning. The key is getting customers committed before production timelines tighten.'};
+    return {focus:'Year-End Closeout',tip:'Use year-end budgets, holiday deadlines, and “use it before you lose it” timing to create urgency. Ask for reorder decisions and lock in next-quarter follow-up dates.'};
+  }
+  function suggestionObjects(){var m=weekMetrics(), w=m.week, issue=topIssue(m.art,'type'), topRep=m.rows[0]||null, seas=seasonalCopy(w);var qualityTitle,qualityText;
+    if(m.art.length||m.repFaultCms.length){
+      var driver=m.art.length>=m.repFaultCms.length?'art / order-entry accuracy':'credit memo prevention';
+      qualityTitle='Trend Watch — '+(m.art.length?issue.name.replace(/\b\w/g,function(c){return c.toUpperCase();}):'Credit Memo Prevention');
+      qualityText='Talking points:\n• Last week logged '+m.art.length+' art error'+(m.art.length===1?'':'s')+' and '+m.repFaultCms.length+' rep-fault credit memo'+(m.repFaultCms.length===1?'':'s')+'.\n• The main quality theme is '+driver+'.\n• Keep the discussion focused on preventable handoff misses, not blame.\n\nManager takeaway:\nClean order entry and proof review protect revenue after the sale.\n\nTeam exercise:\nBefore submitting one custom order today, each rep checks logo, color, quantity, ship date, proof notes, and customer approval trail.';
+    }else{
+      qualityTitle='Quality Win — Keep the Clean Handoff';
+      qualityText='Talking points:\n• No art errors or rep-fault credit memos were logged for the pull week.\n• The goal is to identify what worked and turn it into a repeatable habit.\n• Clean handoffs protect margin and reduce production drag.\n\nManager takeaway:\nRecognize quality behavior while the team is doing it right.\n\nTeam exercise:\nEach rep names one step they used last week to prevent order mistakes, then repeats it on today\'s first custom order.';
+    }
+    var trainingTitle=m.calls<Math.max(20,reps().length*8)?'Sales Training — Stronger Follow-Up Reasons':'Sales Training — Convert Momentum Into Repeatable Plays';
+    var trainingText=m.calls<Math.max(20,reps().length*8)?
+      'Talking points:\n• Activity appears light for the pull week, so follow-up quality matters.\n• Weak follow-ups sound like “just checking in.” Strong follow-ups give the customer a reason to act.\n• Tie every outreach to a past order, deadline, seasonal need, or open quote.\n\nManager takeaway:\nEvery follow-up should create a business reason to respond.\n\nTeam exercise:\nRewrite this: “Just checking in to see if you need anything.” Better: “You ordered event shirts around this time last year — do you want me to price a reorder before production fills up?”':
+      'Talking points:\n• The team logged '+m.calls+' calls and '+m.orders+' orders for the pull week.\n• The strongest habits should be made visible so more reps can copy them.\n• Ask what worked: opener, product angle, objection response, or close.\n\nManager takeaway:\nCoach the behavior behind the number, not only the result.\n\nTeam exercise:\nOne top performer shares the exact opener or follow-up line that moved a customer forward last week.';
+    var seasonTitle='Seasonal Talking Point — '+seas.focus;
+    var seasonText='Talking points:\n• '+seas.tip+'\n• Use timing to create urgency instead of relying only on discounts.\n• Make the ask specific: reorder, quote approval, art proof, ship date, or next follow-up.\n\nManager takeaway:\nSeasonality gives reps a reason to call with purpose.\n\nTeam exercise:\nEach rep picks five accounts from the same period last year and sends a season-specific reorder or promo follow-up.';
+    if(topRep&&topRep.revenue>0){trainingText+='\n\nCallout:\nTop sales example: '+topRep.name+' led the week at '+money(topRep.revenue)+'. Ask what created that win and make it repeatable.';}
+    return [
+      {type:'Error Trend / Quality',title:qualityTitle,text:qualityText,checked:true},
+      {type:'Seasonal Talking Point',title:seasonTitle,text:seasonText,checked:true},
+      {type:'Sales Training Tip',title:trainingTitle,text:trainingText,checked:true}
+    ];}
+  function saved(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')||{};}catch(e){return {};}}
+  function saveCards(){var data={cards:[]};document.querySelectorAll('#smAiGrid .sm-ai-card').forEach(function(card){var idx=card.getAttribute('data-idx');data.cards.push({idx:idx,checked:!!(card.querySelector('.sm-ai-check')||{}).checked,title:(card.querySelector('.sm-ai-card-title')||{}).value||'',text:(card.querySelector('.sm-ai-card-text')||{}).value||''});});try{localStorage.setItem(STORE,JSON.stringify(data));}catch(e){}}
+  function ensurePanel(){var stack=document.querySelector('#pg-slides .sm-main-stack');if(!stack||document.getElementById('smAiPanel'))return;var panel=document.createElement('section');panel.className='sm-panel sm-ai-panel';panel.id='smAiPanel';panel.innerHTML='<div class="sm-panel-head"><div><div class="sm-kicker">AI suggested slides</div><div class="sm-title">Manager Suggested Slides</div><p class="sm-help">Rule-based suggestions from the previous week. Check the slides you want, edit the wording, and they will fill the custom slide slots when you generate.</p></div><span class="sm-pill purple">Optional</span></div><div class="sm-ai-note"><strong>How this works:</strong> checked cards become the back custom slides in the PPTX. Use the copy button when you want Chat/Claude to polish the language before the meeting.</div><div class="sm-ai-controls"><button class="sm-btn" type="button" onclick="smAiRefreshSuggestions()">Refresh suggestions</button><button class="sm-btn" type="button" onclick="smAiApplySuggestions()">Apply checked to custom slides</button><button class="sm-btn" type="button" onclick="smAiCopyPrompt()">Copy to Chat/Claude</button></div><div id="smAiGrid" class="sm-ai-grid"></div><div class="sm-ai-mini">Tip: leave a card unchecked if you do not want that topic in the deck. You can still manually type your own custom slides below.</div>';
+    var panels=stack.querySelectorAll('.sm-panel');if(panels.length>1)stack.insertBefore(panel,panels[1]);else stack.appendChild(panel);}
+  function renderCards(force){ensurePanel();var grid=document.getElementById('smAiGrid');if(!grid)return;if(grid.dataset.built&&!force)return;var base=suggestionObjects();var sv=saved();if(sv.cards&&sv.cards.length&&!force){sv.cards.forEach(function(c,i){if(base[i]){base[i].checked=c.checked;base[i].title=c.title||base[i].title;base[i].text=c.text||base[i].text;}});}grid.dataset.built='1';grid.innerHTML=base.map(function(c,i){return '<div class="sm-ai-card" data-idx="'+i+'"><div class="sm-ai-top"><div><div class="sm-ai-type">'+esc(c.type)+'</div><div class="sm-ai-title">Slide '+(i+1)+'</div></div><label class="sm-ai-include"><input class="sm-ai-check" type="checkbox" '+(c.checked?'checked':'')+' onchange="smAiSaveCards()"> Include</label></div><label>Title</label><input class="sm-ai-card-title" type="text" value="'+esc(c.title)+'" oninput="smAiSaveCards()"><label>Talking points / takeaway / exercise</label><textarea class="sm-ai-card-text" oninput="smAiSaveCards()">'+esc(c.text)+'</textarea></div>';}).join('');saveCards();}
+  function includedCards(){var arr=[];document.querySelectorAll('#smAiGrid .sm-ai-card').forEach(function(card){var chk=card.querySelector('.sm-ai-check');if(!chk||!chk.checked)return;arr.push({title:(card.querySelector('.sm-ai-card-title')||{}).value||'',text:(card.querySelector('.sm-ai-card-text')||{}).value||''});});return arr.slice(0,3);}
+  function applyCards(){ensurePanel();renderCards(false);var cards=includedCards();if(!cards.length)return false;for(var i=1;i<=3;i++){var c=cards[i-1]||{title:'',text:''};var t=document.getElementById('smCustomTitle'+i),x=document.getElementById('smCustomText'+i);if(t)t.value=c.title||'';if(x)x.value=c.text||'';}saveCards();if(typeof originalRender==='function')originalRender();return true;}
+  function promptText(){var m=weekMetrics(), cards=includedCards(), lines=[];lines.push('Sales meeting slide polish request');lines.push('Meeting week selected: '+((m.ctx.selected&&m.ctx.selected.label)||''));lines.push('Data pull week: '+((m.week&&m.week.label)||''));lines.push('Sales: '+money(m.salesTotal)+' | Orders: '+m.orders+' | Calls: '+m.calls);lines.push('Art errors: '+m.art.length+' | Rep-fault credit memos: '+m.repFaultCms.length+' / '+money(m.cmCost));lines.push('Top reps: '+(m.rows.slice(0,3).map(function(r){return r.name+' '+money(r.revenue);}).join(', ')||'No positive rep sales found'));lines.push('');lines.push('Please polish these optional meeting slides for managers. Keep them concise, direct, and action-oriented. Include talking points, manager takeaway, and a short team exercise.');cards.forEach(function(c,i){lines.push('\nSlide '+(i+1)+': '+c.title);lines.push(c.text);});return lines.join('\n');}
+  function copyPrompt(){var txt=promptText();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){try{var st=document.getElementById('smStatus');if(st){st.textContent='Copied AI slide prompt for Chat/Claude.';st.style.color='#A7FFC0';}}catch(e){}});}else{prompt(txt);} }
+  function install(){if(window.__smAiSuggestionsInstalled)return;window.__smAiSuggestionsInstalled=true;originalInit=window.initSlidesPage;originalRender=window.smRenderPreview;originalGenerate=window.smGeneratePptx;window.initSlidesPage=function(){if(typeof originalInit==='function')originalInit();ensurePanel();renderCards(false);};window.smRenderPreview=function(){if(typeof originalRender==='function')originalRender();ensurePanel();document.getElementById('smAiGrid')&&(document.getElementById('smAiGrid').dataset.built='');renderCards(true);};window.smGeneratePptx=function(){applyCards();if(typeof originalGenerate==='function')return originalGenerate();};window.smAiRefreshSuggestions=function(){try{localStorage.removeItem(STORE);}catch(e){}var g=document.getElementById('smAiGrid');if(g)g.dataset.built='';renderCards(true);};window.smAiApplySuggestions=function(){applyCards();var st=document.getElementById('smStatus');if(st){st.textContent='Applied checked suggested slides to the custom slide slots.';st.style.color='#A7FFC0';}};window.smAiCopyPrompt=copyPrompt;window.smAiSaveCards=saveCards;}
+  install();
+  document.addEventListener('DOMContentLoaded',function(){try{if(document.getElementById('pg-slides')&&document.getElementById('pg-slides').classList.contains('active')&&window.initSlidesPage)window.initSlidesPage();}catch(e){console.warn(e);}});
+})();
+</script>
+</body></html>
