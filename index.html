@@ -2679,7 +2679,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab" onclick="gt('entry',this)">Data entry</button>
   <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>
   <button class="tab" onclick="gt('hr',this)">HR &amp; Notes</button>
-  <button class="tab" onclick="gt('credits',this)">Credit memos</button>
+  <button class="tab" onclick="gt('credits',this)">Credit memos</button>  <button class="tab" onclick="gt('reviews',this)"> Customer Reviews</button>
   <button class="tab" onclick="gt('art',this)">Art errors</button>
   <button class="tab" onclick="gt('perf',this)">Performance</button>
   <button class="tab" onclick="gt('meeting',this)">Meeting report</button>
@@ -2687,7 +2687,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab" onclick="gt('reports',this)">Reports</button>
   <button class="tab" onclick="gt('prodintel',this)">&#128202; Production intelligence</button>
   <button class="tab" onclick="gt('cknow',this)">&#129504; Company knowledge</button>
-  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>
+  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>  <button class="tab" onclick="gt('customers',this)"> Customers</button>
   <button class="tab" onclick="gt('history',this)" id="historyTab">&#x1F4CB; Report history</button>
   <button class="tab" onclick="gt('lb',this)">Leaderboard</button>
   <button class="tab" onclick="gt('daily',this)">&#128197; Daily sales</button>
@@ -2792,6 +2792,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 </div>
 
 <div id="pg-entry" class="page data-entry-command">
+<div id="entry-missing"></div>
   <div class="entry-hero">
     <div>
       <div class="eyebrow">Operations input center</div>
@@ -3427,7 +3428,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v409 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v415 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -3701,6 +3702,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 </div>
 
 <div id="pg-prodintel" class="page">
+<div id="pi-ai"></div>
   <div class="prodintel-page">
     <section class="prodintel-hero">
       <div>
@@ -4010,6 +4012,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   </div>
 </div>
 <div id="pg-intel" class="page forecast-command-page">
+<div id="fc-driver"></div>
   <div class="forecast-hero">
     <div><div class="forecast-eyebrow">Sales Opportunity Command Center</div><h1>Forecast</h1><p>Plan outreach around holidays, appreciation weeks, seasonal shifts, industry events, and downtime windows — with what to sell, who to call, and how to pitch it.</p></div>
     <div class="forecast-hero-actions"><button class="forecast-action primary" id="forecastVerifyBtn" onclick="verifyForecastWithAI()">&#10024; Verify &amp; enhance with AI</button><button class="forecast-action" id="forecastPrintBtn" onclick="printForecast()">&#128438; Print / PDF</button><button class="forecast-action muted" id="forecastResetBtn" onclick="resetForecastToBaseline()" style="display:none;" title="Discard AI additions, revert to baseline">&#8635; Reset</button></div>
@@ -4178,7 +4181,11 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   </div>
   <div class="inb-panel"><div id="inbBody"></div></div>
 </div>
+<div id="pg-customers" class="page"><div id="cust-page"></div></div>
+<div id="pg-reviews" class="page"><div id="reviews-page"></div></div>
 <div id="pg-admin" class="page admin-system-page">
+<div id="ds-panel"></div>
+<div id="ai-conn"></div>
   <section class="admin-sys-hero">
     <div>
       <div class="admin-sys-kicker">System Control Center</div>
@@ -5975,8 +5982,9 @@ function saveE(){let rep=document.getElementById('eR').value,key=rep+'|'+getCWK(
 
 async function callAI(p, opts){
   opts = opts || {};
-  var key=getAPIKey();
-  if(!key){throw new Error('No API key set. Add it in the Data Entry tab at the top.');}
+  var _proxy='';try{_proxy=(localStorage.getItem('tcp_ai_proxy_url')||'').trim();}catch(e){}
+  var key=_proxy?'':getAPIKey();
+  if(!_proxy&&!key){throw new Error('No API key set. Add it in the Data Entry tab at the top, or configure a proxy in Admin.');}
   /* Auto-prepend company context to every AI prompt — unless skipCompanyContext is set or it's the knowledge-base cleanup prompt */
   try{var _ctx=(typeof getCompanyContext==='function')?getCompanyContext():'';if(_ctx&&!opts.skipCompanyContext&&p.indexOf('organizing notes about how a custom branded apparel company')<0)p=_ctx+p;}catch(e){}
   var body = {
@@ -5988,14 +5996,11 @@ async function callAI(p, opts){
     body.tools = [{type:'web_search_20250305', name:'web_search', max_uses: opts.maxSearches || 5}];
     body.max_tokens = opts.maxTokens || 4000;  // web search results consume tokens
   }
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+  var _hdrs={'Content-Type':'application/json'};
+  if(!_proxy){_hdrs['x-api-key']=key;_hdrs['anthropic-version']='2023-06-01';_hdrs['anthropic-dangerous-direct-browser-access']='true';}
+  const resp=await fetch(_proxy||'https://api.anthropic.com/v1/messages',{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':key,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
+    headers:_hdrs,
     body:JSON.stringify(body)
   });
   if(!resp.ok){
@@ -6370,6 +6375,17 @@ function buildMgrMeetingBody(E,ai,depth,X){
   out+='<div class="sec flow"><div class="sec-h"><span>&#9989; Recommended actions this week</span></div>'
     +((ai&&ai.actions&&ai.actions.length)?('<ol style="font-size:10.4px;line-height:1.55;padding-left:18px;">'+ai.actions.map(function(x){return '<li style="margin:4px 0;">'+_m2esc(x)+'</li>';}).join('')+'</ol>'):'<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable)</div>')
     +'</div>';
+  // 14b. Customer love (reviews)
+  try{
+    if(typeof reviewsForReport==='function'&&E.prev&&E.prev.start&&E.prev.end){
+      var _rvs=reviewsForReport(new Date(E.prev.start),new Date(E.prev.end));
+      if(_rvs&&_rvs.length){
+        out+='<div class="sec"><div class="sec-h"><span>&#11088; Customer love &mdash; '+_m2esc(E.prev.label)+'</span><span class="tag">celebrate the team</span></div><div class="tri" style="grid-template-columns:1fr 1fr;">'
+          +_rvs.map(function(rv){var st='';for(var i=0;i<5;i++)st+=(i<rv.stars?'\u2605':'\u2606');return '<div class="bcard"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-weight:900;font-size:11px;">'+_m2esc(rv.rep)+'</span><span style="font-size:8px;background:#EEF2FF;color:#4F46E5;padding:2px 8px;border-radius:20px;">'+_m2esc(rv.platform)+'</span></div><div style="color:#F59E0B;font-size:12px;letter-spacing:1px;margin-bottom:5px;">'+st+'</div><div style="font-size:10.5px;line-height:1.5;font-style:italic;color:#334155;">'+(rv.text?('\u201c'+_m2esc(rv.text)+'\u201d'):'<span style="color:#98A2B3;">(no written review)</span>')+'</div>'+(rv.customer?'<div style="font-size:9px;color:#98A2B3;margin-top:4px;">\u2014 '+_m2esc(rv.customer)+'</div>':'')+'</div>';}).join('')
+          +'</div></div>';
+      }
+    }
+  }catch(e){}
   // 15. Pitch / intel
   if(X.pitchHtml)out+=X.pitchHtml;
   if(X.intelHtml)out+=X.intelHtml;
@@ -6847,7 +6863,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
 // beforeunload: not needed in artifact sandbox
@@ -6867,6 +6883,8 @@ function loadFromStorage(){
     S.hrViolations=(saved.hrViolations||[]).map(function(v){if(v.points!==undefined&&v.pts===undefined)v.pts=v.points;return v;});
     S.coachingNotes=saved.coachingNotes||[];
     S.dailySales=saved.dailySales||[];
+    S.customers=saved.customers||[];
+    S.reviews=saved.reviews||{url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};
     S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};
     S.teamGoals=saved.teamGoals||{};
     S.reps.forEach(function(r){if(!r.profile)r.profile={};if(r.retired===undefined)r.retired=false;});
@@ -15274,13 +15292,793 @@ window.addEventListener('load', function(){
 (function(){
   var NAV_GROUPS=[
     {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['year','Year Overview','🗓️'],['lb','Leaderboard','🏆']]},
-    {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['reports','Reports Hub','📄']]},
+    {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['reports','Reports Hub','📄']]},
     {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
-    {key:'opsg',icon:'🛠️',label:'Operations',open:true,items:[['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['art','Art Errors','🎨'],['prodintel','Production Intelligence','📊']]},
+    {key:'opsg',icon:'🛠️',label:'Operations',open:true,items:[['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['reviews','Customer Reviews','⭐'],['art','Art Errors','🎨'],['prodintel','Production Intelligence','📊']]},
     {key:'engage',icon:'🎮',label:'Games',open:false,items:[['games','Games','🎮'],['gtrack','Game Tracker','📊']]},
     {key:'system',icon:'⚙️',label:'Admin',open:false,items:[['admin','Admin','⚙️'],['cknow','Company Knowledge','🧠']]}
   ];
   
+/* ===== MODULE: PHASE11-REVIEWS (Customer Reviews: CSV pull, ISO week payout, dedupe, celebration) ===== */
+var REVIEW_PAY=10;
+function _rvEnsure(){if(!S.reviews||typeof S.reviews!=='object')S.reviews={url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};if(!S.reviews.decisions)S.reviews.decisions={};if(!S.reviews.unmatchFix)S.reviews.unmatchFix={};}
+function _rvCsvSplit(line){var out=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(ch===','&&!q){out.push(cur);cur='';}else cur+=ch;}out.push(cur);return out;}
+function _rvParseCSV(text){
+  var raw=String(text||'').replace(/\r/g,'');
+  var lines=raw.split('\n').filter(function(l){return l.trim().length;});
+  if(lines.length<2)return [];
+  var head=_rvCsvSplit(lines[0]).map(function(h){return h.trim().toLowerCase();});
+  function col(){var names=Array.prototype.slice.call(arguments);for(var i=0;i<names.length;i++){var idx=head.findIndex(function(h){return h.indexOf(names[i])>=0;});if(idx>=0)return idx;}return -1;}
+  var ci={ts:col('timestamp','date'),email:col('email'),cust:col('customer id','customer_id'),type:col('type'),stars:col('star','rating'),msg:col('message','review'),rep:col('sales rep','rep name','rep'),custName:col('customer name')};
+  var rows=[];
+  for(var i=1;i<lines.length;i++){
+    var f=_rvCsvSplit(lines[i]);
+    var ts=ci.ts>=0?String(f[ci.ts]||'').trim():'';
+    var typ=ci.type>=0?String(f[ci.type]||'').trim():'';
+    var msg=ci.msg>=0?String(f[ci.msg]||'').trim():'';
+    var rep=ci.rep>=0?String(f[ci.rep]||'').trim():'';
+    if(!ts&&!msg&&!rep)continue;
+    rows.push({ts:ts,email:ci.email>=0?String(f[ci.email]||'').trim():'',custId:ci.cust>=0?String(f[ci.cust]||'').trim():'',type:typ,stars:ci.stars>=0?Number(f[ci.stars])||0:0,msg:msg,rep:rep,custName:ci.custName>=0?String(f[ci.custName]||'').trim():''});
+  }
+  return rows;
+}
+function _rvPlatform(t){var s=String(t||'').toLowerCase();if(s.indexOf('google')>=0)return 'Google';if(s.indexOf('trust')>=0)return 'Trustpilot';if(s.indexOf('face')>=0)return 'Facebook';return t?String(t):'Other';}
+function _rvPays(t){var p=_rvPlatform(t);return p==='Google'||p==='Trustpilot';}
+function _rvDate(ts){if(!ts)return null;var d=new Date(ts);if(!isNaN(d))return d;var m=String(ts).match(/(\d{1,4})[\/-](\d{1,2})[\/-](\d{1,4})/);if(m){var a=+m[1],b=+m[2],c=+m[3];if(a>31)return new Date(a,b-1,c);return new Date(c<100?2000+c:c,a-1,b);}return null;}
+function _rvISO(d){if(!d)return null;var t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));var day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);var ys=new Date(Date.UTC(t.getUTCFullYear(),0,1));var wn=Math.ceil((((t-ys)/86400000)+1)/7);return {year:t.getUTCFullYear(),week:wn};}
+function _rvWeekRange(year,week){var simple=new Date(Date.UTC(year,0,1+(week-1)*7));var dow=simple.getUTCDay()||7;var monday=new Date(simple);monday.setUTCDate(simple.getUTCDate()-dow+1);var sunday=new Date(monday);sunday.setUTCDate(monday.getUTCDate()+6);return {start:monday,end:sunday};}
+function _rvFmt(d){return d?(d.getUTCMonth()+1)+'/'+d.getUTCDate():'';}
+function _rvHash(s){return String(s||'').toLowerCase().replace(/\s+/g,' ').replace(/[^\w ]/g,'').trim();}
+function _rvRowId(r){return _rvHash(r.rep)+'|'+_rvHash(r.custName)+'|'+String(r.ts).slice(0,16)+'|'+_rvHash(r.msg).slice(0,40);}
+function _rvMatchRep(name){
+  _rvEnsure();
+  var raw=String(name||'').trim();
+  if(!raw)return {matched:false,name:'',display:'(no name)'};
+  var fix=S.reviews.unmatchFix[raw.toLowerCase()];if(fix)raw=fix;
+  var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
+  var lk=raw.toLowerCase();
+  var hit=reps.find(function(r){return r.name.toLowerCase()===lk;});
+  if(hit)return {matched:true,name:hit.name,display:hit.name};
+  hit=reps.find(function(r){var p=r.name.toLowerCase().split(/\s+/);var q=lk.split(/\s+/);return p[0]===q[0]&&p[p.length-1]===q[q.length-1];});
+  if(hit)return {matched:true,name:hit.name,display:hit.name};
+  hit=reps.find(function(r){return r.name.toLowerCase().replace(/\s+/g,'')===lk.replace(/\s+/g,'');});
+  if(hit)return {matched:true,name:hit.name,display:hit.name};
+  return {matched:false,name:raw,display:raw};
+}
+/* enrich rows with computed fields + dedupe/decision status */
+function _rvEnriched(){
+  _rvEnsure();
+  var seenText={},out=[];
+  (S.reviews.rows||[]).forEach(function(r,idx){
+    var d=_rvDate(r.ts),iso=_rvISO(d);
+    var id=_rvRowId(r);
+    var th=_rvHash(r.msg);
+    var dec=S.reviews.decisions[id];
+    var isDup=false;
+    if(th&&th.length>4){if(seenText[th]){isDup=true;}else seenText[th]=id;}
+    var m=_rvMatchRep(r.rep);
+    out.push({raw:r,idx:idx,id:id,date:d,year:iso?iso.year:null,week:iso?iso.week:null,
+      platform:_rvPlatform(r.type),pays:_rvPays(r.type),
+      repName:m.name,matched:m.matched,repDisplay:m.display,
+      isDup:isDup,decision:dec||null});
+  });
+  return out;
+}
+function _rvActive(list){ // rows that count: not removed, dupes only if approved
+  return list.filter(function(x){
+    if(x.decision==='removed')return false;
+    if(x.isDup&&x.decision!=='approved')return false;
+    return true;
+  });
+}
+/* ---------- fetch ---------- */
+function _rvUrl(){_rvEnsure();return (document.getElementById('rv-url')||{}).value||S.reviews.url||'';}
+async function rvRefresh(silent){
+  _rvEnsure();
+  var url=_rvUrl().trim();
+  var st=document.getElementById('rv-status');
+  if(!url){if(st&&!silent)st.textContent='Paste your published CSV link first.';return;}
+  S.reviews.url=url;try{markDirty();}catch(e){}
+  if(st)st.textContent='Fetching\u2026';
+  try{
+    var res=await fetch(url,{cache:'no-store'});
+    var text=await res.text();
+    var rows=_rvParseCSV(text);
+    S.reviews.rows=rows;S.reviews.lastFetched=new Date().toISOString();
+    try{markDirty();}catch(e){}
+    if(st)st.textContent='\u2713 '+rows.length+' reviews loaded';
+    renderReviewsPage();
+  }catch(e){
+    if(st)st.textContent='\u2717 Fetch failed \u2014 check the link is a published CSV. ('+String((e&&e.message)||e).slice(0,50)+')';
+  }
+}
+/* ---------- decisions ---------- */
+function rvDecide(id,decision){_rvEnsure();S.reviews.decisions[id]=decision;try{markDirty();}catch(e){}renderReviewsPage();}
+function rvAssignRep(rawName,repName){_rvEnsure();if(repName)S.reviews.unmatchFix[String(rawName).toLowerCase()]=repName;else delete S.reviews.unmatchFix[String(rawName).toLowerCase()];try{markDirty();}catch(e){}renderReviewsPage();}
+/* ---------- selectors / default to last week ---------- */
+function _rvLastWeek(){var d=new Date();d.setDate(d.getDate()-7);return _rvISO(d);}
+function _rvWeeksForQ(year,q){ // ISO weeks whose Monday falls in that quarter's months
+  var mo={Q1:[0,2],Q2:[3,5],Q3:[6,8],Q4:[9,11]}[q]||[0,11];
+  var out=[];for(var w=1;w<=53;w++){var r=_rvWeekRange(year,w);if(r.start.getUTCFullYear()===year&&r.start.getUTCMonth()>=mo[0]&&r.start.getUTCMonth()<=mo[1])out.push(w);}return out;
+}
+function _rvSel(id){return document.getElementById(id);}
+function _rvCurrentFilter(){
+  var y=_rvSel('rv-yr'),q=_rvSel('rv-q'),w=_rvSel('rv-wk');
+  return {year:y?parseInt(y.value,10):(_rvLastWeek().year),q:q?q.value:'Q1',week:w?parseInt(w.value,10):_rvLastWeek().week};
+}
+/* ---------- render ---------- */
+function renderReviewsPage(){
+  var host=document.getElementById('reviews-page');if(!host)return;
+  _rvEnsure();
+  var all=_rvEnriched();
+  var lw=_rvLastWeek();
+  // build selectors once
+  var f=_rvCurrentFilter();
+  if(!_rvSel('rv-yr')){f={year:lw.year,q:_qFromWeek(lw.year,lw.week),week:lw.week};}
+  var yrs={};all.forEach(function(x){if(x.year)yrs[x.year]=1;});yrs[lw.year]=1;var yrList=Object.keys(yrs).map(Number).sort();
+  var pendingDupes=all.filter(function(x){return x.isDup&&!x.decision;});
+  var unmatched=_rvActive(all).filter(function(x){return !x.matched&&x.pays;});
+  // selected-week rows
+  var wk=_rvActive(all).filter(function(x){return x.year===f.year&&x.week===f.week;});
+  var range=_rvWeekRange(f.year,f.week);
+  // payout: matched + paying platform
+  var pay={};wk.forEach(function(x){if(x.pays&&x.matched){pay[x.repName]=(pay[x.repName]||0)+1;}});
+  var payList=Object.keys(pay).map(function(n){return {name:n,count:pay[n],amt:pay[n]*REVIEW_PAY};}).sort(function(a,b){return b.count-a.count;});
+  var payTotal=payList.reduce(function(s,r){return s+r.amt;},0);
+  var gCount=wk.filter(function(x){return x.platform==='Google';}).length;
+  var tCount=wk.filter(function(x){return x.platform==='Trustpilot';}).length;
+  var totalRev=wk.length;
+  // celebration
+  var topEarner=payList[0];
+  // build UI
+  function opt(v,cur,lbl){return '<option value="'+v+'"'+(String(v)===String(cur)?' selected':'')+'>'+(lbl||v)+'</option>';}
+  var yrOpts=yrList.map(function(y){return opt(y,f.year);}).join('');
+  var qOpts=['Q1','Q2','Q3','Q4'].map(function(q){return opt(q,f.q);}).join('');
+  var wkNums=_rvWeeksForQ(f.year,f.q);if(wkNums.indexOf(f.week)<0&&wkNums.length)f.week=wkNums[0];
+  var wkOpts=wkNums.map(function(w){var r=_rvWeekRange(f.year,w);return opt(w,f.week,'Wk '+w+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end));}).join('');
+  var lastFetch=S.reviews.lastFetched?new Date(S.reviews.lastFetched).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'never';
+
+  var html='<div class="r3-shell">'
+    +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#FBBF24,#FF6A3D);">&#11088;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name">Customer Reviews</div><div class="r3-sub">Google &amp; Trustpilot &middot; $'+REVIEW_PAY+' per review &middot; last synced '+lastFetch+'</div></div>'
+    +'<div class="r3-hactions"><button class="dc2-act" onclick="rvRefresh(false)">&#8635; Refresh</button></div></div>';
+  // source row
+  html+='<div style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'
+    +'<input id="rv-url" class="r3-in" style="flex:1;min-width:240px;margin:0;" placeholder="Published Google Sheet CSV link" value="'+_m2esc(S.reviews.url||'')+'">'
+    +'<span id="rv-status" class="dc-flat" style="font-size:11px;">'+(S.reviews.rows&&S.reviews.rows.length?('\u2713 '+S.reviews.rows.length+' loaded'):'')+'</span></div>';
+  // duplicate queue
+  if(pendingDupes.length){
+    html+='<div style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);background:rgba(251,191,36,.06);">'
+      +'<div class="dc2-panel-h" style="color:var(--tcp-gold);"><span>&#9888;&#65039; Possible duplicates &mdash; approve or remove ('+pendingDupes.length+')</span></div>';
+    pendingDupes.forEach(function(x){
+      html+='<div class="r3-note" style="border-color:rgba(251,191,36,.35);"><div class="r3-note-h"><span>'+_m2esc(x.repDisplay)+' &middot; '+x.platform+' &middot; '+_stars(x.raw.stars)+' &middot; '+_m2esc(x.raw.custName||'')+' &middot; <span class="dc-flat">'+_m2esc(String(x.raw.ts).slice(0,10))+'</span></span>'
+        +'<span style="display:flex;gap:6px;"><button class="dc-mini" style="border-color:var(--tcp-green);color:var(--tcp-green);" onclick="rvDecide(\''+x.id+'\',\'approved\')">&#10003; Keep</button><button class="dc-mini" style="border-color:var(--tcp-red);color:var(--tcp-red);" onclick="rvDecide(\''+x.id+'\',\'removed\')">&times; Remove</button></span></div>'
+        +'<div class="r3-note-t">'+_m2esc(x.raw.msg||'(no text)')+'</div></div>';
+    });
+    html+='</div>';
+  }
+  // unmatched bucket
+  if(unmatched.length){
+    var reps2=(typeof activeReps==='function'?activeReps():(S.reps||[]));
+    var groups={};unmatched.forEach(function(x){var k=x.raw.rep||'(blank)';(groups[k]=groups[k]||[]).push(x);});
+    html+='<div style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);background:rgba(251,113,133,.05);">'
+      +'<div class="dc2-panel-h" style="color:var(--tcp-red);"><span>&#128269; Unmatched rep names &mdash; assign so they get paid ('+Object.keys(groups).length+')</span></div>';
+    Object.keys(groups).forEach(function(k){
+      html+='<div class="r3-note" style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><div><b>'+_m2esc(k)+'</b> <span class="dc-flat">&middot; '+groups[k].length+' review'+(groups[k].length>1?'s':'')+'</span></div>'
+        +'<select class="r3-in" style="margin:0;max-width:200px;" onchange="rvAssignRep(\''+_jsq(k)+'\',this.value)"><option value="">Assign to\u2026</option>'+reps2.map(function(r){return '<option>'+_m2esc(r.name)+'</option>';}).join('')+'</select></div>';
+    });
+    html+='</div>';
+  }
+  // filter bar
+  html+='<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'
+    +'<span class="dc2-sl" style="align-self:center;">Viewing</span>'
+    +'<select id="rv-yr" class="r3-in" style="margin:0;max-width:100px;" onchange="renderReviewsPage()">'+yrOpts+'</select>'
+    +'<select id="rv-q" class="r3-in" style="margin:0;max-width:80px;" onchange="_rvQChange()">'+qOpts+'</select>'
+    +'<select id="rv-wk" class="r3-in" style="margin:0;max-width:200px;" onchange="renderReviewsPage()">'+wkOpts+'</select>'
+    +'<span class="dc-flat" style="font-size:11px;">'+_rvFmt(range.start)+'\u2013'+_rvFmt(range.end)+', '+f.year+' (Mon\u2013Sun)</span></div>';
+  // stats
+  html+='<div class="dc2-stats" style="border-bottom:1px solid var(--tcp-line);">'
+    +'<div class="dc2-stat"><div class="dc2-sl">Reviews this week</div><div class="dc2-sv">'+totalRev+'</div><div class="dc2-ss dc-flat">'+payList.length+' rep'+(payList.length!==1?'s':'')+' earning</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">Payout this week</div><div class="dc2-sv" style="color:var(--tcp-green);">$'+payTotal+'</div><div class="dc2-ss dc-flat">$'+REVIEW_PAY+' \u00d7 '+(payTotal/REVIEW_PAY)+' paid reviews</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">Google</div><div class="dc2-sv" style="color:#60A5FA;">'+gCount+'</div><div class="dc2-ss dc-flat">'+(totalRev?Math.round(gCount/totalRev*100):0)+'% of week</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">Trustpilot</div><div class="dc2-sv" style="color:#34D399;">'+tCount+'</div><div class="dc2-ss dc-flat">'+(totalRev?Math.round(tCount/totalRev*100):0)+'% of week</div></div>'
+    +'</div>';
+  // celebration
+  if(topEarner){
+    html+='<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);"><div class="hero-band" style="margin:0;padding:12px 16px;background:linear-gradient(135deg,#B45309,#065F46);">'
+      +'<div class="hb-eyebrow" style="color:#FDE68A;">&#127881; Review star of the week</div>'
+      +'<div class="hb-title" style="font-size:16px;">'+_m2esc(topEarner.name)+' &mdash; '+topEarner.count+' review'+(topEarner.count>1?'s':'')+' ($'+topEarner.amt+')</div></div></div>';
+  }
+  // payout table
+  html+='<div style="padding:13px 16px;border-bottom:1px solid var(--tcp-line);">'
+    +'<div class="dc2-panel-h"><span>&#128176; Weekly payout \u2014 submit to payroll</span>'
+    +(payList.length?'<button class="dc2-act" onclick="rvCopyPayout()">&#128203; Copy for payroll</button>':'')+'</div>'
+    +(payList.length?('<table class="r3-tbl"><thead><tr><th style="text-align:left;">Rep</th><th>Reviews</th><th>Amount</th></tr></thead><tbody>'
+      +payList.map(function(r){return '<tr><td style="text-align:left;font-weight:700;">'+_m2esc(r.name)+'</td><td>'+r.count+'</td><td style="font-weight:800;color:var(--tcp-green);">$'+r.amt+'</td></tr>';}).join('')
+      +'<tr style="border-top:2px solid var(--tcp-line-strong);"><td style="text-align:left;font-weight:800;">TOTAL</td><td style="font-weight:800;">'+(payTotal/REVIEW_PAY)+'</td><td style="font-weight:900;color:var(--tcp-green);">$'+payTotal+'</td></tr>'
+      +'</tbody></table>'):'<div class="dc-flat" style="padding:6px 0;">No paid reviews for this week yet.</div>')
+    +'</div>';
+  // reviews grouped by rep
+  var byRep={};wk.forEach(function(x){var k=x.matched?x.repName:x.repDisplay;(byRep[k]=byRep[k]||[]).push(x);});
+  html+='<div style="padding:13px 16px;"><div class="dc2-panel-h"><span>Reviews this week \u2014 grouped by rep</span></div>';
+  var repKeys=Object.keys(byRep).sort(function(a,b){return byRep[b].length-byRep[a].length;});
+  if(!repKeys.length)html+='<div class="dc-flat" style="padding:6px 0;">No reviews land in this week.</div>';
+  repKeys.forEach(function(k){
+    html+='<div style="margin:0 0 10px;"><div style="font-size:12px;font-weight:800;color:var(--tcp-text);margin-bottom:5px;">'+_m2esc(k)+' <span class="dc-flat" style="font-weight:400;">&middot; '+byRep[k].length+'</span></div>';
+    byRep[k].forEach(function(x){
+      var pc=x.platform==='Google'?'#60A5FA':x.platform==='Trustpilot'?'#34D399':'#9AA0B3';
+      html+='<div class="r3-note"><div class="r3-note-h"><span><span class="r3-pill" style="background:transparent;border:1px solid '+pc+';color:'+pc+';">'+x.platform+'</span> '+_stars(x.raw.stars)+(x.raw.custName?' <span class="dc-flat">&middot; '+_m2esc(x.raw.custName)+'</span>':'')+(!x.pays?' <span class="dc-flat">&middot; no pay</span>':'')+'</span><span class="dc-flat" style="font-size:10px;">'+_m2esc(String(x.raw.ts).slice(0,10))+'</span></div>'
+        +(x.raw.msg?'<div class="r3-note-t">'+_m2esc(x.raw.msg)+'</div>':'')+'</div>';
+    });
+    html+='</div>';
+  });
+  html+='</div></div>';
+  host.innerHTML=html;
+}
+function _stars(n){n=Math.round(Number(n)||0);var s='';for(var i=0;i<5;i++)s+=(i<n?'\u2605':'\u2606');return '<span style="color:#FBBF24;letter-spacing:1px;">'+s+'</span>';}
+function _jsq(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function _qFromWeek(year,week){var r=_rvWeekRange(year,week);var m=r.start.getUTCMonth();return m<=2?'Q1':m<=5?'Q2':m<=8?'Q3':'Q4';}
+function _rvQChange(){var w=_rvSel('rv-wk'),y=_rvSel('rv-yr'),q=_rvSel('rv-q');if(w&&y&&q){var nums=_rvWeeksForQ(parseInt(y.value,10),q.value);w.innerHTML=nums.map(function(n){var r=_rvWeekRange(parseInt(y.value,10),n);return '<option value="'+n+'">Wk '+n+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end)+'</option>';}).join('');}renderReviewsPage();}
+function rvCopyPayout(){
+  var all=_rvEnriched(),f=_rvCurrentFilter();
+  var wk=_rvActive(all).filter(function(x){return x.year===f.year&&x.week===f.week&&x.pays&&x.matched;});
+  var pay={};wk.forEach(function(x){pay[x.repName]=(pay[x.repName]||0)+1;});
+  var range=_rvWeekRange(f.year,f.week);
+  var lines=['Review payout \u2014 Wk '+f.week+' ('+_rvFmt(range.start)+'\u2013'+_rvFmt(range.end)+', '+f.year+')',''];
+  var tot=0;Object.keys(pay).sort().forEach(function(n){var amt=pay[n]*REVIEW_PAY;tot+=amt;lines.push(n+'\t$'+amt+'\t('+pay[n]+' review'+(pay[n]>1?'s':'')+')');});
+  lines.push('','TOTAL\t$'+tot);
+  var txt=lines.join('\n');
+  try{navigator.clipboard.writeText(txt);var s=document.getElementById('rv-status');if(s){s.textContent='\u2713 Payout copied to clipboard';}}catch(e){prompt('Copy the payout:',txt);}
+}
+/* manager report hook: 2 reviews for a given week key range (from meeting engine) */
+function reviewsForReport(startDate,endDate){
+  try{
+    _rvEnsure();
+    var all=_rvActive(_rvEnriched());
+    var inWin=all.filter(function(x){return x.date&&x.date>=startDate&&x.date<=endDate&&x.matched;});
+    function pick(platform,needText){var pool=inWin.filter(function(x){return x.platform===platform&&(!needText||(x.raw.msg&&x.raw.msg.length>3));});return pool[0]||null;}
+    var g=pick('Google',true)||pick('Google',false);
+    var t=pick('Trustpilot',true)||pick('Trustpilot',false);
+    var withText=inWin.filter(function(x){return x.raw.msg&&x.raw.msg.length>3;});
+    if(!g&&!t){ // nothing at all
+      if(!inWin.length)return null;
+    }
+    if(!g)g=t||withText[0]||inWin[0];
+    if(!t)t=g;
+    // ensure at least one has text if any text exists
+    if(withText.length){if(!(g&&g.raw.msg)&&!(t&&t.raw.msg)){g=withText[0];}}
+    var out=[g,t].filter(Boolean).slice(0,2).map(function(x){return {rep:x.repName,stars:Math.round(Number(x.raw.stars)||0),platform:x.platform,text:x.raw.msg||'',customer:x.raw.custName||''};});
+    return out.length?out:null;
+  }catch(e){return null;}
+}
+window.rvRefresh=rvRefresh;window.rvDecide=rvDecide;window.rvAssignRep=rvAssignRep;window.renderReviewsPage=renderReviewsPage;window.rvCopyPayout=rvCopyPayout;window._rvQChange=_rvQChange;window.reviewsForReport=reviewsForReport;
+window.addEventListener('load',function(){
+  setTimeout(function(){try{_rvEnsure();var u=(S.reviews&&S.reviews.url);if(u){var el=document.getElementById('rv-url');if(el)el.value=u;rvRefresh(true);}}catch(e){}},2600);
+});
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('button'):null;if(!b)return;
+  var oc=b.getAttribute('onclick')||'';
+  if(oc.indexOf("gt('reviews'")>=0)setTimeout(function(){try{renderReviewsPage();}catch(_e){}},80);
+});
+
+/* ===== MODULE: PHASE10-CUSTOMERS (customer intelligence: log, harvest, statuses) ===== */
+function _custEnsure(){if(!S.customers||!Array.isArray(S.customers))S.customers=[];}
+function _custISO(d){
+  if(!d)return '';
+  if(d instanceof Date&&!isNaN(d)){function p(x){return (x<10?'0':'')+x;}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+  var s=String(d);if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  var t=new Date(s);return isNaN(t)?'':_custISO(t);
+}
+function _custDays(iso){if(!iso)return null;var t=new Date(iso+'T12:00:00');return isNaN(t)?null:Math.floor((Date.now()-t)/86400000);}
+function _custStatus(cu){
+  var fd2=_custDays(cu.firstOrder),ld=_custDays(cu.lastOrder);
+  if(cu.reactivated&&_custDays(cu.reactivated)!=null&&_custDays(cu.reactivated)<=90)return {k:'react',label:'Reactivated',col:'#22D3EE'};
+  if(fd2!=null&&fd2<=60)return {k:'new',label:'New',col:'#8B7CFF'};
+  if(ld==null)return {k:'unknown',label:'\u2014',col:'#9AA0B3'};
+  if(ld<60)return {k:'active',label:'Active',col:'#34D399'};
+  if(ld<120)return {k:'cool',label:'Cooling',col:'#FBBF24'};
+  return {k:'dormant',label:'Dormant',col:'#FB7185'};
+}
+function custUpsert(name,rep,dateISO,amount,note,src){
+  _custEnsure();
+  name=String(name||'').trim();if(!name)return null;
+  var key=name.toLowerCase();
+  var cu=S.customers.find(function(x){return String(x.name||'').toLowerCase()===key;});
+  amount=Number(amount)||0;
+  if(cu){
+    var gap=null;
+    if(cu.lastOrder&&dateISO&&dateISO>cu.lastOrder){
+      gap=Math.floor((new Date(dateISO)-new Date(cu.lastOrder))/86400000);
+      if(gap>90)cu.reactivated=dateISO;
+      cu.lastOrder=dateISO;
+    }else if(dateISO&&(!cu.lastOrder||dateISO>cu.lastOrder))cu.lastOrder=dateISO;
+    if(dateISO&&(!cu.firstOrder||dateISO<cu.firstOrder))cu.firstOrder=dateISO;
+    cu.orders=(cu.orders||0)+1;
+    cu.revenue=(Number(cu.revenue)||0)+amount;
+    if(rep)cu.rep=rep;
+    if(note)cu.notes=((cu.notes||'')+(cu.notes?'\n':'')+note);
+  }else{
+    cu={id:Date.now()+Math.floor(Math.random()*999),name:name,rep:rep||'',firstOrder:dateISO||'',lastOrder:dateISO||'',orders:1,revenue:amount,notes:note||'',src:src||'manual'};
+    S.customers.push(cu);
+  }
+  try{markDirty();}catch(e){}
+  return cu;
+}
+function custHarvest(){
+  _custEnsure();
+  var seen={};try{(JSON.parse(localStorage.getItem('tcp_cust_harvested')||'[]')||[]).forEach(function(k){seen[k]=1;});}catch(e){}
+  var added=0,updated=0;
+  try{
+    YEARS.forEach(function(yr){QTRS.forEach(function(q){
+      (gwq(yr,q)||[]).forEach(function(w){
+        activeReps().forEach(function(r){
+          var d=gd(r.name+'|'+w.key);
+          var cn=String((d&&d.topSaleCustomer)||'').trim();
+          if(!cn||!Number(d.topSale||0))return;
+          var mk='ts|'+r.name+'|'+w.key;
+          if(seen[mk])return;
+          var before=S.customers.length;
+          custUpsert(cn,r.name,_custISO(w.end),Number(d.topSale)||0,'','harvest');
+          seen[mk]=1;(S.customers.length>before)?added++:updated++;
+        });
+      });
+    });});
+  }catch(e){console.warn('harvest weeks:',e);}
+  try{
+    (S.cms||[]).forEach(function(cm){
+      var cn=String(cm.custName||'').trim();if(!cn)return;
+      var mk='cm|'+cm.id;if(seen[mk])return;
+      var key=cn.toLowerCase();
+      var cu=S.customers.find(function(x){return String(x.name||'').toLowerCase()===key;});
+      if(!cu){S.customers.push({id:Date.now()+Math.floor(Math.random()*999),name:cn,rep:cm.rep||'',firstOrder:'',lastOrder:'',orders:0,revenue:0,notes:'',src:'credit-memo'});added++;}
+      seen[mk]=1;
+    });
+    try{markDirty();}catch(e){}
+  }catch(e){console.warn('harvest cms:',e);}
+  try{localStorage.setItem('tcp_cust_harvested',JSON.stringify(Object.keys(seen)));}catch(e){}
+  return {added:added,updated:updated};
+}
+function custLogFromForm(){
+  var n=(document.getElementById('cu-name')||{}).value||'';
+  var rp=(document.getElementById('cu-rep')||{}).value||'';
+  var dt=(document.getElementById('cu-date')||{}).value||_dcToday();
+  var am=(document.getElementById('cu-amt')||{}).value||'';
+  var nt=(document.getElementById('cu-note')||{}).value||'';
+  if(!String(n).trim()){alert('Customer name first.');return;}
+  var before=(S.customers||[]).length;
+  _custEnsure();
+  var cu=custUpsert(n,rp,dt,am,nt,'manual');
+  var isNew=S.customers.length>before;
+  renderCustomersPage();
+  var msg=document.getElementById('cu-msg');
+  if(msg){msg.textContent=isNew?('\u2713 '+cu.name+' added as a NEW customer'):('\u2713 Order logged for '+cu.name+(cu.reactivated===dt?' \u2014 REACTIVATED after a 90+ day gap!':''));msg.style.display='inline';setTimeout(function(){msg.style.display='none';},3500);}
+}
+function custDelete(id){
+  _custEnsure();
+  var cu=S.customers.find(function(x){return x.id===id;});
+  if(!cu)return;
+  if(!confirm('Remove '+cu.name+' from the customer book? (Does not touch any sales data.)'))return;
+  S.customers=S.customers.filter(function(x){return x.id!==id;});
+  try{markDirty();}catch(e){}
+  renderCustomersPage();
+}
+function renderCustomersPage(){
+  var host=document.getElementById('cust-page');if(!host)return;
+  _custEnsure();
+  var list=S.customers.slice();
+  var qy=((document.getElementById('cu-search')||{}).value||'').toLowerCase().trim();
+  var reps=activeReps();
+  var newC=list.filter(function(c){return _custStatus(c).k==='new';});
+  var reactC=list.filter(function(c){return _custStatus(c).k==='react';});
+  var coolC=list.filter(function(c){var s=_custStatus(c);return (s.k==='cool')&&(c.orders||0)>=2;});
+  var byRepNew={};newC.forEach(function(c){if(c.rep)byRepNew[c.rep]=(byRepNew[c.rep]||0)+1;});
+  var repLine=Object.keys(byRepNew).sort(function(a,b){return byRepNew[b]-byRepNew[a];}).slice(0,4).map(function(r){return r.split(' ')[0]+' ('+byRepNew[r]+')';}).join(', ');
+  function sCell(l,v,s2){return '<div class="dc2-stat"><div class="dc2-sl">'+l+'</div><div class="dc2-sv" style="font-size:19px;">'+v+'</div><div class="dc2-ss dc-flat">'+(s2||'')+'</div></div>';}
+  var shown=qy?list.filter(function(c){return String(c.name).toLowerCase().indexOf(qy)>=0||String(c.rep||'').toLowerCase().indexOf(qy)>=0;}):list;
+  shown.sort(function(a,b){return String(b.lastOrder||'').localeCompare(String(a.lastOrder||''));});
+  var rows=shown.slice(0,200).map(function(c){
+    var st=_custStatus(c);
+    return '<tr><td style="text-align:left;font-weight:700;">'+_m2esc(c.name)+(c.notes?' <span class="dc-flat" title="'+_m2esc(c.notes)+'">&#128221;</span>':'')+'</td>'
+      +'<td style="text-align:left;">'+_m2esc((c.rep||'').split(' ')[0])+'</td>'
+      +'<td>'+(c.firstOrder||'&mdash;')+'</td><td>'+(c.lastOrder||'&mdash;')+'</td>'
+      +'<td>'+(c.orders||0)+'</td><td>$'+Math.round(c.revenue||0).toLocaleString()+'</td>'
+      +'<td><span class="r3-pill" style="background:transparent;border:1px solid '+st.col+';color:'+st.col+';">'+st.label+'</span></td>'
+      +'<td><button class="dc-mini" onclick="custDelete('+c.id+')">&times;</button></td></tr>';
+  }).join('');
+  host.innerHTML='<div class="r3-shell">'
+    +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#22D3EE,#34D399);">&#127970;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name">Customer intelligence</div><div class="r3-sub">'+list.length+' customers tracked &middot; where the sales are coming from</div></div>'
+    +'<div class="r3-hactions"><button class="dc2-act" onclick="var r=custHarvest();renderCustomersPage();alert(\'Scan complete: \'+r.added+\' new customers found, \'+r.updated+\' orders added from existing tracker data.\')">&#128269; Scan tracker for customers</button></div></div>'
+    +'<div class="dc2-stats" style="border-bottom:1px solid var(--tcp-line);">'
+    +sCell('New (60d)',String(newC.length),repLine||'by first order date')
+    +sCell('Reactivated',String(reactC.length),'came back after 90+ days')
+    +sCell('Going quiet',String(coolC.length),'repeat buyers, 60+ days silent')
+    +sCell('Book value','$'+Math.round(list.reduce(function(s,c){return s+(Number(c.revenue)||0);},0)).toLocaleString(),'tracked revenue')
+    +'</div>'
+    +'<div style="padding:13px 18px;border-bottom:1px solid var(--tcp-line);">'
+    +'<div class="dc2-panel-h"><span>Log an order / new customer</span><span id="cu-msg" class="dc-up" style="display:none;font-size:11px;text-transform:none;letter-spacing:0;"></span></div>'
+    +'<div style="display:grid;grid-template-columns:2fr 1.2fr 1fr 1fr;gap:8px;">'
+    +'<input id="cu-name" class="r3-in" style="margin:0;" placeholder="Customer name">'
+    +'<select id="cu-rep" class="r3-in" style="margin:0;"><option value="">Rep\u2026</option>'+reps.map(function(r){return '<option>'+_m2esc(r.name)+'</option>';}).join('')+'</select>'
+    +'<input id="cu-date" type="date" class="r3-in" style="margin:0;" value="'+_dcToday()+'">'
+    +'<input id="cu-amt" class="r3-in" style="margin:0;" placeholder="$ (optional)" inputmode="decimal">'
+    +'</div>'
+    +'<div style="display:flex;gap:8px;margin-top:8px;"><input id="cu-note" class="r3-in" style="margin:0;flex:1;" placeholder="Note (optional)"><button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="custLogFromForm()">&#43; Log</button></div>'
+    +'</div>'
+    +'<div style="padding:12px 18px;">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;"><div class="dc2-panel-h" style="margin:0;"><span>Customer book</span></div><input id="cu-search" class="r3-in" style="margin:0;max-width:220px;" placeholder="Search\u2026" oninput="renderCustomersPage()"></div>'
+    +(shown.length?('<table class="r3-tbl"><thead><tr><th style="text-align:left;">Customer</th><th style="text-align:left;">Rep</th><th>First order</th><th>Last order</th><th>Orders</th><th>Revenue</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'+(shown.length>200?'<div class="dc-flat" style="font-size:10.5px;margin-top:6px;">Showing 200 of '+shown.length+'</div>':'')):'<div class="dc-flat" style="padding:8px 0;">No customers yet. Hit <b>Scan tracker for customers</b> to seed the book from your existing top-sale and credit-memo data, then log orders as they land.</div>')
+    +'</div></div>';
+  var srch=document.getElementById('cu-search');
+  if(srch&&qy){srch.value=qy;srch.focus();try{srch.setSelectionRange(qy.length,qy.length);}catch(e){}}
+}
+window.custUpsert=custUpsert;window.custHarvest=custHarvest;window.custLogFromForm=custLogFromForm;window.custDelete=custDelete;window.renderCustomersPage=renderCustomersPage;
+window.addEventListener('load',function(){setTimeout(function(){try{_custEnsure();}catch(e){}},500);});
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('button'):null;if(!b)return;
+  var oc=b.getAttribute('onclick')||'';
+  if(oc.indexOf("gt('customers'")>=0)setTimeout(function(){try{renderCustomersPage();}catch(_e){}},80);
+});
+
+/* ===== MODULE: PHASE8-DATASAFETY (backup freshness + daily auto-snapshot + rollback) ===== */
+function _dsLastBackup(){var t=0;try{t=Number(localStorage.getItem('tcp_last_backup_ts')||0);}catch(e){}return t;}
+function _dsDaysSince(ts){return ts>0?Math.floor((Date.now()-ts)/86400000):null;}
+function dsBackupNow(){
+  try{exportAllData();localStorage.setItem('tcp_last_backup_ts',String(Date.now()));}catch(e){alert('Backup failed: '+((e&&e.message)||e));}
+  setTimeout(function(){try{renderDataSafety();renderDashCockpit();}catch(e){}},400);
+}
+function _dsSnapshot(){
+  try{
+    var today=_dcToday();
+    var meta=null;try{meta=JSON.parse(localStorage.getItem('tcp_autosnap_meta')||'null');}catch(e){}
+    if(meta&&meta.date===today)return; // one per day, taken before today's edits
+    var raw=localStorage.getItem(STORE_KEY);
+    if(!raw)return;
+    localStorage.setItem('tcp_autosnap',raw);
+    localStorage.setItem('tcp_autosnap_meta',JSON.stringify({date:today,bytes:raw.length,taken:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}));
+  }catch(e){console.warn('autosnap:',e);/* quota or storage blocked — non-fatal */}
+}
+function dsRestoreSnapshot(){
+  var meta=null;try{meta=JSON.parse(localStorage.getItem('tcp_autosnap_meta')||'null');}catch(e){}
+  var snap=null;try{snap=localStorage.getItem('tcp_autosnap');}catch(e){}
+  if(!snap){alert('No auto-snapshot available yet. One is taken automatically each day when the app first opens.');return;}
+  var ok=confirm('RESTORE SNAPSHOT:\n\nThis will replace your CURRENT tracker data with the snapshot taken '+(meta?meta.taken:'earlier')+' (start of that day).\n\nAnything entered since then will be lost. A backup download is strongly recommended first.\n\nContinue?');
+  if(!ok)return;
+  try{
+    localStorage.setItem(STORE_KEY,snap);
+    alert('Snapshot restored. The app will reload now.');
+    location.reload();
+  }catch(e){alert('Restore failed: '+((e&&e.message)||e));}
+}
+function renderDataSafety(){
+  var host=document.getElementById('ds-panel');if(!host)return;
+  var ts=_dsLastBackup(),days=_dsDaysSince(ts);
+  var meta=null;try{meta=JSON.parse(localStorage.getItem('tcp_autosnap_meta')||'null');}catch(e){}
+  var bCol=days==null?'var(--tcp-red)':days<=7?'var(--tcp-green)':days<=14?'var(--tcp-gold)':'var(--tcp-red)';
+  var bTxt=days==null?'No backup downloaded yet':(days===0?'Backed up today':days+' day'+(days>1?'s':'')+' since last backup');
+  host.innerHTML='<div class="r3-shell" style="margin:0 0 14px;">'
+    +'<div class="r3-head" style="padding:12px 16px;"><span class="r3-av" style="background:linear-gradient(135deg,#34D399,#7C6CFF);width:32px;height:32px;font-size:15px;">&#128737;&#65039;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name" style="font-size:13.5px;">Data safety</div><div class="r3-sub">Everything lives in THIS browser\u2019s storage \u2014 backups are your insurance.</div></div></div>'
+    +'<div class="dc2-stats" style="grid-template-columns:1fr 1fr;border-bottom:1px solid var(--tcp-line);">'
+    +'<div class="dc2-stat"><div class="dc2-sl">Backup file</div><div class="dc2-sv" style="font-size:15px;color:'+bCol+';">'+bTxt+'</div><div class="dc2-ss dc-flat">'+(ts>0?new Date(ts).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'download one now')+'</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">Daily auto-snapshot</div><div class="dc2-sv" style="font-size:15px;">'+(meta?'&#10003; '+_m2esc(meta.taken):'&mdash;')+'</div><div class="dc2-ss dc-flat">'+(meta?Math.round(meta.bytes/1024)+' KB &middot; in-browser rollback point':'taken automatically each morning')+'</div></div>'
+    +'</div>'
+    +'<div style="padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap;">'
+    +'<button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="dsBackupNow()">&#128190; Download backup now</button>'
+    +'<button class="dc2-act" onclick="dsRestoreSnapshot()">&#8617;&#65039; Restore this morning\u2019s snapshot</button>'
+    +'<label class="dc2-act" style="cursor:pointer;">&#128194; Restore from backup file<input type="file" accept=".json,application/json" style="display:none;" onchange="importAllData(this)"></label>'
+    +'</div>'
+    +'<div class="dc-flat" style="font-size:10px;padding:0 16px 12px;line-height:1.6;">The auto-snapshot protects against a bad data-entry day (one-click rollback to how things looked this morning). The backup file protects against browser wipes, computer changes, and everything else \u2014 keep a recent one somewhere safe (email it to yourself, drop it in Drive). Reminder chips appear on the Dashboard when a backup is overdue.</div>'
+    +'</div>';
+}
+function renderAIConn(){
+  var host=document.getElementById('ai-conn');if(!host)return;
+  var proxy='';try{proxy=(localStorage.getItem('tcp_ai_proxy_url')||'').trim();}catch(e){}
+  var hasKey=false;try{hasKey=!!(typeof getAPIKey==='function'&&getAPIKey());}catch(e){}
+  var mode=proxy?'Proxy (key stays server-side) — recommended':(hasKey?'Direct key in this browser':'Not configured');
+  var mCol=proxy?'var(--tcp-green)':(hasKey?'var(--tcp-gold)':'var(--tcp-red)');
+  host.innerHTML='<div class="r3-shell" style="margin:0 0 14px;">'
+    +'<div class="r3-head" style="padding:12px 16px;"><span class="r3-av" style="background:linear-gradient(135deg,#7C6CFF,#FB7185);width:32px;height:32px;font-size:15px;">&#128273;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name" style="font-size:13.5px;">AI connection</div><div class="r3-sub">Mode: <span style="color:'+mCol+';font-weight:800;">'+mode+'</span></div></div>'
+    +'<div class="r3-hactions"><button class="dc-mini" onclick="aiConnTest()">Test connection</button><span id="ai-conn-st" class="dc-flat" style="font-size:10.5px;"></span></div></div>'
+    +'<div style="padding:12px 16px;">'
+    +'<div class="dc2-panel-h"><span>Proxy URL (Cloudflare/Netlify worker that injects the API key)</span></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;"><input id="ai-proxy-in" class="r3-in" style="flex:1;min-width:220px;margin:0;" placeholder="https://your-proxy.workers.dev/v1/messages" value="'+_m2esc(proxy)+'">'
+    +'<button class="dc2-act" onclick="aiConnSave()">Save</button>'
+    +(proxy?'<button class="dc2-act" onclick="aiConnClear()">Use direct key instead</button>':'')+'</div>'
+    +'<div class="dc-flat" style="font-size:10px;margin-top:9px;line-height:1.6;">With a proxy set, this app sends AI requests to YOUR proxy and never handles the API key in the browser — the safe setup. Once the proxy works: 1) create a fresh key at console.anthropic.com, 2) put it in the proxy’s environment settings, 3) <b>revoke the old key</b> (it has been exposed in past file shares), 4) clear the direct key from Data Entry.</div>'
+    +'</div></div>';
+}
+function aiConnSave(){
+  var v=((document.getElementById('ai-proxy-in')||{}).value||'').trim();
+  if(v&&!/^https:\/\//.test(v)){alert('Proxy URL must start with https://');return;}
+  try{if(v)localStorage.setItem('tcp_ai_proxy_url',v);else localStorage.removeItem('tcp_ai_proxy_url');}catch(e){}
+  renderAIConn();
+}
+function aiConnClear(){try{localStorage.removeItem('tcp_ai_proxy_url');}catch(e){}renderAIConn();}
+async function aiConnTest(){
+  var st=document.getElementById('ai-conn-st');if(st)st.textContent='Testing\u2026';
+  try{
+    var r=await callAI('Reply with exactly: OK',{maxTokens:10,skipCompanyContext:true});
+    if(st)st.textContent=/OK/i.test(String(r))?'\u2713 Working':'\u2713 Responded';
+    if(st)st.style.color='var(--tcp-green)';
+  }catch(e){
+    if(st){st.textContent='\u2717 '+String((e&&e.message)||e).slice(0,60);st.style.color='var(--tcp-red)';}
+  }
+}
+window.renderAIConn=renderAIConn;window.aiConnSave=aiConnSave;window.aiConnClear=aiConnClear;window.aiConnTest=aiConnTest;
+window.dsBackupNow=dsBackupNow;window.dsRestoreSnapshot=dsRestoreSnapshot;window.renderDataSafety=renderDataSafety;
+window.addEventListener('load',function(){
+  setTimeout(function(){try{_dsSnapshot();}catch(e){}try{renderDataSafety();}catch(e){}try{renderAIConn();}catch(e){}},900);
+});
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('button'):null;if(!b)return;
+  var oc=b.getAttribute('onclick')||'';
+  if(oc.indexOf("gt('admin'")>=0)setTimeout(function(){try{renderDataSafety();renderAIConn();}catch(_e){}},100);
+});
+
+/* ===== MODULE: PHASE7-ONEONONE (printable coaching packet per rep) ===== */
+async function buildOneOnOnePacket(repName){
+  var w=window.open('','_blank');
+  if(w){w.document.write('<!doctype html><meta charset="utf-8"><title>1-on-1 packet</title><body style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:44px;color:#555;background:#fff;font-size:15px;">Building '+String(repName).replace(/</g,'&lt;')+'&#8217;s 1-on-1 packet&hellip;</body>');w.document.close();}
+  try{
+    var E=_r360Engine();
+    if(!E){if(w)w.document.body.innerHTML='No weekly data available to build a packet.';return;}
+    var R=E.reps.find(function(x){return x.name===repName;});
+    if(!R){if(w)w.document.body.innerHTML='Rep not found in the current data.';return;}
+    var esc=_m2esc,fn=repName.split(' ')[0];
+    var rank=E.byWk.findIndex(function(x){return x.name===repName;})+1;
+    var score=_r360Score(repName,E.yr,E.q);
+    // AI celebrate/coach (reuse weekly cache; fetch if absent)
+    var insight=null;
+    try{
+      var cache=JSON.parse(localStorage.getItem('tcp_rep_insight')||'null');
+      if(cache&&cache.wk===E.prev.key&&cache.reps&&cache.reps[repName])insight=cache.reps[repName];
+    }catch(e){}
+    if(!insight){
+      try{
+        var teamAvgWk=E.reps.length>0?E.team.wkRev/E.reps.length:0;
+        var covP0=R.setSize>0?Math.round(R.accts/R.setSize*100):null;
+        var p='You are a sales manager\u2019s coaching assistant at Triple Crown Products (custom apparel). One rep, one completed week. Be specific, use the numbers, no filler.\n'
+          +'Rep: '+repName+' \u2014 '+E.prev.label+' '+E.yr+' (week '+E.weeksCompleted+' of '+E.qtdWeeks.length+(E.earlyQuarter?', EARLY quarter: no failure framing on pace':'')+').\n'
+          +'Week: $'+Math.round(R.wkRev).toLocaleString()+' rev, '+R.wkOrders+' orders, '+R.wkCalls+' calls. Rank #'+rank+' of '+E.reps.length+' (team avg $'+Math.round(teamAvgWk).toLocaleString()+'/rep).\n'
+          +'Prior week: '+(R.pwRev!=null?'$'+Math.round(R.pwRev).toLocaleString():'n/a')+'. QTD $'+Math.round(R.qtdRev).toLocaleString()+(R.goalRev>0?' vs $'+Math.round(R.goalRev).toLocaleString()+' goal':'')+'. YTD $'+Math.round(R.ytdRev).toLocaleString()+'.\n'
+          +'Top sale: '+(R.topSale>0?'$'+Math.round(R.topSale).toLocaleString()+(R.topSaleCustomer?' ('+R.topSaleCustomer+')':''):'none')+'. Coverage: '+(covP0!=null?covP0+'%':'n/a')+'. Art: '+R.art+' wk/'+R.qtdArt+' QTD. Credits: $'+Math.round(R.credits).toLocaleString()+' wk.\n'
+          +'Return ONLY JSON, no fences: {"celebrate":["2-3 bullets, max 18 words each"],"coach":["2-3 bullets, max 18 words each \u2014 what to work on and how"]}';
+        var raw=await callAI(p,{maxTokens:600,skipCompanyContext:true});
+        raw=String(raw||'').replace(/```json/gi,'').replace(/```/g,'').trim();
+        var a2=raw.indexOf('{'),b2=raw.lastIndexOf('}');
+        insight=JSON.parse(raw.slice(a2,b2+1));
+        try{var c2=JSON.parse(localStorage.getItem('tcp_rep_insight')||'null')||{wk:E.prev.key,reps:{}};if(c2.wk!==E.prev.key)c2={wk:E.prev.key,reps:{}};c2.reps[repName]=insight;localStorage.setItem('tcp_rep_insight',JSON.stringify(c2));}catch(e){}
+      }catch(e){insight=null;}
+    }
+    // flags
+    var flags=[];
+    var paced=R.goalRev*(E.weeksCompleted/E.qtdWeeks.length);
+    if(E.weeksCompleted>=4&&R.goalRev>0&&R.qtdRev<paced*0.7)flags.push('Under 70% of paced quarter goal');
+    var ravg=E.weeksCompleted>1?(R.qtdRev/E.weeksCompleted):0;
+    if(ravg>1000&&R.wkRev<ravg*0.5&&R.wkRev>0)flags.push('Revenue dip vs personal average ($'+Math.round(ravg).toLocaleString()+'/wk)');
+    if(R.wkCalls===0&&(R.wkRev>0||R.wkOrders>0))flags.push('Zero calls logged in '+_dcWkShort(E.prev));
+    if(R.art>=3)flags.push(R.art+' art errors in '+_dcWkShort(E.prev));
+    if(R.credits>0)flags.push('$'+Math.round(R.credits).toLocaleString()+' rep-fault credits in '+_dcWkShort(E.prev));
+    // coaching log + quality
+    var notes=(S.coachingNotes||[]).filter(function(n){return n.rep===repName;}).sort(function(a,b){return String(b.date).localeCompare(String(a.date));}).slice(0,5);
+    var artsQ=(S.artErrors||[]).filter(function(a){return a.rep===repName&&String(a.yr)===String(E.yr)&&a.q===E.q;});
+    var credsQ=(S.cms||[]).filter(function(cm){return cm.rep===repName&&cm.fault==='rep'&&String(cm.yr)===String(E.yr)&&cm.q===E.q;});
+    var credQ$=credsQ.reduce(function(s,cm){return s+Number(cm.amount||0);},0);
+    var cov=R.setSize>0?Math.round(R.accts/R.setSize*100):null;
+    var qtdPct=R.goalRev>0?Math.round(R.qtdRev/R.goalRev*100):0;
+    function kcell(l,v,s2){return '<div class="k"><div class="kl">'+l+'</div><div class="kv">'+v+'</div>'+(s2?'<div class="ks">'+s2+'</div>':'')+'</div>';}
+    function bl(arr,cls){if(!arr||!arr.length)return '<div style="font-size:9.6px;color:#98A2B3;">(AI unavailable \u2014 discuss from the numbers above)</div>';return '<ul class="bullets '+cls+'">'+arr.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';}
+    function lines(n2){var s2='';for(var i2=0;i2<n2;i2++)s2+='<div style="border-bottom:1px solid #D8DCE3;height:26px;"></div>';return s2;}
+    var wowTxt=(R.pwRev!=null&&R.pwRev>0)?((R.wkRev>=R.pwRev?'&#9650; ':'&#9660; ')+Math.abs(Math.round((R.wkRev-R.pwRev)/R.pwRev*100))+'% vs prior wk'):'';
+    var body=''
+      +'<div class="exec-box" style="display:flex;justify-content:space-between;align-items:center;gap:14px;"><div><div class="eyebrow">1-on-1 coaching packet</div><div style="font-size:20px;font-weight:950;">'+esc(repName)+'</div><div style="font-size:10.5px;opacity:.75;margin-top:3px;">'+esc(E.prev.label)+' '+E.yr+' &middot; rank #'+rank+' of '+E.reps.length+(score?' &middot; score '+score.toFixed(1)+'/5':'')+'</div></div>'
+      +'<div style="text-align:right;font-size:10px;opacity:.75;">Meeting date<br><span style="font-size:14px;font-weight:800;opacity:1;">____ / ____ / ______</span></div></div>'
+      +'<div class="sec"><div class="sec-h"><span>&#128202; Where '+esc(fn)+' stands</span></div><div class="kgrid">'
+      +kcell('Week revenue','$'+Math.round(R.wkRev).toLocaleString(),wowTxt)
+      +kcell('Orders &middot; calls',R.wkOrders+' / '+R.wkCalls,(R.wkOrders>0?'AOV $'+Math.round(R.aov).toLocaleString():''))
+      +kcell(E.q+' QTD','$'+Math.round(R.qtdRev).toLocaleString(),(E.earlyQuarter?'wk '+E.weeksCompleted+' of '+E.qtdWeeks.length+' \u2014 early':qtdPct+'% of $'+Math.round(R.goalRev).toLocaleString()))
+      +kcell(E.yr+' YTD','$'+Math.round(R.ytdRev).toLocaleString(),R.ytdOrders+' orders')
+      +kcell('Coverage',cov!=null?cov+'%':'&mdash;',R.setSize>0?(R.accts+' of '+R.setSize):'')
+      +kcell('Top sale (wk)',R.topSale>0?'$'+Math.round(R.topSale).toLocaleString():'&mdash;',esc(R.topSaleCustomer||''))
+      +kcell('Quarter best',R.qTop>0?'$'+Math.round(R.qTop).toLocaleString():'&mdash;',esc(R.qTopCust||''))
+      +kcell('Quality ('+E.q+')',artsQ.length+' art &middot; $'+Math.round(credQ$).toLocaleString(),credsQ.length+' rep-fault memo'+(credsQ.length!==1?'s':''))
+      +'</div>'
+      +(R.series.length>1?('<div style="margin-top:9px;"><div style="font-size:7.8px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;color:#667085;">Weekly revenue &middot; '+E.q+'</div>'+_m2spark(R.series,E.wkLabels,'#2563EB')+'</div>'):'')
+      +'</div>'
+      +'<div class="sec"><div class="sec-h"><span>&#128161; Talk about this</span><span class="tag">AI-prepared</span></div><div class="tri" style="grid-template-columns:1fr 1fr;">'
+      +'<div class="bcard"><div class="bl" style="color:#059669;">&#127881; Celebrate</div>'+bl(insight&&insight.celebrate,'win')+'</div>'
+      +'<div class="bcard"><div class="bl" style="color:#D97706;">&#127919; Coach on</div>'+bl(insight&&insight.coach,'watch')+'</div>'
+      +'</div>'
+      +(flags.length?('<div style="margin-top:9px;"><div class="bl" style="color:#DC2626;font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;">&#9888;&#65039; Open flags</div><ul class="bullets risk">'+flags.map(function(f){return '<li>'+esc(f)+'</li>';}).join('')+'</ul></div>'):'')
+      +'</div>'
+      +(notes.length?('<div class="sec"><div class="sec-h"><span>&#128220; Recent coaching log</span></div>'+notes.map(function(n){return '<div style="border-left:2px solid #CBD5E1;padding:4px 10px;margin:0 0 7px;"><div style="font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#667085;">'+esc(n.type||'Note')+' &middot; '+esc(n.date||'')+'</div><div style="font-size:10.5px;line-height:1.5;">'+esc(n.note||'')+'</div></div>';}).join('')+'</div>'):'')
+      +'<div class="sec" style="break-inside:avoid;"><div class="sec-h"><span>&#9997;&#65039; Discussion &amp; commitments</span><span class="tag">fill in together</span></div>'
+      +'<div class="tri" style="grid-template-columns:1fr 1fr;">'
+      +'<div><div class="bl" style="color:#334155;font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">'+esc(fn)+'&#8217;s commitments for next week</div>'+lines(4)+'</div>'
+      +'<div><div class="bl" style="color:#334155;font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Manager commitments / support needed</div>'+lines(4)+'</div>'
+      +'</div>'
+      +'<div style="margin-top:12px;"><div class="bl" style="color:#334155;font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Notes</div>'+lines(5)+'</div>'
+      +'<div style="display:flex;gap:26px;margin-top:14px;font-size:9.5px;color:#667085;"><span>Follow-up date: ______________</span><span>Rep initials: ________</span><span>Manager initials: ________</span></div>'
+      +'</div>';
+    var html=buildReportPrintV2('1-on-1 &mdash; '+esc(repName),E.q+' '+E.yr+' &middot; '+esc(E.prev.label),'Coaching Packet',body);
+    try{saveReport('coaching','1-on-1 \u2014 '+repName+' ('+String(E.prev.label||'').split(':')[0]+')',E.q+' '+E.yr,html);}catch(e){}
+    if(w){w.document.open();w.document.write(html);w.document.close();w.focus();}
+  }catch(e){
+    if(w){try{w.document.body.innerHTML='Packet error: '+String((e&&e.message)||e);}catch(_e){}}
+  }
+}
+window.buildOneOnOnePacket=buildOneOnOnePacket;
+
+/* ===== MODULE: PHASE6-INTELLIGENCE (forecast driver AI + prod-intel AI + entry missing-data) ===== */
+function _p6Stats(){
+  var E=_r360Engine();if(!E)return null;
+  var series=E.teamSeries.filter(function(v){return v>0;});
+  var mean=series.length?series.reduce(function(s,v){return s+v;},0)/series.length:0;
+  var sd=series.length>1?Math.sqrt(series.reduce(function(s,v){return s+Math.pow(v-mean,2);},0)/series.length):0;
+  var vol=mean>0?Math.round(sd/mean*100):0;
+  var byQtd=E.reps.slice().sort(function(a,b){return b.qtdRev-a.qtdRev;});
+  var top3=byQtd.slice(0,3);
+  var top3Share=E.team.qtdRev>0?Math.round(top3.reduce(function(s,r){return s+r.qtdRev;},0)/E.team.qtdRev*100):0;
+  return {E:E,vol:vol,byQtd:byQtd,top3:top3,top3Share:top3Share};
+}
+function renderForecastDriver(){
+  var host=document.getElementById('fc-driver');if(!host)return;
+  var st=_p6Stats();
+  if(!st||!st.E){host.innerHTML='';return;}
+  var E=st.E,t=E.team;
+  host.innerHTML='<div class="r3-shell" style="margin:0 0 14px;"><div class="r3-head" style="padding:12px 16px;">'
+    +'<span class="r3-av" style="background:linear-gradient(135deg,#22D3EE,#7C6CFF);width:32px;height:32px;font-size:15px;">&#129504;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name" style="font-size:13.5px;">What&#8217;s driving this number</div><div class="r3-sub">'+_dcWkShort(E.prev)+' &middot; '+E.q+' '+E.yr+' &middot; run rate $'+Math.round(E.avgWeekly).toLocaleString()+'/wk</div></div>'
+    +'<div class="r3-hactions"><span id="fc-driver-conf"></span><button class="dc-mini" onclick="fetchForecastDriver(true)">&#8635;</button></div></div>'
+    +'<div style="padding:12px 16px;" id="fc-driver-body"><span class="dc-flat">Loading&hellip;</span></div></div>';
+  fetchForecastDriver(false);
+}
+async function fetchForecastDriver(force){
+  var el=document.getElementById('fc-driver-body');if(!el)return;
+  var st=_p6Stats();if(!st){el.innerHTML='';return;}
+  var E=st.E,t=E.team;
+  var cache=null;try{cache=JSON.parse(localStorage.getItem('tcp_fc_driver')||'null');}catch(e){}
+  if(!force&&cache&&cache.wk===E.prev.key&&cache.data){_p6RenderDriver(cache.data);return;}
+  el.innerHTML='<span class="dc-flat">Analyzing the forecast&hellip;</span>';
+  var prompt='You explain a sales forecast for the manager at Triple Crown Products (custom apparel). Be concrete, name reps, no filler.\n'
+    +'Quarter '+E.q+' '+E.yr+', week '+E.weeksCompleted+' of '+E.qtdWeeks.length+(E.earlyQuarter?' (EARLY \u2014 low confidence is expected, no failure framing)':'')+'.\n'
+    +'QTD $'+Math.round(t.qtdRev).toLocaleString()+' of $'+Math.round(t.goalRev).toLocaleString()+' goal ('+E.qtdPct+'%). Run rate $'+Math.round(E.avgWeekly).toLocaleString()+'/wk \u2192 projects $'+Math.round(E.projected).toLocaleString()+' ('+E.projectedPct+'% of goal). Forward need $'+Math.round(E.forwardNeed).toLocaleString()+'/wk.\n'
+    +'Weekly team series: ['+E.teamSeries.map(function(v){return Math.round(v);}).join(', ')+'] (volatility '+st.vol+'% of mean).\n'
+    +'Top contributors QTD: '+st.top3.map(function(r){return r.name+' $'+Math.round(r.qtdRev).toLocaleString();}).join(', ')+' \u2014 top 3 = '+st.top3Share+'% of team revenue.\n'
+    +'Bottom 3: '+st.byQtd.slice(-3).map(function(r){return r.name+' $'+Math.round(r.qtdRev).toLocaleString();}).join(', ')+'.\n'
+    +'Return ONLY JSON, no fences: {"confidence":"high|medium|low","confidence_why":"one short line","drivers":["3-4 bullets, max 20 words: what is actually producing this projection \u2014 name reps, weeks, patterns"],"risks":["2-3 bullets: what could break it"],"upside":["1-2 bullets: what could beat it"]}';
+  try{
+    var raw=await callAI(prompt,{maxTokens:800,skipCompanyContext:true});
+    raw=String(raw||'').replace(/```json/gi,'').replace(/```/g,'').trim();
+    var a=raw.indexOf('{'),b=raw.lastIndexOf('}');
+    var data=JSON.parse(raw.slice(a,b+1));
+    try{localStorage.setItem('tcp_fc_driver',JSON.stringify({wk:E.prev.key,data:data}));}catch(e){}
+    _p6RenderDriver(data);
+  }catch(e){
+    el.innerHTML='<span class="dc-flat">AI unavailable \u2014 '+( /api key/i.test(String(e&&e.message))?'add your API key in Admin.':'tap \u21bb to retry.')+'</span>';
+  }
+}
+function _p6RenderDriver(d){
+  var el=document.getElementById('fc-driver-body');if(!el)return;
+  var conf=document.getElementById('fc-driver-conf');
+  if(conf){var cc=String(d.confidence||'').toLowerCase();var col=cc==='high'?'var(--tcp-green)':cc==='low'?'var(--tcp-red)':'var(--tcp-gold)';conf.innerHTML='<span class="r3-pill" style="background:transparent;border:1px solid '+col+';color:'+col+';" title="'+_m2esc(d.confidence_why||'')+'">'+_m2esc(cc||'?')+' confidence</span>';}
+  function bl(arr,cls){return '<ul class="dc2-cc-list '+cls+'">'+(arr||[]).map(function(x){return '<li>'+_m2esc(x)+'</li>';}).join('')+'</ul>';}
+  el.innerHTML='<div class="dc2-cc" style="grid-template-columns:1.2fr 1fr;">'
+    +'<div><div class="dc2-cc-h" style="color:#22D3EE;">&#9889; Drivers</div>'+bl(d.drivers,'good')+'</div>'
+    +'<div><div class="dc2-cc-h dc2-cc-fix">&#9888;&#65039; Risks</div>'+bl(d.risks,'fix')
+    +((d.upside&&d.upside.length)?('<div class="dc2-cc-h dc2-cc-good" style="margin-top:9px;">&#128200; Upside</div>'+bl(d.upside,'good')):'')
+    +'</div></div>'
+    +(d.confidence_why?'<div class="dc-flat" style="font-size:10.5px;margin-top:8px;">Confidence: '+_m2esc(d.confidence_why)+'</div>':'');
+}
+function renderProdIntelAI(){
+  var host=document.getElementById('pi-ai');if(!host)return;
+  var yr=getYr(),q=getQ();
+  var arts=(S.artErrors||[]).filter(function(a){return String(a.yr)===String(yr);});
+  var artsQ=arts.filter(function(a){return a.q===q;});
+  var cms=(S.cms||[]).filter(function(cm){return String(cm.yr)===String(yr);});
+  var cmsQ=cms.filter(function(cm){return cm.q===q;});
+  var credQ=cmsQ.reduce(function(s,cm){return s+Number(cm.amount||0);},0);
+  var byRep={};artsQ.forEach(function(a){byRep[a.rep]=(byRep[a.rep]||0)+1;});
+  var topArt=Object.keys(byRep).sort(function(a,b){return byRep[b]-byRep[a];}).slice(0,3);
+  var custCt={};cms.forEach(function(cm){var k2=cm.custName||cm.custId;if(k2)custCt[k2]=(custCt[k2]||0)+1;});
+  var repeats=Object.keys(custCt).filter(function(k2){return custCt[k2]>=2;});
+  function sCell(l,v,s2){return '<div class="dc2-stat"><div class="dc2-sl">'+l+'</div><div class="dc2-sv" style="font-size:19px;">'+v+'</div><div class="dc2-ss dc-flat">'+(s2||'')+'</div></div>';}
+  host.innerHTML='<div class="r3-shell" style="margin:0 0 14px;">'
+    +'<div class="r3-head" style="padding:12px 16px;"><span class="r3-av" style="background:linear-gradient(135deg,#FB7185,#FBBF24);width:32px;height:32px;font-size:15px;">&#128300;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name" style="font-size:13.5px;">Quality intelligence</div><div class="r3-sub">'+q+' '+yr+' &middot; patterns in art errors &amp; credit memos</div></div>'
+    +'<div class="r3-hactions"><button class="dc-mini" onclick="fetchProdIntelAI(true)">&#8635;</button></div></div>'
+    +'<div class="dc2-stats" style="border-bottom:1px solid var(--tcp-line);">'
+    +sCell('Art errors ('+q+')',String(artsQ.length),arts.length+' YTD')
+    +sCell('Credit memos ('+q+')','$'+Math.round(credQ).toLocaleString(),cmsQ.length+' cases')
+    +sCell('Top art source',topArt.length?_m2esc(String(topArt[0]).split(' ')[0])+' ('+byRep[topArt[0]]+')':'&mdash;',topArt.slice(1).map(function(n){return String(n).split(' ')[0];}).join(', '))
+    +sCell('Repeat customers',String(repeats.length),repeats.slice(0,2).map(function(x){return _m2esc(x);}).join(', ')||'in credit memos')
+    +'</div>'
+    +'<div style="padding:12px 16px;" id="pi-ai-body"><span class="dc-flat">Loading&hellip;</span></div></div>';
+  fetchProdIntelAI(false);
+}
+async function fetchProdIntelAI(force){
+  var el=document.getElementById('pi-ai-body');if(!el)return;
+  var yr=getYr(),q=getQ(),today=_dcToday();
+  var cache=null;try{cache=JSON.parse(localStorage.getItem('tcp_pi_ai')||'null');}catch(e){}
+  if(!force&&cache&&cache.d===today&&cache.q===q&&cache.data){_p6RenderPI(cache.data);return;}
+  var arts=(S.artErrors||[]).filter(function(a){return String(a.yr)===String(yr)&&a.q===q;});
+  var cms=(S.cms||[]).filter(function(cm){return String(cm.yr)===String(yr)&&cm.q===q;});
+  if(!arts.length&&!cms.length){el.innerHTML='<span class="dc-flat">No art errors or credit memos in '+q+' yet \u2014 clean quarter so far.</span>';return;}
+  el.innerHTML='<span class="dc-flat">Reading the quarter\u2019s quality record&hellip;</span>';
+  var byRep={},byType={};arts.forEach(function(a){byRep[a.rep]=(byRep[a.rep]||0)+1;byType[a.type||'other']=(byType[a.type||'other']||0)+1;});
+  var cmRep={},cmFault={};cms.forEach(function(cm){cmRep[cm.rep]=(cmRep[cm.rep]||0)+Number(cm.amount||0);cmFault[cm.fault||'?']=(cmFault[cm.fault||'?']||0)+Number(cm.amount||0);});
+  var prompt='You analyze quality/ops data for a custom apparel sales manager (screen print, embroidery, DTF). Find PATTERNS, not summaries. Name reps and customers. No filler.\n'
+    +q+' '+yr+' data:\nArt errors ('+arts.length+'): by rep '+JSON.stringify(byRep)+', by type '+JSON.stringify(byType)+'.\n'
+    +'Recent error notes: '+arts.slice(-8).map(function(a){return a.rep.split(' ')[0]+': '+String(a.desc||a.type||'').slice(0,60);}).join(' | ')+'\n'
+    +'Credit memos ('+cms.length+', $'+Math.round(cms.reduce(function(s,cm){return s+Number(cm.amount||0);},0)).toLocaleString()+'): $ by rep '+JSON.stringify(cmRep)+', $ by fault '+JSON.stringify(cmFault)+'.\n'
+    +'Recent memo notes: '+cms.slice(-8).map(function(cm){return cm.rep.split(' ')[0]+'/'+(cm.custName||'?')+' $'+cm.amount+': '+String(cm.desc||'').slice(0,50);}).join(' | ')+'\n'
+    +'Return ONLY JSON, no fences: {"patterns":["3-4 bullets, max 20 words: repeat issues, concentrations, preventable causes"],"impact":"1-2 sentences on the financial/customer impact","actions":["2-3 specific management actions"]}';
+  try{
+    var raw=await callAI(prompt,{maxTokens:800,skipCompanyContext:true});
+    raw=String(raw||'').replace(/```json/gi,'').replace(/```/g,'').trim();
+    var a=raw.indexOf('{'),b=raw.lastIndexOf('}');
+    var data=JSON.parse(raw.slice(a,b+1));
+    try{localStorage.setItem('tcp_pi_ai',JSON.stringify({d:today,q:q,data:data}));}catch(e){}
+    _p6RenderPI(data);
+  }catch(e){
+    el.innerHTML='<span class="dc-flat">AI unavailable \u2014 '+( /api key/i.test(String(e&&e.message))?'add your API key in Admin.':'tap \u21bb to retry.')+'</span>';
+  }
+}
+function _p6RenderPI(d){
+  var el=document.getElementById('pi-ai-body');if(!el)return;
+  function bl(arr,cls){return '<ul class="dc2-cc-list '+cls+'">'+(arr||[]).map(function(x){return '<li>'+_m2esc(x)+'</li>';}).join('')+'</ul>';}
+  el.innerHTML='<div class="dc2-cc">'
+    +'<div><div class="dc2-cc-h dc2-cc-fix">&#128269; Patterns</div>'+bl(d.patterns,'fix')+(d.impact?'<div class="dc-flat" style="font-size:11px;margin-top:8px;">'+_m2esc(d.impact)+'</div>':'')+'</div>'
+    +'<div><div class="dc2-cc-h" style="color:#22D3EE;">&#9989; Do about it</div>'+bl(d.actions,'good')+'</div>'
+    +'</div>';
+}
+function renderEntryMissing(){
+  var host=document.getElementById('entry-missing');if(!host)return;
+  try{
+    var ctx=_dcContext();if(!ctx){host.innerHTML='';return;}
+    var idxCal=ctx.weeks.findIndex(function(w){return w.key===ctx.cal.key;});
+    var target=idxCal>0?ctx.weeks[idxCal-1]:ctx.cal;
+    var reps=activeReps();
+    var missing=[],entered=0;
+    reps.forEach(function(r){
+      var d=gd(r.name+'|'+target.key);
+      if(Number(d.revenue||0)>0||Number(d.orders||0)>0||Number(d.calls||0)>0)entered++;
+      else missing.push(r.name.split(' ')[0]);
+    });
+    var pct=reps.length?Math.round(entered/reps.length*100):0;
+    var col=pct===100?'var(--tcp-green)':pct>=50?'var(--tcp-gold)':'var(--tcp-red)';
+    host.innerHTML='<div class="r3-shell" style="margin:0 0 14px;"><div class="r3-head" style="padding:11px 16px;">'
+      +'<span class="r3-av" style="background:linear-gradient(135deg,#34D399,#22D3EE);width:32px;height:32px;font-size:15px;">&#9998;</span>'
+      +'<div class="r3-hmeta"><div class="r3-name" style="font-size:13.5px;">'+_m2esc(_dcWkShort(target))+' entry status</div>'
+      +'<div class="r3-sub"><span style="color:'+col+';font-weight:800;">'+entered+' of '+reps.length+' reps entered ('+pct+'%)</span>'
+      +(missing.length?' &middot; missing: '+missing.slice(0,6).map(function(n){return _m2esc(n);}).join(', ')+(missing.length>6?' +'+(missing.length-6):''):' &middot; all in &#10003;')+'</div></div>'
+      +'<div class="r3-hactions"><button class="dc-mini" onclick="renderEntryMissing()">&#8635;</button></div></div></div>';
+  }catch(e){host.innerHTML='';}
+}
+window.renderForecastDriver=renderForecastDriver;window.fetchForecastDriver=fetchForecastDriver;
+window.renderProdIntelAI=renderProdIntelAI;window.fetchProdIntelAI=fetchProdIntelAI;
+window.renderEntryMissing=renderEntryMissing;
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    try{renderEntryMissing();}catch(e){}
+    try{if(document.getElementById('pg-intel')&&document.getElementById('pg-intel').classList.contains('active'))renderForecastDriver();}catch(e){}
+  },700);
+});
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('button'):null;if(!b)return;
+  var oc=b.getAttribute('onclick')||'';
+  if(oc.indexOf("gt('intel'")>=0)setTimeout(function(){try{renderForecastDriver();}catch(_e){}},100);
+  if(oc.indexOf("gt('prodintel'")>=0)setTimeout(function(){try{renderProdIntelAI();}catch(_e){}},100);
+  if(oc.indexOf("gt('entry'")>=0)setTimeout(function(){try{renderEntryMissing();}catch(_e){}},100);
+});
+// keep entry status fresh as data is typed
+document.addEventListener('change',function(e){
+  var pg=document.getElementById('pg-entry');
+  if(pg&&pg.contains(e.target))setTimeout(function(){try{renderEntryMissing();}catch(_e){}},400);
+});
+
 /* ===== MODULE: PHASE4-REPORTSHUB (unified reports: meeting + generators + history + exec packet) ===== */
 function _hubRelocate(){
   try{
@@ -15399,6 +16197,7 @@ function mountRep360(ri){
   var tabs=['Overview','Trends','Coaching','Quality','Reviews','HR','History'];
   var head='<div class="r3-head"><span class="r3-av">'+esc(initials)+'</span><div class="r3-hmeta"><div class="r3-name">'+esc(name)+'</div><div class="r3-sub">'+(E?(_dcWkShort(E.prev)+' &middot; rank #'+rank+' of '+E.reps.length+' &middot; score '+score.toFixed(1)+'/5'):'no recent data')+'</div></div>'
     +'<div class="r3-hactions">'
+    +'<button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="buildOneOnOnePacket(this.dataset.rep)" data-rep="'+esc(name)+'">&#129309; 1-on-1 packet</button>'
     +(typeof buildRepQuarterReport==='function'?'<button class="dc2-act" onclick="buildRepQuarterReport(this.dataset.rep)" data-rep="'+esc(name)+'">&#128196; Quarter report</button>':'')
     +(typeof downloadRepSummaryPDF==='function'?'<button class="dc2-act" onclick="downloadRepSummaryPDF(this.dataset.rep)" data-rep="'+esc(name)+'">&#128229; Summary PDF</button>':'')
     +'</div></div>';
@@ -15722,6 +16521,12 @@ function computeDashAlerts(E,ctx,lastDaily){
     });
     if(coach.length>0)A.push({sev:'blue',icon:'&#129309;',txt:'Coach: '+coach.slice(0,4).join(', ')+(coach.length>4?' +'+(coach.length-4):''),page:'profiles'});
   }
+  try{
+    var bts=Number(localStorage.getItem('tcp_last_backup_ts')||0);
+    var bdays=bts>0?Math.floor((Date.now()-bts)/86400000):null;
+    if(bdays==null)A.push({sev:'blue',icon:'&#128737;&#65039;',txt:'No backup file yet &middot; download one in Admin',page:'admin'});
+    else if(bdays>7)A.push({sev:bdays>21?'red':'amber',icon:'&#128737;&#65039;',txt:'Backup overdue &middot; last '+bdays+'d ago',page:'admin'});
+  }catch(e){}
   if(A.length===0)A.push({sev:'green',icon:'&#10003;',txt:'All clear \u2014 data current, no flags',page:null});
   return A;
 }
@@ -15940,7 +16745,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:409,phase:'Phase 5 — Visual + Mobile',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:415,phase:'Phase 11 — Customer Reviews',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -15953,6 +16758,8 @@ const PAGE_PURPOSE={
   daily:['Daily sales','Log the running total; see momentum, CORP/SMB split, best days.'],
   intel:['Forecast','Where the quarter is heading and what\u2019s driving it.'],
   inbound:['Inbound leads','Live inbound channel activity from the published sheet.'],
+  reviews:['Customer reviews','Google & Trustpilot reviews, weekly $10 payouts, and rep recognition.'],
+  customers:['Customer intelligence','New customers, reactivations, and who\u2019s going quiet \u2014 where sales come from.'],
   entry:['Data entry','Weekly numbers in \u2014 everything else in the app feeds from here.'],
   credits:['Credit memos','Cost of errors \u2014 who, why, and how much.'],
   art:['Art errors','Art quality tracking \u2014 catch patterns before they cost money.'],
