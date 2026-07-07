@@ -2659,6 +2659,86 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 .dr-in{width:100%;box-sizing:border-box;}
 @media(max-width:520px){.dr-grid{grid-template-columns:1fr 1fr;}}
 </style>
+
+<style id="tcp-daily-calendar-rep-ui-v418">
+/* ===== v418 Daily Sales calendar top-rep integration ===== */
+#pg-daily .daily-log-panel{overflow:visible;}
+#pg-daily .daily-calendar-grid{align-items:stretch;}
+#pg-daily .daily-day-cell{min-height:98px;padding:9px 10px 34px;}
+#pg-daily .daily-day-cell.daily-clickable{cursor:pointer;}
+#pg-daily .daily-day-cell.daily-clickable:hover{transform:translateY(-2px);border-color:rgba(139,92,246,.58);box-shadow:0 16px 34px rgba(0,0,0,.20),0 0 0 1px rgba(139,92,246,.12);}
+#pg-daily .daily-day-cell.daily-clickable:focus{outline:none;border-color:rgba(139,92,246,.92);box-shadow:0 0 0 3px rgba(139,92,246,.18);}
+#pg-daily .daily-day-cell.rep-only{background:linear-gradient(145deg,rgba(251,191,36,.13),rgba(139,92,246,.055));border-color:rgba(251,191,36,.24);}
+#pg-daily .daily-day-num{display:flex;align-items:center;gap:4px;}
+#pg-daily .daily-day-sale{font-size:13.5px;}
+#pg-daily .daily-top-rep-chip{position:absolute;left:8px;right:26px;bottom:7px;display:flex;align-items:center;justify-content:center;gap:5px;min-height:20px;padding:3px 8px;border-radius:999px;border:1px solid rgba(251,191,36,.72);background:linear-gradient(135deg,rgba(251,191,36,.18),rgba(251,191,36,.07));color:#FFD27A;font-size:9px;font-weight:950;letter-spacing:.035em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.10);}
+#pg-daily .daily-top-rep-chip span{overflow:hidden;text-overflow:ellipsis;}
+#pg-daily .daily-cell-hint{font-size:9px;color:#9BA6C4;margin-top:3px;}
+#dr-view{display:none!important;}
+.daily-rep-popup .daily-popup-note{margin-top:10px;padding:9px 11px;border:1px solid rgba(34,211,238,.18);border-radius:12px;background:rgba(34,211,238,.065);color:#BFD0F2;font-size:11px;line-height:1.45;}
+.daily-rep-popup .r3m-row{align-items:center;}
+@media(max-width:760px){#pg-daily .daily-day-cell{min-height:88px;padding:8px 7px 33px;}#pg-daily .daily-top-rep-chip{left:6px;right:24px;font-size:8.5px;padding:3px 6px;}}
+</style>
+
+
+<style id="tcp-customer-reviews-ui-v417">
+/* ===== v417 Customer Reviews Command Center visual refresh ===== */
+#pg-reviews{max-width:1540px;margin:0 auto;padding:4px 2px 42px;}
+#pg-reviews .rv-shell{border:1px solid rgba(255,255,255,.10)!important;border-radius:28px!important;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),rgba(11,15,28,.72)!important;box-shadow:0 24px 72px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.075)!important;overflow:hidden!important;}
+#pg-reviews .rv-hero{position:relative;overflow:hidden;align-items:center!important;gap:16px!important;padding:28px 30px!important;border-bottom:1px solid rgba(255,255,255,.10)!important;background:radial-gradient(circle at 12% 0%,rgba(251,191,36,.28),transparent 31%),radial-gradient(circle at 88% 18%,rgba(34,211,238,.18),transparent 34%),linear-gradient(135deg,rgba(42,31,75,.95),rgba(11,18,34,.96) 55%,rgba(20,37,40,.88))!important;}
+#pg-reviews .rv-hero:after{content:"";position:absolute;right:-115px;bottom:-155px;width:390px;height:390px;border-radius:999px;background:radial-gradient(circle,rgba(52,211,153,.20),transparent 67%);pointer-events:none;}
+#pg-reviews .rv-hero>*{position:relative;z-index:1;}
+#pg-reviews .rv-hero .r3-av{width:58px!important;height:58px!important;border-radius:20px!important;font-size:25px!important;background:linear-gradient(135deg,#FBBF24,#FF6A3D 54%,#8B5CF6)!important;box-shadow:0 18px 42px rgba(251,191,36,.24),inset 0 1px 0 rgba(255,255,255,.28)!important;}
+#pg-reviews .rv-hero .r3-name{font-size:31px!important;line-height:1!important;font-weight:950!important;letter-spacing:-.052em!important;color:#fff!important;}
+#pg-reviews .rv-hero .r3-sub{font-size:13px!important;line-height:1.6!important;color:#D2D9F2!important;margin-top:9px!important;max-width:760px!important;}
+#pg-reviews .rv-hero .r3-hactions{margin-left:auto!important;z-index:2;}
+#pg-reviews .rv-hero .dc2-act{min-height:42px!important;padding:11px 16px!important;border-radius:15px!important;background:linear-gradient(135deg,#8B5CF6,#3B82F6)!important;color:#fff!important;border:1px solid rgba(255,255,255,.16)!important;font-weight:900!important;box-shadow:0 13px 32px rgba(59,130,246,.25)!important;}
+#pg-reviews .rv-source-row,#pg-reviews .rv-filter-bar{padding:16px 18px!important;gap:11px!important;border-bottom:1px solid rgba(255,255,255,.085)!important;background:rgba(255,255,255,.035)!important;}
+#pg-reviews .rv-source-row:before{content:"Review feed";font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.12em;color:#9DDCFF;margin-right:2px;}
+#pg-reviews .rv-source-row #rv-url{min-height:42px!important;border-radius:14px!important;background:rgba(4,7,14,.55)!important;border:1px solid rgba(255,255,255,.13)!important;color:#fff!important;padding:10px 13px!important;font-size:12px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;}
+#pg-reviews #rv-status{display:inline-flex;align-items:center;min-height:34px;padding:7px 11px!important;border-radius:999px!important;background:rgba(71,209,108,.10)!important;border:1px solid rgba(71,209,108,.22)!important;color:#A7FFC0!important;font-weight:850!important;}
+#pg-reviews .rv-alert{padding:16px 18px!important;border-bottom:1px solid rgba(255,255,255,.085)!important;}
+#pg-reviews .rv-alert-dupes{background:linear-gradient(135deg,rgba(251,191,36,.115),rgba(251,191,36,.035))!important;}
+#pg-reviews .rv-alert-unmatched{background:linear-gradient(135deg,rgba(251,113,133,.105),rgba(251,113,133,.032))!important;}
+#pg-reviews .rv-filter-bar{position:sticky;top:74px;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+#pg-reviews .rv-filter-bar .dc2-sl{font-size:10px!important;text-transform:uppercase!important;letter-spacing:.12em!important;color:#9FAAD0!important;font-weight:950!important;}
+#pg-reviews .rv-filter-bar .r3-in,#pg-reviews .rv-alert select{min-height:38px!important;border-radius:13px!important;background:#0E1323!important;border:1px solid rgba(255,255,255,.14)!important;color:#F7FAFF!important;padding:9px 30px 9px 11px!important;font-size:12px!important;font-weight:800!important;}
+#pg-reviews .rv-kpi-grid{display:grid!important;grid-template-columns:repeat(4,minmax(150px,1fr))!important;gap:14px!important;padding:18px!important;border-bottom:1px solid rgba(255,255,255,.085)!important;background:transparent!important;}
+#pg-reviews .rv-kpi-grid .dc2-stat{position:relative;overflow:hidden;min-height:126px;padding:17px!important;border-radius:22px!important;border:1px solid rgba(255,255,255,.09)!important;background:linear-gradient(145deg,rgba(255,255,255,.070),rgba(255,255,255,.026)),rgba(18,23,40,.86)!important;box-shadow:0 16px 42px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06)!important;}
+#pg-reviews .rv-kpi-grid .dc2-stat:after{content:"";position:absolute;right:-32px;top:-34px;width:106px;height:106px;border-radius:999px;background:radial-gradient(circle,rgba(251,191,36,.24),transparent 66%);pointer-events:none;}
+#pg-reviews .rv-kpi-grid .dc2-stat:nth-child(2):after{background:radial-gradient(circle,rgba(71,209,108,.23),transparent 66%);}
+#pg-reviews .rv-kpi-grid .dc2-stat:nth-child(3):after{background:radial-gradient(circle,rgba(96,165,250,.25),transparent 66%);}
+#pg-reviews .rv-kpi-grid .dc2-stat:nth-child(4):after{background:radial-gradient(circle,rgba(52,211,153,.24),transparent 66%);}
+#pg-reviews .rv-kpi-grid .dc2-sl{position:relative;z-index:1;font-size:10px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.10em!important;color:#A8B4D6!important;margin-bottom:9px!important;}
+#pg-reviews .rv-kpi-grid .dc2-sv{position:relative;z-index:1;font-size:30px!important;line-height:1!important;font-weight:950!important;letter-spacing:-.055em!important;color:#fff!important;}
+#pg-reviews .rv-kpi-grid .dc2-ss{position:relative;z-index:1;font-size:11px!important;line-height:1.45!important;margin-top:9px!important;color:#98A4C3!important;}
+#pg-reviews .rv-chart-grid{display:grid!important;grid-template-columns:1.1fr .95fr .95fr!important;gap:14px!important;padding:18px!important;border-bottom:1px solid rgba(255,255,255,.085)!important;background:rgba(255,255,255,.015)!important;}
+#pg-reviews .rv-chart-grid .dc2-chart{border-radius:22px!important;border:1px solid rgba(255,255,255,.085)!important;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(17,22,38,.88)!important;box-shadow:0 14px 34px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.055)!important;padding:16px!important;}
+#pg-reviews .dc2-panel-h{font-size:12px!important;font-weight:950!important;letter-spacing:.035em!important;text-transform:uppercase!important;color:#F1F5FF!important;margin-bottom:12px!important;}
+#pg-reviews .dcb{height:100px!important;align-items:flex-end!important;gap:6px!important;padding-top:10px!important;}
+#pg-reviews .dcb-b{border-radius:8px 8px 4px 4px!important;box-shadow:0 0 18px rgba(251,191,36,.16)!important;}
+#pg-reviews .dc-prog{height:10px!important;background:rgba(255,255,255,.10)!important;border-radius:999px!important;overflow:hidden!important;}
+#pg-reviews .dc-prog-fill{height:100%!important;border-radius:999px!important;box-shadow:0 0 18px rgba(255,255,255,.10)!important;}
+#pg-reviews .rv-star-card{padding:16px 18px!important;border-bottom:1px solid rgba(255,255,255,.085)!important;background:rgba(251,191,36,.025)!important;}
+#pg-reviews .rv-star-card .hero-band{border-radius:22px!important;border:1px solid rgba(251,191,36,.28)!important;background:radial-gradient(circle at 10% 0%,rgba(251,191,36,.30),transparent 38%),linear-gradient(135deg,#92400E,#064E3B)!important;box-shadow:0 18px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.14)!important;}
+#pg-reviews .rv-payout-section,#pg-reviews .rv-review-section{padding:18px!important;border-bottom:1px solid rgba(255,255,255,.085)!important;}
+#pg-reviews .rv-review-section{border-bottom:0!important;}
+#pg-reviews .r3-tbl{width:100%;border-collapse:separate!important;border-spacing:0 8px!important;font-size:12px!important;}
+#pg-reviews .r3-tbl th{padding:0 12px 4px!important;background:transparent!important;color:#9FAAD0!important;font-size:10px!important;text-transform:uppercase!important;letter-spacing:.09em!important;font-weight:950!important;}
+#pg-reviews .r3-tbl td{padding:12px!important;background:rgba(255,255,255,.045)!important;border-top:1px solid rgba(255,255,255,.075)!important;border-bottom:1px solid rgba(255,255,255,.075)!important;color:#EFF4FF!important;}
+#pg-reviews .r3-tbl td:first-child{border-left:1px solid rgba(255,255,255,.075)!important;border-radius:14px 0 0 14px!important;}
+#pg-reviews .r3-tbl td:last-child{border-right:1px solid rgba(255,255,255,.075)!important;border-radius:0 14px 14px 0!important;}
+#pg-reviews .rv-rep-group{margin:0 0 14px!important;padding:14px!important;border-radius:20px!important;background:rgba(255,255,255,.032)!important;border:1px solid rgba(255,255,255,.075)!important;}
+#pg-reviews .r3-note{border-radius:17px!important;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(15,20,36,.92)!important;border:1px solid rgba(255,255,255,.085)!important;box-shadow:0 10px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.045)!important;padding:13px 14px!important;margin-bottom:10px!important;}
+#pg-reviews .r3-note-h{gap:10px!important;align-items:flex-start!important;}
+#pg-reviews .r3-note-t{font-size:12px!important;line-height:1.65!important;color:#CFD8F2!important;margin-top:9px!important;}
+#pg-reviews .r3-pill{border-radius:999px!important;padding:4px 9px!important;font-size:10px!important;font-weight:950!important;letter-spacing:.04em!important;text-transform:uppercase!important;}
+#pg-reviews .dc-mini,#pg-reviews .dc2-act{border-radius:12px!important;font-weight:850!important;}
+#pg-reviews .dc-flat{color:#9DA8C8!important;}
+@media(max-width:1180px){#pg-reviews .rv-kpi-grid{grid-template-columns:repeat(2,minmax(150px,1fr))!important;}#pg-reviews .rv-chart-grid{grid-template-columns:1fr!important;}#pg-reviews .rv-filter-bar{position:relative;top:auto;}}
+@media(max-width:720px){#pg-reviews{padding:0 0 30px;}#pg-reviews .rv-hero{align-items:flex-start!important;flex-direction:column!important;padding:22px!important;}#pg-reviews .rv-hero .r3-name{font-size:26px!important;}#pg-reviews .rv-hero .r3-hactions{margin-left:0!important;width:100%;}#pg-reviews .rv-hero .dc2-act{width:100%;}#pg-reviews .rv-source-row,#pg-reviews .rv-filter-bar{align-items:stretch!important;}#pg-reviews .rv-source-row:before{width:100%;}#pg-reviews .rv-kpi-grid{grid-template-columns:1fr!important;padding:14px!important;}#pg-reviews .rv-chart-grid{padding:14px!important;}#pg-reviews .rv-payout-section,#pg-reviews .rv-review-section{padding:14px!important;}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -2685,7 +2765,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab" onclick="gt('entry',this)">Data entry</button>
   <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>
   <button class="tab" onclick="gt('hr',this)">HR &amp; Notes</button>
-  <button class="tab" onclick="gt('credits',this)">Credit memos</button>  <button class="tab" onclick="gt('reviews',this)"> Customer Reviews</button>
+  <button class="tab" onclick="gt('credits',this)">Credit memos</button>  <button class="tab" onclick="gt('reviews',this)">⭐ Customer Reviews</button>
   <button class="tab" onclick="gt('art',this)">Art errors</button>
   <button class="tab" onclick="gt('perf',this)">Performance</button>
   <button class="tab" onclick="gt('meeting',this)">Meeting report</button>
@@ -4013,9 +4093,10 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       <div class="daily-panel-head">
         <div>
           <div class="daily-section-kicker">Momentum</div>
-          <h2>Daily sales log</h2>
+          <h2>Daily sales calendar</h2>
         </div>
       </div>
+      <p class="daily-help">Top SMB rep badges now live on the day itself. Click any sales day to open the per-rep daily breakdown.</p>
       <div id="dailyCalendar"></div>
     </section>
   </div>
@@ -7724,6 +7805,11 @@ function buildDailyMonthSel(){
   S.dailySales.forEach(function(e){
     months.add(e.date.substring(0,7));
   });
+  if(S.dailyRep&&typeof S.dailyRep==='object'){
+    Object.keys(S.dailyRep).forEach(function(d){
+      if(/^\d{4}-\d{2}-\d{2}$/.test(d))months.add(d.substring(0,7));
+    });
+  }
   // Also add prev month
   var prev=new Date(now.getFullYear(),now.getMonth()-1,1);
   months.add(prev.getFullYear()+'-'+(prev.getMonth()+1).toString().padStart(2,'0'));
@@ -7800,6 +7886,7 @@ function formatDateShort(dateStr){
 
 function renderDailyLog(){
   initDailySales();
+  if(typeof _drEnsure==='function'){try{_drEnsure();}catch(_drErr){}}
   var sel=document.getElementById('dailyViewMonth');
   var filterMonth=sel?sel.value:'';
   var cal=document.getElementById('dailyCalendar');
@@ -7807,15 +7894,38 @@ function renderDailyLog(){
   if(!cal)return;
 
   var allEntries=getDailySales();
+  var repDates=(S.dailyRep&&typeof S.dailyRep==='object')?Object.keys(S.dailyRep).filter(function(d){return /^\d{4}-\d{2}-\d{2}$/.test(d);}):[];
   var monthEntries=filterMonth?allEntries.filter(function(e){return e.date.startsWith(filterMonth);}):allEntries;
+  var monthRepDates=filterMonth?repDates.filter(function(d){return d.startsWith(filterMonth);}):repDates;
+  var monthEntryMap={};
+  monthEntries.forEach(function(e){monthEntryMap[e.date]=e;});
+
+  function repTotalsFor(dateISO){
+    if(typeof _drDayTotals!=='function')return null;
+    try{return _drDayTotals(dateISO);}catch(e){return null;}
+  }
+  function displayEntryFor(dateISO){
+    var e=monthEntryMap[dateISO];
+    if(e)return e;
+    var t=repTotalsFor(dateISO);
+    if(t&&(t.rows.length||t.totalDay>0||t.totalCum>0)){
+      return {date:dateISO,dailySales:t.totalDay,corpSales:t.corpDay,smbSales:t.smbDay,corpCumulative:t.corpCum,smbCumulative:t.smbCum,runningTotal:t.totalCum,repOnly:true};
+    }
+    return null;
+  }
+
+  var dateSet={};
+  monthEntries.forEach(function(e){dateSet[e.date]=true;});
+  monthRepDates.forEach(function(d){dateSet[d]=true;});
+  var displayEntries=Object.keys(dateSet).sort().map(displayEntryFor).filter(Boolean);
 
   if(sumRow){
-    var monthTotal=monthEntries.reduce(function(s,e){return s+e.dailySales;},0);
-    var corpTotal=monthEntries.reduce(function(s,e){return s+(e.corpSales||0);},0);
-    var smbTotal=monthEntries.reduce(function(s,e){return s+(e.smbSales||0);},0);
-    var monthDays=monthEntries.filter(function(e){return e.dailySales>0;}).length;
-    var lastEntry=monthEntries.length?monthEntries[monthEntries.length-1]:null;
-    var bestDay=monthEntries.reduce(function(best,e){return e.dailySales>best?e.dailySales:best;},0);
+    var monthTotal=displayEntries.reduce(function(s,e){return s+Number(e.dailySales||0);},0);
+    var corpTotal=displayEntries.reduce(function(s,e){return s+Number(e.corpSales||0);},0);
+    var smbTotal=displayEntries.reduce(function(s,e){return s+Number(e.smbSales||0);},0);
+    var monthDays=displayEntries.filter(function(e){return Number(e.dailySales||0)>0;}).length;
+    var lastEntry=displayEntries.length?displayEntries[displayEntries.length-1]:null;
+    var bestDay=displayEntries.reduce(function(best,e){return Number(e.dailySales||0)>best?Number(e.dailySales||0):best;},0);
     var avg=monthDays>0?monthTotal/monthDays:0;
     sumRow.innerHTML=[
       {l:'Total daily sales',v:'$'+Math.round(monthTotal).toLocaleString()},
@@ -7823,19 +7933,19 @@ function renderDailyLog(){
       {l:'SMB sales',v:'$'+Math.round(smbTotal).toLocaleString()},
       {l:'Days with sales',v:monthDays},
       {l:'Best day',v:bestDay>0?'$'+Math.round(bestDay).toLocaleString():'—'},
-      {l:'Running total',v:lastEntry?'$'+Math.round(lastEntry.runningTotal).toLocaleString():'—'},
+      {l:'Running total',v:lastEntry?'$'+Math.round(lastEntry.runningTotal||0).toLocaleString():'—'},
       {l:'Avg / day',v:monthDays>0?'$'+Math.round(avg).toLocaleString():'—'}
     ].map(function(s){
       return'<div class="daily-summary-card"><div class="daily-summary-label">'+s.l+'</div><div class="daily-summary-value">'+s.v+'</div></div>';
     }).join('');
   }
 
-  if(!monthEntries.length){
+  if(!displayEntries.length){
     cal.innerHTML='<div class="daily-empty">No entries for this month. Log your first running total above.</div>';
     return;
   }
 
-  if(!filterMonth){cal.innerHTML=renderDailyTable(monthEntries);return;}
+  if(!filterMonth){cal.innerHTML=renderDailyTable(displayEntries);return;}
 
   var parts=filterMonth.split('-');
   var yr=parseInt(parts[0],10),mo=parseInt(parts[1],10)-1;
@@ -7843,8 +7953,8 @@ function renderDailyLog(){
   var lastDay=new Date(yr,mo+1,0);
   var startDow=firstDay.getDay();
   var entryMap={};
-  monthEntries.forEach(function(e){entryMap[e.date]=e;});
-  var maxDaily=monthEntries.reduce(function(m,e){return Math.max(m,e.dailySales);},1);
+  displayEntries.forEach(function(e){entryMap[e.date]=e;});
+  var maxDaily=displayEntries.reduce(function(m,e){return Math.max(m,Number(e.dailySales||0));},1);
   var cells=[];
   ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(function(d){cells.push('<div class="daily-day-header">'+d+'</div>');});
   for(var i=0;i<startDow;i++)cells.push('<div></div>');
@@ -7852,27 +7962,52 @@ function renderDailyLog(){
   for(var day=1;day<=lastDay.getDate();day++){
     var dateStr=yr+'-'+(mo+1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0');
     var entry=entryMap[dateStr];
+    var repT=repTotalsFor(dateStr);
+    var top=repT&&repT.top&&Number(repT.top.day||0)>0?repT.top:null;
+    var hasRepRows=!!(repT&&repT.rows&&repT.rows.length);
+    var hasData=!!entry||hasRepRows;
     var today=new Date().toISOString().split('T')[0];
     var isToday=dateStr===today;
-    var intensity=entry&&entry.dailySales>0?Math.min(1,entry.dailySales/maxDaily):0;
-    var style=entry?' style="--daily-intensity:'+(0.10+intensity*0.26).toFixed(2)+'"':'';
+    var dailyVal=entry?Number(entry.dailySales||0):(repT?Number(repT.totalDay||0):0);
+    var intensity=dailyVal>0?Math.min(1,dailyVal/maxDaily):0;
+    var style=hasData?' style="--daily-intensity:'+(0.10+intensity*0.26).toFixed(2)+'"':'';
+    var clickAttrs=hasData?' onclick="dailyOpenDayDetail(\''+dateStr+'\')" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();dailyOpenDayDetail(\''+dateStr+'\');}" title="Click for per-rep daily sales"':'';
+    var actualDailyEntry=!!monthEntryMap[dateStr];
     cells.push(
-      '<div class="daily-day-cell '+(entry?'has-sales ':'')+(isToday?'today':'')+'"'+style+'>'
+      '<div class="daily-day-cell '+(hasData?'has-sales daily-clickable ':'')+(entry&&entry.repOnly?'rep-only ':'')+(isToday?'today':'')+'"'+style+clickAttrs+'>'
       +'<div class="daily-day-num">'+day+(isToday?' ●':'')+'</div>'
       +(entry
-        ?'<div class="daily-day-sale">Total +$'+Math.round(entry.dailySales).toLocaleString()+'</div>'
-         +'<div class="daily-day-total">CORP $'+Math.round(entry.corpCumulative||0).toLocaleString()+'</div>'
-         +'<div class="daily-day-total">SMB $'+Math.round(entry.smbCumulative||0).toLocaleString()+'</div>'
-         +'<div class="daily-day-total">Σ $'+Math.round(entry.runningTotal).toLocaleString()+'</div>'
-         +'<button class="daily-delete-btn" onclick="deleteDailyEntry(&quot;'+dateStr+'&quot;)" title="Remove">×</button>'
+        ?'<div class="daily-day-sale">Total +$'+Math.round(Number(entry.dailySales||0)).toLocaleString()+'</div>'
+         +'<div class="daily-day-total">CORP $'+Math.round(Number(entry.corpSales||0)).toLocaleString()+'</div>'
+         +'<div class="daily-day-total">SMB $'+Math.round(Number(entry.smbSales||0)).toLocaleString()+'</div>'
+         +'<div class="daily-day-total">Σ $'+Math.round(Number(entry.runningTotal||0)).toLocaleString()+'</div>'
         :'')
+      +(top?'<div class="daily-top-rep-chip"><span>&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number(top.day||0)).toLocaleString()+'</span></div>':'')
+      +(actualDailyEntry?'<button class="daily-delete-btn" onclick="event.stopPropagation();deleteDailyEntry(&quot;'+dateStr+'&quot;)" title="Remove">×</button>':'')
       +'</div>'
     );
   }
 
-  cal.innerHTML='<div class="daily-calendar-grid">'+cells.join('')+'</div><div class="daily-table-wrap">'+renderDailyTable(monthEntries)+'</div>';
+  cal.innerHTML='<div class="daily-calendar-grid">'+cells.join('')+'</div><div class="daily-table-wrap">'+renderDailyTable(displayEntries)+'</div>';
 }
 
+function dailyOpenDayDetail(dateISO){
+  if(typeof drDayPopup==='function'){
+    drDayPopup(dateISO);
+    return;
+  }
+  var entry=null;
+  try{entry=getDailySales().filter(function(e){return e.date===dateISO;})[0]||null;}catch(e){}
+  var dstr=(typeof formatDateShort==='function'?formatDateShort(dateISO):dateISO);
+  if(entry&&typeof _r360Modal==='function'){
+    _r360Modal('<div class="r3m-h"><span class="r3-pill">Daily sales</span><div class="r3m-title">'+dstr+'</div></div>'
+      +'<div class="r3m-row"><span class="dc-flat">Total day</span><span style="font-weight:900;">+$'+Math.round(entry.dailySales||0).toLocaleString()+'</span></div>'
+      +'<div class="r3m-row"><span class="dc-flat">CORP day</span><span style="font-weight:900;color:#9DDCFF;">+$'+Math.round(entry.corpSales||0).toLocaleString()+'</span></div>'
+      +'<div class="r3m-row"><span class="dc-flat">SMB day</span><span style="font-weight:900;color:#FFD27A;">+$'+Math.round(entry.smbSales||0).toLocaleString()+'</span></div>'
+      +'<div class="dc-flat" style="margin-top:10px;font-size:11px;">No per-rep detail has been saved for this date yet.</div>');
+  }
+}
+window.dailyOpenDayDetail=dailyOpenDayDetail;
 
 function renderDailyTable(entries){
   if(!entries.length)return'';
@@ -15376,40 +15511,36 @@ function drSaveRepDay(){
   try{markDirty();}catch(e){}
   var m=document.getElementById('dr-msg');if(m){m.textContent='\u2713 Saved '+d;m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
   renderDailyRepView();
+  if(typeof buildDailyMonthSel==='function')buildDailyMonthSel();
+  if(typeof renderDailyLog==='function')renderDailyLog();
 }
 function renderDailyRepView(){
-  var host=document.getElementById('dr-view');if(!host)return;
-  _drEnsure();
-  var dates=_drDates().slice().reverse();
-  if(!dates.length){host.innerHTML='';return;}
-  var rows=dates.map(function(d){
-    var t=_drDayTotals(d);
-    return '<tr style="cursor:pointer;" onclick="drDayPopup(\''+d+'\')"><td style="text-align:left;">'+(typeof formatDateShort==='function'?formatDateShort(d):d)+'</td>'
-      +'<td style="text-align:right;font-weight:900;color:#A7FFC0;">+$'+Math.round(t.smbDay).toLocaleString()+'</td>'
-      +'<td style="text-align:left;">'+(t.top?('<span class="r3-pill" style="background:transparent;border:1px solid #FFD27A;color:#FFD27A;">&#11088; '+_m2esc(t.top.name.split(' ')[0])+' +$'+Math.round(t.top.day).toLocaleString()+'</span>'):'<span class="dc-flat">\u2014</span>')+'</td>'
-      +'<td style="text-align:right;color:#9DDCFF;font-weight:800;">+$'+Math.round(t.corpDay).toLocaleString()+'</td>'
-      +'<td style="text-align:right;color:#FFD27A;font-weight:800;">$'+Math.round(t.smbCum).toLocaleString()+'</td>'
-      +'<td style="text-align:right;color:#A8AFC3;">$'+Math.round(t.totalCum).toLocaleString()+'</td>'
-      +'<td style="text-align:right;"><span class="dc-flat">'+t.rows.length+' reps &rsaquo;</span></td></tr>';
-  }).join('');
-  host.innerHTML='<div class="r3-shell" style="margin:16px 0 0;">'
-    +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#FBBF24,#34D399);">&#128197;</span>'
-    +'<div class="r3-hmeta"><div class="r3-name">Per-rep daily log</div><div class="r3-sub">Top SMB rep per day &middot; click a day for everyone\u2019s sales</div></div></div>'
-    +'<div style="padding:8px 16px 14px;overflow-x:auto;"><table class="r3-tbl"><thead><tr><th style="text-align:left;">Date</th><th style="text-align:right;">SMB day</th><th style="text-align:left;">Top rep (SMB)</th><th style="text-align:right;">CORP day</th><th style="text-align:right;">SMB cum</th><th style="text-align:right;">Total cum</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  // v418: the separate per-rep daily log table was intentionally removed.
+  // Calendar days now carry the top-rep badge and open the daily per-rep popup directly.
+  var host=document.getElementById('dr-view');
+  if(host)host.innerHTML='';
 }
 function drDayPopup(dateISO){
   var t=_drDayTotals(dateISO);
+  var dailyEntry=null;
+  try{dailyEntry=getDailySales().filter(function(e){return e.date===dateISO;})[0]||null;}catch(e){}
+  var summary={
+    smbDay:dailyEntry?Number(dailyEntry.smbSales||0):Number(t.smbDay||0),
+    corpDay:dailyEntry?Number(dailyEntry.corpSales||0):Number(t.corpDay||0),
+    totalDay:dailyEntry?Number(dailyEntry.dailySales||0):Number(t.totalDay||0),
+    runningTotal:dailyEntry?Number(dailyEntry.runningTotal||0):Number(t.totalCum||0)
+  };
   var dstr=(typeof formatDateShort==='function'?formatDateShort(dateISO):dateISO);
   var rowsH=t.rows.length?t.rows.map(function(r,i){
-    return '<div class="r3m-row"><span style="display:flex;align-items:center;gap:8px;"><span class="dc-flat" style="width:16px;">'+(i+1)+'</span><span style="font-weight:700;">'+_m2esc(r.name)+'</span>'+(i===0&&r.day>0?' <span class="r3-pill" style="background:transparent;border:1px solid #FFD27A;color:#FFD27A;">&#11088; top</span>':'')+'</span><span style="text-align:right;"><span style="font-weight:800;color:#A7FFC0;">+$'+Math.round(r.day).toLocaleString()+'</span> <span class="dc-flat" style="font-weight:400;">$'+Math.round(r.cum).toLocaleString()+' cum</span></span></div>';
-  }).join(''):'<div class="dc-flat" style="padding:6px 0;">No rep entries for this day.</div>';
-  var h='<div class="r3m-h"><span class="r3-pill">Daily sales</span><div class="r3m-title">'+dstr+'</div></div>'
+    return '<div class="r3m-row"><span style="display:flex;align-items:center;gap:8px;min-width:0;"><span class="dc-flat" style="width:16px;flex:none;">'+(i+1)+'</span><span style="font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_m2esc(r.name)+'</span>'+(i===0&&r.day>0?' <span class="r3-pill" style="background:transparent;border:1px solid #FFD27A;color:#FFD27A;flex:none;">&#11088; top</span>':'')+'</span><span style="text-align:right;white-space:nowrap;"><span style="font-weight:900;color:#A7FFC0;">+$'+Math.round(r.day).toLocaleString()+'</span> <span class="dc-flat" style="font-weight:400;">$'+Math.round(r.cum).toLocaleString()+' cum</span></span></div>';
+  }).join(''):'<div class="daily-popup-note">No per-rep entries are saved for this day yet. Use <strong>Per-rep daily entry</strong> to save each rep\'s cumulative SMB total, then this popup will rank everyone for the day.</div>';
+  var h='<div class="daily-rep-popup"><div class="r3m-h"><span class="r3-pill">Daily sales</span><div class="r3m-title">'+dstr+'</div></div>'
     +'<div class="dc2-stats" style="grid-template-columns:1fr 1fr 1fr;border:1px solid var(--tcp-line);border-radius:10px;margin-bottom:10px;">'
-    +'<div class="dc2-stat"><div class="dc2-sl">SMB (day)</div><div class="dc2-sv" style="font-size:16px;color:#FFD27A;">+$'+Math.round(t.smbDay).toLocaleString()+'</div></div>'
-    +'<div class="dc2-stat"><div class="dc2-sl">CORP (day)</div><div class="dc2-sv" style="font-size:16px;color:#9DDCFF;">+$'+Math.round(t.corpDay).toLocaleString()+'</div></div>'
-    +'<div class="dc2-stat"><div class="dc2-sl">Total (day)</div><div class="dc2-sv" style="font-size:16px;">+$'+Math.round(t.totalDay).toLocaleString()+'</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">SMB (day)</div><div class="dc2-sv" style="font-size:16px;color:#FFD27A;">+$'+Math.round(summary.smbDay).toLocaleString()+'</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">CORP (day)</div><div class="dc2-sv" style="font-size:16px;color:#9DDCFF;">+$'+Math.round(summary.corpDay).toLocaleString()+'</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">Total (day)</div><div class="dc2-sv" style="font-size:16px;">+$'+Math.round(summary.totalDay).toLocaleString()+'</div></div>'
     +'</div>'
-    +'<div class="dc2-panel-h"><span>Rep sales &middot; ranked (day &middot; cumulative)</span></div>'+rowsH;
+    +'<div class="dc2-panel-h"><span>Rep sales &middot; ranked (day &middot; cumulative)</span><span class="dc-flat" style="font-size:11px;">Σ $'+Math.round(summary.runningTotal).toLocaleString()+'</span></div>'+rowsH+'</div>';
   if(typeof _r360Modal==='function')_r360Modal(h);else alert('Rep sales for '+dstr);
 }
 window.drSaveRepDay=drSaveRepDay;window.renderDailyRepView=renderDailyRepView;window.drDayPopup=drDayPopup;window._drRenderForm=_drRenderForm;window._drLive=_drLive;
@@ -15561,17 +15692,17 @@ function renderReviewsPage(){
   var wkOpts=wkNums.map(function(w){var r=_rvWeekRange(f.year,w);return opt(w,f.week,'Wk '+w+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end));}).join('');
   var lastFetch=S.reviews.lastFetched?new Date(S.reviews.lastFetched).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'never';
 
-  var html='<div class="r3-shell">'
-    +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#FBBF24,#FF6A3D);">&#11088;</span>'
+  var html='<div class="r3-shell rv-shell">'
+    +'<div class="r3-head rv-hero"><span class="r3-av" style="background:linear-gradient(135deg,#FBBF24,#FF6A3D);">&#11088;</span>'
     +'<div class="r3-hmeta"><div class="r3-name">Customer Reviews</div><div class="r3-sub">Google &amp; Trustpilot &middot; $'+REVIEW_PAY+' per review &middot; last synced '+lastFetch+'</div></div>'
     +'<div class="r3-hactions"><button class="dc2-act" onclick="rvRefresh(false)">&#8635; Refresh</button></div></div>';
   // source row
-  html+='<div style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'
+  html+='<div class="rv-source-row" style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'
     +'<input id="rv-url" class="r3-in" style="flex:1;min-width:240px;margin:0;" placeholder="Published Google Sheet CSV link" value="'+_m2esc(S.reviews.url||'')+'">'
     +'<span id="rv-status" class="dc-flat" style="font-size:11px;">'+(S.reviews.rows&&S.reviews.rows.length?('\u2713 '+S.reviews.rows.length+' loaded'):'')+'</span></div>';
   // duplicate queue
   if(pendingDupes.length){
-    html+='<div style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);background:rgba(251,191,36,.06);">'
+    html+='<div class="rv-alert rv-alert-dupes" style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);background:rgba(251,191,36,.06);">'
       +'<div class="dc2-panel-h" style="color:var(--tcp-gold);"><span>&#9888;&#65039; Possible duplicates &mdash; approve or remove ('+pendingDupes.length+')</span></div>';
     pendingDupes.forEach(function(x){
       html+='<div class="r3-note" style="border-color:rgba(251,191,36,.35);"><div class="r3-note-h"><span>'+_m2esc(x.repDisplay)+' &middot; '+x.platform+' &middot; '+_stars(x.raw.stars)+' &middot; '+_m2esc(x.raw.custName||'')+' &middot; <span class="dc-flat">'+_m2esc(String(x.raw.ts).slice(0,10))+'</span></span>'
@@ -15584,7 +15715,7 @@ function renderReviewsPage(){
   if(unmatched.length){
     var reps2=(typeof activeReps==='function'?activeReps():(S.reps||[]));
     var groups={};unmatched.forEach(function(x){var k=x.raw.rep||'(blank)';(groups[k]=groups[k]||[]).push(x);});
-    html+='<div style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);background:rgba(251,113,133,.05);">'
+    html+='<div class="rv-alert rv-alert-unmatched" style="padding:11px 16px;border-bottom:1px solid var(--tcp-line);background:rgba(251,113,133,.05);">'
       +'<div class="dc2-panel-h" style="color:var(--tcp-red);"><span>&#128269; Unmatched rep names &mdash; assign so they get paid ('+Object.keys(groups).length+')</span></div>';
     Object.keys(groups).forEach(function(k){
       html+='<div class="r3-note" style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><div><b>'+_m2esc(k)+'</b> <span class="dc-flat">&middot; '+groups[k].length+' review'+(groups[k].length>1?'s':'')+'</span></div>'
@@ -15593,14 +15724,14 @@ function renderReviewsPage(){
     html+='</div>';
   }
   // filter bar
-  html+='<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'
+  html+='<div class="rv-filter-bar" style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'
     +'<span class="dc2-sl" style="align-self:center;">Viewing</span>'
     +'<select id="rv-yr" class="r3-in" style="margin:0;max-width:100px;" onchange="renderReviewsPage()">'+yrOpts+'</select>'
     +'<select id="rv-q" class="r3-in" style="margin:0;max-width:80px;" onchange="_rvQChange()">'+qOpts+'</select>'
     +'<select id="rv-wk" class="r3-in" style="margin:0;max-width:200px;" onchange="renderReviewsPage()">'+wkOpts+'</select>'
     +'<span class="dc-flat" style="font-size:11px;">'+_rvFmt(range.start)+'\u2013'+_rvFmt(range.end)+', '+f.year+' (Mon\u2013Sun)</span></div>';
   // stats
-  html+='<div class="dc2-stats" style="border-bottom:1px solid var(--tcp-line);">'
+  html+='<div class="dc2-stats rv-kpi-grid" style="border-bottom:1px solid var(--tcp-line);">'
     +'<div class="dc2-stat"><div class="dc2-sl">Reviews this week</div><div class="dc2-sv">'+totalRev+'</div><div class="dc2-ss dc-flat">'+payList.length+' rep'+(payList.length!==1?'s':'')+' earning</div></div>'
     +'<div class="dc2-stat"><div class="dc2-sl">Payout this week</div><div class="dc2-sv" style="color:var(--tcp-green);">$'+payTotal+'</div><div class="dc2-ss dc-flat">$'+REVIEW_PAY+' \u00d7 '+(payTotal/REVIEW_PAY)+' paid reviews</div></div>'
     +'<div class="dc2-stat"><div class="dc2-sl">Google</div><div class="dc2-sv" style="color:#60A5FA;">'+gCount+'</div><div class="dc2-ss dc-flat">'+(totalRev?Math.round(gCount/totalRev*100):0)+'% of week</div></div>'
@@ -15624,7 +15755,7 @@ function renderReviewsPage(){
     var donutTotal=gW+tW+oW;
     var gPct=donutTotal?Math.round(gW/donutTotal*100):0;
     var tPct=donutTotal?Math.round(tW/donutTotal*100):0;
-    html+='<div class="dc2-charts" style="border-bottom:1px solid var(--tcp-line);">'
+    html+='<div class="dc2-charts rv-chart-grid" style="border-bottom:1px solid var(--tcp-line);">'
       +'<div class="dc2-chart"><div class="dc2-panel-h"><span>Reviews / week (last 8)</span></div>'+bars(wkSeries,wkLabels,'#FBBF24')+'</div>'
       +'<div class="dc2-chart"><div class="dc2-panel-h"><span>Source split (this wk)</span></div>'
         +'<div style="display:flex;flex-direction:column;gap:7px;padding-top:4px;">'
@@ -15638,12 +15769,12 @@ function renderReviewsPage(){
   })();
   // celebration
   if(topEarner){
-    html+='<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);"><div class="hero-band" style="margin:0;padding:12px 16px;background:linear-gradient(135deg,#B45309,#065F46);">'
+    html+='<div class="rv-star-card" style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);"><div class="hero-band" style="margin:0;padding:12px 16px;background:linear-gradient(135deg,#B45309,#065F46);">'
       +'<div class="hb-eyebrow" style="color:#FDE68A;">&#127881; Review star of the week</div>'
       +'<div class="hb-title" style="font-size:16px;">'+_m2esc(topEarner.name)+' &mdash; '+topEarner.count+' review'+(topEarner.count>1?'s':'')+' ($'+topEarner.amt+')</div></div></div>';
   }
   // payout table
-  html+='<div style="padding:13px 16px;border-bottom:1px solid var(--tcp-line);">'
+  html+='<div class="rv-payout-section" style="padding:13px 16px;border-bottom:1px solid var(--tcp-line);">'
     +'<div class="dc2-panel-h"><span>&#128176; Weekly payout \u2014 submit to payroll</span>'
     +(payList.length?'<button class="dc2-act" onclick="rvCopyPayout()">&#128203; Copy for payroll</button>':'')+'</div>'
     +(payList.length?('<table class="r3-tbl"><thead><tr><th style="text-align:left;">Rep</th><th>Reviews</th><th>Amount</th></tr></thead><tbody>'
@@ -15653,11 +15784,11 @@ function renderReviewsPage(){
     +'</div>';
   // reviews grouped by rep
   var byRep={};wk.forEach(function(x){var k=x.matched?x.repName:x.repDisplay;(byRep[k]=byRep[k]||[]).push(x);});
-  html+='<div style="padding:13px 16px;"><div class="dc2-panel-h"><span>Reviews this week \u2014 grouped by rep</span></div>';
+  html+='<div class="rv-review-section" style="padding:13px 16px;"><div class="dc2-panel-h"><span>Reviews this week \u2014 grouped by rep</span></div>';
   var repKeys=Object.keys(byRep).sort(function(a,b){return byRep[b].length-byRep[a].length;});
   if(!repKeys.length)html+='<div class="dc-flat" style="padding:6px 0;">No reviews land in this week.</div>';
   repKeys.forEach(function(k){
-    html+='<div style="margin:0 0 10px;"><div style="font-size:12px;font-weight:800;color:var(--tcp-text);margin-bottom:5px;">'+_m2esc(k)+' <span class="dc-flat" style="font-weight:400;">&middot; '+byRep[k].length+'</span></div>';
+    html+='<div class="rv-rep-group" style="margin:0 0 10px;"><div style="font-size:12px;font-weight:800;color:var(--tcp-text);margin-bottom:5px;">'+_m2esc(k)+' <span class="dc-flat" style="font-weight:400;">&middot; '+byRep[k].length+'</span></div>';
     byRep[k].forEach(function(x){
       var pc=x.platform==='Google'?'#60A5FA':x.platform==='Trustpilot'?'#34D399':'#9AA0B3';
       html+='<div class="r3-note"><div class="r3-note-h"><span><span class="r3-pill" style="background:transparent;border:1px solid '+pc+';color:'+pc+';">'+x.platform+'</span> '+_stars(x.raw.stars)+(x.raw.custName?' <span class="dc-flat">&middot; '+_m2esc(x.raw.custName)+'</span>':'')+(!x.pays?' <span class="dc-flat">&middot; no pay</span>':'')+'</span><span class="dc-flat" style="font-size:10px;">'+_m2esc(String(x.raw.ts).slice(0,10))+'</span></div>'
