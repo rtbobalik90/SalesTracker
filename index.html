@@ -3977,6 +3977,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
               <button class="sbtn art-primary" onclick="aeSyncCsv()">Sync CSV</button>
             </div>
             <div id="aeCsvStatus" class="art-csv-status">Not synced yet. Only reps on the tracker roster are imported — anyone else on the sheet is skipped. Deleted rows stay ignored on future syncs.</div>
+            <div id="aeLastRefreshed" class="art-csv-status" style="opacity:.7;font-size:11px;margin-top:2px;"></div>
             <div class="art-action-strip" style="margin-top:0;">
               <button class="sbtn credit-danger" onclick="aeDeleteUnmatched()">Delete all unmatched</button>
               <button class="sbtn credit-danger" onclick="aeClearIgnoredRows()">Restore deleted CSV rows</button>
@@ -6629,6 +6630,7 @@ function aeFilteredOrders(filtered){
 }
 function aeSetText(id,txt){var el=document.getElementById(id);if(el)el.textContent=txt;}
 function renderAEL(){
+  try{var _lr=document.getElementById('aeLastRefreshed');if(_lr){var _ls=S.artErrorSource&&S.artErrorSource.lastSync;_lr.textContent=_ls?('Last refreshed '+new Date(_ls).toLocaleString()):'Not synced yet';}}catch(e){}
   var f=aeFilteredList();
   var orders=aeFilteredOrders(f);
   var rate=orders>0?(f.length/orders*100):0;
@@ -17789,7 +17791,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:437,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:438,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
