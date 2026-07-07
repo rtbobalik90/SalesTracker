@@ -3962,35 +3962,16 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
     <div class="art-layout">
       <div class="art-main-stack">
-        <div class="art-panel art-panel-hot">
-          <div class="art-panel-head">
-            <div>
-              <div class="art-section-kicker">Google CSV intake</div>
-              <div class="art-section-title">Sync art errors from web CSV <button onclick="event.stopPropagation();showHelp('art-errors')" title="What is this?" class="art-help-btn">?</button></div>
-              <p class="art-help">Paste the published Google Sheet CSV link. The tracker reads date, sales order number, sales rep, issue explanation, and issue type, then matches the rep to the tracker roster.</p>
-            </div>
-            <span class="art-pill">Source synced</span>
+        <div class="art-panel art-mini-panel">
+          <div class="art-panel-head compact">
+            <div><div class="art-section-kicker">Google CSV intake</div><div class="art-section-title">Source configured in Admin</div></div>
+            <div class="art-icon-bubble">&#128260;</div>
           </div>
-          <div class="art-csv-card">
-            <div class="art-csv-row">
-              <div class="art-csv-field"><label>Published Google CSV URL</label><input type="url" id="aeCsvUrl" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"></div>
-              <button class="sbtn" onclick="aeSaveCsvUrl()">Save URL</button>
-              <button class="sbtn art-primary" onclick="aeSyncCsv()">Sync CSV</button>
-            </div>
-            <div class="art-csv-map">
-              <span><strong>Date</strong> Finds Date / Timestamp columns and assigns the tracker week.</span>
-              <span><strong>SO number</strong> Finds Sales Order Number / SO / Order #.</span>
-              <span><strong>Sales rep</strong> Matches to the tracker roster by rep name.</span>
-              <span><strong>Explain issue</strong> Pulls the issue explanation/description.</span>
-              <span><strong>Issue type</strong> Maps type/category; unknown labels stay visible.</span>
-            </div>
-            <div id="aeCsvReadout" class="art-sync-readout"></div>
-            <div id="aeCsvStatus" class="art-csv-status">Not synced yet. Deleted synced rows stay ignored on future syncs so they do not keep dinging the rep.</div>
-            <div class="art-action-strip" style="margin-top:0;">
-              <button class="sbtn" onclick="aeSyncCsv()">Refresh from Google CSV</button>
-              <button class="sbtn credit-danger" onclick="aeClearIgnoredRows()">Restore deleted CSV rows</button>
-              <span id="aeMsg" class="art-status" style="display:none;">✓ Synced!</span>
-            </div>
+          <p class="art-help">The CSV source URL lives in <strong>Admin &#8594; Art Error CSV Source</strong>. Refresh pulls the latest rows from there. Rows whose rep is not on the roster are skipped.</p>
+          <div class="art-action-strip" style="margin-top:0;">
+            <button class="sbtn art-primary" onclick="aeRefreshInline()">&#128260; Refresh from Google CSV</button>
+            <button class="sbtn credit-danger" onclick="aeClearIgnoredRows()">Restore deleted CSV rows</button>
+            <span id="aeRefreshMsg" class="art-status" style="display:none;"></span>
           </div>
         </div>
 
@@ -4001,6 +3982,16 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
               <div class="art-section-title">Art error history</div>
             </div>
             <span class="art-pill art-pill-purple">Hover to edit</span>
+          </div>
+          <div class="art-period-bar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px;">
+            <div class="ig"><label>Year</label><select id="aeFYr" onchange="aeFilterYrChange()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+            <div class="ig"><label>Quarter</label><select id="aeFQ" onchange="aeFilterQChange()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
+            <div class="ig"><label>Month</label><select id="aeFM" onchange="aeFilterMChange()"><option value="all">All</option></select></div>
+            <div class="ig"><label>Week</label><select id="aeFW" onchange="renderAEL()"><option value="all">All</option></select></div>
+            <div style="flex:1 1 8px;"></div>
+            <button class="sbtn" onclick="aeQuickFilter('currentQuarter')">This quarter</button>
+            <button class="sbtn" onclick="aeQuickFilter('currentWeek')">This week</button>
+            <button class="sbtn" onclick="aeQuickFilter('all')">All</button>
           </div>
           <div class="chips art-summary-chips" id="aeSum"></div>
           <div id="aeLog" class="art-log-list"></div>
@@ -4034,10 +4025,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
           <div class="art-filter-grid">
             <div class="ig"><label>Rep</label><select id="aeFR" onchange="renderAEL()"><option value="all">All reps</option></select></div>
             <div class="ig"><label>Type</label><select id="aeFT" onchange="renderAEL()"><option value="all">All types</option><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select></div>
-            <div class="ig"><label>Year</label><select id="aeFYr" onchange="aeFilterYrChange()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
-            <div class="ig"><label>Quarter</label><select id="aeFQ" onchange="aeFilterQChange()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
-            <div class="ig"><label>Month</label><select id="aeFM" onchange="aeFilterMChange()"><option value="all">All</option></select></div>
-            <div class="ig"><label>Week</label><select id="aeFW" onchange="renderAEL()"><option value="all">All</option></select></div>
+            
           </div>
         </div>
 
@@ -5024,6 +5012,18 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     </div>
 
     <div class="admin-sys-panel admin-span-6">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">Art Error CSV Source</div><h2>Google Sheet art errors feed</h2><p>Paste the published CSV. The Art Errors page reads date, SO number, sales rep, issue, and type, and matches the rep to the roster. Rows whose rep is not on the roster are skipped on import.</p></div><span class="admin-big-icon">&#127912;</span></div>
+      <label class="admin-label">Published Google Sheet CSV URL<input id="aeCsvUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv"></label>
+      <div class="admin-button-row">
+        <button class="sbtn entry-primary" onclick="aeSaveCsvUrl()">&#10003; Save URL</button>
+        <button class="sbtn" onclick="aeSyncCsv()">&#128260; Sync CSV</button>
+        <button class="sbtn credit-danger" onclick="aeClearIgnoredRows()">Restore deleted rows</button>
+      </div>
+      <div id="aeCsvReadout" class="art-sync-readout"></div>
+      <div id="aeCsvStatus" class="art-csv-status">Not synced yet. Deleted synced rows stay ignored on future syncs.</div>
+    </div>
+
+    <div class="admin-sys-panel admin-span-6">
       <div class="admin-panel-head"><div><div class="admin-sys-kicker">Production Feed Manager</div><h2>Google Sheet production status</h2><p>Connect the published CSV feed so Company Knowledge, Forecast, and reports can reference current production timelines.</p></div><span class="admin-big-icon">🏭</span></div>
       <label class="admin-label">Published Google Sheet CSV URL<input id="prodCsvUrlInput" type="url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?gid=0&single=true&output=csv"></label>
       <div class="admin-button-row">
@@ -5702,7 +5702,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());aeAutoPeriod();renderAEL();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -17806,7 +17806,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:431,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:432,phase:'Art: sync\u2192Admin, period selector, roster-only import',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -18576,6 +18576,8 @@ try{ if(typeof injectThemeCSS==='function') injectThemeCSS(loadTheme()); }catch(
       +'<div class="art-sync-metric"><div>Ignored</div><div>'+((S.artErrorIgnored||[]).length).toLocaleString()+'</div></div>';
   }
   window.aeSaveCsvUrl=function(){aeEnsureStore();var el=document.getElementById('aeCsvUrl');S.artErrorSource.url=aeClean(el&&el.value||'');markDirty();aeStatus(S.artErrorSource.url?'CSV URL saved. Click <strong>Sync CSV</strong> to import rows.':'CSV URL cleared.','ok');aeReadout();};
+  window.aeAutoPeriod=function(){try{if(window._aePeriodInit)return;var y=document.getElementById('aeFYr');if(!y)return;window._aePeriodInit=1;if(typeof aeQuickFilter==='function')aeQuickFilter('currentQuarter');}catch(e){}};
+  window.aeRefreshInline=async function(){var m=document.getElementById('aeRefreshMsg');if(m){m.style.display='inline';m.textContent='Refreshing\u2026';}try{await aeSyncCsv();if(m)m.textContent=(S.artErrorSource&&S.artErrorSource.lastError)?('\u26a0 '+S.artErrorSource.lastError):('\u2713 Updated \u00b7 '+((S.artErrorSource&&S.artErrorSource.lastImported)||0)+' new');}catch(e){if(m)m.textContent='\u26a0 '+(e&&e.message||e);}if(m)setTimeout(function(){m.style.display='none';},5000);};
   window.aeSyncCsv=async function(){
     aeEnsureStore();var urlEl=document.getElementById('aeCsvUrl');var url=aeClean((urlEl&&urlEl.value)||S.artErrorSource.url||'');
     if(!url){aeStatus('Paste a published Google Sheet CSV URL first.','bad');return;}
@@ -18595,10 +18597,11 @@ try{ if(typeof injectThemeCSS==='function') injectThemeCSS(loadTheme()); }catch(
       var missing=[]; if(idx.date<0)missing.push('date'); if(idx.so<0)missing.push('sales order number'); if(idx.rep<0)missing.push('sales rep'); if(idx.desc<0)missing.push('explain issue'); if(idx.type<0)missing.push('issue type');
       if(missing.length)throw new Error('Missing required column(s): '+missing.join(', ')+'. Headers found: '+headers.join(' | '));
       var stats={imported:0,updated:0,skipped:0,ignored:0,unmatched:0,badDate:0};
+      S.artErrors=(S.artErrors||[]).filter(function(a){return a&&a.repMatched!==false;});
       var existing={};(S.artErrors||[]).forEach(function(a){if(a&&a.sourceKey)existing[a.sourceKey]=a;});
       dataRows.forEach(function(r){
         var d=aeParseDate(r[idx.date]); if(!d){stats.badDate++;return;}
-        var w=aeWeekForDate(d),mr=aeMatchRep(r[idx.rep]),mt=aeMapType(r[idx.type]); if(!mr.matched)stats.unmatched++;
+        var w=aeWeekForDate(d),mr=aeMatchRep(r[idx.rep]),mt=aeMapType(r[idx.type]); if(!mr.matched){stats.unmatched++;return;}
         var rec={dateISO:aeISO(d),date:fds(aeISO(d)),sourceDate:aeClean(r[idx.date]),so:aeClean(r[idx.so]),sourceRep:aeClean(r[idx.rep]),rep:mr.name,repMatched:mr.matched,type:mt.type,issueTypeLabel:mt.label,sourceType:mt.source,desc:aeClean(r[idx.desc]),weekKey:w&&w.key||'',yr:String((w&&w.key||'').split('_')[0]||d.getFullYear()),q:String((w&&w.key||'').split('_')[1]||('Q'+(Math.floor(d.getMonth()/3)+1))),source:'google_csv',syncVersion:AE_SYNC_VERSION};
         rec.sourceKey=aeSourceKey(rec);
         if(aeIgnored(rec.sourceKey)){stats.ignored++;return;}
@@ -18608,7 +18611,7 @@ try{ if(typeof injectThemeCSS==='function') injectThemeCSS(loadTheme()); }catch(
       });
       S.artErrorSource.lastSync=new Date().toISOString();S.artErrorSource.lastCount=dataRows.length;S.artErrorSource.lastImported=stats.imported;S.artErrorSource.lastUpdated=stats.updated;S.artErrorSource.lastSkipped=stats.skipped+stats.ignored+stats.badDate;S.artErrorSource.lastUnmatched=stats.unmatched;S.artErrorSource.lastError='';
       markDirty();aePopulateMWeek();renderAEL();aeReadout();
-      aeStatus('✓ Synced '+dataRows.length.toLocaleString()+' CSV row(s): <strong>'+stats.imported+'</strong> new, <strong>'+stats.updated+'</strong> updated, <strong>'+stats.ignored+'</strong> ignored, <strong>'+stats.unmatched+'</strong> unmatched rep name(s).',stats.unmatched?'warn':'ok');
+      aeStatus('✓ Synced '+dataRows.length.toLocaleString()+' CSV row(s): <strong>'+stats.imported+'</strong> new, <strong>'+stats.updated+'</strong> updated, <strong>'+stats.ignored+'</strong> ignored, <strong>'+stats.unmatched+'</strong> row(s) skipped \u2014 rep not on roster.',stats.unmatched?'warn':'ok');
     }catch(e){S.artErrorSource.lastError=e&&e.message?e.message:String(e);aeStatus('❌ '+aeEsc(S.artErrorSource.lastError),'bad');aeReadout();}
   };
   window.aeClearIgnoredRows=function(){aeEnsureStore();var n=S.artErrorIgnored.length;if(!n){aeStatus('No deleted CSV rows are currently ignored.','warn');return;}if(!confirm('Restore '+n+' ignored CSV row(s)? They may return on the next sync.'))return;S.artErrorIgnored=[];markDirty();aeStatus('Ignored-row list cleared. Click Sync CSV to bring source rows back.','ok');aeReadout();};
