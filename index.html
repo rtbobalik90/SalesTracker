@@ -2653,6 +2653,12 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   .r3-addrow{grid-template-columns:1fr;}
 }
 </style>
+<style id="tcp-dailyrep-grid">
+.dr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;}
+.dr-cell label{display:block;font-size:9.5px;color:var(--tcp-muted);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dr-in{width:100%;box-sizing:border-box;}
+@media(max-width:520px){.dr-grid{grid-template-columns:1fr 1fr;}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -3428,7 +3434,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v415 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v416 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -3970,6 +3976,9 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         </div>
         <div id="dailyMsg" class="daily-inline-msg"></div>
       </section>
+<div id="dr-form"></div>
+<div id="dr-view"></div>
+
 
       <section class="daily-panel daily-controls-panel">
         <div class="daily-panel-head compact">
@@ -6863,7 +6872,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
 // beforeunload: not needed in artifact sandbox
@@ -6885,6 +6894,7 @@ function loadFromStorage(){
     S.dailySales=saved.dailySales||[];
     S.customers=saved.customers||[];
     S.reviews=saved.reviews||{url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};
+    S.dailyRep=saved.dailyRep||{};
     S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};
     S.teamGoals=saved.teamGoals||{};
     S.reps.forEach(function(r){if(!r.profile)r.profile={};if(r.retired===undefined)r.retired=false;});
@@ -15299,6 +15309,119 @@ window.addEventListener('load', function(){
     {key:'system',icon:'⚙️',label:'Admin',open:false,items:[['admin','Admin','⚙️'],['cknow','Company Knowledge','🧠']]}
   ];
   
+/* ===== MODULE: PHASE12-DAILYREP (per-rep cumulative daily sales, additive to combined totals) ===== */
+function _drEnsure(){if(!S.dailyRep||typeof S.dailyRep!=='object')S.dailyRep={};/* {date:{rep:cumAmt,...,__corp:amt}} */}
+function _drToday(){var n=new Date();function p(x){return (x<10?'0':'')+x;}return n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());}
+function _drDates(){_drEnsure();return Object.keys(S.dailyRep).sort();}
+function _drPrevDate(dateISO){var ds=_drDates().filter(function(d){return d<dateISO;});return ds.length?ds[ds.length-1]:null;}
+function _drRepDay(dateISO,repName){ // that day's SMB sales for a rep = cum today - cum prev
+  _drEnsure();var cur=Number((S.dailyRep[dateISO]||{})[repName]||0);
+  var pd=_drPrevDate(dateISO);var prev=pd?Number((S.dailyRep[pd]||{})[repName]||0):0;
+  return Math.max(0,cur-prev);
+}
+function _drDayTotals(dateISO){
+  _drEnsure();var day=S.dailyRep[dateISO]||{};
+  var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
+  var smbDay=0,smbCum=0,rows=[];
+  reps.forEach(function(r){
+    var cum=Number(day[r.name]||0);
+    var dayS=_drRepDay(dateISO,r.name);
+    if(cum>0||dayS>0){rows.push({name:r.name,cum:cum,day:dayS});smbCum+=cum;smbDay+=dayS;}
+  });
+  rows.sort(function(a,b){return b.day-a.day||b.cum-a.cum;});
+  var corp=Number(day.__corp||0);
+  var pd=_drPrevDate(dateISO);var corpPrev=pd?Number((S.dailyRep[pd]||{}).__corp||0):0;
+  var corpDay=Math.max(0,corp-corpPrev);
+  return {rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
+}
+function _drRenderForm(){
+  var host=document.getElementById('dr-form');if(!host)return;
+  _drEnsure();
+  var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
+  var d=(document.getElementById('dr-date')||{}).value||_drToday();
+  host.innerHTML='<div class="r3-shell" style="margin:16px 0 0;">'
+    +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#34D399,#7C6CFF);">&#128100;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name">Per-rep daily entry</div><div class="r3-sub">Cumulative running total per rep (SMB) &middot; CORP separate &middot; blank fields = re-enter totals</div></div></div>'
+    +'<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;">'
+    +'<div class="ig" style="margin:0;"><label style="font-size:9px;color:var(--tcp-muted);text-transform:uppercase;letter-spacing:.08em;">Date</label><br><input type="date" id="dr-date" class="r3-in" style="margin:4px 0 0;max-width:170px;" value="'+d+'" onchange="_drRenderForm()"></div>'
+    +'<div class="ig" style="margin:0;"><label style="font-size:9px;color:#9DDCFF;text-transform:uppercase;letter-spacing:.08em;font-weight:800;">CORP running total ($)</label><br><input type="number" id="dr-corp" class="r3-in" style="margin:4px 0 0;max-width:180px;" min="0" step="0.01" placeholder="'+(Number((S.dailyRep[d]||{}).__corp||0)||'')+'" value="'+(S.dailyRep[d]&&S.dailyRep[d].__corp!=null?S.dailyRep[d].__corp:'')+'"></div>'
+    +'</div>'
+    +'<div style="padding:12px 16px;"><div class="dc2-panel-h"><span>Rep cumulative totals (SMB)</span><span id="dr-live" class="dc-flat" style="font-size:11px;"></span></div>'
+    +'<div class="dr-grid">'
+    +reps.map(function(r){var v=(S.dailyRep[d]&&S.dailyRep[d][r.name]!=null)?S.dailyRep[d][r.name]:'';return '<div class="dr-cell"><label>'+_m2esc(r.name)+'</label><input type="number" class="r3-in dr-in" data-rep="'+_m2esc(r.name)+'" style="margin:0;" min="0" step="0.01" placeholder="0.00" value="'+v+'" oninput="_drLive()"></div>';}).join('')
+    +'</div>'
+    +'<div style="margin-top:12px;display:flex;gap:8px;align-items:center;"><button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="drSaveRepDay()">&#128190; Save day</button><span id="dr-msg" class="dc-up" style="display:none;font-size:11px;"></span></div>'
+    +'</div></div>';
+  _drLive();
+}
+function _drLive(){
+  var el=document.getElementById('dr-live');if(!el)return;
+  var d=(document.getElementById('dr-date')||{}).value||_drToday();
+  var ins=document.querySelectorAll('.dr-in');
+  var smbCum=0;ins.forEach(function(i){smbCum+=Number(i.value)||0;});
+  var corp=Number((document.getElementById('dr-corp')||{}).value)||0;
+  // day-jumps
+  var smbDay=0;ins.forEach(function(i){var rep=i.dataset.rep;var cur=Number(i.value)||0;var pd=_drPrevDate(d);var prev=pd?Number((S.dailyRep[pd]||{})[rep]||0):0;smbDay+=Math.max(0,cur-prev);});
+  el.innerHTML='SMB cum $'+Math.round(smbCum).toLocaleString()+' &middot; day +$'+Math.round(smbDay).toLocaleString()+' &middot; +CORP = $'+Math.round(smbCum+corp).toLocaleString();
+}
+function drSaveRepDay(){
+  _drEnsure();
+  var d=(document.getElementById('dr-date')||{}).value;
+  if(!d){alert('Pick a date.');return;}
+  var rec={};var any=false;
+  document.querySelectorAll('.dr-in').forEach(function(i){var v=i.value.trim();if(v!==''){rec[i.dataset.rep]=Number(v)||0;any=true;}});
+  var corp=(document.getElementById('dr-corp')||{}).value.trim();
+  if(corp!=='')rec.__corp=Number(corp)||0;
+  S.dailyRep[d]=rec;
+  try{markDirty();}catch(e){}
+  var m=document.getElementById('dr-msg');if(m){m.textContent='\u2713 Saved '+d;m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
+  renderDailyRepView();
+}
+function renderDailyRepView(){
+  var host=document.getElementById('dr-view');if(!host)return;
+  _drEnsure();
+  var dates=_drDates().slice().reverse();
+  if(!dates.length){host.innerHTML='';return;}
+  var rows=dates.map(function(d){
+    var t=_drDayTotals(d);
+    return '<tr style="cursor:pointer;" onclick="drDayPopup(\''+d+'\')"><td style="text-align:left;">'+(typeof formatDateShort==='function'?formatDateShort(d):d)+'</td>'
+      +'<td style="text-align:right;font-weight:900;color:#A7FFC0;">+$'+Math.round(t.smbDay).toLocaleString()+'</td>'
+      +'<td style="text-align:left;">'+(t.top?('<span class="r3-pill" style="background:transparent;border:1px solid #FFD27A;color:#FFD27A;">&#11088; '+_m2esc(t.top.name.split(' ')[0])+' +$'+Math.round(t.top.day).toLocaleString()+'</span>'):'<span class="dc-flat">\u2014</span>')+'</td>'
+      +'<td style="text-align:right;color:#9DDCFF;font-weight:800;">+$'+Math.round(t.corpDay).toLocaleString()+'</td>'
+      +'<td style="text-align:right;color:#FFD27A;font-weight:800;">$'+Math.round(t.smbCum).toLocaleString()+'</td>'
+      +'<td style="text-align:right;color:#A8AFC3;">$'+Math.round(t.totalCum).toLocaleString()+'</td>'
+      +'<td style="text-align:right;"><span class="dc-flat">'+t.rows.length+' reps &rsaquo;</span></td></tr>';
+  }).join('');
+  host.innerHTML='<div class="r3-shell" style="margin:16px 0 0;">'
+    +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#FBBF24,#34D399);">&#128197;</span>'
+    +'<div class="r3-hmeta"><div class="r3-name">Per-rep daily log</div><div class="r3-sub">Top SMB rep per day &middot; click a day for everyone\u2019s sales</div></div></div>'
+    +'<div style="padding:8px 16px 14px;overflow-x:auto;"><table class="r3-tbl"><thead><tr><th style="text-align:left;">Date</th><th style="text-align:right;">SMB day</th><th style="text-align:left;">Top rep (SMB)</th><th style="text-align:right;">CORP day</th><th style="text-align:right;">SMB cum</th><th style="text-align:right;">Total cum</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+function drDayPopup(dateISO){
+  var t=_drDayTotals(dateISO);
+  var dstr=(typeof formatDateShort==='function'?formatDateShort(dateISO):dateISO);
+  var rowsH=t.rows.length?t.rows.map(function(r,i){
+    return '<div class="r3m-row"><span style="display:flex;align-items:center;gap:8px;"><span class="dc-flat" style="width:16px;">'+(i+1)+'</span><span style="font-weight:700;">'+_m2esc(r.name)+'</span>'+(i===0&&r.day>0?' <span class="r3-pill" style="background:transparent;border:1px solid #FFD27A;color:#FFD27A;">&#11088; top</span>':'')+'</span><span style="text-align:right;"><span style="font-weight:800;color:#A7FFC0;">+$'+Math.round(r.day).toLocaleString()+'</span> <span class="dc-flat" style="font-weight:400;">$'+Math.round(r.cum).toLocaleString()+' cum</span></span></div>';
+  }).join(''):'<div class="dc-flat" style="padding:6px 0;">No rep entries for this day.</div>';
+  var h='<div class="r3m-h"><span class="r3-pill">Daily sales</span><div class="r3m-title">'+dstr+'</div></div>'
+    +'<div class="dc2-stats" style="grid-template-columns:1fr 1fr 1fr;border:1px solid var(--tcp-line);border-radius:10px;margin-bottom:10px;">'
+    +'<div class="dc2-stat"><div class="dc2-sl">SMB (day)</div><div class="dc2-sv" style="font-size:16px;color:#FFD27A;">+$'+Math.round(t.smbDay).toLocaleString()+'</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">CORP (day)</div><div class="dc2-sv" style="font-size:16px;color:#9DDCFF;">+$'+Math.round(t.corpDay).toLocaleString()+'</div></div>'
+    +'<div class="dc2-stat"><div class="dc2-sl">Total (day)</div><div class="dc2-sv" style="font-size:16px;">+$'+Math.round(t.totalDay).toLocaleString()+'</div></div>'
+    +'</div>'
+    +'<div class="dc2-panel-h"><span>Rep sales &middot; ranked (day &middot; cumulative)</span></div>'+rowsH;
+  if(typeof _r360Modal==='function')_r360Modal(h);else alert('Rep sales for '+dstr);
+}
+window.drSaveRepDay=drSaveRepDay;window.renderDailyRepView=renderDailyRepView;window.drDayPopup=drDayPopup;window._drRenderForm=_drRenderForm;window._drLive=_drLive;
+window.addEventListener('load',function(){
+  setTimeout(function(){try{if(document.getElementById('pg-daily')&&document.getElementById('pg-daily').classList.contains('active')){_drRenderForm();renderDailyRepView();}}catch(e){}},700);
+});
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('button'):null;if(!b)return;
+  var oc=b.getAttribute('onclick')||'';
+  if(oc.indexOf("gt('daily'")>=0)setTimeout(function(){try{_drRenderForm();renderDailyRepView();}catch(_e){}},90);
+});
+
 /* ===== MODULE: PHASE11-REVIEWS (Customer Reviews: CSV pull, ISO week payout, dedupe, celebration) ===== */
 var REVIEW_PAY=10;
 function _rvEnsure(){if(!S.reviews||typeof S.reviews!=='object')S.reviews={url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};if(!S.reviews.decisions)S.reviews.decisions={};if(!S.reviews.unmatchFix)S.reviews.unmatchFix={};}
@@ -15483,6 +15606,36 @@ function renderReviewsPage(){
     +'<div class="dc2-stat"><div class="dc2-sl">Google</div><div class="dc2-sv" style="color:#60A5FA;">'+gCount+'</div><div class="dc2-ss dc-flat">'+(totalRev?Math.round(gCount/totalRev*100):0)+'% of week</div></div>'
     +'<div class="dc2-stat"><div class="dc2-sl">Trustpilot</div><div class="dc2-sv" style="color:#34D399;">'+tCount+'</div><div class="dc2-ss dc-flat">'+(totalRev?Math.round(tCount/totalRev*100):0)+'% of week</div></div>'
     +'</div>';
+  // charts (quick-glance)
+  (function(){
+    // last 8 ISO weeks ending at selected week
+    var wkSeries=[],wkLabels=[];
+    var yy=f.year,ww=f.week;
+    var seq=[];for(var b=7;b>=0;b--){var tw=ww-b,ty=yy;while(tw<1){ty--;tw+=52;}seq.push({y:ty,w:tw});}
+    seq.forEach(function(p){var cnt=_rvActive(all).filter(function(x){return x.year===p.y&&x.week===p.w;}).length;wkSeries.push(cnt);wkLabels.push('w'+p.w);});
+    var gW=wk.filter(function(x){return x.platform==='Google';}).length;
+    var tW=wk.filter(function(x){return x.platform==='Trustpilot';}).length;
+    var oW=wk.length-gW-tW;
+    // rep leaderboard this week (by count, matched)
+    var lb={};wk.forEach(function(x){if(x.matched){lb[x.repName]=(lb[x.repName]||0)+1;}});
+    var lbArr=Object.keys(lb).map(function(n){return {n:n,c:lb[n]};}).sort(function(a,b){return b.c-a.c;}).slice(0,6);
+    var lbMax=lbArr.length?lbArr[0].c:1;
+    function bars(vals,labels,color){var max=Math.max.apply(null,vals.concat([1]));return '<div class="dcb">'+vals.map(function(v,i){var h=max>0?Math.max(3,Math.round((v/max)*46)):3;return '<div class="dcb-c"><div class="dcb-v">'+(v>0?v:'')+'</div><div class="dcb-b" style="height:'+h+'px;background:'+color+';opacity:'+(v>0?1:.15)+';"></div><div class="dcb-x">'+labels[i]+'</div></div>';}).join('')+'</div>';}
+    var donutTotal=gW+tW+oW;
+    var gPct=donutTotal?Math.round(gW/donutTotal*100):0;
+    var tPct=donutTotal?Math.round(tW/donutTotal*100):0;
+    html+='<div class="dc2-charts" style="border-bottom:1px solid var(--tcp-line);">'
+      +'<div class="dc2-chart"><div class="dc2-panel-h"><span>Reviews / week (last 8)</span></div>'+bars(wkSeries,wkLabels,'#FBBF24')+'</div>'
+      +'<div class="dc2-chart"><div class="dc2-panel-h"><span>Source split (this wk)</span></div>'
+        +'<div style="display:flex;flex-direction:column;gap:7px;padding-top:4px;">'
+        +'<div><div style="display:flex;justify-content:space-between;font-size:10.5px;margin-bottom:3px;"><span style="color:#60A5FA;font-weight:700;">Google</span><span class="dc-flat">'+gW+' &middot; '+gPct+'%</span></div><div class="dc-prog" style="margin-top:0;"><div class="dc-prog-fill" style="width:'+gPct+'%;background:#60A5FA;"></div></div></div>'
+        +'<div><div style="display:flex;justify-content:space-between;font-size:10.5px;margin-bottom:3px;"><span style="color:#34D399;font-weight:700;">Trustpilot</span><span class="dc-flat">'+tW+' &middot; '+tPct+'%</span></div><div class="dc-prog" style="margin-top:0;"><div class="dc-prog-fill" style="width:'+tPct+'%;background:#34D399;"></div></div></div>'
+        +(oW>0?'<div><div style="display:flex;justify-content:space-between;font-size:10.5px;margin-bottom:3px;"><span class="dc-flat">Other</span><span class="dc-flat">'+oW+'</span></div><div class="dc-prog" style="margin-top:0;"><div class="dc-prog-fill" style="width:'+(donutTotal?Math.round(oW/donutTotal*100):0)+'%;background:#9AA0B3;"></div></div></div>':'')
+        +'</div></div>'
+      +'<div class="dc2-chart"><div class="dc2-panel-h"><span>Top reps (this wk)</span></div>'
+        +(lbArr.length?('<div style="display:flex;flex-direction:column;gap:6px;padding-top:4px;">'+lbArr.map(function(r){return '<div style="display:flex;align-items:center;gap:8px;"><span style="font-size:10.5px;width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_m2esc(r.n.split(' ')[0])+'</span><div style="flex:1;height:8px;background:var(--tcp-panel-2);border-radius:99px;"><div style="height:100%;border-radius:99px;width:'+Math.round(r.c/lbMax*100)+'%;background:linear-gradient(90deg,#FBBF24,#FF6A3D);"></div></div><span style="font-size:10.5px;font-weight:800;width:16px;text-align:right;">'+r.c+'</span></div>';}).join('')+'</div>'):'<div class="dc-flat" style="padding-top:6px;">No reviews this week.</div>')
+      +'</div></div>';
+  })();
   // celebration
   if(topEarner){
     html+='<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);"><div class="hero-band" style="margin:0;padding:12px 16px;background:linear-gradient(135deg,#B45309,#065F46);">'
@@ -16745,7 +16898,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:415,phase:'Phase 11 — Customer Reviews',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:416,phase:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
