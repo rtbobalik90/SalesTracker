@@ -1025,6 +1025,170 @@ select optgroup{
 @media(max-width:760px){.daily-hero{flex-direction:column;align-items:flex-start;padding:20px}.daily-hero-actions{width:100%}.daily-action-btn,.daily-save-btn{width:100%}.daily-entry-grid{grid-template-columns:1fr}.daily-summary-grid{grid-template-columns:1fr}.daily-calendar-grid{gap:4px}.daily-day-cell{min-height:66px;padding:7px}.daily-day-sale{font-size:11px}.daily-table-wrap{overflow-x:auto}.daily-table{min-width:620px}}
 </style>
 
+<style id="tcp-daily-married-entry-v419">
+/* ===== v419 Daily Sales married entry panel ===== */
+#pg-daily .daily-entry-married-layout{
+  grid-template-columns:minmax(0,1.72fr) minmax(260px,.42fr)!important;
+  align-items:start!important;
+}
+#pg-daily .daily-entry-married-panel{
+  padding:0!important;
+  overflow:hidden;
+  border-color:rgba(71,209,108,.26)!important;
+}
+#pg-daily .daily-entry-married-panel:before{
+  background:linear-gradient(90deg,#47D16C,#22D3EE,#8B5CF6)!important;
+}
+#pg-daily .daily-entry-married-head{
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:22px 22px 17px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(135deg,rgba(71,209,108,.08),rgba(34,211,238,.04) 44%,rgba(139,92,246,.08));
+}
+#pg-daily .daily-entry-married-head h2{
+  margin:0;
+  color:#fff;
+  font-size:22px;
+  line-height:1.05;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+#pg-daily .daily-entry-married-head .daily-help{
+  margin:9px 0 0;
+  max-width:900px;
+}
+#pg-daily .daily-entry-married-body{
+  display:grid;
+  grid-template-columns:minmax(330px,.94fr) minmax(420px,1.06fr);
+  gap:18px;
+  padding:18px;
+}
+#pg-daily .daily-entry-primary-card,
+#pg-daily .daily-rep-entry-host .daily-rep-entry-card{
+  position:relative;
+  overflow:hidden;
+  height:100%;
+  border:1px solid rgba(255,255,255,.085);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,.050),rgba(255,255,255,.022)),rgba(10,14,26,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055);
+}
+#pg-daily .daily-entry-primary-card{
+  padding:18px;
+}
+#pg-daily .daily-entry-primary-card:after,
+#pg-daily .daily-rep-entry-host .daily-rep-entry-card:after{
+  content:"";
+  position:absolute;
+  right:-38px;
+  top:-44px;
+  width:130px;
+  height:130px;
+  border-radius:999px;
+  background:radial-gradient(circle,rgba(34,211,238,.16),transparent 68%);
+  pointer-events:none;
+}
+#pg-daily .daily-entry-card-label{
+  position:relative;
+  z-index:1;
+  font-size:10px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#8EEBD1;
+  margin-bottom:13px;
+}
+#pg-daily .daily-entry-married-body .daily-entry-grid{
+  position:relative;
+  z-index:1;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+#pg-daily .daily-entry-married-body .daily-save-btn{
+  width:100%;
+  margin-top:2px;
+}
+#pg-daily .daily-rep-entry-host .daily-rep-entry-card{
+  padding:0;
+}
+#pg-daily .daily-rep-entry-host .r3-head{
+  padding:16px 18px!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(255,255,255,.025);
+}
+#pg-daily .daily-rep-entry-host .r3-av{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+}
+#pg-daily .daily-rep-date-chip{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+  padding:9px 11px;
+  border:1px solid rgba(34,211,238,.15);
+  border-radius:13px;
+  background:rgba(34,211,238,.055);
+  color:#BDEFFF;
+  font-size:11px;
+}
+#pg-daily .daily-rep-date-chip span{
+  color:#8F9AB8;
+  font-weight:850;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-size:9.5px;
+}
+#pg-daily .daily-rep-date-chip strong{
+  color:#F4F7FF;
+  font-weight:950;
+}
+#pg-daily .daily-rep-entry-host .dr-grid{
+  grid-template-columns:repeat(auto-fill,minmax(132px,1fr));
+  gap:10px;
+}
+#pg-daily .daily-rep-entry-host .dr-cell label{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#pg-daily .daily-rep-entry-host .dc2-panel-h{
+  align-items:flex-start;
+  gap:10px;
+}
+#pg-daily .daily-rep-entry-host #dr-live{
+  text-align:right;
+  text-transform:none;
+  letter-spacing:0;
+  line-height:1.35;
+  max-width:245px;
+}
+#pg-daily .daily-controls-panel{
+  align-self:start;
+}
+@media(max-width:1280px){
+  #pg-daily .daily-entry-married-layout{grid-template-columns:1fr!important;}
+}
+@media(max-width:980px){
+  #pg-daily .daily-entry-married-body{grid-template-columns:1fr;}
+}
+@media(max-width:720px){
+  #pg-daily .daily-entry-married-head{flex-direction:column;padding:20px;}
+  #pg-daily .daily-entry-married-body{padding:14px;gap:14px;}
+  #pg-daily .daily-rep-entry-host .dr-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:520px){
+  #pg-daily .daily-rep-entry-host .dr-grid{grid-template-columns:1fr;}
+}
+</style>
+
 <style id="tcp-forecast-ui-v260">
 .forecast-command-page{position:relative;display:flex;flex-direction:column;gap:16px}.forecast-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:24px 26px;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:radial-gradient(circle at 10% 10%,rgba(139,92,246,.28),transparent 34%),radial-gradient(circle at 86% 12%,rgba(34,211,238,.16),transparent 32%),linear-gradient(135deg,rgba(19,25,45,.96),rgba(9,13,26,.96));box-shadow:0 22px 60px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.08)}.forecast-hero:after{content:"";position:absolute;right:-120px;bottom:-150px;width:360px;height:360px;border-radius:999px;background:radial-gradient(circle,rgba(255,176,32,.16),transparent 66%);pointer-events:none}.forecast-eyebrow,.forecast-panel-kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.15em;color:#9DDCFF;margin-bottom:7px}.forecast-hero h1{margin:0;color:#fff;font-size:30px;line-height:1;font-weight:950;letter-spacing:-.045em}.forecast-hero p{margin:9px 0 0;max-width:790px;color:#A8B3D0;font-size:13px;line-height:1.6}.forecast-hero-actions{position:relative;z-index:1;display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.forecast-action{border-radius:14px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#F2F6FF;padding:10px 14px;font-size:12px;font-weight:850;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:transform .15s ease,background .15s ease,border-color .15s ease}.forecast-action:hover{transform:translateY(-1px);background:rgba(139,92,246,.16);border-color:rgba(139,92,246,.45)}.forecast-action.primary{background:linear-gradient(135deg,#8B5CF6,#3B82F6);border-color:rgba(255,255,255,.16);color:#fff;box-shadow:0 10px 28px rgba(59,130,246,.25)}.forecast-status{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.045);padding:10px 12px;font-size:12px;color:#A8AFC3}.forecast-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px}.forecast-kpi{position:relative;overflow:hidden;min-height:126px;border-radius:20px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.026)),rgba(18,23,40,.86);box-shadow:0 16px 42px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:16px}.forecast-kpi:after{content:"";position:absolute;right:-30px;top:-34px;width:96px;height:96px;border-radius:999px;background:radial-gradient(circle,var(--forecast-glow,rgba(139,92,246,.24)),transparent 66%)}.forecast-kpi-icon{position:relative;z-index:1;width:38px;height:38px;border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);font-size:17px}.forecast-kpi-label{position:relative;z-index:1;font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#9FAAD0;font-weight:900;margin-bottom:7px}.forecast-kpi-value{position:relative;z-index:1;font-size:28px;font-weight:950;color:#fff;letter-spacing:-.05em;line-height:1}.forecast-kpi-sub{position:relative;z-index:1;font-size:11px;color:#9EA8C4;margin-top:8px;line-height:1.35}.forecast-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(330px,.75fr);gap:16px;align-items:start}.forecast-main-stack,.forecast-side-stack{display:flex;flex-direction:column;gap:16px;min-width:0}.forecast-downtime-panel{grid-column:1/-1}.forecast-panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(17,22,38,.88);box-shadow:0 18px 45px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06);padding:18px}.forecast-panel:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#FF477E,#FFB020,#47D16C,#22D3EE,#8B5CF6);opacity:.85}.forecast-panel-head{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}.forecast-panel h2{font-size:17px;line-height:1.1;margin:0;color:#fff;font-weight:950;letter-spacing:-.035em}.forecast-range,.forecast-pill{display:inline-flex;align-items:center;white-space:nowrap;padding:5px 9px;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.055);color:#B7C3E5;font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.forecast-help{position:relative;margin:0 0 14px;color:#A8AFC3;font-size:12px;line-height:1.6}.forecast-card-list{display:flex;flex-direction:column;gap:10px}.forecast-card-list.downtime{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.forecast-event-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-left:4px solid var(--event-color,#8B5CF6);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.024)),rgba(14,18,32,.88);box-shadow:0 14px 34px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.055);padding:14px}.forecast-event-card:after{content:"";position:absolute;right:-38px;top:-48px;width:120px;height:120px;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.18),transparent 66%);pointer-events:none}.forecast-event-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:9px}.forecast-event-title-wrap h3{margin:0 0 6px;color:#fff;font-size:14px;font-weight:950;letter-spacing:-.025em;line-height:1.2}.forecast-event-badges{display:flex;gap:5px;flex-wrap:wrap}.forecast-tag,.forecast-ai-tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.forecast-tag{background:rgba(139,92,246,.15);color:#C8B9FF;border:1px solid rgba(139,92,246,.30)}.forecast-ai-tag{background:rgba(139,92,246,.15);color:#C8B9FF;border:1px solid rgba(139,92,246,.28)}.forecast-date-chip{display:flex;flex-direction:column;align-items:flex-end;gap:2px;white-space:nowrap;color:#A8AFC3;font-size:10px}.forecast-date-chip strong{color:#C8B9FF;font-size:11px}.forecast-pitch{position:relative;z-index:1;margin:0 0 9px;color:#DCE5FF;font-size:12px;line-height:1.55}.forecast-mini-row{position:relative;z-index:1;display:grid;grid-template-columns:72px minmax(0,1fr);gap:9px;padding:9px 10px;border-radius:13px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);margin-bottom:9px}.forecast-mini-row span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#8F9AB8}.forecast-mini-row strong{font-size:11px;color:#EFF4FF;line-height:1.4}.forecast-products{position:relative;z-index:1;margin:9px 0}.forecast-products>div:first-child{font-size:10px;font-weight:900;color:#8EEBD1;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.forecast-product-list{display:flex;flex-wrap:wrap;gap:5px}.forecast-product-list span{display:inline-flex;font-size:10.5px;padding:4px 9px;border-radius:999px;background:rgba(71,209,108,.10);color:#A7FFC0;border:1px solid rgba(71,209,108,.22)}.forecast-lead{position:relative;z-index:1;font-size:11px;color:#FFD27A;margin-top:8px;line-height:1.4}.forecast-opener{position:relative;z-index:1;margin:10px 0 0;padding:9px 11px;border-radius:0 12px 12px 0;border-left:3px solid #8B5CF6;background:rgba(139,92,246,.10);color:#EDE9FF;font-size:11px;line-height:1.45;font-style:italic}.forecast-empty{padding:16px;border-radius:16px;border:1px dashed rgba(255,255,255,.12);background:rgba(255,255,255,.035);color:#9EA8C4;font-size:12px;text-align:center}@media(max-width:1180px){.forecast-layout{grid-template-columns:1fr}.forecast-kpi-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:720px){.forecast-hero{flex-direction:column;align-items:flex-start;padding:20px}.forecast-hero-actions{width:100%}.forecast-action{flex:1}.forecast-kpi-grid{grid-template-columns:1fr}.forecast-event-top{flex-direction:column}.forecast-date-chip{align-items:flex-start}.forecast-card-list.downtime{grid-template-columns:1fr}}
 </style>
@@ -4029,36 +4193,40 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       </div>
     </section>
 
-    <div class="daily-layout">
-      <section class="daily-panel daily-entry-panel">
-        <div class="daily-panel-head">
+    <div class="daily-layout daily-entry-married-layout">
+      <section class="daily-panel daily-entry-panel daily-entry-married-panel">
+        <div class="daily-entry-married-head">
           <div>
             <div class="daily-section-kicker">Input</div>
-            <h2>Log running total</h2>
+            <h2>Daily sales entry</h2>
+            <p class="daily-help">One date now drives both the running-total entry and the per-rep SMB totals. Log the team total on the left, then save the rep cumulative totals on the right for the calendar popup rankings.</p>
           </div>
-          <span class="daily-status-pill">Cumulative entry</span>
+          <span class="daily-status-pill">Combined + per rep</span>
         </div>
-        <p class="daily-help">Enter the combined cumulative sales total for the selected date. Add that day&rsquo;s CORP sales separately and the tracker will calculate Small/Medium Business sales automatically.</p>
-        <div class="daily-entry-grid">
-          <div class="ig daily-field">
-            <label>Date sales happened</label>
-            <input type="date" id="dailyDate">
+        <div class="daily-entry-married-body">
+          <div class="daily-entry-primary-card">
+            <div class="daily-entry-card-label">Team running total</div>
+            <div class="daily-entry-grid">
+              <div class="ig daily-field">
+                <label>Date sales happened</label>
+                <input type="date" id="dailyDate" onchange="if(typeof _drRenderForm==='function')_drRenderForm();">
+              </div>
+              <div class="ig daily-field">
+                <label>Total sales running total ($)</label>
+                <input type="number" id="dailyTotal" min="0" step="0.01" placeholder="0.00">
+              </div>
+              <div class="ig daily-field">
+                <label>CORP sales for day ($)</label>
+                <input type="number" id="dailyCorpSales" min="0" step="0.01" placeholder="0.00">
+              </div>
+              <button class="daily-save-btn" onclick="saveDailyEntry()">Log running total</button>
+            </div>
+            <div id="dailyMsg" class="daily-inline-msg"></div>
           </div>
-          <div class="ig daily-field">
-            <label>Total sales running total ($)</label>
-            <input type="number" id="dailyTotal" min="0" step="0.01" placeholder="0.00">
-          </div>
-          <div class="ig daily-field">
-            <label>CORP sales for day ($)</label>
-            <input type="number" id="dailyCorpSales" min="0" step="0.01" placeholder="0.00">
-          </div>
-          <button class="daily-save-btn" onclick="saveDailyEntry()">Log entry</button>
+          <div id="dr-form" class="daily-rep-entry-host"></div>
         </div>
-        <div id="dailyMsg" class="daily-inline-msg"></div>
+        <div id="dr-view"></div>
       </section>
-<div id="dr-form"></div>
-<div id="dr-view"></div>
-
 
       <section class="daily-panel daily-controls-panel">
         <div class="daily-panel-head compact">
@@ -7789,6 +7957,7 @@ function setupDailyTab(){
   // Set default date to yesterday
   var el=document.getElementById('dailyDate');
   if(el&&!el.value)el.value=getDailyDate();
+  if(typeof _drRenderForm==='function'){try{_drRenderForm();}catch(e){}}
   // Populate month selector
   buildDailyMonthSel();
   renderDailyLog();
@@ -7845,6 +8014,7 @@ function saveDailyEntry(){
   markDirty();
   buildDailyMonthSel();
   renderDailyLog();
+  if(typeof _drRenderForm==='function'){try{_drRenderForm();}catch(e){}}
   
   if(totalEl)totalEl.value='';
   if(corpEl)corpEl.value='';
@@ -15469,23 +15639,36 @@ function _drDayTotals(dateISO){
   var corpDay=Math.max(0,corp-corpPrev);
   return {rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
 }
+function _drCorpCumulativeFor(dateISO){
+  var fallback=0;
+  try{fallback=Number((S.dailyRep&&S.dailyRep[dateISO]||{}).__corp||0)||0;}catch(e){}
+  try{
+    var rows=getDailySales().filter(function(e){return e.date<=dateISO;}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+    if(rows.length)return Number(rows[rows.length-1].corpCumulative||0)||0;
+  }catch(e){}
+  return fallback;
+}
 function _drRenderForm(){
   var host=document.getElementById('dr-form');if(!host)return;
   _drEnsure();
   var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
-  var d=(document.getElementById('dr-date')||{}).value||_drToday();
-  host.innerHTML='<div class="r3-shell" style="margin:16px 0 0;">'
+  var mainDate=document.getElementById('dailyDate');
+  var d=(mainDate&&mainDate.value)||(document.getElementById('dr-date')||{}).value||_drToday();
+  if(mainDate&&!mainDate.value)mainDate.value=d;
+  var corpCum=_drCorpCumulativeFor(d);
+  var dLabel=(typeof formatDateShort==='function'?formatDateShort(d):d);
+  host.innerHTML='<div class="daily-rep-entry-card">'
     +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#34D399,#7C6CFF);">&#128100;</span>'
-    +'<div class="r3-hmeta"><div class="r3-name">Per-rep daily entry</div><div class="r3-sub">Cumulative running total per rep (SMB) &middot; CORP separate &middot; blank fields = re-enter totals</div></div></div>'
-    +'<div style="padding:12px 16px;border-bottom:1px solid var(--tcp-line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;">'
-    +'<div class="ig" style="margin:0;"><label style="font-size:9px;color:var(--tcp-muted);text-transform:uppercase;letter-spacing:.08em;">Date</label><br><input type="date" id="dr-date" class="r3-in" style="margin:4px 0 0;max-width:170px;" value="'+d+'" onchange="_drRenderForm()"></div>'
-    +'<div class="ig" style="margin:0;"><label style="font-size:9px;color:#9DDCFF;text-transform:uppercase;letter-spacing:.08em;font-weight:800;">CORP running total ($)</label><br><input type="number" id="dr-corp" class="r3-in" style="margin:4px 0 0;max-width:180px;" min="0" step="0.01" placeholder="'+(Number((S.dailyRep[d]||{}).__corp||0)||'')+'" value="'+(S.dailyRep[d]&&S.dailyRep[d].__corp!=null?S.dailyRep[d].__corp:'')+'"></div>'
+    +'<div class="r3-hmeta"><div class="r3-name">Per-rep daily entry</div><div class="r3-sub">Same date as running total &middot; cumulative SMB totals &middot; blank fields = re-enter totals</div></div></div>'
+    +'<div style="padding:14px 16px 0;position:relative;z-index:1;">'
+    +'<input type="hidden" id="dr-date" value="'+d+'"><input type="hidden" id="dr-corp" value="'+corpCum+'">'
+    +'<div class="daily-rep-date-chip"><span>Sales date tied to left panel</span><strong>'+_m2esc(dLabel)+'</strong></div>'
     +'</div>'
-    +'<div style="padding:12px 16px;"><div class="dc2-panel-h"><span>Rep cumulative totals (SMB)</span><span id="dr-live" class="dc-flat" style="font-size:11px;"></span></div>'
+    +'<div style="padding:0 16px 16px;position:relative;z-index:1;"><div class="dc2-panel-h"><span>Rep cumulative totals (SMB)</span><span id="dr-live" class="dc-flat" style="font-size:11px;"></span></div>'
     +'<div class="dr-grid">'
     +reps.map(function(r){var v=(S.dailyRep[d]&&S.dailyRep[d][r.name]!=null)?S.dailyRep[d][r.name]:'';return '<div class="dr-cell"><label>'+_m2esc(r.name)+'</label><input type="number" class="r3-in dr-in" data-rep="'+_m2esc(r.name)+'" style="margin:0;" min="0" step="0.01" placeholder="0.00" value="'+v+'" oninput="_drLive()"></div>';}).join('')
     +'</div>'
-    +'<div style="margin-top:12px;display:flex;gap:8px;align-items:center;"><button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="drSaveRepDay()">&#128190; Save day</button><span id="dr-msg" class="dc-up" style="display:none;font-size:11px;"></span></div>'
+    +'<div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="drSaveRepDay()">&#128190; Save rep totals</button><span id="dr-msg" class="dc-up" style="display:none;font-size:11px;"></span></div>'
     +'</div></div>';
   _drLive();
 }
@@ -15497,7 +15680,7 @@ function _drLive(){
   var corp=Number((document.getElementById('dr-corp')||{}).value)||0;
   // day-jumps
   var smbDay=0;ins.forEach(function(i){var rep=i.dataset.rep;var cur=Number(i.value)||0;var pd=_drPrevDate(d);var prev=pd?Number((S.dailyRep[pd]||{})[rep]||0):0;smbDay+=Math.max(0,cur-prev);});
-  el.innerHTML='SMB cum $'+Math.round(smbCum).toLocaleString()+' &middot; day +$'+Math.round(smbDay).toLocaleString()+' &middot; +CORP = $'+Math.round(smbCum+corp).toLocaleString();
+  el.innerHTML='SMB cum $'+Math.round(smbCum).toLocaleString()+' &middot; SMB day +$'+Math.round(smbDay).toLocaleString()+' &middot; total cum $'+Math.round(smbCum+corp).toLocaleString();
 }
 function drSaveRepDay(){
   _drEnsure();
