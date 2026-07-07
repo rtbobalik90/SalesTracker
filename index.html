@@ -3287,6 +3287,24 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 }
 </style>
 
+
+<style id="tcp-customer-reviews-week-sync-v421">
+/* ===== v421 Customer Reviews week sync controls ===== */
+#pg-reviews .rv-week-btn{
+  min-height:34px!important;
+  border-radius:12px!important;
+  border:1px solid rgba(139,92,246,.34)!important;
+  background:rgba(139,92,246,.11)!important;
+  color:#DAD1FF!important;
+  font-weight:850!important;
+  padding:7px 10px!important;
+}
+#pg-reviews .rv-week-btn:hover{
+  background:linear-gradient(135deg,#8B5CF6,#3B82F6)!important;
+  border-color:rgba(255,255,255,.20)!important;
+  color:#fff!important;
+}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -16216,32 +16234,97 @@ async function rvRefresh(silent){
 /* ---------- decisions ---------- */
 function rvDecide(id,decision){_rvEnsure();S.reviews.decisions[id]=decision;try{markDirty();}catch(e){}renderReviewsPage();}
 function rvAssignRep(rawName,repName){_rvEnsure();if(repName)S.reviews.unmatchFix[String(rawName).toLowerCase()]=repName;else delete S.reviews.unmatchFix[String(rawName).toLowerCase()];try{markDirty();}catch(e){}renderReviewsPage();}
-/* ---------- selectors / default to last week ---------- */
+/* ---------- selectors / default to main tracker week ---------- */
 function _rvLastWeek(){var d=new Date();d.setDate(d.getDate()-7);return _rvISO(d);}
-function _rvWeeksForQ(year,q){ // ISO weeks whose Monday falls in that quarter's months
+function _rvTrackerDefault(){
+  try{
+    if(typeof getYr==='function'&&typeof getQ==='function'&&typeof getWN==='function'){
+      return {year:getYr(),q:getQ(),week:getWN()};
+    }
+  }catch(e){}
+  var lw=_rvLastWeek()||{};
+  return {year:lw.year||new Date().getFullYear(),q:_qFromWeek(lw.year||new Date().getFullYear(),lw.week||1),week:lw.week||1};
+}
+function _rvWeeksForQ(year,q){
+  try{
+    if(typeof gwq==='function'){
+      var tr=(gwq(parseInt(year,10),q)||[]).map(function(w){return Number(w.num);}).filter(function(n){return !isNaN(n);});
+      if(tr.length)return tr;
+    }
+  }catch(e){}
   var mo={Q1:[0,2],Q2:[3,5],Q3:[6,8],Q4:[9,11]}[q]||[0,11];
   var out=[];for(var w=1;w<=53;w++){var r=_rvWeekRange(year,w);if(r.start.getUTCFullYear()===year&&r.start.getUTCMonth()>=mo[0]&&r.start.getUTCMonth()<=mo[1])out.push(w);}return out;
 }
+function _rvTrackerWeekObj(year,q,week){
+  year=parseInt(year,10);week=parseInt(week,10);
+  try{
+    if(typeof gwq==='function'){
+      var hit=(gwq(year,q)||[]).filter(function(w){return Number(w.num)===week;})[0];
+      if(hit)return hit;
+    }
+  }catch(e){}
+  var r=_rvWeekRange(year,week);
+  return {num:week,key:year+'_'+q+'_W_'+week,start:r.start,end:r.end,label:'Wk '+week+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end),month:''};
+}
+function _rvDateOnly(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+function _rvInTrackerRange(x,wk){
+  if(!x||!x.date||!wk||!wk.start||!wk.end)return false;
+  var d=_rvDateOnly(x.date),s=_rvDateOnly(wk.start),e=_rvDateOnly(wk.end);
+  return d>=s&&d<=e;
+}
+function _rvAllTrackerWeeks(){
+  var out=[];
+  for(var y=2026;y<=2030;y++)['Q1','Q2','Q3','Q4'].forEach(function(q){
+    _rvWeeksForQ(y,q).forEach(function(n){var w=_rvTrackerWeekObj(y,q,n);out.push({year:y,q:q,week:Number(n),num:Number(n),start:w.start,end:w.end,label:w.label,key:y+'_'+q+'_'+n});});
+  });
+  return out.sort(function(a,b){return a.start-b.start;});
+}
+function _rvPriorTrackerWeeks(year,q,week,count){
+  var seq=_rvAllTrackerWeeks(),key=String(year)+'_'+q+'_'+String(week),idx=seq.findIndex(function(w){return w.key===key;});
+  if(idx<0)idx=seq.findIndex(function(w){return w.year==year&&w.q===q&&Number(w.week)===Number(week);});
+  if(idx<0)return [];
+  return seq.slice(Math.max(0,idx-(count-1)),idx+1);
+}
 function _rvSel(id){return document.getElementById(id);}
+function _rvSetFilter(year,q,week){
+  var y=_rvSel('rv-yr'),qs=_rvSel('rv-q'),w=_rvSel('rv-wk');
+  if(y)y.value=String(year);
+  if(qs)qs.value=q;
+  if(w){
+    var nums=_rvWeeksForQ(parseInt(year,10),q);
+    w.innerHTML=nums.map(function(n){var r=_rvTrackerWeekObj(parseInt(year,10),q,n);return '<option value="'+n+'">'+(r.label||('Wk '+n+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end)))+'</option>';}).join('');
+    if(nums.indexOf(Number(week))<0&&nums.length)week=nums[nums.length-1];
+    w.value=String(week);
+  }
+}
+function _rvSyncFiltersToMain(){var d=_rvTrackerDefault();_rvSetFilter(d.year,d.q,d.week);}
+function _rvShiftWeek(delta){
+  var f=_rvCurrentFilter(),seq=_rvAllTrackerWeeks(),key=String(f.year)+'_'+f.q+'_'+String(f.week),idx=seq.findIndex(function(w){return w.key===key;});
+  if(idx<0)return;
+  var tgt=seq[Math.max(0,Math.min(seq.length-1,idx+delta))];
+  _rvSetFilter(tgt.year,tgt.q,tgt.week);renderReviewsPage();
+}
 function _rvCurrentFilter(){
-  var y=_rvSel('rv-yr'),q=_rvSel('rv-q'),w=_rvSel('rv-wk');
-  return {year:y?parseInt(y.value,10):(_rvLastWeek().year),q:q?q.value:'Q1',week:w?parseInt(w.value,10):_rvLastWeek().week};
+  var d=_rvTrackerDefault(),y=_rvSel('rv-yr'),q=_rvSel('rv-q'),w=_rvSel('rv-wk');
+  return {year:y?parseInt(y.value,10):d.year,q:q?q.value:d.q,week:w?parseInt(w.value,10):d.week};
 }
 /* ---------- render ---------- */
 function renderReviewsPage(){
   var host=document.getElementById('reviews-page');if(!host)return;
   _rvEnsure();
   var all=_rvEnriched();
-  var lw=_rvLastWeek();
-  // build selectors once
+  var def=_rvTrackerDefault();
+  // build selectors once; Customer Reviews now defaults to the main tracker week
   var f=_rvCurrentFilter();
-  if(!_rvSel('rv-yr')){f={year:lw.year,q:_qFromWeek(lw.year,lw.week),week:lw.week};}
-  var yrs={};all.forEach(function(x){if(x.year)yrs[x.year]=1;});yrs[lw.year]=1;var yrList=Object.keys(yrs).map(Number).sort();
+  if(!_rvSel('rv-yr')){f={year:def.year,q:def.q,week:def.week};}
+  var yrNums=_rvWeeksForQ(f.year,f.q);
+  if(yrNums.indexOf(Number(f.week))<0&&yrNums.length){f.week=(f.year===def.year&&f.q===def.q&&yrNums.indexOf(Number(def.week))>=0)?def.week:yrNums[yrNums.length-1];}
+  var range=_rvTrackerWeekObj(f.year,f.q,f.week);
+  var yrs={};all.forEach(function(x){if(x.year)yrs[x.year]=1;});yrs[def.year]=1;var yrList=Object.keys(yrs).map(Number).sort();
   var pendingDupes=all.filter(function(x){return x.isDup&&!x.decision;});
   var unmatched=_rvActive(all).filter(function(x){return !x.matched&&x.pays;});
-  // selected-week rows
-  var wk=_rvActive(all).filter(function(x){return x.year===f.year&&x.week===f.week;});
-  var range=_rvWeekRange(f.year,f.week);
+  // selected-week rows use the Tracker week date range, not ISO Mon-Sun
+  var wk=_rvActive(all).filter(function(x){return _rvInTrackerRange(x,range);});
   // payout: matched + paying platform
   var pay={};wk.forEach(function(x){if(x.pays&&x.matched){pay[x.repName]=(pay[x.repName]||0)+1;}});
   var payList=Object.keys(pay).map(function(n){return {name:n,count:pay[n],amt:pay[n]*REVIEW_PAY};}).sort(function(a,b){return b.count-a.count;});
@@ -16255,8 +16338,8 @@ function renderReviewsPage(){
   function opt(v,cur,lbl){return '<option value="'+v+'"'+(String(v)===String(cur)?' selected':'')+'>'+(lbl||v)+'</option>';}
   var yrOpts=yrList.map(function(y){return opt(y,f.year);}).join('');
   var qOpts=['Q1','Q2','Q3','Q4'].map(function(q){return opt(q,f.q);}).join('');
-  var wkNums=_rvWeeksForQ(f.year,f.q);if(wkNums.indexOf(f.week)<0&&wkNums.length)f.week=wkNums[0];
-  var wkOpts=wkNums.map(function(w){var r=_rvWeekRange(f.year,w);return opt(w,f.week,'Wk '+w+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end));}).join('');
+  var wkNums=_rvWeeksForQ(f.year,f.q);
+  var wkOpts=wkNums.map(function(w){var r=_rvTrackerWeekObj(f.year,f.q,w);return opt(w,f.week,(r.label||('Wk '+w+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end))));}).join('');
   var lastFetch=S.reviews.lastFetched?new Date(S.reviews.lastFetched).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'never';
 
   var html='<div class="r3-shell rv-shell">'
@@ -16295,8 +16378,10 @@ function renderReviewsPage(){
     +'<span class="dc2-sl" style="align-self:center;">Viewing</span>'
     +'<select id="rv-yr" class="r3-in" style="margin:0;max-width:100px;" onchange="renderReviewsPage()">'+yrOpts+'</select>'
     +'<select id="rv-q" class="r3-in" style="margin:0;max-width:80px;" onchange="_rvQChange()">'+qOpts+'</select>'
-    +'<select id="rv-wk" class="r3-in" style="margin:0;max-width:200px;" onchange="renderReviewsPage()">'+wkOpts+'</select>'
-    +'<span class="dc-flat" style="font-size:11px;">'+_rvFmt(range.start)+'\u2013'+_rvFmt(range.end)+', '+f.year+' (Mon\u2013Sun)</span></div>';
+    +'<select id="rv-wk" class="r3-in" style="margin:0;max-width:220px;" onchange="renderReviewsPage()">'+wkOpts+'</select>'
+    +'<button class="dc-mini rv-week-btn" onclick="_rvShiftWeek(-1)">&#8592; Previous week</button>'
+    +'<button class="dc-mini rv-week-btn" onclick="_rvSyncFiltersToMain();renderReviewsPage()">Match tracker week</button>'
+    +'<span class="dc-flat" style="font-size:11px;">'+_rvFmt(range.start)+'\u2013'+_rvFmt(range.end)+', '+f.year+' (Tracker week)</span></div>';
   // stats
   html+='<div class="dc2-stats rv-kpi-grid" style="border-bottom:1px solid var(--tcp-line);">'
     +'<div class="dc2-stat"><div class="dc2-sl">Reviews this week</div><div class="dc2-sv">'+totalRev+'</div><div class="dc2-ss dc-flat">'+payList.length+' rep'+(payList.length!==1?'s':'')+' earning</div></div>'
@@ -16308,9 +16393,8 @@ function renderReviewsPage(){
   (function(){
     // last 8 ISO weeks ending at selected week
     var wkSeries=[],wkLabels=[];
-    var yy=f.year,ww=f.week;
-    var seq=[];for(var b=7;b>=0;b--){var tw=ww-b,ty=yy;while(tw<1){ty--;tw+=52;}seq.push({y:ty,w:tw});}
-    seq.forEach(function(p){var cnt=_rvActive(all).filter(function(x){return x.year===p.y&&x.week===p.w;}).length;wkSeries.push(cnt);wkLabels.push('w'+p.w);});
+    var seq=_rvPriorTrackerWeeks(f.year,f.q,f.week,8);
+    seq.forEach(function(p){var cnt=_rvActive(all).filter(function(x){return _rvInTrackerRange(x,p);}).length;wkSeries.push(cnt);wkLabels.push('w'+p.week);});
     var gW=wk.filter(function(x){return x.platform==='Google';}).length;
     var tW=wk.filter(function(x){return x.platform==='Trustpilot';}).length;
     var oW=wk.length-gW-tW;
@@ -16369,12 +16453,11 @@ function renderReviewsPage(){
 function _stars(n){n=Math.round(Number(n)||0);var s='';for(var i=0;i<5;i++)s+=(i<n?'\u2605':'\u2606');return '<span style="color:#FBBF24;letter-spacing:1px;">'+s+'</span>';}
 function _jsq(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
 function _qFromWeek(year,week){var r=_rvWeekRange(year,week);var m=r.start.getUTCMonth();return m<=2?'Q1':m<=5?'Q2':m<=8?'Q3':'Q4';}
-function _rvQChange(){var w=_rvSel('rv-wk'),y=_rvSel('rv-yr'),q=_rvSel('rv-q');if(w&&y&&q){var nums=_rvWeeksForQ(parseInt(y.value,10),q.value);w.innerHTML=nums.map(function(n){var r=_rvWeekRange(parseInt(y.value,10),n);return '<option value="'+n+'">Wk '+n+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end)+'</option>';}).join('');}renderReviewsPage();}
+function _rvQChange(){var w=_rvSel('rv-wk'),y=_rvSel('rv-yr'),q=_rvSel('rv-q');if(w&&y&&q){var old=Number(w.value)||0,nums=_rvWeeksForQ(parseInt(y.value,10),q.value);w.innerHTML=nums.map(function(n){var r=_rvTrackerWeekObj(parseInt(y.value,10),q.value,n);return '<option value="'+n+'">'+(r.label||('Wk '+n+': '+_rvFmt(r.start)+'\u2013'+_rvFmt(r.end)))+'</option>';}).join('');w.value=String(nums.indexOf(old)>=0?old:(nums.length?nums[nums.length-1]:''));}renderReviewsPage();}
 function rvCopyPayout(){
-  var all=_rvEnriched(),f=_rvCurrentFilter();
-  var wk=_rvActive(all).filter(function(x){return x.year===f.year&&x.week===f.week&&x.pays&&x.matched;});
+  var all=_rvEnriched(),f=_rvCurrentFilter(),range=_rvTrackerWeekObj(f.year,f.q,f.week);
+  var wk=_rvActive(all).filter(function(x){return _rvInTrackerRange(x,range)&&x.pays&&x.matched;});
   var pay={};wk.forEach(function(x){pay[x.repName]=(pay[x.repName]||0)+1;});
-  var range=_rvWeekRange(f.year,f.week);
   var lines=['Review payout \u2014 Wk '+f.week+' ('+_rvFmt(range.start)+'\u2013'+_rvFmt(range.end)+', '+f.year+')',''];
   var tot=0;Object.keys(pay).sort().forEach(function(n){var amt=pay[n]*REVIEW_PAY;tot+=amt;lines.push(n+'\t$'+amt+'\t('+pay[n]+' review'+(pay[n]>1?'s':'')+')');});
   lines.push('','TOTAL\t$'+tot);
@@ -16402,14 +16485,20 @@ function reviewsForReport(startDate,endDate){
     return out.length?out:null;
   }catch(e){return null;}
 }
-window.rvRefresh=rvRefresh;window.rvDecide=rvDecide;window.rvAssignRep=rvAssignRep;window.renderReviewsPage=renderReviewsPage;window.rvCopyPayout=rvCopyPayout;window._rvQChange=_rvQChange;window.reviewsForReport=reviewsForReport;
+window.rvRefresh=rvRefresh;window.rvDecide=rvDecide;window.rvAssignRep=rvAssignRep;window.renderReviewsPage=renderReviewsPage;window.rvCopyPayout=rvCopyPayout;window._rvQChange=_rvQChange;window._rvShiftWeek=_rvShiftWeek;window._rvSyncFiltersToMain=_rvSyncFiltersToMain;window.reviewsForReport=reviewsForReport;
 window.addEventListener('load',function(){
   setTimeout(function(){try{_rvEnsure();var u=(S.reviews&&S.reviews.url);if(u){var el=document.getElementById('rv-url');if(el)el.value=u;rvRefresh(true);}}catch(e){}},2600);
 });
 document.addEventListener('click',function(e){
   var b=e.target&&e.target.closest?e.target.closest('button'):null;if(!b)return;
   var oc=b.getAttribute('onclick')||'';
-  if(oc.indexOf("gt('reviews'")>=0)setTimeout(function(){try{renderReviewsPage();}catch(_e){}},80);
+  if(oc.indexOf("gt('reviews'")>=0)setTimeout(function(){try{_rvSyncFiltersToMain();renderReviewsPage();}catch(_e){}},80);
+});
+document.addEventListener('change',function(e){
+  var id=e.target&&e.target.id;
+  if(['selYr','selQ','selM','selW'].indexOf(id)>=0&&document.getElementById('pg-reviews')&&document.getElementById('pg-reviews').classList.contains('active')){
+    setTimeout(function(){try{_rvSyncFiltersToMain();renderReviewsPage();}catch(_e){}},30);
+  }
 });
 
 /* ===== MODULE: PHASE10-CUSTOMERS (customer intelligence: log, harvest, statuses) ===== */
