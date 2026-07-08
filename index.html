@@ -3900,27 +3900,6 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     </div>
 
     <div class="credit-side-stack">
-      <div class="credit-panel credit-filter-panel">
-        <div class="credit-panel-head compact">
-          <div>
-            <div class="credit-section-kicker">Controls</div>
-            <div class="credit-section-title">Filter view</div>
-          </div>
-        </div>
-        <div class="credit-filter-grid filter-row">
-          <label>Rep</label><select id="cmFR" onchange="renderCML()"><option value="all">All reps</option></select>
-          <label>Fault</label><select id="cmFF" onchange="renderCML()"><option value="all">All</option><option value="screen_print">Screen print</option><option value="embroidery">Embroidery</option><option value="art">Art</option><option value="shipping">Shipping</option><option value="vendor">Vendor</option><option value="rep">Rep</option><option value="customer">Customer</option><option value="other">Other</option></select>
-          <label>Year</label><select id="cmFYr" onchange="renderCML()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select>
-          <label>Quarter</label><select id="cmFQ" onchange="renderCML()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
-        </div>
-        <div class="credit-action-row" style="margin-top:10px;gap:8px;">
-          <button class="sbtn" onclick="cmSetView('current')">Current quarter</button>
-          <button class="sbtn" onclick="cmSetView('rep')">Rep-fault only</button>
-          <button class="sbtn" onclick="cmSetView('all')">All records</button>
-        </div>
-        <div class="chips credit-hidden-chips" id="cmSum"></div>
-      </div>
-
       <div class="credit-panel credit-insight-panel">
         <div class="credit-panel-head compact">
           <div>
@@ -3940,6 +3919,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="credit-section-title">Credit memo log <span>Hover a row to edit</span></div>
       </div>
     </div>
+    <style>.credit-log-filters .cmf-ig{display:flex;flex-direction:column;gap:3px;}.credit-log-filters .cmf-ig label{font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--tcp-muted,#8b95a7);}.credit-log-filters .cmf-ig select{background:rgba(0,0,0,.25);border:1px solid var(--tcp-line,#232a36);border-radius:8px;color:inherit;font-size:11.5px;padding:5px 8px;min-width:108px;}</style><div class="credit-log-filters" style="display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin:6px 0 12px;padding:12px;border:1px solid var(--tcp-line,rgba(255,255,255,.08));border-radius:12px;background:rgba(255,255,255,.02);"><div style="display:flex;gap:6px;flex-wrap:wrap;flex-basis:100%;margin-bottom:2px;"><button class="sbtn" onclick="cmSetView('week')">Current week</button><button class="sbtn" onclick="cmSetView('current')">Current quarter</button><button class="sbtn" onclick="cmSetView('rep')">Rep-fault only</button><button class="sbtn" onclick="cmSetView('all')">All records</button></div><div class="cmf-ig"><label>Rep</label><select id="cmFR" onchange="renderCML()"><option value="all">All reps</option></select></div><div class="cmf-ig"><label>Fault</label><select id="cmFF" onchange="renderCML()"><option value="all">All</option><option value="screen_print">Screen print</option><option value="embroidery">Embroidery</option><option value="art">Art</option><option value="shipping">Shipping</option><option value="vendor">Vendor</option><option value="rep">Rep</option><option value="customer">Customer</option><option value="other">Other</option></select></div><div class="cmf-ig"><label>Year</label><select id="cmFYr" onchange="renderCML()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div><div class="cmf-ig"><label>Quarter</label><select id="cmFQ" onchange="renderCML()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div><div class="cmf-ig"><label>Month</label><select id="cmFM" onchange="renderCML()"><option value="all">All</option></select></div><div class="cmf-ig"><label>Week</label><select id="cmFW" onchange="renderCML()"><option value="all">All</option></select></div></div><div class="chips credit-hidden-chips" id="cmSum" style="margin-bottom:10px;"></div>
     <div id="cmLog" class="credit-log-list"></div>
   </div>
 </div>
@@ -5677,7 +5657,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -6492,7 +6472,7 @@ function editCN(id){let n=S.coachingNotes.find(x=>x.id===id);if(!n)return;docume
 function saveCNEdit(id){let n=S.coachingNotes.find(x=>x.id===id);if(!n)return;n.rep=document.getElementById('cnie_rep_'+id)?.value||n.rep;n.date=document.getElementById('cnie_date_'+id)?.value||n.date;n.type=document.getElementById('cnie_type_'+id)?.value||n.type;n.note=document.getElementById('cnie_note_'+id)?.value||n.note;n.yr=new Date(n.date+'T12:00:00').getFullYear();n.q=dateToQ(n.date,n.yr)||n.q;renderCNL();}
 function renderHRSummaryByRep(){let yr=getYr(),q=getQ();let el=document.getElementById('hrSummaryByRep');let rows=activeReps().map(r=>{let qPts=getHRPoints(r.name,yr,q),ytdPts=S.hrViolations.filter(v=>v.rep===r.name&&v.yr==yr).reduce((s,v)=>s+v.pts,0);let hasPIP=S.hrViolations.some(v=>v.rep===r.name&&v.yr==yr&&v.cat==='pip'),hasFinal=S.hrViolations.some(v=>v.rep===r.name&&v.yr==yr&&v.cat==='final');let noteCount=S.coachingNotes.filter(n=>n.rep===r.name&&n.yr==yr&&n.q===q).length,cap=hrcap(qPts);return{name:r.name,qPts,ytdPts,hasPIP,hasFinal,noteCount,cap};});el.innerHTML='<div style="display:grid;grid-template-columns:1fr 65px 65px 65px 85px 70px;gap:5px;padding:4px 0;border-bottom:0.5px solid var(--color-border-secondary);font-size:11px;font-weight:500;color:var(--color-text-secondary);"><span>Rep</span><span>'+q+' pts</span><span>'+getYr()+' YTD</span><span>Notes</span><span>Rating cap</span><span>Status</span></div>'+rows.map(r=>{let capRt=rfrom(r.cap),status=r.hasPIP?'<span class="hr-pip">PIP</span>':r.hasFinal?'<span class="hr-final">Final</span>':r.qPts>=3?'<span class="hr-written">Warning</span>':r.qPts>0?'<span class="hr-tardy">Minor</span>':'<span style="font-size:11px;color:#5DCAA5;">Clean</span>';return'<div style="display:grid;grid-template-columns:1fr 65px 65px 65px 85px 70px;gap:5px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;align-items:center;"><span style="font-weight:500;">'+r.name+'</span><span style="color:'+(r.qPts>=3?'#E24B4A':r.qPts>0?'#EF9F27':'#5DCAA5')+';font-weight:500;">'+r.qPts.toFixed(1)+'</span><span>'+r.ytdPts.toFixed(1)+'</span><span>'+r.noteCount+'</span><span class="rb '+capRt.c+'" style="font-size:10px;padding:2px 5px;">'+capRt.l+'</span><span>'+status+'</span></div>';}).join('');}
 
-function saveCM(){let rep=document.getElementById('cmRep').value,wk=document.getElementById('cmWeek').value,amt=parseFloat(document.getElementById('cmAmt').value)||0,fault=(document.getElementById('cmFault').value||'').toLowerCase(),custId=document.getElementById('cmCustId').value.trim(),custName=document.getElementById('cmCustName').value.trim(),soNum=document.getElementById('cmSO').value.trim(),invNum=document.getElementById('cmInv').value.trim(),desc=document.getElementById('cmDesc').value.trim();if(!amt)return;let parts=wk.split('_');S.cms.push({id:Date.now(),rep,weekKey:wk,yr:parts[0],q:parts[1],amount:amt,fault,custId,custName,soNum,invNum,desc,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});['cmAmt','cmCustId','cmCustName','cmSO','cmInv','cmDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('cmFault').value='screen_print';updateFN();let m=document.getElementById('cmMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);markDirty();renderCML();}
+function saveCM(){let rep=document.getElementById('cmRep').value,wk=document.getElementById('cmWeek').value,amt=parseFloat(document.getElementById('cmAmt').value)||0,fault=(document.getElementById('cmFault').value||'').toLowerCase(),custId=document.getElementById('cmCustId').value.trim(),custName=document.getElementById('cmCustName').value.trim(),soNum=document.getElementById('cmSO').value.trim(),invNum=document.getElementById('cmInv').value.trim(),desc=document.getElementById('cmDesc').value.trim();if(!amt)return;if(soNum||invNum){var _cmDup=(S.cms||[]).some(function(c){return c&&String(c.soNum||'').trim()===soNum&&String(c.invNum||'').trim()===invNum&&Math.round((Number(c.amount)||0)*100)===Math.round(amt*100);});if(_cmDup&&!confirm('You are adding a duplicate credit memo\n\n\u2022 SO #: '+(soNum||'\u2014')+'\n\u2022 Invoice #: '+(invNum||'\u2014')+'\n\u2022 Amount: $'+amt.toFixed(2)+'\n\nThis exact credit memo already exists. Do you still wish to proceed?'))return;}let parts=wk.split('_');S.cms.push({id:Date.now(),rep,weekKey:wk,yr:parts[0],q:parts[1],amount:amt,fault,custId,custName,soNum,invNum,desc,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});['cmAmt','cmCustId','cmCustName','cmSO','cmInv','cmDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('cmFault').value='screen_print';updateFN();let m=document.getElementById('cmMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);markDirty();renderCML();}
 function deleteCM(id){S.cms=S.cms.filter(c=>c.id!==id);renderCML();markDirty();}
 function faultBadge(fault){if(fault==='rep')return'<span class="fault-rep">Rep</span>';if(fault==='customer')return'<span class="fault-cust">Customer</span>';return'<span class="fault-other">'+(FL[fault]||fault)+'</span>';}
 function _cmMoney(n){n=Number(n)||0;return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -6513,15 +6493,21 @@ function _cmNormalize(){
     c.rep=c.rep||'';
   });
 }
+function _cmCurrentWeekKey(){try{if(typeof gwq!=='function')return '';var d=new Date();var wks=gwq(getYr(),getQ())||[];for(var i=0;i<wks.length;i++){var w=wks[i];if(w.start&&w.end&&d>=new Date(w.start)&&d<=new Date(new Date(w.end).getTime()+86399000))return w.key;}return wks.length?wks[wks.length-1].key:'';}catch(e){return '';}}
+function _cmPopMWeek(){try{if(typeof gwq!=='function')return;var yrEl=document.getElementById('cmFYr'),qEl=document.getElementById('cmFQ'),mEl=document.getElementById('cmFM'),wEl=document.getElementById('cmFW');if(!mEl||!wEl)return;var yr=(yrEl&&yrEl.value&&yrEl.value!=='all')?Number(yrEl.value):getYr();var qs=(qEl&&qEl.value!=='all')?[qEl.value]:['Q1','Q2','Q3','Q4'];var months=[],weeks=[];qs.forEach(function(q){(gwq(yr,q)||[]).forEach(function(w){if(months.indexOf(w.month)<0)months.push(w.month);weeks.push(w);});});var mSel=mEl.value,wSel=wEl.value;mEl.innerHTML='<option value="all">All</option>'+months.map(function(m){return '<option'+(m===mSel?' selected':'')+'>'+m+'</option>';}).join('');wEl.innerHTML='<option value="all">All</option>'+weeks.map(function(w){return '<option value="'+w.key+'"'+(w.key===wSel?' selected':'')+'>'+(w.label||w.key)+'</option>';}).join('');}catch(e){}}
 function cmSetView(view){
-  var yr=document.getElementById('cmFYr'),q=document.getElementById('cmFQ'),rep=document.getElementById('cmFR'),fault=document.getElementById('cmFF');
-  if(view==='current'){if(yr)yr.value=String(getYr());if(q)q.value=getQ();if(rep)rep.value='all';if(fault)fault.value='all';}
+  var yr=document.getElementById('cmFYr'),q=document.getElementById('cmFQ'),rep=document.getElementById('cmFR'),fault=document.getElementById('cmFF'),mo=document.getElementById('cmFM'),wk=document.getElementById('cmFW');
+  if(view==='current'){if(yr)yr.value=String(getYr());if(q)q.value=getQ();if(rep)rep.value='all';if(fault)fault.value='all';if(mo)mo.value='all';if(wk)wk.value='all';}
+  if(view==='week'){if(yr)yr.value=String(getYr());if(q)q.value=getQ();if(rep)rep.value='all';if(fault)fault.value='all';if(mo)mo.value='all';if(typeof _cmPopMWeek==='function')_cmPopMWeek();var ck=_cmCurrentWeekKey();if(wk&&ck)wk.value=ck;}
   if(view==='rep'){if(fault)fault.value='rep';}
-  if(view==='all'){if(yr)yr.value='all';if(q)q.value='all';if(rep)rep.value='all';if(fault)fault.value='all';}
+  if(view==='all'){if(yr)yr.value='all';if(q)q.value='all';if(rep)rep.value='all';if(fault)fault.value='all';if(mo)mo.value='all';if(wk)wk.value='all';}
   renderCML();
 }
 function renderCML(){
   _cmNormalize();
+  if(typeof _cmPopMWeek==='function')_cmPopMWeek();
+  var fm=document.getElementById('cmFM')?.value||'all';
+  var fw=document.getElementById('cmFW')?.value||'all';
   var fr=document.getElementById('cmFR')?.value||'all';
   fr=String(fr).replace(/ \(retired\)$/,'');
   var ff=document.getElementById('cmFF')?.value||'all';
@@ -6529,7 +6515,7 @@ function renderCML(){
   var fq=document.getElementById('cmFQ')?.value||'all';
   var f=(S.cms||[]).filter(function(c){
     var repName=String(c.rep||'').replace(/ \(retired\)$/,'');
-    return (fr==='all'||repName===fr)&&(ff==='all'||c.fault===ff)&&(fyr==='all'||String(c.yr)===String(fyr))&&(fq==='all'||c.q===fq);
+    return (fr==='all'||repName===fr)&&(ff==='all'||c.fault===ff)&&(fyr==='all'||String(c.yr)===String(fyr))&&(fq==='all'||c.q===fq)&&(fm==='all'||String(c.weekKey||'').split('_')[2]===fm)&&(fw==='all'||c.weekKey===fw);
   });
   var tot=f.reduce(function(s,c){return s+(Number(c.amount)||0);},0);
   var repList=f.filter(function(c){return c.fault==='rep';});
@@ -18121,7 +18107,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:447,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:449,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
