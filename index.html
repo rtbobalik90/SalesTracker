@@ -3442,7 +3442,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab" onclick="gt('reports',this)">Reports</button>
   <button class="tab" onclick="gt('prodintel',this)">&#128202; Production intelligence</button>
   <button class="tab" onclick="gt('cknow',this)">&#129504; Company knowledge</button>
-  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>  <button class="tab" onclick="gt('customers',this)"> Customers</button>  <button class="tab" onclick="gt('orders',this)">📦 Orders</button>
+  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>  <button class="tab" onclick="gt('customers',this)"> Customers</button>  <button class="tab" onclick="gt('orders',this)">📦 Orders</button>  <button class="tab" onclick="gt('gamestorm',this)">🎮 Gamestorm</button>
   <button class="tab" onclick="gt('history',this)" id="historyTab">&#x1F4CB; Report history</button>
   <button class="tab" onclick="gt('lb',this)">Leaderboard</button>
   <button class="tab" onclick="gt('daily',this)">&#128197; Daily sales</button>
@@ -4916,6 +4916,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 </div>
 <div id="pg-customers" class="page"><div id="cust-page"></div></div>
 <div id="pg-orders" class="page"><div id="ord-page"></div></div>
+<div id="pg-gamestorm" class="page"><div id="gs-page"></div></div>
 <div id="pg-reviews" class="page"><div id="reviews-page"></div></div>
 <div id="pg-admin" class="page admin-system-page">
 <div id="ds-panel"></div>
@@ -5657,7 +5658,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},gamestorm:()=>{renderGamestorm();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -7110,6 +7111,243 @@ function renderOrdersPage(){
 function _ordTeamStat(yr,q){try{return _ordRollup(_ordFilter({rep:'all',type:'all',place:'all',status:'all',newc:'all',yr:String(yr||'all'),q:q||'all',mon:'all',wk:'all'})).tot;}catch(e){return {sales:0,orders:0,aov:0,newCust:0,web:0,entered:0,gen:0,cc:0,as:0};}}
 function _ordRepStat(rep,yr,q){try{var roll=_ordRollup(_ordFilter({rep:'all',type:'all',place:'all',status:'all',newc:'all',yr:String(yr||'all'),q:q||'all',mon:'all',wk:'all'}));var R=null,rank=null;roll.rows.forEach(function(x,i){if(x.rep===rep){R=x;rank=i+1;}});R=R||{sales:0,orders:0,aov:0,newCust:0,web:0,entered:0,gen:0,cc:0,as:0};R.rank=rank;R.of=roll.rows.length;return R;}catch(e){return {sales:0,orders:0,aov:0,newCust:0,web:0,entered:0,gen:0,cc:0,as:0,rank:null,of:0};}}
 function _ordHasData(){try{return _ordAll().length>0;}catch(e){return false;}}
+/* ===== MODULE: GAMESTORM (AI sales-game strategy lab) ===== */
+function _gsEnsure(){ if(!S.gamestorm||typeof S.gamestorm!=='object')S.gamestorm={projects:[],activeId:null}; if(!Array.isArray(S.gamestorm.projects))S.gamestorm.projects=[]; return S.gamestorm; }
+function _gsEsc(s){ if(typeof _m2esc==='function')return _m2esc(s); return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function _gsDirty(){ try{ if(typeof markDirty==='function')markDirty(); }catch(e){} }
+function _gs$(n){ n=Number(n)||0; return (n<0?'-$':'$')+Math.abs(Math.round(n)).toLocaleString(); }
+function _gsNow(){ return new Date().toISOString(); }
+function _gsId(){ return 'gs_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6); }
+var GS_STAGES=['Draft','Brainstorming','Pressure Testing','Building','Ready to Launch','Active','Completed','Archived'];
+var GS_TABS=['Strategy','Theme','Game Mechanics','Teams','Scoring','Rewards','Timeline','Launch Kit','Art Prompts','Weekly Updates','Manager Notes','Final Game Plan'];
+
+/* ---------- quarter intelligence: read the real tracker ---------- */
+function _gsQuarterIntel(){
+  var yr,q; try{ yr=getYr(); q=getQ(); }catch(e){ yr=new Date().getFullYear(); q='Q'+(Math.floor(new Date().getMonth()/3)+1); }
+  var wks=[]; try{ wks=gwq(yr,q)||[]; }catch(e){}
+  var elapsed=0; try{ elapsed=(typeof weeksElapsed==='function')?weeksElapsed(yr,q):0; }catch(e){}
+  var totalWk=wks.length||13; var remaining=Math.max(0,totalWk-elapsed);
+  var reps=[]; try{ reps=(typeof activeReps==='function')?activeReps():(S.reps||[]); }catch(e){ reps=S.reps||[]; }
+  var goal=0, sales=0, orders=0, calls=0, art=0, credits=0;
+  var repRows=reps.map(function(r){
+    var t={revenue:0,orders:0,calls:0}; try{ t=totW(r.name,wks)||t; }catch(e){}
+    var g=0; try{ var go=(typeof repGoalObj==='function')?repGoalObj(r.name,yr,q):null; g=go&&go.rev?go.rev:0; }catch(e){}
+    var a=0,cr=0; try{ a=(typeof repArt==='function')?repArt(r.name,wks):0; }catch(e){}
+    try{ cr=(typeof repCr==='function')?repCr(r.name,wks):0; }catch(e){}
+    goal+=g; sales+=(t.revenue||0); orders+=(t.orders||0); calls+=(t.calls||0); art+=a; credits+=cr;
+    return {name:r.name,rev:t.revenue||0,goal:g,orders:t.orders||0,calls:t.calls||0,art:a,credits:cr,pct:g>0?Math.round((t.revenue||0)/g*100):null};
+  });
+  var gap=goal-sales;
+  var pace=elapsed>0?sales/elapsed:0;
+  var needWk=remaining>0?gap/remaining:gap;
+  var paceGap=needWk-pace; // positive = behind pace
+  repRows.sort(function(a,b){ return b.rev-a.rev; });
+  var top=repRows.slice(0,3).filter(function(r){return r.rev>0;});
+  var support=repRows.slice().sort(function(a,b){ return (a.pct==null?999:a.pct)-(b.pct==null?999:b.pct); }).filter(function(r){return r.goal>0&&(r.pct==null||r.pct<70);}).slice(0,3);
+  var ord=null; try{ ord=(typeof _ordTeamStat==='function'&&typeof _ordHasData==='function'&&_ordHasData())?_ordTeamStat(yr,q):null; }catch(e){}
+  var reviews=0; try{ reviews=((S.reviews&&S.reviews.rows)||[]).length; }catch(e){}
+  // concentration: share of top rep
+  var conc=sales>0&&top.length?Math.round(top[0].rev/sales*100):0;
+  return {yr:yr,q:q,totalWk:totalWk,elapsed:elapsed,remaining:remaining,goal:goal,sales:sales,gap:gap,pace:pace,needWk:needWk,paceGap:paceGap,
+    reps:repRows,top:top,support:support,orders:orders,calls:calls,art:art,credits:credits,ordStat:ord,reviews:reviews,conc:conc,
+    goalPct:goal>0?Math.round(sales/goal*100):null};
+}
+/* strategy translations from the data */
+function _gsStrategyReads(I){
+  var reads=[];
+  if(I.gap>0&&I.remaining<=3&&I.remaining>0) reads.push({t:'URGENT',x:'Only '+I.remaining+' week'+(I.remaining===1?'':'s')+' left and a '+_gs$(I.gap)+' gap \u2014 run a short, high-intensity quarter-recovery game that rewards closed dollars.'});
+  else if(I.gap>0&&I.paceGap>0) reads.push({t:'Behind pace',x:'Need '+_gs$(I.needWk)+'/wk but pacing '+_gs$(I.pace)+'/wk. The game should reward closed revenue and high-value opportunities to close the gap.'});
+  else if(I.gap<=0&&I.goal>0) reads.push({t:'Ahead of goal',x:'Team is at or above goal \u2014 use a stretch/legacy game (new customers, reactivations, or margin) rather than raw revenue.'});
+  if(I.calls>0&&I.orders>0&&(I.calls/Math.max(1,I.orders))<3) reads.push({t:'Low activity',x:'Call volume looks light relative to orders \u2014 add a daily activity mechanic (dials, quotes, account touches).'});
+  else if(I.calls===0) reads.push({t:'Activity not tracked',x:'No call activity is showing \u2014 if you want an activity game, make sure calls are being logged, or key the game to orders instead.'});
+  if(I.credits>0) reads.push({t:'Quality risk',x:_gs$(I.credits)+' in rep-fault credit memos this quarter \u2014 add a quality gate so the game doesn\u2019t reward volume that gets clawed back.'});
+  if(I.art>=5) reads.push({t:'Art errors up',x:I.art+' art errors this quarter \u2014 consider a "clean order" bonus so accuracy counts, not just speed.'});
+  if(I.conc>=45&&I.top.length) reads.push({t:'Top-heavy',x:I.top[0].name.split(' ')[0]+' is carrying ~'+I.conc+'% of revenue \u2014 a team-balanced format will lift participation across the floor.'});
+  if(I.ordStat&&I.ordStat.newCust!=null) reads.push({t:'New customers',x:I.ordStat.newCust+' new customers this quarter across '+I.ordStat.orders+' orders \u2014 a reactivation/new-logo game could open fresh pipeline.'});
+  if(!reads.length) reads.push({t:'Steady',x:'No single red flag \u2014 a fun, visible team game with quick weekly wins will keep momentum.'});
+  return reads;
+}
+/* deterministic game-type recommendation */
+function _gsRecommend(I){
+  if(I.gap>0&&I.remaining<=3&&I.remaining>0) return {type:'Quarter Recovery Sprint',why:'Large gap, few weeks left. Reward closed dollars daily, keep rules dead simple, add a countdown.',focus:'revenue'};
+  if(I.credits>0||I.art>=5) return {type:'Clean & Close',why:'Quality issues present. Reward closed revenue but gate points on clean orders (no rep-fault credits/art errors).',focus:'quality+revenue'};
+  if(I.conc>=45) return {type:'Team Relay',why:'Revenue is top-heavy. Use balanced teams so every rep\u2019s contribution moves the score \u2014 lifts the middle of the floor.',focus:'participation'};
+  if(I.calls>0&&I.orders>0&&(I.calls/Math.max(1,I.orders))<3) return {type:'Activity Blitz',why:'Activity looks low. Score daily dials/quotes/touches with a revenue multiplier so effort and outcomes both count.',focus:'activity'};
+  if(I.gap<=0&&I.goal>0) return {type:'Stretch & New Logos',why:'Team is at goal. Chase new customers, reactivations, and bigger average orders instead of raw revenue.',focus:'new-business'};
+  return {type:'Momentum Game',why:'No single red flag. A simple, visible team game with weekly twists keeps energy high and participation broad.',focus:'momentum'};
+}
+
+/* ---------- project CRUD ---------- */
+function _gsActive(){ var G=_gsEnsure(); return G.projects.find(function(p){return p.id===G.activeId;})||null; }
+function _gsNewProject(){
+  var G=_gsEnsure();
+  var I=_gsQuarterIntel(); var rec=_gsRecommend(I);
+  var p={ id:_gsId(), title:'Untitled game', stage:'Draft', created:_gsNow(), updated:_gsNow(),
+    quarter:I.q+' '+I.yr, goal:I.goal, gap:I.gap,
+    fields:{}, chat:[], recommendation:rec, pressure:null };
+  GS_TABS.forEach(function(t){ p.fields[t]=''; });
+  p.fields['Strategy']='Recommended format: '+rec.type+'\n\nWhy: '+rec.why+'\n\nQuarter snapshot at creation: goal '+_gs$(I.goal)+', sales '+_gs$(I.sales)+', gap '+_gs$(I.gap)+', '+I.remaining+' weeks left.';
+  G.projects.unshift(p); G.activeId=p.id; _gsDirty(); return p;
+}
+function _gsOpen(id){ var G=_gsEnsure(); G.activeId=id; _gsDirty(); renderGamestorm(); }
+function _gsDup(id){ var G=_gsEnsure(); var src=G.projects.find(function(p){return p.id===id;}); if(!src)return; var copy=JSON.parse(JSON.stringify(src)); copy.id=_gsId(); copy.title=(src.title||'Untitled')+' (copy)'; copy.stage='Draft'; copy.created=copy.updated=_gsNow(); G.projects.unshift(copy); G.activeId=copy.id; _gsDirty(); renderGamestorm(); }
+function _gsArchive(id){ var G=_gsEnsure(); var p=G.projects.find(function(x){return x.id===id;}); if(p){ p.stage=(p.stage==='Archived'?'Draft':'Archived'); p.updated=_gsNow(); _gsDirty(); renderGamestorm(); } }
+function _gsDelete(id){ if(!confirm('Delete this game project permanently?'))return; var G=_gsEnsure(); G.projects=G.projects.filter(function(p){return p.id!==id;}); if(G.activeId===id)G.activeId=(G.projects[0]&&G.projects[0].id)||null; _gsDirty(); renderGamestorm(); }
+function _gsSetStage(id,stage){ var G=_gsEnsure(); var p=G.projects.find(function(x){return x.id===id;}); if(p){ p.stage=stage; p.updated=_gsNow(); _gsDirty(); renderGamestorm(); } }
+function _gsSetTitle(id,v){ var G=_gsEnsure(); var p=G.projects.find(function(x){return x.id===id;}); if(p){ p.title=v; p.updated=_gsNow(); _gsDirty(); } }
+function _gsSaveField(tab,v){ var p=_gsActive(); if(!p)return; p.fields[tab]=v; p.updated=_gsNow(); _gsDirty(); }
+var _gsTab='Strategy';
+function _gsSetTab(t){ _gsTab=t; renderGamestorm(); }
+
+/* ---------- AI console ---------- */
+function _gsIntelPromptBlock(I){
+  var lines=['QUARTER DATA ('+I.q+' '+I.yr+'):',
+    '- Goal: '+_gs$(I.goal)+' | Sales so far: '+_gs$(I.sales)+' | Gap: '+_gs$(I.gap)+(I.goalPct!=null?(' ('+I.goalPct+'% of goal)'):''),
+    '- Weeks elapsed: '+I.elapsed+' of '+I.totalWk+' | Weeks remaining: '+I.remaining,
+    '- Current pace: '+_gs$(I.pace)+'/wk | Needed pace: '+_gs$(I.needWk)+'/wk',
+    '- Orders: '+I.orders+' | Calls: '+I.calls+' | Art errors: '+I.art+' | Rep-fault credits: '+_gs$(I.credits)+' | Reviews: '+I.reviews];
+  if(I.ordStat)lines.push('- Uploaded orders: '+_gs$(I.ordStat.sales)+' across '+I.ordStat.orders+' orders, '+I.ordStat.newCust+' new customers, '+I.ordStat.web+' web / '+I.ordStat.entered+' entered');
+  if(I.top.length)lines.push('- Top reps: '+I.top.map(function(r){return r.name+' ('+_gs$(r.rev)+')';}).join(', '));
+  if(I.support.length)lines.push('- Reps needing support: '+I.support.map(function(r){return r.name+(r.pct!=null?(' ('+r.pct+'% of goal)'):'');}).join(', '));
+  return lines.join('\n');
+}
+var GS_ACTIONS=[
+  {k:'idea',label:'Create game idea',prompt:'Brainstorm ONE strong sales-game concept for this quarter that fits the data. Give: game name, theme/story, business objective, the 2-3 sales behaviors it drives, team structure, a simple scoring idea, and why it fits the gap. Keep it punchy and rep-friendly.'},
+  {k:'pressure',label:'Pressure-test',prompt:'Pressure-test the current game concept below. Assess: too complicated? too easy/hard? fair? can reps understand it in 30 seconds? can a manager track it in a spreadsheet? does it drive the right behavior? can reps game it? does it support the quarter goal? Then give Strengths, Weaknesses, Risks, and a final verdict: KEEP / REVISE / SIMPLIFY / REBUILD.'},
+  {k:'build',label:'Build launch-ready',prompt:'Turn the concept below into a launch-ready game. Provide: title, theme summary, manager objective, rep objective, full rules, scoring system (with point values), team setup, weekly cadence, rewards, and a leaderboard format. Be concrete and simple enough to run in a spreadsheet.'},
+  {k:'weekly',label:'Weekly adjustment',prompt:'Given the CURRENT quarter data above and the active game below, recommend this week\u2019s move: is it working? what twist, catch-up mechanic, or bonus challenge should we add? Give the manager 3 bullet talking points and a short message to send the team.'},
+  {k:'recovery',label:'Quarter recovery scan',prompt:'Act as a sales director. Given the quarter data, tell me bluntly whether we can still make goal, what the fastest lever is, and what ONE game format gives us the best shot at closing the gap in the weeks remaining. Be direct.'},
+  {k:'email',label:'Launch email',prompt:'Write a high-energy launch email to the sales team announcing the game below. Include the theme, the rules in plain language, the scoring, the rewards, and a clear call to action. Keep it under 250 words.'},
+  {k:'art',label:'Art prompts',prompt:'Generate 4 image-generation prompts for this game: (1) game logo, (2) team/character art, (3) a scoreboard/leaderboard background, (4) a victory graphic. For each: visual style, theme, scene details, mood, color direction, key objects, and what to avoid.'},
+  {k:'simplify',label:'Simplify it',prompt:'The game below is too complex. Simplify it so a rep understands it in 20 seconds and a manager can track it in one spreadsheet column \u2014 without losing the competitive edge. Show the simplified rules and scoring.'},
+  {k:'revenue',label:'Tie closer to revenue',prompt:'Rework the scoring of the game below so it ties more directly to closed revenue and the quarter gap, while keeping it simple and fair.'}
+];
+function _gsAI(k){
+  var p=_gsActive(); if(!p){ alert('Create or open a game project first.'); return; }
+  var act=GS_ACTIONS.find(function(a){return a.k===k;}); if(!act)return;
+  var I=_gsQuarterIntel();
+  var concept=(p.fields['Strategy']||'')+'\n'+(p.fields['Game Mechanics']||'')+'\n'+(p.fields['Scoring']||'')+'\n'+(p.fields['Theme']||'');
+  var prompt='You are a sharp, practical sales manager AND creative game master helping run a sales game tied to real quarterly performance. Be direct, challenge weak ideas, and stay concrete.\n\n'
+    +_gsIntelPromptBlock(I)+'\n\nCURRENT GAME (may be blank if brand new):\n'+(concept.trim()||'(nothing built yet)')+'\n\nTASK: '+act.prompt;
+  p.chat.push({role:'user',label:act.label,text:act.label,ts:_gsNow()});
+  p.chat.push({role:'ai',text:'',pending:true,ts:_gsNow()});
+  p.updated=_gsNow(); _gsDirty(); renderGamestorm();
+  if(typeof callAI!=='function'){ _gsFinishAI(p,'AI is not configured. Add your worker proxy in Admin \u2192 AI connection to enable Gamestorm\u2019s console.'); return; }
+  var maxT=(k==='build'||k==='email'||k==='art')?2600:1600;
+  Promise.resolve().then(function(){ return callAI(prompt,{maxTokens:maxT}); })
+    .then(function(res){ _gsFinishAI(p, _gsAIText(res)); })
+    .catch(function(e){ _gsFinishAI(p,'\u26A0 '+(e&&e.message||'AI request failed')); });
+}
+function _gsAIText(res){ if(res==null)return ''; if(typeof res==='string')return res; try{ if(res.content&&res.content.length)return res.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('\n'); if(res.text)return res.text; }catch(e){} return String(res); }
+function _gsFinishAI(p,text){ for(var i=p.chat.length-1;i>=0;i--){ if(p.chat[i].pending){ p.chat[i].pending=false; p.chat[i].text=text; break; } } p.updated=_gsNow(); _gsDirty(); renderGamestorm(); }
+function _gsChatToField(idx){ var p=_gsActive(); if(!p||!p.chat[idx])return; var t=p.chat[idx].text||''; var cur=p.fields[_gsTab]||''; p.fields[_gsTab]=(cur?cur+'\n\n':'')+t; p.updated=_gsNow(); _gsDirty(); renderGamestorm(); }
+
+/* ---------- render ---------- */
+function _gsCss(){ if(document.getElementById('gs-css'))return; var s=document.createElement('style'); s.id='gs-css';
+  s.textContent='#gs-page{--gsl:var(--tcp-line,#232a36);--gsp:var(--tcp-panel-2,#141821);--gsm:var(--tcp-muted,#8b95a7);}'
+   +'#gs-page .gs-hero{background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(35,42,54,.4));border:1px solid var(--gsl);border-radius:16px;padding:18px 20px;margin-bottom:16px;}'
+   +'#gs-page .gs-hero h1{font-size:26px;font-weight:900;margin:0;letter-spacing:-.5px;}'
+   +'#gs-page .gs-hero .sub{color:#B7A6FF;font-weight:700;font-size:12px;margin-top:2px;}'
+   +'#gs-page .gs-hero .desc{color:var(--gsm);font-size:12px;margin-top:6px;max-width:640px;}'
+   +'#gs-page .gs-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}'
+   +'#gs-page .gs-btn{background:var(--gsp);border:1px solid var(--gsl);color:inherit;border-radius:9px;padding:7px 12px;font-size:11.5px;font-weight:700;cursor:pointer;}'
+   +'#gs-page .gs-btn:hover{border-color:#7C5CFF;}'
+   +'#gs-page .gs-btn.pri{background:linear-gradient(135deg,#7C5CFF,#9B7BFF);border-color:transparent;color:#fff;}'
+   +'#gs-page .gs-grid{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}'
+   +'#gs-page .gs-card{background:var(--gsp);border:1px solid var(--gsl);border-radius:14px;padding:14px 15px;margin-bottom:14px;}'
+   +'#gs-page .gs-kick{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:#8E7BFF;font-weight:800;}'
+   +'#gs-page .gs-title{font-size:14px;font-weight:900;margin:1px 0 8px;}'
+   +'#gs-page .gs-proj{border:1px solid var(--gsl);border-radius:10px;padding:8px 10px;margin-bottom:7px;cursor:pointer;background:rgba(255,255,255,.02);}'
+   +'#gs-page .gs-proj.active{border-color:#7C5CFF;background:rgba(124,92,255,.08);}'
+   +'#gs-page .gs-proj .pn{font-weight:800;font-size:12px;}'
+   +'#gs-page .gs-badge{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;border:1px solid var(--gsl);border-radius:999px;padding:1px 7px;color:var(--gsm);}'
+   +'#gs-page .gs-intel{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;}'
+   +'#gs-page .gs-stat{background:rgba(255,255,255,.02);border:1px solid var(--gsl);border-radius:10px;padding:8px 10px;}'
+   +'#gs-page .gs-stat .l{font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--gsm);}'
+   +'#gs-page .gs-stat .v{font-size:17px;font-weight:900;margin-top:2px;}'
+   +'#gs-page .gs-read{font-size:11.5px;line-height:1.5;padding:7px 0;border-top:1px solid var(--gsl);}'
+   +'#gs-page .gs-read b{color:#C9BBFF;}'
+   +'#gs-page .gs-loop{display:flex;flex-wrap:wrap;gap:6px;}'
+   +'#gs-page .gs-loop .st{flex:1;min-width:90px;text-align:center;font-size:10px;font-weight:800;padding:8px 6px;border:1px solid var(--gsl);border-radius:9px;cursor:pointer;color:var(--gsm);}'
+   +'#gs-page .gs-loop .st.on{background:linear-gradient(135deg,#7C5CFF,#9B7BFF);border-color:transparent;color:#fff;}'
+   +'#gs-page .gs-tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}'
+   +'#gs-page .gs-tab{font-size:10.5px;font-weight:700;padding:5px 9px;border:1px solid var(--gsl);border-radius:8px;cursor:pointer;color:var(--gsm);}'
+   +'#gs-page .gs-tab.on{background:#20263180;border-color:#7C5CFF;color:#fff;}'
+   +'#gs-page textarea.gs-ta{width:100%;min-height:220px;background:rgba(0,0,0,.25);border:1px solid var(--gsl);border-radius:10px;color:inherit;font-size:12.5px;line-height:1.55;padding:11px;font-family:inherit;resize:vertical;}'
+   +'#gs-page .gs-console{max-height:420px;overflow-y:auto;padding-right:4px;}'
+   +'#gs-page .gs-msg{border:1px solid var(--gsl);border-radius:10px;padding:9px 11px;margin-bottom:8px;font-size:12px;line-height:1.55;white-space:pre-wrap;}'
+   +'#gs-page .gs-msg.user{background:rgba(124,92,255,.08);border-color:rgba(124,92,255,.4);font-weight:700;}'
+   +'#gs-page .gs-msg.ai{background:rgba(255,255,255,.02);}'
+   +'#gs-page .gs-msg .add{font-size:10px;font-weight:800;color:#8E7BFF;cursor:pointer;margin-top:6px;display:inline-block;}'
+   +'#gs-page .gs-empty{text-align:center;color:var(--gsm);font-size:12px;padding:26px 10px;}'
+   +'@media(max-width:900px){#gs-page .gs-grid{grid-template-columns:1fr;}}';
+  document.head.appendChild(s);
+}
+function renderGamestorm(){
+  var host=document.getElementById('gs-page'); if(!host)return; _gsCss(); _gsEnsure();
+  var I=_gsQuarterIntel(); var G=S.gamestorm; var p=_gsActive();
+  var hero='<div class="gs-hero"><h1>\uD83C\uDFAE Gamestorm</h1><div class="sub">AI-powered sales game strategy lab</div>'
+    +'<div class="desc">Build sales games tied to real quarter performance \u2014 brainstorm, pressure-test, and launch, then adjust weekly from live tracker data.</div>'
+    +'<div class="gs-actions">'
+    +'<button class="gs-btn pri" onclick="_gsNewProject();renderGamestorm();">+ New game project</button>'
+    +'<button class="gs-btn" onclick="_gsAI(\'idea\')">Create from data</button>'
+    +'<button class="gs-btn" onclick="_gsAI(\'recovery\')">Run quarter recovery scan</button>'
+    +'<button class="gs-btn" onclick="_gsAI(\'build\')">Generate launch kit</button>'
+    +'</div></div>';
+  // intelligence panel
+  var rec=_gsRecommend(I); var reads=_gsStrategyReads(I);
+  var intel='<div class="gs-card"><div class="gs-kick">Quarter intelligence</div><div class="gs-title">'+I.q+' '+I.yr+' \u2014 the situation</div>'
+    +'<div class="gs-intel">'
+    +'<div class="gs-stat"><div class="l">Goal</div><div class="v">'+_gs$(I.goal)+'</div></div>'
+    +'<div class="gs-stat"><div class="l">Sales</div><div class="v">'+_gs$(I.sales)+'</div></div>'
+    +'<div class="gs-stat"><div class="l">Gap</div><div class="v" style="color:'+(I.gap>0?'#F0A9A9':'#7BE3A9')+';">'+_gs$(I.gap)+'</div></div>'
+    +'<div class="gs-stat"><div class="l">Weeks left</div><div class="v">'+I.remaining+'</div></div>'
+    +'<div class="gs-stat"><div class="l">Need / wk</div><div class="v">'+_gs$(I.needWk)+'</div></div>'
+    +'<div class="gs-stat"><div class="l">Pace / wk</div><div class="v">'+_gs$(I.pace)+'</div></div>'
+    +'</div>'
+    +'<div style="margin-top:10px;"><div class="gs-kick">Recommended format</div><div style="font-weight:900;font-size:14px;margin:2px 0;color:#C9BBFF;">'+_gsEsc(rec.type)+'</div><div style="font-size:11.5px;color:var(--gsm);">'+_gsEsc(rec.why)+'</div></div>'
+    +'<div style="margin-top:10px;">'+reads.map(function(r){return '<div class="gs-read"><b>'+_gsEsc(r.t)+'</b> \u2014 '+_gsEsc(r.x)+'</div>';}).join('')+'</div>'
+    +'</div>';
+  // project library
+  var projList=G.projects.length?G.projects.map(function(pr){
+    return '<div class="gs-proj'+(pr.id===G.activeId?' active':'')+'" onclick="_gsOpen(\''+pr.id+'\')"><div style="display:flex;justify-content:space-between;gap:6px;align-items:center;"><span class="pn">'+_gsEsc(pr.title||'Untitled')+'</span><span class="gs-badge">'+_gsEsc(pr.stage)+'</span></div>'
+     +'<div style="font-size:10px;color:var(--gsm);margin-top:3px;">'+_gsEsc(pr.quarter||'')+' \u00b7 updated '+new Date(pr.updated).toLocaleDateString()+'</div></div>';
+  }).join(''):'<div class="gs-empty">No projects yet.<br>Start one to begin building.</div>';
+  var library='<div class="gs-card"><div style="display:flex;justify-content:space-between;align-items:center;"><div><div class="gs-kick">Project library</div><div class="gs-title">Your games</div></div>'
+    +'<button class="gs-btn pri" onclick="_gsNewProject();renderGamestorm();">+ New</button></div>'
+    +'<div style="margin-top:8px;">'+projList+'</div></div>';
+  // right side: builder + console (only if a project is active)
+  var right='';
+  if(p){
+    var loop='<div class="gs-card"><div class="gs-kick">Loop navigator</div><div class="gs-title" style="margin-bottom:8px;">Where this project is</div><div class="gs-loop">'
+      +['Draft','Brainstorming','Pressure Testing','Building','Ready to Launch','Active','Completed'].map(function(st){return '<div class="st'+(p.stage===st?' on':'')+'" onclick="_gsSetStage(\''+p.id+'\',\''+st+'\')">'+st+'</div>';}).join('')+'</div></div>';
+    var head='<div class="gs-card"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input value="'+_gsEsc(p.title)+'" oninput="_gsSetTitle(\''+p.id+'\',this.value)" style="flex:1;min-width:180px;background:rgba(0,0,0,.25);border:1px solid var(--gsl);border-radius:9px;color:inherit;font-size:15px;font-weight:800;padding:8px 11px;">'
+      +'<button class="gs-btn" onclick="_gsDup(\''+p.id+'\')">Duplicate</button>'
+      +'<button class="gs-btn" onclick="_gsArchive(\''+p.id+'\')">'+(p.stage==='Archived'?'Unarchive':'Archive')+'</button>'
+      +'<button class="gs-btn" onclick="_gsDelete(\''+p.id+'\')">Delete</button></div></div>';
+    // AI console
+    var actBtns=GS_ACTIONS.map(function(a){return '<button class="gs-btn" onclick="_gsAI(\''+a.k+'\')">'+a.label+'</button>';}).join('');
+    var msgs=p.chat.length?p.chat.map(function(m,i){
+      if(m.role==='user')return '<div class="gs-msg user">\u25B8 '+_gsEsc(m.text)+'</div>';
+      return '<div class="gs-msg ai">'+(m.pending?'<span style="color:var(--gsm);">Thinking\u2026</span>':_gsEsc(m.text)+'<br><span class="add" onclick="_gsChatToField('+i+')">+ Add to '+_gsEsc(_gsTab)+'</span>')+'</div>';
+    }).join(''):'<div class="gs-empty">Use an action below and the AI will build with your live quarter data.</div>';
+    var console_='<div class="gs-card"><div class="gs-kick">AI Gamestorm console</div><div class="gs-title">Strategy assistant</div>'
+      +'<div class="gs-console" id="gs-console">'+msgs+'</div>'
+      +'<div class="gs-actions" style="margin-top:10px;">'+actBtns+'</div></div>';
+    // builder workspace
+    var tabs=GS_TABS.map(function(t){return '<div class="gs-tab'+(t===_gsTab?' on':'')+'" onclick="_gsSetTab(\''+t+'\')">'+t+'</div>';}).join('');
+    var builder='<div class="gs-card"><div class="gs-kick">Game builder</div><div class="gs-title">Workspace</div>'
+      +'<div class="gs-tabs">'+tabs+'</div>'
+      +'<textarea class="gs-ta" oninput="_gsSaveField(\''+_gsEsc(_gsTab)+'\',this.value)" placeholder="'+_gsEsc(_gsTab)+' \u2014 write here, or use the AI console and click \u201cAdd to '+_gsEsc(_gsTab)+'\u201d.">'+_gsEsc(p.fields[_gsTab]||'')+'</textarea>'
+      +'<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="gs-btn" onclick="_gsAI(\'simplify\')">Ask AI to simplify</button><button class="gs-btn" onclick="_gsAI(\'pressure\')">Pressure-test</button><button class="gs-btn" onclick="_gsAI(\'revenue\')">Tie closer to revenue</button></div></div>';
+    right=loop+head+console_+builder;
+  } else {
+    right='<div class="gs-card gs-empty">Select a project on the left, or start a new one to open the console and builder.</div>';
+  }
+  host.innerHTML=hero+'<div class="gs-grid"><div>'+intel+library+'</div><div>'+right+'</div></div>';
+  var cons=document.getElementById('gs-console'); if(cons)cons.scrollTop=cons.scrollHeight;
+}
+
 function buildMtgEngine(prev,yr,q){
   var qtdWeeks=gwq(yr,q);
   var prevIdx=qtdWeeks.findIndex(function(w){return w.key===prev.key;});if(prevIdx<0)prevIdx=0;
@@ -7927,7 +8165,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},gamestorm:S.gamestorm||{projects:[],activeId:null},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
 // beforeunload: not needed in artifact sandbox
@@ -7951,7 +8189,7 @@ function loadFromStorage(){
     S.dailySales=saved.dailySales||[];
     S.customers=saved.customers||[];
     S.reviews=saved.reviews||{url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};
-    S.orders=saved.orders||[];S.ordersMeta=saved.ordersMeta||{};
+    S.orders=saved.orders||[];S.ordersMeta=saved.ordersMeta||{};S.gamestorm=saved.gamestorm||{projects:[],activeId:null};
     S.dailyRep=saved.dailyRep||{};
     S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};
     S.teamGoals=saved.teamGoals||{};
@@ -16417,7 +16655,7 @@ window.addEventListener('load', function(){
 (function(){
   var NAV_GROUPS=[
     {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['year','Year Overview','🗓️'],['lb','Leaderboard','🏆']]},
-    {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['orders','Orders','📦'],['reports','Reports Hub','📄'],['slides','Sales Slides','🎬']]},
+    {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['orders','Orders','📦'],['gamestorm','Gamestorm','🎮'],['reports','Reports Hub','📄'],['slides','Sales Slides','🎬']]},
     {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
     {key:'opsg',icon:'🛠️',label:'Operations',open:true,items:[['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['reviews','Customer Reviews','⭐'],['art','Art Errors','🎨'],['prodintel','Production Intelligence','📊']]},
     {key:'engage',icon:'🎮',label:'Games',open:false,items:[['games','Games','🎮'],['gtrack','Game Tracker','📊']]},
@@ -18107,7 +18345,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:450,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:451,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
