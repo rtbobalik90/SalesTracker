@@ -3442,13 +3442,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab" onclick="gt('reports',this)">Reports</button>
   <button class="tab" onclick="gt('prodintel',this)">&#128202; Production intelligence</button>
   <button class="tab" onclick="gt('cknow',this)">&#129504; Company knowledge</button>
-  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>  <button class="tab" onclick="gt('customers',this)"> Customers</button>  <button class="tab" onclick="gt('orders',this)">📦 Orders</button>  <button class="tab" onclick="gt('gamestorm',this)">🎮 Gamestorm</button>
+  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>  <button class="tab" onclick="gt('customers',this)"> Customers</button>  <button class="tab" onclick="gt('orders',this)">📦 Orders</button>
   <button class="tab" onclick="gt('history',this)" id="historyTab">&#x1F4CB; Report history</button>
   <button class="tab" onclick="gt('lb',this)">Leaderboard</button>
   <button class="tab" onclick="gt('daily',this)">&#128197; Daily sales</button>
   <button class="tab" onclick="gt('calc',this)">&#128290; Calculator</button>
   <button class="tab" onclick="gt('intel',this)">&#128197; Forecast</button>
-  <button class="tab" onclick="gt('games',this)">&#127918; Games</button>
+  <button class="tab" onclick="gt('games',this)">&#127918; Games</button>  <button class="tab" onclick="gt('gamestorm',this)">&#127918; Gamestorm</button>
   <button class="tab" onclick="gt('gtrack',this)">&#128202; Game tracker</button>
   <button class="tab" onclick="gt('notifs',this)" id="notifsTab">&#x1F514; Notifications</button>
   <button class="tab" onclick="gt('admin',this)" style="margin-left:auto;border-color:#534AB7;color:#A8B8FF;opacity:.85;">&#9881;&#xFE0F; Admin</button>
@@ -16667,10 +16667,10 @@ window.addEventListener('load', function(){
 (function(){
   var NAV_GROUPS=[
     {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['year','Year Overview','🗓️'],['lb','Leaderboard','🏆']]},
-    {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['orders','Orders','📦'],['gamestorm','Gamestorm','🎮'],['reports','Reports Hub','📄'],['slides','Sales Slides','🎬']]},
+    {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['orders','Orders','📦'],['reports','Reports Hub','📄'],['slides','Sales Slides','🎬']]},
     {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
     {key:'opsg',icon:'🛠️',label:'Operations',open:true,items:[['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['reviews','Customer Reviews','⭐'],['art','Art Errors','🎨'],['prodintel','Production Intelligence','📊']]},
-    {key:'engage',icon:'🎮',label:'Games',open:false,items:[['games','Games','🎮'],['gtrack','Game Tracker','📊']]},
+    {key:'engage',icon:'🎮',label:'Games',open:false,items:[['gamestorm','Gamestorm','🎮'],['games','Games','🎮'],['gtrack','Game Tracker','📊']]},
     {key:'system',icon:'⚙️',label:'Admin',open:false,items:[['admin','Admin','⚙️'],['cknow','Company Knowledge','🧠']]}
   ];
   
@@ -18357,7 +18357,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:453,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:454,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
