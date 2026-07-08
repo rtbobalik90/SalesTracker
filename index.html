@@ -17205,7 +17205,7 @@ async function buildOneOnOnePacket(repName){
           +'Rep: '+repName+' \u2014 '+E.prev.label+' '+E.yr+' (week '+E.weeksCompleted+' of '+E.qtdWeeks.length+(E.earlyQuarter?', EARLY quarter: no failure framing on pace':'')+').\n'
           +'Week: $'+Math.round(R.wkRev).toLocaleString()+' rev, '+R.wkOrders+' orders, '+R.wkCalls+' calls. Rank #'+rank+' of '+E.reps.length+' (team avg $'+Math.round(teamAvgWk).toLocaleString()+'/rep).\n'
           +'Prior week: '+(R.pwRev!=null?'$'+Math.round(R.pwRev).toLocaleString():'n/a')+'. QTD $'+Math.round(R.qtdRev).toLocaleString()+(R.goalRev>0?' vs $'+Math.round(R.goalRev).toLocaleString()+' goal':'')+'. YTD $'+Math.round(R.ytdRev).toLocaleString()+'.\n'
-          +'Top sale: '+(R.topSale>0?'$'+Math.round(R.topSale).toLocaleString()+(R.topSaleCustomer?' ('+R.topSaleCustomer+')':''):'none')+'. Coverage: '+(covP0!=null?covP0+'%':'n/a')+'. Art: '+R.art+' wk/'+R.qtdArt+' QTD. Credits: $'+Math.round(R.credits).toLocaleString()+' wk.\n'
+          +'Top sale: '+(R.topSale>0?'$'+Math.round(R.topSale).toLocaleString()+(R.topSaleCustomer?' ('+R.topSaleCustomer+')':''):'none')+'. Coverage: '+(covP0!=null?covP0+'%':'n/a')+'. Art: '+R.art+' wk/'+R.qtdArt+' QTD. Credits: $'+Math.round(R.credits).toLocaleString()+(_ordHasData()?(function(){var _o=_ordRepStat(repName,yr,q);return '. Orders (QTD): $'+Math.round(_o.sales).toLocaleString()+' across '+Math.round(_o.orders||0)+' orders, $'+Math.round(_o.aov||0).toLocaleString()+' avg, '+Math.round(_o.newCust||0)+' new'+(_o.rank?(', rank #'+_o.rank+'/'+_o.of):'')+'.';})():'')+' wk.\n'
           +'Return ONLY JSON, no fences: {"celebrate":["2-3 bullets, max 18 words each"],"coach":["2-3 bullets, max 18 words each \u2014 what to work on and how"]}';
         var raw=await callAI(p,{maxTokens:600,skipCompanyContext:true});
         raw=String(raw||'').replace(/```json/gi,'').replace(/```/g,'').trim();
@@ -17582,7 +17582,7 @@ function mountRep360(ri){
       +cell('Quarter best',R.qTop>0?_m2$(R.qTop):'&mdash;',esc(R.qTopCust||''))
       +cell('AOV (wk)',R.wkOrders>0?_m2$(R.aov):'&mdash;','')
       +cell('Art',String(R.art),R.qtdArt+' QTD')
-      +cell('Credits',_m2$(R.credits),'wk &middot; rep-fault')
+      +cell('Credits',_m2$(R.credits),'wk &middot; rep-fault')+(_ordHasData()?(function(){var _o=_ordRepStat(name,E.yr,E.q);return cell('Order sales',_m2$(_o.sales),Math.round(_o.orders||0).toLocaleString()+' ord &middot; '+_m2$(_o.aov)+' AOV')+cell('New customers',Math.round(_o.newCust||0).toLocaleString(),(_o.rank?('rank #'+_o.rank+'/'+_o.of):'')+' &middot; '+Math.round(_o.web||0)+'w/'+Math.round(_o.entered||0)+'e');})():'')
       +'</div>'
       +'<div class="dc2-repai" style="border:0;padding:14px 0 0;"><div class="dc2-panel-h"><span>&#129504; AI read &middot; celebrate &amp; coach</span><button class="dc-mini" onclick="_r360Insight(this.dataset.rep,true)" data-rep="'+esc(name)+'">&#8635;</button></div><div id="r360-ai"><span class="dc-flat">Loading&hellip;</span></div></div>';
   }else pv.overview='<div class="dc-flat" style="padding:10px 0;">No recent weekly data for this rep.</div>';
@@ -18107,7 +18107,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:449,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:450,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
