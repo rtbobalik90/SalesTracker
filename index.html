@@ -5676,7 +5676,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());renderCML();},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -6577,6 +6577,18 @@ function saveCMEdit(id){let c=S.cms.find(x=>x.id===id);if(!c)return;c.rep=docume
 
 function saveAE(){let rep=document.getElementById('aeRep').value,wk=document.getElementById('aeWeek').value,so=document.getElementById('aeSO').value.trim(),type=document.getElementById('aeType').value,desc=document.getElementById('aeDesc').value.trim();if(!so){document.getElementById('aeSO').style.borderColor='#E24B4A';setTimeout(()=>document.getElementById('aeSO').style.borderColor='',1500);return;}let parts=wk.split('_');S.artErrors.push({id:Date.now(),rep,weekKey:wk,yr:parts[0],q:parts[1],so,type,desc,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});document.getElementById('aeSO').value='';document.getElementById('aeDesc').value='';let m=document.getElementById('aeMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);renderAEL();markDirty();}
 function deleteAE(id){S.artErrors=S.artErrors.filter(a=>a.id!==id);renderAEL();markDirty();}
+function aeAutoSync(){
+  try{
+    var src=(window.S&&S.artErrorSource)||{};
+    var inp=document.getElementById('aeCsvUrl');
+    if(inp&&!inp.value&&src.url&&document.activeElement!==inp)inp.value=src.url;
+    if(!src.url)return;
+    var last=src.lastSync?Date.parse(src.lastSync):0;
+    if(last&&(Date.now()-last)<15*60*1000)return;
+    if(window._aeAutoSyncing)return; window._aeAutoSyncing=true;
+    setTimeout(function(){try{if(typeof aeSyncCsv==='function')aeSyncCsv();}catch(e){}window._aeAutoSyncing=false;},800);
+  }catch(e){}
+}
 function aeDeleteUnmatched(){
   var un=(S.artErrors||[]).filter(function(a){return a&&a.repMatched===false;});
   if(!un.length){if(typeof aeStatus==='function')aeStatus('No unmatched rows to delete \u2014 everyone in the log is on the roster.','');else alert('No unmatched rows to delete.');return;}
@@ -8641,7 +8653,7 @@ function renderDailyLog(){
     var dateStr=yr+'-'+(mo+1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0');
     var entry=entryMap[dateStr];
     var repT=repTotalsFor(dateStr);
-    var top=repT&&repT.top&&Number(repT.top.day||0)>0?repT.top:null;
+    var top=repT&&repT.top&&(Number(repT.top.day||0)>0||Number(repT.top.cum||0)>0)?repT.top:null;
     var hasRepRows=!!(repT&&repT.rows&&repT.rows.length);
     var hasData=!!entry||hasRepRows;
     var today=new Date().toISOString().split('T')[0];
@@ -8660,7 +8672,7 @@ function renderDailyLog(){
          +'<div class="daily-day-total">SMB $'+Math.round(Number(entry.smbSales||0)).toLocaleString()+'</div>'
          +'<div class="daily-day-total">Σ $'+Math.round(Number(entry.runningTotal||0)).toLocaleString()+'</div>'
         :'')
-      +(top?'<div class="daily-top-rep-chip"><span>&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number(top.day||0)).toLocaleString()+'</span></div>':'')
+      +(top?'<div class="daily-top-rep-chip"><span>&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number((Number(top.day||0)>0?top.day:top.cum)||0)).toLocaleString()+'</span></div>':'')
       +(actualDailyEntry?'<button class="daily-delete-btn" onclick="event.stopPropagation();deleteDailyEntry(&quot;'+dateStr+'&quot;)" title="Remove">×</button>':'')
       +'</div>'
     );
@@ -17791,7 +17803,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:438,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:440,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
