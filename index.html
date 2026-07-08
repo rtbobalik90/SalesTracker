@@ -8591,8 +8591,9 @@ function renderDailyLog(){
   monthEntries.forEach(function(e){monthEntryMap[e.date]=e;});
 
   function repTotalsFor(dateISO){
-    if(typeof _drDayTotals!=='function')return null;
-    try{return _drDayTotals(dateISO);}catch(e){return null;}
+    var _f=(typeof _drDayTotals==='function')?_drDayTotals:(typeof window!=='undefined'?window._drDayTotals:null);
+    if(typeof _f!=='function')return null;
+    try{return _f(dateISO);}catch(e){return null;}
   }
   function displayEntryFor(dateISO){
     var e=monthEntryMap[dateISO];
@@ -16246,7 +16247,7 @@ function drDayPopup(dateISO){
     +'<div class="dc2-panel-h"><span>Rep sales &middot; ranked (day &middot; cumulative)</span><span class="dc-flat" style="font-size:11px;">Σ $'+Math.round(summary.runningTotal).toLocaleString()+'</span></div>'+rowsH+'</div>';
   if(typeof _r360Modal==='function')_r360Modal(h);else alert('Rep sales for '+dstr);
 }
-window.drSaveRepDay=drSaveRepDay;window.renderDailyRepView=renderDailyRepView;window.drDayPopup=drDayPopup;window._drRenderForm=_drRenderForm;window._drLive=_drLive;
+window.drSaveRepDay=drSaveRepDay;window.renderDailyRepView=renderDailyRepView;window.drDayPopup=drDayPopup;window._drDayTotals=_drDayTotals;window._drRenderForm=_drRenderForm;window._drLive=_drLive;
 window.addEventListener('load',function(){
   setTimeout(function(){try{if(document.getElementById('pg-daily')&&document.getElementById('pg-daily').classList.contains('active')){_drRenderForm();renderDailyRepView();}}catch(e){}},700);
 });
@@ -17803,7 +17804,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:442,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:443,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
