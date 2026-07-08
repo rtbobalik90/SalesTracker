@@ -2853,14 +2853,14 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 /* ===== v418 Daily Sales calendar top-rep integration ===== */
 #pg-daily .daily-log-panel{overflow:visible;}
 #pg-daily .daily-calendar-grid{align-items:stretch;}
-#pg-daily .daily-day-cell{min-height:98px;padding:9px 10px 34px;}
+#pg-daily .daily-day-cell{min-height:98px;padding:9px 10px 12px;}
 #pg-daily .daily-day-cell.daily-clickable{cursor:pointer;}
 #pg-daily .daily-day-cell.daily-clickable:hover{transform:translateY(-2px);border-color:rgba(139,92,246,.58);box-shadow:0 16px 34px rgba(0,0,0,.20),0 0 0 1px rgba(139,92,246,.12);}
 #pg-daily .daily-day-cell.daily-clickable:focus{outline:none;border-color:rgba(139,92,246,.92);box-shadow:0 0 0 3px rgba(139,92,246,.18);}
 #pg-daily .daily-day-cell.rep-only{background:linear-gradient(145deg,rgba(251,191,36,.13),rgba(139,92,246,.055));border-color:rgba(251,191,36,.24);}
 #pg-daily .daily-day-num{display:flex;align-items:center;gap:4px;}
 #pg-daily .daily-day-sale{font-size:13.5px;}
-#pg-daily .daily-top-rep-chip{position:absolute;left:8px;right:26px;bottom:7px;display:flex;align-items:center;justify-content:center;gap:5px;min-height:20px;padding:3px 8px;border-radius:999px;border:1px solid rgba(251,191,36,.72);background:linear-gradient(135deg,rgba(251,191,36,.18),rgba(251,191,36,.07));color:#FFD27A;font-size:9px;font-weight:950;letter-spacing:.035em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.10);}
+#pg-daily .daily-day-toprep{margin-top:3px;font-size:9.5px;font-weight:800;color:#FFD27A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em;}.daily-top-rep-chip{position:absolute;left:8px;right:26px;bottom:7px;display:flex;align-items:center;justify-content:center;gap:5px;min-height:20px;padding:3px 8px;border-radius:999px;border:1px solid rgba(251,191,36,.72);background:linear-gradient(135deg,rgba(251,191,36,.18),rgba(251,191,36,.07));color:#FFD27A;font-size:9px;font-weight:950;letter-spacing:.035em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.10);}
 #pg-daily .daily-top-rep-chip span{overflow:hidden;text-overflow:ellipsis;}
 #pg-daily .daily-cell-hint{font-size:9px;color:#9BA6C4;margin-top:3px;}
 #dr-view{display:none!important;}
@@ -8672,7 +8672,7 @@ function renderDailyLog(){
          +'<div class="daily-day-total">SMB $'+Math.round(Number(entry.smbSales||0)).toLocaleString()+'</div>'
          +'<div class="daily-day-total">Σ $'+Math.round(Number(entry.runningTotal||0)).toLocaleString()+'</div>'
         :'')
-      +(top?'<div class="daily-top-rep-chip"><span>&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number((Number(top.day||0)>0?top.day:top.cum)||0)).toLocaleString()+'</span></div>':'')
+      +(top?'<div class="daily-day-toprep">&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number((Number(top.day||0)>0?top.day:top.cum)||0)).toLocaleString()+'</div>':'')
       +(actualDailyEntry?'<button class="daily-delete-btn" onclick="event.stopPropagation();deleteDailyEntry(&quot;'+dateStr+'&quot;)" title="Remove">×</button>':'')
       +'</div>'
     );
@@ -17803,7 +17803,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:440,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:441,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
