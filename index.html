@@ -7121,6 +7121,9 @@ function renderOrdersPage(){
   host.innerHTML=uploadCard+kpis+filters+rollTbl+listCard;
 }
 
+function _ordTeamStat(yr,q){try{return _ordRollup(_ordFilter({rep:'all',type:'all',place:'all',status:'all',newc:'all',yr:String(yr||'all'),q:q||'all',mon:'all',wk:'all'})).tot;}catch(e){return {sales:0,orders:0,aov:0,newCust:0,web:0,entered:0,gen:0,cc:0,as:0};}}
+function _ordRepStat(rep,yr,q){try{var roll=_ordRollup(_ordFilter({rep:'all',type:'all',place:'all',status:'all',newc:'all',yr:String(yr||'all'),q:q||'all',mon:'all',wk:'all'}));var R=null,rank=null;roll.rows.forEach(function(x,i){if(x.rep===rep){R=x;rank=i+1;}});R=R||{sales:0,orders:0,aov:0,newCust:0,web:0,entered:0,gen:0,cc:0,as:0};R.rank=rank;R.of=roll.rows.length;return R;}catch(e){return {sales:0,orders:0,aov:0,newCust:0,web:0,entered:0,gen:0,cc:0,as:0,rank:null,of:0};}}
+function _ordHasData(){try{return _ordAll().length>0;}catch(e){return false;}}
 function buildMtgEngine(prev,yr,q){
   var qtdWeeks=gwq(yr,q);
   var prevIdx=qtdWeeks.findIndex(function(w){return w.key===prev.key;});if(prevIdx<0)prevIdx=0;
@@ -7334,6 +7337,7 @@ function buildMgrMeetingBody(E,ai,depth,X){
     +'<div class="k"><div class="kl">YTD revenue</div><div class="kv">'+_m2$(t.ytdRev)+'</div><div class="ks">'+_m2n(t.ytdOrders)+' orders &middot; '+E.yr+'</div></div>'
     +'<div class="k"><div class="kl">Art errors</div><div class="kv">'+_m2n(t.art)+'</div><div class="ks">'+E.qtdArtPct.toFixed(1)+'% QTD rate</div></div>'
     +'<div class="k"><div class="kl">Credits (rep-fault)</div><div class="kv">'+_m2$(t.credits)+'</div><div class="ks">'+_m2$(E.qtdCreditsTotal)+' QTD ('+E.qtdCreditPct.toFixed(2)+'%)</div></div>'
+    +(_ordHasData()?(function(){var _os=_ordTeamStat(E.yr,E.q);return '<div class="k"><div class="kl">Order sales (QTD)</div><div class="kv">'+_m2$(_os.sales)+'</div><div class="ks">'+_m2n(_os.orders)+' orders &middot; '+_m2$(_os.aov)+' avg</div></div>'+'<div class="k"><div class="kl">New customers</div><div class="kv">'+_m2n(_os.newCust)+'</div><div class="ks">'+_m2n(_os.web)+' web / '+_m2n(_os.entered)+' entered</div></div>';})():'')
     +'</div>';
   // team trend chart (visual-heavy)
   if(E.teamSeries.length>1)out+='<div style="margin-top:8px;"><div style="font-size:7.8px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;color:#667085;">Team revenue by week ('+E.q+')</div>'+_m2spark(E.teamSeries,E.wkLabels,'#2563EB')+'</div>';
@@ -18117,7 +18121,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:446,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:447,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
