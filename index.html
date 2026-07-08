@@ -8667,12 +8667,12 @@ function renderDailyLog(){
       '<div class="daily-day-cell '+(hasData?'has-sales daily-clickable ':'')+(entry&&entry.repOnly?'rep-only ':'')+(isToday?'today':'')+'"'+style+clickAttrs+'>'
       +'<div class="daily-day-num">'+day+(isToday?' ●':'')+'</div>'
       +(entry
-        ?'<div class="daily-day-sale">Total +$'+Math.round(Number(entry.dailySales||0)).toLocaleString()+'</div>'
+        ?'<div class="daily-day-sale">Total +$'+Math.round(Number(entry.dailySales||0)).toLocaleString()+'</div>'+(top?'<div class="daily-day-toprep">&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number((Number(top.day||0)>0?top.day:top.cum)||0)).toLocaleString()+'</div>':'')
          +'<div class="daily-day-total">CORP $'+Math.round(Number(entry.corpSales||0)).toLocaleString()+'</div>'
          +'<div class="daily-day-total">SMB $'+Math.round(Number(entry.smbSales||0)).toLocaleString()+'</div>'
          +'<div class="daily-day-total">Σ $'+Math.round(Number(entry.runningTotal||0)).toLocaleString()+'</div>'
         :'')
-      +(top?'<div class="daily-day-toprep">&#11088; '+_m2esc(top.name.split(' ')[0])+' +$'+Math.round(Number((Number(top.day||0)>0?top.day:top.cum)||0)).toLocaleString()+'</div>':'')
+      
       +(actualDailyEntry?'<button class="daily-delete-btn" onclick="event.stopPropagation();deleteDailyEntry(&quot;'+dateStr+'&quot;)" title="Remove">×</button>':'')
       +'</div>'
     );
@@ -17803,7 +17803,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:441,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:442,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
