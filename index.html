@@ -16560,16 +16560,26 @@ document.addEventListener('click',function(e){
 var REVIEW_PAY=10;
 function _rvEnsure(){if(!S.reviews||typeof S.reviews!=='object')S.reviews={url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};if(!S.reviews.decisions)S.reviews.decisions={};if(!S.reviews.unmatchFix)S.reviews.unmatchFix={};if(!S.reviews.repFix)S.reviews.repFix={};}
 function _rvCsvSplit(line){var out=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(ch===','&&!q){out.push(cur);cur='';}else cur+=ch;}out.push(cur);return out;}
+function _rvCsvRows(text){
+  var rows=[],cur=[],val='',q=false,NL=String.fromCharCode(10),CR=String.fromCharCode(13);
+  text=String(text||'');
+  for(var i=0;i<text.length;i++){var ch=text[i];
+    if(ch===CR)continue;
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){val+='"';i++;} else q=false; } else val+=ch; }
+    else { if(ch==='"')q=true; else if(ch===','){cur.push(val);val='';} else if(ch===NL){cur.push(val);rows.push(cur);cur=[];val='';} else val+=ch; }
+  }
+  cur.push(val); rows.push(cur);
+  return rows.filter(function(r){return r.some(function(x){return String(x).trim().length;});});
+}
 function _rvParseCSV(text){
-  var raw=String(text||'').replace(/\r/g,'');
-  var lines=raw.split('\n').filter(function(l){return l.trim().length;});
-  if(lines.length<2)return [];
-  var head=_rvCsvSplit(lines[0]).map(function(h){return h.trim().toLowerCase();});
+  var allRows=_rvCsvRows(text);
+  if(allRows.length<2)return [];
+  var head=allRows[0].map(function(h){return String(h).trim().toLowerCase();});
   function col(){var names=Array.prototype.slice.call(arguments);for(var i=0;i<names.length;i++){var idx=head.findIndex(function(h){return h.indexOf(names[i])>=0;});if(idx>=0)return idx;}return -1;}
   var ci={ts:col('timestamp','date'),email:col('email'),cust:col('customer id','customer_id'),type:col('type'),stars:col('star','rating'),msg:col('message','review'),rep:col('sales rep','rep name','rep'),custName:col('customer name')};
   var rows=[];
-  for(var i=1;i<lines.length;i++){
-    var f=_rvCsvSplit(lines[i]);
+  for(var i=1;i<allRows.length;i++){
+    var f=allRows[i];
     var ts=ci.ts>=0?String(f[ci.ts]||'').trim():'';
     var typ=ci.type>=0?String(f[ci.type]||'').trim():'';
     var msg=ci.msg>=0?String(f[ci.msg]||'').trim():'';
@@ -18107,7 +18117,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:445,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:446,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
