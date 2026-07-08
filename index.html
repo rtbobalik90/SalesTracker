@@ -6711,6 +6711,7 @@ function renderPerf(){
 function lbPeriodWeeks(yr,q,period){if(period==='year'){var all=[];QTRS.forEach(function(qq){all=all.concat(gwq(yr,qq));});return all;}return gwq(yr,q);}
 function lbPrevPeriod(yr,q,period){if(period==='year'){var all=[];QTRS.forEach(function(qq){all=all.concat(gwq(yr-1,qq));});return{yr:yr-1,q:q,weeks:all,label:String(yr-1)};}var i=QTRS.indexOf(q);var py=i<=0?yr-1:yr,pq=i<=0?'Q4':QTRS[i-1];return{yr:py,q:pq,weeks:gwq(py,pq),label:pq+' '+py};}
 function lbMetricVal(t,metric){if(metric==='cust')return t.acctsCalled||0;if(metric==='orders')return t.orders||0;return t.revenue||0;}
+function _lbOrdSales(rep,yr,q){try{return (typeof _ordHasData==='function'&&_ordHasData()&&typeof _ordRepStat==='function')?(_ordRepStat(rep,yr,q).sales||0):0;}catch(e){return 0;}}
 window._lbPeriod=window._lbPeriod||'quarter';
 window._lbMetric=window._lbMetric||'rev';
 window.setLbPeriod=function(p){window._lbPeriod=p;renderLB();};
@@ -6720,18 +6721,18 @@ function renderLB(){
   var yr=getYr(),q=getQ(),period=window._lbPeriod,metric=window._lbMetric;
   var weeks=lbPeriodWeeks(yr,q,period),scWeeks=gwq(yr,q),we=weeksElapsed(yr,q);
   var reps=activeReps();
-  var ranked=reps.map(function(r){var idx=S.reps.findIndex(function(x){return x.name===r.name;});var t=totW(r.name,weeks);var ro=repGoalObj(r.name,yr,q);var hrP=getHRPoints(r.name,yr,q);var scT=period==='quarter'?t:totW(r.name,scWeeks);var sc=calcSc(r.name,scT,ro,scWeeks.length,hrP,we);return{name:r.name,idx:idx,t:t,ro:ro,sc:sc,val:lbMetricVal(t,metric)};}).sort(function(a,b){return b.val-a.val;});
+  var ranked=reps.map(function(r){var idx=S.reps.findIndex(function(x){return x.name===r.name;});var t=totW(r.name,weeks);var ro=repGoalObj(r.name,yr,q);var hrP=getHRPoints(r.name,yr,q);var scT=period==='quarter'?t:totW(r.name,scWeeks);var sc=calcSc(r.name,scT,ro,scWeeks.length,hrP,we);return{name:r.name,idx:idx,t:t,ro:ro,sc:sc,val:(metric==='ordsales'?_lbOrdSales(r.name,yr,q):lbMetricVal(t,metric))};}).sort(function(a,b){return b.val-a.val;});
   var prev=lbPrevPeriod(yr,q,period);
-  var prevRanked=reps.map(function(r){var t=totW(r.name,prev.weeks);return{name:r.name,val:lbMetricVal(t,metric)};}).sort(function(a,b){return b.val-a.val;});
+  var prevRanked=reps.map(function(r){var t=totW(r.name,prev.weeks);return{name:r.name,val:(metric==='ordsales'?0:lbMetricVal(t,metric))};}).sort(function(a,b){return b.val-a.val;});
   var prevRank={};prevRanked.forEach(function(r,i){if(r.val>0)prevRank[r.name]=i;});
   var topName=ranked.length?ranked[0].name:null;
   var bestCov=null,bestCovV=-1;ranked.forEach(function(r){var cv=r.t.setSize>0?r.t.acctsCalled/r.t.setSize:0;if(cv>bestCovV){bestCovV=cv;bestCov=r.name;}});
   var climber=null,climberD=0;ranked.forEach(function(r,i){if(r.name in prevRank){var d=prevRank[r.name]-i;if(d>climberD){climberD=d;climber=r.name;}}});
   function movement(name,currIdx){if(!(name in prevRank))return{txt:'new',cls:'flat',arrow:'\u2022'};var d=prevRank[name]-currIdx;if(d>0)return{txt:'+'+d,cls:'up',arrow:'\u25B2'};if(d<0)return{txt:String(d),cls:'down',arrow:'\u25BC'};return{txt:'',cls:'flat',arrow:'\u2014'};}
   function badges(r){var b=[];if(r.name===topName)b.push({i:'\uD83D\uDC51',t:'Leader'});if(r.name===climber&&climberD>0)b.push({i:'\uD83D\uDE80',t:'Top climber +'+climberD});if(r.name===bestCov&&bestCovV>0)b.push({i:'\uD83C\uDFAF',t:'Coverage leader'});if(r.ro.rev>0&&r.t.revenue>=r.ro.rev)b.push({i:'\uD83D\uDCB0',t:'Goal crusher'});if((r.t.orders||0)>0&&(r.t.art||0)===0)b.push({i:'\u2728',t:'Flawless quality'});return b;}
-  function fmtVal(v){return metric==='rev'?('$'+Math.round(v).toLocaleString()):(Math.round(v).toLocaleString()+(metric==='cust'?' called':' orders'));}
+  function fmtVal(v){return (metric==='rev'||metric==='ordsales')?('$'+Math.round(v).toLocaleString()):(Math.round(v).toLocaleString()+(metric==='cust'?' called':' orders'));}
   function badgeHtml(bs){return bs.length?'<div class="lb-badges">'+bs.map(function(x){return '<span class="lb-badge" title="'+x.t+'">'+x.i+'</span>';}).join('')+'</div>':'';}
-  var ctrls='<div class="lb-controls"><div class="lb-seg">'+[['quarter','This Quarter'],['year','This Year']].map(function(p){return '<button class="lb-seg-btn'+(period===p[0]?' on':'')+'" onclick="setLbPeriod(\''+p[0]+'\')">'+p[1]+'</button>';}).join('')+'</div><div class="lb-seg">'+[['rev','Revenue'],['cust','Customers'],['orders','Orders']].map(function(m){return '<button class="lb-seg-btn'+(metric===m[0]?' on':'')+'" onclick="setLbMetric(\''+m[0]+'\')">'+m[1]+'</button>';}).join('')+'</div></div>';
+  var ctrls='<div class="lb-controls"><div class="lb-seg">'+[['quarter','This Quarter'],['year','This Year']].map(function(p){return '<button class="lb-seg-btn'+(period===p[0]?' on':'')+'" onclick="setLbPeriod(\''+p[0]+'\')">'+p[1]+'</button>';}).join('')+'</div><div class="lb-seg">'+[['rev','Revenue'],['cust','Customers'],['orders','Orders']].concat((typeof _ordHasData==='function'&&_ordHasData())?[['ordsales','Order $']]:[]).map(function(m){return '<button class="lb-seg-btn'+(metric===m[0]?' on':'')+'" onclick="setLbMetric(\''+m[0]+'\')">'+m[1]+'</button>';}).join('')+'</div></div>';
   var host=document.getElementById('lbBody');if(!host)return;
   if(!ranked.length){host.innerHTML=ctrls+'<p style="font-size:12px;color:var(--color-text-secondary);padding:10px 2px;">No reps.</p>';return;}
   var podOrder=[1,0,2];
@@ -18356,7 +18357,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:452,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:453,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
