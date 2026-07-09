@@ -9136,11 +9136,13 @@ function renderDailyLog(){
   }
   function displayEntryFor(dateISO){
     var e=monthEntryMap[dateISO];
-    if(e)return e;
     var t=repTotalsFor(dateISO);
-    if(t&&(t.rows.length||t.totalDay>0||t.totalCum>0)){
-      return {date:dateISO,dailySales:t.totalDay,corpSales:t.corpDay,smbSales:t.smbDay,corpCumulative:t.corpCum,smbCumulative:t.smbCum,runningTotal:t.totalCum,repOnly:true};
+    if(t&&(t.rows.length||t.smbDay>0||t.corpDay>0)){
+      var _cd=Number(t.corpDay||0)>0?Number(t.corpDay||0):(e?Number(e.corpSales||0):0);
+      var _sd=Number(t.smbDay||0);
+      return {date:dateISO,dailySales:_sd+_cd,corpSales:_cd,smbSales:_sd,corpCumulative:t.corpCum,smbCumulative:t.smbCum,runningTotal:t.totalCum,repOnly:true};
     }
+    if(e)return e;
     return null;
   }
 
@@ -16767,7 +16769,14 @@ function drDayPopup(dateISO){
   var t=_drDayTotals(dateISO);
   var dailyEntry=null;
   try{dailyEntry=getDailySales().filter(function(e){return e.date===dateISO;})[0]||null;}catch(e){}
-  var summary={
+  var _hasRep=(t.rows&&t.rows.length>0)||Number(t.smbDay||0)>0||Number(t.corpDay||0)>0;
+  var _corpDay=Number(t.corpDay||0)>0?Number(t.corpDay||0):(dailyEntry?Number(dailyEntry.corpSales||0):0);
+  var summary=_hasRep?{
+    smbDay:Number(t.smbDay||0),
+    corpDay:_corpDay,
+    totalDay:Number(t.smbDay||0)+_corpDay,
+    runningTotal:Number(t.totalCum||0)
+  }:{
     smbDay:dailyEntry?Number(dailyEntry.smbSales||0):Number(t.smbDay||0),
     corpDay:dailyEntry?Number(dailyEntry.corpSales||0):Number(t.corpDay||0),
     totalDay:dailyEntry?Number(dailyEntry.dailySales||0):Number(t.totalDay||0),
@@ -18357,7 +18366,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:454,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:455,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
