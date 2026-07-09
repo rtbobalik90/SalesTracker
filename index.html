@@ -3434,7 +3434,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v417 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v416 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -15329,13 +15329,10 @@ function _drDayTotals(dateISO){
     if(cum>0||dayS>0){rows.push({name:r.name,cum:cum,day:dayS});smbCum+=cum;smbDay+=dayS;}
   });
   rows.sort(function(a,b){return b.day-a.day||b.cum-a.cum;});
-  // single source of truth: totals are re-summed from the exact rows shown, so header + rows can never diverge
-  var _smbDay=rows.reduce(function(s,r){return s+(Number(r.day)||0);},0);
-  var _smbCum=rows.reduce(function(s,r){return s+(Number(r.cum)||0);},0);
   var corp=Number(day.__corp||0);
   var pd=_drPrevDate(dateISO);var corpPrev=pd?Number((S.dailyRep[pd]||{}).__corp||0):0;
   var corpDay=Math.max(0,corp-corpPrev);
-  return {rows:rows,smbDay:_smbDay,smbCum:_smbCum,corpCum:corp,corpDay:corpDay,totalDay:_smbDay+corpDay,totalCum:_smbCum+corp,top:rows[0]||null,_v:416};
+  return {rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
 }
 function _drRenderForm(){
   var host=document.getElementById('dr-form');if(!host)return;
@@ -15406,7 +15403,7 @@ function drDayPopup(dateISO){
   var rowsH=t.rows.length?t.rows.map(function(r,i){
     return '<div class="r3m-row"><span style="display:flex;align-items:center;gap:8px;"><span class="dc-flat" style="width:16px;">'+(i+1)+'</span><span style="font-weight:700;">'+_m2esc(r.name)+'</span>'+(i===0&&r.day>0?' <span class="r3-pill" style="background:transparent;border:1px solid #FFD27A;color:#FFD27A;">&#11088; top</span>':'')+'</span><span style="text-align:right;"><span style="font-weight:800;color:#A7FFC0;">+$'+Math.round(r.day).toLocaleString()+'</span> <span class="dc-flat" style="font-weight:400;">$'+Math.round(r.cum).toLocaleString()+' cum</span></span></div>';
   }).join(''):'<div class="dc-flat" style="padding:6px 0;">No rep entries for this day.</div>';
-  var h='<div class="r3m-h"><span class="r3-pill">Daily sales</span><div class="r3m-title">'+dstr+' <span class="dc-flat" style="font-size:9px;font-weight:400;">v'+(t._v||'?')+'</span></div></div>'
+  var h='<div class="r3m-h"><span class="r3-pill">Daily sales</span><div class="r3m-title">'+dstr+'</div></div>'
     +'<div class="dc2-stats" style="grid-template-columns:1fr 1fr 1fr;border:1px solid var(--tcp-line);border-radius:10px;margin-bottom:10px;">'
     +'<div class="dc2-stat"><div class="dc2-sl">SMB (day)</div><div class="dc2-sv" style="font-size:16px;color:#FFD27A;">+$'+Math.round(t.smbDay).toLocaleString()+'</div></div>'
     +'<div class="dc2-stat"><div class="dc2-sl">CORP (day)</div><div class="dc2-sv" style="font-size:16px;color:#9DDCFF;">+$'+Math.round(t.corpDay).toLocaleString()+'</div></div>'
@@ -16901,7 +16898,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:417,phase:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:416,phase:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
