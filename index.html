@@ -16680,24 +16680,24 @@ window.addEventListener('load', function(){
 function _drEnsure(){if(!S.dailyRep||typeof S.dailyRep!=='object')S.dailyRep={};/* {date:{rep:cumAmt,...,__corp:amt}} */}
 function _drToday(){var n=new Date();function p(x){return (x<10?'0':'')+x;}return n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());}
 function _drDates(){_drEnsure();return Object.keys(S.dailyRep).sort();}
-function _drPrevDate(dateISO){var ds=_drDates().filter(function(d){return d<dateISO;});return ds.length?ds[ds.length-1]:null;}
-function _drRepDay(dateISO,repName){ // that day's SMB sales for a rep = cum today - cum prev
-  _drEnsure();var cur=Number((S.dailyRep[dateISO]||{})[repName]||0);
-  var pd=_drPrevDate(dateISO);var prev=pd?Number((S.dailyRep[pd]||{})[repName]||0):0;
+function _drWeekStart(dateISO){var p=String(dateISO).split('-');var d=new Date(Date.UTC(+p[0],(+p[1])-1,+p[2]));d.setUTCDate(d.getUTCDate()-d.getUTCDay());return d.toISOString().slice(0,10);}function _drValAt(dateISO,key){var v=(S.dailyRep[dateISO]||{});var x=(key==='__corp')?v.__corp:v[key];return (x!=null&&x!=='')?(Number(x)||0):null;}function _drLatestInWeek(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d>=ws&&d<=dateISO;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drPrevWeekEnd(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<ws;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drWTD(dateISO,key){var cur=_drLatestInWeek(dateISO,key);var prev=_drPrevWeekEnd(dateISO,key);return cur>=prev?(cur-prev):cur;}function _drPrevDate(dateISO){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<dateISO&&d>=ws;});return ds.length?ds[ds.length-1]:null;}
+function _drRepDay(dateISO,repName){ // that day's SMB = week-to-date today - week-to-date prev (within Sun-Sat work week)
+  _drEnsure();var cur=_drWTD(dateISO,repName);
+  var pd=_drPrevDate(dateISO);var prev=pd?_drWTD(pd,repName):0;
   return Math.max(0,cur-prev);
 }
 function _drDayTotals(dateISO){
-  _drEnsure();var day=S.dailyRep[dateISO]||{};
+  _drEnsure();
   var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
   var smbDay=0,smbCum=0,rows=[];
   reps.forEach(function(r){
-    var cum=Number(day[r.name]||0);
+    var cum=_drWTD(dateISO,r.name);/* week-to-date SMB (resets Sunday) */
     var dayS=_drRepDay(dateISO,r.name);
     if(cum>0||dayS>0){rows.push({name:r.name,cum:cum,day:dayS});smbCum+=cum;smbDay+=dayS;}
   });
   rows.sort(function(a,b){return b.day-a.day||b.cum-a.cum;});
-  var corp=Number(day.__corp||0);
-  var pd=_drPrevDate(dateISO);var corpPrev=pd?Number((S.dailyRep[pd]||{}).__corp||0):0;
+  var corp=_drWTD(dateISO,'__corp');/* week-to-date corp (auto-detects weekly reset vs carried cumulative) */
+  var pd=_drPrevDate(dateISO);var corpPrev=pd?_drWTD(pd,'__corp'):0;
   var corpDay=Math.max(0,corp-corpPrev);
   return {rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
 }
@@ -18366,7 +18366,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:456,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:457,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
