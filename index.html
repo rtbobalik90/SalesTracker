@@ -4741,6 +4741,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       </div>
       <p class="daily-help">Top SMB rep badges now live on the day itself. Click any sales day to open the per-rep daily breakdown.</p>
       <div id="dailyCalendar"></div>
+    <div id="yoy-panel"></div>
     </section>
   </div>
 </div>
@@ -5658,7 +5659,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},gamestorm:()=>{renderGamestorm();},daily:()=>{setupDailyTab();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},gamestorm:()=>{renderGamestorm();},daily:()=>{setupDailyTab();renderYoY();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -7360,6 +7361,70 @@ function renderGamestorm(){
   var cons=document.getElementById('gs-console'); if(cons)cons.scrollTop=cons.scrollHeight;
 }
 
+/* ===== MODULE: YEAR-OVER-YEAR (prior-year weekly sales vs this year) ===== */
+function _yoyEnsure(){ if(!S.priorYear||typeof S.priorYear!=='object')S.priorYear={}; return S.priorYear; }
+function _yoyEsc(s){ if(typeof _m2esc==='function')return _m2esc(s); return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function _yoy$(n){ n=Number(n)||0; return (n<0?'-$':'$')+Math.abs(Math.round(n)).toLocaleString(); }
+function _yoyPct(cur,prev){ if(!prev)return null; return (cur-prev)/prev*100; }
+function _yoyPctHtml(cur,prev){ var p=_yoyPct(cur,prev); if(p==null)return '<span style="color:var(--tcp-muted,#8b95a7);">&mdash;</span>'; var col=p>=0?'#7BE3A9':'#F0A9A9'; return '<span style="color:'+col+';font-weight:800;">'+(p>=0?'+':'')+p.toFixed(1)+'%</span>'; }
+function _yoyDailySMB(wk){ var out=0; try{ var DT=(typeof _drDayTotals==='function')?_drDayTotals:(typeof window!=='undefined'?window._drDayTotals:null); if(typeof DT!=='function')return 0; var d=new Date(wk.start), end=new Date(wk.end); var guard=0; while(d<=end&&guard<60){ var iso=d.toISOString().slice(0,10); try{ out+=Number((DT(iso)||{}).smbDay||0); }catch(e){} d.setDate(d.getDate()+1); guard++; } }catch(e){} return out; }
+function _yoyOfficialSMB(wk){ var out=0; try{ var reps=(typeof activeReps==='function'?activeReps():(S.reps||[])); reps.forEach(function(r){ try{ var d=(typeof gd==='function')?gd(r.name+'|'+wk.key):null; out+=Number((d&&d.revenue)||0); }catch(e){} }); }catch(e){} return out; }
+function _yoySave(wkKey,field,val){ _yoyEnsure(); if(!S.priorYear[wkKey])S.priorYear[wkKey]={total:0,corp:0}; S.priorYear[wkKey][field]=Number(String(val).replace(/[^0-9.\-]/g,''))||0; try{ if(typeof markDirty==='function')markDirty(); }catch(e){} renderYoY(); }
+var _yoyQ=null;
+function _yoySetQ(q){ _yoyQ=q; renderYoY(); }
+function _yoyCss(){ if(document.getElementById('yoy-css'))return; var s=document.createElement('style'); s.id='yoy-css';
+  s.textContent='#yoy-panel{margin-top:16px;}'
+   +'#yoy-panel .yoy-card{background:var(--tcp-panel-2,#141821);border:1px solid var(--tcp-line,#232a36);border-radius:14px;padding:15px 16px;}'
+   +'#yoy-panel .yoy-kick{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:#59D3A0;font-weight:800;}'
+   +'#yoy-panel h2{font-size:16px;font-weight:900;margin:1px 0 2px;}'
+   +'#yoy-panel .yoy-help{font-size:11.5px;color:var(--tcp-muted,#8b95a7);margin:0 0 10px;}'
+   +'#yoy-panel table{width:100%;border-collapse:collapse;font-size:12px;}'
+   +'#yoy-panel th{font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--tcp-muted,#8b95a7);font-weight:700;padding:6px 8px;text-align:right;border-bottom:1px solid var(--tcp-line,#232a36);}'
+   +'#yoy-panel th:first-child{text-align:left;}'
+   +'#yoy-panel td{padding:6px 8px;text-align:right;border-bottom:1px solid rgba(255,255,255,.04);}'
+   +'#yoy-panel .yoy-in{width:88px;background:rgba(0,0,0,.25);border:1px solid var(--tcp-line,#232a36);border-radius:7px;color:inherit;font-size:11.5px;padding:4px 6px;text-align:right;}'
+   +'#yoy-panel .yoy-grp{border-left:1px solid var(--tcp-line,#232a36);}'
+   +'#yoy-panel tr.yoy-tot td{border-top:1px solid var(--tcp-line,#232a36);font-weight:800;padding-top:9px;}'
+   +'#yoy-panel .yoy-sel{background:rgba(0,0,0,.25);border:1px solid var(--tcp-line,#232a36);border-radius:8px;color:inherit;font-size:11.5px;padding:5px 9px;}';
+  document.head.appendChild(s);
+}
+function renderYoY(){
+  var host=document.getElementById('yoy-panel'); if(!host)return; _yoyCss(); _yoyEnsure();
+  var yr=(typeof getYr==='function')?getYr():new Date().getFullYear();
+  var q=_yoyQ||((typeof getQ==='function')?getQ():'Q1');
+  var pyr=yr-1;
+  var weeks=[]; try{ weeks=gwq(yr,q)||[]; }catch(e){}
+  var totPT=0,totPC=0,totPS=0,totD=0,totO=0;
+  var body=weeks.map(function(w){
+    var pd=S.priorYear[w.key]||{total:0,corp:0}; var pTotal=Number(pd.total)||0,pCorp=Number(pd.corp)||0,pSMB=pTotal-pCorp;
+    var dSMB=_yoyDailySMB(w), oSMB=_yoyOfficialSMB(w);
+    totPT+=pTotal; totPC+=pCorp; totPS+=pSMB; totD+=dSMB; totO+=oSMB;
+    return '<tr>'
+      +'<td style="text-align:left;font-weight:600;">'+_yoyEsc(w.label||w.key)+'</td>'
+      +'<td><input type="number" step="any" value="'+(pTotal||'')+'" onchange="_yoySave(\''+w.key+'\',\'total\',this.value)" class="yoy-in" placeholder="0"></td>'
+      +'<td><input type="number" step="any" value="'+(pCorp||'')+'" onchange="_yoySave(\''+w.key+'\',\'corp\',this.value)" class="yoy-in" placeholder="0"></td>'
+      +'<td style="font-weight:800;color:#C9BBFF;">'+_yoy$(pSMB)+'</td>'
+      +'<td class="yoy-grp">'+_yoy$(dSMB)+'</td><td>'+_yoyPctHtml(dSMB,pSMB)+'</td>'
+      +'<td class="yoy-grp">'+_yoy$(oSMB)+'</td><td>'+_yoyPctHtml(oSMB,pSMB)+'</td>'
+      +'</tr>';
+  }).join('');
+  var totRow='<tr class="yoy-tot"><td style="text-align:left;">'+q+' '+yr+' total</td>'
+    +'<td>'+_yoy$(totPT)+'</td><td>'+_yoy$(totPC)+'</td><td style="color:#C9BBFF;">'+_yoy$(totPS)+'</td>'
+    +'<td class="yoy-grp">'+_yoy$(totD)+'</td><td>'+_yoyPctHtml(totD,totPS)+'</td>'
+    +'<td class="yoy-grp">'+_yoy$(totO)+'</td><td>'+_yoyPctHtml(totO,totPS)+'</td></tr>';
+  var qSel='<select class="yoy-sel" onchange="_yoySetQ(this.value)">'+['Q1','Q2','Q3','Q4'].map(function(x){return '<option'+(x===q?' selected':'')+'>'+x+'</option>';}).join('')+'</select>';
+  host.innerHTML='<div class="yoy-card">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">'
+    +'<div><div class="yoy-kick">Year over year</div><h2>'+pyr+' vs '+yr+' &mdash; team SMB by week</h2>'
+    +'<p class="yoy-help">Enter last year\u2019s weekly <b>Total</b> and <b>Corp</b>; team SMB = Total &minus; Corp. Compared against this year\u2019s Daily-calendar SMB and the main tracker\u2019s weekly revenue.</p></div>'
+    +'<div>'+qSel+'</div></div>'
+    +'<div style="overflow-x:auto;"><table><thead><tr>'
+    +'<th>Week</th><th>'+pyr+' Total</th><th>'+pyr+' Corp</th><th>'+pyr+' SMB</th>'
+    +'<th class="yoy-grp">'+yr+' SMB (daily)</th><th>YoY</th>'
+    +'<th class="yoy-grp">'+yr+' SMB (official)</th><th>YoY</th>'
+    +'</tr></thead><tbody>'+body+totRow+'</tbody></table></div></div>';
+}
+
 function buildMtgEngine(prev,yr,q){
   var qtdWeeks=gwq(yr,q);
   var prevIdx=qtdWeeks.findIndex(function(w){return w.key===prev.key;});if(prevIdx<0)prevIdx=0;
@@ -8177,7 +8242,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},gamestorm:S.gamestorm||{projects:[],activeId:null},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
 // beforeunload: not needed in artifact sandbox
@@ -8201,7 +8266,7 @@ function loadFromStorage(){
     S.dailySales=saved.dailySales||[];
     S.customers=saved.customers||[];
     S.reviews=saved.reviews||{url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};
-    S.orders=saved.orders||[];S.ordersMeta=saved.ordersMeta||{};S.gamestorm=saved.gamestorm||{projects:[],activeId:null};
+    S.orders=saved.orders||[];S.ordersMeta=saved.ordersMeta||{};S.gamestorm=saved.gamestorm||{projects:[],activeId:null};S.priorYear=saved.priorYear||{};
     S.dailyRep=saved.dailyRep||{};
     S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};
     S.teamGoals=saved.teamGoals||{};
@@ -18366,7 +18431,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:457,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:458,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
