@@ -7467,7 +7467,7 @@ function _rpLogout(){ _rpSetSession(null); location.reload(); }
 function _rpApply(){
   _rpCss(); var G=_rpEnsure(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); }
   var sess=_rpSession(); var repLink=!!_rpUrlGist();
-  if(sess&&sess.role==='rep'){ _rp2Css(); ov.style.display='block'; ov.innerHTML=_rp2Html(sess.rep); return; }
+  if(sess&&sess.role==='rep'){ _rp2Css(); ov.style.display='block'; ov.innerHTML=_rp2Html(sess.rep); try{_rp2After();}catch(e){} return; }
   if(sess&&sess.role==='manager'){ ov.style.display='none'; return; }
   if(!repLink&&!G.enabled){ ov.style.display='none'; return; }
   // not logged in -> login screen
@@ -7597,7 +7597,7 @@ function _rp2Html(rep){
  return '<div class="rp2-app"><aside class="rp2-side"><div class="rp2-logo">\u25B2 SALES TRACKER<br><span>Rep View</span></div>'+nav+'<button class="rp2-nav rp2-out" onclick="_rpLogout()">\u23FB Sign out</button></aside>'
   +'<main class="rp2-main"><div class="rp2-top"><div><div class="rp2-hi">'+_rp2Esc(rep)+'</div><div class="rp2-sub">'+getQ()+' '+getYr()+' \u00B7 read-only view</div></div></div><div id="rp2-page">'+_rp2Page()+'</div></main></div>';
 }
-function _rp2Go(p){ _rp2.page=p; var el=document.getElementById('rp-overlay'); if(el)el.innerHTML=_rp2Html(_rp2.rep); }
+function _rp2Go(p){ _rp2.page=p; var el=document.getElementById('rp-overlay'); if(el){ el.innerHTML=_rp2Html(_rp2.rep); try{_rp2After();}catch(e){} } }
 function _rp2Page(){
  var p=_rp2.page;
  try{
@@ -7612,24 +7612,119 @@ function _rp2Page(){
 function _rp2KPI(l,v,s){ return '<div class="rp2-kpi"><div class="rp2-kl">'+l+'</div><div class="rp2-kv">'+v+'</div>'+(s?'<div class="rp2-ks">'+s+'</div>':'')+'</div>'; }
 
 /* ---------- pages ---------- */
+/* ---- rp2 game layer + rich dashboard ---- */
+function _rp2WeekSeries(){ var rep=_rp2.rep,wks=_rp2Wks(); return wks.map(function(w){ var d=(S.data||{})[rep+'|'+w.key]||{}; return {key:w.key,label:(w.label||w.key).replace(/^.*?:\s*/,''),rev:d.revenue||0,orders:d.orders||0,calls:d.calls||0,has:!!(d.revenue||d.orders||d.calls)}; }); }
+function _rp2TeamAvgSeries(){ var wks=_rp2Wks(); var reps=(typeof activeReps==='function'?activeReps():(S.reps||[])); var n=reps.length||1; return wks.map(function(w){ var tot=0; reps.forEach(function(r){ tot+=((S.data||{})[r.name+'|'+w.key]||{}).revenue||0; }); return Math.round(tot/n); }); }
+function _rp2Streak(){ var ser=_rp2WeekSeries().filter(function(x){return x.has;}); if(!ser.length)return 0; var goal=_rp2Goal(_rp2.rep); var wkGoal=goal>0?goal/(_rp2Wks().length||13):0; var s=0; for(var i=ser.length-1;i>=0;i--){ var ok=wkGoal>0?ser[i].rev>=wkGoal:ser[i].rev>0; if(ok)s++; else break; } return s; }
+function _rp2Badges(){ var rep=_rp2.rep,ser=_rp2WeekSeries().filter(function(x){return x.has;}),t=_rp2Tot(rep),goal=_rp2Goal(rep);
+ var maxWk=ser.reduce(function(a,x){return Math.max(a,x.rev);},0); var lastRev=ser.length?ser[ser.length-1].rev:0;
+ var ranks=_rp2Ranks(),rk=_rp2RankOf(ranks,rep)||99; var art=(S.artErrors||[]).filter(function(a){return a.rep===rep;}).length;
+ var maxCalls=ser.reduce(function(a,x){return Math.max(a,x.calls);},0);
+ return [
+  {i:'\uD83C\uDF31',l:'On the board',e:ser.length>0,d:'First week entered'},
+  {i:'\uD83D\uDCB0',l:'$10K week',e:maxWk>=10000,d:'A 10K+ week'},
+  {i:'\uD83D\uDE80',l:'$25K week',e:maxWk>=25000,d:'A 25K+ week'},
+  {i:'\uD83D\uDC8E',l:'$50K week',e:maxWk>=50000,d:'A 50K+ week'},
+  {i:'\uD83C\uDFC5',l:'Halfway there',e:goal>0&&t.revenue>=goal*0.5,d:'50% of quarter goal'},
+  {i:'\uD83C\uDFC6',l:'Goal crusher',e:goal>0&&t.revenue>=goal,d:'Quarter goal hit'},
+  {i:'\uD83E\uDD47',l:'Podium',e:rk<=3,d:'Top-3 rank'},
+  {i:'\uD83D\uDCDE',l:'Dialer',e:maxCalls>=100,d:'100+ calls in a week'},
+  {i:'\uD83C\uDFAF',l:'Clean art',e:ser.length>0&&art===0,d:'Zero art errors'},
+  {i:'\uD83D\uDD25',l:'New best',e:ser.length>=2&&lastRev>0&&lastRev>=maxWk,d:'Latest week = personal best'}
+ ];
+}
+function _rp2Momentum(){ var ser=_rp2WeekSeries().filter(function(x){return x.has;}); if(ser.length<2)return null; var a=ser[ser.length-2].rev,b=ser[ser.length-1].rev; if(a<=0)return null; return Math.round((b-a)/a*100); }
+function _rp2Attention(){ var rep=_rp2.rep,out=[],wks=_rp2Wks(),now=new Date();
+ var ser=_rp2WeekSeries(); var entered=ser.filter(function(x){return x.has;}).length;
+ var goal=_rp2Goal(rep),t=_rp2Tot(rep);
+ if(entered<ser.length){ var missing=ser.filter(function(x){return !x.has;}).length; if(entered>0&&missing>0&&missing<=ser.length-entered)out.push({i:'\uD83D\uDCDD',m:'Some weeks not entered yet \u2014 check with your manager if your numbers look light.'}); }
+ if(goal>0&&entered>0){ var expect=goal*(entered/(ser.length||13)); if(t.revenue<expect*0.9)out.push({i:'\u23F3',m:'You\u2019re behind pace \u2014 see Forecast for what closes the gap.'}); }
+ var art=(S.artErrors||[]).filter(function(a){return a.rep===rep;}).length; if(art>0)out.push({i:'\uD83C\uDFA8',m:art+' art error'+(art===1?'':'s')+' this quarter \u2014 double-check artwork before submitting.'});
+ var crs=(S.cms||[]).filter(function(c){return c.rep===rep&&String(c.fault||'').toLowerCase().indexOf('rep')>=0;}); if(crs.length)out.push({i:'\uD83D\uDCB3',m:crs.length+' rep-fault credit memo'+(crs.length===1?'':'s')+' on record this quarter.'});
+ return out;
+}
 function _rp2Dash(){
  var rep=_rp2.rep, t=_rp2Tot(rep), goal=_rp2Goal(rep), ranks=_rp2Ranks(), rk=_rp2RankOf(ranks,rep);
  var pct=goal>0?Math.round(t.revenue/goal*100):null;
  var teamRev=ranks.reduce(function(a,r){return a+r.rev;},0);
  var os=null; try{ if(typeof _ordHasData==='function'&&_ordHasData())os=_ordRepStat(rep,getYr(),getQ()); }catch(e){}
+ var ser=_rp2WeekSeries().filter(function(x){return x.has;});
+ var lastRev=ser.length?ser[ser.length-1].rev:0; var mom=_rp2Momentum(); var streak=_rp2Streak();
+ var hr=new Date().getHours(); var greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+ var momHtml=mom==null?'':('<span class="rp2-mom '+(mom>=0?'up':'dn')+'">'+(mom>=0?'\u25B2':'\u25BC')+' '+Math.abs(mom)+'% vs prior wk</span>');
+ var hero='<div class="rp2-hero"><div class="rp2-hero-row"><div><div class="rp2-hero-kick">'+greet.toUpperCase()+' \u00B7 YOUR COMMAND CENTER</div><div class="rp2-hero-name">'+_rp2Esc(rep.split(' ')[0])+'\u2019s '+getQ()+' '+getYr()+'</div></div>'
+  +(streak>=2?'<div class="rp2-flame">\uD83D\uDD25 '+streak+'-week streak</div>':'')+'</div>'
+  +'<div class="rp2-hero-brief" id="rp2-hero-brief"><span class="rp2-dots">Reading your quarter\u2026</span></div></div>';
  var maxRev=ranks.length?ranks[0].rev:0;
  var bars=ranks.map(function(r,i){ var me=r.name===rep; var w=maxRev>0?Math.max(2,Math.round(r.rev/maxRev*100)):2; var nm=(i<3)?r.name:_rp2Anon(r.name,i+1);
    return '<div class="rp2-bar-row'+(me?' me':'')+'"><div class="rp2-bar-name">'+_rp2Esc(nm)+'</div><div class="rp2-bar-track"><div class="rp2-bar-fill" style="width:'+w+'%;"></div></div><div class="rp2-bar-val">'+_rp2$(r.rev)+'</div></div>'; }).join('');
- return '<div class="rp2-grid">'
-  +_rp2KPI('QTD revenue',_rp2$(t.revenue),goal>0?('Goal '+_rp2$(goal)+(pct!=null?' \u00B7 '+pct+'%':'')):'')
+ var ringPct=Math.min(100,pct||0);
+ var badges=_rp2Badges(); var earned=badges.filter(function(b){return b.e;}).length;
+ var chips=badges.map(function(b){ return '<div class="rp2-badge'+(b.e?' on':'')+'" title="'+_rp2Esc(b.d)+'">'+(b.e?b.i:'\uD83D\uDD12')+'<span>'+_rp2Esc(b.l)+'</span></div>'; }).join('');
+ var att=_rp2Attention();
+ var attHtml=att.length?'<div class="rp2-card"><div class="rp2-ch">Needs your attention</div>'+att.map(function(a){return '<div class="rp2-att">'+a.i+' '+_rp2Esc(a.m)+'</div>';}).join('')+'</div>':'';
+ return hero
+  +'<div class="rp2-grid">'
+  +_rp2KPI('This week',_rp2$(lastRev),momHtml||'latest entered week')
+  +_rp2KPI('QTD revenue',_rp2$(t.revenue),goal>0?('Goal '+_rp2$(goal)):'')
   +_rp2KPI('Your rank',rk?('#'+rk):'\u2014','of '+ranks.length+' reps')
-  +_rp2KPI('Orders',(os?os.orders:(t.orders||0)),os?(_rp2$(os.aov)+' avg'):'entered this quarter')
-  +_rp2KPI('Calls',(t.calls||0),'this quarter')
+  +_rp2KPI('Orders',(os?os.orders:(t.orders||0)),os?(_rp2$(os.aov)+' avg'):'this quarter')
   +_rp2KPI('Team QTD',_rp2$(teamRev),'all reps combined')
   +'</div>'
-  +(goal>0?'<div class="rp2-card"><div class="rp2-ch">Progress to goal</div><div class="rp2-pbar"><div class="rp2-pfill" style="width:'+Math.min(100,pct||0)+'%;"></div></div><div class="rp2-ks">'+pct+'% of '+_rp2$(goal)+'</div></div>':'')
+  +'<div class="rp2-charts">'
+  +'<div class="rp2-card rp2-ring-card"><div class="rp2-ch">Goal progress</div><div class="rp2-ring" style="background:conic-gradient(#7C5CFF '+(ringPct*3.6)+'deg, rgba(255,255,255,.07) 0);"><div class="rp2-ring-in"><div class="rp2-ring-pct">'+(pct!=null?pct+'%':'\u2014')+'</div><div class="rp2-ring-sub">'+(goal>0?('of '+_rp2$(goal)):'no goal set')+'</div></div></div></div>'
+  +'<div class="rp2-card"><div class="rp2-ch">Your weekly revenue</div><div class="rp2-cwrap"><canvas id="rp2-c-weekly"></canvas></div></div>'
+  +'<div class="rp2-card"><div class="rp2-ch">You vs team average</div><div class="rp2-cwrap"><canvas id="rp2-c-vsavg"></canvas></div></div>'
+  +'</div>'
+  +'<div class="rp2-card"><div class="rp2-ch">Milestones \u00B7 '+earned+' of '+badges.length+' earned</div><div class="rp2-badges">'+chips+'</div></div>'
+  +attHtml
   +'<div class="rp2-card"><div class="rp2-ch">Team \u2014 where you stand</div>'+bars+'</div>';
 }
+function _rp2After(){
+ try{
+  if(_rp2.page!=='dash')return;
+  _rp2Charts(); _rp2AutoBrief(); _rp2MaybeCelebrate();
+ }catch(e){}
+}
+function _rp2Charts(){
+ if(typeof Chart!=='function')return;
+ (_rp2.charts||[]).forEach(function(c){ try{c.destroy&&c.destroy();}catch(e){} }); _rp2.charts=[];
+ var ser=_rp2WeekSeries(); var labels=ser.map(function(x,i){return 'W'+(i+1);});
+ var mine=ser.map(function(x){return x.rev;}); var avg=_rp2TeamAvgSeries();
+ var tick={color:'#8b95a7',font:{size:10}}, grid={color:'rgba(255,255,255,.05)'};
+ var c1=document.getElementById('rp2-c-weekly');
+ if(c1){ _rp2.charts.push(new Chart(c1.getContext('2d'),{type:'bar',data:{labels:labels,datasets:[{data:mine,backgroundColor:'rgba(124,92,255,.75)',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tick,grid:{display:false}},y:{ticks:tick,grid:grid}}}})); }
+ var c2=document.getElementById('rp2-c-vsavg');
+ if(c2){ _rp2.charts.push(new Chart(c2.getContext('2d'),{type:'line',data:{labels:labels,datasets:[{label:'You',data:mine,borderColor:'#7C5CFF',backgroundColor:'rgba(124,92,255,.15)',tension:.35,fill:true},{label:'Team avg',data:avg,borderColor:'#3b82f6',borderDash:[5,4],tension:.35,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#aab4c6',boxWidth:10,font:{size:10}}}},scales:{x:{ticks:tick,grid:{display:false}},y:{ticks:tick,grid:grid}}}})); }
+}
+function _rp2AutoBrief(){
+ var out=document.getElementById('rp2-hero-brief'); if(!out)return;
+ if(_rp2.briefText){ out.textContent=_rp2.briefText; }
+ if(typeof callAI!=='function'){ if(!_rp2.briefText)out.textContent='Welcome back \u2014 your numbers are below.'; return; }
+ var p='You are a supportive sales coach at Triple Crown Products. Rep data: '+JSON.stringify(_rp2Ctx())+'\nWrite a 2-3 sentence personal daily brief for this rep: one genuine win, one focus for today, keep momentum. Plain text, warm, direct, no lists. Never mention other reps by name.';
+ callAI(p,{maxTokens:220}).then(function(r){ var txt=(r&&(r.text||r))||''; if(txt){ _rp2.briefText=String(txt); var el=document.getElementById('rp2-hero-brief'); if(el)el.textContent=_rp2.briefText; } }).catch(function(){ var el=document.getElementById('rp2-hero-brief'); if(el&&!_rp2.briefText)el.textContent='Welcome back \u2014 your numbers are below.'; });
+}
+function _rp2MaybeCelebrate(){
+ try{
+  var rep=_rp2.rep,goal=_rp2Goal(rep),t=_rp2Tot(rep);
+  var ser=_rp2WeekSeries().filter(function(x){return x.has;});
+  var lastRev=ser.length?ser[ser.length-1].rev:0; var maxWk=ser.reduce(function(a,x){return Math.max(a,x.rev);},0);
+  var goalHit=goal>0&&t.revenue>=goal; var newBest=ser.length>=2&&lastRev>0&&lastRev>=maxWk;
+  if(!goalHit&&!newBest)return;
+  var key='rp2_cel_'+rep+'_'+getQ()+getYr()+(goalHit?'_goal':'_best'+lastRev);
+  try{ if(sessionStorage.getItem(key))return; sessionStorage.setItem(key,'1'); }catch(e){}
+  _rp2Confetti(goalHit?'\uD83C\uDFC6 QUARTER GOAL HIT!':'\uD83D\uDD25 NEW PERSONAL BEST WEEK!');
+ }catch(e){}
+}
+function _rp2Confetti(msg){
+ var wrap=document.createElement('div'); wrap.className='rp2-confetti';
+ var em=['\uD83C\uDF89','\u2728','\uD83C\uDFC6','\uD83D\uDCB0','\uD83D\uDD25','\uD83C\uDF8A'];
+ for(var i=0;i<50;i++){ var s=document.createElement('span'); s.textContent=em[i%em.length]; s.style.left=(Math.random()*100)+'%'; s.style.animationDelay=(Math.random()*1.2)+'s'; s.style.fontSize=(14+Math.random()*16)+'px'; wrap.appendChild(s); }
+ if(msg){ var b=document.createElement('div'); b.className='rp2-cel-msg'; b.textContent=msg; wrap.appendChild(b); }
+ document.body.appendChild(wrap);
+ setTimeout(function(){ try{wrap.remove();}catch(e){} },5000);
+}
+
 function _rp2Year(){
  var rep=_rp2.rep, yr=getYr(), rows='', totalRev=0, totalOrd=0;
  ['Q1','Q2','Q3','Q4'].forEach(function(q){ var wks=[]; try{ wks=gwq(yr,q)||[]; }catch(e){} var t={revenue:0,orders:0,calls:0}; try{ t=totW(rep,wks)||t; }catch(e){}
@@ -7813,7 +7908,8 @@ function _rp2Css(){ if(document.getElementById('rp2-css'))return; var s=document
  +'.rp2-msg{max-width:85%;padding:8px 11px;border-radius:11px;font-size:13px;line-height:1.45;white-space:pre-wrap;}'
  +'.rp2-msg.you{align-self:flex-end;background:#7C5CFF;color:#fff;}.rp2-msg.ai{align-self:flex-start;background:#1a2030;color:#dfe6f3;}'
  +'.rp2-rev{padding:8px 0;border-top:1px solid rgba(255,255,255,.05);}.rp2-rev-h{font-size:11px;color:#F5C97B;font-weight:700;}.rp2-rev-h span{color:#8b95a7;font-weight:600;margin-left:6px;}.rp2-rev-m{font-size:12.5px;color:#d8dee9;margin-top:3px;}'
- +'@media(max-width:760px){.rp2-app{flex-direction:column;}.rp2-side{width:auto;flex:none;height:auto;position:static;flex-direction:row;flex-wrap:wrap;gap:4px;padding:10px;}.rp2-logo{display:none;}.rp2-navg{display:none;}.rp2-nav{width:auto;font-size:11px;padding:6px 9px;background:#141a26;}.rp2-out{margin:0;}.rp2-main{padding:14px 12px 50px;}}';
+ +'@media(max-width:760px){.rp2-app{flex-direction:column;}.rp2-side{width:auto;flex:none;height:auto;position:static;flex-direction:row;flex-wrap:wrap;gap:4px;padding:10px;}.rp2-logo{display:none;}.rp2-navg{display:none;}.rp2-nav{width:auto;font-size:11px;padding:6px 9px;background:#141a26;}.rp2-out{margin:0;}.rp2-main{padding:14px 12px 50px;}}'
+ +'.rp2-hero{background:linear-gradient(120deg,#1b1440,#0f1b33 55%,#0d1118);border:1px solid #2a2a4a;border-radius:16px;padding:18px 20px;margin-bottom:14px;}'+'.rp2-hero-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}'+'.rp2-hero-kick{font-size:9px;letter-spacing:1.2px;color:#8E7BFF;font-weight:800;}'+'.rp2-hero-name{font-size:24px;font-weight:900;color:#fff;margin-top:2px;}'+'.rp2-flame{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#FBBF24;font-weight:800;font-size:12px;border-radius:999px;padding:6px 13px;white-space:nowrap;}'+'.rp2-hero-brief{margin-top:12px;font-size:13px;line-height:1.55;color:#cdd6e6;min-height:18px;white-space:pre-wrap;}'+'.rp2-dots{color:#8b95a7;font-style:italic;}'+'.rp2-mom{font-weight:800;font-size:10.5px;}.rp2-mom.up{color:#7BE3A9;}.rp2-mom.dn{color:#F0A9A9;}'+'.rp2-charts{display:grid;grid-template-columns:220px 1fr 1fr;gap:12px;margin-bottom:14px;}'+'.rp2-cwrap{height:170px;position:relative;}'+'.rp2-ring-card{display:flex;flex-direction:column;}'+'.rp2-ring{width:150px;height:150px;border-radius:50%;margin:6px auto;display:flex;align-items:center;justify-content:center;}'+'.rp2-ring-in{width:112px;height:112px;border-radius:50%;background:#12161f;display:flex;flex-direction:column;align-items:center;justify-content:center;}'+'.rp2-ring-pct{font-size:24px;font-weight:900;color:#fff;}.rp2-ring-sub{font-size:9.5px;color:#8b95a7;}'+'.rp2-badges{display:flex;flex-wrap:wrap;gap:8px;}'+'.rp2-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);border:1px solid #222a38;border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:700;color:#5d6a80;}'+'.rp2-badge.on{background:rgba(124,92,255,.12);border-color:#7C5CFF;color:#E4DDFF;}'+'.rp2-att{font-size:12.5px;color:#e8d9b0;padding:6px 0;border-top:1px solid rgba(255,255,255,.05);}'+'.rp2-confetti{position:fixed;inset:0;z-index:100001;pointer-events:none;overflow:hidden;}'+'.rp2-confetti span{position:absolute;top:-30px;animation:rp2fall 3.6s linear forwards;}'+'.rp2-cel-msg{position:absolute;top:38%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7C5CFF,#9B7BFF);color:#fff;font-weight:900;font-size:20px;padding:14px 26px;border-radius:16px;box-shadow:0 10px 40px rgba(124,92,255,.5);animation:rp2pop .5s ease;}'+'@keyframes rp2fall{to{transform:translateY(110vh) rotate(340deg);opacity:.9;}}@keyframes rp2pop{from{transform:translateX(-50%) scale(.6);opacity:0;}to{transform:translateX(-50%) scale(1);opacity:1;}}'+'@media(max-width:900px){.rp2-charts{grid-template-columns:1fr;}}';
  document.head.appendChild(s);
 }
 
@@ -18821,7 +18917,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:472,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:473,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
