@@ -4662,7 +4662,6 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <p>Log the team running total, review month momentum, export the daily sales record, and spot strong or soft sales days at a glance.</p>
       </div>
       <div class="daily-hero-actions">
-        <button class="daily-action-btn primary" onclick="saveDailyEntry()">&#10003; Log entry</button>
         <button class="daily-action-btn" onclick="downloadDailyExcel()">&#8595; Excel</button>
         <button class="daily-action-btn" onclick="downloadDailyPDF()">&#128196; PDF</button>
       </div>
@@ -4674,28 +4673,19 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
           <div>
             <div class="daily-section-kicker">Input</div>
             <h2>Daily sales entry</h2>
-            <p class="daily-help">One date now drives both the running-total entry and the per-rep SMB totals. Log the team total on the left, then save the rep cumulative totals on the right for the calendar popup rankings.</p>
+            <p class="daily-help">Pick the date, then enter each rep’s cumulative SMB and the day’s cumulative CORP on the right. The calendar totals are built from these.</p>
           </div>
           <span class="daily-status-pill">Combined + per rep</span>
         </div>
         <div class="daily-entry-married-body">
           <div class="daily-entry-primary-card">
-            <div class="daily-entry-card-label">Team running total</div>
+            <div class="daily-entry-card-label">Sales date</div>
             <div class="daily-entry-grid">
               <div class="ig daily-field">
                 <label>Date sales happened</label>
                 <input type="date" id="dailyDate" onchange="if(typeof _drRenderForm==='function')_drRenderForm();">
               </div>
-              <div class="ig daily-field">
-                <label>Total sales running total ($)</label>
-                <input type="number" id="dailyTotal" min="0" step="0.01" placeholder="0.00">
               </div>
-              <div class="ig daily-field">
-                <label>CORP sales for day ($)</label>
-                <input type="number" id="dailyCorpSales" min="0" step="0.01" placeholder="0.00">
-              </div>
-              <button class="daily-save-btn" onclick="saveDailyEntry()">Log running total</button>
-            </div>
             <div id="dailyMsg" class="daily-inline-msg"></div>
           </div>
           <div id="dr-form" class="daily-rep-entry-host"></div>
@@ -18576,7 +18566,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:463,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:464,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
