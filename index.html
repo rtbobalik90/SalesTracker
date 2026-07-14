@@ -3431,7 +3431,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab active" onclick="gt('dash',this)">Dashboard</button>
   <button class="tab" onclick="gt('year',this)">🗓️ Year Overview</button>
   <button class="tab" onclick="gt('entry',this)">Data entry</button>
-  <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>
+  <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>  <button class="tab" onclick="gt('repportal',this)">&#128272; Rep Portal</button>
   <button class="tab" onclick="gt('hr',this)">HR &amp; Notes</button>
   <button class="tab" onclick="gt('credits',this)">Credit memos</button>  <button class="tab" onclick="gt('reviews',this)">⭐ Customer Reviews</button>
   <button class="tab" onclick="gt('art',this)">Art errors</button>
@@ -18570,7 +18570,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:467,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:468,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
