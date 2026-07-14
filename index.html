@@ -7708,7 +7708,7 @@ function _rp2Page(){
  var p=_rp2.page;
  try{
   if(p==='dash')return _rp2Dash(); if(p==='year')return _rp2Year(); if(p==='lb')return _rp2LB();
-  if(p==='daily')return _rp2Daily(); if(p==='forecast')return _rp2Forecast(); if(p==='customers')return _rp2Customers();
+  if(p==='daily')return _rp2Daily(); if(p==='forecast')return (typeof window._rp2ForecastV2==='function'?window._rp2ForecastV2():_rp2Forecast()); if(p==='customers')return _rp2Customers();
   if(p==='orders')return _rp2Orders(); if(p==='reports')return _rp2Reports(); if(p==='profile')return _rp2Profile();
   if(p==='credits')return _rp2Credits(); if(p==='reviews')return _rp2Reviews(); if(p==='arterrors')return _rp2Art();
   if(p==='production')return _rp2Prod(); if(p==='ai')return _rp2AI();
@@ -7788,8 +7788,14 @@ function _rp2Dash(){
 }
 function _rp2After(){
  try{
-  if(_rp2.page!=='dash')return;
-  _rp2Charts(); _rp2AutoBrief(); _rp2MaybeCelebrate();
+  if(_rp2.page==='dash'){
+   _rp2Charts(); _rp2AutoBrief(); _rp2MaybeCelebrate();
+   return;
+  }
+  if(_rp2.page==='forecast'){
+   setTimeout(function(){ try{ if(typeof window._rp2ForecastUpdate==='function')window._rp2ForecastUpdate(); }catch(e){} },0);
+   return;
+  }
  }catch(e){}
 }
 function _rp2Charts(){
@@ -22209,7 +22215,7 @@ body.coach-seated #pg-coach .coach-panel-head,
     }).join('');
   }
 
-  window._rp2Forecast=function(){
+  window._rp2ForecastV2=function(){
     var f=forecastData();
     if(!f)return '<div class="rp2-card">Forecast context is unavailable.</div>';
     var c=f.c;
@@ -22219,7 +22225,7 @@ body.coach-seated #pg-coach .coach-panel-head,
     var selectedState=c.selectedData&&c.selectedData.state?c.selectedData.state.label:'Selected context';
 
     var hero='<div class="rp2-fc-hero"><div class="rp2-fc-hero-grid"><div>'
-      +'<div class="rp2-fc-kick">Forecast Center 2.0 · '+esc(getQ())+' '+esc(getYr())+'</div>'
+      +'<div class="rp2-fc-kick">Forecast Center 2.0 · BUILD v478 · '+esc(getQ())+' '+esc(getYr())+'</div>'
       +'<div class="rp2-fc-title">Your road to the quarter goal</div>'
       +'<div class="rp2-fc-summary">'+esc(forecastSummary(f))+'</div>'
       +'<div class="rp2-fc-badges">'
@@ -22404,23 +22410,6 @@ body.coach-seated #pg-coach .coach-panel-head,
         scales:{x:{ticks:tick,grid:{display:false}},y:{ticks:{color:'#8b95a7',font:{size:10},callback:function(v){return '$'+Math.round(v/1000)+'k';}},grid:grid}}
       }
     });
-  };
-
-  var oldAfter=window._rp2After;
-  window._rp2After=function(){
-    try{
-      if(_rp2.page==='dash'){
-        _rp2Charts();
-        if(typeof _rp2AutoBrief==='function')_rp2AutoBrief();
-        if(typeof _rp2MaybeCelebrate==='function')_rp2MaybeCelebrate();
-        return;
-      }
-      if(_rp2.page==='forecast'){
-        setTimeout(function(){try{_rp2ForecastUpdate();}catch(e){}},0);
-        return;
-      }
-      if(typeof oldAfter==='function')oldAfter();
-    }catch(e){}
   };
 
   try{
