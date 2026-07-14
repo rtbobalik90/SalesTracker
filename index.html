@@ -7440,7 +7440,7 @@ function _rpRenderAdmin(){
   var repRows=reps.map(function(r){ var has=G.accounts[r.name]&&G.accounts[r.name].hash; return '<tr><td style="text-align:left;font-weight:600;">'+_rpEsc(r.name)+'</td>'
     +'<td>'+(has?'<span style="color:#7BE3A9;">\u25cf set</span>':'<span style="color:var(--tcp-muted,#8b95a7);">\u2014 none</span>')+'</td>'
     +'<td><input type="password" id="rp-pw-'+_rpSlug(r.name)+'" placeholder="new password" class="rp-in" autocomplete="new-password"></td>'
-    +'<td style="text-align:right;"><button class="rp-btn" onclick="_rpSaveRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Save</button>'+(has?' <button class="rp-btn" onclick="_rpClearRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Clear</button>':'')+'</td></tr>'; }).join('');
+    +'<td style="text-align:right;"><button class="rp-btn" onclick="_rpSaveRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Save</button>'+(has?' <button class="rp-btn" onclick="_rpClearRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Clear</button> <button class="rp-btn" data-rep="'+_rpEsc(r.name)+'" onclick="_rpCopyRepLinkFor(this.dataset.rep)">&#128279; Link</button>':'')+'</td></tr>'; }).join('');
   host.innerHTML='<div class="rp-card"><div class="rp-kick">Rep portal</div><div class="rp-h2">Rep logins &amp; visibility</div>'
     +'<p class="rp-help">Soft login (same page, no backend): each rep sees only their own view. Not a hard security wall \u2014 a technical rep could still reach raw data via browser tools.</p>'
     +'<div class="rp-row"><label class="rp-switch"><input type="checkbox" '+(G.enabled?'checked':'')+' onchange="_rpToggleEnabled()"> Portal enabled (show login on load)</label><button class="rp-btn" onclick="_rpCopyRepLink()" style="margin-left:10px;">\uD83D\uDD17 Copy rep link</button>'+(G.managerHash?'':'<span style="color:#F0A9A9;font-size:11px;margin-left:10px;">Set a manager password first \u2193</span>')+'</div>'
@@ -7475,7 +7475,7 @@ function _rpApply(){
   ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card">'
     +'<div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div>'
     +'<div class="rp-login-sub">Sign in to see your numbers</div>'
-    +'<input id="rp-login-name" placeholder="Your name (optional)" class="rp-login-in" autocomplete="off">'
+    +'<input id="rp-login-name" value="'+_rpEsc(_rpUrlRep())+'" placeholder="Your name (optional)" class="rp-login-in" autocomplete="off">'
     +'<input id="rp-login-pw" type="password" placeholder="Password" class="rp-login-in" autocomplete="current-password" onkeydown="if(event.key===&quot;Enter&quot;)_rpAttemptLogin()">'
     +'<button class="rp-login-btn" onclick="_rpAttemptLogin()">Sign in</button>'
     +'<div id="rp-login-msg" class="rp-login-msg"></div></div></div>';
@@ -7483,6 +7483,9 @@ function _rpApply(){
 function _rpUrlGist(){ try{ var m=(location.search||'').match(/[?&]portal=([^&]+)/); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
 function _rpRepLink(){ var gid=''; try{ gid=localStorage.getItem('salesTracker_gistId')||''; }catch(e){} if(!gid){ alert('Set up cloud sync first (save your data to a Gist in Admin), then come back and copy the rep link.'); return ''; } return location.origin+location.pathname+'?portal='+encodeURIComponent(gid); }
 function _rpCopyRepLink(){ var link=_rpRepLink(); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert('Rep link copied \u2014 share it with your reps:\n\n'+link); } else { prompt('Copy this rep link and share it with your reps:', link); } }catch(e){ prompt('Copy this rep link and share it with your reps:', link); } }
+function _rpUrlRep(){ try{ var m=(location.search||'').match(/[?&]rep=([^&]+)/); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
+function _rpRepLinkFor(rep){ var base=_rpRepLink(); if(!base)return ''; return base+'&rep='+encodeURIComponent(rep); }
+function _rpCopyRepLinkFor(rep){ var link=_rpRepLinkFor(rep); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert(rep+'\u2019s portal link copied \u2014 send it to them:\n\n'+link); } else { prompt('Copy '+rep+'\u2019s portal link:', link); } }catch(e){ prompt('Copy '+rep+'\u2019s portal link:', link); } }
 async function _rpPullGist(gistId){ try{ var resp=await _gistFetch('https://api.github.com/gists/'+gistId,''); if(!resp||!resp.ok)return false; var data=await resp.json(); var content=await _readCloudContentFromGist(data); content=await _decompressPayload(content); var parsed=JSON.parse(content); if(!parsed||!parsed.data)return false; _restoreTrackerKeys(parsed.data); if(typeof loadFromStorage==='function')loadFromStorage(); return true; }catch(e){ return false; } }
 function _rpBoot(){ try{ _rpEnsure(); var gid=_rpUrlGist(); if(gid){ _rpCss(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); } ov.style.display='block'; ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub">Loading your portal\u2026</div></div></div>'; Promise.resolve().then(function(){ return _rpPullGist(gid); }).then(function(){ _rpEnsure(); _rpApply(); }); return; } if(S.repPortal.enabled)_rpApply(); }catch(e){} }
 
@@ -18570,7 +18573,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:468,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:469,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
