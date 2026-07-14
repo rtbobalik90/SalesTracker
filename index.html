@@ -4908,11 +4908,11 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 <div id="pg-customers" class="page"><div id="cust-page"></div></div>
 <div id="pg-orders" class="page"><div id="ord-page"></div></div>
 <div id="pg-gamestorm" class="page"><div id="gs-page"></div></div>
+<div id="pg-repportal" class="page"><div id="rp-admin"></div></div>
 <div id="pg-reviews" class="page"><div id="reviews-page"></div></div>
 <div id="pg-admin" class="page admin-system-page">
 <div id="ds-panel"></div>
 <div id="ai-conn"></div>
-  <div id="rp-admin" style="margin-top:16px;"></div>
   <section class="admin-sys-hero">
     <div>
       <div class="admin-sys-kicker">System Control Center</div>
@@ -5650,7 +5650,7 @@ function checkNewRecords(rep,cwk){let d=gd(rep+'|'+cwk),p=S.reps.find(r=>r.name=
 function popSel(){['eR','pR','scR','prRep','aiR','cmRep','aeRep','hrRep','cnRep','rvRep','gFillRep'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const cv=el.value;el.innerHTML=activeReps().map(r=>'<option>'+r.name+'</option>').join('');if(activeReps().find(r=>r.name===cv))el.value=cv;});['cmFR','aeFR','hrFR','cnFR'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML='<option value="all">All reps</option>'+S.reps.filter(r=>r&&r.name&&r.name.trim()).map(r=>'<option'+(r.retired?' style="color:#8B8A94;"':'')+'>'+r.name+(r.retired?' (retired)':'')+'</option>').join('');});}
 let ch={};
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
-function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();try{_rpRenderAdmin();}catch(e){}},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},gamestorm:()=>{renderGamestorm();},daily:()=>{setupDailyTab();renderYoY();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
+function gt(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');btn.classList.add('active');({dash:renderDash,year:renderYearOverview,entry:()=>{renderRL();renderGoals();renderSetSizes();},profiles:renderProfiles,hr:()=>{renderHRL();renderCNL();renderHRSummaryByRep();},credits:()=>{fwSel('cmWeek',getYr(),getQ());if(!window._cmDefaulted){window._cmDefaulted=true;cmSetView('week');}else{renderCML();}},art:()=>{fwSel('aeWeek',getYr(),getQ());renderAEL();aeAutoSync();markDirty();},perf:renderPerf,lb:renderLB,notifs:()=>{renderNotifLog();},admin:()=>{initAdmin();},intel:()=>{initIntelTab();},games:()=>{initGamesTab();},gtrack:()=>{initGameTrackerTab();},orders:()=>{renderOrdersPage();},gamestorm:()=>{renderGamestorm();},repportal:()=>{try{_rpRenderAdmin();}catch(e){}},daily:()=>{setupDailyTab();renderYoY();},calc:()=>{initCalculatorPage();},prodintel:()=>{renderProdIntelPage();},reports:popSel,history:()=>{renderHistory();updateHistoryBadge();},review:()=>{popSel();document.getElementById('rvYr').value=getYr();document.getElementById('rvQ').value=getQ();},meeting:()=>{populateMtgWeekSel();},slides:()=>{if(window.initSlidesPage)window.initSlidesPage();},inbound:()=>{renderInbound();},cknow:renderCKnow})[p]?.();}
 
 /* ===== v347 Inbound Leads — multi-year + period comparison (week/quarter/year) ===== */
 var INBOUND_STORE='salesTracker_inbound_v1';
@@ -7443,7 +7443,7 @@ function _rpRenderAdmin(){
     +'<td style="text-align:right;"><button class="rp-btn" onclick="_rpSaveRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Save</button>'+(has?' <button class="rp-btn" onclick="_rpClearRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Clear</button>':'')+'</td></tr>'; }).join('');
   host.innerHTML='<div class="rp-card"><div class="rp-kick">Rep portal</div><div class="rp-h2">Rep logins &amp; visibility</div>'
     +'<p class="rp-help">Soft login (same page, no backend): each rep sees only their own view. Not a hard security wall \u2014 a technical rep could still reach raw data via browser tools.</p>'
-    +'<div class="rp-row"><label class="rp-switch"><input type="checkbox" '+(G.enabled?'checked':'')+' onchange="_rpToggleEnabled()"> Portal enabled (show login on load)</label>'+(G.managerHash?'':'<span style="color:#F0A9A9;font-size:11px;margin-left:10px;">Set a manager password first \u2193</span>')+'</div>'
+    +'<div class="rp-row"><label class="rp-switch"><input type="checkbox" '+(G.enabled?'checked':'')+' onchange="_rpToggleEnabled()"> Portal enabled (show login on load)</label><button class="rp-btn" onclick="_rpCopyRepLink()" style="margin-left:10px;">\uD83D\uDD17 Copy rep link</button>'+(G.managerHash?'':'<span style="color:#F0A9A9;font-size:11px;margin-left:10px;">Set a manager password first \u2193</span>')+'</div>'
     +'<div class="rp-sub">Manager password</div><div class="rp-row"><input type="password" id="rp-mgr-pw" placeholder="'+(G.managerHash?'change manager password':'set manager password')+'" class="rp-in" autocomplete="new-password"><button class="rp-btn pri" onclick="_rpSaveManagerPw()">Save</button>'+(G.managerHash?'<span style="color:#7BE3A9;font-size:11px;margin-left:8px;">\u25cf set</span>':'')+'</div>'
     +'<div class="rp-sub">What reps can see (applies to all reps)</div><div class="rp-chips">'+secRow+'</div>'
     +'<div class="rp-sub">Rep passwords</div><table class="rp-tbl"><thead><tr><th style="text-align:left;">Rep</th><th>Password</th><th>Set</th><th></th></tr></thead><tbody>'+repRows+'</tbody></table>'
@@ -7480,7 +7480,11 @@ function _rpApply(){
     +'<button class="rp-login-btn" onclick="_rpAttemptLogin()">Sign in</button>'
     +'<div id="rp-login-msg" class="rp-login-msg"></div></div></div>';
 }
-function _rpBoot(){ try{ _rpEnsure(); if(S.repPortal.enabled)_rpApply(); }catch(e){} }
+function _rpUrlGist(){ try{ var m=(location.search||'').match(/[?&]portal=([^&]+)/); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
+function _rpRepLink(){ var gid=''; try{ gid=localStorage.getItem('salesTracker_gistId')||''; }catch(e){} if(!gid){ alert('Set up cloud sync first (save your data to a Gist in Admin), then come back and copy the rep link.'); return ''; } return location.origin+location.pathname+'?portal='+encodeURIComponent(gid); }
+function _rpCopyRepLink(){ var link=_rpRepLink(); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert('Rep link copied \u2014 share it with your reps:\n\n'+link); } else { prompt('Copy this rep link and share it with your reps:', link); } }catch(e){ prompt('Copy this rep link and share it with your reps:', link); } }
+async function _rpPullGist(gistId){ try{ var resp=await _gistFetch('https://api.github.com/gists/'+gistId,''); if(!resp||!resp.ok)return false; var data=await resp.json(); var content=await _readCloudContentFromGist(data); content=await _decompressPayload(content); var parsed=JSON.parse(content); if(!parsed||!parsed.data)return false; _restoreTrackerKeys(parsed.data); if(typeof loadFromStorage==='function')loadFromStorage(); return true; }catch(e){ return false; } }
+function _rpBoot(){ try{ _rpEnsure(); var gid=_rpUrlGist(); if(gid){ _rpCss(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); } ov.style.display='block'; ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub">Loading your portal\u2026</div></div></div>'; Promise.resolve().then(function(){ return _rpPullGist(gid); }).then(function(){ _rpEnsure(); _rpApply(); }); return; } if(S.repPortal.enabled)_rpApply(); }catch(e){} }
 
 /* ---------- rep bundle (filter S to one rep) ---------- */
 function _rpBundle(rep){
@@ -16875,7 +16879,7 @@ window.addEventListener('load', function(){
   var NAV_GROUPS=[
     {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['year','Year Overview','🗓️'],['lb','Leaderboard','🏆']]},
     {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['orders','Orders','📦'],['reports','Reports Hub','📄'],['slides','Sales Slides','🎬']]},
-    {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
+    {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['repportal','Rep Portal','🔐'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
     {key:'opsg',icon:'🛠️',label:'Operations',open:true,items:[['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['reviews','Customer Reviews','⭐'],['art','Art Errors','🎨'],['prodintel','Production Intelligence','📊']]},
     {key:'engage',icon:'🎮',label:'Games',open:false,items:[['gamestorm','Gamestorm','🎮'],['games','Games','🎮'],['gtrack','Game Tracker','📊']]},
     {key:'system',icon:'⚙️',label:'Admin',open:false,items:[['admin','Admin','⚙️'],['cknow','Company Knowledge','🧠']]}
@@ -18566,7 +18570,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:464,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:467,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
