@@ -3407,6 +3407,71 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 @media(max-width:720px){#pg-slides .sm-hero{flex-direction:column;align-items:flex-start;padding:22px}#pg-slides .sm-hero h1{font-size:27px}#pg-slides .sm-hero-actions{width:100%;justify-content:flex-start}#pg-slides .sm-btn{flex:1}#pg-slides .sm-controls,#pg-slides .sm-context,#pg-slides .sm-slide-checks{grid-template-columns:1fr}}
 </style>
 
+
+<style id="tcp-rep-intelligence-foundation-v474-css">
+/* ===== v474 Rep Intelligence Foundation ===== */
+#pg-profiles.rep-intelligence-page{--rep-violet:#8B7CFF;--rep-cyan:#4FD1FF;--rep-green:#5DCAA5;--rep-gold:#F5C56B;--rep-line:rgba(255,255,255,.09);--rep-panel:rgba(15,19,31,.86);position:relative;isolation:isolate;padding-bottom:64px;}
+#pg-profiles.rep-intelligence-page:before{content:"";position:fixed;inset:0 0 0 var(--sidebar-w,0);pointer-events:none;z-index:-1;background:radial-gradient(circle at 72% 12%,rgba(79,209,255,.075),transparent 26%),radial-gradient(circle at 26% 28%,rgba(139,124,255,.08),transparent 30%);}
+#pg-profiles>.page-purpose{display:none!important;}
+.rep-intel-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,.6fr);gap:24px;align-items:end;padding:28px 30px;margin-bottom:14px;border:1px solid rgba(255,255,255,.105);border-radius:26px;background:linear-gradient(125deg,rgba(25,22,55,.96),rgba(14,24,42,.94) 48%,rgba(12,18,31,.96));box-shadow:0 28px 70px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.07);}
+.rep-intel-hero:before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-150px;top:-240px;background:radial-gradient(circle,rgba(79,209,255,.18),rgba(139,124,255,.07) 38%,transparent 68%);filter:blur(2px);}
+.rep-intel-hero:after{content:"";position:absolute;inset:auto 0 0;height:1px;background:linear-gradient(90deg,transparent,rgba(139,124,255,.8),rgba(79,209,255,.7),transparent);opacity:.65;}
+.rep-intel-hero-copy,.rep-intel-hero-actions{position:relative;z-index:1;}
+.rep-intel-kicker,.rep-intel-section-kicker{font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.16em;color:#A9A1FF;}
+.rep-intel-live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--rep-green);box-shadow:0 0 0 5px rgba(93,202,165,.10),0 0 18px rgba(93,202,165,.75);margin-right:8px;vertical-align:1px;animation:repIntelPulse 2.4s ease-in-out infinite;}
+@keyframes repIntelPulse{50%{box-shadow:0 0 0 8px rgba(93,202,165,0),0 0 24px rgba(93,202,165,.9)}}
+.rep-intel-hero h1{margin:8px 0 9px;color:#fff;font-size:clamp(30px,3.2vw,46px);line-height:.98;letter-spacing:-.055em;font-weight:950;}
+.rep-intel-hero p{margin:0;max-width:800px;color:#AEB7CC;font-size:13px;line-height:1.65;}
+.rep-intel-context-line{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 11px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.045);color:#D8DDF0;font-size:11px;font-weight:750;box-shadow:inset 0 1px 0 rgba(255,255,255,.045);}
+.rep-intel-hero-actions{padding:16px;border:1px solid rgba(255,255,255,.095);border-radius:20px;background:rgba(5,10,20,.30);backdrop-filter:blur(18px);box-shadow:0 18px 40px rgba(0,0,0,.20);}
+.rep-intel-selected-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#8690AA;font-weight:950;margin-bottom:7px;}
+.rep-intel-rep-select{width:100%;appearance:none;border:1px solid rgba(139,124,255,.36);border-radius:13px;background:linear-gradient(180deg,rgba(139,124,255,.13),rgba(255,255,255,.035));color:#fff;padding:11px 38px 11px 12px;font-size:13px;font-weight:850;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+.rep-intel-selected-meta{margin-top:8px;color:#8994AA;font-size:10.5px;line-height:1.45;}
+.rep-intel-period-shell,.rep-intel-roster-shell{border:1px solid var(--rep-line);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),rgba(10,14,25,.76);box-shadow:0 18px 46px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.04);}
+.rep-intel-period-shell{padding:16px 18px;margin-bottom:14px;}
+.rep-intel-period-head,.rep-intel-roster-head{display:flex;align-items:center;justify-content:space-between;gap:18px;}
+.rep-intel-period-head h2,.rep-intel-roster-head h2{margin:4px 0 0;font-size:17px;color:#F7F9FF;font-weight:900;letter-spacing:-.025em;}
+.rep-intel-period-badge{padding:6px 10px;border-radius:999px;border:1px solid rgba(79,209,255,.20);background:rgba(79,209,255,.07);color:#8DE3FF;font-size:10px;font-weight:850;white-space:nowrap;}
+.rep-intel-period-grid{display:grid;grid-template-columns:.8fr .8fr 1fr 2fr;gap:10px;margin-top:14px;}
+.rep-intel-control{display:flex;flex-direction:column;gap:5px;padding:9px 10px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(255,255,255,.025);transition:.18s ease;}
+.rep-intel-control:hover{border-color:rgba(139,124,255,.28);background:rgba(139,124,255,.045);transform:translateY(-1px);}
+.rep-intel-control>span{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#778198;font-weight:900;}
+.rep-intel-control select{width:100%;border:0;background:transparent;color:#F8FAFF;font-size:12px;font-weight:850;outline:none;min-width:0;}
+.rep-intel-control select option,.rep-intel-rep-select option{background:#111724;color:#fff;}
+.rep-intel-alerts{margin:0 0 14px;}
+.rep-intel-roster-shell{padding:16px 18px 18px;margin-bottom:14px;}
+.rep-intel-team-pulse{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;}
+.rep-intel-pulse-chip{min-width:82px;padding:7px 9px;border:1px solid rgba(255,255,255,.075);border-radius:12px;background:rgba(255,255,255,.025);}
+.rep-intel-pulse-chip span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#707A90;font-weight:900;}
+.rep-intel-pulse-chip strong{display:block;margin-top:2px;font-size:12px;color:#F5F7FF;font-weight:900;}
+.rep-intel-roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px;margin-top:14px;}
+#pg-profiles .rep-card{position:relative;overflow:hidden;min-height:154px;margin:0!important;padding:14px!important;border:1px solid rgba(255,255,255,.085)!important;border-radius:18px!important;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018))!important;box-shadow:0 14px 34px rgba(0,0,0,.16)!important;text-align:left!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;}
+#pg-profiles .rep-card:before{content:"";position:absolute;width:145px;height:145px;border-radius:50%;right:-72px;top:-78px;background:radial-gradient(circle,rgba(79,209,255,.12),rgba(139,124,255,.08) 45%,transparent 70%);pointer-events:none;}
+#pg-profiles .rep-card:hover{transform:translateY(-3px)!important;border-color:rgba(139,124,255,.30)!important;box-shadow:0 20px 42px rgba(0,0,0,.25)!important;}
+#pg-profiles .rep-card.selected{border-color:rgba(139,124,255,.62)!important;background:linear-gradient(145deg,rgba(139,124,255,.14),rgba(79,209,255,.04))!important;box-shadow:0 18px 44px rgba(42,35,95,.30),inset 0 1px 0 rgba(255,255,255,.07)!important;}
+.rep-intel-card-top{position:relative;display:flex;align-items:center;gap:10px;min-width:0;}
+.rep-intel-card-top .av,.rep-intel-card-top img{flex:0 0 auto;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.rep-intel-card-id{min-width:0;flex:1;}.rep-intel-card-name{font-size:13px;font-weight:950;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.rep-intel-card-role{margin-top:3px;font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.07em;color:#8E99B1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rep-intel-rank{flex:0 0 auto;display:flex;align-items:center;justify-content:center;min-width:34px;height:28px;padding:0 7px;border-radius:10px;background:rgba(139,124,255,.11);border:1px solid rgba(139,124,255,.18);color:#BDB7FF;font-size:10px;font-weight:950;}
+.rep-intel-card-metrics{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px;}
+.rep-intel-mini{padding:7px 7px;border-radius:11px;border:1px solid rgba(255,255,255,.06);background:rgba(4,8,16,.22);min-width:0;}.rep-intel-mini span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:#667188;font-weight:850;}.rep-intel-mini strong{display:block;margin-top:2px;font-size:11px;color:#F7F9FF;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rep-intel-card-foot{position:relative;margin-top:10px;display:flex;align-items:center;gap:8px;}.rep-intel-progress{height:5px;flex:1;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;}.rep-intel-progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rep-violet),var(--rep-cyan));box-shadow:0 0 14px rgba(79,209,255,.28);}.rep-intel-progress-label{font-size:9px;color:#8892A8;font-weight:850;white-space:nowrap;}
+.rep-intel-detail{position:relative;}
+#pg-profiles #r360{margin-top:0;}
+#pg-profiles #r360 .r3-shell{overflow:hidden;border-radius:24px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015)),rgba(9,13,24,.88);box-shadow:0 28px 70px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.05);}
+#pg-profiles #r360 .r3-head{padding:20px 20px 17px;background:linear-gradient(115deg,rgba(139,124,255,.11),rgba(79,209,255,.035),transparent);}
+#pg-profiles #r360 .r3-name{font-size:24px;letter-spacing:-.035em;}
+#pg-profiles #r360 .r3-tabs{padding-left:14px;padding-right:14px;background:rgba(5,9,17,.24);}
+#pg-profiles #r360 .r3-tab{padding-top:12px;padding-bottom:12px;}
+#pg-profiles #r360 .r3-pane{padding:18px;}
+/* Keep the detailed legacy profile information available, but visually subordinate it beneath Rep 360. */
+#pg-profiles #r360~.profile-command,#pg-profiles #r360~.profile-layout{opacity:.94;}
+#pg-profiles .profile-command{margin-top:14px;border-radius:22px!important;overflow:hidden;}
+#pg-profiles .profile-layout{gap:14px!important;}
+@media(max-width:1100px){.rep-intel-hero{grid-template-columns:1fr}.rep-intel-period-grid{grid-template-columns:repeat(2,1fr)}.rep-intel-control-week{grid-column:span 1}.rep-intel-team-pulse{justify-content:flex-start}}
+@media(max-width:700px){.rep-intel-hero{padding:22px 19px;border-radius:22px}.rep-intel-hero h1{font-size:32px}.rep-intel-period-grid{grid-template-columns:1fr}.rep-intel-period-head,.rep-intel-roster-head{align-items:flex-start;flex-direction:column}.rep-intel-roster-grid{grid-template-columns:1fr}.rep-intel-team-pulse{width:100%}.rep-intel-pulse-chip{flex:1}.rep-intel-card-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -3685,10 +3750,51 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   </div>
 </div>
 
-<div id="pg-profiles" class="page">
-  <div id="profileAlerts"></div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:9px;margin-bottom:1.1rem;" id="repCards"></div>
-  <div id="profileDetail"></div>
+<div id="pg-profiles" class="page rep-intelligence-page">
+  <section class="rep-intel-hero">
+    <div class="rep-intel-hero-copy">
+      <div class="rep-intel-kicker"><span class="rep-intel-live-dot"></span> Team intelligence workspace</div>
+      <h1>Rep Intelligence Center</h1>
+      <p>One immersive workspace for rep performance, weekly movement, quarter pace, coaching, quality, history, and manager follow-through.</p>
+      <div class="rep-intel-context-line" id="repIntelContextLine">Loading tracker context…</div>
+    </div>
+    <div class="rep-intel-hero-actions">
+      <div class="rep-intel-selected-label">Selected rep</div>
+      <select id="repQuickSelect" class="rep-intel-rep-select" onchange="repIntelSelectRep(this.value)"></select>
+      <div class="rep-intel-selected-meta" id="repIntelSelectedMeta">Choose a rep to open their command view.</div>
+    </div>
+  </section>
+
+  <section class="rep-intel-period-shell" aria-label="Rep reporting period controls">
+    <div class="rep-intel-period-head">
+      <div>
+        <div class="rep-intel-section-kicker">Reporting context</div>
+        <h2>Change the period without leaving the rep workspace</h2>
+      </div>
+      <div class="rep-intel-period-badge" id="repIntelPeriodBadge">Tracker context</div>
+    </div>
+    <div class="rep-intel-period-grid">
+      <label class="rep-intel-control"><span>Year</span><select id="repCtxYr" onchange="repIntelSetContext('year',this.value)"></select></label>
+      <label class="rep-intel-control"><span>Quarter</span><select id="repCtxQ" onchange="repIntelSetContext('quarter',this.value)"></select></label>
+      <label class="rep-intel-control"><span>Month</span><select id="repCtxM" onchange="repIntelSetContext('month',this.value)"></select></label>
+      <label class="rep-intel-control rep-intel-control-week"><span>Week</span><select id="repCtxW" onchange="repIntelSetContext('week',this.value)"></select></label>
+    </div>
+  </section>
+
+  <div id="profileAlerts" class="rep-intel-alerts"></div>
+
+  <section class="rep-intel-roster-shell">
+    <div class="rep-intel-roster-head">
+      <div>
+        <div class="rep-intel-section-kicker">Team roster</div>
+        <h2>Choose a rep</h2>
+      </div>
+      <div class="rep-intel-team-pulse" id="repIntelTeamPulse"></div>
+    </div>
+    <div id="repCards" class="rep-intel-roster-grid"></div>
+  </section>
+
+  <div id="profileDetail" class="rep-intel-detail"></div>
   <div id="custIntelPanel" style="margin-top:0;"></div>
 </div>
 <div id="pg-hr" class="page hr-command-page">
@@ -20922,4 +21028,106 @@ body.coach-seated #pg-coach .coach-panel-head,
   document.addEventListener('DOMContentLoaded',function(){try{if(document.getElementById('pg-slides')&&document.getElementById('pg-slides').classList.contains('active')&&window.initSlidesPage)window.initSlidesPage();}catch(e){console.warn(e);}});
 })();
 </script>
+
+<script id="tcp-rep-intelligence-foundation-v474-js">
+(function(){
+  function repIntelEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function repIntelMoney(v){v=Number(v||0);if(Math.abs(v)>=1000000)return '$'+(v/1000000).toFixed(1).replace(/\.0$/,'')+'M';if(Math.abs(v)>=1000)return '$'+Math.round(v/1000)+'K';return '$'+Math.round(v).toLocaleString();}
+  function repIntelActive(){try{return activeReps();}catch(e){return (S.reps||[]).filter(function(r){return r&&!r.retired;});}}
+  function repIntelSelectedWeek(){try{var yr=getYr(),q=getQ(),wn=getWN();return (gwq(yr,q)||[]).find(function(w){return String(w.num)===String(wn);})||null;}catch(e){return null;}}
+  function repIntelSetOptions(el,items,value,labelFn,valueFn){if(!el)return;el.innerHTML=(items||[]).map(function(item){var v=valueFn?valueFn(item):item,l=labelFn?labelFn(item):item;return '<option value="'+repIntelEsc(v)+'">'+repIntelEsc(l)+'</option>';}).join('');if(value!=null)el.value=String(value);}
+  function repIntelSyncContext(){
+    var gy=document.getElementById('selYr'),gq=document.getElementById('selQ'),gm=document.getElementById('selM'),gw=document.getElementById('selW');
+    if(!gy||!gq||!gm||!gw)return;
+    repIntelSetOptions(document.getElementById('repCtxYr'),Array.prototype.slice.call(gy.options).map(function(o){return o.value;}),gy.value);
+    repIntelSetOptions(document.getElementById('repCtxQ'),Array.prototype.slice.call(gq.options).map(function(o){return o.value;}),gq.value);
+    repIntelSetOptions(document.getElementById('repCtxM'),Array.prototype.slice.call(gm.options).map(function(o){return o.value;}),gm.value);
+    repIntelSetOptions(document.getElementById('repCtxW'),Array.prototype.slice.call(gw.options),gw.value,function(o){return o.textContent;},function(o){return o.value;});
+    var wk=repIntelSelectedWeek();
+    var line=document.getElementById('repIntelContextLine');
+    if(line)line.innerHTML='<span style="color:#8DE3FF;font-weight:950;">'+repIntelEsc(getQ()+' '+getYr())+'</span><span style="opacity:.35;">•</span><span>'+repIntelEsc(getM())+'</span><span style="opacity:.35;">•</span><span>'+repIntelEsc(wk?wk.label:('Week '+getWN()))+'</span>';
+    var badge=document.getElementById('repIntelPeriodBadge');if(badge)badge.textContent=getQ()+' '+getYr()+' · '+getM();
+  }
+  window.repIntelSetContext=function(kind,value){
+    try{
+      if(kind==='year'){document.getElementById('selYr').value=value;onYrChange();}
+      else if(kind==='quarter'){document.getElementById('selQ').value=value;onQChange();}
+      else if(kind==='month'){document.getElementById('selM').value=value;onMChange();}
+      else if(kind==='week'){document.getElementById('selW').value=value;onWChange();}
+      repIntelSyncContext();
+    }catch(e){console.warn('rep context:',e);}
+  };
+  window.repIntelSelectRep=function(name){try{if(name)selectRep(name);}catch(e){console.warn('rep select:',e);}};
+  function repIntelUpdateQuickSelect(){
+    var el=document.getElementById('repQuickSelect');if(!el)return;
+    var reps=repIntelActive();
+    if(!reps.length){el.innerHTML='<option value="">No active reps</option>';return;}
+    if(!selectedRep||!reps.some(function(r){return r.name===selectedRep;}))selectedRep=reps[0].name;
+    el.innerHTML=reps.map(function(r){return '<option value="'+repIntelEsc(r.name)+'">'+repIntelEsc(r.name)+'</option>';}).join('');
+    el.value=selectedRep;
+    var r=reps.find(function(x){return x.name===selectedRep;});
+    var meta=document.getElementById('repIntelSelectedMeta');
+    if(meta&&r){var role='Sales rep';try{role=roleDef(repRole(r)).name||role;}catch(e){}meta.textContent=role+' · performance, coaching, quality, and history';}
+  }
+  function repIntelUpdatePulse(){
+    var host=document.getElementById('repIntelTeamPulse');if(!host)return;
+    var reps=repIntelActive(),wk=repIntelSelectedWeek(),weekKey=wk&&wk.key;
+    var wkRev=0,wkCalls=0,qRev=0;
+    reps.forEach(function(r){try{var wd=weekKey?gd(r.name+'|'+weekKey):{};wkRev+=Number(wd.revenue||0);wkCalls+=Number(wd.calls||0);qRev+=Number((totW(r.name,gwq(getYr(),getQ()))||{}).revenue||0);}catch(e){}});
+    host.innerHTML='<div class="rep-intel-pulse-chip"><span>Active reps</span><strong>'+reps.length+'</strong></div>'+
+      '<div class="rep-intel-pulse-chip"><span>Selected week</span><strong>'+repIntelMoney(wkRev)+'</strong></div>'+
+      '<div class="rep-intel-pulse-chip"><span>Week calls</span><strong>'+Math.round(wkCalls).toLocaleString()+'</strong></div>'+
+      '<div class="rep-intel-pulse-chip"><span>'+repIntelEsc(getQ())+' revenue</span><strong>'+repIntelMoney(qRev)+'</strong></div>';
+  }
+  function repIntelRenderCards(){
+    var el=document.getElementById('repCards');if(!el)return;
+    var reps=repIntelActive(),yr=getYr(),q=getQ(),wk=repIntelSelectedWeek(),weekKey=wk&&wk.key;
+    var ranks=reps.map(function(r){var d=weekKey?gd(r.name+'|'+weekKey):{};return {name:r.name,rev:Number(d.revenue||0)};}).sort(function(a,b){return b.rev-a.rev;});
+    el.innerHTML=reps.map(function(r){
+      var i=S.reps.indexOf(r),goal=getGoal(r.name,yr,q),qt=totW(r.name,gwq(yr,q))||{},wd=weekKey?gd(r.name+'|'+weekKey):{};
+      var pct=Number(goal.rev||0)>0?Math.round(Number(qt.revenue||0)/Number(goal.rev||0)*100):0;
+      var rank=ranks.findIndex(function(x){return x.name===r.name;})+1;
+      var role='Sales rep';try{role=roleDef(repRole(r)).name||role;}catch(e){}
+      var safe=String(r.name||'').replace(/'/g,"\\'");
+      return '<div class="rep-card'+(selectedRep===r.name?' selected':'')+'" onclick="selectRep(\''+safe+'\')">'
+        +'<div class="rep-intel-card-top">'+avatarEl(r,i,42)+'<div class="rep-intel-card-id"><div class="rep-intel-card-name">'+repIntelEsc(r.name)+'</div><div class="rep-intel-card-role">'+repIntelEsc(role)+'</div></div><div class="rep-intel-rank">#'+rank+'</div></div>'
+        +'<div class="rep-intel-card-metrics"><div class="rep-intel-mini"><span>Week sales</span><strong>'+repIntelMoney(wd.revenue||0)+'</strong></div><div class="rep-intel-mini"><span>'+repIntelEsc(q)+' sales</span><strong>'+repIntelMoney(qt.revenue||0)+'</strong></div><div class="rep-intel-mini"><span>Week calls</span><strong>'+Math.round(Number(wd.calls||0)).toLocaleString()+'</strong></div></div>'
+        +'<div class="rep-intel-card-foot"><div class="rep-intel-progress"><i style="width:'+Math.max(0,Math.min(100,pct))+'%"></i></div><div class="rep-intel-progress-label">'+pct+'% to qtr goal</div></div>'
+        +'</div>';
+    }).join('');
+  }
+  function repIntelRefreshChrome(){repIntelSyncContext();repIntelUpdateQuickSelect();repIntelUpdatePulse();}
+
+  /* The Rep 360 engine now uses the selected tracker week, not simply the latest week containing data. */
+  window._r360Engine=function(){
+    try{
+      var yr=getYr(),q=getQ(),wk=repIntelSelectedWeek();if(!wk)return null;
+      var key=wk.key+'|selected';
+      if(window._r360E&&window._r360E.key===key)return window._r360E.E;
+      var E=buildMtgEngine(wk,yr,q);window._r360E={key:key,E:E};return E;
+    }catch(e){console.warn('r360 selected context:',e);return null;}
+  };
+
+  /* Upgrade the roster cards while preserving the same underlying tracker data and rep selection flow. */
+  window.renderProfileCards=repIntelRenderCards;
+
+  var baseRenderProfiles=window.renderProfiles;
+  window.renderProfiles=function(){
+    var reps=repIntelActive();if(reps.length&&(!selectedRep||!reps.some(function(r){return r.name===selectedRep;})))selectedRep=reps[0].name;
+    if(typeof baseRenderProfiles==='function')baseRenderProfiles();
+    repIntelRefreshChrome();
+  };
+  var baseSelectRep=window.selectRep;
+  window.selectRep=function(name){if(typeof baseSelectRep==='function')baseSelectRep(name);repIntelRefreshChrome();};
+
+  function wrapContextHandler(name){
+    var base=window[name];if(typeof base!=='function')return;
+    window[name]=function(){var out=base.apply(this,arguments);window._r360E=null;var pg=document.getElementById('pg-profiles');if(pg&&pg.classList.contains('active')){try{window.renderProfiles();}catch(e){console.warn('rep refresh:',e);}}else{repIntelSyncContext();}return out;};
+  }
+  ['onYrChange','onQChange','onMChange','onWChange'].forEach(wrapContextHandler);
+
+  window.addEventListener('load',function(){setTimeout(function(){try{repIntelRefreshChrome();}catch(e){}},850);});
+})();
+</script>
+
 </body></html>
