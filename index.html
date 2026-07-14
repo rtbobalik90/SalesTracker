@@ -9475,6 +9475,7 @@ function renderDailyTable(entries){
 function deleteDailyEntry(date){
   if(!confirm('Remove entry for '+formatDateShort(date)+'?'))return;
   S.dailySales=S.dailySales.filter(function(e){return e.date!==date;});
+  try{if(S.dailyRep)delete S.dailyRep[date];}catch(e){}
   markDirty();
   buildDailyMonthSel();
   renderDailyLog();
@@ -9483,6 +9484,7 @@ function deleteDailyEntry(date){
 function clearDailyLog(){
   if(!confirm('Clear all daily sales entries?'))return;
   S.dailySales=[];
+  S.dailyRep={};
   markDirty();
   buildDailyMonthSel();
   renderDailyLog();
@@ -16957,7 +16959,8 @@ function drSaveRepDay(){
   document.querySelectorAll('.dr-in').forEach(function(i){var v=i.value.trim();if(v!==''){rec[i.dataset.rep]=Number(v)||0;any=true;}});
   var corp=(document.getElementById('dr-corp')||{}).value.trim();
   if(corp!=='')rec.__corp=Number(corp)||0;
-  S.dailyRep[d]=rec;
+  if(Object.keys(rec).length===0){delete S.dailyRep[d];}else{S.dailyRep[d]=rec;}
+  try{if(S.dailySales)S.dailySales=S.dailySales.filter(function(e){return e.date!==d;});}catch(e){}
   try{markDirty();}catch(e){}
   var m=document.getElementById('dr-msg');if(m){m.textContent='\u2713 Saved '+d;m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
   renderDailyRepView();
@@ -18571,7 +18574,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:461,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:462,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
