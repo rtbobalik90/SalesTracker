@@ -16914,15 +16914,7 @@ function _drDayTotals(dateISO){
   var corpDay=Math.max(0,corp-corpPrev);
   return {rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
 }
-function _drCorpCumulativeFor(dateISO){
-  var fallback=0;
-  try{fallback=Number((S.dailyRep&&S.dailyRep[dateISO]||{}).__corp||0)||0;}catch(e){}
-  try{
-    var rows=getDailySales().filter(function(e){return e.date<=dateISO;}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
-    if(rows.length)return Number(rows[rows.length-1].corpCumulative||0)||0;
-  }catch(e){}
-  return fallback;
-}
+function _drCorpCumulativeFor(dateISO){ try{ var v=(S.dailyRep&&S.dailyRep[dateISO]||{}).__corp; return (v!=null&&v!=='')?(Number(v)||0):''; }catch(e){ return ''; } }
 function _drRenderForm(){
   var host=document.getElementById('dr-form');if(!host)return;
   _drEnsure();
@@ -16936,7 +16928,7 @@ function _drRenderForm(){
     +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#34D399,#7C6CFF);">&#128100;</span>'
     +'<div class="r3-hmeta"><div class="r3-name">Per-rep daily entry</div><div class="r3-sub">Same date as running total &middot; cumulative SMB totals &middot; blank fields = re-enter totals</div></div></div>'
     +'<div style="padding:14px 16px 0;position:relative;z-index:1;">'
-    +'<input type="hidden" id="dr-date" value="'+d+'"><input type="hidden" id="dr-corp" value="'+corpCum+'">'
+    +'<input type="hidden" id="dr-date" value="'+d+'"><span style="display:inline-flex;align-items:center;gap:7px;margin-left:14px;font-size:11px;color:var(--tcp-muted,#8b95a7);vertical-align:middle;">CORP (cumulative, wk-to-date):<input type="number" id="dr-corp" min="0" step="0.01" placeholder="0.00" value="'+corpCum+'" oninput="try{_drLive()}catch(e){}" style="width:130px;background:rgba(0,0,0,.25);border:1px solid var(--tcp-line,#232a36);border-radius:7px;color:inherit;font-size:12px;padding:6px 9px;"></span>'
     +'<div class="daily-rep-date-chip"><span>Sales date tied to left panel</span><strong>'+_m2esc(dLabel)+'</strong></div>'
     +'</div>'
     +'<div style="padding:0 16px 16px;position:relative;z-index:1;"><div class="dc2-panel-h"><span>Rep cumulative totals (SMB)</span><span id="dr-live" class="dc-flat" style="font-size:11px;"></span></div>'
@@ -18579,7 +18571,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:460,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:461,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
