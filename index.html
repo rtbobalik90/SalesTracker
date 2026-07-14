@@ -7703,7 +7703,24 @@ function _rp2Html(rep){
  return '<div class="rp2-app"><aside class="rp2-side"><div class="rp2-logo">\u25B2 SALES TRACKER<br><span>Rep View</span></div>'+nav+'<button class="rp2-nav rp2-out" onclick="_rpLogout()">\u23FB Sign out</button></aside>'
   +'<main class="rp2-main"><div class="rp2-top"><div><div class="rp2-hi">'+_rp2Esc(rep)+'</div><div class="rp2-sub">'+getQ()+' '+getYr()+' \u00B7 read-only view</div></div></div><div id="rp2-page">'+_rp2Page()+'</div></main></div>';
 }
-function _rp2Go(p){ _rp2.page=p; var el=document.getElementById('rp-overlay'); if(el){ el.innerHTML=_rp2Html(_rp2.rep); try{_rp2After();}catch(e){} } }
+function _rp2Go(p){
+ _rp2.page=p;
+ var el=document.getElementById('rp-overlay');
+ if(el){
+  el.innerHTML=_rp2Html(_rp2.rep);
+  el.scrollTop=0;
+  var main=el.querySelector('.rp2-main');
+  if(main)main.scrollTop=0;
+  try{_rp2After();}catch(e){}
+  requestAnimationFrame(function(){
+   try{
+    el.scrollTop=0;
+    var m=el.querySelector('.rp2-main');
+    if(m)m.scrollTop=0;
+   }catch(e){}
+  });
+ }
+}
 function _rp2Page(){
  var p=_rp2.page;
  try{
@@ -22418,6 +22435,137 @@ body.coach-seated #pg-coach .coach-panel-head,
   }catch(e){}
 })();
 </script>
+
+
+<style id="rp2-v479-scroll-fix">
+/* ===== REP PORTAL SCROLL ARCHITECTURE — v479 ===== */
+#rp-overlay{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+#rp-overlay .rp2-app{
+  height:100vh!important;
+  min-height:0!important;
+  width:100%!important;
+  overflow:hidden!important;
+  display:flex!important;
+}
+#rp-overlay .rp2-side{
+  height:100vh!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  position:relative!important;
+  top:auto!important;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(132,108,255,.45) rgba(255,255,255,.03);
+}
+#rp-overlay .rp2-main{
+  height:100vh!important;
+  min-height:0!important;
+  min-width:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior-y:contain!important;
+  scrollbar-gutter:stable;
+  scroll-behavior:smooth;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(132,108,255,.58) rgba(255,255,255,.035);
+}
+#rp-overlay .rp2-main::-webkit-scrollbar,
+#rp-overlay .rp2-side::-webkit-scrollbar{
+  width:10px;
+}
+#rp-overlay .rp2-main::-webkit-scrollbar-track,
+#rp-overlay .rp2-side::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.025);
+}
+#rp-overlay .rp2-main::-webkit-scrollbar-thumb,
+#rp-overlay .rp2-side::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,rgba(132,108,255,.72),rgba(78,156,255,.48));
+  border:2px solid #070b12;
+  border-radius:999px;
+}
+#rp-overlay .rp2-top{
+  position:sticky!important;
+  top:0!important;
+  z-index:50!important;
+}
+#rp-overlay #rp2-page{
+  width:100%!important;
+  max-width:1500px!important;
+  min-width:0!important;
+  padding-bottom:88px!important;
+}
+#rp-overlay .rp2-fc-shell,
+#rp-overlay .rp2-fc-panel,
+#rp-overlay .rp2-fc-intel,
+#rp-overlay .rp2-fc-scenarios{
+  min-width:0!important;
+}
+#rp-overlay .rp2-fc-insight,
+#rp-overlay .rp2-fc-scenario{
+  min-width:0!important;
+  max-width:100%!important;
+}
+#rp-overlay .rp2-fc-scenario{
+  width:100%!important;
+  white-space:normal!important;
+  text-align:left!important;
+}
+#rp-overlay .rp2-fc-insight-title,
+#rp-overlay .rp2-fc-insight-copy,
+#rp-overlay .rp2-fc-scenario-rate,
+#rp-overlay .rp2-fc-scenario-copy{
+  overflow-wrap:anywhere;
+}
+#rp-overlay .rp2-fc-road-scroll{
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:auto!important;
+  scrollbar-color:rgba(132,108,255,.72) rgba(255,255,255,.055)!important;
+  padding-bottom:14px!important;
+}
+#rp-overlay .rp2-fc-road-scroll::-webkit-scrollbar{
+  height:11px;
+}
+#rp-overlay .rp2-fc-road-scroll::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.045);
+  border-radius:999px;
+}
+#rp-overlay .rp2-fc-road-scroll::-webkit-scrollbar-thumb{
+  background:linear-gradient(90deg,#846cff,#4e9cff);
+  border:2px solid #111b2a;
+  border-radius:999px;
+}
+@media(max-width:1700px){
+  #rp-overlay .rp2-fc-intel{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:1250px){
+  #rp-overlay .rp2-fc-scenarios{
+    grid-template-columns:1fr!important;
+  }
+}
+@media(max-width:760px){
+  #rp-overlay{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+  #rp-overlay .rp2-app{
+    height:auto!important;
+    min-height:100vh!important;
+    overflow:visible!important;
+  }
+  #rp-overlay .rp2-side,
+  #rp-overlay .rp2-main{
+    height:auto!important;
+    overflow:visible!important;
+  }
+}
+</style>
 
 </body>
 </html>
