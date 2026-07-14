@@ -16895,7 +16895,7 @@ window.addEventListener('load', function(){
 function _drEnsure(){if(!S.dailyRep||typeof S.dailyRep!=='object')S.dailyRep={};/* {date:{rep:cumAmt,...,__corp:amt}} */}
 function _drToday(){var n=new Date();function p(x){return (x<10?'0':'')+x;}return n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());}
 function _drDates(){_drEnsure();return Object.keys(S.dailyRep).sort();}
-function _drWeekStart(dateISO){var p=String(dateISO).split('-');var d=new Date(Date.UTC(+p[0],(+p[1])-1,+p[2]));d.setUTCDate(d.getUTCDate()-d.getUTCDay());return d.toISOString().slice(0,10);}function _drValAt(dateISO,key){var v=(S.dailyRep[dateISO]||{});var x=(key==='__corp')?v.__corp:v[key];return (x!=null&&x!=='')?(Number(x)||0):null;}function _drLatestInWeek(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d>=ws&&d<=dateISO;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drPrevWeekEnd(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<ws;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drWeekBaseline(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d>=ws&&d<=dateISO;});var fv=null;for(var i=0;i<ds.length;i++){var v=_drValAt(ds[i],key);if(v!=null){fv=v;break;}}var pe=_drPrevWeekEnd(dateISO,key);if(fv==null)return pe;return fv>=pe?pe:0;}function _drWTD(dateISO,key){var cur=_drLatestInWeek(dateISO,key);var base=_drWeekBaseline(dateISO,key);return Math.max(0,cur-base);}function _drPrevDate(dateISO){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<dateISO&&d>=ws;});return ds.length?ds[ds.length-1]:null;}
+function _drWeekStart(dateISO){var p=String(dateISO).split('-');var d=new Date(Date.UTC(+p[0],(+p[1])-1,+p[2]));d.setUTCDate(d.getUTCDate()-d.getUTCDay());return d.toISOString().slice(0,10);}function _drValAt(dateISO,key){var v=(S.dailyRep[dateISO]||{});var x=(key==='__corp')?v.__corp:v[key];return (x!=null&&x!=='')?(Number(x)||0):null;}function _drLatestInWeek(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d>=ws&&d<=dateISO;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drPrevWeekEnd(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<ws;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drWeekBaseline(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d>=ws&&d<=dateISO;});var fv=null;for(var i=0;i<ds.length;i++){var v=_drValAt(ds[i],key);if(v!=null){fv=v;break;}}var pe=_drPrevWeekEnd(dateISO,key);if(fv==null)return pe;return fv>=pe?pe:0;}function _drWTD(dateISO,key){return _drLatestInWeek(dateISO,key);}function _drPrevDate(dateISO){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<dateISO&&d>=ws;});return ds.length?ds[ds.length-1]:null;}
 function _drRepDay(dateISO,repName){ // that day's SMB = week-to-date today - week-to-date prev (within Sun-Sat work week)
   _drEnsure();var cur=_drWTD(dateISO,repName);
   var pd=_drPrevDate(dateISO);var prev=pd?_drWTD(pd,repName):0;
@@ -16937,7 +16937,7 @@ function _drRenderForm(){
     +'<div class="dr-grid">'
     +reps.map(function(r){var v=(S.dailyRep[d]&&S.dailyRep[d][r.name]!=null)?S.dailyRep[d][r.name]:'';return '<div class="dr-cell"><label>'+_m2esc(r.name)+'</label><input type="number" class="r3-in dr-in" data-rep="'+_m2esc(r.name)+'" style="margin:0;" min="0" step="0.01" placeholder="0.00" value="'+v+'" oninput="_drLive()"></div>';}).join('')
     +'</div>'
-    +'<div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="drSaveRepDay()">&#128190; Save rep totals</button><span id="dr-msg" class="dc-up" style="display:none;font-size:11px;"></span></div>'
+    +'<div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button class="dc2-act" style="border-color:#F0A9A9;color:#F0A9A9;margin-right:8px;" onclick="drResetCorp()" title="Clear all stored corp values and start fresh">Reset all CORP</button><button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="drSaveRepDay()">&#128190; Save rep totals</button><span id="dr-msg" class="dc-up" style="display:none;font-size:11px;"></span></div>'
     +'</div></div>';
   _drLive();
 }
@@ -16951,6 +16951,8 @@ function _drLive(){
   var smbDay=0;ins.forEach(function(i){var rep=i.dataset.rep;var cur=Number(i.value)||0;var pd=_drPrevDate(d);var prev=pd?Number((S.dailyRep[pd]||{})[rep]||0):0;smbDay+=Math.max(0,cur-prev);});
   el.innerHTML='SMB cum $'+Math.round(smbCum).toLocaleString()+' &middot; SMB day +$'+Math.round(smbDay).toLocaleString()+' &middot; total cum $'+Math.round(smbCum+corp).toLocaleString();
 }
+function drResetCorp(){ if(!confirm('Clear ALL stored CORP values? (Rep SMB stays. You will re-enter corp fresh \u2014 cumulative, resets Sunday.)'))return; try{ if(S.dailyRep){ Object.keys(S.dailyRep).forEach(function(d){ if(S.dailyRep[d]&&('__corp' in S.dailyRep[d]))delete S.dailyRep[d].__corp; }); } }catch(e){} try{ if(S.dailySales)S.dailySales=(S.dailySales||[]).map(function(e){e.corpSales=0;e.corpCumulative=0;return e;}); }catch(e){} try{markDirty();}catch(e){} try{if(typeof renderDailyLog==='function')renderDailyLog();}catch(e){} try{if(typeof _drRenderForm==='function')_drRenderForm();}catch(e){} alert('All CORP values cleared. Enter corp per day going forward (cumulative week-to-date, restarts each Sunday).'); }
+try{window.drResetCorp=drResetCorp;}catch(e){}
 function drSaveRepDay(){
   _drEnsure();
   var d=(document.getElementById('dr-date')||{}).value;
@@ -18574,7 +18576,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:462,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:463,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#7C6CFF;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
