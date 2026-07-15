@@ -19560,8 +19560,8 @@ window.addEventListener('load',function(){
     else if(_snapAny){snapVal='Data Entered';snapSub=_snapTimes.length?_snapStamp(Math.max.apply(null,_snapTimes)):'Date not recorded';}
     else{snapVal='N/A';snapSub='No data entered';}
     document.getElementById('wkExecHero').innerHTML='<div class="wk-hero-main"><div class="wk-kicker">Weekly Executive Dashboard</div><h1>'+safe(ctx.q+' '+ctx.yr+' • Week '+ctx.weekNo)+'</h1><p><strong>'+safe(dateLabel)+'</strong> • '+safe(viewLabel)+'. Quarter week '+safe(ctx.quarterWeek)+' of '+safe(ctx.totalWeeks)+'. This dashboard uses weekly uploads, forecast updates, production feed, and management records.</p></div>'+ 
-      metric('Revenue',fval(fmtMoney(totals.rev)),fsub(revP+'% of '+fmtMoney(totals.revGoal)+' • '+paceStatus(_revMH.gap,'',true)),'rgba(139,92,246,.24)','Revenue booked through the selected week from weekly Data Entry compared to the full quarter revenue goal.','metricRevenue')+
-      metric('Orders',fval(fmtNum(totals.orders)),fsub('Through selected week'),'rgba(34,211,238,.16)','Total orders from weekly Data Entry through the selected week.','metricOrders')+
+      metric('QTD Revenue',fval(fmtMoney(totals.rev)),fsub(revP+'% of '+fmtMoney(totals.revGoal)+' • cumulative through selected week'+(!_snapAny?' • selected-week scorecard missing':'')),'rgba(139,92,246,.24)','Cumulative quarter revenue through the selected week. This is NOT the standalone revenue for the selected week. Check Snapshot to confirm whether the selected week itself has a weekly scorecard.','metricRevenue')+
+      metric('QTD Orders',fval(fmtNum(totals.orders)),fsub('Cumulative through selected week'+(!_snapAny?' • selected-week scorecard missing':'')),'rgba(34,211,238,.16)','Cumulative quarter orders through the selected week. This is not the standalone selected-week order count unless Snapshot confirms data was entered for that week.','metricOrders')+
       metric('Customers Called',fval(totals.setSize>0?(coverageP+'%'):fmtNum(totals.accts)),fsub(totals.setSize>0?(coverageSub+' • '+paceStatus(_covMH.gap,'accts',false)):coverageSub),'rgba(71,209,108,.18)','Customers called this quarter: unique accounts contacted through the selected week divided by your customer-set size (the goal is to reach every customer once). The marker shows where you should be by now.','metricCoverage')+
       metric('Art Errors',fval(artRate.toFixed(1)+'%'),fsub(fmtNum(totals.art)+' total errors'),'rgba(255,176,32,.20)','Art errors logged through the selected week divided by orders through the selected week.','metricArtErrors')+
       metric('Credit Memo Cost',fval(fmtMoney(cm.cost)),fsub(cm.cases+' rep-fault cases • '+crRate.toFixed(2)+'% revenue impact'),'rgba(255,91,46,.18)','Rep-fault credit memo dollars from the Credit Memos tab through the selected week. Customer/vendor fault credits are tracked elsewhere but are not counted here for coaching impact.','metricCreditMemos')+
@@ -25907,6 +25907,27 @@ body.coach-seated #pg-coach .coach-panel-head,
   }
   function safeWeeks(v){return safeArray(v).filter(function(w){return w&&typeof w==='object'})}
   function safeStateArray(key){try{return safeArray(S&&S[key])}catch(e){return []}}
+  function own(obj,key){return !!(obj&&Object.prototype.hasOwnProperty.call(obj,key))}
+  function weekEndISO(w){try{return w&&w.end?iso(w.end):''}catch(e){return ''}}
+  function exactWeeklyRecord(rep,w){
+    if(!rep||!w||!w.key)return null;
+    try{var key=rep+'|'+w.key;return own(S&&S.data,key)?S.data[key]:null}catch(e){return null}
+  }
+  function dailyWeekFallback(rep,w){
+    var end=weekEndISO(w);
+    if(!rep||!end||typeof window._drDayTotals!=='function')return {available:false,revenue:0,coverage:0,lastDate:'',source:'none'};
+    try{
+      var t=window._drDayTotals(end),row=(t&&t.rows||[]).filter(function(r){return r&&r.name===rep})[0]||null;
+      if(!row||n(row.cum)<=0)return {available:false,revenue:0,coverage:0,lastDate:'',source:'managementDailyRep'};
+      var coverage=0,lastDate='',start=w&&w.start?iso(w.start):end;
+      try{var d=dt(start),stop=dt(end),guard=0;while(d&&stop&&d<=stop&&guard<10){var day=iso(d),rec=S&&S.dailyRep&&S.dailyRep[day];if(rec&&own(rec,rep)){coverage++;lastDate=day}d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1,12);guard++}}catch(e){}
+      return {available:true,revenue:n(row.cum),coverage:coverage,lastDate:lastDate||end,source:'managementDailyRep'}
+    }catch(e){return {available:false,revenue:0,coverage:0,lastDate:'',source:'managementDailyRep',error:(e&&e.message)||String(e)}}
+  }
+  function dailyWeekRank(rep,w){
+    var end=weekEndISO(w);if(!end||typeof window._drDayTotals!=='function')return {rank:null,total:0};
+    try{var rows=(window._drDayTotals(end)||{}).rows||[];rows=rows.filter(function(r){return r&&n(r.cum)>0}).slice().sort(function(a,b){return n(b.cum)-n(a.cum)});var rank=null;rows.forEach(function(r,i){if(r.name===rep)rank=i+1});return {rank:rank,total:rows.length}}catch(e){return {rank:null,total:0}}
+  }
   function esc(v){return _rp2Esc(String(v==null?'':v))}
   function money(v){return _rp2$(n(v))}
   function pct(v){return Math.round(n(v))+'%'}
@@ -25941,7 +25962,7 @@ body.coach-seated #pg-coach .coach-panel-head,
       if(has)entered++;
       t.revenue+=n(d.revenue);t.orders+=n(d.orders);t.calls+=n(d.calls)
     });
-    t.entered=entered;t.aov=t.orders?t.revenue/t.orders:0;
+    t.entered=entered;t.aov=t.orders?t.revenue/t.orders:0;t.callsKnown=entered>0;t.source='weeklyScorecard';
     return t
   }
   function ranks(rep,weeks){
@@ -26116,57 +26137,40 @@ body.coach-seated #pg-coach .coach-panel-head,
     var c=spec.c;
     if(!c||!c.goal)return {goal:0,projected:0,gap:0,need:0,status:'No goal set'};
     var entered=spec.weeks.filter(function(w){var d=(S.data||{})[spec.rep+'|'+w.key]||{};return n(d.revenue)||n(d.orders)||n(d.calls)});
-    var avgRev=entered.length?t.revenue/entered.length:0;
+    var enteredCount=entered.length||(t&&t.provisional?1:0);
+    var avgRev=enteredCount?t.revenue/enteredCount:0;
     var totalWeeks=(c.wks||[]).length||13,elapsed=Math.max(0,spec.weeks.length),remaining=Math.max(0,totalWeeks-elapsed);
     var projected=t.revenue+avgRev*remaining,gap=Math.max(0,c.goal-t.revenue),need=remaining?gap/remaining:gap;
     return {goal:c.goal,projected:projected,gap:gap,need:need,status:projected>=c.goal?'Projected above goal':'Projected below goal'}
   }
   function buildReport(tab){
     var warnings=[],spec;
-    try{spec=periodSpec(tab)}catch(e){
-      warnings.push('Period context: '+((e&&e.message)||e));
-      spec={tab:tab,c:null,rep:_rp2.rep,year:2026,q:'Q1',selected:null,weeks:[],prevWeeks:[],label:'Selected report',sub:'',comparison:'previous equivalent period'}
-    }
+    try{spec=periodSpec(tab)}catch(e){warnings.push('Period context: '+((e&&e.message)||e));spec={tab:tab,c:null,rep:_rp2.rep,year:2026,q:'Q1',selected:null,weeks:[],prevWeeks:[],label:'Selected report',sub:'',comparison:'previous equivalent period'}}
     spec.weeks=safeWeeks(spec.weeks);spec.prevWeeks=safeWeeks(spec.prevWeeks);
-
-    var t={revenue:0,orders:0,calls:0,entered:0,aov:0},p={revenue:0,orders:0,calls:0,entered:0,aov:0};
+    var t={revenue:0,orders:0,calls:0,entered:0,aov:0,callsKnown:false,source:'none'},p={revenue:0,orders:0,calls:0,entered:0,aov:0,callsKnown:false,source:'none'};
     try{t=totals(spec.rep,spec.weeks)}catch(e){warnings.push('Current totals: '+((e&&e.message)||e))}
     try{p=totals(spec.rep,spec.prevWeeks)}catch(e){warnings.push('Comparison totals: '+((e&&e.message)||e))}
-
+    var emptyOrders={records:[],primary:[],net:0,orders:0,aov:0,issueOrders:[],newOrders:[],newRevenue:0,repeatOrders:[],repeatRevenue:0,largest:null},orders=emptyOrders;
+    try{orders=orderSnapshot(spec.rep,spec.weeks)||emptyOrders}catch(e){warnings.push('Orders: '+((e&&e.message)||e));orders=emptyOrders}
+    var exactRecord=null,dailyFallback={available:false,revenue:0,coverage:0,lastDate:'',source:'none'};
+    var isSingleWeek=(tab==='weekly'&&spec.weeks.length===1&&spec.weeks[0]);
+    if(isSingleWeek){
+      exactRecord=exactWeeklyRecord(spec.rep,spec.weeks[0]);
+      if(!exactRecord){dailyFallback=dailyWeekFallback(spec.rep,spec.weeks[0]);if(dailyFallback.available){t.revenue=dailyFallback.revenue;t.orders=orders.orders;t.aov=t.orders?t.revenue/t.orders:0;t.entered=1;t.calls=0;t.callsKnown=false;t.source='dailySalesFallback';t.provisional=true}}
+      else{t.callsKnown=true;t.source='weeklyScorecard'}
+    }
     var rk={rank:null,total:0},pr={rank:null,total:0};
     try{rk=ranks(spec.rep,spec.weeks)}catch(e){warnings.push('Current rank: '+((e&&e.message)||e))}
     try{pr=ranks(spec.rep,spec.prevWeeks)}catch(e){warnings.push('Comparison rank: '+((e&&e.message)||e))}
-
-    var emptyOrders={records:[],primary:[],net:0,orders:0,aov:0,issueOrders:[],newOrders:[],newRevenue:0,repeatOrders:[],repeatRevenue:0,largest:null};
-    var orders=emptyOrders;
-    try{orders=orderSnapshot(spec.rep,spec.weeks)||emptyOrders}catch(e){warnings.push('Orders: '+((e&&e.message)||e));orders=emptyOrders}
-
-    var quality={arts:[],credits:[],creditTotal:0};
-    try{quality=qualitySnapshot(spec.rep,spec.weeks)||quality}catch(e){warnings.push('Quality: '+((e&&e.message)||e))}
-
-    var cutoff='';
-    try{
-      var last=spec.weeks.length?spec.weeks[spec.weeks.length-1]:null;
-      cutoff=(last&&last.end?iso(last.end):'')||(spec.selected&&spec.selected.end?iso(spec.selected.end):'')||(String(spec.year)+'-12-31')
-    }catch(e){warnings.push('Report cutoff: '+((e&&e.message)||e));cutoff=String(spec.year)+'-12-31'}
-
-    var customers={active:0,newCount:0,dormant:0,slipping:0,top5Share:0,total:0};
-    try{customers=customerSnapshot(spec.rep,cutoff)||customers}catch(e){warnings.push('Customers: '+((e&&e.message)||e))}
-
-    var forecast={goal:0,projected:0,gap:0,need:0,status:'Forecast unavailable'};
-    try{forecast=forecastSnapshot(spec,t)||forecast}catch(e){warnings.push('Forecast: '+((e&&e.message)||e))}
-
-    var weekGoal=0;
-    try{weekGoal=forecast.goal&&spec.c?(forecast.goal/(safeWeeks(spec.c.wks).length||13)):0}catch(e){warnings.push('Goal pace: '+((e&&e.message)||e))}
+    if(t.source==='dailySalesFallback'){var dr=dailyWeekRank(spec.rep,spec.weeks[0]);rk={rank:dr.rank,total:dr.total}}
+    var quality={arts:[],credits:[],creditTotal:0};try{quality=qualitySnapshot(spec.rep,spec.weeks)||quality}catch(e){warnings.push('Quality: '+((e&&e.message)||e))}
+    var cutoff='';try{var last=spec.weeks.length?spec.weeks[spec.weeks.length-1]:null;cutoff=(last&&last.end?iso(last.end):'')||(spec.selected&&spec.selected.end?iso(spec.selected.end):'')||(String(spec.year)+'-12-31')}catch(e){warnings.push('Report cutoff: '+((e&&e.message)||e));cutoff=String(spec.year)+'-12-31'}
+    var customers={active:0,newCount:0,dormant:0,slipping:0,top5Share:0,total:0};try{customers=customerSnapshot(spec.rep,cutoff)||customers}catch(e){warnings.push('Customers: '+((e&&e.message)||e))}
+    var forecast={goal:0,projected:0,gap:0,need:0,status:'Forecast unavailable'};try{forecast=forecastSnapshot(spec,t)||forecast}catch(e){warnings.push('Forecast: '+((e&&e.message)||e))}
+    var weekGoal=0;try{weekGoal=forecast.goal&&spec.c?(forecast.goal/(safeWeeks(spec.c.wks).length||13)):0}catch(e){warnings.push('Goal pace: '+((e&&e.message)||e))}
     var expected=weekGoal*spec.weeks.length,pacePct=expected>0?t.revenue/expected*100:null;
-    var callTarget=125*spec.weeks.length,callPct=callTarget>0?t.calls/callTarget*100:0;
-
-    return {
-      spec:spec,t:t,p:p,rank:rk.rank,rankTotal:rk.total,prevRank:pr.rank,
-      orders:orders,quality:quality,customers:customers,forecast:forecast,
-      expected:expected,pacePct:pacePct,callTarget:callTarget,callPct:callPct,
-      warnings:warnings
-    }
+    var callTarget=t.callsKnown===false?0:(125*spec.weeks.length),callPct=callTarget>0?t.calls/callTarget*100:0;
+    return {spec:spec,t:t,p:p,rank:rk.rank,rankTotal:rk.total,prevRank:pr.rank,orders:orders,quality:quality,customers:customers,forecast:forecast,expected:expected,pacePct:pacePct,callTarget:callTarget,callPct:callPct,warnings:warnings,exactRecord:exactRecord,dailyFallback:dailyFallback}
   }
   function rankMove(g){
     if(!g.rank)return 'Rank unavailable';
@@ -26175,6 +26179,7 @@ body.coach-seated #pg-coach .coach-panel-head,
     return d>0?('#'+g.rank+' · ▲ '+d):d<0?('#'+g.rank+' · ▼ '+Math.abs(d)):('#'+g.rank+' · no move')
   }
   function reportHeadline(g){
+    if(g.t&&g.t.source==='dailySalesFallback')return 'Live weekly performance is available from Daily Sales while the official weekly scorecard is still pending';
     if(!g.t.entered)return _rpUrlGist()?'The selected reporting point is not present in the current cloud snapshot yet':'The selected reporting point does not have entered weekly performance yet';
     if(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100&&g.callPct>=100)return 'Revenue pace and activity are both supporting the performance story';
     if(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100&&g.callPct<90)return 'Revenue is carrying the period more strongly than call activity';
@@ -26185,7 +26190,9 @@ body.coach-seated #pg-coach .coach-panel-head,
   }
   function summaryText(g){
     var pieces=[];
-    if(!g.t.entered&&_rpUrlGist()){
+    if(g.t&&g.t.source==='dailySalesFallback'){
+      pieces.push('The official weekly scorecard has not been entered for '+g.spec.label+', so this review is using '+money(g.t.revenue)+' from the same per-rep Daily Sales cumulative feed used by the management Daily Sales popup. '+g.orders.orders+' dated primary order'+(g.orders.orders===1?' is':'s are')+' available for the week; weekly calls remain unavailable until the weekly scorecard is entered.');
+    }else if(!g.t.entered&&_rpUrlGist()){
       var _diag=_rpCloudWeekDiagnostic(g.spec.rep,g.spec.selected&&g.spec.selected.key?g.spec.selected.key:'');
       pieces.push('This Rep Portal is reading the GitHub Gist cloud snapshot. The exact selected scorecard key '+_diag.exactKey+' is not present in the loaded snapshot. The snapshot currently contains '+_diag.weeklyDataCount+' weekly scorecard keys. Refresh Data after the manager-side cloud save completes.');
     }else{
@@ -26209,7 +26216,7 @@ body.coach-seated #pg-coach .coach-panel-head,
   function periodComparison(g){
     return [
       {label:'Revenue',curr:g.t.revenue,prev:g.p.revenue,format:money,copy:g.spec.comparison},
-      {label:'Calls',curr:g.t.calls,prev:g.p.calls,format:function(v){return Math.round(v).toLocaleString()},copy:g.spec.comparison},
+      {label:'Calls',curr:g.t.callsKnown===false?null:g.t.calls,prev:g.t.callsKnown===false?null:g.p.calls,format:function(v){return v==null?'—':Math.round(v).toLocaleString()},copy:g.t.callsKnown===false?'Weekly scorecard pending':g.spec.comparison,unknown:g.t.callsKnown===false},
       {label:'Orders',curr:g.t.orders,prev:g.p.orders,format:function(v){return Math.round(v).toLocaleString()},copy:g.spec.comparison},
       {label:'Average Order Value',curr:g.t.aov,prev:g.p.aov,format:money,copy:g.spec.comparison},
       {label:'Rank',curr:g.rank||0,prev:g.prevRank||0,format:function(v){return v?'#'+v:'—'},copy:'lower is better',rank:true},
@@ -26258,7 +26265,8 @@ body.coach-seated #pg-coach .coach-panel-head,
   function changeCards(g){
     return '<div class="rp2-rh-change-grid">'+periodComparison(g).map(function(x){
       var di;
-      if(x.rank){
+      if(x.unknown){di={text:'Unavailable',cls:'flat'};}
+      else if(x.rank){
         var d=(x.prev&&x.curr)?x.prev-x.curr:null;
         di=d==null?{text:'No baseline',cls:'flat'}:d>0?{text:'▲ '+d+' spot'+(d===1?'':'s'),cls:'up'}:d<0?{text:'▼ '+Math.abs(d)+' spot'+(Math.abs(d)===1?'':'s'),cls:'down'}:{text:'No movement',cls:'flat'};
       }else if(x.inverse){
@@ -26289,6 +26297,9 @@ body.coach-seated #pg-coach .coach-panel-head,
     var sourceWarning=(g.warnings&&g.warnings.length)
       ?('<div class="rp2-rh-source-warning"><strong>Some connected data was skipped safely.</strong><span>'+esc(g.warnings.join(' · '))+'</span></div>')
       :'';
+    if(g.t&&g.t.source==='dailySalesFallback'){
+      sourceWarning+='<div class="rp2-rh-source-warning rp2-rh-live-fallback"><strong>Live Daily Sales fallback</strong><span>The official weekly scorecard for '+esc(g.spec.label)+' is missing. Revenue is using the exact management per-rep Daily Sales cumulative source through '+esc(g.dailyFallback.lastDate||'the end of the selected week')+'. Orders use dated order records. Calls stay unavailable until weekly Data Entry is completed.</span></div>';
+    }
     var summary=sectionHead('Executive summary','The performance story in plain English','This is the unified read across weekly performance, forecast, customers, orders, leaderboard, and quality signals.')
       +'<div class="rp2-rh-summary"><div class="rp2-rh-summary-label">'+esc(g.spec.label)+' · '+esc(g.spec.sub)+'</div><div class="rp2-rh-summary-title">'+esc(reportHeadline(g))+'</div><div class="rp2-rh-summary-copy">'+esc(summaryText(g))+'</div><div class="rp2-rh-summary-foot"><span class="rp2-rh-pill">'+esc(weekState(g.spec.selected))+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+(g.forecast.goal?(Math.round(g.pacePct||0)+'% of cumulative pace'):'Goal not set')+'</span></div></div>';
 
@@ -26365,7 +26376,7 @@ body.coach-seated #pg-coach .coach-panel-head,
       'KEY METRICS',
       'Revenue: '+money(g.t.revenue),
       'Orders: '+g.t.orders,
-      'Calls: '+g.t.calls,
+      'Calls: '+(g.t.callsKnown===false?'Unavailable until weekly scorecard entry':g.t.calls),
       'AOV: '+money(g.t.aov),
       'Rank: '+(g.rank?'#'+g.rank+' of '+g.rankTotal:'Unavailable'),
       'Forecast: '+(g.forecast.goal?money(g.forecast.projected):'No goal set'),
@@ -26434,14 +26445,14 @@ body.coach-seated #pg-coach .coach-panel-head,
    try{
     var tab=window._rp2ReportTab,g=buildReport(tab==='history'?'quarter':tab);
     var coach=coaching(g),paceLabel=g.forecast.goal?(Math.round(g.pacePct||0)+'% of cumulative pace'):'Goal not set';
-    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v494</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
+    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v495</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span>'+(g.t.source==='dailySalesFallback'?'<span class="rp2-rh-pill warn">Daily Sales provisional · weekly scorecard pending</span>':'')+'<span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
       +'<div class="rp2-rh-brief"><div><div class="rp2-rh-brief-label">Current report focus</div><div class="rp2-rh-brief-value">'+money(g.t.revenue)+'</div><div class="rp2-rh-brief-title">'+esc(reportHeadline(g))+'</div><div class="rp2-rh-brief-copy">'+esc(coach.focus.title)+': '+esc(coach.focus.copy)+'</div></div><div class="rp2-rh-actions"><button class="rp2-rh-btn pri" onclick="_rp2ReportPrint()">🖨 Print Report</button><button class="rp2-rh-btn" onclick="_rp2ReportCopy()">⧉ Copy Summary</button></div></div>'
       +'</div></div>';
 
     var kpis='<div class="rp2-rh-kpis">'
-      +kpi('Revenue',money(g.t.revenue),g.forecast.goal?paceLabel:'Selected report period')
-      +kpi('Orders',String(g.t.orders),g.t.orders?money(g.t.aov)+' AOV':'No orders entered')
-      +kpi('Calls',String(g.t.calls),g.callTarget?(Math.round(g.callPct)+'% of '+g.callTarget+' target'):'No call target window')
+      +kpi(g.t.source==='dailySalesFallback'?'Provisional revenue':'Revenue',money(g.t.revenue),g.t.source==='dailySalesFallback'?'From management per-rep Daily Sales feed':(g.forecast.goal?paceLabel:'Selected report period'))
+      +kpi('Orders',String(g.t.orders),g.t.source==='dailySalesFallback'?'Dated primary orders in selected week':(g.t.orders?money(g.t.aov)+' AOV':'No orders entered'))
+      +kpi('Calls',g.t.callsKnown===false?'—':String(g.t.calls),g.t.callsKnown===false?'Available after weekly scorecard entry':(g.callTarget?(Math.round(g.callPct)+'% of '+g.callTarget+' target'):'No call target window'))
       +kpi('Rank',g.rank?('#'+g.rank):'—',g.rank?('of '+g.rankTotal+' reps'):'No rank available')
       +kpi('Forecast',g.forecast.goal?money(g.forecast.projected):'—',g.forecast.status)
       +kpi('Active customers',String(g.customers.active),g.customers.dormant+' dormant signals')
@@ -26502,5 +26513,9 @@ body.coach-seated #pg-coach .coach-panel-head,
 #rp-overlay .rp2-rh-source-warning span{color:#9aa8bc;font-size:9.5px;line-height:1.55;overflow-wrap:anywhere}
 </style>
 
+<style id="rp2-reports-v495-live-fallback-css">
+#rp-overlay .rp2-rh-live-fallback{border-color:rgba(78,156,255,.30);background:linear-gradient(135deg,rgba(78,156,255,.09),rgba(132,108,255,.06));}
+#rp-overlay .rp2-rh-live-fallback strong{color:#9fc8ff}
+</style>
 </body>
 </html>
