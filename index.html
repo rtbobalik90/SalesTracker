@@ -7573,7 +7573,7 @@ function _rpLogout(){ _rpSetSession(null); location.reload(); }
 function _rpApply(){
   _rpCss(); var G=_rpEnsure(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); }
   var sess=_rpSession(); var repLink=!!_rpUrlGist();
-  if(sess&&sess.role==='rep'){ _rp2Css(); ov.style.display='block'; ov.innerHTML=_rp2Html(sess.rep); try{_rp2After();}catch(e){} return; }
+  if(sess&&sess.role==='rep'){ _rp2Css(); ov.style.display='block'; ov.innerHTML=_rp2Html(sess.rep); try{_rp2After();}catch(e){} try{_rpStartCloudRefresh();}catch(e){} return; }
   if(sess&&sess.role==='manager'){ ov.style.display='none'; return; }
   if(!repLink&&!G.enabled){ ov.style.display='none'; return; }
   // not logged in -> login screen
@@ -7593,7 +7593,108 @@ function _rpUrlRep(){ try{ var m=(location.search||'').match(/[?&]rep=([^&]+)/);
 function _rpRepLinkFor(rep){ var base=_rpRepLink(); if(!base)return ''; return base+'&rep='+encodeURIComponent(rep); }
 async function _rpProfileSavePw(rep){ if(!rep){alert('Open a rep first.');return;} var el=document.getElementById('rp-prof-pw'); var v=el?el.value.trim():''; if(!v){alert('Enter a password for '+rep+'.');return;} var G=_rpEnsure(); G.accounts[rep]=G.accounts[rep]||{}; G.accounts[rep].hash=await _rpHash(v); if(el)el.value=''; _rpDirty(); alert(rep+'\u2019s portal password saved.'); }
 function _rpCopyRepLinkFor(rep){ var link=_rpRepLinkFor(rep); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert(rep+'\u2019s portal link copied \u2014 send it to them:\n\n'+link); } else { prompt('Copy '+rep+'\u2019s portal link:', link); } }catch(e){ prompt('Copy '+rep+'\u2019s portal link:', link); } }
-async function _rpPullGist(gistId){ try{ var resp=await _gistFetch('https://api.github.com/gists/'+gistId,''); if(!resp||!resp.ok)return false; var data=await resp.json(); var content=await _readCloudContentFromGist(data); content=await _decompressPayload(content); var parsed=JSON.parse(content); if(!parsed||!parsed.data)return false; _restoreTrackerKeys(parsed.data); if(typeof loadFromStorage==='function')loadFromStorage(); return true; }catch(e){ return false; } }
+async function _rpPullGist(gistId){
+  try{
+    var resp=await _gistFetch('https://api.github.com/gists/'+gistId,'');
+    if(!resp||!resp.ok){
+      window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'GitHub API '+(resp&&resp.status||'unavailable')};
+      return false;
+    }
+    var data=await resp.json();
+    var content=await _readCloudContentFromGist(data);
+    content=await _decompressPayload(content);
+    var parsed=JSON.parse(content);
+    if(!parsed||!parsed.data){
+      window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'Invalid cloud payload'};
+      return false;
+    }
+    _restoreTrackerKeys(parsed.data);
+    if(typeof loadFromStorage==='function')loadFromStorage();
+    window._rpCloudMeta={
+      gistId:gistId||'',
+      exportedAt:parsed.exportedAt||'',
+      loadedAt:new Date().toISOString(),
+      ok:true,
+      error:''
+    };
+    return true;
+  }catch(e){
+    window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:(e&&e.message)||String(e)};
+    console.warn('[rep portal cloud pull]',e);
+    return false;
+  }
+}
+
+var _rpCloudRefreshTimer=null;
+var _rpCloudRefreshBusy=false;
+
+function _rpCloudAgeLabel(){
+  try{
+    var m=window._rpCloudMeta||{};
+    var stamp=m.exportedAt||m.loadedAt;
+    if(!stamp)return 'Cloud snapshot';
+    var d=new Date(stamp);
+    if(isNaN(d.getTime()))return 'Cloud snapshot';
+    var mins=Math.max(0,Math.round((Date.now()-d.getTime())/60000));
+    if(mins<1)return 'Cloud updated just now';
+    if(mins<60)return 'Cloud updated '+mins+'m ago';
+    if(mins<1440)return 'Cloud updated '+Math.round(mins/60)+'h ago';
+    return 'Cloud updated '+Math.round(mins/1440)+'d ago';
+  }catch(e){return 'Cloud snapshot'}
+}
+
+function _rpStartCloudRefresh(){
+  try{
+    if(_rpCloudRefreshTimer||!_rpUrlGist())return;
+    _rpCloudRefreshTimer=setInterval(function(){
+      var sess=_rpSession();
+      if(!sess||sess.role!=='rep'||document.hidden)return;
+      _rp2RefreshCloud(null,true);
+    },5*60*1000);
+  }catch(e){}
+}
+
+window._rp2RefreshCloud=async function(btn,silent){
+  if(_rpCloudRefreshBusy)return false;
+  var gid=_rpUrlGist();
+  if(!gid)return false;
+  _rpCloudRefreshBusy=true;
+  var oldText='';
+  try{
+    if(btn){
+      oldText=btn.textContent;
+      btn.disabled=true;
+      btn.textContent='↻ Refreshing…';
+    }
+    var ok=await _rpPullGist(gid);
+    if(ok){
+      try{_rp2Go(_rp2.page||'dash');}catch(e){_rpApply();}
+      return true;
+    }
+    if(!silent)alert('Could not refresh the Rep Portal cloud snapshot. '+(((window._rpCloudMeta||{}).error)||'Please try again.'));
+    return false;
+  }catch(e){
+    if(!silent)alert('Could not refresh Rep Portal data: '+((e&&e.message)||e));
+    return false;
+  }finally{
+    _rpCloudRefreshBusy=false;
+    if(btn){
+      btn.disabled=false;
+      btn.textContent=oldText||'↻ Refresh data';
+    }
+  }
+};
+
+document.addEventListener('visibilitychange',function(){
+  try{
+    if(document.hidden)return;
+    var sess=_rpSession(),m=window._rpCloudMeta||{},loaded=m.loadedAt?new Date(m.loadedAt).getTime():0;
+    if(sess&&sess.role==='rep'&&_rpUrlGist()&&(!loaded||Date.now()-loaded>90*1000)){
+      _rp2RefreshCloud(null,true);
+    }
+  }catch(e){}
+});
+
 function _rpBoot(){ try{ _rpEnsure(); var gid=_rpUrlGist(); if(gid){ _rpCss(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); } ov.style.display='block'; ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub">Loading your portal\u2026</div></div></div>'; Promise.resolve().then(function(){ return _rpPullGist(gid); }).then(function(){ _rpEnsure(); _rpApply(); }); return; } if(S.repPortal.enabled)_rpApply(); }catch(e){} }
 
 /* ---------- rep bundle (filter S to one rep) ---------- */
@@ -8883,7 +8984,25 @@ function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localS
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
 function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
-function markDirty(){_dataDirty=true;var el=document.getElementById('saveStatus');if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}debouncedPersist();}
+var _portalCloudSyncTimer=null;
+function _queuePortalCloudSync(){
+  try{
+    clearTimeout(_portalCloudSyncTimer);
+    _portalCloudSyncTimer=setTimeout(function(){
+      try{persist();}catch(e){console.warn('[portal sync] local persist failed',e);}
+      try{
+        if(typeof _gistAutoSave==='function')Promise.resolve(_gistAutoSave()).catch(function(e){console.warn('[portal sync] cloud save failed',e);});
+      }catch(e){console.warn('[portal sync] cloud save failed',e);}
+    },2200);
+  }catch(e){}
+}
+function markDirty(){
+  _dataDirty=true;
+  var el=document.getElementById('saveStatus');
+  if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}
+  debouncedPersist();
+  _queuePortalCloudSync();
+}
 // beforeunload: not needed in artifact sandbox
 function persistSave(){persist();if(!_lsAvailable()){if(confirm('Browser storage is not available (Chrome blocks it for local files).\n\nExport JSON now to save your work?')){exportData();}}}
 function loadFromStorage(){
@@ -15306,6 +15425,7 @@ function showCloudPayloadBreakdown(){
 // ─── AUTO-SYNC ───────────────────────────────────────────────────────────
 // Push current state to Gist every 5 min when creds are set. Silent unless errors.
 async function _gistAutoSave(){
+  try{persist();}catch(e){console.warn('[auto-sync] could not persist latest live state before cloud save',e);}
   var token=localStorage.getItem(GIST_TOKEN_STORE);
   if(!token)return;
   var gistId=localStorage.getItem(GIST_ID_STORE)||'';
@@ -21513,6 +21633,8 @@ body.coach-seated #pg-coach .coach-panel-head,
       +'<label class="rp2-context-field"><span>Quarter</span><select class="rp2-context-select" onchange="_rp2PeriodChange(\'q\',this.value)">'+rp2Opts('selQ')+'</select></label>'
       +'<label class="rp2-context-field"><span>Month</span><select class="rp2-context-select" onchange="_rp2PeriodChange(\'m\',this.value)">'+rp2Opts('selM')+'</select></label>'
       +'<label class="rp2-context-field"><span>Week</span><select class="rp2-context-select week" onchange="_rp2PeriodChange(\'w\',this.value)">'+rp2Opts('selW')+'</select></label>'
+      +'<button class="rp2-cloud-refresh" onclick="_rp2RefreshCloud(this,false)" title="Pull the newest manager-saved cloud snapshot">↻ Refresh data</button>'
+      +'<div class="rp2-cloud-age" title="Rep Portal data source: GitHub Gist cloud snapshot">'+_rp2Esc(_rpCloudAgeLabel())+'</div>'
       +'<div class="rp2-readonly">● Read only</div>'
       +'</div>';
   };
@@ -21717,6 +21839,17 @@ body.coach-seated #pg-coach .coach-panel-head,
   #rp-overlay .rp2-grid-v2,#rp-overlay .rp2-hero-facts{grid-template-columns:1fr;}
   #rp-overlay .rp2-hero-v2{padding:22px 20px;}
 }
+
+#rp-overlay .rp2-cloud-refresh{
+  min-height:34px;padding:0 10px;border-radius:9px;border:1px solid rgba(132,108,255,.30);
+  background:rgba(132,108,255,.08);color:#c8c1ff;font-size:8.5px;font-weight:900;
+  letter-spacing:.35px;text-transform:uppercase;cursor:pointer;white-space:nowrap
+}
+#rp-overlay .rp2-cloud-refresh:hover{background:rgba(132,108,255,.15);border-color:rgba(132,108,255,.48);color:#fff}
+#rp-overlay .rp2-cloud-refresh:disabled{opacity:.65;cursor:wait}
+#rp-overlay .rp2-cloud-age{color:#66768e;font-size:7.5px;font-weight:850;white-space:nowrap}
+@media(max-width:1180px){#rp-overlay .rp2-cloud-age{display:none}}
+
 </style>
 
 <script id="rp2-dashboard-v476-js">
@@ -25964,7 +26097,7 @@ body.coach-seated #pg-coach .coach-panel-head,
     return d>0?('#'+g.rank+' · ▲ '+d):d<0?('#'+g.rank+' · ▼ '+Math.abs(d)):('#'+g.rank+' · no move')
   }
   function reportHeadline(g){
-    if(!g.t.entered)return 'The selected reporting point does not have entered weekly performance yet';
+    if(!g.t.entered)return _rpUrlGist()?'The selected reporting point is not present in the current cloud snapshot yet':'The selected reporting point does not have entered weekly performance yet';
     if(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100&&g.callPct>=100)return 'Revenue pace and activity are both supporting the performance story';
     if(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100&&g.callPct<90)return 'Revenue is carrying the period more strongly than call activity';
     if(g.forecast.goal&&g.pacePct!=null&&g.pacePct<85&&g.callPct>=100)return 'Activity is present, but the revenue result has not caught up yet';
@@ -25974,7 +26107,11 @@ body.coach-seated #pg-coach .coach-panel-head,
   }
   function summaryText(g){
     var pieces=[];
-    pieces.push('You produced '+money(g.t.revenue)+' across '+g.t.orders+' orders and '+g.t.calls+' calls in '+g.spec.label+'.');
+    if(!g.t.entered&&_rpUrlGist()){
+      pieces.push('This Rep Portal is reading the GitHub Gist cloud snapshot. The selected weekly scorecard key is not present in that snapshot yet. Use Refresh Data after the manager-side cloud save completes.');
+    }else{
+      pieces.push('You produced '+money(g.t.revenue)+' across '+g.t.orders+' orders and '+g.t.calls+' calls in '+g.spec.label+'.');
+    }
     if(g.spec.prevWeeks.length){
       var rd=deltaInfo(g.t.revenue,g.p.revenue),cd=deltaInfo(g.t.calls,g.p.calls),od=deltaInfo(g.t.orders,g.p.orders);
       pieces.push('Versus the '+g.spec.comparison+', revenue is '+rd.text.toLowerCase()+', orders are '+od.text.toLowerCase()+', and calls are '+cd.text.toLowerCase()+'.');
@@ -26218,7 +26355,7 @@ body.coach-seated #pg-coach .coach-panel-head,
    try{
     var tab=window._rp2ReportTab,g=buildReport(tab==='history'?'quarter':tab);
     var coach=coaching(g),paceLabel=g.forecast.goal?(Math.round(g.pacePct||0)+'% of cumulative pace'):'Goal not set';
-    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v492</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
+    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v493</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
       +'<div class="rp2-rh-brief"><div><div class="rp2-rh-brief-label">Current report focus</div><div class="rp2-rh-brief-value">'+money(g.t.revenue)+'</div><div class="rp2-rh-brief-title">'+esc(reportHeadline(g))+'</div><div class="rp2-rh-brief-copy">'+esc(coach.focus.title)+': '+esc(coach.focus.copy)+'</div></div><div class="rp2-rh-actions"><button class="rp2-rh-btn pri" onclick="_rp2ReportPrint()">🖨 Print Report</button><button class="rp2-rh-btn" onclick="_rp2ReportCopy()">⧉ Copy Summary</button></div></div>'
       +'</div></div>';
 
