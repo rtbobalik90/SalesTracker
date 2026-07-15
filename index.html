@@ -25698,6 +25698,7 @@ body.coach-seated #pg-coach .coach-panel-head,
   function safeStateArray(key){try{return safeArray(S&&S[key])}catch(e){return []}}
   function esc(v){return _rp2Esc(String(v==null?'':v))}
   function money(v){return _rp2$(n(v))}
+  function pct(v){return Math.round(n(v))+'%'}
   function clean(v){return String(v==null?'':v).replace(/^\s+|\s+$/g,'')}
   function dt(v){
     if(v==null||v==='')return null;
@@ -25864,9 +25865,15 @@ body.coach-seated #pg-coach .coach-panel-head,
   }
   function qualitySnapshot(rep,weeks){
     var keys=weekKeys(weeks);
-    var arts=safeStateArray('artErrors').filter(function(a){return a.rep===rep&&(!a.weekKey||keys[a.weekKey])});
-    var credits=safeStateArray('cms').filter(function(c){var fault=String(c.fault||'').toLowerCase();return c.rep===rep&&(!c.weekKey||keys[c.weekKey])&&fault.indexOf('rep')>=0});
-    var creditTotal=credits.reduce(function(s,c){return s+n(c.amount)},0);
+    var arts=safeStateArray('artErrors').filter(function(a){
+      return !!(a&&typeof a==='object'&&a.rep===rep&&(!a.weekKey||keys[a.weekKey]))
+    });
+    var credits=safeStateArray('cms').filter(function(c){
+      if(!c||typeof c!=='object')return false;
+      var fault=String(c.fault||'').toLowerCase();
+      return c.rep===rep&&(!c.weekKey||keys[c.weekKey])&&fault.indexOf('rep')>=0
+    });
+    var creditTotal=credits.reduce(function(s,c){return s+n(c&&c.amount)},0);
     return {arts:arts,credits:credits,creditTotal:creditTotal}
   }
   function customerSnapshot(rep,cutoff){
@@ -26117,7 +26124,7 @@ body.coach-seated #pg-coach .coach-panel-head,
   function savedHistory(){
     try{
       if(typeof reportHistory==='undefined'||!Array.isArray(reportHistory))return [];
-      return reportHistory.filter(function(r){return !r.subject||r.subject===_rp2.rep}).slice(0,12)
+      return reportHistory.filter(function(r){return !!(r&&typeof r==='object'&&(!r.subject||r.subject===_rp2.rep))}).slice(0,12)
     }catch(e){return []}
   }
   function historyView(){
@@ -26211,7 +26218,7 @@ body.coach-seated #pg-coach .coach-panel-head,
    try{
     var tab=window._rp2ReportTab,g=buildReport(tab==='history'?'quarter':tab);
     var coach=coaching(g),paceLabel=g.forecast.goal?(Math.round(g.pacePct||0)+'% of cumulative pace'):'Goal not set';
-    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v490</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
+    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v492</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
       +'<div class="rp2-rh-brief"><div><div class="rp2-rh-brief-label">Current report focus</div><div class="rp2-rh-brief-value">'+money(g.t.revenue)+'</div><div class="rp2-rh-brief-title">'+esc(reportHeadline(g))+'</div><div class="rp2-rh-brief-copy">'+esc(coach.focus.title)+': '+esc(coach.focus.copy)+'</div></div><div class="rp2-rh-actions"><button class="rp2-rh-btn pri" onclick="_rp2ReportPrint()">🖨 Print Report</button><button class="rp2-rh-btn" onclick="_rp2ReportCopy()">⧉ Copy Summary</button></div></div>'
       +'</div></div>';
 
