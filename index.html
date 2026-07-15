@@ -23747,16 +23747,16 @@ body.coach-seated #pg-coach .coach-panel-head,
   function categorySub(row,cat){if(cat.id==='revenue')return row.orders+' orders · '+Math.round(row.calls).toLocaleString()+' calls';if(cat.id==='calls')return money(row.revenue)+' revenue · '+row.orders+' orders';if(cat.id==='orders')return money(row.revenue)+' revenue · '+money(row.aov)+' AOV';if(cat.id==='aov')return row.orders+' orders supporting the average';if(cat.id==='improved')return 'Recent entered-week pace versus earlier pace';if(cat.id==='consistency')return 'Higher score means less week-to-week volatility';if(cat.id==='quality')return row.qualityMeta.arts+' art errors · '+row.qualityMeta.credits+' rep-fault credits';return ''}
   function podiumCard(row,place,g){if(!row)return '';var mv=moveFor(row.name,g.current,g.previous),medal=place===1?'🥇':place===2?'🥈':'🥉';return '<div class="rp2-lb-podium-card '+(place===1?'first':'')+'"><div class="rp2-lb-medal">'+medal+'</div><div class="rp2-lb-podium-rank">'+place+'</div><div class="rp2-lb-podium-name">'+esc(row.name)+'</div><div class="rp2-lb-podium-value">'+fmt(row.value,g.cat)+'</div><div class="rp2-lb-podium-sub">'+categorySub(row,g.cat)+'</div><div class="rp2-lb-podium-move '+(mv.delta>0?'good':mv.delta<0?'warn':'')+'">'+mv.label+' vs prior snapshot</div></div>'}
   function leaderboardRows(g){
-    var visible=g.current.filter(function(r){return r.rank<=3||r.name===g.me.name});
-    return visible.map(function(r){
+    return g.current.map(function(r,i){
       var mv=moveFor(r.name,g.current,g.previous);
       var isMe=r.name===g.me.name;
+      var displayName=(r.rank<=3||isMe)?r.name:('Rep #'+r.rank);
       var above=isMe&&r.rank>1?g.current[r.rank-2]:null;
       var gap=isMe&&above?Math.max(0,above.value-r.value):0;
       var gapText=isMe?(r.rank===1?'You are #1':fmtGap(gap,g.cat)+' to move up'):'';
       return '<div class="rp2-lb-row '+(isMe?'me ':'')+'">'
         +'<div class="rp2-lb-pos">#'+r.rank+'</div>'
-        +'<div class="rp2-lb-name">'+esc(r.name)+(isMe?'<small>You</small>':'')+'</div>'
+        +'<div class="rp2-lb-name">'+esc(displayName)+(isMe?'<small>You</small>':'')+'</div>'
         +'<div class="rp2-lb-value">'+fmt(r.value,g.cat)+'</div>'
         +'<div class="rp2-lb-gap">'+gapText+'</div>'
         +'<div class="rp2-lb-move '+mv.cls+'">'+mv.label+'</div>'
@@ -23789,13 +23789,14 @@ body.coach-seated #pg-coach .coach-panel-head,
   function storyCard(icon,label,title,copy){return '<div class="rp2-lb-story"><div class="rp2-lb-story-icon">'+icon+'</div><div class="rp2-lb-story-label">'+label+'</div><div class="rp2-lb-story-title">'+title+'</div><div class="rp2-lb-story-copy">'+copy+'</div></div>'}
   function storyCards(g){var movementTitle=g.move.delta>0?'You are climbing':g.move.delta<0?'Your position slipped':'Your rank is holding steady',movementCopy=g.move.delta>0?'You moved up '+g.move.delta+' position'+(g.move.delta===1?'':'s')+' compared with the prior selected-week snapshot.':g.move.delta<0?'You moved down '+Math.abs(g.move.delta)+' position'+(Math.abs(g.move.delta)===1?'':'s')+' compared with the prior selected-week snapshot.':'Your position is unchanged from the prior selected-week snapshot.';var posTitle='Your current category position is #'+g.me.rank,posCopy=g.me.rank<=3?'You are currently on the podium in '+g.cat.label.toLowerCase()+'. Protecting the position may matter as much as chasing the next one.':'You are outside the podium, so the next-rank gap is the most practical target.';var routeTitle=g.me.rank===1?'Build a safer lead':'Close '+(g.above?fmtGap(g.above.value-g.me.value,g.cat):'the next gap'),routeCopy=g.me.rank===1?'Widen the cushion over #2 so one weak period does not immediately cost the lead.':'Treat the next position as the immediate target, then recalculate after you pass that rep.';return '<div class="rp2-lb-story-grid">'+storyCard('↗','Rank movement',movementTitle,movementCopy)+storyCard('◎','Competitive position',posTitle,posCopy)+storyCard('⚡','Fastest route up',routeTitle,routeCopy)+'</div>'}
   function ladder(g){
-    var visible=g.current.filter(function(r){return r.rank<=3||r.name===g.me.name});
-    var max=visible.length?Math.max.apply(null,visible.map(function(r){return r.value})):1;
-    return '<div class="rp2-lb-ladder">'+visible.map(function(r){
+    var max=g.current.length?Math.max.apply(null,g.current.map(function(r){return r.value})):1;
+    return '<div class="rp2-lb-ladder">'+g.current.map(function(r){
+      var isMe=r.name===g.me.name;
+      var displayName=(r.rank<=3||isMe)?r.name:('Rep #'+r.rank);
       var pct=max>0?Math.max(2,r.value/max*100):2;
-      return '<div class="rp2-lb-ladder-row '+(r.name===g.me.name?'me':'')+'">'
+      return '<div class="rp2-lb-ladder-row '+(isMe?'me':'')+'">'
         +'<div class="rp2-lb-pos">#'+r.rank+'</div>'
-        +'<div class="rp2-lb-name">'+esc(r.name)+(r.name===g.me.name?'<small>You</small>':'')+'</div>'
+        +'<div class="rp2-lb-name">'+esc(displayName)+(isMe?'<small>You</small>':'')+'</div>'
         +'<div class="rp2-lb-value">'+fmt(r.value,g.cat)+'</div>'
         +'<div class="rp2-lb-ladder-bar"><span style="width:'+pct+'%"></span></div>'
       +'</div>';
@@ -23807,10 +23808,10 @@ body.coach-seated #pg-coach .coach-panel-head,
     var hero='<div class="rp2-lb-hero"><div class="rp2-lb-hero-grid"><div><div class="rp2-lb-kick">Leaderboard 2.0 · BUILD v482</div><div class="rp2-lb-title">Your competitive position</div><div class="rp2-lb-copy">'+esc(g.story.title)+'. '+esc(g.story.copy)+'</div><div class="rp2-lb-pills"><span class="rp2-lb-pill">'+esc(g.cat.label)+' leaderboard</span><span class="rp2-lb-pill">Through '+esc(selectedLabel)+'</span><span class="rp2-lb-pill '+(g.move.delta>0?'good':g.move.delta<0?'warn':'')+'">'+g.move.label+' rank movement</span></div></div><div class="rp2-lb-brief"><div><div class="rp2-lb-brief-label">Your '+esc(g.cat.label)+' rank</div><div class="rp2-lb-brief-rank">#'+g.me.rank+'</div><div class="rp2-lb-brief-title">'+esc(g.story.title)+'</div><div class="rp2-lb-brief-copy">'+esc(g.story.copy)+'</div></div><div class="rp2-lb-brief-sub">Current category value: <strong style="color:#fff">'+fmt(g.me.value,g.cat)+'</strong></div></div></div></div>';
     var tabs=tabBar(g.cat.id);
     var podium=sectionHead('Podium','Top three in '+g.cat.label,'The podium updates with the category tab. Top three remain visible by name while lower ranks use privacy-aware naming outside your immediate competitive neighborhood.')+'<div class="rp2-lb-podium">'+podiumCard(g.top3[1],2,g)+podiumCard(g.top3[0],1,g)+podiumCard(g.top3[2],3,g)+'</div>';
-    var board=sectionHead('Full ranking','The '+g.cat.label+' board','Only the top three and your own position are shown. Your row is highlighted, and climb math is private to your profile.')+'<div class="rp2-lb-main-grid"><div class="rp2-lb-panel"><div class="rp2-lb-panel-title">'+esc(g.cat.label)+' standings</div><div class="rp2-lb-panel-sub">Ranked through '+esc(selectedLabel)+'</div><div class="rp2-lb-table">'+leaderboardRows(g)+'</div></div>'+climbPanel(g)+'</div>';
+    var board=sectionHead('Full ranking','The '+g.cat.label+' board','The full team is shown. Top three names and your own name remain visible; every other rep is anonymous. Climb math is private to your profile.')+'<div class="rp2-lb-main-grid"><div class="rp2-lb-panel"><div class="rp2-lb-panel-title">'+esc(g.cat.label)+' standings</div><div class="rp2-lb-panel-sub">Ranked through '+esc(selectedLabel)+'</div><div class="rp2-lb-table">'+leaderboardRows(g)+'</div></div>'+climbPanel(g)+'</div>';
     var closest=sectionHead('Closest battle','Your nearest competitive matchup','The matchup follows the category tab, comparing you with the rep immediately above—or below if you currently hold #1.')+'<div class="rp2-lb-panel">'+battle(g)+'</div>';
     var what=sectionHead('What it means','How to read your position','Rank alone is not enough. These cards explain whether you are moving, how strong the position is, and the fastest practical route upward.')+storyCards(g);
-    var climb=sectionHead('The climb','Distance across the full field','The ladder keeps the view focused on the top three and your own position, while your private Climb Bar handles the math required to move up.')+'<div class="rp2-lb-panel"><div class="rp2-lb-panel-title">'+esc(g.cat.label)+' climb ladder</div><div class="rp2-lb-panel-sub">Relative position across the selected context</div>'+ladder(g)+'</div>';
+    var climb=sectionHead('The climb','Distance across the full field','The ladder shows the full field while keeping non-podium competitors anonymous. Your private Climb Bar handles the math required to move up.')+'<div class="rp2-lb-panel"><div class="rp2-lb-panel-title">'+esc(g.cat.label)+' climb ladder</div><div class="rp2-lb-panel-sub">Relative position across the selected context</div>'+ladder(g)+'</div>';
     return '<div class="rp2-lb-shell">'+hero+tabs+podium+board+closest+what+climb+'</div>'
   };
   try{var sess=(typeof _rpSession==='function')?_rpSession():null;if(sess&&sess.role==='rep'&&_rp2.page==='lb'){setTimeout(function(){try{_rp2Go('lb')}catch(e){}},0)}}catch(e){}
@@ -23894,7 +23895,7 @@ body.coach-seated #pg-coach .coach-panel-head,
   content:"";
 }
 #rp-overlay .rp2-lb-panel-sub::after{
-  content:" · Top 3 + your profile only";
+  content:" · Full team · names private below Top 3";
   color:#8475ed;
   font-weight:850;
 }
