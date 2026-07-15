@@ -7725,7 +7725,7 @@ function _rp2Page(){
  var p=_rp2.page;
  try{
   if(p==='dash')return _rp2Dash(); if(p==='year')return (typeof window._rp2YearV2==='function'?window._rp2YearV2():_rp2Year()); if(p==='lb')return (typeof window._rp2LBV2==='function'?window._rp2LBV2():_rp2LB());
-  if(p==='daily')return (typeof window._rp2DailyV2==='function'?window._rp2DailyV2():_rp2Daily()); if(p==='forecast')return (typeof window._rp2ForecastV2==='function'?window._rp2ForecastV2():_rp2Forecast()); if(p==='customers')return _rp2Customers();
+  if(p==='daily')return (typeof window._rp2DailyV2==='function'?window._rp2DailyV2():_rp2Daily()); if(p==='forecast')return (typeof window._rp2ForecastV2==='function'?window._rp2ForecastV2():_rp2Forecast()); if(p==='customers')return (typeof window._rp2CustomersV2==='function'?window._rp2CustomersV2():_rp2Customers());
   if(p==='orders')return _rp2Orders(); if(p==='reports')return _rp2Reports(); if(p==='profile')return _rp2Profile();
   if(p==='credits')return _rp2Credits(); if(p==='reviews')return _rp2Reviews(); if(p==='arterrors')return _rp2Art();
   if(p==='production')return _rp2Prod(); if(p==='ai')return _rp2AI();
@@ -24417,6 +24417,483 @@ body.coach-seated #pg-coach .coach-panel-head,
   line-height:1.55;
 }
 </style>
+
+
+<style id="rp2-customers-v488-css">
+/* ===== REP PORTAL CUSTOMERS 2.0 — v488 ===== */
+#rp-overlay .rp2-cu-shell{display:grid;gap:16px;min-width:0}
+#rp-overlay .rp2-cu-hero{
+  position:relative;overflow:hidden;padding:30px 32px;border-radius:23px;
+  background:
+    radial-gradient(circle at 88% 14%,rgba(78,156,255,.18),transparent 29%),
+    radial-gradient(circle at 12% 108%,rgba(132,108,255,.18),transparent 31%),
+    linear-gradient(135deg,#171536 0%,#102139 55%,#0d1928 100%);
+  border:1px solid rgba(132,108,255,.34);box-shadow:0 20px 60px rgba(0,0,0,.20)
+}
+#rp-overlay .rp2-cu-hero-grid{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(340px,.8fr);gap:26px;align-items:stretch}
+#rp-overlay .rp2-cu-kick{color:#9585ff;font-size:8.5px;font-weight:950;letter-spacing:1.3px;text-transform:uppercase}
+#rp-overlay .rp2-cu-title{margin-top:7px;color:#fff;font-size:34px;font-weight:950;letter-spacing:-.05em;line-height:1.02}
+#rp-overlay .rp2-cu-copy{max-width:820px;margin-top:13px;color:#b7c3d6;font-size:12px;line-height:1.7}
+#rp-overlay .rp2-cu-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+#rp-overlay .rp2-cu-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);color:#aebbd0;font-size:8px;font-weight:900;letter-spacing:.55px;text-transform:uppercase}
+#rp-overlay .rp2-cu-pill.good{border-color:rgba(78,214,163,.24);background:rgba(78,214,163,.09);color:#82ddb9}
+#rp-overlay .rp2-cu-pill.warn{border-color:rgba(245,190,100,.24);background:rgba(245,190,100,.09);color:#f0c97f}
+#rp-overlay .rp2-cu-brief{display:flex;flex-direction:column;justify-content:space-between;min-height:230px;padding:22px;border-radius:18px;border:1px solid rgba(255,255,255,.085);background:rgba(5,11,21,.43)}
+#rp-overlay .rp2-cu-brief-label{color:#74829a;font-size:8px;font-weight:950;letter-spacing:1.15px;text-transform:uppercase}
+#rp-overlay .rp2-cu-brief-value{margin-top:9px;color:#fff;font-size:39px;font-weight:950;letter-spacing:-.055em;line-height:1}
+#rp-overlay .rp2-cu-brief-title{margin-top:10px;color:#fff;font-size:18px;font-weight:930;line-height:1.2}
+#rp-overlay .rp2-cu-brief-copy{margin-top:8px;color:#8998ad;font-size:10px;line-height:1.55}
+#rp-overlay .rp2-cu-brief-sub{margin-top:18px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07);color:#8392a8;font-size:9.5px;line-height:1.5}
+
+#rp-overlay .rp2-cu-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px}
+#rp-overlay .rp2-cu-kpi{position:relative;overflow:hidden;min-height:126px;padding:17px 18px;border-radius:17px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line);box-shadow:0 14px 38px rgba(0,0,0,.11)}
+#rp-overlay .rp2-cu-kpi:after{content:"";position:absolute;width:94px;height:94px;border-radius:50%;right:-52px;top:-48px;background:rgba(132,108,255,.08)}
+#rp-overlay .rp2-cu-kpi-label{position:relative;z-index:1;color:#718099;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .rp2-cu-kpi-value{position:relative;z-index:1;margin-top:9px;color:#fff;font-size:24px;font-weight:950;letter-spacing:-.04em}
+#rp-overlay .rp2-cu-kpi-sub{position:relative;z-index:1;margin-top:5px;color:#7f8ea5;font-size:9.5px;line-height:1.4}
+
+#rp-overlay .rp2-cu-tabs-wrap{position:sticky;top:74px;z-index:35;padding:10px;border-radius:17px;background:rgba(7,12,20,.93);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.07);box-shadow:0 12px 35px rgba(0,0,0,.18)}
+#rp-overlay .rp2-cu-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+#rp-overlay .rp2-cu-tab{flex:0 0 auto;padding:10px 13px;border-radius:11px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.03);color:#8796ac;font-size:9px;font-weight:900;letter-spacing:.25px;cursor:pointer}
+#rp-overlay .rp2-cu-tab:hover{color:#fff;border-color:rgba(132,108,255,.32)}
+#rp-overlay .rp2-cu-tab.active{color:#fff;background:linear-gradient(135deg,rgba(132,108,255,.22),rgba(78,156,255,.16));border-color:rgba(132,108,255,.48);box-shadow:0 0 0 1px rgba(132,108,255,.08) inset}
+
+#rp-overlay .rp2-cu-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:8px}
+#rp-overlay .rp2-cu-section-kick{color:#8878ef;font-size:8px;font-weight:950;letter-spacing:1.25px;text-transform:uppercase}
+#rp-overlay .rp2-cu-section-title{margin-top:5px;color:#fff;font-size:20px;font-weight:930;letter-spacing:-.03em}
+#rp-overlay .rp2-cu-section-note{max-width:620px;color:#718099;font-size:10px;line-height:1.45;text-align:right}
+
+#rp-overlay .rp2-cu-portfolio{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+#rp-overlay .rp2-cu-segment{min-height:160px;padding:18px;border-radius:17px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line);cursor:pointer;transition:.15s ease}
+#rp-overlay .rp2-cu-segment:hover{transform:translateY(-2px);border-color:rgba(132,108,255,.34)}
+#rp-overlay .rp2-cu-segment-icon{font-size:18px}
+#rp-overlay .rp2-cu-segment-label{margin-top:12px;color:#8575ef;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .rp2-cu-segment-value{margin-top:8px;color:#fff;font-size:27px;font-weight:950;letter-spacing:-.04em}
+#rp-overlay .rp2-cu-segment-copy{margin-top:6px;color:#7f8ea5;font-size:9.5px;line-height:1.5}
+
+#rp-overlay .rp2-cu-overview-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr);gap:12px;align-items:start}
+#rp-overlay .rp2-cu-panel{min-width:0;padding:20px;border-radius:19px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line);box-shadow:0 16px 46px rgba(0,0,0,.12)}
+#rp-overlay .rp2-cu-panel-title{color:#fff;font-size:14px;font-weight:900}
+#rp-overlay .rp2-cu-panel-sub{margin-top:4px;color:#6f7f97;font-size:9px;line-height:1.45}
+
+#rp-overlay .rp2-cu-action-list{display:grid;gap:8px;margin-top:15px}
+#rp-overlay .rp2-cu-action{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px;border-radius:13px;border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.023);cursor:pointer}
+#rp-overlay .rp2-cu-action:hover{border-color:rgba(132,108,255,.34);background:rgba(132,108,255,.045)}
+#rp-overlay .rp2-cu-action-no{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:rgba(132,108,255,.10);color:#a99eff;font-size:10px;font-weight:950}
+#rp-overlay .rp2-cu-action-name{color:#fff;font-size:11px;font-weight:920}
+#rp-overlay .rp2-cu-action-name small{display:block;margin-top:4px;color:#708099;font-size:8.5px;font-weight:700;line-height:1.4}
+#rp-overlay .rp2-cu-action-value{text-align:right;color:#fff;font-size:11px;font-weight:950}
+#rp-overlay .rp2-cu-action-value small{display:block;margin-top:4px;color:#6d7d94;font-size:7.5px;font-weight:800;text-transform:uppercase;letter-spacing:.65px}
+
+#rp-overlay .rp2-cu-concentration{display:grid;gap:14px;margin-top:15px}
+#rp-overlay .rp2-cu-con-row{display:grid;gap:7px}
+#rp-overlay .rp2-cu-con-top{display:flex;justify-content:space-between;gap:12px;color:#8392a8;font-size:9px}
+#rp-overlay .rp2-cu-con-top strong{color:#fff;font-size:11px;font-weight:920}
+#rp-overlay .rp2-cu-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.055);overflow:hidden}
+#rp-overlay .rp2-cu-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#846cff,#4e9cff)}
+#rp-overlay .rp2-cu-risk-callout{margin-top:16px;padding:14px;border-radius:14px;border:1px solid rgba(245,190,100,.18);background:rgba(245,190,100,.055);color:#9f9174;font-size:9.5px;line-height:1.55}
+#rp-overlay .rp2-cu-risk-callout strong{color:#f0c97f}
+
+#rp-overlay .rp2-cu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#rp-overlay .rp2-cu-card{position:relative;min-height:250px;padding:18px;border-radius:17px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line);cursor:pointer;transition:.15s ease}
+#rp-overlay .rp2-cu-card:hover{transform:translateY(-2px);border-color:rgba(132,108,255,.38)}
+#rp-overlay .rp2-cu-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#rp-overlay .rp2-cu-card-name{min-width:0;color:#fff;font-size:15px;font-weight:930;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .rp2-cu-status{flex:none;padding:5px 7px;border-radius:999px;background:rgba(255,255,255,.045);color:#8796ac;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.55px}
+#rp-overlay .rp2-cu-status.growing,#rp-overlay .rp2-cu-status.core{background:rgba(78,214,163,.09);color:#78d8b1}
+#rp-overlay .rp2-cu-status.new{background:rgba(78,156,255,.10);color:#8dbbf2}
+#rp-overlay .rp2-cu-status.risk,#rp-overlay .rp2-cu-status.slipping{background:rgba(245,190,100,.09);color:#eac276}
+#rp-overlay .rp2-cu-status.dormant{background:rgba(240,120,120,.09);color:#e79a9a}
+#rp-overlay .rp2-cu-card-rev{margin-top:17px;color:#fff;font-size:25px;font-weight:950;letter-spacing:-.04em}
+#rp-overlay .rp2-cu-card-sub{margin-top:5px;color:#73829a;font-size:9px;line-height:1.4}
+#rp-overlay .rp2-cu-card-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:15px}
+#rp-overlay .rp2-cu-mini{padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.045);background:rgba(255,255,255,.022)}
+#rp-overlay .rp2-cu-mini span{display:block;color:#687890;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.6px}
+#rp-overlay .rp2-cu-mini strong{display:block;margin-top:5px;color:#dfe7f3;font-size:11px;font-weight:900}
+#rp-overlay .rp2-cu-health{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.055)}
+#rp-overlay .rp2-cu-health-top{display:flex;justify-content:space-between;gap:10px;color:#708098;font-size:8px;font-weight:850}
+#rp-overlay .rp2-cu-health-top strong{color:#fff;font-size:10px;font-weight:950}
+#rp-overlay .rp2-cu-health-bar{height:7px;margin-top:7px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}
+#rp-overlay .rp2-cu-health-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#846cff,#4ed6a3)}
+
+#rp-overlay .rp2-cu-table{display:grid;gap:7px;margin-top:15px}
+#rp-overlay .rp2-cu-row{display:grid;grid-template-columns:minmax(190px,1.3fr) 120px 100px 115px 100px 90px;gap:10px;align-items:center;min-height:58px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.022);cursor:pointer}
+#rp-overlay .rp2-cu-row:hover{border-color:rgba(132,108,255,.30)}
+#rp-overlay .rp2-cu-row-name{min-width:0;color:#dfe7f3;font-size:10.5px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .rp2-cu-row-name small{display:block;margin-top:3px;color:#64748b;font-size:8px;font-weight:700}
+#rp-overlay .rp2-cu-row-val{color:#fff;font-size:10px;font-weight:900;text-align:right}
+#rp-overlay .rp2-cu-row-muted{color:#7b8aa0;font-size:8.5px;text-align:right}
+
+#rp-overlay .rp2-cu-empty{padding:34px;border-radius:18px;border:1px dashed rgba(255,255,255,.10);background:rgba(255,255,255,.02);text-align:center}
+#rp-overlay .rp2-cu-empty strong{display:block;color:#fff;font-size:15px}
+#rp-overlay .rp2-cu-empty span{display:block;margin-top:7px;color:#77869c;font-size:10px;line-height:1.55}
+
+#rp-overlay .rp2-cu-drawer-wrap{position:fixed;inset:0;z-index:999999;display:flex;justify-content:flex-end;background:rgba(2,6,12,.62);backdrop-filter:blur(6px)}
+#rp-overlay .rp2-cu-drawer{width:min(620px,94vw);height:100%;overflow-y:auto;padding:24px;background:#0b1321;border-left:1px solid rgba(132,108,255,.30);box-shadow:-24px 0 70px rgba(0,0,0,.42)}
+#rp-overlay .rp2-cu-drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.07)}
+#rp-overlay .rp2-cu-drawer-kick{color:#8f80f6;font-size:8px;font-weight:950;letter-spacing:1.1px;text-transform:uppercase}
+#rp-overlay .rp2-cu-drawer-name{margin-top:7px;color:#fff;font-size:27px;font-weight:950;letter-spacing:-.04em;line-height:1.05}
+#rp-overlay .rp2-cu-close{width:36px;height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#aab6c8;font-size:18px;cursor:pointer}
+#rp-overlay .rp2-cu-detail-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:17px}
+#rp-overlay .rp2-cu-detail-kpi{padding:13px;border-radius:12px;border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.023)}
+#rp-overlay .rp2-cu-detail-kpi span{display:block;color:#687890;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.75px}
+#rp-overlay .rp2-cu-detail-kpi strong{display:block;margin-top:6px;color:#fff;font-size:15px;font-weight:920}
+#rp-overlay .rp2-cu-detail-section{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.065)}
+#rp-overlay .rp2-cu-detail-title{color:#fff;font-size:14px;font-weight:920}
+#rp-overlay .rp2-cu-detail-copy{margin-top:8px;color:#8c9ab0;font-size:10px;line-height:1.62}
+#rp-overlay .rp2-cu-score-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+#rp-overlay .rp2-cu-score{padding:10px;border-radius:10px;background:rgba(255,255,255,.024);border:1px solid rgba(255,255,255,.045);text-align:center}
+#rp-overlay .rp2-cu-score span{display:block;color:#687890;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.6px}
+#rp-overlay .rp2-cu-score strong{display:block;margin-top:5px;color:#fff;font-size:12px;font-weight:920}
+#rp-overlay .rp2-cu-mix{display:grid;gap:9px;margin-top:12px}
+#rp-overlay .rp2-cu-mix-row{display:grid;grid-template-columns:130px minmax(0,1fr) 48px;gap:9px;align-items:center}
+#rp-overlay .rp2-cu-mix-label{color:#8796ac;font-size:9px}
+#rp-overlay .rp2-cu-mix-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}
+#rp-overlay .rp2-cu-mix-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#846cff,#4e9cff)}
+#rp-overlay .rp2-cu-mix-pct{color:#dfe7f3;font-size:8.5px;font-weight:900;text-align:right}
+#rp-overlay .rp2-cu-order-history{display:grid;gap:7px;margin-top:12px}
+#rp-overlay .rp2-cu-hist-row{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border-radius:10px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.045)}
+#rp-overlay .rp2-cu-hist-date{color:#78879d;font-size:8.5px}
+#rp-overlay .rp2-cu-hist-name{color:#dfe7f3;font-size:9.5px;font-weight:850}
+#rp-overlay .rp2-cu-hist-val{color:#fff;font-size:9.5px;font-weight:920}
+
+@media(max-width:1500px){#rp-overlay .rp2-cu-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}#rp-overlay .rp2-cu-portfolio{grid-template-columns:repeat(3,minmax(0,1fr))}#rp-overlay .rp2-cu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1200px){#rp-overlay .rp2-cu-hero-grid,#rp-overlay .rp2-cu-overview-grid{grid-template-columns:1fr}#rp-overlay .rp2-cu-section-head{align-items:flex-start;flex-direction:column}#rp-overlay .rp2-cu-section-note{text-align:left}#rp-overlay .rp2-cu-table{overflow-x:auto}#rp-overlay .rp2-cu-row{min-width:840px}}
+@media(max-width:800px){#rp-overlay .rp2-cu-portfolio,#rp-overlay .rp2-cu-grid{grid-template-columns:1fr}#rp-overlay .rp2-cu-score-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#rp-overlay .rp2-cu-kpis{grid-template-columns:1fr}#rp-overlay .rp2-cu-hero{padding:23px 20px}#rp-overlay .rp2-cu-detail-kpis{grid-template-columns:1fr}}
+</style>
+
+<script id="rp2-customers-v488-js">
+(function(){
+  var CU_TABS=[
+    {id:'overview',label:'Overview',icon:'◫'},
+    {id:'top',label:'Top Accounts',icon:'★'},
+    {id:'attention',label:'Needs Attention',icon:'⚠'},
+    {id:'growth',label:'Growth Opportunities',icon:'↗'},
+    {id:'new',label:'New Customers',icon:'＋'},
+    {id:'dormant',label:'Dormant Accounts',icon:'○'}
+  ];
+  window._rp2CustomerTab=window._rp2CustomerTab||'overview';
+  window._rp2CustomerOpenKey=window._rp2CustomerOpenKey||null;
+
+  function n(v){return Number(v)||0}
+  function esc(v){return _rp2Esc(String(v==null?'':v))}
+  function money(v){return _rp2$(n(v))}
+  function clean(v){return String(v==null?'':v).replace(/^\s+|\s+$/g,'')}
+  function norm(v){return clean(v).toLowerCase().replace(/\s+/g,' ')}
+  function dt(v){if(!v)return null;var d=new Date(String(v).length===10?v+'T12:00:00':v);return isNaN(d.getTime())?null:d}
+  function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function daysBetween(a,b){var x=dt(a),y=dt(b);return x&&y?Math.round((y-x)/86400000):0}
+  function sameCutoffPriorYear(cutoff){
+    var d=dt(cutoff),p=new Date(d.getFullYear()-1,d.getMonth(),d.getDate(),12);
+    return iso(p)
+  }
+  function startOfYear(y){return String(y)+'-01-01'}
+  function displayDate(v){var d=dt(v);return d?d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}
+  function pct(v){return Math.round(n(v))+'%'}
+  function selectedContext(){
+    var c=window._rp2V476Context?window._rp2V476Context(_rp2.rep):null;
+    if(c&&c.selected)return c;
+    return {rep:_rp2.rep,selected:null,through:[],idx:0}
+  }
+  function orderIssues(o){
+    var art=[],cm=[];
+    try{if(typeof _ordArtFor==='function')art=_ordArtFor(o)||[]}catch(e){}
+    try{if(typeof _ordCmFor==='function')cm=_ordCmFor(o)||[]}catch(e){}
+    return {art:art.length,credits:cm.length,creditValue:cm.reduce(function(s,x){return s+n(x.amount)},0)}
+  }
+  function customerBuild(){
+    var c=selectedContext(),rep=_rp2.rep,year=Number(getYr());
+    var cutoff=c.selected&&c.selected.end?iso(dt(c.selected.end)):String(year)+'-12-31';
+    var yStart=startOfYear(year),priorStart=startOfYear(year-1),priorCut=sameCutoffPriorYear(cutoff);
+    var all=(S.orders||[]).filter(function(o){
+      return o.rep===rep&&o.kind==='order'&&clean(o.customer)&&o.orderDate&&o.orderDate<=cutoff
+    }).slice().sort(function(a,b){return String(a.orderDate).localeCompare(String(b.orderDate))});
+    var by={};
+
+    all.forEach(function(o){
+      var key=norm(o.customer),x=by[key]||(by[key]={
+        key:key,name:clean(o.customer),orders:[],dates:{},currentRevenue:0,priorRevenue:0,currentOrders:0,priorOrders:0,
+        lifetimeRevenue:0,newFlag:false,types:{},placements:{},issues:0,artErrors:0,credits:0,creditValue:0
+      });
+      x.name=clean(o.customer)||x.name;
+      x.orders.push(o);
+      x.lifetimeRevenue+=n(o.total);
+      x.dates[o.orderDate]=true;
+      if(o.lastOrderDate&&o.lastOrderDate<=cutoff)x.dates[o.lastOrderDate]=true;
+      if(o.orderDate>=yStart&&o.orderDate<=cutoff){x.currentRevenue+=n(o.total);x.currentOrders++;if(o.newCustomer)x.newFlag=true}
+      if(o.orderDate>=priorStart&&o.orderDate<=priorCut){x.priorRevenue+=n(o.total);x.priorOrders++}
+      x.types[o.orderType||'General Sale']=(x.types[o.orderType||'General Sale']||0)+n(o.total);
+      x.placements[o.placement||'Unknown']=(x.placements[o.placement||'Unknown']||0)+1;
+      var iq=orderIssues(o);x.issues+=iq.art+iq.credits;x.artErrors+=iq.art;x.credits+=iq.credits;x.creditValue+=iq.creditValue;
+    });
+
+    var customers=Object.keys(by).map(function(key){
+      var x=by[key],dates=Object.keys(x.dates).sort(),last=dates.length?dates[dates.length-1]:'',first=dates.length?dates[0]:'';
+      var intervals=[];for(var i=1;i<dates.length;i++){var dd=daysBetween(dates[i-1],dates[i]);if(dd>0&&dd<730)intervals.push(dd)}
+      var cadence=intervals.length?intervals.reduce(function(s,v){return s+v},0)/intervals.length:null;
+      var daysSince=last?daysBetween(last,cutoff):9999;
+      var currentAov=x.currentOrders?x.currentRevenue/x.currentOrders:(x.orders.length?x.lifetimeRevenue/x.orders.length:0);
+      var largest=x.orders.reduce(function(best,o){return !best||n(o.total)>n(best.total)?o:best},null);
+      var typeEntries=Object.keys(x.types).map(function(k){return {name:k,value:x.types[k]}}).sort(function(a,b){return b.value-a.value});
+      var typeTotal=typeEntries.reduce(function(s,z){return s+z.value},0);
+      var topType=typeEntries[0]||null,topTypeShare=topType&&typeTotal>0?topType.value/typeTotal:0;
+      var trend=x.priorRevenue>0?(x.currentRevenue-x.priorRevenue)/x.priorRevenue*100:(x.currentRevenue>0?100:0);
+      var cadenceOverdue=!!(cadence&&daysSince>Math.max(45,cadence*1.25));
+      var isNew=!!(x.newFlag||(first>=yStart&&first<=cutoff));
+      var status='Stable',statusKey='core';
+      if(daysSince>120){status='Dormant';statusKey='dormant'}
+      else if(isNew&&daysSince<=120){status='New';statusKey='new'}
+      else if(x.priorRevenue>0&&x.currentRevenue<x.priorRevenue*.75){status='Slipping';statusKey='slipping'}
+      else if(cadenceOverdue||daysSince>75){status='At Risk';statusKey='risk'}
+      else if(x.currentRevenue>x.priorRevenue*1.15&&x.currentRevenue>0){status='Growing';statusKey='growing'}
+
+      var recencyScore=daysSince<=30?40:daysSince<=60?32:daysSince<=90?24:daysSince<=120?16:6;
+      var trendScore=x.priorRevenue>0?(trend>=15?25:trend>=-10?20:trend>=-30?12:5):(x.currentRevenue>0?18:5);
+      var repeatScore=Math.min(20,Math.max(5,x.currentOrders*4+Math.min(6,dates.length)));
+      var qualityScore=Math.max(0,15-Math.min(15,x.artErrors*3+x.credits*4+x.creditValue/500));
+      var health=Math.max(0,Math.min(100,recencyScore+trendScore+repeatScore+qualityScore));
+
+      var expansion=topTypeShare>=.75&&x.currentOrders>=2;
+      var segment=statusKey;
+      if(statusKey==='core'&&expansion)segment='growth';
+      else if(statusKey==='growing')segment='growth';
+
+      var actions=[];
+      if(daysSince>120){
+        actions.push({type:'Win Back',score:100+Math.min(30,x.lifetimeRevenue/5000),reason:'No recorded purchase in '+daysSince+' days.',recommendation:'Reopen the relationship and ask what changed since the last order.',potential:Math.max(currentAov,x.priorRevenue*.25)})
+      }
+      if(cadenceOverdue){
+        actions.push({type:'Reorder Due',score:92+Math.min(25,(daysSince/(cadence||daysSince))*10),reason:'Typical recorded cadence is about '+Math.round(cadence)+' days; this account is at '+daysSince+' days.',recommendation:'Reach out with a reorder check-in before the account drifts further.',potential:Math.max(currentAov,x.lifetimeRevenue/Math.max(1,x.orders.length))})
+      }
+      if(x.priorRevenue>0&&x.currentRevenue<x.priorRevenue*.75){
+        actions.push({type:'Revenue Decline',score:88+Math.min(30,Math.abs(trend)/3),reason:'Comparable YTD revenue is down '+Math.abs(Math.round(trend))+'%.',recommendation:'Review what they bought previously and identify the missing program or reorder.',potential:Math.max(0,x.priorRevenue-x.currentRevenue)})
+      }
+      if(isNew&&daysSince<=45){
+        actions.push({type:'New Customer Follow-Up',score:76,reason:'A new-customer order was recorded within the last '+daysSince+' days.',recommendation:'Follow up while the first buying experience is still fresh and look for the second order.',potential:Math.max(currentAov,largest?n(largest.total):0)})
+      }
+      if(expansion){
+        actions.push({type:'Account Expansion',score:68+Math.round(topTypeShare*10),reason:Math.round(topTypeShare*100)+'% of recorded order revenue is concentrated in '+topType.name+'.',recommendation:'Explore another order type instead of relying on one buying pattern.',potential:Math.max(currentAov*.75,1000)})
+      }
+      if(statusKey==='growing'){
+        actions.push({type:'Growth Momentum',score:64+Math.min(20,trend/5),reason:'Comparable YTD revenue is up '+Math.round(trend)+'%.',recommendation:'Protect the momentum and look for a larger or broader next program.',potential:Math.max(currentAov,x.currentRevenue*.15)})
+      }
+
+      return {
+        key:key,name:x.name,orders:x.orders,currentRevenue:x.currentRevenue,priorRevenue:x.priorRevenue,currentOrders:x.currentOrders,
+        priorOrders:x.priorOrders,lifetimeRevenue:x.lifetimeRevenue,newFlag:x.newFlag,dates:dates,last:last,first:first,cadence:cadence,
+        daysSince:daysSince,currentAov:currentAov,largest:largest,types:typeEntries,topType:topType,topTypeShare:topTypeShare,
+        trend:trend,cadenceOverdue:cadenceOverdue,isNew:isNew,status:status,statusKey:statusKey,segment:segment,
+        health:health,scoreParts:{recency:recencyScore,trend:trendScore,repeat:repeatScore,quality:Math.round(qualityScore)},
+        issues:x.issues,artErrors:x.artErrors,credits:x.credits,creditValue:x.creditValue,actions:actions
+      };
+    });
+
+    var active=customers.filter(function(x){return x.currentRevenue>0});
+    var activeSorted=active.slice().sort(function(a,b){return b.currentRevenue-a.currentRevenue});
+    var currentTotal=active.reduce(function(s,x){return s+x.currentRevenue},0);
+    var top5=activeSorted.slice(0,5).reduce(function(s,x){return s+x.currentRevenue},0);
+    var top10=activeSorted.slice(0,10).reduce(function(s,x){return s+x.currentRevenue},0);
+    var top1=activeSorted[0]||null;
+    var currentOrders=active.reduce(function(s,x){return s+x.currentOrders},0);
+    var newCount=customers.filter(function(x){return x.isNew&&x.currentRevenue>0}).length;
+    var atRisk=customers.filter(function(x){return x.segment==='risk'||x.statusKey==='slipping'}).length;
+    var dormant=customers.filter(function(x){return x.segment==='dormant'}).length;
+    var growth=customers.filter(function(x){return x.segment==='growth'}).length;
+
+    var actionQueue=[];
+    customers.forEach(function(x){
+      x.actions.forEach(function(a){
+        actionQueue.push({customer:x,action:a,score:a.score+(x.currentRevenue>0?Math.min(20,x.currentRevenue/5000):0)})
+      })
+    });
+    actionQueue.sort(function(a,b){return b.score-a.score});
+
+    var portfolio={
+      core:customers.filter(function(x){return x.segment==='core'}).length,
+      growth:growth,
+      risk:customers.filter(function(x){return x.segment==='risk'||x.statusKey==='slipping'}).length,
+      dormant:dormant,
+      new:customers.filter(function(x){return x.segment==='new'}).length
+    };
+
+    return {
+      c:c,rep:rep,year:year,cutoff:cutoff,priorCut:priorCut,customers:customers,active:active,activeSorted:activeSorted,
+      currentTotal:currentTotal,currentOrders:currentOrders,top5:top5,top10:top10,top1:top1,newCount:newCount,atRisk:atRisk,
+      dormant:dormant,growth:growth,actionQueue:actionQueue,portfolio:portfolio
+    }
+  }
+
+  function sectionHead(kick,title,note){return '<div class="rp2-cu-section-head"><div><div class="rp2-cu-section-kick">'+kick+'</div><div class="rp2-cu-section-title">'+title+'</div></div><div class="rp2-cu-section-note">'+note+'</div></div>'}
+  function kpi(label,value,sub){return '<div class="rp2-cu-kpi"><div class="rp2-cu-kpi-label">'+esc(label)+'</div><div class="rp2-cu-kpi-value">'+value+'</div><div class="rp2-cu-kpi-sub">'+sub+'</div></div>'}
+  function tabBar(active){return '<div class="rp2-cu-tabs-wrap"><div class="rp2-cu-tabs">'+CU_TABS.map(function(t){return '<button class="rp2-cu-tab '+(t.id===active?'active':'')+'" onclick="_rp2CustomerSetTab(\''+t.id+'\')">'+t.icon+' '+t.label+'</button>'}).join('')+'</div></div>'}
+  function statusClass(x){return x.statusKey==='slipping'?'slipping':x.statusKey}
+  function trendText(x){
+    if(x.priorRevenue<=0)return x.currentRevenue>0?'New recorded revenue baseline':'No comparable prior-year revenue';
+    return (x.trend>=0?'▲ ':'▼ ')+Math.abs(Math.round(x.trend))+'% vs comparable '+(Number(getYr())-1)
+  }
+  function encodedKey(x){return encodeURIComponent(x.key)}
+  function card(x){
+    return '<button class="rp2-cu-card" onclick="_rp2CustomerOpen(\''+encodedKey(x)+'\')">'
+      +'<div class="rp2-cu-card-top"><div class="rp2-cu-card-name">'+esc(x.name)+'</div><span class="rp2-cu-status '+statusClass(x)+'">'+esc(x.status)+'</span></div>'
+      +'<div class="rp2-cu-card-rev">'+money(x.currentRevenue)+'</div><div class="rp2-cu-card-sub">'+esc(trendText(x))+'</div>'
+      +'<div class="rp2-cu-card-stats"><div class="rp2-cu-mini"><span>Orders</span><strong>'+x.currentOrders+'</strong></div><div class="rp2-cu-mini"><span>Last order</span><strong>'+displayDate(x.last)+'</strong></div><div class="rp2-cu-mini"><span>AOV</span><strong>'+money(x.currentAov)+'</strong></div><div class="rp2-cu-mini"><span>Days since</span><strong>'+x.daysSince+'</strong></div></div>'
+      +'<div class="rp2-cu-health"><div class="rp2-cu-health-top"><span>Account health</span><strong>'+Math.round(x.health)+'/100</strong></div><div class="rp2-cu-health-bar"><span style="width:'+Math.round(x.health)+'%"></span></div></div>'
+      +'</button>'
+  }
+  function empty(title,copy){return '<div class="rp2-cu-empty"><strong>'+esc(title)+'</strong><span>'+esc(copy)+'</span></div>'}
+  function cards(list){
+    if(!list.length)return empty('No customers match this view','As more order history is loaded, this section will populate automatically.');
+    return '<div class="rp2-cu-grid">'+list.map(card).join('')+'</div>'
+  }
+  function table(list){
+    if(!list.length)return empty('No customers match this view','There are no accounts in this category for the selected reporting point.');
+    return '<div class="rp2-cu-panel"><div class="rp2-cu-table">'+list.map(function(x){
+      return '<button class="rp2-cu-row" onclick="_rp2CustomerOpen(\''+encodedKey(x)+'\')">'
+        +'<div class="rp2-cu-row-name">'+esc(x.name)+'<small>'+esc(x.status)+' · health '+Math.round(x.health)+'/100</small></div>'
+        +'<div class="rp2-cu-row-val">'+money(x.currentRevenue)+'</div>'
+        +'<div class="rp2-cu-row-val">'+x.currentOrders+'</div>'
+        +'<div class="rp2-cu-row-val">'+money(x.currentAov)+'</div>'
+        +'<div class="rp2-cu-row-muted">'+displayDate(x.last)+'</div>'
+        +'<div class="rp2-cu-row-muted">'+x.daysSince+' days</div>'
+      +'</button>'
+    }).join('')+'</div></div>'
+  }
+  function segmentCard(icon,label,count,copy,tab){
+    return '<button class="rp2-cu-segment" onclick="_rp2CustomerSetTab(\''+tab+'\')"><div class="rp2-cu-segment-icon">'+icon+'</div><div class="rp2-cu-segment-label">'+label+'</div><div class="rp2-cu-segment-value">'+count+'</div><div class="rp2-cu-segment-copy">'+copy+'</div></button>'
+  }
+  function actionList(g,limit){
+    var list=g.actionQueue.slice(0,limit||5);
+    if(!list.length)return empty('No urgent customer actions detected','The available order history is not currently flagging an overdue, declining, new-follow-up, or concentrated account.');
+    return '<div class="rp2-cu-action-list">'+list.map(function(z,i){
+      return '<button class="rp2-cu-action" onclick="_rp2CustomerOpen(\''+encodedKey(z.customer)+'\')"><div class="rp2-cu-action-no">'+(i+1)+'</div><div class="rp2-cu-action-name">'+esc(z.customer.name)+'<small><strong style="color:#bcb4ff">'+esc(z.action.type)+'</strong> · '+esc(z.action.reason)+'</small></div><div class="rp2-cu-action-value">'+money(z.action.potential)+'<small>estimated opportunity</small></div></button>'
+    }).join('')+'</div>'
+  }
+  function concentration(g){
+    var p5=g.currentTotal>0?g.top5/g.currentTotal*100:0,p10=g.currentTotal>0?g.top10/g.currentTotal*100:0,p1=g.currentTotal>0&&g.top1?g.top1.currentRevenue/g.currentTotal*100:0;
+    var riskCopy=!g.top1?'No active customer revenue is available yet.'
+      :('Your largest account, '+g.top1.name+', represents '+Math.round(p1)+'% of recorded YTD customer revenue through this point.');
+    return '<div class="rp2-cu-panel"><div class="rp2-cu-panel-title">Portfolio concentration</div><div class="rp2-cu-panel-sub">How much of your recorded customer revenue is concentrated in the largest accounts.</div><div class="rp2-cu-concentration">'
+      +'<div class="rp2-cu-con-row"><div class="rp2-cu-con-top"><span>Top 1 account</span><strong>'+Math.round(p1)+'%</strong></div><div class="rp2-cu-bar"><span style="width:'+Math.min(100,p1)+'%"></span></div></div>'
+      +'<div class="rp2-cu-con-row"><div class="rp2-cu-con-top"><span>Top 5 accounts</span><strong>'+Math.round(p5)+'%</strong></div><div class="rp2-cu-bar"><span style="width:'+Math.min(100,p5)+'%"></span></div></div>'
+      +'<div class="rp2-cu-con-row"><div class="rp2-cu-con-top"><span>Top 10 accounts</span><strong>'+Math.round(p10)+'%</strong></div><div class="rp2-cu-bar"><span style="width:'+Math.min(100,p10)+'%"></span></div></div>'
+      +'</div><div class="rp2-cu-risk-callout"><strong>Concentration read:</strong> '+esc(riskCopy)+'</div></div>'
+  }
+  function overview(g){
+    var portfolio=sectionHead('Portfolio map','How your customer book is distributed','Accounts are segmented from recorded order recency, comparable revenue trend, new-customer flags, and buying-pattern concentration.')
+      +'<div class="rp2-cu-portfolio">'
+      +segmentCard('◆','Core Accounts',g.portfolio.core,'Active accounts without a current risk or expansion flag.','top')
+      +segmentCard('↗','Growth Accounts',g.portfolio.growth,'Growing accounts or accounts with a clear order-type expansion opportunity.','growth')
+      +segmentCard('⚠','At Risk',g.portfolio.risk,'Slipping revenue or a buying cadence that appears overdue.','attention')
+      +segmentCard('○','Dormant',g.portfolio.dormant,'More than 120 days since the last recorded purchase.','dormant')
+      +segmentCard('＋','New',g.portfolio.new,'New-customer flags or a first recorded purchase this year.','new')
+      +'</div>';
+    var actions=sectionHead('Action queue','The customers I would work next','This queue ranks the strongest signals in the available order history. Estimated opportunity uses recorded average order value or the comparable revenue gap—it is directional, not a promise.')
+      +'<div class="rp2-cu-overview-grid"><div class="rp2-cu-panel"><div class="rp2-cu-panel-title">Your next 5 customer actions</div><div class="rp2-cu-panel-sub">Highest-priority reorder, decline, win-back, expansion, and new-customer signals.</div>'+actionList(g,5)+'</div>'+concentration(g)+'</div>';
+    return portfolio+actions
+  }
+  function filteredView(g,tab){
+    var list=[],title='',note='';
+    if(tab==='top'){
+      list=g.activeSorted.slice();title='Top Accounts';note='Active accounts ranked by recorded YTD revenue through the selected reporting point.'
+    }else if(tab==='attention'){
+      list=g.customers.filter(function(x){return x.segment==='risk'||x.statusKey==='slipping'||x.cadenceOverdue}).sort(function(a,b){return a.health-b.health});title='Needs Attention';note='Accounts with a decline signal, overdue buying cadence, or elevated recency risk.'
+    }else if(tab==='growth'){
+      list=g.customers.filter(function(x){return x.segment==='growth'||x.actions.some(function(a){return a.type==='Reorder Due'||a.type==='Account Expansion'||a.type==='Growth Momentum'})}).sort(function(a,b){return b.currentRevenue-a.currentRevenue});title='Growth Opportunities';note='Accounts with reorder timing, momentum, or a concentrated order-type pattern that may support expansion.'
+    }else if(tab==='new'){
+      list=g.customers.filter(function(x){return x.isNew&&x.currentRevenue>0}).sort(function(a,b){return b.currentRevenue-a.currentRevenue});title='New Customers';note='Customers with a new-customer flag or a first recorded purchase in the selected year.'
+    }else if(tab==='dormant'){
+      list=g.customers.filter(function(x){return x.statusKey==='dormant'}).sort(function(a,b){return b.lifetimeRevenue-a.lifetimeRevenue});title='Dormant Accounts';note='Accounts more than 120 days from the last recorded purchase, ranked by recorded lifetime revenue.'
+    }
+    return sectionHead('Customer view',title,note)+table(list)
+  }
+  function accountMeaning(x){
+    if(x.statusKey==='dormant')return 'This account has gone quiet. The strongest immediate question is whether the buying need disappeared, moved to a competitor, or is simply overdue.';
+    if(x.statusKey==='slipping')return 'This account is still part of the book, but comparable revenue has materially declined. Review prior buying patterns before the relationship erodes further.';
+    if(x.statusKey==='risk')return 'The account is not necessarily lost, but its recency or buying cadence is signaling that a proactive check-in is warranted.';
+    if(x.statusKey==='new')return 'The first recorded buying cycle is still recent. The highest-value move is creating the second order before the relationship becomes one-and-done.';
+    if(x.segment==='growth'&&x.topTypeShare>=.75)return 'This is an active account with a concentrated buying pattern. The easiest expansion conversation is likely broadening beyond '+x.topType.name+'.';
+    if(x.statusKey==='growing')return 'This account has positive comparable momentum. Protect what is working and look for the next larger or broader program.';
+    return 'This is a relatively healthy active account. The opportunity is maintaining cadence and looking for a larger next program without creating unnecessary risk.'
+  }
+  function drawer(g){
+    if(!window._rp2CustomerOpenKey)return '';
+    var key=decodeURIComponent(window._rp2CustomerOpenKey),x=g.customers.filter(function(c){return c.key===key})[0];
+    if(!x)return '';
+    var mixTotal=x.types.reduce(function(s,z){return s+z.value},0)||1;
+    var recent=x.orders.slice().sort(function(a,b){return String(b.orderDate).localeCompare(String(a.orderDate))}).slice(0,10);
+    var actions=x.actions.slice().sort(function(a,b){return b.score-a.score});
+    return '<div class="rp2-cu-drawer-wrap" onclick="if(event.target===this)_rp2CustomerClose()"><aside class="rp2-cu-drawer">'
+      +'<div class="rp2-cu-drawer-head"><div><div class="rp2-cu-drawer-kick">Customer detail · '+esc(x.status)+'</div><div class="rp2-cu-drawer-name">'+esc(x.name)+'</div></div><button class="rp2-cu-close" onclick="_rp2CustomerClose()">×</button></div>'
+      +'<div class="rp2-cu-detail-kpis">'
+        +'<div class="rp2-cu-detail-kpi"><span>'+getYr()+' YTD revenue</span><strong>'+money(x.currentRevenue)+'</strong></div>'
+        +'<div class="rp2-cu-detail-kpi"><span>Prior comparable YTD</span><strong>'+money(x.priorRevenue)+'</strong></div>'
+        +'<div class="rp2-cu-detail-kpi"><span>Recorded orders this year</span><strong>'+x.currentOrders+'</strong></div>'
+        +'<div class="rp2-cu-detail-kpi"><span>Average order value</span><strong>'+money(x.currentAov)+'</strong></div>'
+        +'<div class="rp2-cu-detail-kpi"><span>Last recorded order</span><strong>'+displayDate(x.last)+'</strong></div>'
+        +'<div class="rp2-cu-detail-kpi"><span>Days since order</span><strong>'+x.daysSince+'</strong></div>'
+      +'</div>'
+      +'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-title">What this account means</div><div class="rp2-cu-detail-copy">'+esc(accountMeaning(x))+'</div></div>'
+      +'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-title">Transparent health score · '+Math.round(x.health)+'/100</div><div class="rp2-cu-detail-copy">The score uses only four visible components: recency, comparable revenue trend, repeat-order evidence, and linked quality issues.</div><div class="rp2-cu-score-grid">'
+        +'<div class="rp2-cu-score"><span>Recency</span><strong>'+x.scoreParts.recency+'/40</strong></div>'
+        +'<div class="rp2-cu-score"><span>Trend</span><strong>'+x.scoreParts.trend+'/25</strong></div>'
+        +'<div class="rp2-cu-score"><span>Repeat</span><strong>'+x.scoreParts.repeat+'/20</strong></div>'
+        +'<div class="rp2-cu-score"><span>Quality</span><strong>'+x.scoreParts.quality+'/15</strong></div>'
+      +'</div></div>'
+      +(actions.length?'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-title">Recommended account actions</div><div class="rp2-cu-action-list">'+actions.slice(0,4).map(function(a,i){return '<div class="rp2-cu-action"><div class="rp2-cu-action-no">'+(i+1)+'</div><div class="rp2-cu-action-name">'+esc(a.type)+'<small>'+esc(a.recommendation)+' '+esc(a.reason)+'</small></div><div class="rp2-cu-action-value">'+money(a.potential)+'<small>estimated opportunity</small></div></div>'}).join('')+'</div></div>':'')
+      +'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-title">Recorded order-type mix</div><div class="rp2-cu-detail-copy">This uses the order types available in the uploaded order data—not a product-category feed.</div><div class="rp2-cu-mix">'+x.types.map(function(z){var p=z.value/mixTotal*100;return '<div class="rp2-cu-mix-row"><div class="rp2-cu-mix-label">'+esc(z.name)+'</div><div class="rp2-cu-mix-bar"><span style="width:'+p+'%"></span></div><div class="rp2-cu-mix-pct">'+Math.round(p)+'%</div></div>'}).join('')+'</div></div>'
+      +'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-title">Quality signals</div><div class="rp2-cu-detail-copy">'+x.artErrors+' linked art error'+(x.artErrors===1?'':'s')+' · '+x.credits+' linked credit memo'+(x.credits===1?'':'s')+' · '+money(x.creditValue)+' linked credit value.</div></div>'
+      +'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-title">Recent recorded orders</div><div class="rp2-cu-order-history">'+recent.map(function(o){return '<div class="rp2-cu-hist-row"><div class="rp2-cu-hist-date">'+displayDate(o.orderDate)+'</div><div class="rp2-cu-hist-name">'+esc(o.orderNum||'Order')+' · '+esc(o.orderType||'General Sale')+'</div><div class="rp2-cu-hist-val">'+money(o.total)+'</div></div>'}).join('')+'</div></div>'
+      +'<div class="rp2-cu-detail-section"><div class="rp2-cu-detail-copy">Data note: customer intelligence is based on the order history currently loaded into Sales Tracker. Missing historical files can make cadence, lifetime revenue, or “first recorded purchase” appear newer than the actual customer relationship.</div></div>'
+      +'</aside></div>'
+  }
+
+  window._rp2CustomerSetTab=function(id){
+    window._rp2CustomerTab=id;
+    window._rp2CustomerOpenKey=null;
+    var page=document.getElementById('rp2-page');if(page)page.innerHTML=window._rp2CustomersV2();
+    var main=document.querySelector('#rp-overlay .rp2-main');if(main)main.scrollTop=0
+  };
+  window._rp2CustomerOpen=function(encoded){
+    window._rp2CustomerOpenKey=encoded;
+    var page=document.getElementById('rp2-page');if(page)page.innerHTML=window._rp2CustomersV2()
+  };
+  window._rp2CustomerClose=function(){
+    window._rp2CustomerOpenKey=null;
+    var page=document.getElementById('rp2-page');if(page)page.innerHTML=window._rp2CustomersV2()
+  };
+
+  window._rp2CustomersV2=function(){
+    var g=customerBuild(),tab=window._rp2CustomerTab;
+    if(!g.customers.length){
+      return '<div class="rp2-cu-shell"><div class="rp2-cu-hero"><div class="rp2-cu-kick">Customers 2.0 · BUILD v488</div><div class="rp2-cu-title">Your account command center</div><div class="rp2-cu-copy">No customer order history is currently loaded for '+esc(g.rep)+'. Once order files are imported, this page will build the portfolio, action queue, and account health views automatically.</div></div></div>'
+    }
+    var concentration=g.currentTotal>0?g.top5/g.currentTotal*100:0;
+    var heroStory=g.actionQueue.length
+      ?('The strongest current account signal is '+g.actionQueue[0].action.type.toLowerCase()+' for '+g.actionQueue[0].customer.name+'.')
+      :'Your customer book does not currently show a high-priority risk signal in the available order history.';
+    var hero='<div class="rp2-cu-hero"><div class="rp2-cu-hero-grid"><div><div class="rp2-cu-kick">Customers 2.0 · BUILD v488</div><div class="rp2-cu-title">Your account command center</div><div class="rp2-cu-copy">'+esc(heroStory)+' This page turns recorded order history into a practical view of who drives the book, who needs attention, and where the next customer opportunity may be.</div><div class="rp2-cu-pills"><span class="rp2-cu-pill">Through '+esc(g.cutoff)+'</span><span class="rp2-cu-pill">'+g.active.length+' active customers</span><span class="rp2-cu-pill '+(g.atRisk||g.dormant?'warn':'good')+'">'+(g.atRisk+g.dormant)+' risk / dormant signals</span></div></div>'
+      +'<div class="rp2-cu-brief"><div><div class="rp2-cu-brief-label">Recorded YTD customer revenue</div><div class="rp2-cu-brief-value">'+money(g.currentTotal)+'</div><div class="rp2-cu-brief-title">'+Math.round(concentration)+'% comes from your top 5 accounts</div><div class="rp2-cu-brief-copy">'+(g.top1?('Your largest recorded account is '+g.top1.name+' at '+money(g.top1.currentRevenue)+'.'):'No active account revenue is available.')+'</div></div><div class="rp2-cu-brief-sub">'+g.currentOrders+' primary orders · '+g.newCount+' new customers</div></div>'
+      +'</div></div>';
+    var activeAov=g.currentOrders?g.currentTotal/g.currentOrders:0;
+    var kpis='<div class="rp2-cu-kpis">'
+      +kpi('Active customers',String(g.active.length),'Customers with recorded revenue this year through the selected point')
+      +kpi('Top 10 revenue share',g.currentTotal?pct(g.top10/g.currentTotal*100):'—','Portfolio concentration across the ten largest active accounts')
+      +kpi('Average order value',g.currentOrders?money(activeAov):'—',g.currentOrders+' recorded primary orders')
+      +kpi('New customers',String(g.newCount),'New-customer flag or first recorded purchase this year')
+      +kpi('Needs attention',String(g.atRisk),'Slipping revenue or overdue buying cadence')
+      +kpi('Dormant accounts',String(g.dormant),'More than 120 days since last recorded purchase')
+      +'</div>';
+    var content=tab==='overview'?overview(g):filteredView(g,tab);
+    return '<div class="rp2-cu-shell">'+hero+kpis+tabBar(tab)+content+'</div>'+drawer(g)
+  };
+
+  try{
+    var sess=(typeof _rpSession==='function')?_rpSession():null;
+    if(sess&&sess.role==='rep'&&_rp2.page==='customers')setTimeout(function(){try{_rp2Go('customers')}catch(e){}},0)
+  }catch(e){}
+})();
+</script>
 
 </body>
 </html>
