@@ -7531,6 +7531,29 @@ function _rpDirty(){ try{ if(typeof markDirty==='function')markDirty(); }catch(e
 async function _rpHash(s){ try{ var b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode('tcpRepPortal::'+s)); return [].map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join(''); }catch(e){ return 'p:'+s; } }
 function _rpSession(){ try{ return JSON.parse(localStorage.getItem('tcp_rp_session')||'null'); }catch(e){ return null; } }
 function _rpSetSession(o){ try{ if(o)localStorage.setItem('tcp_rp_session',JSON.stringify(o)); else localStorage.removeItem('tcp_rp_session'); }catch(e){} }
+function _rpNormName(v){ return String(v==null?'':v).trim().replace(/\s+/g,' ').toLowerCase(); }
+function _rpCanonicalRepName(name){
+  var target=_rpNormName(name); if(!target)return '';
+  var reps=[];
+  try{ reps=(typeof activeReps==='function'?activeReps():(S.reps||[]))||[]; }catch(e){ reps=(S&&S.reps)||[]; }
+  for(var i=0;i<reps.length;i++){
+    var r=reps[i],rn=typeof r==='string'?r:(r&&r.name);
+    if(_rpNormName(rn)===target)return String(rn);
+  }
+  return '';
+}
+function _rpRequestedRep(){
+  var raw=_rpUrlRep();
+  if(!raw)return '';
+  return _rpCanonicalRepName(raw)||String(raw).trim().replace(/\s+/g,' ');
+}
+function _rpSessionMismatch(sess){
+  if(!sess||sess.role!=='rep')return null;
+  var requested=_rpRequestedRep(),gid=_rpUrlGist();
+  if(requested&&_rpNormName(sess.rep)!==_rpNormName(requested))return {type:'rep',requested:requested,sessionRep:sess.rep||''};
+  if(gid&&sess.portal&&String(sess.portal)!==String(gid))return {type:'portal',requested:requested,sessionRep:sess.rep||''};
+  return null;
+}
 
 /* ---------- admin ---------- */
 async function _rpSaveManagerPw(){ var el=document.getElementById('rp-mgr-pw'); var v=el?el.value.trim():''; if(!v){ alert('Enter a manager password.'); return; } _rpEnsure().managerHash=await _rpHash(v); if(el)el.value=''; _rpDirty(); _rpRenderAdmin(); alert('Manager password saved.'); }
@@ -7559,32 +7582,77 @@ function _rpRenderAdmin(){
 /* ---------- login + routing ---------- */
 async function _rpAttemptLogin(){
   var G=_rpEnsure(); var nEl=document.getElementById('rp-login-name'), pEl=document.getElementById('rp-login-pw'), msg=document.getElementById('rp-login-msg');
-  var name=nEl?nEl.value.trim():'', pw=pEl?pEl.value:'';
+  var requested=_rpRequestedRep(), name=requested||(nEl?nEl.value.trim():''), pw=pEl?pEl.value:'';
   if(!pw){ if(msg)msg.textContent='Enter your password.'; return; }
   var h=await _rpHash(pw);
-  if(G.managerHash&&h===G.managerHash){ _rpSetSession({role:'manager'}); _rpApply(); return; }
-  var rep=null;
-  if(name&&G.accounts[name]&&G.accounts[name].hash===h)rep=name;
-  if(!rep)for(var r in G.accounts){ if(G.accounts[r].hash===h){ rep=r; break; } }
-  if(rep){ _rpSetSession({role:'rep',rep:rep}); _rpApply(); return; }
-  if(msg)msg.textContent='That login didn\u2019t match. Check with your manager.';
+  if(G.managerHash&&h===G.managerHash){ _rpSetSession({role:'manager',portal:_rpUrlGist()||''}); _rpApply(); return; }
+
+  var rep=null,canonical=name?_rpCanonicalRepName(name):'';
+
+  /* A rep-specific link is identity locked: URL identity and authenticated identity must agree. */
+  if(requested){
+    canonical=_rpCanonicalRepName(requested)||requested;
+    if(G.accounts[canonical]&&G.accounts[canonical].hash===h)rep=canonical;
+  }else{
+    if(canonical&&G.accounts[canonical]&&G.accounts[canonical].hash===h)rep=canonical;
+    if(!rep)for(var r in G.accounts){ if(G.accounts[r]&&G.accounts[r].hash===h){ rep=r; break; } }
+  }
+
+  if(rep){
+    rep=_rpCanonicalRepName(rep)||rep;
+    _rpSetSession({role:'rep',rep:rep,portal:_rpUrlGist()||''});
+    _rpApply();
+    return;
+  }
+
+  if(msg)msg.textContent=requested
+    ?('This link is for '+requested+'. Use that rep\u2019s portal password.')
+    :'That login didn\u2019t match. Check with your manager.';
 }
 function _rpLogout(){ _rpSetSession(null); location.reload(); }
 function _rpApply(){
-  _rpCss(); var G=_rpEnsure(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); }
-  var sess=_rpSession(); var repLink=!!_rpUrlGist();
-  if(sess&&sess.role==='rep'){ _rp2Css(); ov.style.display='block'; ov.innerHTML=_rp2Html(sess.rep); try{_rp2After();}catch(e){} try{_rpStartCloudRefresh();}catch(e){} return; }
+  _rpCss();
+  var G=_rpEnsure(),ov=document.getElementById('rp-overlay');
+  if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); }
+
+  var sess=_rpSession(),repLink=!!_rpUrlGist(),requested=_rpRequestedRep(),mismatch=_rpSessionMismatch(sess);
+
+  /* A stale browser-wide rep session may never override the rep named by the URL. */
+  if(mismatch){
+    window._rpIdentityMismatch={type:mismatch.type,requested:mismatch.requested||requested||'',sessionRep:mismatch.sessionRep||'',at:new Date().toISOString()};
+    _rpSetSession(null);
+    sess=null;
+  }
+
+  if(sess&&sess.role==='rep'){
+    var canonical=_rpCanonicalRepName(sess.rep)||sess.rep;
+    if(requested&&_rpNormName(canonical)!==_rpNormName(requested)){ _rpSetSession(null); sess=null; }
+    else{
+      if(canonical!==sess.rep||(!sess.portal&&_rpUrlGist()))_rpSetSession({role:'rep',rep:canonical,portal:_rpUrlGist()||sess.portal||''});
+      _rp2Css(); ov.style.display='block'; ov.innerHTML=_rp2Html(canonical);
+      try{_rp2After();}catch(e){} try{_rpStartCloudRefresh();}catch(e){}
+      return;
+    }
+  }
+
   if(sess&&sess.role==='manager'){ ov.style.display='none'; return; }
   if(!repLink&&!G.enabled){ ov.style.display='none'; return; }
-  // not logged in -> login screen
+
+  var target=requested||_rpUrlRep(),missingTarget=!!(_rpUrlRep()&&!_rpCanonicalRepName(_rpUrlRep())),mismatchMsg='';
+  if(window._rpIdentityMismatch&&window._rpIdentityMismatch.requested){
+    mismatchMsg='This link is for '+window._rpIdentityMismatch.requested+'. A different rep session was signed out to prevent cross-rep data from being shown.';
+  }else if(missingTarget){
+    mismatchMsg='The rep named in this link was not found in the current cloud snapshot. Check the rep link or refresh the manager cloud data.';
+  }
+
   ov.style.display='block';
   ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card">'
     +'<div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div>'
-    +'<div class="rp-login-sub">Sign in to see your numbers</div>'
-    +'<input id="rp-login-name" value="'+_rpEsc(_rpUrlRep())+'" placeholder="Your name (optional)" class="rp-login-in" autocomplete="off">'
+    +'<div class="rp-login-sub">'+(target?('Sign in as '+_rpEsc(target)):'Sign in to see your numbers')+'</div>'
+    +'<input id="rp-login-name" value="'+_rpEsc(target)+'" placeholder="Your name (optional)" class="rp-login-in" autocomplete="off" '+(requested?'readonly':'')+'>'
     +'<input id="rp-login-pw" type="password" placeholder="Password" class="rp-login-in" autocomplete="current-password" onkeydown="if(event.key===&quot;Enter&quot;)_rpAttemptLogin()">'
     +'<button class="rp-login-btn" onclick="_rpAttemptLogin()">Sign in</button>'
-    +'<div id="rp-login-msg" class="rp-login-msg"></div></div></div>';
+    +'<div id="rp-login-msg" class="rp-login-msg">'+_rpEsc(mismatchMsg)+'</div></div></div>';
 }
 function _rpUrlGist(){ try{ var m=(location.search||'').match(/[?&]portal=([^&]+)/); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
 function _rpRepLink(){ var gid=''; try{ gid=localStorage.getItem('salesTracker_gistId')||''; }catch(e){} if(!gid){ alert('Set up cloud sync first (save your data to a Gist in Admin), then come back and copy the rep link.'); return ''; } return location.origin+location.pathname+'?portal='+encodeURIComponent(gid); }
@@ -7669,6 +7737,7 @@ function _rpStartCloudRefresh(){
     _rpCloudRefreshTimer=setInterval(function(){
       var sess=_rpSession();
       if(!sess||sess.role!=='rep'||document.hidden)return;
+      if(_rpSessionMismatch(sess)){ _rpApply(); return; }
       _rp2RefreshCloud(null,true);
     },5*60*1000);
   }catch(e){}
@@ -7688,6 +7757,8 @@ window._rp2RefreshCloud=async function(btn,silent){
     }
     var ok=await _rpPullGist(gid);
     if(ok){
+      var sess=_rpSession();
+      if(_rpSessionMismatch(sess)){ _rpApply(); return true; }
       try{_rp2Go(_rp2.page||'dash');}catch(e){_rpApply();}
       return true;
     }
@@ -21764,7 +21835,7 @@ body.coach-seated #pg-coach .coach-panel-head,
       return (gr.g?'<div class="rp2-navg">'+gr.g+'</div>':'')+its;
     }).join('');
     return '<div class="rp2-app"><aside class="rp2-side"><div class="rp2-logo">▲ SALES TRACKER<span>REP PERFORMANCE PORTAL</span></div>'+nav+'<button class="rp2-nav rp2-out" onclick="_rpLogout()">⏻ Sign out</button></aside>'
-      +'<main class="rp2-main"><div class="rp2-top"><div class="rp2-person"><div class="rp2-person-mark">'+rp2Initials(rep)+'</div><div><div class="rp2-hi">'+_rp2Esc(rep)+'</div><div class="rp2-sub">Personal performance workspace · '+getQ()+' '+getYr()+'</div></div></div>'+_rp2PeriodControls()+'</div><div id="rp2-page">'+_rp2Page()+'</div></main></div>';
+      +'<main class="rp2-main"><div class="rp2-top"><div class="rp2-person"><div class="rp2-person-mark">'+rp2Initials(rep)+'</div><div><div class="rp2-hi">'+_rp2Esc(rep)+'</div><div class="rp2-sub">Personal performance workspace · '+getQ()+' '+getYr()+' · identity scope v500</div></div></div>'+_rp2PeriodControls()+'</div><div id="rp2-page">'+_rp2Page()+'</div></main></div>';
   };
   window._rp2Dash=function(){
     var rep=_rp2.rep,t=_rp2Tot(rep),goal=_rp2Goal(rep),ranks=_rp2Ranks(),rk=_rp2RankOf(ranks,rep);
