@@ -7615,7 +7615,10 @@ async function _rpPullGist(gistId){
       exportedAt:parsed.exportedAt||'',
       loadedAt:new Date().toISOString(),
       ok:true,
-      error:''
+      error:'',
+      weeklyDataCount:Number(parsed.weeklyDataCount)||0,
+      latestWeeklyKeys:Array.isArray(parsed.latestWeeklyKeys)?parsed.latestWeeklyKeys:[],
+      selectedWeekKey:parsed.selectedWeekKey||''
     };
     return true;
   }catch(e){
@@ -7627,6 +7630,23 @@ async function _rpPullGist(gistId){
 
 var _rpCloudRefreshTimer=null;
 var _rpCloudRefreshBusy=false;
+
+
+function _rpCloudWeekDiagnostic(rep,weekKey){
+  try{
+    var meta=window._rpCloudMeta||{};
+    var exact=!!(S&&S.data&&Object.prototype.hasOwnProperty.call(S.data,rep+'|'+weekKey));
+    return {
+      exactKey:rep+'|'+weekKey,
+      exactPresent:exact,
+      weeklyDataCount:Number(meta.weeklyDataCount)||Object.keys((S&&S.data)||{}).length,
+      selectedWeekKey:meta.selectedWeekKey||'',
+      latestWeeklyKeys:Array.isArray(meta.latestWeeklyKeys)?meta.latestWeeklyKeys:[]
+    };
+  }catch(e){
+    return {exactKey:rep+'|'+weekKey,exactPresent:false,weeklyDataCount:0,selectedWeekKey:'',latestWeeklyKeys:[]};
+  }
+}
 
 function _rpCloudAgeLabel(){
   try{
@@ -8983,6 +9003,48 @@ function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
 function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function _liveTrackerStateForCloud(){
+  return {
+    reps:(S.reps||[]).map(function(r){
+      return Object.assign({},r,{
+        profile:r&&r.profile?Object.assign({},r.profile,{photo:null}):(r&&r.profile)
+      });
+    }),
+    goals:S.goals||{},
+    data:S.data||{},
+    cms:S.cms||[],
+    artErrors:S.artErrors||[],
+    artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},
+    artErrorIgnored:S.artErrorIgnored||[],
+    hrViolations:S.hrViolations||[],
+    coachingNotes:S.coachingNotes||[],
+    dailySales:S.dailySales||[],
+    customers:S.customers||[],
+    reviews:S.reviews||{},
+    orders:S.orders||[],
+    ordersMeta:S.ordersMeta||{},
+    gamestorm:S.gamestorm||{projects:[],activeId:null},
+    priorYear:S.priorYear||{},
+    repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},
+    dailyRep:S.dailyRep||{},
+    companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},
+    teamGoals:S.teamGoals||{}
+  };
+}
+
+function _liveWeeklyCloudMeta(){
+  try{
+    var keys=Object.keys((S&&S.data)||{}).sort();
+    return {
+      weeklyDataCount:keys.length,
+      latestWeeklyKeys:keys.slice(-25),
+      selectedWeekKey:(typeof getCWK==='function'?getCWK():'')
+    };
+  }catch(e){
+    return {weeklyDataCount:0,latestWeeklyKeys:[],selectedWeekKey:''};
+  }
+}
+
 function debouncedPersist(){clearTimeout(_persistTimer);_persistTimer=setTimeout(persist,1200);}
 var _portalCloudSyncTimer=null;
 function _queuePortalCloudSync(){
@@ -15182,18 +15244,34 @@ function _restoreTrackerKeys(data){
 function _buildCloudPayload(){
   var dump={};
   var photoCount=0;
+
+  /* Keep tracker-owned auxiliary keys and profile photos from localStorage. */
   for(var i=0;i<localStorage.length;i++){
     var k=localStorage.key(i);
     if(!_isTrackerKey(k))continue;
     if(k&&k.indexOf('salesTracker_photo_')===0)photoCount++;
     dump[k]=localStorage.getItem(k);
   }
+
+  /*
+    CRITICAL:
+    STORE_KEY must come from the current in-memory S object, not the last
+    successful localStorage write. Browser quota/storage failures can leave
+    localStorage stale even while the manager UI is showing newer data.
+  */
+  var liveState=_liveTrackerStateForCloud();
+  dump[STORE_KEY]=JSON.stringify(liveState);
+
+  var weeklyMeta=_liveWeeklyCloudMeta();
   return{
     exportedAt:new Date().toISOString(),
     version:'TCP_Tracker_Backup_v1',
     keyCount:Object.keys(dump).length,
     photoCount:photoCount,
     photosIncluded:true,
+    weeklyDataCount:weeklyMeta.weeklyDataCount,
+    latestWeeklyKeys:weeklyMeta.latestWeeklyKeys,
+    selectedWeekKey:weeklyMeta.selectedWeekKey,
     data:dump
   };
 }
@@ -26108,7 +26186,8 @@ body.coach-seated #pg-coach .coach-panel-head,
   function summaryText(g){
     var pieces=[];
     if(!g.t.entered&&_rpUrlGist()){
-      pieces.push('This Rep Portal is reading the GitHub Gist cloud snapshot. The selected weekly scorecard key is not present in that snapshot yet. Use Refresh Data after the manager-side cloud save completes.');
+      var _diag=_rpCloudWeekDiagnostic(g.spec.rep,g.spec.selected&&g.spec.selected.key?g.spec.selected.key:'');
+      pieces.push('This Rep Portal is reading the GitHub Gist cloud snapshot. The exact selected scorecard key '+_diag.exactKey+' is not present in the loaded snapshot. The snapshot currently contains '+_diag.weeklyDataCount+' weekly scorecard keys. Refresh Data after the manager-side cloud save completes.');
     }else{
       pieces.push('You produced '+money(g.t.revenue)+' across '+g.t.orders+' orders and '+g.t.calls+' calls in '+g.spec.label+'.');
     }
@@ -26355,7 +26434,7 @@ body.coach-seated #pg-coach .coach-panel-head,
    try{
     var tab=window._rp2ReportTab,g=buildReport(tab==='history'?'quarter':tab);
     var coach=coaching(g),paceLabel=g.forecast.goal?(Math.round(g.pacePct||0)+'% of cumulative pace'):'Goal not set';
-    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v493</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
+    var hero='<div class="rp2-rh-hero"><div class="rp2-rh-hero-grid"><div><div class="rp2-rh-kick">Reports Hub 2.0 · BUILD v494</div><div class="rp2-rh-title">Your performance story, in one place</div><div class="rp2-rh-copy">Reports Hub pulls the rep portal together into a single review: what happened, what changed, what is working, what needs attention, and what to do next.</div><div class="rp2-rh-pills"><span class="rp2-rh-pill">'+esc(g.spec.label)+'</span><span class="rp2-rh-pill">'+esc(g.spec.sub)+'</span><span class="rp2-rh-pill '+(g.forecast.goal&&g.pacePct!=null&&g.pacePct>=100?'good':'warn')+'">'+esc(paceLabel)+'</span></div></div>'
       +'<div class="rp2-rh-brief"><div><div class="rp2-rh-brief-label">Current report focus</div><div class="rp2-rh-brief-value">'+money(g.t.revenue)+'</div><div class="rp2-rh-brief-title">'+esc(reportHeadline(g))+'</div><div class="rp2-rh-brief-copy">'+esc(coach.focus.title)+': '+esc(coach.focus.copy)+'</div></div><div class="rp2-rh-actions"><button class="rp2-rh-btn pri" onclick="_rp2ReportPrint()">🖨 Print Report</button><button class="rp2-rh-btn" onclick="_rp2ReportCopy()">⧉ Copy Summary</button></div></div>'
       +'</div></div>';
 
