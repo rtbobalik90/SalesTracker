@@ -7725,7 +7725,7 @@ function _rp2Page(){
  var p=_rp2.page;
  try{
   if(p==='dash')return _rp2Dash(); if(p==='year')return (typeof window._rp2YearV2==='function'?window._rp2YearV2():_rp2Year()); if(p==='lb')return (typeof window._rp2LBV2==='function'?window._rp2LBV2():_rp2LB());
-  if(p==='daily')return _rp2Daily(); if(p==='forecast')return (typeof window._rp2ForecastV2==='function'?window._rp2ForecastV2():_rp2Forecast()); if(p==='customers')return _rp2Customers();
+  if(p==='daily')return (typeof window._rp2DailyV2==='function'?window._rp2DailyV2():_rp2Daily()); if(p==='forecast')return (typeof window._rp2ForecastV2==='function'?window._rp2ForecastV2():_rp2Forecast()); if(p==='customers')return _rp2Customers();
   if(p==='orders')return _rp2Orders(); if(p==='reports')return _rp2Reports(); if(p==='profile')return _rp2Profile();
   if(p==='credits')return _rp2Credits(); if(p==='reviews')return _rp2Reviews(); if(p==='arterrors')return _rp2Art();
   if(p==='production')return _rp2Prod(); if(p==='ai')return _rp2AI();
@@ -7815,6 +7815,10 @@ function _rp2After(){
   }
   if(_rp2.page==='year'){
    setTimeout(function(){ try{ if(typeof window._rp2YearDraw==='function')window._rp2YearDraw(); }catch(e){} },0);
+   return;
+  }
+  if(_rp2.page==='daily'){
+   setTimeout(function(){ try{ if(typeof window._rp2DailyDraw==='function')window._rp2DailyDraw(); }catch(e){} },0);
    return;
   }
  }catch(e){}
@@ -23900,6 +23904,397 @@ body.coach-seated #pg-coach .coach-panel-head,
   font-weight:850;
 }
 </style>
+
+
+<style id="rp2-daily-v486-css">
+/* ===== REP PORTAL DAILY SALES 2.0 — v486 ===== */
+#rp-overlay .rp2-ds-shell{display:grid;gap:16px;min-width:0}
+#rp-overlay .rp2-ds-hero{
+  position:relative;overflow:hidden;padding:30px 32px;border-radius:23px;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(78,156,255,.18),transparent 28%),
+    radial-gradient(circle at 12% 105%,rgba(132,108,255,.18),transparent 31%),
+    linear-gradient(135deg,#171536 0%,#102139 55%,#0d1928 100%);
+  border:1px solid rgba(132,108,255,.34);box-shadow:0 20px 60px rgba(0,0,0,.20)
+}
+#rp-overlay .rp2-ds-hero-grid{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(330px,.8fr);gap:26px;align-items:stretch}
+#rp-overlay .rp2-ds-kick{color:#9585ff;font-size:8.5px;font-weight:950;letter-spacing:1.3px;text-transform:uppercase}
+#rp-overlay .rp2-ds-title{margin-top:7px;color:#fff;font-size:34px;font-weight:950;letter-spacing:-.05em;line-height:1.02}
+#rp-overlay .rp2-ds-copy{max-width:800px;margin-top:13px;color:#b7c3d6;font-size:12px;line-height:1.7}
+#rp-overlay .rp2-ds-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+#rp-overlay .rp2-ds-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);color:#aebbd0;font-size:8px;font-weight:900;letter-spacing:.55px;text-transform:uppercase}
+#rp-overlay .rp2-ds-pill.good{border-color:rgba(78,214,163,.24);background:rgba(78,214,163,.09);color:#82ddb9}
+#rp-overlay .rp2-ds-pill.warn{border-color:rgba(245,190,100,.24);background:rgba(245,190,100,.09);color:#f0c97f}
+#rp-overlay .rp2-ds-pill.risk{border-color:rgba(240,120,120,.24);background:rgba(240,120,120,.09);color:#efa3a3}
+#rp-overlay .rp2-ds-brief{display:flex;flex-direction:column;justify-content:space-between;min-height:230px;padding:22px;border-radius:18px;border:1px solid rgba(255,255,255,.085);background:rgba(5,11,21,.43)}
+#rp-overlay .rp2-ds-brief-label{color:#74829a;font-size:8px;font-weight:950;letter-spacing:1.15px;text-transform:uppercase}
+#rp-overlay .rp2-ds-brief-value{margin-top:9px;color:#fff;font-size:39px;font-weight:950;letter-spacing:-.055em;line-height:1}
+#rp-overlay .rp2-ds-brief-title{margin-top:10px;color:#fff;font-size:18px;font-weight:930;line-height:1.2}
+#rp-overlay .rp2-ds-brief-copy{margin-top:8px;color:#8998ad;font-size:10px;line-height:1.55}
+#rp-overlay .rp2-ds-brief-sub{margin-top:18px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07);color:#8392a8;font-size:9.5px;line-height:1.5}
+
+#rp-overlay .rp2-ds-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px}
+#rp-overlay .rp2-ds-kpi{position:relative;overflow:hidden;min-height:126px;padding:17px 18px;border-radius:17px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line);box-shadow:0 14px 38px rgba(0,0,0,.11)}
+#rp-overlay .rp2-ds-kpi:after{content:"";position:absolute;width:94px;height:94px;border-radius:50%;right:-52px;top:-48px;background:rgba(132,108,255,.08)}
+#rp-overlay .rp2-ds-kpi-label{position:relative;z-index:1;color:#718099;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .rp2-ds-kpi-value{position:relative;z-index:1;margin-top:9px;color:#fff;font-size:24px;font-weight:950;letter-spacing:-.04em}
+#rp-overlay .rp2-ds-kpi-sub{position:relative;z-index:1;margin-top:5px;color:#7f8ea5;font-size:9.5px;line-height:1.4}
+
+#rp-overlay .rp2-ds-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:8px}
+#rp-overlay .rp2-ds-section-kick{color:#8878ef;font-size:8px;font-weight:950;letter-spacing:1.25px;text-transform:uppercase}
+#rp-overlay .rp2-ds-section-title{margin-top:5px;color:#fff;font-size:20px;font-weight:930;letter-spacing:-.03em}
+#rp-overlay .rp2-ds-section-note{max-width:600px;color:#718099;font-size:10px;line-height:1.45;text-align:right}
+
+#rp-overlay .rp2-ds-weekstrip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px}
+#rp-overlay .rp2-ds-day{
+  position:relative;min-height:185px;padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.065);
+  background:linear-gradient(145deg,rgba(17,27,42,.97),rgba(11,18,29,.99));cursor:pointer;transition:.15s ease
+}
+#rp-overlay .rp2-ds-day:hover{transform:translateY(-2px);border-color:rgba(132,108,255,.34)}
+#rp-overlay .rp2-ds-day.selected{border-color:rgba(132,108,255,.68);box-shadow:0 0 0 1px rgba(132,108,255,.12) inset,0 12px 34px rgba(0,0,0,.14)}
+#rp-overlay .rp2-ds-day.reset{border-color:rgba(78,214,163,.18);background:linear-gradient(145deg,rgba(78,214,163,.055),rgba(11,18,29,.99))}
+#rp-overlay .rp2-ds-day.missing{border-style:dashed;border-color:rgba(245,190,100,.30)}
+#rp-overlay .rp2-ds-day-name{color:#73829a;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .rp2-ds-day-date{margin-top:4px;color:#64738a;font-size:8px}
+#rp-overlay .rp2-ds-day-value{margin-top:18px;color:#fff;font-size:21px;font-weight:950;letter-spacing:-.035em}
+#rp-overlay .rp2-ds-day-sub{margin-top:6px;color:#8190a6;font-size:9px;line-height:1.4}
+#rp-overlay .rp2-ds-day-status{position:absolute;left:14px;right:14px;bottom:13px;padding-top:10px;border-top:1px solid rgba(255,255,255,.055);color:#77869c;font-size:8.5px;font-weight:850}
+#rp-overlay .rp2-ds-day-status.good{color:#77d8b1}
+#rp-overlay .rp2-ds-day-status.warn{color:#eac276}
+#rp-overlay .rp2-ds-day-status.risk{color:#e69b9b}
+
+#rp-overlay .rp2-ds-analysis-grid{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(330px,.82fr);gap:12px}
+#rp-overlay .rp2-ds-panel{min-width:0;padding:20px;border-radius:19px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line);box-shadow:0 16px 46px rgba(0,0,0,.12)}
+#rp-overlay .rp2-ds-read{padding:22px;border-radius:19px;background:radial-gradient(circle at 95% 0%,rgba(132,108,255,.13),transparent 30%),linear-gradient(145deg,rgba(17,27,42,.99),rgba(11,18,29,.99));border:1px solid rgba(132,108,255,.25)}
+#rp-overlay .rp2-ds-read-label{color:#8f80f6;font-size:8px;font-weight:950;letter-spacing:1.15px;text-transform:uppercase}
+#rp-overlay .rp2-ds-read-title{margin-top:8px;color:#fff;font-size:24px;font-weight:950;letter-spacing:-.04em;line-height:1.1}
+#rp-overlay .rp2-ds-read-copy{margin-top:10px;color:#9aa8bc;font-size:11px;line-height:1.65}
+#rp-overlay .rp2-ds-read-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px}
+#rp-overlay .rp2-ds-read-fact{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.025)}
+#rp-overlay .rp2-ds-read-fact span{display:block;color:#6d7c93;font-size:7.5px;font-weight:950;letter-spacing:.8px;text-transform:uppercase}
+#rp-overlay .rp2-ds-read-fact strong{display:block;margin-top:6px;color:#fff;font-size:14px;font-weight:920}
+
+#rp-overlay .rp2-ds-intel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+#rp-overlay .rp2-ds-intel-card{padding:17px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}
+#rp-overlay .rp2-ds-intel-label{color:#8575ef;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .rp2-ds-intel-title{margin-top:8px;color:#fff;font-size:15px;font-weight:920}
+#rp-overlay .rp2-ds-intel-copy{margin-top:7px;color:#8493aa;font-size:9.5px;line-height:1.55}
+
+#rp-overlay .rp2-ds-pace{padding:20px;border-radius:19px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line)}
+#rp-overlay .rp2-ds-pace-scale{position:relative;height:15px;margin-top:18px;border-radius:999px;background:rgba(255,255,255,.055);overflow:hidden}
+#rp-overlay .rp2-ds-pace-scale .actual{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#846cff,#4e9cff)}
+#rp-overlay .rp2-ds-pace-scale .needed{position:absolute;top:-3px;bottom:-3px;width:2px;background:#4ed6a3;box-shadow:0 0 10px rgba(78,214,163,.7)}
+#rp-overlay .rp2-ds-pace-labels{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:#6f7f96;font-size:8.5px}
+#rp-overlay .rp2-ds-pace-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:17px}
+#rp-overlay .rp2-ds-pace-stat{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.024)}
+#rp-overlay .rp2-ds-pace-stat span{display:block;color:#6f7e94;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.8px}
+#rp-overlay .rp2-ds-pace-stat strong{display:block;margin-top:6px;color:#fff;font-size:15px;font-weight:920}
+#rp-overlay .rp2-ds-pace-stat small{display:block;margin-top:4px;color:#78879d;font-size:8.5px;line-height:1.4}
+
+#rp-overlay .rp2-ds-record-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#rp-overlay .rp2-ds-record{min-height:150px;padding:17px;border-radius:16px;border:1px solid rgba(255,255,255,.065);background:rgba(255,255,255,.026)}
+#rp-overlay .rp2-ds-record-label{color:#73829a;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .rp2-ds-record-value{margin-top:10px;color:#fff;font-size:21px;font-weight:950;letter-spacing:-.035em}
+#rp-overlay .rp2-ds-record-sub{margin-top:7px;color:#8090a6;font-size:9px;line-height:1.45}
+
+#rp-overlay .rp2-ds-chart-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(330px,.8fr);gap:12px}
+#rp-overlay .rp2-ds-chart{height:285px;position:relative}
+#rp-overlay .rp2-ds-order-list{display:grid;gap:8px;margin-top:13px}
+#rp-overlay .rp2-ds-order{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.023)}
+#rp-overlay .rp2-ds-order-name{color:#dfe7f3;font-size:10px;font-weight:850}
+#rp-overlay .rp2-ds-order-name small{display:block;margin-top:3px;color:#687890;font-size:8px;font-weight:700}
+#rp-overlay .rp2-ds-order-val{color:#fff;font-size:11px;font-weight:920;text-align:right}
+
+#rp-overlay .rp2-ds-calendar{padding:20px;border-radius:19px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));border:1px solid var(--rp-line)}
+#rp-overlay .rp2-ds-cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin:14px 0 7px;color:#6f7f97;font-size:8px;font-weight:950;text-align:center;letter-spacing:.7px}
+#rp-overlay .rp2-ds-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+#rp-overlay .rp2-ds-cal-cell{position:relative;min-height:92px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.022);cursor:pointer}
+#rp-overlay .rp2-ds-cal-cell.empty{opacity:.22;cursor:default}
+#rp-overlay .rp2-ds-cal-cell.has{border-color:rgba(78,156,255,.20)}
+#rp-overlay .rp2-ds-cal-cell.selected{border-color:rgba(132,108,255,.72);box-shadow:0 0 0 1px rgba(132,108,255,.10) inset}
+#rp-overlay .rp2-ds-cal-cell.week{background:rgba(132,108,255,.045)}
+#rp-overlay .rp2-ds-cal-cell.reset{border-color:rgba(78,214,163,.16)}
+#rp-overlay .rp2-ds-cal-num{color:#8392a8;font-size:9px;font-weight:900}
+#rp-overlay .rp2-ds-cal-val{margin-top:12px;color:#fff;font-size:13px;font-weight:950}
+#rp-overlay .rp2-ds-cal-sub{margin-top:4px;color:#6f7f96;font-size:7.5px;line-height:1.3}
+
+#rp-overlay .rp2-ds-next{
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:12px;padding:22px;border-radius:20px;
+  background:radial-gradient(circle at 92% 0%,rgba(78,214,163,.12),transparent 28%),linear-gradient(145deg,rgba(17,27,42,.99),rgba(11,18,29,.99));
+  border:1px solid rgba(78,214,163,.22)
+}
+#rp-overlay .rp2-ds-next-label{color:#73d2ab;font-size:8px;font-weight:950;letter-spacing:1.1px;text-transform:uppercase}
+#rp-overlay .rp2-ds-next-title{margin-top:8px;color:#fff;font-size:22px;font-weight:950;letter-spacing:-.035em}
+#rp-overlay .rp2-ds-next-copy{margin-top:9px;color:#94a3b7;font-size:10.5px;line-height:1.65}
+#rp-overlay .rp2-ds-next-target{display:flex;flex-direction:column;justify-content:center;padding:18px;border-radius:16px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+#rp-overlay .rp2-ds-next-target span{color:#6f7f96;font-size:8px;font-weight:950;letter-spacing:.9px;text-transform:uppercase}
+#rp-overlay .rp2-ds-next-target strong{margin-top:8px;color:#fff;font-size:29px;font-weight:950;letter-spacing:-.045em}
+#rp-overlay .rp2-ds-next-target small{margin-top:6px;color:#7e8da3;font-size:9px;line-height:1.45}
+
+@media(max-width:1500px){#rp-overlay .rp2-ds-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}#rp-overlay .rp2-ds-weekstrip{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1200px){#rp-overlay .rp2-ds-hero-grid,#rp-overlay .rp2-ds-analysis-grid,#rp-overlay .rp2-ds-chart-grid,#rp-overlay .rp2-ds-next{grid-template-columns:1fr}#rp-overlay .rp2-ds-section-head{align-items:flex-start;flex-direction:column}#rp-overlay .rp2-ds-section-note{text-align:left}#rp-overlay .rp2-ds-record-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){#rp-overlay .rp2-ds-weekstrip,#rp-overlay .rp2-ds-intel,#rp-overlay .rp2-ds-read-facts,#rp-overlay .rp2-ds-pace-summary{grid-template-columns:1fr 1fr}#rp-overlay .rp2-ds-cal-grid,#rp-overlay .rp2-ds-cal-dow{gap:4px}}
+@media(max-width:650px){#rp-overlay .rp2-ds-kpis,#rp-overlay .rp2-ds-weekstrip,#rp-overlay .rp2-ds-intel,#rp-overlay .rp2-ds-read-facts,#rp-overlay .rp2-ds-pace-summary,#rp-overlay .rp2-ds-record-grid{grid-template-columns:1fr}#rp-overlay .rp2-ds-hero{padding:23px 20px}#rp-overlay .rp2-ds-cal-cell{min-height:70px;padding:7px}}
+</style>
+
+<script id="rp2-daily-v486-js">
+(function(){
+  function n(v){return Number(v)||0}
+  function money(v){return _rp2$(n(v))}
+  function esc(v){return _rp2Esc(String(v==null?'':v))}
+  function isoDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function asDate(v){if(v instanceof Date)return new Date(v.getTime());var d=new Date(v);return isNaN(d.getTime())?null:d}
+  function dayName(iso){return new Date(iso+'T12:00:00').toLocaleString('en-US',{weekday:'short'})}
+  function dayLong(iso){return new Date(iso+'T12:00:00').toLocaleString('en-US',{weekday:'long',month:'short',day:'numeric'})}
+  function dateRangeDays(start,end){
+    var a=asDate(start),b=asDate(end),out=[];
+    if(!a||!b)return out;
+    a=new Date(a.getFullYear(),a.getMonth(),a.getDate(),12);
+    b=new Date(b.getFullYear(),b.getMonth(),b.getDate(),12);
+    while(a<=b){out.push(isoDate(a));a.setDate(a.getDate()+1)}
+    return out;
+  }
+  function hasOwnDailyRecord(iso,rep){
+    return !!(S.dailyRep&&S.dailyRep[iso]&&Object.prototype.hasOwnProperty.call(S.dailyRep[iso],rep))
+  }
+  function ownCum(iso,rep){
+    try{return typeof _drWTD==='function'?n(_drWTD(iso,rep)):n((S.dailyRep&&S.dailyRep[iso]||{})[rep])}catch(e){return n((S.dailyRep&&S.dailyRep[iso]||{})[rep])}
+  }
+  function priorExplicitInWeek(iso,rep){
+    var ws=typeof _drWeekStart==='function'?_drWeekStart(iso):iso;
+    var dates=(S.dailyRep?Object.keys(S.dailyRep):[]).filter(function(d){return d>=ws&&d<iso&&hasOwnDailyRecord(d,rep)}).sort();
+    return dates.length?dates[dates.length-1]:null
+  }
+  function daySales(iso,rep){
+    var dow=new Date(iso+'T12:00:00').getDay();
+    if(dow===0&&!hasOwnDailyRecord(iso,rep))return {iso:iso,has:true,reset:true,revenue:0,cumulative:0,splitPending:false};
+    if(!hasOwnDailyRecord(iso,rep))return {iso:iso,has:false,reset:false,revenue:null,cumulative:ownCum(iso,rep),splitPending:false};
+    var cur=n((S.dailyRep[iso]||{})[rep]),prevIso=priorExplicitInWeek(iso,rep),prev=prevIso?n((S.dailyRep[prevIso]||{})[rep]):0;
+    var gap=false;
+    if(prevIso){
+      var pd=new Date(prevIso+'T12:00:00'),cd=new Date(iso+'T12:00:00');
+      gap=((cd-pd)/86400000)>1;
+    }else if(dow>1){
+      gap=true;
+    }
+    return {iso:iso,has:true,reset:false,revenue:Math.max(0,cur-prev),cumulative:cur,splitPending:gap,prevIso:prevIso};
+  }
+  function ordersOn(iso,rep){
+    return (S.orders||[]).filter(function(o){return o.rep===rep&&o.orderDate===iso&&o.kind==='order'})
+  }
+  function qualityForWeek(rep,week){
+    var key=week&&week.key;
+    var arts=(S.artErrors||[]).filter(function(a){return a.rep===rep&&(!key||!a.weekKey||a.weekKey===key)});
+    var credits=(S.cms||[]).filter(function(c){var fault=String(c.fault||'').toLowerCase();return c.rep===rep&&(!key||!c.weekKey||c.weekKey===key)&&fault.indexOf('rep')>=0});
+    return {arts:arts.length,credits:credits.length,creditValue:credits.reduce(function(s,c){return s+n(c.amount)},0)}
+  }
+  function selectedContext(){
+    var c=window._rp2V476Context?window._rp2V476Context(_rp2.rep):null;
+    if(c&&c.selected)return c;
+    var wks=_rp2Wks(),w=wks[wks.length-1]||null;
+    return {rep:_rp2.rep,selected:w,wks:wks,selectedData:{calls:0,orders:0,revenue:0,state:{key:'complete',label:'Selected week'}},goal:_rp2Goal(_rp2.rep)}
+  }
+  function dailyBuild(){
+    var c=selectedContext(),rep=_rp2.rep,w=c.selected;
+    var days=w?dateRangeDays(w.start,w.end):[];
+    if(!days.length){
+      var now=new Date(),sun=new Date(now);sun.setDate(now.getDate()-now.getDay());
+      days=dateRangeDays(sun,new Date(sun.getFullYear(),sun.getMonth(),sun.getDate()+6));
+    }
+    var rows=days.map(function(iso){
+      var s=daySales(iso,rep),orders=ordersOn(iso,rep),orderSales=orders.reduce(function(sum,o){return sum+n(o.total)},0),topOrder=orders.reduce(function(best,o){return !best||n(o.total)>n(best.total)?o:best},null);
+      return {iso:iso,sales:s,orders:orders,orderCount:orders.length,orderSales:orderSales,topOrder:topOrder,dow:new Date(iso+'T12:00:00').getDay()}
+    });
+    var entered=rows.filter(function(r){return r.sales.has&&!r.sales.reset&&r.sales.revenue!=null});
+    var latest=entered.length?entered[entered.length-1]:null;
+    var today=isoDate(new Date());
+    var defaultDate=window._rp2DailySelectedDate;
+    if(!defaultDate||days.indexOf(defaultDate)<0){
+      if(days.indexOf(today)>=0)defaultDate=today;
+      else if(latest)defaultDate=latest.iso;
+      else defaultDate=days[Math.min(1,days.length-1)]||today;
+      window._rp2DailySelectedDate=defaultDate;
+    }
+    var selected=rows.filter(function(r){return r.iso===defaultDate})[0]||rows[0];
+    var weekSales=latest?latest.sales.cumulative:0;
+    var weekOrders=rows.reduce(function(s,r){return s+r.orderCount},0);
+    var weekOrderSales=rows.reduce(function(s,r){return s+r.orderSales},0);
+    var weeklyCalls=c.selectedData?n(c.selectedData.calls):0;
+    var weeklyOrdersRecorded=c.selectedData?n(c.selectedData.orders):0;
+    var quarterWeeks=(c.wks&&c.wks.length)||13;
+    var weeklyGoal=c.goal>0?c.goal/quarterWeeks:0;
+    var dailyTarget=weeklyGoal>0?weeklyGoal/5:0;
+    var standardSelling=rows.filter(function(r){return r.dow>=1&&r.dow<=5});
+    var progressIso=days.indexOf(today)>=0?today:(latest?latest.iso:days[0]);
+    var completedSelling=standardSelling.filter(function(r){return r.iso<=progressIso}).length;
+    var neededByNow=dailyTarget*completedSelling;
+    var remainingSelling=standardSelling.filter(function(r){return r.iso>progressIso}).length;
+    var gap=Math.max(0,weeklyGoal-weekSales);
+    var perRemaining=remainingSelling>0?gap/remainingSelling:gap;
+    var quality=qualityForWeek(rep,w);
+
+    var bestRevenue=entered.reduce(function(best,r){return !best||n(r.sales.revenue)>n(best.sales.revenue)?r:best},null);
+    var weakest=entered.filter(function(r){return r.dow>=1&&r.dow<=5}).reduce(function(best,r){return !best||n(r.sales.revenue)<n(best.sales.revenue)?r:best},null);
+    var bestOrderDay=rows.reduce(function(best,r){return !best||r.orderSales>best.orderSales?r:best},null);
+    if(bestOrderDay&&bestOrderDay.orderSales<=0)bestOrderDay=null;
+    var allOrders=[].concat.apply([],rows.map(function(r){return r.orders}));
+    var largestOrder=allOrders.reduce(function(best,o){return !best||n(o.total)>n(best.total)?o:best},null);
+
+    var dayRank=null,rankSize=0;
+    if(selected&&selected.sales.has&&selected.sales.revenue!=null){
+      var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
+      var rankRows=reps.map(function(r){var ds=daySales(selected.iso,r.name);return {name:r.name,value:ds.has&&ds.revenue!=null?n(ds.revenue):0}}).filter(function(x){return x.value>0}).sort(function(a,b){return b.value-a.value});
+      rankSize=rankRows.length;
+      rankRows.forEach(function(r,i){if(r.name===rep)dayRank=i+1});
+    }
+    return {c:c,rep:rep,w:w,days:days,rows:rows,selected:selected,entered:entered,latest:latest,weekSales:weekSales,weekOrders:weekOrders,weekOrderSales:weekOrderSales,weeklyCalls:weeklyCalls,weeklyOrdersRecorded:weeklyOrdersRecorded,weeklyGoal:weeklyGoal,dailyTarget:dailyTarget,completedSelling:completedSelling,neededByNow:neededByNow,remainingSelling:remainingSelling,gap:gap,perRemaining:perRemaining,quality:quality,bestRevenue:bestRevenue,weakest:weakest,bestOrderDay:bestOrderDay,largestOrder:largestOrder,dayRank:dayRank,rankSize:rankSize,progressIso:progressIso}
+  }
+  function sectionHead(kick,title,note){return '<div class="rp2-ds-section-head"><div><div class="rp2-ds-section-kick">'+kick+'</div><div class="rp2-ds-section-title">'+title+'</div></div><div class="rp2-ds-section-note">'+note+'</div></div>'}
+  function kpi(label,value,sub){return '<div class="rp2-ds-kpi"><div class="rp2-ds-kpi-label">'+esc(label)+'</div><div class="rp2-ds-kpi-value">'+value+'</div><div class="rp2-ds-kpi-sub">'+sub+'</div></div>'}
+  function dayStatus(r,g){
+    if(r.sales.reset)return {text:'Weekly reset baseline',tone:'good'};
+    if(!r.sales.has)return {text:'No daily entry',tone:''};
+    if(r.sales.splitPending)return {text:'Cumulative split pending',tone:'warn'};
+    if(g.dailyTarget>0&&r.sales.revenue>=g.dailyTarget)return {text:'At or above daily pace',tone:'good'};
+    if(g.dailyTarget>0)return {text:'Below daily pace',tone:'warn'};
+    return {text:'Daily sales entered',tone:'good'}
+  }
+  function dayCard(r,g){
+    var st=dayStatus(r,g),selected=r.iso===g.selected.iso;
+    return '<button class="rp2-ds-day '+(selected?'selected ':'')+(r.sales.reset?'reset ':'')+(!r.sales.has?'missing':'')+'" onclick="_rp2DailySelect(\''+r.iso+'\')">'
+      +'<div class="rp2-ds-day-name">'+dayName(r.iso)+'</div><div class="rp2-ds-day-date">'+esc(dayLong(r.iso).replace(/^.*?,\s*/,''))+'</div>'
+      +'<div class="rp2-ds-day-value">'+(r.sales.has?(r.sales.revenue==null?'—':money(r.sales.revenue)):'—')+'</div>'
+      +'<div class="rp2-ds-day-sub">'+(r.sales.reset?'Sunday reset':r.sales.splitPending?'May include missing prior day':r.orderCount+' uploaded order'+(r.orderCount===1?'':'s'))+'</div>'
+      +'<div class="rp2-ds-day-status '+st.tone+'">'+st.text+'</div></button>'
+  }
+  function selectedRead(g){
+    var r=g.selected,s=r.sales,title='',copy='',tone='warn';
+    if(s.reset){title='The week starts at a clean $0 baseline';copy='Sunday is the cumulative reset point. Selling-day pace begins Monday, while Sunday remains visible so the weekly progression is easy to read.';tone='good'}
+    else if(!s.has){title='No daily sales entry is recorded yet';copy='This is a data state, not a performance judgment. Once a cumulative rep total is entered for this date, the page can calculate the day’s sales contribution.'}
+    else if(s.splitPending){title='This day may contain more than one day of sales';copy='A prior weekday entry is missing, so the cumulative difference cannot be split accurately. The revenue shown is real cumulative movement, but the exact day allocation is still pending.'}
+    else if(g.dailyTarget>0&&s.revenue>=g.dailyTarget){title='This day is carrying its share of the weekly target';copy='Revenue is at or above the standard daily pace implied by the quarter goal. The next question is whether that output is repeatable across the remaining selling days.';tone='good'}
+    else if(g.dailyTarget>0){title='This day finished below the pace implied by the weekly target';copy='One slower day does not decide the week, but the remaining daily requirement rises. Use the pace tracker to see exactly what the rest of the week now needs.'}
+    else {title='Daily sales are on the board';copy='A configured quarter goal would activate daily pace comparisons. For now, use the week strip and order details to understand momentum.';tone='good'}
+    var ords=r.orders,top=r.topOrder;
+    return '<div class="rp2-ds-read"><div class="rp2-ds-read-label">What this day means · '+esc(dayLong(r.iso))+'</div><div class="rp2-ds-read-title">'+esc(title)+'</div><div class="rp2-ds-read-copy">'+esc(copy)+'</div><div class="rp2-ds-read-facts">'
+      +'<div class="rp2-ds-read-fact"><span>Daily sales</span><strong>'+(s.has&&s.revenue!=null?money(s.revenue):'—')+'</strong></div>'
+      +'<div class="rp2-ds-read-fact"><span>Uploaded orders</span><strong>'+ords.length+'</strong></div>'
+      +'<div class="rp2-ds-read-fact"><span>Daily rank</span><strong>'+(g.dayRank?('#'+g.dayRank+' of '+g.rankSize):'—')+'</strong></div>'
+      +'</div></div>'
+  }
+  function intelligence(g){
+    var r=g.selected,orderAov=r.orderCount?r.orderSales/r.orderCount:0;
+    var activityTitle=g.weeklyCalls>=125?'Weekly call target is complete':Math.max(0,125-g.weeklyCalls)+' calls remain to the weekly target';
+    var activityCopy='The current data source stores calls at the weekly level, not by day. This page will not fabricate a daily call split. Weekly calls are '+g.weeklyCalls+' of 125.';
+    var salesTitle=r.sales.has&&r.sales.revenue!=null?money(r.sales.revenue)+' in daily sales':'No daily sales entry';
+    var salesCopy=r.sales.splitPending?'The amount may span multiple days because a prior cumulative entry is missing.':(g.dailyTarget?'Standard daily pace is about '+money(g.dailyTarget)+'.':'A quarter goal is needed to calculate daily pace.');
+    var qualityTitle=g.quality.arts===0&&g.quality.credits===0?'Clean selected-week quality record':(g.quality.arts+' art errors · '+g.quality.credits+' rep-fault credits');
+    var qualityCopy='Quality is tracked at the selected-week level because the current issue data does not consistently include a reliable daily timestamp.';
+    return '<div class="rp2-ds-intel">'
+      +'<div class="rp2-ds-intel-card"><div class="rp2-ds-intel-label">Sales</div><div class="rp2-ds-intel-title">'+salesTitle+'</div><div class="rp2-ds-intel-copy">'+salesCopy+'</div></div>'
+      +'<div class="rp2-ds-intel-card"><div class="rp2-ds-intel-label">Activity</div><div class="rp2-ds-intel-title">'+activityTitle+'</div><div class="rp2-ds-intel-copy">'+activityCopy+'</div></div>'
+      +'<div class="rp2-ds-intel-card"><div class="rp2-ds-intel-label">Quality</div><div class="rp2-ds-intel-title">'+qualityTitle+'</div><div class="rp2-ds-intel-copy">'+qualityCopy+'</div></div>'
+      +'</div>'
+  }
+  function pace(g){
+    var max=Math.max(g.weeklyGoal,g.weekSales,g.neededByNow,1),actualPct=Math.min(100,g.weekSales/max*100),neededPct=Math.min(100,g.neededByNow/max*100);
+    return '<div class="rp2-ds-pace"><div class="rp2-ds-panel-title">Week pace tracker</div><div class="rp2-ds-panel-sub">Actual daily-sales feed versus the standard Monday–Friday pace implied by the quarter goal.</div>'
+      +'<div class="rp2-ds-pace-scale"><span class="actual" style="width:'+actualPct+'%"></span><span class="needed" style="left:'+neededPct+'%"></span></div>'
+      +'<div class="rp2-ds-pace-labels"><span>Actual '+money(g.weekSales)+'</span><span>Needed by this point '+money(g.neededByNow)+'</span><span>Weekly target '+(g.weeklyGoal?money(g.weeklyGoal):'—')+'</span></div>'
+      +'<div class="rp2-ds-pace-summary">'
+        +'<div class="rp2-ds-pace-stat"><span>Current week sales</span><strong>'+money(g.weekSales)+'</strong><small>Latest cumulative rep total in the selected week</small></div>'
+        +'<div class="rp2-ds-pace-stat"><span>Gap to weekly target</span><strong>'+(g.weeklyGoal?money(g.gap):'—')+'</strong><small>'+(g.weeklyGoal?'Remaining revenue required':'Quarter goal not configured')+'</small></div>'
+        +'<div class="rp2-ds-pace-stat"><span>Needed per remaining day</span><strong>'+(g.remainingSelling?money(g.perRemaining):'—')+'</strong><small>'+g.remainingSelling+' standard selling day'+(g.remainingSelling===1?'':'s')+' remaining</small></div>'
+      +'</div></div>'
+  }
+  function record(label,value,sub){return '<div class="rp2-ds-record"><div class="rp2-ds-record-label">'+label+'</div><div class="rp2-ds-record-value">'+value+'</div><div class="rp2-ds-record-sub">'+sub+'</div></div>'}
+  function records(g){
+    return '<div class="rp2-ds-record-grid">'
+      +record('Best revenue day',g.bestRevenue?money(g.bestRevenue.sales.revenue):'—',g.bestRevenue?esc(dayLong(g.bestRevenue.iso)):'No entered selling day yet')
+      +record('Strongest order day',g.bestOrderDay?money(g.bestOrderDay.orderSales):'—',g.bestOrderDay?(esc(dayLong(g.bestOrderDay.iso))+' · '+g.bestOrderDay.orderCount+' orders'):'No uploaded orders in selected week')
+      +record('Largest uploaded order',g.largestOrder?money(g.largestOrder.total):'—',g.largestOrder?esc((g.largestOrder.customer||'Customer')+(g.largestOrder.orderNum?' · '+g.largestOrder.orderNum:'')):'No uploaded order detail')
+      +record('Day needing attention',g.weakest?money(g.weakest.sales.revenue):'—',g.weakest?esc(dayLong(g.weakest.iso)):'No entered weekday to evaluate')
+      +'</div>'
+  }
+  function orderList(g){
+    var orders=g.selected.orders.slice().sort(function(a,b){return n(b.total)-n(a.total)});
+    if(!orders.length)return '<div class="rp2-ds-panel"><div class="rp2-ds-panel-title">Selected-day orders</div><div class="rp2-ds-panel-sub">No uploaded order records are tied to '+esc(dayLong(g.selected.iso))+'.</div></div>';
+    return '<div class="rp2-ds-panel"><div class="rp2-ds-panel-title">Selected-day orders</div><div class="rp2-ds-panel-sub">Order detail comes from the uploaded orders source and may not exactly equal the cumulative daily-sales feed.</div><div class="rp2-ds-order-list">'
+      +orders.slice(0,8).map(function(o){return '<div class="rp2-ds-order"><div class="rp2-ds-order-name">'+esc(o.customer||'Customer')+'<small>'+esc(o.orderNum||'')+(o.orderType?' · '+esc(o.orderType):'')+'</small></div><div class="rp2-ds-order-val">'+money(o.total)+'</div></div>'}).join('')
+      +'</div></div>'
+  }
+  function monthCalendar(g){
+    var focus=asDate(g.selected.iso+'T12:00:00'),yr=focus.getFullYear(),mo=focus.getMonth(),first=new Date(yr,mo,1),start=first.getDay(),days=new Date(yr,mo+1,0).getDate(),cells='';
+    for(var i=0;i<start;i++)cells+='<div class="rp2-ds-cal-cell empty"></div>';
+    for(var d=1;d<=days;d++){
+      var iso=yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),s=daySales(iso,g.rep),inWeek=g.days.indexOf(iso)>=0,sel=iso===g.selected.iso;
+      cells+='<button class="rp2-ds-cal-cell '+(s.has?'has ':'')+(s.reset?'reset ':'')+(inWeek?'week ':'')+(sel?'selected':'')+'" onclick="_rp2DailySelect(\''+iso+'\')"><div class="rp2-ds-cal-num">'+d+'</div>'
+        +(s.has?'<div class="rp2-ds-cal-val">'+(s.revenue==null?'—':money(s.revenue))+'</div><div class="rp2-ds-cal-sub">'+(s.reset?'Weekly reset':s.splitPending?'Split pending':'Personal daily sales')+'</div>':'')
+        +'</button>';
+    }
+    return '<div class="rp2-ds-calendar"><div class="rp2-ds-panel-title">'+focus.toLocaleString('en-US',{month:'long',year:'numeric'})+' personal sales calendar</div><div class="rp2-ds-panel-sub">Only your own daily sales are shown. Click a date to inspect it.</div><div class="rp2-ds-cal-dow"><span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span></div><div class="rp2-ds-cal-grid">'+cells+'</div></div>'
+  }
+  function nextSelling(g){
+    var next=g.rows.filter(function(r){return r.dow>=1&&r.dow<=5&&r.iso>g.progressIso})[0]||null;
+    if(!next){
+      return '<div class="rp2-ds-next"><div><div class="rp2-ds-next-label">Next selling day</div><div class="rp2-ds-next-title">The selected week has no standard selling days left</div><div class="rp2-ds-next-copy">Use Forecast for the next forward-looking target. This page keeps the selected week as a historical operating record rather than pretending the week still has runway.</div></div><div class="rp2-ds-next-target"><span>Selected-week result</span><strong>'+money(g.weekSales)+'</strong><small>'+g.weekOrders+' uploaded orders · '+g.weeklyCalls+' weekly calls</small></div></div>'
+    }
+    var target=g.remainingSelling?g.perRemaining:g.dailyTarget;
+    return '<div class="rp2-ds-next"><div><div class="rp2-ds-next-label">Your next selling day · '+esc(dayLong(next.iso))+'</div><div class="rp2-ds-next-title">A clear target before the day begins</div><div class="rp2-ds-next-copy">'+(g.weeklyGoal?'Hitting about '+money(target)+' keeps the remaining weekly gap distributed evenly across the standard selling days still available.':'A quarter goal is not configured, so use recent daily performance as the operating baseline.')+' Weekly calls are currently '+g.weeklyCalls+' of 125; daily call allocation is not available from the current source.</div></div><div class="rp2-ds-next-target"><span>Revenue target</span><strong>'+(g.weeklyGoal?money(target):'—')+'</strong><small>'+(g.remainingSelling?g.remainingSelling+' selling days remain in the selected week':'No standard selling days remain')+'</small></div></div>'
+  }
+
+  window._rp2DailySelect=function(iso){
+    window._rp2DailySelectedDate=iso;
+    var page=document.getElementById('rp2-page');
+    if(page)page.innerHTML=window._rp2DailyV2();
+    setTimeout(function(){try{window._rp2DailyDraw()}catch(e){}},0)
+  };
+
+  window._rp2DailyV2=function(){
+    var g=dailyBuild(),wLabel=g.w?(g.w.label||('Wk '+g.w.num)):'Selected week';
+    var statusTitle='',statusCopy='',statusTone='warn';
+    if(!g.weeklyGoal){statusTitle='Weekly pace activates when a quarter goal is available';statusCopy='Daily Sales is still tracking your personal sales, orders, and weekly calls, but it cannot calculate a required revenue pace without a configured goal.'}
+    else if(g.weekSales>=g.neededByNow){statusTitle='At or above pace for this point in the week';statusCopy='Your daily-sales feed is carrying at least the amount implied by the standard Monday–Friday pace through the current point.';statusTone='good'}
+    else {statusTitle=money(g.neededByNow-g.weekSales)+' behind the pace for this point';statusCopy='The gap is recoverable if the remaining selling days average about '+money(g.perRemaining)+'.';statusTone='warn'}
+    var hero='<div class="rp2-ds-hero"><div class="rp2-ds-hero-grid"><div><div class="rp2-ds-kick">Daily Sales 2.0 · BUILD v486</div><div class="rp2-ds-title">Your week, day by day</div><div class="rp2-ds-copy">'+esc(statusTitle)+'. '+esc(statusCopy)+'</div><div class="rp2-ds-pills"><span class="rp2-ds-pill '+statusTone+'">'+esc(statusTitle)+'</span><span class="rp2-ds-pill">'+esc(wLabel)+'</span><span class="rp2-ds-pill">Personal sales only</span></div></div><div class="rp2-ds-brief"><div><div class="rp2-ds-brief-label">Selected week sales</div><div class="rp2-ds-brief-value">'+money(g.weekSales)+'</div><div class="rp2-ds-brief-title">'+(g.weeklyGoal?(Math.round(g.weekSales/g.weeklyGoal*100)+'% of weekly pace target'):'Personal daily-sales total')+'</div><div class="rp2-ds-brief-copy">The weekly sales figure comes from your latest cumulative rep total in the selected week.</div></div><div class="rp2-ds-brief-sub">'+g.weeklyCalls+' weekly calls · '+g.weekOrders+' uploaded orders</div></div></div></div>';
+    var kpis='<div class="rp2-ds-kpis">'
+      +kpi('Week sales',money(g.weekSales),g.weeklyGoal?(Math.round(g.weekSales/g.weeklyGoal*100)+'% of '+money(g.weeklyGoal)+' pace target'):'Quarter goal not set')
+      +kpi('Weekly calls',String(g.weeklyCalls),'125 weekly target · daily split not stored')
+      +kpi('Uploaded orders',String(g.weekOrders),g.weekOrders?money(g.weekOrderSales/g.weekOrders)+' uploaded-order AOV':'No dated orders in selected week')
+      +kpi('Daily pace target',g.dailyTarget?money(g.dailyTarget):'—','Quarter goal ÷ quarter weeks ÷ 5 standard selling days')
+      +kpi('Gap to week target',g.weeklyGoal?money(g.gap):'—',g.remainingSelling?money(g.perRemaining)+' per remaining selling day':'No standard selling days remaining')
+      +kpi('Selected-day rank',g.dayRank?('#'+g.dayRank):'—',g.dayRank?('of '+g.rankSize+' reps with positive daily sales'):'No comparable daily result')
+      +'</div>';
+    var strip=sectionHead('Daily progression','The selected week at a glance','Sunday shows the weekly reset. Missing entries remain visibly different from true $0 days, and cumulative split warnings stay attached to affected days.')+'<div class="rp2-ds-weekstrip">'+g.rows.map(function(r){return dayCard(r,g)}).join('')+'</div>';
+    var analysis=sectionHead('Day intelligence','What the selected day means','Daily revenue is real cumulative-sales data. Dated order detail is shown where available; weekly calls remain weekly because the source does not store a reliable per-day call split.')+'<div class="rp2-ds-analysis-grid"><div>'+selectedRead(g)+intelligence(g)+'</div>'+pace(g)+'</div>';
+    var recs=sectionHead('Week highlights','Best day, biggest order, and the day needing attention','These benchmarks stay inside the selected week so the rep can understand what actually drove the result.')+records(g);
+    var charts=sectionHead('Momentum','Your personal daily-sales curve','The chart uses only your daily sales. The order panel is a separate dated source and is labeled separately so the two systems are not falsely blended.')+'<div class="rp2-ds-chart-grid"><div class="rp2-ds-panel"><div class="rp2-ds-panel-title">Daily sales progression</div><div class="rp2-ds-panel-sub">Personal daily sales across the selected week</div><div class="rp2-ds-chart"><canvas id="rp2-ds-chart"></canvas></div></div>'+orderList(g)+'</div>';
+    var cal=sectionHead('Personal calendar','Your daily sales calendar','This is intentionally personal—not the team-wide management calendar. It shows your own cumulative-derived daily sales only.')+monthCalendar(g);
+    return '<div class="rp2-ds-shell">'+hero+kpis+strip+analysis+recs+charts+cal+nextSelling(g)+'</div>'
+  };
+
+  window._rp2DailyDraw=function(){
+    if(typeof Chart!=='function')return;
+    var g=dailyBuild(),canvas=document.getElementById('rp2-ds-chart');
+    if(!canvas)return;
+    if(_rp2.dailyChart){try{_rp2.dailyChart.destroy()}catch(e){}}
+    var labels=g.rows.map(function(r){return dayName(r.iso)}),values=g.rows.map(function(r){return r.sales.has&&r.sales.revenue!=null?r.sales.revenue:null});
+    _rp2.dailyChart=new Chart(canvas.getContext('2d'),{
+      type:'bar',
+      data:{labels:labels,datasets:[
+        {label:'Daily sales',data:values,backgroundColor:g.rows.map(function(r){return r.iso===g.selected.iso?'rgba(132,108,255,.92)':'rgba(78,156,255,.62)'}),borderRadius:6},
+        {type:'line',label:'Daily pace target',data:g.rows.map(function(r){return r.dow>=1&&r.dow<=5&&g.dailyTarget?g.dailyTarget:null}),borderColor:'#4ed6a3',borderDash:[6,4],pointRadius:0,tension:0}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#aab4c6',boxWidth:10,font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return ' '+ctx.dataset.label+': '+money(ctx.parsed.y)}}}},scales:{x:{ticks:{color:'#8b95a7',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#8b95a7',font:{size:10},callback:function(v){return '$'+Math.round(v/1000)+'k'}},grid:{color:'rgba(255,255,255,.05)'}}}}
+    })
+  };
+
+  try{
+    var sess=(typeof _rpSession==='function')?_rpSession():null;
+    if(sess&&sess.role==='rep'&&_rp2.page==='daily')setTimeout(function(){try{_rp2Go('daily')}catch(e){}},0)
+  }catch(e){}
+})();
+</script>
 
 </body>
 </html>
