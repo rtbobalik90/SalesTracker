@@ -38747,7 +38747,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   var p=g.profile,primary=g.primaryContact||{},phone=clean(field(primary,['phone'],'')||p.phone||''),email=clean(field(primary,['email'],'')||p.email||'');
   var content=tab==='relationships'?relationships(g):tab==='products'?products(g):tab==='sales'?sales(g):tab==='service'?service(g):tab==='files'?files(g):overview(g);
   var openOrders=customerOrderRows(g).filter(function(o){return o.open}).length;
-  var head='<div class="cw5-profile-head"><div class="cw5-head-grid"><div class="cw4-head-left"><button class="cw4-back" onclick="_cw4CloseCompany()">←</button><div class="cw4-head-avatar">'+initials(g.name)+'</div><div><div class="cw4-head-name">'+esc(g.name)+'</div><div class="cw4-head-sub">'+esc([p.customerNumber&&('ID '+p.customerNumber),p.lifecycle||(!g.orders.length&&!g.imported?'Prospect':'Customer'),p.tier&&p.tier+' level','Owned by '+_rp2.rep].filter(Boolean).join(' · '))+'</div><div class="cw4-pills" style="margin-top:8px">'+statusPill(g.status)+'<span class="cw4-pill">Last contact '+fmt(g.activities[0]&&g.activities[0].date)+'</span><span class="cw4-pill info">Next '+fmt(nextTouch(g))+'</span><span class="cw4-pill good">Customer Workspace 5.2 · v531</span></div></div></div><div class="cw5-contact-block"><div class="cw5-contact-label">Primary relationship</div><strong>'+esc(field(primary,['name'],'Not recorded'))+'</strong><span>'+esc([field(primary,['title','buyingRole'],''),phone,email].filter(Boolean).join(' · ')||'Add a primary contact and communication method')+'</span></div><div class="cw4-head-actions"><button class="cw4-btn primary" onclick="_cw5Call(\''+encodeURIComponent(g.name)+'\')">Call / Log</button><button class="cw4-btn" onclick="_cw5Email(\''+encodeURIComponent(g.name)+'\')">Email</button><button class="cw4-btn" onclick="_cw4OpenModal(\'task\')">Task</button><button class="cw4-btn" onclick="_cw4OpenModal(\'opportunity\')">Opportunity</button><button class="cw4-btn" onclick="_cw4StartQuote(\''+encodeURIComponent(g.name)+'\')">Quote</button><button class="cw4-btn" onclick="_cw4MoreToggle()">More ▾</button>'+moreMenu(g)+'</div></div><div class="cw5-head-metrics"><div class="cw5-head-metric action"><span>Next best action</span><strong>'+esc(g.next.title)+'</strong></div><div class="cw5-head-metric"><span>YTD sales</span><strong>'+money(g.metrics.current)+'</strong></div><div class="cw5-head-metric"><span>Lifetime</span><strong>'+money(g.metrics.lifetime)+'</strong></div><div class="cw5-head-metric"><span>Last order</span><strong>'+fmt(g.metrics.last)+'</strong></div><div class="cw5-head-metric"><span>Open pipeline</span><strong>'+money(g.metrics.pipeline)+'</strong></div><div class="cw5-head-metric"><span>Active quotes</span><strong>'+g.openQuotes.length+'</strong></div><div class="cw5-head-metric"><span>Open orders</span><strong>'+openOrders+'</strong></div></div></div>';
+  var head='<div class="cw5-profile-head"><div class="cw5-head-grid"><div class="cw4-head-left"><button class="cw4-back" onclick="_cw4CloseCompany()">←</button><div class="cw4-head-avatar">'+initials(g.name)+'</div><div><div class="cw4-head-name">'+esc(g.name)+'</div><div class="cw4-head-sub">'+esc([p.customerNumber&&('ID '+p.customerNumber),p.lifecycle||(!g.orders.length&&!g.imported?'Prospect':'Customer'),p.tier&&p.tier+' level','Owned by '+_rp2.rep].filter(Boolean).join(' · '))+'</div><div class="cw4-pills" style="margin-top:8px">'+statusPill(g.status)+'<span class="cw4-pill">Last contact '+fmt(g.activities[0]&&g.activities[0].date)+'</span><span class="cw4-pill info">Next '+fmt(nextTouch(g))+'</span><span class="cw4-pill good">Customer Workspace 5.3 · v535</span></div></div></div><div class="cw5-contact-block"><div class="cw5-contact-label">Primary relationship</div><strong>'+esc(field(primary,['name'],'Not recorded'))+'</strong><span>'+esc([field(primary,['title','buyingRole'],''),phone,email].filter(Boolean).join(' · ')||'Add a primary contact and communication method')+'</span></div><div class="cw4-head-actions"><button class="cw4-btn primary" onclick="_cw5Call(\''+encodeURIComponent(g.name)+'\')">Call / Log</button><button class="cw4-btn" onclick="_cw5Email(\''+encodeURIComponent(g.name)+'\')">Email</button><button class="cw4-btn" onclick="_cw4OpenModal(\'task\')">Task</button><button class="cw4-btn" onclick="_cw4OpenModal(\'opportunity\')">Opportunity</button><button class="cw4-btn" onclick="_cw4StartQuote(\''+encodeURIComponent(g.name)+'\')">Quote</button><button class="cw4-btn" onclick="_cw4MoreToggle()">More ▾</button>'+moreMenu(g)+'</div></div><div class="cw5-head-metrics"><div class="cw5-head-metric action"><span>Next best action</span><strong>'+esc(g.next.title)+'</strong></div><div class="cw5-head-metric"><span>YTD sales</span><strong>'+money(g.metrics.current)+'</strong></div><div class="cw5-head-metric"><span>Lifetime</span><strong>'+money(g.metrics.lifetime)+'</strong></div><div class="cw5-head-metric"><span>Last order</span><strong>'+fmt(g.metrics.last)+'</strong></div><div class="cw5-head-metric"><span>Open pipeline</span><strong>'+money(g.metrics.pipeline)+'</strong></div><div class="cw5-head-metric"><span>Active quotes</span><strong>'+g.openQuotes.length+'</strong></div><div class="cw5-head-metric"><span>Open orders</span><strong>'+openOrders+'</strong></div></div></div>';
   return '<div class="cw4-profile"><div class="cw5-sticky">'+head+tabs(tab)+'</div><div class="cw5-tab-content">'+content+'</div></div>'+modal(g)
  }
  function resolveOpenName(){if(window._cw4CompanyName)return window._cw4CompanyName;var key=window._rp2CompanyOpenKey?decodeURIComponent(window._rp2CompanyOpenKey):'',b=crm(),a=b.data.accounts[key];return clean(a&&a.profile&&a.profile.name)||key||knownCompanies()[0]||'New Company'}
@@ -41756,9 +41756,11 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  function readState(){
   try{
    var s=JSON.parse(localStorage.getItem(KEY)||'null');
-   if(!s||s.version!==1)s={version:1,detached:false,minimized:false,left:null,top:null};
+   if(!s||s.version!==1)s={version:1,detached:false,minimized:false,parked:false,left:null,top:null};
+   if(s.parked==null)s.parked=false;
+   if(s.minimized){s.parked=true;s.minimized=false}
    return s
-  }catch(e){return{version:1,detached:false,minimized:false,left:null,top:null}}
+  }catch(e){return{version:1,detached:false,minimized:false,parked:false,left:null,top:null}}
  }
  function writeState(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
  function page(){return window._rp2&&window._rp2.page||''}
@@ -41818,7 +41820,10 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  function html(){
   var s=readState(),x=ctx(),c=call(),contact=selectedContact(x),min=s.minimized?' minimized':'',complete=c.stage==='complete'?' complete':'';
   var status=c.stage==='complete'?'Saved':c.paused?'Paused':'Live',reason=x.queue?x.queue.reason:'Active customer call';
-  return'<div class="fc1-console'+min+complete+'" id="fc1-console"><header class="fc1-head" id="fc1-drag"><div class="fc1-head-left"><div class="fc1-phone">☎</div><div style="min-width:0"><div class="fc1-kick">FLOATING CALL CONSOLE · v534</div><div class="fc1-company">'+esc(x.company||'Active call')+'</div><div class="fc1-contact">'+esc(field(contact||{},['name'],'Contact not selected'))+'</div></div></div><div class="fc1-head-actions"><button class="fc1-icon-btn" onclick="_call534Dock()" title="Return to full Call Workspace">↗</button><button class="fc1-icon-btn" onclick="_call534ToggleMin()" title="'+(s.minimized?'Restore':'Minimize')+'">'+(s.minimized?'▣':'—')+'</button></div></header><div class="fc1-mini-bar"><div class="fc1-status"><span class="fc1-live '+(c.paused?'paused':'')+'"><i></i>'+status+'</span><span class="fc1-reason">'+esc(reason)+'</span></div><div class="fc1-timer"><span>Call timer</span><strong id="fc1-timer">'+duration(activeSeconds())+'</strong></div></div><div class="fc1-body">'+bodyHtml(x)+'</div><footer class="fc1-footer"><div class="fc1-footer-copy"><strong>Keep working anywhere</strong>Drag this console by its header.</div><div class="fc1-footer-actions">'+(c.stage==='active'?'<button class="fc1-btn warn" onclick="_call532Pause()">'+(c.paused?'Resume':'Pause')+'</button>':'')+(c.stage!=='complete'?'<button class="fc1-btn" onclick="_call534Sync()">Save</button><button class="fc1-btn primary" onclick="_call532Complete()">Complete</button>':'')+'</div></footer><div class="fc1-drag-hint">Moveable inside the tracker · position and minimized state are remembered</div></div>'
+  if(s.parked){
+   return'<button type="button" class="fc2-parked '+(c.paused?'paused':'')+(c.stage==='complete'?' complete':'')+'" id="fc1-console" onclick="_call534RestoreParked()" title="Restore active call"><span class="fc2-phone">☎</span><span class="fc2-copy"><b>'+esc(x.company||'Active call')+'</b><small>'+esc(status+' · '+field(contact||{},['name'],'Contact not selected'))+'</small></span><strong id="fc1-timer">'+duration(activeSeconds())+'</strong><span class="fc2-expand">↗</span></button>'
+  }
+  return'<div class="fc1-console'+min+complete+'" id="fc1-console"><header class="fc1-head" id="fc1-drag"><div class="fc1-head-left"><div class="fc1-phone">☎</div><div style="min-width:0"><div class="fc1-kick">FLOATING CALL CONSOLE · v534</div><div class="fc1-company">'+esc(x.company||'Active call')+'</div><div class="fc1-contact">'+esc(field(contact||{},['name'],'Contact not selected'))+'</div></div></div><div class="fc1-head-actions"><button class="fc1-icon-btn" onclick="_call534Dock()" title="Return to full Call Workspace">↗</button><button class="fc1-icon-btn" onclick="_call534ToggleMin()" title="Park call at the bottom">⌄</button></div></header><div class="fc1-mini-bar"><div class="fc1-status"><span class="fc1-live '+(c.paused?'paused':'')+'"><i></i>'+status+'</span><span class="fc1-reason">'+esc(reason)+'</span></div><div class="fc1-timer"><span>Call timer</span><strong id="fc1-timer">'+duration(activeSeconds())+'</strong></div></div><div class="fc1-body">'+bodyHtml(x)+'</div><footer class="fc1-footer"><div class="fc1-footer-copy"><strong>Keep working anywhere</strong>Drag this console by its header.</div><div class="fc1-footer-actions">'+(c.stage==='active'?'<button class="fc1-btn warn" onclick="_call532Pause()">'+(c.paused?'Resume':'Pause')+'</button>':'')+(c.stage!=='complete'?'<button class="fc1-btn" onclick="_call534Sync()">Save</button><button class="fc1-btn primary" onclick="_call532Complete()">Complete</button>':'')+'</div></footer><div class="fc1-drag-hint">Moveable inside the tracker · park it at the bottom without ending the call</div></div>'
  }
  function shouldShow(){
   var s=readState(),c=call();
@@ -41832,6 +41837,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  }
  function applyPosition(){
   var el=document.getElementById('fc1-console'),s=readState();if(!el)return;
+  if(el.classList&&el.classList.contains('fc2-parked'))return;
   var width=el.offsetWidth||500,height=el.offsetHeight||500,maxX=Math.max(8,window.innerWidth-width-8),maxY=Math.max(8,window.innerHeight-height-8);
   var left=s.left==null?maxX-16:Math.max(8,Math.min(maxX,n(s.left)));
   var top=s.top==null?Math.max(98,maxY-16):Math.max(8,Math.min(maxY,n(s.top)));
@@ -41883,10 +41889,11 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  window._call534Html=html;
  window._call534Render=render;
  window._call534Sync=function(){try{if(typeof window._call532Draft==='function')window._call532Draft()}catch(e){};setTimeout(render,0)};
- window._call534ToggleMin=function(){var s=readState();s.minimized=!s.minimized;writeState(s);render()};
- window._call534Dock=function(){var s=readState();s.detached=false;writeState(s);render();_rp2Go('call')};
+ window._call534ToggleMin=function(){var s=readState();s.parked=true;s.minimized=false;writeState(s);render()};
+ window._call534RestoreParked=function(){var s=readState();s.parked=false;s.minimized=false;writeState(s);render()};
+ window._call534Dock=function(){var s=readState();s.detached=false;s.parked=false;s.minimized=false;writeState(s);render();_rp2Go('call')};
  window._call534SetDetached=function(v){var s=readState();s.detached=!!v;writeState(s);render()};
- window._call534Diagnostics=function(){var s=readState();return{detached:s.detached,minimized:s.minimized,page:page(),stage:call().stage||'',company:call().company||'',visible:shouldShow(),left:s.left,top:s.top}};
+ window._call534Diagnostics=function(){var s=readState();return{detached:s.detached,minimized:s.minimized,parked:s.parked,page:page(),stage:call().stage||'',company:call().company||'',visible:shouldShow(),left:s.left,top:s.top}};
 
  var baseGo=window._rp2Go;
  window._rp2Go=function(p){
@@ -41914,6 +41921,347 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  window.addEventListener('resize',function(){if(shouldShow())applyPosition()});
  setTimeout(function(){render();installFloatNotice()},0);
  setTimeout(function(){render();installFloatNotice()},500);
+})();
+</script>
+
+
+<style id="tcp-customer-flow-call-park-v535-css">
+/* ==========================================================================
+   CUSTOMER PROFILE FLOW 3.0 + PARKED CALL PILL · BUILD v535
+   ========================================================================== */
+
+/* The large customer identity card now scrolls naturally with the page. */
+#rp-overlay .cw4-profile.cw8-flow .cw5-sticky,
+#rp-overlay[data-rp-scale="manager"] .cw4-profile.cw8-flow .cw5-sticky{
+ position:relative!important;
+ top:auto!important;
+ z-index:1!important;
+ display:block!important;
+ padding-bottom:0!important;
+ background:transparent!important;
+ backdrop-filter:none!important;
+ box-shadow:none!important;
+}
+#rp-overlay .cw4-profile.cw8-flow .cw5-profile-head{
+ margin-bottom:14px!important;
+}
+#rp-overlay .cw8-nav-shell{
+ --cw8-top:74px;
+ position:sticky;
+ top:var(--cw8-top);
+ z-index:68;
+ display:flex;
+ align-items:center;
+ gap:9px;
+ min-height:58px;
+ margin-bottom:18px;
+ padding:7px;
+ border:1px solid rgba(214,220,244,.10);
+ border-radius:15px;
+ background:rgba(8,12,21,.97);
+ box-shadow:0 12px 34px rgba(0,0,0,.22);
+ backdrop-filter:blur(18px);
+ transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+#rp-overlay .cw8-nav-shell.is-condensed{
+ border-color:rgba(45,212,191,.22);
+ background:linear-gradient(90deg,rgba(11,21,32,.985),rgba(13,16,29,.985));
+ box-shadow:0 18px 48px rgba(0,0,0,.34);
+}
+#rp-overlay .cw8-nav-shell .cw4-tabs,
+#rp-overlay[data-rp-scale="manager"] .cw8-nav-shell .cw4-tabs{
+ position:relative!important;
+ top:auto!important;
+ z-index:1!important;
+ flex:1 1 auto!important;
+ min-width:0!important;
+ min-height:44px!important;
+ margin:0!important;
+ padding:4px!important;
+ border:0!important;
+ border-radius:11px!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+}
+#rp-overlay .cw8-nav-shell .cw4-tab{
+ min-height:39px!important;
+}
+#rp-overlay .cw8-compact{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ flex:0 0 auto;
+ max-width:0;
+ min-width:0;
+ opacity:0;
+ overflow:hidden;
+ pointer-events:none;
+ transform:translateX(-8px);
+ transition:max-width .22s ease,opacity .16s ease,transform .22s ease;
+}
+#rp-overlay .cw8-nav-shell.is-condensed .cw8-compact{
+ max-width:650px;
+ opacity:1;
+ pointer-events:auto;
+ transform:translateX(0);
+}
+#rp-overlay .cw8-back,
+#rp-overlay .cw8-action{
+ flex:none;
+ min-height:39px;
+ padding:0 11px;
+ border-radius:9px;
+ border:1px solid rgba(255,255,255,.09);
+ background:rgba(255,255,255,.035);
+ color:#dce4f0;
+ font-size:9px;
+ font-weight:950;
+ cursor:pointer;
+ white-space:nowrap;
+}
+#rp-overlay .cw8-back{width:39px;padding:0}
+#rp-overlay .cw8-action.call{
+ border-color:rgba(45,212,191,.25);
+ background:rgba(45,212,191,.075);
+ color:#a2eadb;
+}
+#rp-overlay .cw8-avatar{
+ width:38px;height:38px;display:grid;place-items:center;flex:none;
+ border-radius:11px;
+ background:linear-gradient(135deg,rgba(45,212,191,.22),rgba(71,135,255,.25));
+ color:#fff;font-size:11px;font-weight:950;
+}
+#rp-overlay .cw8-account{
+ min-width:150px;max-width:270px;
+}
+#rp-overlay .cw8-account strong{
+ display:block;color:#fff;font-size:11px;font-weight:950;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#rp-overlay .cw8-account span{
+ display:block;margin-top:3px;color:#7f8ea5;font-size:7.5px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#rp-overlay .cw8-next{
+ min-width:150px;max-width:285px;
+ padding:7px 9px;
+ border-left:1px solid rgba(255,255,255,.075);
+}
+#rp-overlay .cw8-next span{
+ display:block;color:#718099;font-size:6.7px;font-weight:950;text-transform:uppercase;
+}
+#rp-overlay .cw8-next strong{
+ display:block;margin-top:3px;color:#cbd4e3;font-size:8px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#rp-overlay .cw8-top-btn{
+ width:34px;height:34px;display:grid;place-items:center;flex:none;
+ border-radius:9px;border:1px solid rgba(139,124,255,.20);
+ background:rgba(139,124,255,.06);color:#c9c2ff;font-size:12px;font-weight:950;cursor:pointer;
+}
+#rp-overlay .cw4-profile.cw8-flow .cw5-tab-content,
+#rp-overlay[data-rp-scale="manager"] .cw4-profile.cw8-flow .cw5-tab-content{
+ position:relative!important;
+ z-index:1!important;
+ padding-top:0!important;
+}
+#rp-overlay .rp2-main{scroll-padding-top:165px}
+
+/* Manager scale keeps the slim bar readable without keeping the giant header. */
+#rp-overlay[data-rp-scale="manager"] .cw8-nav-shell{
+ min-height:66px;
+ padding:9px;
+ gap:11px;
+ border-radius:17px;
+}
+#rp-overlay[data-rp-scale="manager"] .cw8-nav-shell .cw4-tabs{min-height:48px!important}
+#rp-overlay[data-rp-scale="manager"] .cw8-nav-shell .cw4-tab{
+ min-height:44px!important;
+ padding:0 14px!important;
+ font-size:10.5px!important;
+}
+#rp-overlay[data-rp-scale="manager"] .cw8-back,
+#rp-overlay[data-rp-scale="manager"] .cw8-action{
+ min-height:43px;font-size:10px;
+}
+#rp-overlay[data-rp-scale="manager"] .cw8-back{width:43px}
+#rp-overlay[data-rp-scale="manager"] .cw8-avatar{width:42px;height:42px;font-size:12px}
+#rp-overlay[data-rp-scale="manager"] .cw8-account strong{font-size:13px}
+#rp-overlay[data-rp-scale="manager"] .cw8-account span{font-size:9px}
+#rp-overlay[data-rp-scale="manager"] .cw8-next span{font-size:8px}
+#rp-overlay[data-rp-scale="manager"] .cw8-next strong{font-size:9.5px}
+
+/* A fully parked call becomes a small bottom-right restore button. */
+#rp-overlay .fc2-parked{
+ position:fixed!important;
+ left:auto!important;
+ top:auto!important;
+ right:22px!important;
+ bottom:18px!important;
+ z-index:1000040!important;
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr) auto auto;
+ align-items:center;
+ gap:10px;
+ width:min(390px,calc(100vw - 34px));
+ min-height:58px;
+ padding:8px 11px;
+ border-radius:18px;
+ border:1px solid rgba(45,212,191,.32);
+ background:linear-gradient(135deg,rgba(15,29,42,.995),rgba(15,17,32,.995));
+ color:#fff;
+ box-shadow:0 20px 65px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.025) inset;
+ cursor:pointer;
+ text-align:left;
+ backdrop-filter:blur(18px);
+ animation:fc2-arrive .18s ease-out;
+}
+#rp-overlay .fc2-parked:hover{
+ transform:translateY(-2px);
+ border-color:rgba(107,232,213,.48);
+ box-shadow:0 24px 75px rgba(0,0,0,.62);
+}
+#rp-overlay .fc2-parked.paused{border-color:rgba(245,190,100,.34)}
+#rp-overlay .fc2-parked.complete{border-color:rgba(78,214,163,.36)}
+#rp-overlay .fc2-phone{
+ width:40px;height:40px;display:grid;place-items:center;
+ border-radius:12px;
+ background:linear-gradient(135deg,rgba(45,212,191,.20),rgba(139,124,255,.18));
+ color:#a8eee0;font-size:17px;
+}
+#rp-overlay .fc2-copy{min-width:0}
+#rp-overlay .fc2-copy b{
+ display:block;color:#fff;font-size:11px;font-weight:950;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#rp-overlay .fc2-copy small{
+ display:block;margin-top:3px;color:#8492a7;font-size:8px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#rp-overlay .fc2-parked>strong{
+ min-width:58px;color:#8be7d5;font:950 15px/1 ui-monospace,monospace;text-align:right;
+}
+#rp-overlay .fc2-parked.paused>strong{color:#e7c078}
+#rp-overlay .fc2-expand{
+ width:29px;height:29px;display:grid;place-items:center;
+ border-radius:8px;background:rgba(139,124,255,.09);color:#d1cbff;font-size:11px;
+}
+@keyframes fc2-arrive{
+ from{opacity:0;transform:translateY(12px) scale(.97)}
+ to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:1500px){
+ #rp-overlay .cw8-next{display:none}
+ #rp-overlay .cw8-nav-shell.is-condensed .cw8-compact{max-width:430px}
+}
+@media(max-width:1180px){
+ #rp-overlay .cw8-action.call{display:none}
+ #rp-overlay .cw8-account{max-width:190px}
+ #rp-overlay .cw8-nav-shell.is-condensed .cw8-compact{max-width:320px}
+}
+@media(max-width:850px){
+ #rp-overlay .cw8-nav-shell{align-items:stretch;flex-direction:column}
+ #rp-overlay .cw8-compact{
+  max-width:none!important;width:100%;opacity:1;pointer-events:auto;transform:none;
+ }
+ #rp-overlay .cw8-nav-shell .cw4-tabs{width:100%}
+ #rp-overlay .cw8-next{display:none}
+ #rp-overlay .fc2-parked{
+  right:10px!important;bottom:10px!important;width:calc(100vw - 20px);
+ }
+}
+</style>
+
+<script id="rp2-customer-flow-v535-js">
+(function(){
+ var mainEl=null,scrollBound=false,observer=null;
+
+ function esc(v){
+  return String(v==null?'':v).replace(/[&<>"]/g,function(c){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]
+  })
+ }
+ function initials(name){
+  var p=String(name||'').trim().split(/\s+/).filter(Boolean);
+  return((p[0]||'C')[0]+(p[1]||p[0]||'')[0]).toUpperCase()
+ }
+ function qs(root,sel){return(root||document).querySelector(sel)}
+ function customerProfile(){return qs(document,'#rp-overlay .cw4-profile')}
+ function currentMain(){return qs(document,'#rp-overlay .rp2-main')}
+ function update(){
+  var main=currentMain(),profile=customerProfile();if(!main||!profile)return;
+  var head=qs(profile,'.cw5-profile-head'),shell=qs(profile,'.cw8-nav-shell'),top=qs(document,'#rp-overlay .rp2-top');
+  if(!head||!shell)return;
+  shell.style.setProperty('--cw8-top',Math.max(0,(top&&top.offsetHeight)||74)+'px');
+  var mainRect=main.getBoundingClientRect(),headRect=head.getBoundingClientRect(),topHeight=(top&&top.offsetHeight)||74;
+  var condensed=headRect.bottom<=mainRect.top+topHeight+18;
+  shell.classList.toggle('is-condensed',condensed);
+  profile.classList.toggle('cw8-condensed',condensed)
+ }
+ function compactHtml(profile){
+  var nameEl=qs(profile,'.cw4-head-name'),avatarEl=qs(profile,'.cw4-head-avatar'),active=qs(profile,'.cw4-tab.active'),next=qs(profile,'.cw5-head-metric.action strong');
+  var name=nameEl?nameEl.textContent.trim():'Customer',avatar=avatarEl?avatarEl.textContent.trim():initials(name),tab=active?active.textContent.trim():'Overview',action=next?next.textContent.trim():'Review the account';
+  return'<div class="cw8-compact"><button class="cw8-back" onclick="_cw4CloseCompany()" title="Back to customers">←</button><div class="cw8-avatar">'+esc(avatar)+'</div><div class="cw8-account"><strong>'+esc(name)+'</strong><span>'+esc(tab)+'</span></div><div class="cw8-next"><span>Next best action</span><strong>'+esc(action)+'</strong></div><button class="cw8-action call" onclick="_cw5Call(\''+encodeURIComponent(name)+'\')">Call / Log</button><button class="cw8-top-btn" onclick="_cw8AccountTop()" title="Back to account header">↑</button></div>'
+ }
+ function install(){
+  var main=currentMain(),profile=customerProfile();
+  if(!main||!profile)return false;
+  var sticky=qs(profile,'.cw5-sticky'),tabs=qs(profile,'.cw4-tabs');
+  if(!sticky||!tabs)return false;
+  profile.classList.add('cw8-flow');
+  var shell=qs(profile,'.cw8-nav-shell');
+  if(!shell){
+   shell=document.createElement('div');
+   shell.className='cw8-nav-shell';
+   shell.innerHTML=compactHtml(profile);
+   sticky.parentNode.insertBefore(shell,sticky.nextSibling);
+   shell.appendChild(tabs)
+  }else{
+   var old=qs(shell,'.cw8-compact');
+   if(old)old.outerHTML=compactHtml(profile)
+  }
+  mainEl=main;
+  if(!main._cw8ScrollBound){
+   main.addEventListener('scroll',update,{passive:true});
+   main._cw8ScrollBound=true
+  }
+  update();
+  return true
+ }
+ function schedule(){
+  setTimeout(install,0);
+  setTimeout(install,60);
+  setTimeout(install,220)
+ }
+ window._cw8Install=install;
+ window._cw8Update=update;
+ window._cw8AccountTop=function(){
+  var main=currentMain(),profile=customerProfile();if(!main||!profile)return;
+  main.scrollTo({top:Math.max(0,profile.offsetTop-12),behavior:'smooth'})
+ };
+ window._cw8Diagnostics=function(){
+  var profile=customerProfile(),shell=profile&&qs(profile,'.cw8-nav-shell');
+  return{installed:!!(profile&&profile.classList.contains('cw8-flow')&&shell),condensed:!!(shell&&shell.classList.contains('is-condensed')),tabsMoved:!!(shell&&qs(shell,'.cw4-tabs'))}
+ };
+
+ var baseAfter=window._rp2After;
+ window._rp2After=function(){
+  var r=typeof baseAfter==='function'?baseAfter.apply(this,arguments):undefined;
+  schedule();return r
+ };
+ var baseGo=window._rp2Go;
+ window._rp2Go=function(){
+  var r=typeof baseGo==='function'?baseGo.apply(this,arguments):undefined;
+  schedule();return r
+ };
+ if(typeof MutationObserver!=='undefined'){
+  observer=new MutationObserver(function(){schedule()});
+  var target=document.getElementById('rp2-page');
+  if(target)observer.observe(target,{childList:true,subtree:true})
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);
+ else schedule()
 })();
 </script>
 
