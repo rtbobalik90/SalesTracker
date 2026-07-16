@@ -7070,7 +7070,7 @@ function ordUpload(event){
       var ws=wb.Sheets[sheetName];
       var grid=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
       var hi=grid.findIndex(function(r){ return r.some(function(c){ return /order\s*#/i.test(String(c)); }); });
-      if(hi<0){ if(st)st.innerHTML='<span style="color:#F09595;">\u274C Could not find an \u201cOrder #\u201d header.</span>'; event.target.value=''; return; }
+      if(hi<0){ if(st)st.innerHTML='<span style="color:#F09595;">\u274C Wrong importer for this file. The legacy weekly uploader requires an \u201cOrder #\u201d header. Use the green monthly line-item importer at the top for AccountID / InvoiceNumber reports.</span>'; event.target.value=''; return; }
       var H=grid[hi].map(function(c){return String(c).trim();});
       function _ordNormH(s){return String(s||'').toLowerCase().replace(/\s+/g,' ').trim();}function col(names){ for(var i=0;i<H.length;i++){ for(var j=0;j<names.length;j++){ if(_ordNormH(H[i])===_ordNormH(names[j]))return i; } } return -1; }function colDate(){for(var i=0;i<H.length;i++){ if(_ordNormH(H[i])==='order date')return i; }for(var i=0;i<H.length;i++){ var h=_ordNormH(H[i]); if(h.indexOf('order')>=0&&h.indexOf('date')>=0&&h.indexOf('last')<0)return i; }for(var i=0;i<H.length;i++){ if(_ordNormH(H[i])==='date')return i; }return -1; }
       var idx={ rep:col(['Rep','Rep Name','Sales Rep']), customer:col(['Customer','Customer Name']), num:col(['Order #','Order#','Order Number','SO','SO #']),
@@ -7136,13 +7136,17 @@ function renderOrdersPage(){
   var host=document.getElementById('ord-page'); if(!host)return;
   _ordCss(); _ordEnsure();
   var all=_ordAll();
-  var uploadCard='<div class="ord-card" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">'
-    +'<div style="flex:1 1 240px;"><div style="font-weight:900;font-size:13px;">\uD83D\uDCE6 Weekly orders</div>'
-    +'<div style="font-size:11px;color:var(--tcp-muted,#8b95a7);margin-top:2px;">Upload the weekly SalesRepPerformance spreadsheet. Reads the Orders sheet; adjustments &amp; backorders attach to the original order.</div></div>'
+  var uploadCard='<details class="ord-card" style="padding:0;overflow:hidden;">'
+    +'<summary style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;list-style:none;">'
+    +'<div><div style="font-weight:900;font-size:12px;">\uD83E\uDDF0 Legacy weekly summary importer</div>'
+    +'<div style="font-size:10px;color:var(--tcp-muted,#8b95a7);margin-top:3px;">Only use this for the old SalesRepPerformance workbook containing an <b>Orders</b> sheet and an <b>Order #</b> column. Do not use it for line-item reports.</div></div>'
+    +'<span class="r3-pill" style="color:#e7c078;border-color:rgba(245,190,100,.24);">Advanced / legacy</span></summary>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:0 16px 15px;border-top:1px solid var(--tcp-line);">'
+    +'<div style="flex:1 1 240px;padding-top:12px;color:var(--tcp-muted,#8b95a7);font-size:10.5px;">Expected format: SalesRepPerformance workbook → Orders sheet → Order # header.</div>'
     +'<input type="file" id="ordUploadFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="ordUpload(event)">'
-    +'<button class="ord-btn primary" onclick="_ordOpenUpload()">Upload spreadsheet</button>'
-    +'<div id="ord-upload-status" style="flex-basis:100%;font-size:11px;">'+(S.ordersMeta&&S.ordersMeta.lastUpload?('Last upload: '+new Date(S.ordersMeta.lastUpload).toLocaleString()+(S.ordersMeta.lastFile?(' \u00b7 '+_ordEsc(S.ordersMeta.lastFile)):'')):'No spreadsheet uploaded yet.')+'</div>'
-    +'</div>';
+    +'<button class="ord-btn" style="margin-top:12px;border-color:rgba(245,190,100,.28);color:#e7c078" onclick="_ordOpenUpload()">Upload legacy weekly summary</button>'
+    +'<div id="ord-upload-status" style="flex-basis:100%;font-size:10.5px;">'+(S.ordersMeta&&S.ordersMeta.lastUpload?('Last legacy upload: '+new Date(S.ordersMeta.lastUpload).toLocaleString()+(S.ordersMeta.lastFile?(' \u00b7 '+_ordEsc(S.ordersMeta.lastFile)):'')):'No legacy weekly summary uploaded.')+'</div>'
+    +'</div></details>';
   if(!all.length){ host.innerHTML=uploadCard+'<div class="ord-card" style="text-align:center;color:var(--tcp-muted,#8b95a7);font-size:12px;">No orders yet \u2014 upload a spreadsheet to get started.</div>'; return; }
   // filter option lists
   var reps=Array.from(new Set(all.map(function(o){return o.rep;}))).sort();
@@ -18470,6 +18474,11 @@ function custDelete(id){
 function renderCustomersPage(){
   var host=document.getElementById('cust-page');if(!host)return;
   _custEnsure();
+  var importMeta=null;
+  try{importMeta=JSON.parse(localStorage.getItem('_tcp_customer_import_v523')||'null');}catch(_cuimpMetaErr){}
+  var importSummary=importMeta
+   ?('<div id="cuimp-summary" class="cuimp-summary"><div><strong>Customer spreadsheet synced</strong><br><span>'+_m2esc(importMeta.fileName||'Spreadsheet')+' · '+Number(importMeta.imported||0).toLocaleString()+' customers · '+_m2esc(importMeta.reps||'')+'</span></div><span>Imported '+_m2esc(importMeta.importedAt?new Date(importMeta.importedAt).toLocaleString():'')+' · reps see updates after Refresh Data</span></div>')
+   :('<div id="cuimp-summary" class="cuimp-summary" style="border-color:rgba(139,124,255,.22);background:rgba(139,124,255,.045)"><div><strong style="color:#b7b0ff">Customer set has not been imported</strong><br><span>Upload the customer spreadsheet first so Account IDs, customer ownership, loyalty, contacts, and sales snapshots can flow into each rep portal.</span></div><span>Required before line-item orders can map automatically</span></div>');
   var list=S.customers.slice();
   var qy=((document.getElementById('cu-search')||{}).value||'').toLowerCase().trim();
   var reps=activeReps();
@@ -18493,7 +18502,8 @@ function renderCustomersPage(){
   host.innerHTML='<div class="r3-shell">'
     +'<div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#22D3EE,#34D399);">&#127970;</span>'
     +'<div class="r3-hmeta"><div class="r3-name">Customer intelligence</div><div class="r3-sub">'+list.length+' customers tracked &middot; where the sales are coming from</div></div>'
-    +'<div class="r3-hactions"><button class="dc2-act" onclick="var r=custHarvest();renderCustomersPage();alert(\'Scan complete: \'+r.added+\' new customers found, \'+r.updated+\' orders added from existing tracker data.\')">&#128269; Scan tracker for customers</button></div></div>'
+    +'<div class="r3-hactions"><button id="cuimp-upload-btn" class="dc2-act" style="border-color:#5DCAA5;color:#8BE0BF" onclick="custImportChoose()">⬆ Upload customer spreadsheet</button><button class="dc2-act" onclick="downloadCustomerImportTemplate()">⬇ Download import template</button><button class="dc2-act" onclick="var r=custHarvest();renderCustomersPage();alert(\'Scan complete: \'+r.added+\' new customers found, \'+r.updated+\' orders added from existing tracker data.\')">&#128269; Scan legacy tracker data</button><input id="cuimp-file" type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="custImportRead(this)"></div></div>'
+    +importSummary
     +'<div class="dc2-stats" style="border-bottom:1px solid var(--tcp-line);">'
     +sCell('New (60d)',String(newC.length),repLine||'by first order date')
     +sCell('Reactivated',String(reactC.length),'came back after 90+ days')
@@ -18512,7 +18522,7 @@ function renderCustomersPage(){
     +'</div>'
     +'<div style="padding:12px 18px;">'
     +'<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;"><div class="dc2-panel-h" style="margin:0;"><span>Customer book</span></div><input id="cu-search" class="r3-in" style="margin:0;max-width:220px;" placeholder="Search\u2026" oninput="renderCustomersPage()"></div>'
-    +(shown.length?('<table class="r3-tbl"><thead><tr><th style="text-align:left;">Customer</th><th style="text-align:left;">Rep</th><th>First order</th><th>Last order</th><th>Orders</th><th>Revenue</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'+(shown.length>200?'<div class="dc-flat" style="font-size:10.5px;margin-top:6px;">Showing 200 of '+shown.length+'</div>':'')):'<div class="dc-flat" style="padding:8px 0;">No customers yet. Hit <b>Scan tracker for customers</b> to seed the book from your existing top-sale and credit-memo data, then log orders as they land.</div>')
+    +(shown.length?('<table class="r3-tbl"><thead><tr><th style="text-align:left;">Customer</th><th style="text-align:left;">Rep</th><th>First order</th><th>Last order</th><th>Orders</th><th>Revenue</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'+(shown.length>200?'<div class="dc-flat" style="font-size:10.5px;margin-top:6px;">Showing 200 of '+shown.length+'</div>':'')):'<div class="dc-flat" style="padding:8px 0;">No customers yet. Start with <b>Upload customer spreadsheet</b>. That file establishes the customer ID and assigned rep used by the line-item order importer.</div>')
     +'</div></div>';
   var srch=document.getElementById('cu-search');
   if(srch&&qy){srch.value=qy;srch.focus();try{srch.setSelectionRange(qy.length,qy.length);}catch(e){}}
@@ -38529,7 +38539,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  function modalHtml(state){
   var a=state.analysis,preview=state.records.slice(0,20).map(function(r){var cls=r.repState==='matched'?'good':r.repState==='do-not-call'?'warn':'risk';return '<tr><td>'+esc(r.customerNumber||'—')+'</td><td><strong>'+esc(r.name)+'</strong></td><td>'+esc(r.repRaw||'—')+'</td><td><span class="cuimp-badge '+cls+'">'+esc(r.repState==='matched'?r.rep:r.repState)+'</span></td><td>'+esc(r.loyalty||'—')+'</td><td>'+esc(r.position||'—')+'</td><td>'+money(r.importedSalesCurrentYear)+'</td><td>'+money(r.importedLifetimeSales)+'</td><td>'+esc(r.contact||'—')+'</td></tr>'}).join('');
   var reps=Object.keys(a.reps).sort().map(function(r){return r+' '+a.reps[r]}).join(' · ');
-  return '<div class="cuimp-modal-wrap" id="cuimp-modal"><div class="cuimp-modal"><div class="cuimp-head"><div><div class="cuimp-kick">CUSTOMER SPREADSHEET IMPORT · BUILD v523</div><div class="cuimp-title">Review before syncing customer sets</div><div class="cuimp-copy">'+esc(state.fileName)+' · detected header row '+(state.header.index+1)+' · '+state.records.length+' unique customer records. Only rows matched to an active rep will enter that rep’s portal.</div></div><button class="cuimp-close" onclick="custImportClose()">×</button></div>'
+  return '<div class="cuimp-modal-wrap" id="cuimp-modal"><div class="cuimp-modal"><div class="cuimp-head"><div><div class="cuimp-kick">CUSTOMER SPREADSHEET IMPORT · BUILD v525</div><div class="cuimp-title">Review before syncing customer sets</div><div class="cuimp-copy">'+esc(state.fileName)+' · detected header row '+(state.header.index+1)+' · '+state.records.length+' unique customer records. Only rows matched to an active rep will enter that rep’s portal.</div></div><button class="cuimp-close" onclick="custImportClose()">×</button></div>'
    +'<div class="cuimp-stats"><div class="cuimp-stat"><span>Rows found</span><strong>'+a.total+'</strong></div><div class="cuimp-stat"><span>Rep matched</span><strong>'+a.matched+'</strong></div><div class="cuimp-stat"><span>New customers</span><strong>'+a.newCount+'</strong></div><div class="cuimp-stat"><span>Updates</span><strong>'+a.updateCount+'</strong></div><div class="cuimp-stat"><span>Do not call / 0</span><strong>'+a.doNotCall+'</strong></div><div class="cuimp-stat"><span>Unmatched reps</span><strong>'+a.unmatched+'</strong></div></div>'
    +'<div class="cuimp-map"><strong style="color:#c4b5fd">Detected mapping:</strong> Customer ID → customer number · Customer → company · Sales Rep → portal owner · Loyalty → customer tier · Position → Top 90/Bottom 10 · Status → assignment status · sales columns → imported snapshot · contact/address → profile context.<br><strong style="color:#8be0bf">Rep distribution:</strong> '+esc(reps||'No active reps matched')+'</div>'
    +'<div class="cuimp-table-wrap"><table class="cuimp-table"><thead><tr><th>ID</th><th>Customer</th><th>Spreadsheet rep</th><th>Portal owner</th><th>Loyalty</th><th>Position</th><th>Current year</th><th>Lifetime</th><th>Contact</th></tr></thead><tbody>'+preview+'</tbody></table></div>'
@@ -38548,8 +38558,10 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
    var head=host.querySelector('.r3-head');if(head)head.insertAdjacentHTML('afterend','<div id="cuimp-summary" class="cuimp-summary"><div><strong>Customer spreadsheet synced</strong><br><span>'+esc(meta.fileName||'Spreadsheet')+' · '+Number(meta.imported||0).toLocaleString()+' customers · '+esc(meta.reps||'')+'</span></div><span>Imported '+esc(meta.importedAt?new Date(meta.importedAt).toLocaleString():'')+' · reps see updates after Refresh Data</span></div>');
   }
  }
+ /* v525: controls are rendered directly inside renderCustomersPage().
+    Keep decorate() only as a compatibility fallback for older saved builds. */
  var baseRender=window.renderCustomersPage;
- if(typeof baseRender==='function')window.renderCustomersPage=function(){baseRender();setTimeout(decorate,0)};
+ if(typeof baseRender==='function')setTimeout(decorate,0);
  window.custImportChoose=function(){var e=document.getElementById('cuimp-file');if(e)e.click()};
  window.custImportRead=function(input){
   var file=input&&input.files&&input.files[0];if(!file)return;
@@ -38878,7 +38890,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  function managerCard(){
   var a=byRep(''),all=arr(S&&S.orderLineItems),coverage=reportCoverage(),orders=arr(S&&S.orders).filter(function(o){return o&&o.source==='line-item-report'}),unmatched=arr(S&&S.orderLineItemsUnmatched),units=all.filter(function(x){return x.lineClass==='product'}).reduce(function(s,x){return s+Math.max(0,Number(x.quantityOrdered)||0)},0),net=all.reduce(function(s,x){return s+Number(x.extendedSalesRevenue||0)},0),credits=all.filter(function(x){return Number(x.extendedSalesRevenue)<0}).reduce(function(s,x){return s+Number(x.extendedSalesRevenue||0)},0),accounts={};all.forEach(function(x){accounts[String(x.accountId)]=1});
   var recent=orders.slice().sort(function(a,b){return String(b.orderDate).localeCompare(String(a.orderDate))}).slice(0,12);
-  return '<div id="li524-manager-card" class="li524-card"><div class="li524-head"><div><div class="li524-kick">LINE-ITEM ORDER ENGINE · BUILD v524</div><div class="li524-title">Upload invoice line items and rebuild customer purchase history</div><div class="li524-copy">The importer joins AccountID to the Customer Spreadsheet customer ID, inherits the assigned rep, stores every product/decoration/charge/credit line, and rebuilds read-only order summaries for rep portals and customer profiles.</div></div><div class="li524-actions"><button class="li524-btn primary" onclick="_liImportChoose()">⬆ Upload line-item report</button><input id="li524-file" type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="_liImportRead(this)"></div></div>'
+  return '<div id="li524-manager-card" class="li524-card"><div class="li524-head"><div><div class="li524-kick">PRIMARY ORDER IMPORT · LINE-ITEM ENGINE · BUILD v525</div><div class="li524-title">Upload the monthly line-item report here</div><div class="li524-copy">This is the correct importer for files with AccountID, InvoiceNumber, ProductName, QuantityOrdered, and ExtendedSalesRevenue. It joins AccountID to the Customer Spreadsheet, inherits the assigned rep, stores every product/decoration/charge/credit line, and rebuilds customer purchase history.</div></div><div class="li524-actions"><span class="li524-badge good" style="align-self:center">Use this for the report you uploaded</span><button class="li524-btn primary" onclick="_liImportChoose()">⬆ Upload monthly line-item report (CSV/XLSX)</button><input id="li524-file" type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="_liImportRead(this)"></div></div>'
    +'<div class="li524-kpis"><div class="li524-kpi"><span>Loaded lines</span><strong>'+all.length.toLocaleString()+'</strong></div><div class="li524-kpi"><span>Order / invoice summaries</span><strong>'+orders.length.toLocaleString()+'</strong></div><div class="li524-kpi"><span>Mapped accounts</span><strong>'+Object.keys(accounts).length.toLocaleString()+'</strong></div><div class="li524-kpi"><span>Product units</span><strong>'+units.toLocaleString()+'</strong></div><div class="li524-kpi"><span>Net revenue</span><strong>'+money(net)+'</strong></div><div class="li524-kpi"><span>Discounts / credits</span><strong>'+money(credits)+'</strong></div><div class="li524-kpi"><span>Unmapped lines</span><strong>'+unmatched.length.toLocaleString()+'</strong></div></div>'
    +'<div class="li524-note"><strong>Coverage:</strong> '+(coverage.start?formatDate(coverage.start)+' – '+formatDate(coverage.end):'No line-item report loaded')+'. This detail enriches customer buying history but does not pretend that an incomplete date range represents the customer’s full YTD or lifetime sales. The original weekly order importer remains below for legacy files.</div>'
    +(recent.length?'<div class="li524-table-wrap"><table class="li524-table"><thead><tr><th>Order / credit</th><th>Invoice</th><th>Customer</th><th>Rep</th><th>Date</th><th>Lines</th><th>Units</th><th>Net</th></tr></thead><tbody>'+recent.map(function(o){return '<tr><td><span class="li524-link" onclick="_liOpenOrder(\''+encodeURIComponent(o.lineItemOrderKey)+'\')">'+esc(o.orderNum)+'</span></td><td>'+esc(o.invoiceNumber||'—')+'</td><td>'+esc(o.customer)+'</td><td>'+esc(o.rep)+'</td><td>'+formatDate(o.orderDate)+'</td><td>'+Number(o.lineCount||0).toLocaleString()+'</td><td>'+Number(o.productUnits||0).toLocaleString()+'</td><td>'+money(o.total)+'</td></tr>'}).join('')+'</tbody></table></div>':'')
@@ -38924,6 +38936,39 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  window._li524Summary=summarizeGroup;
 
  setTimeout(decorateManager,350);
+})();
+</script>
+
+
+<style id="tcp-import-reliability-v525-css">
+#cust-page .imp525-banner,#ord-page .imp525-banner{
+ margin:0 0 13px;padding:11px 13px;border-radius:11px;
+ border:1px solid rgba(45,212,191,.22);background:rgba(45,212,191,.05);
+ display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+ color:var(--tcp-muted,#8b95a7);font-size:10px;line-height:1.5
+}
+#cust-page .imp525-banner strong,#ord-page .imp525-banner strong{color:#8BE0BF}
+#cust-page .r3-hactions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+#cust-page .r3-hactions .dc2-act{white-space:nowrap}
+#ord-page details.ord-card summary::-webkit-details-marker{display:none}
+</style>
+<script id="tcp-import-reliability-v525-js">
+(function(){
+ function addBanner(){
+  var c=document.getElementById('cust-page');
+  if(c&&!document.getElementById('imp525-customer-banner')){
+   c.insertAdjacentHTML('afterbegin','<div id="imp525-customer-banner" class="imp525-banner"><div><strong>Step 1 — Customer ownership</strong><br>Upload the customer spreadsheet here first. It establishes AccountID/CustId and which rep owns each customer.</div><span>BUILD v525 · permanent page control</span></div>')
+  }
+  var o=document.getElementById('ord-page');
+  if(o&&!document.getElementById('imp525-order-banner')){
+   o.insertAdjacentHTML('afterbegin','<div id="imp525-order-banner" class="imp525-banner"><div><strong>Step 2 — Order and product history</strong><br>Use the green monthly line-item importer for AccountID / InvoiceNumber reports. The collapsed weekly importer is only for the old SalesRepPerformance format.</div><span>BUILD v525 · correct importer guidance</span></div>')
+  }
+ }
+ var oldCust=window.renderCustomersPage;
+ if(typeof oldCust==='function')window.renderCustomersPage=function(){oldCust();addBanner()};
+ var oldOrd=window.renderOrdersPage;
+ if(typeof oldOrd==='function')window.renderOrdersPage=function(){oldOrd();addBanner()};
+ setTimeout(addBanner,250);
 })();
 </script>
 
