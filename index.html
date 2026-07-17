@@ -40602,6 +40602,9 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   var company=clean(window._call532.company);if(!company)return;
   var d={
    company:company,contactId:val('cl1-contact'),outcome:val('cl1-outcome'),sentiment:val('cl1-sentiment'),
+   callType:val('cl1-call-type'),secondaryPurpose:val('cl1-secondary-purpose'),
+   accountUpdateCompleted:checked('cl1-account-update-complete'),
+   industryTags:(typeof window._call537CollectIndustries==='function'?window._call537CollectIndustries():[]),
    subject:val('cl1-subject'),notes:val('cl1-notes'),transcript:val('cl1-transcript'),
    products:val('cl1-products'),objections:val('cl1-objections'),nextAction:val('cl1-next-action'),nextDate:val('cl1-next-date'),
    createFollowUp:checked('cl1-create-followup'),createOpportunity:checked('cl1-create-opportunity'),
@@ -40686,26 +40689,43 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   saveDraftFromDom();
   var g=desktop(),company=clean(window._call532.company),ctx=context(g,company),draft=window._call532.draft||{},contact=contactById(ctx.c,draft.contactId)||ctx.c.primary||ctx.c.contacts&&ctx.c.contacts[0]||null;
   var errors=[];
-  if(!company)errors.push('Choose a customer.');
+  if(!company)errors.push('Choose a company.');
+  if(!draft.callType)errors.push('Choose a call type.');
   if(!draft.outcome)errors.push('Choose a call outcome.');
   if(requiredNext(draft.outcome)&&(!draft.nextAction||!draft.nextDate))errors.push('Record the next action and date, or choose a no-follow-up outcome.');
   if(draft.createOpportunity&&!clean(draft.opportunityTitle))draft.opportunityTitle='Opportunity from call · '+company;
   if(errors.length){alert(errors.join('\n'));return false}
   var s=crm(),a=account(s,company),stamp=new Date().toISOString(),seconds=currentSeconds();
-  var activity={id:id('act'),source:'call-workspace',type:'Call',subject:draft.subject||('Call with '+(contact&&contact.name||company)),detail:draft.notes||'',transcript:draft.transcript||'',outcome:draft.outcome,sentiment:draft.sentiment||'Unknown',productsDiscussed:draft.products||'',objections:draft.objections||'',date:stamp,createdAt:stamp,updatedAt:stamp,nextStep:draft.nextAction||'',nextDate:draft.nextDate||'',contactId:contact&&field(contact,['id','contactId'],'')||'',contactName:contact&&contact.name||'',durationSeconds:seconds,phone:contact&&field(contact,['phone','mobile','phoneNumber'],'')||'',email:contact&&field(contact,['email'],'')||'',callStatus:'completed'};
+  var activity={id:id('act'),source:'call-workspace',type:'Call',callType:draft.callType||'',secondaryPurpose:draft.secondaryPurpose||'',accountUpdateCompleted:!!draft.accountUpdateCompleted,accountUpdateCompletionSource:(draft.callType==='Account Updating Call'?(draft.accountUpdateCompleted?'rep-confirmed':'not-counted'):'not-applicable'),industryTags:arr(draft.industryTags),subject:draft.subject||('Call with '+(contact&&contact.name||company)),detail:draft.notes||'',transcript:draft.transcript||'',outcome:draft.outcome,sentiment:draft.sentiment||'Unknown',productsDiscussed:draft.products||'',objections:draft.objections||'',date:stamp,createdAt:stamp,updatedAt:stamp,nextStep:draft.nextAction||'',nextDate:draft.nextDate||'',contactId:contact&&field(contact,['id','contactId'],'')||'',contactName:contact&&contact.name||'',durationSeconds:seconds,phone:contact&&field(contact,['phone','mobile','phoneNumber'],'')||'',email:contact&&field(contact,['email'],'')||'',callStatus:'completed'};
   a.data.activities.push(activity);
   if(contact){
    var cid=String(field(contact,['id','contactId'],'')||''),idx=a.data.contacts.findIndex(function(x){return String(field(x,['id','contactId'],'')||'')===cid});
    if(idx>=0){a.data.contacts[idx].lastTouch=stamp;if(draft.nextDate)a.data.contacts[idx].nextTouch=draft.nextDate;a.data.contacts[idx].updatedAt=stamp}
   }
+  var oldTags=arr(a.data.profile.industryTags),newTags=arr(draft.industryTags);
+  if(draft.callType==='Account Updating Call'){
+   a.data.profile.industryTags=newTags.slice();
+   a.data.profile.industryTagsUpdatedAt=stamp;
+   a.data.profile.industryTagsUpdatedBy=_rp2.rep;
+   activity.industryTagsChanged=JSON.stringify(oldTags.slice().sort())!==JSON.stringify(newTags.slice().sort());
+   if(draft.accountUpdateCompleted){
+    a.data.profile.lastAccountUpdateAt=stamp;
+    a.data.profile.lastAccountUpdateOutcome=draft.outcome;
+    a.data.profile.lastAccountUpdateRep=_rp2.rep;
+    a.data.profile.lastAccountUpdateActivityId=activity.id;
+    a.data.profile.accountUpdateQuarter=(Math.floor(new Date(stamp).getMonth()/3)+1);
+   }
+  }
   var opportunity=createOpportunity(a.data,company,contact,draft);
   a.data.profile.updatedAt=stamp;s.reps[_rp2.rep]=a.rep;localStorage.setItem(CRM,JSON.stringify(s));
   var follow=createFollowUp(company,contact,activity,draft),queue=ctx.queue;
-  markSourceTaskComplete(queue&&queue.taskId,draft.outcome,draft.notes,draft.nextDate);
-  var b=repStore();b.data.history=arr(b.data.history);b.data.events=arr(b.data.events);b.data.history.unshift({id:activity.id,company:company,contactName:activity.contactName,outcome:activity.outcome,durationSeconds:seconds,nextAction:activity.nextStep,nextDate:activity.nextDate,createdAt:stamp,opportunityId:opportunity&&opportunity.id||'',followUpTaskId:follow&&follow.id||''});if(b.data.history.length>150)b.data.history=b.data.history.slice(0,150);b.data.events.push({type:'call-completed',activityId:activity.id,company:company,at:stamp});delete b.data.drafts[norm(company)];saveStore(b.s);
+  var shouldCloseSource=draft.callType!=='Account Updating Call'||!!draft.accountUpdateCompleted;
+  if(shouldCloseSource)markSourceTaskComplete(queue&&queue.taskId,draft.outcome,draft.notes,draft.nextDate);
+  var b=repStore();b.data.history=arr(b.data.history);b.data.events=arr(b.data.events);b.data.history.unshift({id:activity.id,company:company,contactName:activity.contactName,callType:activity.callType,secondaryPurpose:activity.secondaryPurpose,accountUpdateCompleted:activity.accountUpdateCompleted,outcome:activity.outcome,durationSeconds:seconds,nextAction:activity.nextStep,nextDate:activity.nextDate,createdAt:stamp,opportunityId:opportunity&&opportunity.id||'',followUpTaskId:follow&&follow.id||''});if(b.data.history.length>150)b.data.history=b.data.history.slice(0,150);b.data.events.push({type:'call-completed',activityId:activity.id,company:company,at:stamp});delete b.data.drafts[norm(company)];saveStore(b.s);
   window._call532.elapsed=seconds;window._call532.startedAt='';window._call532.paused=false;window._call532.stage='complete';window._call532.completed={activity:activity,follow:follow,opportunity:opportunity,quoteHandoff:!!draft.quoteHandoff};stopTimer();
   try{window._cw4DirectoryCache=null;window._cw4ProfileCache={}}catch(e){}
   rerender();
+  if(typeof window._at537AfterCall==='function')setTimeout(function(){window._at537AfterCall({activity:activity,draft:draft,company:company,contact:contact,queue:queue,follow:follow,opportunity:opportunity})},90);
   if(draft.quoteHandoff)setTimeout(function(){quoteHandoff(company,draft,activity)},160);
   return true
  }
@@ -40730,7 +40750,8 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   var company=ctx.c.name||window._call532.company,d=window._call532.draft||{},contacts=arr(ctx.c.contacts),selected=d.contactId||field(ctx.c.primary||{},['id','contactId'],'')||field(contacts[0]||{},['id','contactId'],'')||'',queue=ctx.queue||{};
   if(window._call532.stage==='complete')return'<div class="cl1-form">'+completedHtml(company)+'</div>';
   return'<div class="cl1-form" oninput="_call532Draft()" onchange="_call532Draft()">'
-   +'<section class="cl1-section"><div class="cl1-section-title">Call setup</div><div class="cl1-section-copy">Confirm who you are calling and why before opening the phone link.</div><div class="cl1-grid-2"><div class="cl1-field"><label>Contact</label><select id="cl1-contact"><option value="">No specific contact</option>'+formOptions(contacts,selected,function(c){return clean(field(c,['name'],'Contact'))+' · '+clean(field(c,['title','buyingRole'],'Role not recorded'))})+'</select></div><div class="cl1-field"><label>Call subject</label><input id="cl1-subject" value="'+esc(d.subject||queue.reason||('Customer call · '+company))+'"></div></div><div class="cl1-card-actions" style="margin-top:10px"><button type="button" class="cl1-btn primary" onclick="_call532Begin()">'+(window._call532.stage==='active'?'Call in progress':'Begin call')+'</button><button type="button" class="cl1-btn" onclick="_call532Phone()">Open phone</button><button type="button" class="cl1-btn" onclick="_call532Email()">Open email</button><button type="button" class="cl1-btn purple" onclick="_call532OpenCustomer()">Customer profile</button></div></section>'
+   +(typeof window._call537ClassificationHtml==='function'?window._call537ClassificationHtml(ctx,d):'')
+   +'<section class="cl1-section"><div class="cl1-section-title">Call setup</div><div class="cl1-section-copy">Confirm who you are calling and why before opening the phone link.</div><div class="cl1-grid-2"><div class="cl1-field"><label>Contact</label><select id="cl1-contact"><option value="">No specific contact</option>'+formOptions(contacts,selected,function(c){return clean(field(c,['name'],'Contact'))+' · '+clean(field(c,['title','buyingRole'],'Role not recorded'))})+'</select></div><div class="cl1-field"><label>Call subject</label><input id="cl1-subject" value="'+esc(d.subject||queue.reason||('Customer call · '+company))+'"></div></div><div class="cl1-card-actions" style="margin-top:10px"><button type="button" class="cl1-btn primary" onclick="_call532Begin()">'+(window._call532.stage==='active'?'Call in progress':'Begin call')+'</button><button type="button" class="cl1-btn" onclick="_call532Phone()">Open phone</button><button type="button" class="cl1-btn" onclick="_call532Email()">Open email</button><button type="button" class="cl1-btn purple" onclick="_call532OpenCustomer()">Company profile</button></div></section>'
    +'<section class="cl1-section"><div class="cl1-section-title">Conversation record</div><div class="cl1-section-copy">Use the transcript area for manually pasted speech-to-text or key conversation detail. No recording is generated by this file.</div><div class="cl1-grid-2"><div class="cl1-field"><label>Conversation notes</label><textarea id="cl1-notes" placeholder="What did the customer say? What did you learn?">'+esc(d.notes||'')+'</textarea></div><div class="cl1-field"><label>Transcript / detailed notes</label><textarea id="cl1-transcript" placeholder="Paste transcript text or preserve detailed call notes here.">'+esc(d.transcript||'')+'</textarea></div></div><div class="cl1-grid-2"><div class="cl1-field"><label>Products or programs discussed</label><textarea id="cl1-products" placeholder="Products, quantities, programs, timing, or use case">'+esc(d.products||'')+'</textarea></div><div class="cl1-field"><label>Objections / decision barriers</label><textarea id="cl1-objections" placeholder="Price, timing, artwork, inventory, approval, competition, or other barrier">'+esc(d.objections||'')+'</textarea></div></div></section>'
    +'<section class="cl1-section"><div class="cl1-section-title">Outcome and next commitment</div><div class="cl1-section-copy">A next action and date are required unless the outcome explicitly closes the follow-up loop.</div><div class="cl1-grid-2"><div class="cl1-field"><label>Call outcome *</label><select id="cl1-outcome"><option value="">Choose outcome</option>'+['Connected – follow-up required','Connected – quote discussed','Order expected','Sample requested','Left voicemail','No answer','Wrong contact','Not interested','Completed – no follow-up'].map(function(x){return'<option '+(d.outcome===x?'selected':'')+'>'+x+'</option>'}).join('')+'</select></div><div class="cl1-field"><label>Customer sentiment</label><select id="cl1-sentiment">'+['Unknown','Positive','Neutral','Concerned','Frustrated'].map(function(x){return'<option '+((d.sentiment||'Unknown')===x?'selected':'')+'>'+x+'</option>'}).join('')+'</select></div></div><div class="cl1-grid-2"><div class="cl1-field"><label>Next action</label><input id="cl1-next-action" value="'+esc(d.nextAction||'')+'" placeholder="What must happen next?"></div><div class="cl1-field"><label>Next action date</label><input id="cl1-next-date" type="date" value="'+esc(d.nextDate||'')+'"></div></div><label class="cl1-check"><input id="cl1-create-followup" type="checkbox" '+(d.createFollowUp!==false?'checked':'')+'> Create the dated follow-up in Today’s Business when the call is completed.</label></section>'
    +'<section class="cl1-section"><div class="cl1-section-title">Sales handoff</div><div class="cl1-section-copy">Create an opportunity only when the call identified qualified future business. Quote handoff prepares Deal Desk; it does not send a quote.</div><div class="cl1-grid-2"><label class="cl1-check"><input id="cl1-create-opportunity" type="checkbox" '+(d.createOpportunity?'checked':'')+'> Create an opportunity from this call.</label><label class="cl1-check"><input id="cl1-quote-handoff" type="checkbox" '+(d.quoteHandoff?'checked':'')+'> Open a prepared Deal Desk quote after saving.</label></div><div class="cl1-grid-3"><div class="cl1-field"><label>Opportunity title</label><input id="cl1-opportunity-title" value="'+esc(d.opportunityTitle||'')+'" placeholder="Program or business need"></div><div class="cl1-field"><label>Estimated value</label><input id="cl1-opportunity-value" type="number" min="0" step="1" value="'+esc(d.opportunityValue||'')+'"></div><div class="cl1-field"><label>Stage</label><select id="cl1-opportunity-stage">'+['New Opportunity','Discovery','Product Selection','Quote in Progress','Quote Sent','Customer Review'].map(function(x){return'<option '+((d.opportunityStage||'Discovery')===x?'selected':'')+'>'+x+'</option>'}).join('')+'</select></div></div><div class="cl1-field" style="margin-top:8px"><label>Expected close date</label><input id="cl1-opportunity-close" type="date" value="'+esc(d.opportunityClose||'')+'"></div></section>'
@@ -41803,7 +41824,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  function bodyHtml(x){
   var c=call(),d=x.draft||{},contact=selectedContact(x),stage=c.stage||'prep';
   if(stage==='complete')return completionHtml(x);
-  return'<div class="fc1-quick"><button class="fc1-btn primary" onclick="_call532Phone()">Open phone</button><button class="fc1-btn" onclick="_call532Email()">Open email</button><button class="fc1-btn purple" onclick="_call532OpenCustomer()">Full profile</button></div>'
+  return(typeof window._call537FloatingClassification==='function'?window._call537FloatingClassification(x,d):'')+'<div class="fc1-quick"><button class="fc1-btn primary" onclick="_call532Phone()">Open phone</button><button class="fc1-btn" onclick="_call532Email()">Open email</button><button class="fc1-btn purple" onclick="_call532OpenCustomer()">Full profile</button></div>'
    +'<section class="fc1-section"><div class="fc1-section-title">Active conversation</div><div class="fc1-section-copy">The draft remains connected to the full Call Workspace while you browse the tracker.</div><div class="fc1-field" style="margin-top:9px"><label>Contact</label><select id="cl1-contact" onchange="_call534Sync()">'+optionHtml(x)+'</select></div><div class="fc1-field" style="margin-top:8px"><label>Conversation notes</label><textarea id="cl1-notes" oninput="_call534Sync()" placeholder="What did the customer say? What did you learn?">'+esc(d.notes||'')+'</textarea></div></section>'
    +'<section class="fc1-section"><div class="fc1-section-title">Outcome and next step</div><div class="fc1-grid-2"><div class="fc1-field"><label>Outcome</label><select id="cl1-outcome" onchange="_call534Sync()"><option value="">Choose outcome</option>'+['Connected – follow-up required','Connected – quote discussed','Order expected','Sample requested','Left voicemail','No answer','Wrong contact','Not interested','Completed – no follow-up'].map(function(v){return'<option '+(d.outcome===v?'selected':'')+'>'+v+'</option>'}).join('')+'</select></div><div class="fc1-field"><label>Sentiment</label><select id="cl1-sentiment" onchange="_call534Sync()">'+['Unknown','Positive','Neutral','Concerned','Frustrated'].map(function(v){return'<option '+((d.sentiment||'Unknown')===v?'selected':'')+'>'+v+'</option>'}).join('')+'</select></div></div><div class="fc1-grid-2"><div class="fc1-field"><label>Next action</label><input id="cl1-next-action" value="'+esc(d.nextAction||'')+'" oninput="_call534Sync()" placeholder="What happens next?"></div><div class="fc1-field"><label>Next date</label><input id="cl1-next-date" type="date" value="'+esc(d.nextDate||'')+'" onchange="_call534Sync()"></div></div><label class="fc1-check"><input id="cl1-create-followup" type="checkbox" '+(d.createFollowUp!==false?'checked':'')+' onchange="_call534Sync()"> Add the dated action to Today’s Business.</label></section>'
    +hidden('cl1-subject',d.subject||(x.queue&&x.queue.reason)||('Customer call · '+x.company))
@@ -42582,6 +42603,2637 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
    if(overlay&&_rp2&&_rp2.rep)goBase.call(window,_rp2.page||'home')
   }catch(e){}
  },0)
+})();
+</script>
+
+
+
+<style id="tcp-account-call-outlook-v537-css">
+/* ACCOUNT UPDATE CALLS + OUTLOOK AUTOMATION · BUILD v537 */
+
+/* Call classification */
+#rp-overlay .cl2-classify{padding:16px;border-radius:15px;border:1px solid rgba(139,124,255,.2);background:linear-gradient(135deg,rgba(139,124,255,.075),rgba(45,212,191,.035))}
+#rp-overlay .cl2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+#rp-overlay .cl2-field{display:grid;gap:6px;min-width:0}
+#rp-overlay .cl2-field label{color:#8290a6;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.55px}
+#rp-overlay .cl2-field select{width:100%;min-height:41px;padding:0 10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#0a1422;color:#e8edf5;font-size:10px}
+#rp-overlay .cl2-check{display:flex;gap:9px;align-items:flex-start;margin-top:11px;padding:12px;border-radius:11px;border:1px solid rgba(45,212,191,.18);background:rgba(45,212,191,.04);color:#aab6c7;font-size:9px;line-height:1.5}
+#rp-overlay .cl2-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+#rp-overlay .cl2-tag{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.025);color:#9ba9bc;font-size:8px;font-weight:850;cursor:pointer}
+#rp-overlay .cl2-tag.on,#rp-overlay .cl2-tag:has(input:checked){border-color:rgba(45,212,191,.28);background:rgba(45,212,191,.08);color:#a7eee0}
+#rp-overlay .cl2-tag input{margin:0}
+#rp-overlay .cl2-note{margin-top:9px;color:#7f8da2;font-size:8px;line-height:1.55}
+#rp-overlay .cl2-request{margin-top:9px;min-height:33px;padding:0 10px;border-radius:9px;border:1px dashed rgba(139,124,255,.28);background:rgba(139,124,255,.045);color:#c9c3ff;font-size:8px;font-weight:900;cursor:pointer}
+#rp-overlay .fc1-section.cl2-floating{border-color:rgba(139,124,255,.18);background:rgba(139,124,255,.04)}
+#rp-overlay[data-rp-scale="manager"] .cl2-classify{padding:19px}
+#rp-overlay[data-rp-scale="manager"] .cl2-field label{font-size:9px}
+#rp-overlay[data-rp-scale="manager"] .cl2-field select{min-height:45px;font-size:11px}
+#rp-overlay[data-rp-scale="manager"] .cl2-check{font-size:10px}
+#rp-overlay[data-rp-scale="manager"] .cl2-tag{font-size:9px;padding:8px 10px}
+
+/* Company industry controls */
+#rp-overlay .it537-card{margin-top:15px;padding:15px;border-radius:15px;border:1px solid rgba(45,212,191,.17);background:linear-gradient(135deg,rgba(45,212,191,.05),rgba(139,124,255,.038))}
+#rp-overlay .it537-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+#rp-overlay .it537-kick{color:#7ee6d2;font-size:8px;font-weight:950;letter-spacing:.85px;text-transform:uppercase}
+#rp-overlay .it537-title{margin-top:5px;color:#fff;font-size:13px;font-weight:950}
+#rp-overlay .it537-copy{margin-top:5px;color:#8593a8;font-size:9px;line-height:1.5}
+#rp-overlay .it537-actions{display:flex;gap:8px;flex-wrap:wrap}
+#rp-overlay .it537-btn{min-height:35px;padding:0 11px;border-radius:9px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#dce5ef;font-size:8.5px;font-weight:950;cursor:pointer}
+#rp-overlay .it537-btn.primary{border-color:rgba(45,212,191,.25);background:rgba(45,212,191,.075);color:#a5ecdd}
+#rp-overlay .it537-pending{margin-top:10px;color:#e0b967;font-size:8.5px}
+
+/* My Profile Microsoft connection */
+#rp-overlay .ms537-card{margin-bottom:17px;padding:17px;border-radius:16px;border:1px solid rgba(15,108,189,.25);background:linear-gradient(135deg,rgba(15,108,189,.09),rgba(139,124,255,.04))}
+#rp-overlay .ms537-card strong{display:block;color:#fff;font-size:13px}
+#rp-overlay .ms537-card p{margin:6px 0 0;color:#8795aa;font-size:9px;line-height:1.55}
+#rp-overlay .ms537-card button{margin-top:10px;min-height:37px;padding:0 12px;border-radius:9px;border:1px solid rgba(15,108,189,.29);background:rgba(15,108,189,.11);color:#aedcff;font-size:9px;font-weight:900;cursor:pointer}
+
+/* Manager Automation & Templates Center */
+#pg-automations{max-width:1700px;margin:0 auto;padding-bottom:60px}
+#pg-automations .at537-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(330px,.55fr);gap:23px;align-items:stretch;padding:29px 31px;margin:4px 0 18px;border-radius:28px;border:1px solid rgba(255,255,255,.11);background:radial-gradient(circle at 8% 0%,rgba(139,92,246,.26),transparent 36%),radial-gradient(circle at 96% 8%,rgba(34,211,238,.18),transparent 35%),linear-gradient(135deg,rgba(35,27,70,.97),rgba(11,18,34,.98) 58%,rgba(15,37,41,.94));box-shadow:0 25px 72px rgba(0,0,0,.34)}
+#pg-automations .at537-kick{color:#8ff3e5;font-size:10px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}
+#pg-automations .at537-hero h1{margin:9px 0 11px;color:#fff;font-size:36px;line-height:1;font-weight:950;letter-spacing:-.045em}
+#pg-automations .at537-hero p{margin:0;color:#c7d1e7;font-size:13px;line-height:1.7}
+#pg-automations .at537-hero-card{padding:19px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:rgba(5,10,18,.43)}
+#pg-automations .at537-hero-card span{display:block;color:#8f9cb4;font-size:10px;font-weight:900;text-transform:uppercase}
+#pg-automations .at537-hero-card strong{display:block;margin-top:8px;color:#fff;font-size:23px}
+#pg-automations .at537-hero-card p{margin-top:8px;font-size:11px;color:#93a1b8}
+#pg-automations .at537-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;padding:7px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(12,17,29,.9)}
+#pg-automations .at537-tab{min-height:40px;padding:0 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:#99a6bb;font-size:11px;font-weight:900;cursor:pointer}
+#pg-automations .at537-tab.on{border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.12);color:#fff}
+#pg-automations .at537-layout{display:grid;grid-template-columns:minmax(360px,.72fr) minmax(620px,1.28fr);gap:16px;align-items:start}
+#pg-automations .at537-panel{border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.018)),rgba(16,21,36,.95);box-shadow:0 19px 50px rgba(0,0,0,.23);overflow:hidden}
+#pg-automations .at537-panel-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;padding:19px 20px;border-bottom:1px solid rgba(255,255,255,.07)}
+#pg-automations .at537-panel-title{font-size:18px;color:#fff;font-weight:950}
+#pg-automations .at537-panel-copy{margin-top:5px;color:#909db2;font-size:10.5px;line-height:1.55}
+#pg-automations .at537-panel-body{padding:16px;display:grid;gap:11px}
+#pg-automations .at537-btn{min-height:40px;padding:0 13px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e1e7f1;font-size:10px;font-weight:900;cursor:pointer}
+#pg-automations .at537-btn.primary{background:linear-gradient(135deg,#8b5cf6,#3b82f6);border-color:rgba(255,255,255,.16);color:#fff}
+#pg-automations .at537-btn.green{border-color:rgba(52,211,153,.26);background:rgba(52,211,153,.085);color:#a9f5d4}
+#pg-automations .at537-btn.warn{border-color:rgba(251,191,36,.26);background:rgba(251,191,36,.085);color:#ffd88b}
+#pg-automations .at537-btn.danger{border-color:rgba(251,113,133,.26);background:rgba(251,113,133,.075);color:#ffb4c1}
+#pg-automations .at537-list{display:grid;gap:9px}
+#pg-automations .at537-row{padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.067);background:rgba(255,255,255,.023);cursor:pointer}
+#pg-automations .at537-row.on{border-color:rgba(139,92,246,.31);background:rgba(139,92,246,.075)}
+#pg-automations .at537-row-top{display:flex;justify-content:space-between;gap:11px}
+#pg-automations .at537-row strong{color:#fff;font-size:12px}
+#pg-automations .at537-row p{margin:5px 0 0;color:#8592a7;font-size:9px;line-height:1.5}
+#pg-automations .at537-badge{display:inline-flex;align-items:center;min-height:24px;padding:0 8px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#9ca9bb;font-size:7.5px;font-weight:950;white-space:nowrap}
+#pg-automations .at537-badge.active{border-color:rgba(52,211,153,.23);background:rgba(52,211,153,.065);color:#9be9c8}
+#pg-automations .at537-badge.protected{border-color:rgba(251,191,36,.23);background:rgba(251,191,36,.065);color:#f6d186}
+#pg-automations .at537-form{display:grid;gap:13px}
+#pg-automations .at537-grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+#pg-automations .at537-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+#pg-automations .at537-field{display:grid;gap:6px}
+#pg-automations .at537-field label{color:#8a98ae;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.55px}
+#pg-automations .at537-field input,#pg-automations .at537-field select,#pg-automations .at537-field textarea{width:100%;min-height:43px;padding:9px 11px;border-radius:11px;border:1px solid rgba(255,255,255,.11);background:rgba(0,0,0,.25);color:#fff;font-family:inherit;font-size:11px}
+#pg-automations .at537-field textarea{min-height:96px;resize:vertical;line-height:1.55}
+#pg-automations .at537-editor{min-height:245px;padding:15px;border-radius:13px;border:1px solid rgba(255,255,255,.11);background:rgba(0,0,0,.24);color:#eef2ff;font-size:12px;line-height:1.65;outline:none}
+#pg-automations .at537-toolbar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+#pg-automations .at537-tool{width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#dce4f0;font-weight:900;cursor:pointer}
+#pg-automations .at537-chip-grid{display:flex;gap:7px;flex-wrap:wrap}
+#pg-automations .at537-chip{display:inline-flex;gap:5px;align-items:center;padding:7px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:#abb5c5;font-size:8.5px;font-weight:850}
+#pg-automations .at537-chip.on,#pg-automations .at537-chip:has(input:checked){border-color:rgba(34,211,238,.28);background:rgba(34,211,238,.075);color:#abf0f7}
+#pg-automations .at537-actions{display:flex;gap:8px;flex-wrap:wrap}
+#pg-automations .at537-note{padding:12px;border-radius:11px;border:1px solid rgba(251,191,36,.18);background:rgba(251,191,36,.045);color:#9da9bb;font-size:9px;line-height:1.58}
+#pg-automations .at537-audit{display:grid;gap:8px;max-height:650px;overflow:auto}
+#pg-automations .at537-audit-row{padding:12px;border-radius:11px;border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.016)}
+#pg-automations .at537-audit-row strong{display:block;color:#dce4f0;font-size:10px}
+#pg-automations .at537-audit-row span{display:block;margin-top:4px;color:#78869b;font-size:8px}
+
+/* Outlook-style in-tracker composer */
+#rp-overlay .em537-wrap{position:fixed;inset:0;z-index:1000060;display:flex;align-items:flex-end;justify-content:flex-end;padding:22px;background:rgba(0,0,0,.3);pointer-events:none}
+#rp-overlay .em537-compose{width:min(980px,calc(100vw - 44px));height:min(790px,calc(100vh - 44px));display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto auto;border-radius:18px 18px 8px 8px;border:1px solid rgba(255,255,255,.14);background:#f8fafc;color:#172033;box-shadow:0 32px 100px rgba(0,0,0,.63);overflow:hidden;pointer-events:auto}
+#rp-overlay .em537-head{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:12px 14px;background:linear-gradient(90deg,#0f6cbd,#145ea8);color:#fff}
+#rp-overlay .em537-head strong{font-size:13px}
+#rp-overlay .em537-head span{display:block;margin-top:2px;color:#dbeeff;font-size:9px}
+#rp-overlay .em537-head-actions{display:flex;gap:5px}
+#rp-overlay .em537-icon{width:31px;height:31px;border:0;border-radius:7px;background:rgba(255,255,255,.13);color:#fff;font-size:13px;font-weight:900;cursor:pointer}
+#rp-overlay .em537-fields{display:grid;border-bottom:1px solid #d9dee8;background:#fff}
+#rp-overlay .em537-line{display:grid;grid-template-columns:62px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:43px;padding:4px 12px;border-bottom:1px solid #edf0f5}
+#rp-overlay .em537-line:last-child{border-bottom:0}
+#rp-overlay .em537-line label{color:#536174;font-size:11px;font-weight:700}
+#rp-overlay .em537-line input{width:100%;border:0;outline:0;background:transparent;color:#172033;font-size:12px}
+#rp-overlay .em537-from{color:#334155;font-size:11px}
+#rp-overlay .em537-rec-actions{display:flex;gap:6px}
+#rp-overlay .em537-small{border:0;background:transparent;color:#0f6cbd;font-size:10px;font-weight:850;cursor:pointer}
+#rp-overlay .em537-toolbar{display:flex;gap:4px;align-items:center;flex-wrap:wrap;padding:7px 11px;border-bottom:1px solid #d9dee8;background:#f3f6fa}
+#rp-overlay .em537-tool{min-width:31px;height:31px;border:1px solid transparent;border-radius:6px;background:transparent;color:#344154;font-size:11px;font-weight:850;cursor:pointer}
+#rp-overlay .em537-tool:hover{border-color:#cfd6e2;background:#fff}
+#rp-overlay .em537-body-shell{min-height:0;overflow:auto;background:#fff;padding:14px 16px}
+#rp-overlay .em537-body{min-height:285px;outline:0;color:#1e293b;font-size:13px;line-height:1.65}
+#rp-overlay .em537-signature{margin-top:21px;padding-top:15px;border-top:1px solid #e1e6ee}
+#rp-overlay .em537-sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+#rp-overlay .em537-sig-grid input{width:100%;min-height:36px;padding:7px 8px;border:1px solid #d5dbe5;border-radius:7px;background:#fff;color:#1e293b;font-size:11px}
+#rp-overlay .em537-footer-lock{margin-top:14px;padding:13px;border-radius:9px;border:1px solid #d9e0ea;background:#f7f9fc;color:#475569;font-size:10.5px;line-height:1.55}
+#rp-overlay .em537-footer-lock:before{content:"🔒 Company footer";display:block;margin-bottom:6px;color:#64748b;font-size:9px;font-weight:900;text-transform:uppercase}
+#rp-overlay .em537-attachments{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:9px 12px;border-top:1px solid #e1e6ee;background:#f8fafc}
+#rp-overlay .em537-attachment{display:inline-flex;gap:6px;align-items:center;padding:6px 8px;border-radius:8px;border:1px solid #d7dee9;background:#fff;color:#344154;font-size:9px}
+#rp-overlay .em537-attachment button{border:0;background:transparent;color:#b42318;cursor:pointer}
+#rp-overlay .em537-foot{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 13px;border-top:1px solid #d5dbe5;background:#f3f6fa}
+#rp-overlay .em537-send{min-height:38px;padding:0 18px;border:0;border-radius:8px;background:#0f6cbd;color:#fff;font-size:11px;font-weight:900;cursor:pointer}
+#rp-overlay .em537-send:disabled{opacity:.5;cursor:not-allowed}
+#rp-overlay .em537-draft-status{color:#64748b;font-size:9px}
+#rp-overlay .em537-foot-actions{display:flex;gap:7px}
+#rp-overlay .em537-secondary{min-height:38px;padding:0 11px;border-radius:8px;border:1px solid #cdd5e0;background:#fff;color:#334155;font-size:10px;font-weight:850;cursor:pointer}
+#rp-overlay .em537-conflict{padding:9px 12px;border-bottom:1px solid #f1c27d;background:#fff7e8;color:#815c22;font-size:10px}
+#rp-overlay .em537-missing{padding:13px;border-radius:10px;border:1px solid #f0c675;background:#fff8e8;color:#684f22;font-size:10px;margin-bottom:12px}
+#rp-overlay .em537-contact-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+#rp-overlay .em537-contact-card{padding:9px;border-radius:8px;border:1px solid #d7dee8;background:#fff;cursor:pointer}
+#rp-overlay .em537-contact-card strong{display:block;color:#1e293b;font-size:10px}
+#rp-overlay .em537-contact-card span{display:block;margin-top:3px;color:#64748b;font-size:9px}
+#rp-overlay .em537-new-contact{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:9px}
+#rp-overlay .em537-new-contact input{min-height:36px;padding:7px 8px;border:1px solid #d4dbe5;border-radius:7px;font-size:10px}
+#rp-overlay .em537-picker{position:fixed;inset:0;z-index:1000070;display:grid;place-items:center;padding:20px;background:rgba(8,12,20,.64)}
+#rp-overlay .em537-picker-card{width:min(720px,96vw);max-height:82vh;overflow:auto;border-radius:16px;border:1px solid rgba(255,255,255,.13);background:#111827;color:#fff;box-shadow:0 28px 90px rgba(0,0,0,.56)}
+#rp-overlay .em537-picker-head{display:flex;justify-content:space-between;gap:10px;padding:15px;border-bottom:1px solid rgba(255,255,255,.08)}
+#rp-overlay .em537-picker-body{padding:14px;display:grid;gap:8px}
+#rp-overlay .em537-template-option{padding:12px;border-radius:11px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);cursor:pointer}
+#rp-overlay .em537-template-option:hover{border-color:rgba(34,211,238,.27);background:rgba(34,211,238,.055)}
+#rp-overlay .em537-template-option strong{display:block;font-size:11px}
+#rp-overlay .em537-template-option span{display:block;margin-top:4px;color:#8f9db2;font-size:8.5px}
+#rp-overlay .em537-warning{margin-top:6px;color:#efc46e;font-size:8px}
+
+@media(max-width:1100px){
+ #pg-automations .at537-layout,#pg-automations .at537-hero{grid-template-columns:1fr}
+ #pg-automations .at537-grid3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+ #rp-overlay .cl2-grid,#pg-automations .at537-grid2,#pg-automations .at537-grid3,#rp-overlay .em537-sig-grid,#rp-overlay .em537-contact-options,#rp-overlay .em537-new-contact{grid-template-columns:1fr}
+ #rp-overlay .em537-wrap{padding:0}
+ #rp-overlay .em537-compose{width:100vw;height:100vh;border-radius:0}
+}
+</style>
+
+
+<script id="tcp-account-call-template-v537-js">
+(function(){
+ 'use strict';
+
+ var STORE='tcp_automation_templates_v537';
+ var CRM='tcp_rp_company_crm_v510';
+
+ var PRIMARY_TYPES=[
+  'Account Updating Call','Product Opportunity Call','Reorder Call','Quote Follow-Up',
+  'Sample Follow-Up','Order Follow-Up','New Lead / Prospecting Call',
+  'Dormant Account Re-engagement','Web Order Follow-Up','Trade Show Follow-Up',
+  'Service Recovery Call','Relationship Check-In','Payment / Accounting Follow-Up','Other'
+ ];
+ var SECONDARY=[
+  '','Product Opportunity','Reorder Discussion','Quote Follow-Up','Sample Follow-Up',
+  'Service Issue','Order Discussion','Relationship Check-In','Other'
+ ];
+ var OUTCOMES=[
+  'Connected – follow-up required','Connected – quote discussed','Order expected',
+  'Sample requested','Left voicemail','No answer','Wrong contact','Not interested',
+  'Completed – no follow-up'
+ ];
+ var DEFAULT_INDUSTRIES=[
+  'Construction','Landscaping','General Contractor','Excavation','Roofing','HVAC',
+  'Electrical','Plumbing','Manufacturing','Transportation','Municipal / Government',
+  'Education','Healthcare','Hospitality','Nonprofit','Retail','Food Service','Agriculture'
+ ];
+
+ window._at537Tab=window._at537Tab||'templates';
+ window._at537SelectedTemplate=window._at537SelectedTemplate||'';
+ window._at537PreviewData=window._at537PreviewData||null;
+
+ function arr(v){
+  if(Array.isArray(v))return v;
+  if(!v)return[];
+  try{
+   if(typeof v.length==='number'&&typeof v!=='string')return Array.prototype.slice.call(v);
+   if(typeof v==='object')return Object.keys(v).map(function(k){return v[k]}).filter(Boolean)
+  }catch(e){}
+  return[]
+ }
+ function clean(v){return String(v==null?'':v).trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(v){
+  var s=String(v==null?'':v);
+  return typeof _rp2Esc==='function'?_rp2Esc(s):s.replace(/[&<>"]/g,function(c){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]
+  })
+ }
+ function val(id){var e=document.getElementById(id);return e?clean(e.value):''}
+ function checked(id){var e=document.getElementById(id);return!!(e&&e.checked)}
+ function now(){return new Date().toISOString()}
+ function makeId(p){return(p||'id')+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8)}
+ function read(k,def){try{var x=JSON.parse(localStorage.getItem(k)||'null');return x==null?def:x}catch(e){return def}}
+ function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+ function field(o,names,def){
+  for(var i=0;i<names.length;i++){
+   var v=o&&o[names[i]];
+   if(v!=null&&String(v).trim()!=='')return v
+  }
+  return def==null?'':def
+ }
+ function uniq(a){
+  var seen={};
+  return arr(a).map(clean).filter(function(x){
+   var k=norm(x);if(!k||seen[k])return false;seen[k]=1;return true
+  })
+ }
+ function stableHash(value){
+  var s=typeof value==='string'?value:JSON.stringify(value),h=2166136261;
+  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
+  return(h>>>0).toString(36)
+ }
+ function currentRep(){return window._rp2&&_rp2.rep||''}
+
+ function state(){
+  var x=(typeof S!=='undefined'&&S.automationTemplatesV537)||read(STORE,null);
+  if(!x||x.version!==1){
+   x={
+    version:1,
+    industries:[],
+    requests:[],
+    templates:[],
+    branding:{
+     companyName:'Triple Crown Products',
+     tagline:'Built for the teams that build everything else.',
+     address:'',
+     website:'',
+     logoData:'',
+     footerHtml:'<strong>Triple Crown Products</strong><br>Company apparel, uniforms, promotional products, and branded solutions.',
+     disclaimer:'',
+     buttonBackground:'#0f6cbd',
+     buttonText:'#ffffff'
+    },
+    microsoft:{
+     tenantId:'',
+     clientId:'',
+     redirectUri:(location.origin||'')+(location.pathname||''),
+     allowedDomain:'triplecrownproducts.com',
+     managerEmail:''
+    },
+    audit:[],
+    editRequests:[]
+   }
+  }
+  x.industries=arr(x.industries);
+  x.requests=arr(x.requests);
+  x.templates=arr(x.templates);
+  x.audit=arr(x.audit);
+  x.editRequests=arr(x.editRequests);
+  x.branding=x.branding||{};
+  x.microsoft=x.microsoft||{};
+  if(!x.industries.length){
+   x.industries=DEFAULT_INDUSTRIES.map(function(name){
+    return{id:makeId('industry'),name:name,active:true,createdAt:now(),source:'starter'}
+   })
+  }
+  if(typeof S!=='undefined'&&!S.automationTemplatesV537)S.automationTemplatesV537=x;
+  if(!read(STORE,null))write(STORE,x);
+  return x
+ }
+
+ function saveState(x,action,detail){
+  if(action){
+   x.audit.unshift({
+    id:makeId('audit'),
+    action:action,
+    detail:detail||'',
+    actor:'Manager/Admin',
+    at:now()
+   })
+  }
+  if(x.audit.length>500)x.audit=x.audit.slice(0,500);
+  if(typeof S!=='undefined'){
+   S.automationTemplatesV537=x;
+   try{markDirty();persist()}catch(e){}
+  }
+  write(STORE,x)
+ }
+
+ function crm(){
+  var s=read(CRM,null);
+  if(!s||s.version!==1||!s.reps)s={version:1,reps:{}};
+  var rep=currentRep();
+  if(rep)s.reps[rep]=s.reps[rep]||{accounts:{}};
+  return s
+ }
+
+ function account(company,rep,create){
+  rep=rep||currentRep();
+  var s=crm();
+  s.reps[rep]=s.reps[rep]||{accounts:{}};
+  var key=norm(company),a=s.reps[rep].accounts[key];
+  if(!a&&create){
+   a={
+    profile:{name:company,owner:rep,createdAt:now(),updatedAt:now()},
+    contacts:[],opportunities:[],quotes:[],activities:[],notes:[],files:[]
+   };
+   s.reps[rep].accounts[key]=a
+  }
+  if(a){
+   a.profile=a.profile||{name:company,owner:rep};
+   a.contacts=arr(a.contacts);
+   a.opportunities=arr(a.opportunities);
+   a.quotes=arr(a.quotes);
+   a.activities=arr(a.activities);
+   a.notes=arr(a.notes);
+   a.files=arr(a.files)
+  }
+  return{s:s,key:key,data:a,rep:rep}
+ }
+
+ function saveAccount(bundle){
+  if(!bundle||!bundle.data)return;
+  bundle.data.profile.updatedAt=now();
+  write(CRM,bundle.s);
+  try{window._cw4DirectoryCache=null;window._cw4ProfileCache={}}catch(e){}
+ }
+
+ function addActivity(company,activity,rep){
+  var b=account(company,rep||currentRep(),true);
+  b.data.activities.push(activity);
+  saveAccount(b)
+ }
+
+ function approvedIndustries(){
+  return state().industries.filter(function(x){return x.active!==false}).sort(function(a,b){
+   return a.name.localeCompare(b.name)
+  })
+ }
+
+ function companyTags(company,rep){
+  var b=account(company,rep||currentRep(),false);
+  return b.data?uniq(b.data.profile.industryTags):[]
+ }
+
+ function setCompanyTags(company,tags,rep){
+  var b=account(company,rep||currentRep(),true);
+  b.data.profile.industryTags=uniq(tags);
+  b.data.profile.industryTagsUpdatedAt=now();
+  b.data.profile.industryTagsUpdatedBy=rep||currentRep();
+  saveAccount(b);
+  return b.data.profile.industryTags
+ }
+
+ function htmlOptions(list,value){
+  return list.map(function(item){
+   var v=typeof item==='string'?item:item.value;
+   var label=typeof item==='string'?item:(item.label||item.value);
+   return'<option value="'+esc(v)+'" '+(String(value||'')===String(v)?'selected':'')+'>'+esc(label)+'</option>'
+  }).join('')
+ }
+
+ function inferUpdate(queue){
+  return!!(queue&&/account\s*updat|updating\s*account|quarterly.{0,25}call/i.test(
+   [queue.reason,queue.copy,queue.source,queue.title].join(' ')
+  ))
+ }
+
+ function completionDefault(outcome){
+  var s=String(outcome||'');
+  return /connected|left voicemail|order expected|sample requested/i.test(s)&&
+   !/no answer|wrong contact/i.test(s)
+ }
+
+ function callDefault(ctx,d){
+  if(d.callType)return d.callType;
+  if(inferUpdate(ctx&&ctx.queue)){
+   d.callType='Account Updating Call';
+   return d.callType
+  }
+  return''
+ }
+
+ function classification(company,ctx,d,compact){
+  d=d||{};
+  var type=callDefault(ctx,d);
+  var tags=uniq(d.industryTags&&d.industryTags.length?d.industryTags:companyTags(company));
+  var industries=approvedIndustries();
+  var isUpdate=type==='Account Updating Call';
+  if(isUpdate&&d.accountUpdateCompleted==null)d.accountUpdateCompleted=completionDefault(d.outcome);
+
+  var sectionClass=compact?'fc1-section cl2-floating':'cl2-classify';
+  var gridClass=compact?'fc1-grid-2':'cl2-grid';
+  var fieldClass=compact?'fc1-field':'cl2-field';
+  var checkClass=compact?'fc1-check':'cl2-check';
+
+  return'<section class="'+sectionClass+'">'+
+   '<div class="'+(compact?'fc1-section-title':'cl1-section-title')+'">Call classification</div>'+
+   '<div class="'+(compact?'fc1-section-copy':'cl1-section-copy')+'">Primary type controls reporting and automation. Secondary purpose is optional.</div>'+
+   '<div class="'+gridClass+'">'+
+    '<div class="'+fieldClass+'"><label>Primary call type *</label>'+
+     '<select id="cl1-call-type" onchange="_call537TypeChanged();'+(compact?'_call534Sync()':'_call532Draft()')+'">'+
+      '<option value="">Choose call type</option>'+htmlOptions(PRIMARY_TYPES,type)+
+     '</select></div>'+
+    '<div class="'+fieldClass+'"><label>Secondary purpose</label>'+
+     '<select id="cl1-secondary-purpose" onchange="'+(compact?'_call534Sync()':'_call532Draft()')+'">'+
+      htmlOptions(SECONDARY,d.secondaryPurpose||'')+
+     '</select></div>'+
+   '</div>'+
+   '<div id="cl2-account-update-fields" style="'+(isUpdate?'':'display:none')+'">'+
+    '<label class="'+checkClass+'"><input id="cl1-account-update-complete" type="checkbox" '+(d.accountUpdateCompleted?'checked':'')+
+     ' onchange="'+(compact?'_call534Sync()':'_call532Draft()')+'">'+
+     '<span><strong style="display:block;color:#e8edf5">Count this as the completed account update</strong>'+
+     'Connected conversations and voicemail default to checked. No answer defaults to unchecked. The rep may override before saving.</span></label>'+
+    '<div class="cl2-note">Checked removes the source company from Updating Account Calls and records the quarterly update. Unchecked keeps it available for another attempt.</div>'+
+    '<div class="cl2-tags">'+industries.map(function(ind){
+     var on=tags.some(function(t){return norm(t)===norm(ind.name)});
+     return'<label class="cl2-tag '+(on?'on':'')+'"><input class="cl2-industry-check" type="checkbox" value="'+esc(ind.name)+'" '+(on?'checked':'')+
+      ' onchange="'+(compact?'_call534Sync()':'_call532Draft()')+'"> '+esc(ind.name)+'</label>'
+    }).join('')+'</div>'+
+    '<button type="button" class="cl2-request" onclick="_it537RequestTag(\''+encodeURIComponent(company)+'\')">Request a new industry tag</button>'+
+   '</div>'+
+  '</section>'
+ }
+
+ window._call537ClassificationHtml=function(ctx,d){
+  return classification(ctx&&ctx.c&&ctx.c.name||window._call532.company,ctx,d,false)
+ };
+ window._call537FloatingClassification=function(x,d){
+  return classification(x&&x.company||window._call532.company,{queue:x&&x.queue},d,true)
+ };
+ window._call537CollectIndustries=function(){
+  return uniq([].slice.call(document.querySelectorAll('.cl2-industry-check:checked')).map(function(e){return e.value}))
+ };
+ window._call537TypeChanged=function(){
+  var e=document.getElementById('cl1-call-type');
+  var box=document.getElementById('cl2-account-update-fields');
+  if(box)box.style.display=e&&e.value==='Account Updating Call'?'':'none';
+  if(e&&e.value==='Account Updating Call'){
+   var c=document.getElementById('cl1-account-update-complete');
+   if(c&&!c.dataset.manual)c.checked=completionDefault(val('cl1-outcome'))
+  }
+  try{window._call532Draft()}catch(_){}
+ };
+ window._call537OutcomeChanged=function(){
+  var c=document.getElementById('cl1-account-update-complete');
+  if(c&&val('cl1-call-type')==='Account Updating Call'&&!c.dataset.manual){
+   c.checked=completionDefault(val('cl1-outcome'))
+  }
+  try{window._call532Draft()}catch(_){}
+ };
+
+ function bindOutcome(){
+  var outcome=document.getElementById('cl1-outcome');
+  var completion=document.getElementById('cl1-account-update-complete');
+  if(outcome&&!outcome._v537){
+   outcome._v537=1;
+   outcome.addEventListener('change',window._call537OutcomeChanged)
+  }
+  if(completion&&!completion._v537){
+   completion._v537=1;
+   completion.addEventListener('change',function(){completion.dataset.manual='1'})
+  }
+ }
+
+ window._it537RequestTag=function(encoded){
+  var company=decodeURIComponent(encoded||encodeURIComponent(window._cw4CompanyName||window._call532&&window._call532.company||''));
+  var name=clean(prompt('What industry tag is missing for '+company+'?'));
+  if(!name)return;
+  var x=state();
+  if(x.industries.some(function(i){return norm(i.name)===norm(name)})){
+   alert('That industry already exists in the approved list.');
+   return
+  }
+  if(x.requests.some(function(r){
+   return r.status==='Pending'&&norm(r.name)===norm(name)&&norm(r.company)===norm(company)&&r.rep===currentRep()
+  })){
+   alert('That tag request is already pending for this company.');
+   return
+  }
+  x.requests.unshift({
+   id:makeId('request'),
+   name:name,
+   company:company,
+   rep:currentRep(),
+   status:'Pending',
+   requestedAt:now()
+  });
+  saveState(x,'Industry tag requested',name+' · '+company+' · '+currentRep());
+  alert('Industry tag request submitted. It will not affect email matching until approved.');
+  installIndustryCard()
+ };
+
+ window._it537SaveCompanyTags=function(encoded){
+  var company=decodeURIComponent(encoded);
+  var tags=uniq([].slice.call(document.querySelectorAll('#it537-company-tags input:checked')).map(function(e){return e.value}));
+  setCompanyTags(company,tags);
+  addActivity(company,{
+   id:makeId('activity'),
+   source:'company-profile',
+   type:'Industry Tags Updated',
+   subject:'Approved industry tags updated',
+   detail:tags.join(', ')||'No approved tags selected',
+   date:now(),createdAt:now(),updatedAt:now(),rep:currentRep()
+  });
+  alert('Industry tags saved.');
+  installIndustryCard()
+ };
+
+ function industryCardHtml(company){
+  var tags=companyTags(company);
+  var industries=approvedIndustries();
+  var x=state();
+  var pending=x.requests.filter(function(r){
+   return r.status==='Pending'&&r.rep===currentRep()&&norm(r.company)===norm(company)
+  });
+  return'<div class="it537-card" id="it537-company-card">'+
+   '<div class="it537-head"><div>'+
+    '<div class="it537-kick">APPROVED INDUSTRY TAGS · v537</div>'+
+    '<div class="it537-title">Template and account intelligence</div>'+
+    '<div class="it537-copy">Reps select approved tags while updating the company. Pending requests never influence template matching.</div>'+
+   '</div><div class="it537-actions">'+
+    '<button class="it537-btn" onclick="_it537RequestTag(\''+encodeURIComponent(company)+'\')">Request new tag</button>'+
+    '<button class="it537-btn primary" onclick="_it537SaveCompanyTags(\''+encodeURIComponent(company)+'\')">Save tags</button>'+
+   '</div></div>'+
+   '<div class="cl2-tags" id="it537-company-tags">'+industries.map(function(i){
+    var on=tags.some(function(t){return norm(t)===norm(i.name)});
+    return'<label class="cl2-tag '+(on?'on':'')+'"><input type="checkbox" value="'+esc(i.name)+'" '+(on?'checked':'')+'> '+esc(i.name)+'</label>'
+   }).join('')+'</div>'+
+   (pending.length?'<div class="it537-pending">Pending approval: '+pending.map(function(r){return esc(r.name)}).join(', ')+'</div>':'')+
+  '</div>'
+ }
+
+ function installIndustryCard(){
+  if(!window._cw4CompanyName)return;
+  var profile=document.querySelector('#rp-overlay .cw4-profile');
+  var head=profile&&profile.querySelector('.cw5-profile-head');
+  if(!head)return;
+  var old=document.getElementById('it537-company-card');
+  if(old)old.remove();
+  head.insertAdjacentHTML('beforeend',industryCardHtml(window._cw4CompanyName))
+ }
+
+ function templateCore(t){
+  return{
+   name:t.name||'',
+   subject:t.subject||'',
+   bodyHtml:t.bodyHtml||'',
+   primaryType:t.primaryType||'',
+   outcome:t.outcome||'',
+   secondaryPurpose:t.secondaryPurpose||'',
+   industries:uniq(t.industries).sort(),
+   allIndustries:!!t.allIndustries,
+   attachments:arr(t.attachments).map(function(a){return{name:a.name,size:a.size,type:a.type}}),
+   priority:Number(t.priority)||0,
+   footerVersion:stableHash(state().branding||{})
+  }
+ }
+
+ function templateHash(t){return stableHash(templateCore(t))}
+
+ function templateConflict(x,t){
+  return x.templates.filter(function(other){
+   if(other.id===t.id||!other.active)return false;
+   if(other.primaryType!==t.primaryType||other.outcome!==t.outcome||
+      clean(other.secondaryPurpose)!==clean(t.secondaryPurpose))return false;
+   if(other.allIndustries&&t.allIndustries)return true;
+   if(other.allIndustries||t.allIndustries)return false;
+   return uniq(other.industries).some(function(a){
+    return uniq(t.industries).some(function(b){return norm(a)===norm(b)})
+   })
+  })[0]||null
+ }
+
+ function findTemplate(primary,outcome,secondary,tags){
+  var active=state().templates.filter(function(t){return t.active});
+  var tagset=uniq(tags);
+  function industryMatch(t){
+   return !t.allIndustries&&uniq(t.industries).some(function(i){
+    return tagset.some(function(c){return norm(c)===norm(i)})
+   })
+  }
+  function first(predicate){
+   return active.filter(predicate).sort(function(a,b){
+    return(Number(b.priority)||0)-(Number(a.priority)||0)||
+     String(b.updatedAt||'').localeCompare(String(a.updatedAt||''))
+   })[0]||null
+  }
+  return first(function(t){
+   return t.primaryType===primary&&t.outcome===outcome&&clean(t.secondaryPurpose)===clean(secondary)&&industryMatch(t)
+  })||first(function(t){
+   return t.primaryType===primary&&t.outcome===outcome&&clean(t.secondaryPurpose)===clean(secondary)&&t.allIndustries
+  })||first(function(t){
+   return t.primaryType===primary&&t.outcome===outcome&&!clean(t.secondaryPurpose)&&industryMatch(t)
+  })||first(function(t){
+   return t.primaryType===primary&&t.outcome===outcome&&!clean(t.secondaryPurpose)&&t.allIndustries
+  })||null
+ }
+
+ function mergeFields(source,context){
+  var d=context.draft||{},contact=context.contact||{},company=context.company||'';
+  var rep=context.rep||currentRep(),profile=context.profile||{};
+  var map={
+   contact_first_name:clean(field(contact,['name'],'Customer')).split(/\s+/)[0]||'Customer',
+   contact_full_name:field(contact,['name'],'Customer'),
+   contact_title:field(contact,['title','buyingRole'],''),
+   company_name:company,
+   company_industry:uniq(profile.industryTags).join(', '),
+   company_industry_tags:uniq(profile.industryTags).join(', '),
+   rep_first_name:clean(rep).split(/\s+/)[0]||'',
+   rep_full_name:rep,
+   rep_title:field(profile,['repTitle'],'Sales Specialist'),
+   rep_phone:field(profile,['repPhone'],''),
+   rep_email:field(profile,['repEmail'],''),
+   rep_calendar_link:field(profile,['repCalendarLink'],''),
+   next_action:d.nextAction||'',
+   next_date:d.nextDate||'',
+   call_date:new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
+   call_type:d.callType||'',
+   call_outcome:d.outcome||'',
+   secondary_purpose:d.secondaryPurpose||''
+  };
+  return String(source||'').replace(/\{\{\s*([a-z0-9_]+)\s*\}\}/gi,function(_,key){
+   return map[key.toLowerCase()]!=null?map[key.toLowerCase()]:''
+  })
+ }
+
+ function footerHtml(){
+  var b=state().branding||{};
+  return(b.logoData?'<img src="'+b.logoData+'" alt="'+esc(b.companyName||'Company')+'" style="max-width:180px;max-height:65px;display:block;margin-bottom:8px">':'')+
+   (b.footerHtml||('<strong>'+esc(b.companyName||'Triple Crown Products')+'</strong>'))+
+   (b.disclaimer?'<div style="margin-top:8px;color:#64748b;font-size:10px">'+b.disclaimer+'</div>':'')
+ }
+
+ function selectedTemplate(){
+  var t=state().templates.filter(function(item){return item.id===window._at537SelectedTemplate})[0];
+  return t||{
+   id:'',
+   name:'',
+   subject:'',
+   bodyHtml:'<p>Hi {{contact_first_name}},</p><p>I just left you a quick voicemail and wanted to follow up by email.</p><p>Please let me know when you have a few minutes to connect.</p><p>Thank you,</p>',
+   primaryType:'Account Updating Call',
+   outcome:'Left voicemail',
+   secondaryPurpose:'',
+   industries:[],
+   allIndustries:true,
+   active:false,
+   protected:false,
+   priority:0,
+   attachments:[],
+   previewHash:'',
+   testHash:'',
+   createdAt:now(),
+   updatedAt:now()
+  }
+ }
+
+ function managerTemplateList(x,t){
+  if(!x.templates.length){
+   return'<div class="at537-row"><strong>No templates yet</strong><p>Create the first voicemail follow-up template.</p></div>'
+  }
+  return x.templates.map(function(item){
+   return'<div class="at537-row '+(item.id===t.id?'on':'')+'" onclick="_at537SelectTemplate(\''+item.id+'\')">'+
+    '<div class="at537-row-top"><strong>'+esc(item.name||'Untitled template')+'</strong><div>'+
+     '<span class="at537-badge '+(item.active?'active':'')+'">'+(item.active?'Active':'Draft')+'</span> '+
+     (item.protected?'<span class="at537-badge protected">Protected</span>':'')+
+    '</div></div>'+
+    '<p>'+esc(item.primaryType+' · '+item.outcome+(item.secondaryPurpose?' · '+item.secondaryPurpose:''))+'<br>'+
+     esc(item.allIndustries?'All Industries':uniq(item.industries).join(', ')||'No industries')+
+    '</p></div>'
+  }).join('')
+ }
+
+ function templateCenter(x){
+  var t=selectedTemplate();
+  var industries=approvedIndustries();
+  var h=templateHash(t);
+  var previewOk=t.previewHash===h;
+  var testOk=t.testHash===h;
+  return'<div class="at537-layout">'+
+   '<section class="at537-panel"><div class="at537-panel-head"><div>'+
+    '<div class="at537-panel-title">Email templates</div>'+
+    '<div class="at537-panel-copy">One active template per call type, outcome, secondary purpose, and industry. All Industries is the fallback.</div>'+
+   '</div><button class="at537-btn primary" onclick="_at537NewTemplate()">＋ New</button></div>'+
+   '<div class="at537-panel-body"><div class="at537-list">'+managerTemplateList(x,t)+'</div></div></section>'+
+   '<section class="at537-panel"><div class="at537-panel-head"><div>'+
+    '<div class="at537-panel-title">'+(t.id?'Edit template':'Create template')+'</div>'+
+    '<div class="at537-panel-copy">A current merged preview and successful Microsoft test are required before activation.</div>'+
+   '</div><div><span class="at537-badge '+(previewOk?'active':'')+'">Preview '+(previewOk?'✓':'required')+'</span> '+
+    '<span class="at537-badge '+(testOk?'active':'')+'">Test '+(testOk?'✓':'required')+'</span></div></div>'+
+   '<div class="at537-panel-body"><div class="at537-form">'+
+    '<div class="at537-grid2"><div class="at537-field"><label>Template name</label><input id="at537-t-name" value="'+esc(t.name)+'"></div>'+
+    '<div class="at537-field"><label>Email subject</label><input id="at537-t-subject" value="'+esc(t.subject)+'"></div></div>'+
+    '<div class="at537-grid3"><div class="at537-field"><label>Primary call type</label><select id="at537-t-primary">'+htmlOptions(PRIMARY_TYPES,t.primaryType)+'</select></div>'+
+    '<div class="at537-field"><label>Call outcome</label><select id="at537-t-outcome">'+htmlOptions(OUTCOMES,t.outcome)+'</select></div>'+
+    '<div class="at537-field"><label>Secondary purpose</label><select id="at537-t-secondary">'+htmlOptions(SECONDARY,t.secondaryPurpose)+'</select></div></div>'+
+    '<div class="at537-field"><label>Industry matching</label><div class="at537-chip-grid">'+
+     '<label class="at537-chip '+(t.allIndustries?'on':'')+'"><input id="at537-t-all" type="checkbox" '+(t.allIndustries?'checked':'')+'> All Industries fallback</label>'+
+     industries.map(function(ind){
+      var on=uniq(t.industries).some(function(n){return norm(n)===norm(ind.name)});
+      return'<label class="at537-chip '+(on?'on':'')+'"><input class="at537-t-ind" type="checkbox" value="'+esc(ind.name)+'" '+(on?'checked':'')+'> '+esc(ind.name)+'</label>'
+     }).join('')+
+    '</div></div>'+
+    '<div class="at537-field"><label>Preview and test data</label><select id="at537-preview-account">'+previewAccountOptions()+'</select>'+
+     '<div class="at537-panel-copy">Use built-in sample data or a real company/rep record. Test emails still go only to the manager address.</div></div>'+
+    '<div class="at537-field"><label>Rich email body</label><div class="at537-toolbar">'+
+     '<button class="at537-tool" onclick="_at537Cmd(\'bold\')"><b>B</b></button>'+
+     '<button class="at537-tool" onclick="_at537Cmd(\'italic\')"><i>I</i></button>'+
+     '<button class="at537-tool" onclick="_at537Cmd(\'underline\')"><u>U</u></button>'+
+     '<button class="at537-tool" onclick="_at537Cmd(\'insertUnorderedList\')">•</button>'+
+     '<button class="at537-btn" onclick="_at537InsertLink()">Insert link</button>'+
+     '<button class="at537-btn" onclick="_at537InsertButton()">Branded button</button>'+
+     '<button class="at537-btn" onclick="_at537InsertMerge()">Merge field</button>'+
+    '</div><div id="at537-t-body" class="at537-editor" contenteditable="true">'+t.bodyHtml+'</div></div>'+
+    '<div class="at537-grid3"><div class="at537-field"><label>Priority</label><input id="at537-t-priority" type="number" value="'+Number(t.priority||0)+'"></div>'+
+    '<div class="at537-field"><label>Protection</label><select id="at537-t-protected"><option value="No" '+(!t.protected?'selected':'')+'>Standard</option><option value="Yes" '+(t.protected?'selected':'')+'>Protected</option></select></div>'+
+    '<div class="at537-field"><label>Status</label><input disabled value="'+(t.active?'Active':'Draft / Inactive')+'"></div></div>'+
+    '<div class="at537-field"><label>Approved default attachments</label><input id="at537-t-attachments" type="file" multiple onchange="_at537TemplateFiles(event)">'+
+     '<div class="at537-chip-grid">'+arr(t.attachments).map(function(a,i){
+      return'<span class="at537-chip">📎 '+esc(a.name)+' <button onclick="_at537RemoveTemplateAttachment('+i+')" style="border:0;background:transparent;color:#ff9cad;cursor:pointer">×</button></span>'
+     }).join('')+'</div></div>'+
+    '<div class="at537-note">Merge fields: {{contact_first_name}}, {{contact_full_name}}, {{contact_title}}, {{company_name}}, {{company_industry_tags}}, {{rep_first_name}}, {{rep_full_name}}, {{rep_title}}, {{rep_phone}}, {{rep_email}}, {{rep_calendar_link}}, {{next_action}}, {{next_date}}, {{call_date}}, {{call_type}}, {{call_outcome}}, {{secondary_purpose}}.</div>'+
+    '<div class="at537-actions">'+
+     '<button class="at537-btn primary" onclick="_at537SaveTemplate()">Save draft</button>'+
+     '<button class="at537-btn" onclick="_at537PreviewTemplate()">Merged preview</button>'+
+     '<button class="at537-btn green" onclick="_at537TestTemplate()">Send Microsoft test</button>'+
+     '<button class="at537-btn '+(t.active?'warn':'green')+'" onclick="_at537ToggleActive()">'+(t.active?'Deactivate':'Activate')+'</button>'+
+     (t.id?'<button class="at537-btn" onclick="_at537DuplicateTemplate()">Duplicate</button>'+
+      (t.protected?'<button class="at537-btn" onclick="_at537RequestTemplateEdit()">Request admin edit</button>':'')+
+      '<button class="at537-btn danger" onclick="_at537DeleteTemplate()">Delete</button>':'')+
+    '</div>'+
+   '</div></div></section>'+
+  '</div>'
+ }
+
+ function collectTemplate(){
+  var old=selectedTemplate();
+  var body=document.getElementById('at537-t-body');
+  var t=Object.assign({},old,{
+   id:old.id||makeId('template'),
+   name:val('at537-t-name'),
+   subject:val('at537-t-subject'),
+   bodyHtml:body?body.innerHTML:'',
+   primaryType:val('at537-t-primary'),
+   outcome:val('at537-t-outcome'),
+   secondaryPurpose:val('at537-t-secondary'),
+   allIndustries:checked('at537-t-all'),
+   industries:uniq([].slice.call(document.querySelectorAll('.at537-t-ind:checked')).map(function(e){return e.value})),
+   priority:Number(val('at537-t-priority'))||0,
+   protected:val('at537-t-protected')==='Yes',
+   updatedAt:now()
+  });
+  if(!old.id)t.createdAt=now();
+  var oldHash=old.id?templateHash(old):'';
+  if(oldHash&&oldHash!==templateHash(t)){
+   t.previewHash='';
+   t.testHash='';
+   t.active=false
+  }
+  return t
+ }
+
+ function replaceTemplate(x,t){
+  var i=x.templates.findIndex(function(item){return item.id===t.id});
+  if(i>=0)x.templates[i]=t;
+  else x.templates.unshift(t)
+ }
+
+ function sampleContext(t){
+  var x=state();
+  return{
+   company:'Sample Construction Company',
+   contact:{name:'Jordan Customer',title:'Operations Manager'},
+   draft:{
+    callType:t.primaryType,
+    outcome:t.outcome,
+    secondaryPurpose:t.secondaryPurpose,
+    nextAction:'Reconnect next Tuesday',
+    nextDate:'July 21, 2026'
+   },
+   rep:'Robert Bobalik',
+   profile:{
+    industryTags:t.allIndustries?['Construction']:t.industries,
+    repTitle:'Sales Manager',
+    repPhone:'(262) 555-0100',
+    repEmail:x.microsoft.managerEmail||'manager@triplecrownproducts.com',
+    repCalendarLink:'https://example.com/calendar'
+   }
+  }
+ }
+
+ function previewAccounts(){
+  var results=[],seen={},s=crm();
+  Object.keys(s.reps||{}).forEach(function(rep){
+   var accounts=s.reps[rep]&&s.reps[rep].accounts||{};
+   Object.keys(accounts).forEach(function(key){
+    var a=accounts[key],company=field(a&&a.profile,['name'],key);
+    var token=norm(rep+'|'+company);
+    if(!seen[token]){seen[token]=1;results.push({rep:rep,company:company})}
+   })
+  });
+  return results.sort(function(a,b){
+   return a.company.localeCompare(b.company)||a.rep.localeCompare(b.rep)
+  })
+ }
+
+ function previewAccountOptions(){
+  return'<option value="">Built-in sample data</option>'+previewAccounts().map(function(item){
+   var value=encodeURIComponent(item.rep)+'|||'+encodeURIComponent(item.company);
+   return'<option value="'+value+'">'+esc(item.company)+' · '+esc(item.rep)+'</option>'
+  }).join('')
+ }
+
+ function managerPreviewContext(t){
+  var selected=val('at537-preview-account');
+  if(!selected)return sampleContext(t);
+  var parts=selected.split('|||');
+  var rep=decodeURIComponent(parts[0]||''),company=decodeURIComponent(parts[1]||'');
+  var b=account(company,rep,false);
+  if(!b.data)return sampleContext(t);
+  var contact=b.data.contacts.filter(function(c){return clean(c.email)})[0]||b.data.contacts[0]||{name:'Customer'};
+  return{
+   company:company,
+   contact:contact,
+   draft:{
+    callType:t.primaryType,
+    outcome:t.outcome,
+    secondaryPurpose:t.secondaryPurpose,
+    nextAction:'Follow the recorded next customer action',
+    nextDate:new Date(Date.now()+3*86400000).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})
+   },
+   rep:rep,
+   profile:Object.assign({},b.data.profile||{},{
+    industryTags:uniq(b.data.profile&&b.data.profile.industryTags),
+    repTitle:'Sales Specialist',
+    repPhone:'',
+    repEmail:state().microsoft.managerEmail||'',
+    repCalendarLink:''
+   })
+  }
+ }
+
+ function industryCenter(x){
+  return'<section class="at537-panel"><div class="at537-panel-head"><div>'+
+   '<div class="at537-panel-title">Approved industry tag library</div>'+
+   '<div class="at537-panel-copy">Reps assign approved tags to companies. Pending requests never influence template matching.</div>'+
+  '</div><button class="at537-btn primary" onclick="_at537AddIndustry()">＋ Add tag</button></div>'+
+  '<div class="at537-panel-body"><div class="at537-list">'+x.industries.sort(function(a,b){return a.name.localeCompare(b.name)}).map(function(ind){
+   return'<div class="at537-row"><div class="at537-row-top"><strong>'+esc(ind.name)+'</strong>'+
+    '<span class="at537-badge '+(ind.active!==false?'active':'')+'">'+(ind.active!==false?'Approved':'Inactive')+'</span></div>'+
+    '<p>Created '+new Date(ind.createdAt||Date.now()).toLocaleDateString()+'</p>'+
+    '<div class="at537-actions" style="margin-top:8px"><button class="at537-btn" onclick="_at537ToggleIndustry(\''+ind.id+'\')">'+(ind.active!==false?'Deactivate':'Activate')+'</button></div></div>'
+  }).join('')+'</div></div></section>'
+ }
+
+ function requestCenter(x){
+  var pending=x.requests.filter(function(r){return r.status==='Pending'});
+  return'<section class="at537-panel"><div class="at537-panel-head"><div>'+
+   '<div class="at537-panel-title">Pending industry requests</div>'+
+   '<div class="at537-panel-copy">Approval creates the master tag and automatically assigns it to the company that requested it.</div>'+
+  '</div><span class="at537-badge '+(pending.length?'protected':'active')+'">'+pending.length+' pending</span></div>'+
+  '<div class="at537-panel-body"><div class="at537-list">'+
+   (pending.length?pending.map(function(q){
+    return'<div class="at537-row"><div class="at537-row-top"><strong>'+esc(q.name)+'</strong><span class="at537-badge protected">Pending</span></div>'+
+     '<p>'+esc(q.company)+' · '+esc(q.rep)+' · '+new Date(q.requestedAt).toLocaleString()+'</p>'+
+     '<div class="at537-actions" style="margin-top:8px"><button class="at537-btn green" onclick="_at537ApproveRequest(\''+q.id+'\')">Approve & assign</button>'+
+     '<button class="at537-btn danger" onclick="_at537RejectRequest(\''+q.id+'\')">Reject</button></div></div>'
+   }).join(''):'<div class="at537-row"><strong>No pending requests</strong><p>Rep-submitted tags will appear here.</p></div>')+
+  '</div></div></section>'
+ }
+
+ function brandingCenter(x){
+  var b=x.branding||{};
+  return'<section class="at537-panel"><div class="at537-panel-head"><div>'+
+   '<div class="at537-panel-title">Company-branded footer</div>'+
+   '<div class="at537-panel-copy">Reps may edit their personal signature details for one message. This company footer remains locked.</div>'+
+  '</div></div><div class="at537-panel-body">'+
+   '<div class="at537-grid2"><div class="at537-field"><label>Company name</label><input id="at537-b-company" value="'+esc(b.companyName||'')+'"></div>'+
+   '<div class="at537-field"><label>Tagline</label><input id="at537-b-tagline" value="'+esc(b.tagline||'')+'"></div></div>'+
+   '<div class="at537-grid2"><div class="at537-field"><label>Address</label><input id="at537-b-address" value="'+esc(b.address||'')+'"></div>'+
+   '<div class="at537-field"><label>Website</label><input id="at537-b-website" value="'+esc(b.website||'')+'"></div></div>'+
+   '<div class="at537-field"><label>Locked footer HTML / rich text</label><textarea id="at537-b-footer">'+esc(b.footerHtml||'')+'</textarea></div>'+
+   '<div class="at537-field"><label>Legal / disclaimer</label><textarea id="at537-b-disclaimer">'+esc(b.disclaimer||'')+'</textarea></div>'+
+   '<div class="at537-field"><label>Approved logo</label><input type="file" accept="image/*" onchange="_at537BrandLogo(event)"></div>'+
+   '<div class="at537-note">'+footerHtml()+'</div>'+
+   '<button class="at537-btn primary" onclick="_at537SaveBranding()">Save locked footer</button>'+
+  '</div></section>'
+ }
+
+ function microsoftCenter(x){
+  var m=x.microsoft||{};
+  var status=window.TCP537&&TCP537.microsoftStatus?TCP537.microsoftStatus('manager'):{connected:false};
+  return'<section class="at537-panel"><div class="at537-panel-head"><div>'+
+   '<div class="at537-panel-title">Microsoft 365 organization connection</div>'+
+   '<div class="at537-panel-copy">One Triple Crown Entra application. Each rep authorizes their own existing work Outlook mailbox from My Profile.</div>'+
+  '</div><span class="at537-badge '+(status.connected?'active':'')+'">'+(status.connected?'Manager connected':'Not connected')+'</span></div>'+
+  '<div class="at537-panel-body">'+
+   '<div class="at537-grid2"><div class="at537-field"><label>Microsoft tenant ID</label><input id="at537-ms-tenant" value="'+esc(m.tenantId||'')+'"></div>'+
+   '<div class="at537-field"><label>Application / client ID</label><input id="at537-ms-client" value="'+esc(m.clientId||'')+'"></div></div>'+
+   '<div class="at537-grid2"><div class="at537-field"><label>SPA redirect URI</label><input id="at537-ms-redirect" value="'+esc(m.redirectUri||(location.origin+location.pathname))+'"></div>'+
+   '<div class="at537-field"><label>Allowed work email domain</label><input id="at537-ms-domain" value="'+esc(m.allowedDomain||'triplecrownproducts.com')+'"></div></div>'+
+   '<div class="at537-field"><label>Manager test email address</label><input id="at537-ms-manager" value="'+esc(m.managerEmail||'')+'"></div>'+
+   '<div class="at537-note">Required delegated scopes: User.Read, Mail.ReadWrite, and Mail.Send. Register the redirect URI as a Single-page application URL. The tracker does not store Outlook passwords or a client secret.</div>'+
+   '<div class="at537-actions"><button class="at537-btn primary" onclick="_at537SaveMicrosoft()">Save Microsoft settings</button>'+
+    '<button class="at537-btn '+(status.connected?'danger':'green')+'" onclick="'+(status.connected?"TCP537.disconnectMicrosoft('manager')":"TCP537.connectMicrosoft('manager')")+'">'+(status.connected?'Disconnect manager test mailbox':'Connect manager test mailbox')+'</button></div>'+
+   (status.connected?'<div class="at537-note">Connected: '+esc(status.name)+' · '+esc(status.address)+'</div>':'')+
+  '</div></section>'
+ }
+
+ function auditCenter(x){
+  return'<section class="at537-panel"><div class="at537-panel-head"><div>'+
+   '<div class="at537-panel-title">Automation audit history</div>'+
+   '<div class="at537-panel-copy">Publishing, testing, protection, tag approvals, template overrides, and system changes remain traceable.</div>'+
+  '</div><span class="at537-badge">'+x.audit.length+' events</span></div>'+
+  '<div class="at537-panel-body"><div class="at537-audit">'+
+   (x.audit.length?x.audit.map(function(a){
+    return'<div class="at537-audit-row"><strong>'+esc(a.action)+'</strong><span>'+esc(a.detail||'')+' · '+new Date(a.at).toLocaleString()+' · '+esc(a.actor||'Manager/Admin')+'</span></div>'
+   }).join(''):'<div class="at537-audit-row"><strong>No audit events yet</strong></div>')+
+  '</div></div></section>'
+ }
+
+ function managerTab(x){
+  if(window._at537Tab==='templates')return templateCenter(x);
+  if(window._at537Tab==='industries')return industryCenter(x);
+  if(window._at537Tab==='requests')return requestCenter(x);
+  if(window._at537Tab==='branding')return brandingCenter(x);
+  if(window._at537Tab==='microsoft')return microsoftCenter(x);
+  return auditCenter(x)
+ }
+
+ function renderManager(){
+  var host=document.getElementById('pg-automations');
+  if(!host)return;
+  var x=state();
+  var active=x.templates.filter(function(t){return t.active}).length;
+  var pending=x.requests.filter(function(r){return r.status==='Pending'}).length;
+  var ms=window.TCP537&&TCP537.microsoftStatus?TCP537.microsoftStatus('manager'):{connected:false};
+  host.innerHTML=
+   '<section class="at537-hero"><div><div class="at537-kick">AUTOMATION & TEMPLATES CENTER · BUILD v537</div>'+
+    '<h1>Call outcomes become consistent customer follow-up.</h1>'+
+    '<p>Create approved industries, match a call outcome to one email, test it through Microsoft 365, and control the locked company footer from one manager/admin workspace.</p>'+
+   '</div><div class="at537-hero-card"><span>System readiness</span><strong>'+active+' active templates</strong>'+
+    '<p>'+x.industries.length+' approved industries · '+pending+' pending requests · Microsoft '+(ms.connected?'connected':'not connected')+'</p></div></section>'+
+   '<div class="at537-tabs">'+[
+    ['templates','Email Templates'],['industries','Industry Library'],['requests','Pending Requests'],
+    ['branding','Branding & Footer'],['microsoft','Microsoft 365'],['audit','Audit History']
+   ].map(function(tab){
+    return'<button class="at537-tab '+(window._at537Tab===tab[0]?'on':'')+'" onclick="_at537SetTab(\''+tab[0]+'\')">'+tab[1]+'</button>'
+   }).join('')+'</div>'+
+   '<div id="at537-content">'+managerTab(x)+'</div>'
+ }
+
+ window._at537SetTab=function(tab){window._at537Tab=tab;renderManager()};
+ window._at537SelectTemplate=function(id){window._at537SelectedTemplate=id;renderManager()};
+ window._at537NewTemplate=function(){window._at537SelectedTemplate='';renderManager()};
+ window._at537Cmd=function(cmd){document.execCommand(cmd,false,null);var e=document.getElementById('at537-t-body');if(e)e.focus()};
+ window._at537InsertMerge=function(){var f=prompt('Merge field','{{contact_first_name}}');if(f)document.execCommand('insertText',false,f)};
+ window._at537InsertLink=function(){var url=prompt('Link URL');if(url)document.execCommand('createLink',false,url)};
+ window._at537InsertButton=function(){
+  var label=prompt('Button label','Learn more'),url=prompt('Button URL','https://');
+  if(!label||!url)return;
+  var b=state().branding||{};
+  document.execCommand('insertHTML',false,'<a href="'+esc(url)+'" style="display:inline-block;padding:10px 16px;border-radius:6px;background:'+(b.buttonBackground||'#0f6cbd')+';color:'+(b.buttonText||'#ffffff')+';text-decoration:none;font-weight:700">'+esc(label)+'</a>')
+ };
+
+ window._at537SaveTemplate=function(){
+  var x=state(),t=collectTemplate();
+  if(!t.name||!t.subject||!t.primaryType||!t.outcome){
+   alert('Complete the template name, subject, primary call type, and outcome.');return
+  }
+  if(!t.allIndustries&&!t.industries.length){
+   alert('Select at least one industry or All Industries.');return
+  }
+  replaceTemplate(x,t);
+  window._at537SelectedTemplate=t.id;
+  saveState(x,'Template saved',t.name);
+  renderManager()
+ };
+
+ window._at537PreviewTemplate=function(){
+  var x=state(),t=collectTemplate(),context=managerPreviewContext(t);
+  t.previewHash=templateHash(t);
+  replaceTemplate(x,t);
+  window._at537SelectedTemplate=t.id;
+  saveState(x,'Template preview completed',t.name);
+  var preview='<div style="font:14px/1.6 Segoe UI,Arial;color:#1e293b"><div style="padding:8px;background:#fff4cf"><strong>TEST PREVIEW · NOT SENT</strong></div>'+
+   '<h2>'+esc(mergeFields(t.subject,context))+'</h2><hr>'+
+   mergeFields(t.bodyHtml,context)+
+   '<div style="margin-top:20px">'+footerHtml()+'</div></div>';
+  window._at537PreviewData={title:t.name,html:preview};
+  var w=window.open('','tcpTemplatePreview');
+  if(w){
+   w.document.open();
+   w.document.write('<!doctype html><meta charset="utf-8"><title>'+esc(t.name)+'</title><body style="padding:36px;max-width:850px;margin:auto">'+preview+'</body>');
+   w.document.close()
+  }
+  renderManager()
+ };
+
+ window._at537TestTemplate=async function(){
+  var x=state(),t=collectTemplate(),h=templateHash(t);
+  if(t.previewHash!==h){alert('Run the merged preview after the latest edits first.');return}
+  if(!clean(x.microsoft.managerEmail)){alert('Set the manager test email in Microsoft 365 settings.');return}
+  if(!window.TCP537||!TCP537.sendTemplateTest){alert('Microsoft email integration is still loading.');return}
+  try{
+   await TCP537.sendTemplateTest(t,managerPreviewContext(t),x.microsoft.managerEmail);
+   t.testHash=h;
+   replaceTemplate(x,t);
+   window._at537SelectedTemplate=t.id;
+   saveState(x,'Template test sent',t.name+' → '+x.microsoft.managerEmail);
+   alert('Microsoft test email sent successfully.');
+   renderManager()
+  }catch(e){alert(e.message)}
+ };
+
+ window._at537ToggleActive=function(){
+  var x=state(),t=collectTemplate(),h=templateHash(t);
+  if(t.active)t.active=false;
+  else{
+   if(t.previewHash!==h||t.testHash!==h){
+    alert('A current merged preview and successful Microsoft test are required before activation.');return
+   }
+   var conflict=templateConflict(x,t);
+   if(conflict){
+    alert('Activation conflict with "'+conflict.name+'". Remove the overlapping industry, deactivate the other template, or edit the existing template.');
+    return
+   }
+   t.active=true
+  }
+  replaceTemplate(x,t);
+  window._at537SelectedTemplate=t.id;
+  saveState(x,t.active?'Template activated':'Template deactivated',t.name);
+  renderManager()
+ };
+
+ window._at537DuplicateTemplate=function(){
+  var x=state(),t=collectTemplate();
+  t.id=makeId('template');
+  t.name='Copy of '+t.name;
+  t.active=false;
+  t.protected=false;
+  t.previewHash='';
+  t.testHash='';
+  t.createdAt=now();
+  x.templates.unshift(t);
+  window._at537SelectedTemplate=t.id;
+  saveState(x,'Protected/standard template duplicated',t.name);
+  renderManager()
+ };
+
+ window._at537RequestTemplateEdit=function(){
+  var x=state(),t=collectTemplate(),note=clean(prompt('Describe the requested edit to this protected template.'));
+  if(!note)return;
+  x.editRequests.unshift({
+   id:makeId('edit-request'),templateId:t.id,templateName:t.name,note:note,
+   status:'Pending',requestedBy:'Manager/Admin',requestedAt:now()
+  });
+  saveState(x,'Protected template edit requested',t.name+' · '+note);
+  alert('Edit request recorded in the audit history.');
+  renderManager()
+ };
+
+ window._at537DeleteTemplate=function(){
+  var x=state(),t=selectedTemplate();
+  if(t.protected&&!confirm('This template is protected. Delete it as manager/admin anyway?'))return;
+  if(!confirm('Delete '+t.name+'?'))return;
+  x.templates=x.templates.filter(function(item){return item.id!==t.id});
+  window._at537SelectedTemplate='';
+  saveState(x,'Template deleted',t.name);
+  renderManager()
+ };
+
+ window._at537TemplateFiles=function(event){
+  var files=arr(event.target.files),x=state(),t=collectTemplate(),remaining=files.length;
+  if(!remaining)return;
+  files.forEach(function(file){
+   if(file.size>3*1024*1024){
+    alert(file.name+' exceeds the 3 MB direct-template attachment limit.');
+    if(--remaining===0){replaceTemplate(x,t);saveState(x,'Template attachments updated',t.name);renderManager()}
+    return
+   }
+   var reader=new FileReader();
+   reader.onload=function(){
+    t.attachments=arr(t.attachments);
+    t.attachments.push({
+     id:makeId('attachment'),name:file.name,type:file.type||'application/octet-stream',
+     size:file.size,dataUrl:reader.result,contentBytes:String(reader.result).split(',')[1]||'',
+     source:'manager-template'
+    });
+    t.previewHash='';t.testHash='';t.active=false;
+    if(--remaining===0){
+     replaceTemplate(x,t);
+     window._at537SelectedTemplate=t.id;
+     saveState(x,'Template attachments updated',t.name);
+     renderManager()
+    }
+   };
+   reader.readAsDataURL(file)
+  })
+ };
+
+ window._at537RemoveTemplateAttachment=function(index){
+  var x=state(),t=collectTemplate();
+  t.attachments=arr(t.attachments);
+  t.attachments.splice(index,1);
+  t.previewHash='';t.testHash='';t.active=false;
+  replaceTemplate(x,t);
+  window._at537SelectedTemplate=t.id;
+  saveState(x,'Template attachment removed',t.name);
+  renderManager()
+ };
+
+ window._at537AddIndustry=function(){
+  var name=clean(prompt('Approved industry tag name'));
+  if(!name)return;
+  var x=state();
+  if(x.industries.some(function(i){return norm(i.name)===norm(name)})){
+   alert('That tag already exists.');return
+  }
+  x.industries.push({id:makeId('industry'),name:name,active:true,createdAt:now(),source:'manager'});
+  saveState(x,'Industry tag created',name);
+  renderManager()
+ };
+
+ window._at537ToggleIndustry=function(id){
+  var x=state(),item=x.industries.filter(function(i){return i.id===id})[0];
+  if(!item)return;
+  item.active=item.active===false;
+  saveState(x,'Industry tag '+(item.active?'activated':'deactivated'),item.name);
+  renderManager()
+ };
+
+ window._at537ApproveRequest=function(id){
+  var x=state(),q=x.requests.filter(function(r){return r.id===id})[0];
+  if(!q)return;
+  var industry=x.industries.filter(function(i){return norm(i.name)===norm(q.name)})[0];
+  if(!industry){
+   industry={id:makeId('industry'),name:q.name,active:true,createdAt:now(),source:'approved-request'};
+   x.industries.push(industry)
+  }else industry.active=true;
+  q.status='Approved';q.reviewedAt=now();q.reviewedBy='Manager/Admin';
+  var tags=companyTags(q.company,q.rep);tags.push(industry.name);setCompanyTags(q.company,tags,q.rep);
+  addActivity(q.company,{
+   id:makeId('activity'),source:'industry-approval',type:'Industry Tag Approved',
+   subject:industry.name+' approved and assigned',
+   detail:'Approved by Manager/Admin from the rep request.',
+   date:now(),createdAt:now(),updatedAt:now()
+  },q.rep);
+  saveState(x,'Industry request approved',q.name+' · '+q.company+' · '+q.rep);
+  renderManager()
+ };
+
+ window._at537RejectRequest=function(id){
+  var x=state(),q=x.requests.filter(function(r){return r.id===id})[0];
+  if(!q)return;
+  q.status='Rejected';q.reviewedAt=now();q.reviewedBy='Manager/Admin';
+  saveState(x,'Industry request rejected',q.name+' · '+q.company);
+  renderManager()
+ };
+
+ window._at537BrandLogo=function(event){
+  var file=event.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(){
+   var x=state();x.branding.logoData=reader.result;
+   x.templates.forEach(function(t){t.active=false;t.previewHash='';t.testHash=''});
+   saveState(x,'Company email logo updated',file.name+' · template tests invalidated');
+   renderManager()
+  };
+  reader.readAsDataURL(file)
+ };
+
+ window._at537SaveBranding=function(){
+  var x=state();
+  x.branding=Object.assign({},x.branding,{
+   companyName:val('at537-b-company'),
+   tagline:val('at537-b-tagline'),
+   address:val('at537-b-address'),
+   website:val('at537-b-website'),
+   footerHtml:val('at537-b-footer'),
+   disclaimer:val('at537-b-disclaimer')
+  });
+  x.templates.forEach(function(t){t.active=false;t.previewHash='';t.testHash=''});
+  saveState(x,'Locked company footer updated','Template tests invalidated');
+  alert('Footer saved. Templates must be previewed and tested again before activation.');
+  renderManager()
+ };
+
+ window._at537SaveMicrosoft=function(){
+  var x=state();
+  x.microsoft={
+   tenantId:val('at537-ms-tenant'),
+   clientId:val('at537-ms-client'),
+   redirectUri:val('at537-ms-redirect'),
+   allowedDomain:val('at537-ms-domain'),
+   managerEmail:val('at537-ms-manager')
+  };
+  saveState(x,'Microsoft 365 settings updated',x.microsoft.allowedDomain);
+  renderManager()
+ };
+
+ window._at537SetTemplateTestHash=function(templateId,hash){
+  var x=state(),t=x.templates.filter(function(item){return item.id===templateId})[0];
+  if(t){t.testHash=hash;saveState(x,'Template test recorded',t.name)}
+ };
+
+ function ensureManagerPage(){
+  if(!document.getElementById('pg-automations')){
+   var page=document.createElement('div');
+   page.id='pg-automations';
+   page.className='page';
+   var admin=document.getElementById('pg-admin');
+   if(admin&&admin.parentNode)admin.parentNode.insertBefore(page,admin);
+   else document.body.appendChild(page)
+  }
+
+  var tabBar=document.getElementById('tabBar');
+  if(tabBar&&!tabBar.querySelector('[data-at537-top]')){
+   var topButton=document.createElement('button');
+   topButton.className='tab';
+   topButton.dataset.at537Top='1';
+   topButton.innerHTML='⚡ Automation & Templates';
+   topButton.onclick=function(){gt('automations',topButton)};
+   var adminButton=tabBar.querySelector('button[onclick*="admin"]');
+   tabBar.insertBefore(topButton,adminButton||null)
+  }
+
+  var system=document.querySelector('#tabBar .nav-group[data-group="system"] .nav-group-items');
+  if(system&&!system.querySelector('[data-at537-nav]')){
+   var navButton=document.createElement('button');
+   navButton.className='tab nav-item';
+   navButton.dataset.at537Nav='1';
+   navButton.dataset.navLabel='Automation & Templates';
+   navButton.dataset.navIcon='⚡';
+   navButton.innerHTML='<span class="nav-icon">⚡</span><span class="nav-label">Automation & Templates</span>';
+   navButton.onclick=function(){gt('automations',navButton)};
+   system.insertBefore(navButton,system.firstChild)
+  }
+ }
+
+ var gtBase=window.gt;
+ window.gt=function(page,button){
+  if(page==='automations'){
+   ensureManagerPage();
+   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active')});
+   document.querySelectorAll('.tab').forEach(function(e){e.classList.remove('active')});
+   var target=document.getElementById('pg-automations');
+   if(target)target.classList.add('active');
+   if(button)button.classList.add('active');
+   renderManager();
+   return
+  }
+  return typeof gtBase==='function'?gtBase.apply(this,arguments):undefined
+ };
+
+ window.TCP537=Object.assign(window.TCP537||{},{
+  PRIMARY_TYPES:PRIMARY_TYPES,
+  SECONDARY:SECONDARY,
+  OUTCOMES:OUTCOMES,
+  arr:arr,clean:clean,norm:norm,esc:esc,val:val,checked:checked,now:now,makeId:makeId,
+  read:read,write:write,field:field,uniq:uniq,currentRep:currentRep,
+  state:state,saveState:saveState,account:account,saveAccount:saveAccount,addActivity:addActivity,
+  approvedIndustries:approvedIndustries,companyTags:companyTags,setCompanyTags:setCompanyTags,
+  templateHash:templateHash,templateConflict:templateConflict,findTemplate:findTemplate,
+  mergeFields:mergeFields,footerHtml:footerHtml,sampleContext:sampleContext,managerPreviewContext:managerPreviewContext,previewAccounts:previewAccounts,
+  renderManager:renderManager,installIndustryCard:installIndustryCard,bindOutcome:bindOutcome
+ });
+
+ window._at537MatchTemplate=findTemplate;
+ window._at537RenderManager=renderManager;
+ window._at537DiagnosticsCore=function(){
+  var x=state();
+  return{
+   templates:x.templates.length,
+   activeTemplates:x.templates.filter(function(t){return t.active}).length,
+   industries:x.industries.length,
+   pendingRequests:x.requests.filter(function(r){return r.status==='Pending'}).length
+  }
+ };
+
+ var afterBase=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof afterBase==='function'?afterBase.apply(this,arguments):undefined;
+  setTimeout(function(){bindOutcome();installIndustryCard()},0);
+  return result
+ };
+
+ var goBase=window._rp2Go;
+ window._rp2Go=function(){
+  var result=goBase.apply(this,arguments);
+  setTimeout(function(){bindOutcome();installIndustryCard()},50);
+  return result
+ };
+
+ ensureManagerPage();
+ setTimeout(function(){ensureManagerPage();bindOutcome();installIndustryCard()},0);
+ setTimeout(function(){ensureManagerPage();bindOutcome();installIndustryCard()},600);
+})();
+</script>
+
+
+<script id="tcp-outlook-composer-v537-js">
+(function(){
+ 'use strict';
+
+ var API=window.TCP537;
+ if(!API)return;
+
+ var EMAIL='tcp_email_composer_v537';
+ var ACTION='tcp_rp_action_center_v504';
+ var TOKENS='tcp_ms365_tokens_v537';
+ var AUTH_PENDING='tcp_ms365_auth_pending_v537';
+
+ window._em537ActiveId=window._em537ActiveId||'';
+ window._em537Picker=window._em537Picker||null;
+
+ var autosaveTimer=null;
+ var reconcileTimer=null;
+
+ function arr(v){return API.arr(v)}
+ function clean(v){return API.clean(v)}
+ function norm(v){return API.norm(v)}
+ function esc(v){return API.esc(v)}
+ function val(id){return API.val(id)}
+ function now(){return API.now()}
+ function makeId(p){return API.makeId(p)}
+ function read(k,d){return API.read(k,d)}
+ function write(k,v){return API.write(k,v)}
+ function field(o,names,d){return API.field(o,names,d)}
+ function uniq(v){return API.uniq(v)}
+ function currentRep(){return API.currentRep()}
+ function account(company,rep,create){return API.account(company,rep,create)}
+ function saveAccount(bundle){return API.saveAccount(bundle)}
+ function addActivity(company,activity,rep){return API.addActivity(company,activity,rep)}
+ function companyTags(company,rep){return API.companyTags(company,rep)}
+
+ function dateISO(value){
+  var d=value?new Date(value):new Date();
+  if(isNaN(d.getTime()))d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')
+ }
+
+ function firstName(name){return clean(name).split(/\s+/)[0]||''}
+
+ function repProfile(rep){
+  var result={repTitle:'Sales Specialist',repPhone:'',repEmail:'',repCalendarLink:''};
+  try{
+   var stored=read('tcp_rp_profile_v2',{});
+   var p=stored&&stored.reps&&stored.reps[rep]||stored&&stored[rep]||{};
+   result.repTitle=p.title||p.jobTitle||result.repTitle;
+   result.repPhone=p.phone||p.directPhone||'';
+   result.repEmail=p.email||'';
+   result.repCalendarLink=p.calendarLink||p.bookingLink||''
+  }catch(e){}
+  try{
+   if(typeof S!=='undefined'&&S.repProfiles&&S.repProfiles[rep]){
+    var s=S.repProfiles[rep];
+    result.repTitle=s.title||result.repTitle;
+    result.repPhone=s.phone||result.repPhone;
+    result.repEmail=s.email||result.repEmail;
+    result.repCalendarLink=s.calendarLink||result.repCalendarLink
+   }
+  }catch(e){}
+  return result
+ }
+
+ function contactById(company,id){
+  var b=account(company,currentRep(),false);
+  return b.data&&b.data.contacts.filter(function(contact){
+   return String(field(contact,['id','contactId'],'')||'')===String(id||'')
+  })[0]||null
+ }
+
+ function validEmail(value){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(value))
+ }
+
+ function recipients(value){
+  var list=Array.isArray(value)?value:String(value||'').split(/[;,]/);
+  return uniq(list.map(clean).filter(validEmail))
+ }
+
+ function graphRecipients(list){
+  return arr(list).map(function(address){
+   return{emailAddress:{address:address}}
+  })
+ }
+
+ function emailStore(){
+  var x=read(EMAIL,{version:1,reps:{}});
+  if(!x||x.version!==1)x={version:1,reps:{}};
+  x.reps=x.reps||{};
+  var rep=currentRep()||'manager';
+  x.reps[rep]=x.reps[rep]||{drafts:{},events:[]};
+  return{x:x,data:x.reps[rep],rep:rep}
+ }
+
+ function emailDraft(id){
+  var b=emailStore();
+  return b.data.drafts[id]||null
+ }
+
+ function saveEmailStore(bundle){
+  write(EMAIL,bundle.x)
+ }
+
+ function putDraft(draft,event){
+  var b=emailStore();
+  draft.updatedAt=now();
+  b.data.drafts[draft.id]=draft;
+  if(event)b.data.events.push({type:event,draftId:draft.id,at:now()});
+  if(b.data.events.length>700)b.data.events=b.data.events.slice(-700);
+  saveEmailStore(b);
+  return draft
+ }
+
+ function signatureHtml(draft){
+  var rows=[
+   draft.sigName?'<strong>'+esc(draft.sigName)+'</strong>':'',
+   draft.sigTitle?esc(draft.sigTitle):'',
+   draft.sigPhone?esc(draft.sigPhone):'',
+   draft.sigEmail?'<a href="mailto:'+esc(draft.sigEmail)+'">'+esc(draft.sigEmail)+'</a>':'',
+   draft.sigCalendar?'<a href="'+esc(draft.sigCalendar)+'">Schedule a call</a>':''
+  ].filter(Boolean);
+  return'<div>'+rows.join('<br>')+'</div>'
+ }
+
+ function fullBody(draft){
+  return(draft.bodyHtml||'')+
+   '<div style="margin-top:22px">'+signatureHtml(draft)+'</div>'+
+   '<div style="margin-top:14px">'+(draft.footerHtml||API.footerHtml())+'</div>'
+ }
+
+ function templateContext(company,contact,callDraft){
+  var b=account(company,currentRep(),true);
+  return{
+   company:company,
+   contact:contact||{},
+   draft:callDraft||{},
+   rep:currentRep(),
+   profile:Object.assign({},b.data.profile||{},repProfile(currentRep()))
+  }
+ }
+
+ function createDraft(options){
+  options=options||{};
+  var company=options.company||window._cw4CompanyName||window._call532&&window._call532.company||'';
+  var b=account(company,currentRep(),true);
+  var contact=options.contact||contactById(company,options.contactId)||b.data.contacts[0]||{};
+  var template=options.template||null;
+  var callDraft=options.callDraft||{};
+  var context=templateContext(company,contact,callDraft);
+  var profile=repProfile(currentRep());
+  var connected=window.TCP537.microsoftStatus('rep');
+  var email=field(contact,['email'],'');
+  var draft={
+   id:makeId('email'),
+   company:company,
+   rep:currentRep(),
+   contactId:field(contact,['id','contactId'],''),
+   contactName:field(contact,['name'],''),
+   to:email?[email]:[],
+   cc:[],
+   bcc:[],
+   subject:template?API.mergeFields(template.subject,context):'',
+   bodyHtml:template?API.mergeFields(template.bodyHtml,context):'<p></p>',
+   sigName:currentRep(),
+   sigTitle:profile.repTitle,
+   sigPhone:profile.repPhone,
+   sigEmail:profile.repEmail||connected.address||'',
+   sigCalendar:profile.repCalendarLink,
+   footerHtml:API.footerHtml(),
+   attachments:template?arr(template.attachments).map(function(a){return Object.assign({},a)}):[],
+   removedRemoteAttachmentIds:[],
+   templateId:template&&template.id||'',
+   templateName:template&&template.name||'',
+   templateOverride:!!options.templateOverride,
+   callActivityId:options.callActivityId||'',
+   callType:callDraft.callType||'',
+   outcome:callDraft.outcome||'',
+   secondaryPurpose:callDraft.secondaryPurpose||'',
+   status:'draft',
+   createdAt:now(),
+   updatedAt:now(),
+   outlookMessageId:'',
+   remoteModifiedAt:'',
+   lastSyncedAt:'',
+   localVersion:1,
+   localDirty:true,
+   conflict:null,
+   taskId:'',
+   newContactId:'',
+   source:options.source||'manual'
+  };
+  putDraft(draft,'created');
+  return draft
+ }
+
+ function taskStore(){
+  var s=read(ACTION,null);
+  if(!s||s.version!==1||!s.reps)s={version:1,reps:{}};
+  s.reps[currentRep()]=s.reps[currentRep()]||{manual:[],state:{},events:[]};
+  var rep=s.reps[currentRep()];
+  rep.manual=arr(rep.manual);
+  rep.state=rep.state||{};
+  rep.events=arr(rep.events);
+  return{s:s,rep:rep}
+ }
+
+ function ensureDraftTask(draft){
+  var b=taskStore();
+  var key='email-draft:'+draft.id;
+  var task=b.rep.manual.filter(function(t){return t.emailDraftKey===key})[0];
+  if(!task){
+   task={
+    id:makeId('manual'),
+    source:'email-composer',
+    category:'email',
+    tone:'warn',
+    score:220,
+    title:'Send voicemail follow-up email — '+draft.company,
+    why:'The prepared Outlook follow-up was saved as a draft.',
+    action:'Open the linked draft, review it, and send it today.',
+    measure:'Microsoft confirms the message was sent.',
+    dueDate:dateISO(),
+    customer:draft.company,
+    contactId:draft.contactId,
+    contactName:draft.contactName,
+    page:'emaildraft',
+    emailDraftId:draft.id,
+    emailDraftKey:key
+   };
+   b.rep.manual.push(task);
+   b.rep.events.push({type:'create',taskId:task.id,title:task.title,customer:draft.company,at:now()});
+   draft.taskId=task.id;
+   write(ACTION,b.s);
+   putDraft(draft,'task-created')
+  }
+  return task
+ }
+
+ function completeDraftTask(draft){
+  if(!draft.taskId)return;
+  var b=taskStore();
+  b.rep.state[draft.taskId]=Object.assign({},b.rep.state[draft.taskId]||{},{
+   status:'completed',
+   completedAt:now(),
+   result:'Email sent',
+   note:'Microsoft 365 confirmed the linked message was sent.'
+  });
+  b.rep.events.push({type:'complete',taskId:draft.taskId,title:'Email sent',customer:draft.company,at:now()});
+  write(ACTION,b.s)
+ }
+
+ function composerFromDom(draft){
+  if(!draft)return draft;
+  var body=document.getElementById('em537-body');
+  draft.to=recipients(val('em537-to'));
+  draft.cc=recipients(val('em537-cc'));
+  draft.bcc=recipients(val('em537-bcc'));
+  draft.subject=val('em537-subject');
+  draft.bodyHtml=body?body.innerHTML:draft.bodyHtml;
+  draft.sigName=val('em537-sig-name');
+  draft.sigTitle=val('em537-sig-title');
+  draft.sigPhone=val('em537-sig-phone');
+  draft.sigEmail=val('em537-sig-email');
+  draft.sigCalendar=val('em537-sig-calendar');
+  draft.localVersion=(draft.localVersion||0)+1;
+  draft.localDirty=true;
+  return draft
+ }
+
+ /* Microsoft 365 OAuth 2.0 authorization code + PKCE */
+ function tokenStore(){
+  var x=read(TOKENS,{version:1,accounts:{}});
+  if(!x||x.version!==1||!x.accounts)x={version:1,accounts:{}};
+  return x
+ }
+
+ function tokenKey(mode){return mode==='manager'?'manager':'rep:'+currentRep()}
+ function getToken(mode){return tokenStore().accounts[tokenKey(mode)]||null}
+
+ function saveToken(mode,value){
+  var x=tokenStore();
+  x.accounts[tokenKey(mode)]=value;
+  write(TOKENS,x)
+ }
+
+ function clearToken(mode){
+  var x=tokenStore();
+  delete x.accounts[tokenKey(mode)];
+  write(TOKENS,x)
+ }
+
+ function b64url(bytes){
+  var s='';
+  bytes.forEach(function(byte){s+=String.fromCharCode(byte)});
+  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')
+ }
+
+ async function sha256(value){
+  var bytes=new TextEncoder().encode(value);
+  var digest=await crypto.subtle.digest('SHA-256',bytes);
+  return b64url(new Uint8Array(digest))
+ }
+
+ function randomVerifier(){
+  var bytes=new Uint8Array(64);
+  crypto.getRandomValues(bytes);
+  return b64url(bytes)
+ }
+
+ function msConfig(){return API.state().microsoft||{}}
+
+ async function exchangeCode(config,code,verifier){
+  var body=new URLSearchParams({
+   client_id:config.clientId,
+   scope:'openid profile offline_access User.Read Mail.ReadWrite Mail.Send',
+   code:code,
+   redirect_uri:config.redirectUri,
+   grant_type:'authorization_code',
+   code_verifier:verifier
+  });
+  var response=await fetch(
+   'https://login.microsoftonline.com/'+encodeURIComponent(config.tenantId)+'/oauth2/v2.0/token',
+   {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}
+  );
+  var data=await response.json();
+  if(!response.ok)throw new Error(data.error_description||data.error||'Microsoft token exchange failed.');
+  return data
+ }
+
+ async function refreshToken(mode,current){
+  var config=msConfig();
+  if(!current||!current.refreshToken)throw new Error('Microsoft reconnect required.');
+  var body=new URLSearchParams({
+   client_id:config.clientId,
+   scope:'openid profile offline_access User.Read Mail.ReadWrite Mail.Send',
+   refresh_token:current.refreshToken,
+   redirect_uri:config.redirectUri,
+   grant_type:'refresh_token'
+  });
+  var response=await fetch(
+   'https://login.microsoftonline.com/'+encodeURIComponent(config.tenantId)+'/oauth2/v2.0/token',
+   {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}
+  );
+  var data=await response.json();
+  if(!response.ok)throw new Error(data.error_description||data.error||'Microsoft reconnect required.');
+  var updated=Object.assign({},current,{
+   accessToken:data.access_token,
+   refreshToken:data.refresh_token||current.refreshToken,
+   expiresAt:Date.now()+((data.expires_in||3600)-120)*1000,
+   updatedAt:now()
+  });
+  saveToken(mode,updated);
+  return updated
+ }
+
+ async function accessToken(mode){
+  var current=getToken(mode);
+  if(!current)throw new Error('Connect Microsoft 365 first.');
+  if(Date.now()>Number(current.expiresAt||0))current=await refreshToken(mode,current);
+  return current.accessToken
+ }
+
+ async function graph(mode,path,options){
+  options=options||{};
+  var token=await accessToken(mode);
+  var headers=Object.assign({
+   'Authorization':'Bearer '+token,
+   'Content-Type':'application/json',
+   'Prefer':'IdType="ImmutableId"'
+  },options.headers||{});
+  var url=path.indexOf('http')===0?path:'https://graph.microsoft.com/v1.0'+path;
+  var response=await fetch(url,Object.assign({},options,{headers:headers}));
+
+  if(response.status===401){
+   var refreshed=await refreshToken(mode,getToken(mode));
+   headers.Authorization='Bearer '+refreshed.accessToken;
+   response=await fetch(url,Object.assign({},options,{headers:headers}))
+  }
+
+  if(!response.ok){
+   var errorText=await response.text();
+   throw new Error('Microsoft Graph '+response.status+': '+errorText.slice(0,280))
+  }
+  if(response.status===202||response.status===204)return null;
+  var text=await response.text();
+  return text?JSON.parse(text):null
+ }
+
+ async function finishConnection(mode,data){
+  var value={
+   accessToken:data.access_token,
+   refreshToken:data.refresh_token||'',
+   expiresAt:Date.now()+((data.expires_in||3600)-120)*1000,
+   scope:data.scope||'',
+   connectedAt:now(),
+   updatedAt:now()
+  };
+  saveToken(mode,value);
+  var me=await graph(mode,'/me?$select=id,displayName,mail,userPrincipalName');
+  value.account=me;
+  value.updatedAt=now();
+
+  var allowed=clean(msConfig().allowedDomain).toLowerCase();
+  var address=clean(me.mail||me.userPrincipalName).toLowerCase();
+  if(allowed&&address.split('@')[1]!==allowed){
+   clearToken(mode);
+   throw new Error('Only '+allowed+' Microsoft accounts may connect.')
+  }
+
+  saveToken(mode,value);
+  return value
+ }
+
+ async function handleAuthCallback(){
+  var query=new URLSearchParams(location.search||'');
+  var code=query.get('code');
+  var stateId=query.get('state');
+  var error=query.get('error');
+  if(!code&&!error)return;
+
+  var pending=read(AUTH_PENDING,null);
+  try{
+   if(error)throw new Error(query.get('error_description')||error);
+   if(!pending||pending.state!==stateId)throw new Error('Microsoft sign-in state did not match.');
+   var data=await exchangeCode(pending.config,code,pending.verifier);
+   var connected=await finishConnection(pending.mode,data);
+   write(AUTH_PENDING,null);
+   history.replaceState({},document.title,pending.cleanUrl||location.pathname);
+
+   if(window.opener&&window.opener!==window){
+    window.opener.postMessage({
+     type:'tcp-ms365-connected-v537',
+     mode:pending.mode,
+     account:connected.account
+    },location.origin);
+    window.close()
+   }else{
+    alert('Microsoft 365 connected.');
+    refreshCurrent()
+   }
+  }catch(e){
+   history.replaceState({},document.title,pending&&pending.cleanUrl||location.pathname);
+   if(window.opener&&window.opener!==window){
+    window.opener.postMessage({type:'tcp-ms365-error-v537',message:e.message},location.origin);
+    window.close()
+   }else alert(e.message)
+  }
+ }
+
+ async function connectMicrosoft(mode){
+  mode=mode||'rep';
+  var config=msConfig();
+  if(!clean(config.tenantId)||!clean(config.clientId)){
+   alert('Configure the Microsoft tenant ID and application client ID in Automation & Templates first.');
+   return
+  }
+  config.redirectUri=clean(config.redirectUri)||(location.origin+location.pathname);
+  var verifier=randomVerifier();
+  var challenge=await sha256(verifier);
+  var stateId=makeId('state');
+  var cleanUrl=location.origin+location.pathname;
+
+  write(AUTH_PENDING,{
+   state:stateId,
+   verifier:verifier,
+   mode:mode,
+   config:config,
+   cleanUrl:cleanUrl,
+   at:now()
+  });
+
+  var url='https://login.microsoftonline.com/'+encodeURIComponent(config.tenantId)+'/oauth2/v2.0/authorize?'+
+   new URLSearchParams({
+    client_id:config.clientId,
+    response_type:'code',
+    redirect_uri:config.redirectUri,
+    response_mode:'query',
+    scope:'openid profile offline_access User.Read Mail.ReadWrite Mail.Send',
+    code_challenge:challenge,
+    code_challenge_method:'S256',
+    state:stateId,
+    prompt:'select_account'
+   }).toString();
+
+  var popup=window.open(url,'tcpMicrosoftConnect','width=620,height=760,resizable=yes,scrollbars=yes');
+  if(!popup)location.href=url
+ }
+
+ function disconnectMicrosoft(mode){
+  clearToken(mode||'rep');
+  refreshCurrent()
+ }
+
+ function microsoftStatus(mode){
+  var t=getToken(mode||'rep');
+  return t?{
+   connected:true,
+   address:t.account&&t.account.mail||t.account&&t.account.userPrincipalName||'',
+   name:t.account&&t.account.displayName||'',
+   expiresAt:t.expiresAt
+  }:{connected:false,address:'',name:''}
+ }
+
+ /* Outlook draft synchronization */
+ async function listRemoteAttachments(draft,mode){
+  if(!draft.outlookMessageId)return[];
+  var result=await graph(mode,'/me/messages/'+encodeURIComponent(draft.outlookMessageId)+'/attachments?$select=id,name,contentType,size,isInline');
+  return arr(result&&result.value).map(function(a){
+   return{
+    id:makeId('attachment'),
+    name:a.name,
+    type:a.contentType||'application/octet-stream',
+    size:a.size||0,
+    source:'outlook',
+    remoteId:a.id,
+    isInline:!!a.isInline
+   }
+  })
+ }
+
+ async function syncAttachments(draft,mode){
+  if(!draft.outlookMessageId)return;
+
+  var removed=arr(draft.removedRemoteAttachmentIds);
+  for(var i=0;i<removed.length;i++){
+   await graph(mode,
+    '/me/messages/'+encodeURIComponent(draft.outlookMessageId)+'/attachments/'+encodeURIComponent(removed[i]),
+    {method:'DELETE'}
+   )
+  }
+  draft.removedRemoteAttachmentIds=[];
+
+  var unsynced=arr(draft.attachments).filter(function(a){
+   return !a.remoteId&&(a.contentBytes||a.dataUrl)
+  });
+
+  for(var j=0;j<unsynced.length;j++){
+   var item=unsynced[j];
+   var bytes=item.contentBytes||String(item.dataUrl||'').split(',')[1]||'';
+   if(!bytes)continue;
+   var created=await graph(mode,
+    '/me/messages/'+encodeURIComponent(draft.outlookMessageId)+'/attachments',
+    {
+     method:'POST',
+     body:JSON.stringify({
+      '@odata.type':'#microsoft.graph.fileAttachment',
+      name:item.name,
+      contentType:item.type||'application/octet-stream',
+      contentBytes:bytes
+     })
+    }
+   );
+   item.remoteId=created&&created.id||'';
+   item.source=item.source||'tracker'
+  }
+ }
+
+ function pullRecipients(list){
+  return arr(list).map(function(r){return r.emailAddress&&r.emailAddress.address||''}).filter(Boolean)
+ }
+
+ async function remoteSync(draft,mode){
+  mode=mode||'rep';
+  if(!getToken(mode))return draft;
+
+  var payload={
+   subject:draft.subject,
+   body:{contentType:'HTML',content:fullBody(draft)},
+   toRecipients:graphRecipients(draft.to),
+   ccRecipients:graphRecipients(draft.cc),
+   bccRecipients:graphRecipients(draft.bcc)
+  };
+
+  if(!draft.outlookMessageId){
+   var created=await graph(mode,'/me/messages',{method:'POST',body:JSON.stringify(payload)});
+   draft.outlookMessageId=created.id;
+   draft.remoteModifiedAt=created.lastModifiedDateTime||now();
+   draft.outlookCreatedAt=now();
+   await syncAttachments(draft,mode);
+   draft.localDirty=false;
+   draft.lastSyncedAt=now();
+   putDraft(draft,'outlook-created');
+   return draft
+  }
+
+  var remote=await graph(mode,
+   '/me/messages/'+encodeURIComponent(draft.outlookMessageId)+
+   '?$select=id,isDraft,lastModifiedDateTime,sentDateTime,subject,body,toRecipients,ccRecipients,bccRecipients'
+  );
+
+  if(remote&&!remote.isDraft)return markSent(draft,'outlook',remote);
+
+  var remoteTime=new Date(remote.lastModifiedDateTime||0).getTime();
+  var localTime=new Date(draft.updatedAt||0).getTime();
+  var lastRemote=new Date(draft.remoteModifiedAt||0).getTime();
+
+  if(remoteTime>lastRemote+1000&&draft.localDirty){
+   if(remoteTime>localTime){
+    draft.conflict={
+     detectedAt:now(),
+     winner:'Outlook',
+     acknowledged:false,
+     localSnapshot:{
+      subject:draft.subject,bodyHtml:draft.bodyHtml,to:draft.to,cc:draft.cc,bcc:draft.bcc,
+      attachments:draft.attachments,updatedAt:draft.updatedAt
+     },
+     remoteModifiedAt:remote.lastModifiedDateTime
+    };
+    draft.subject=remote.subject||'';
+    draft.bodyHtml=remote.body&&remote.body.content||'';
+    draft.to=pullRecipients(remote.toRecipients);
+    draft.cc=pullRecipients(remote.ccRecipients);
+    draft.bcc=pullRecipients(remote.bccRecipients);
+    draft.attachments=await listRemoteAttachments(draft,mode);
+    draft.localDirty=false;
+    draft.remoteModifiedAt=remote.lastModifiedDateTime;
+    putDraft(draft,'conflict-outlook-won');
+    return draft
+   }else{
+    draft.conflict={
+     detectedAt:now(),
+     winner:'Tracker',
+     acknowledged:false,
+     remoteSnapshot:{
+      subject:remote.subject,bodyHtml:remote.body&&remote.body.content||'',
+      to:pullRecipients(remote.toRecipients),
+      cc:pullRecipients(remote.ccRecipients),
+      bcc:pullRecipients(remote.bccRecipients),
+      updatedAt:remote.lastModifiedDateTime
+     }
+    }
+   }
+  }else if(remoteTime>localTime&&!draft.localDirty){
+   draft.subject=remote.subject||'';
+   draft.bodyHtml=remote.body&&remote.body.content||'';
+   draft.to=pullRecipients(remote.toRecipients);
+   draft.cc=pullRecipients(remote.ccRecipients);
+   draft.bcc=pullRecipients(remote.bccRecipients);
+   draft.attachments=await listRemoteAttachments(draft,mode);
+   draft.remoteModifiedAt=remote.lastModifiedDateTime;
+   draft.lastSyncedAt=now();
+   putDraft(draft,'outlook-pulled');
+   return draft
+  }
+
+  await graph(mode,'/me/messages/'+encodeURIComponent(draft.outlookMessageId),{
+   method:'PATCH',
+   body:JSON.stringify(payload)
+  });
+  await syncAttachments(draft,mode);
+  draft.remoteModifiedAt=now();
+  draft.lastSyncedAt=now();
+  draft.localDirty=false;
+  putDraft(draft,'outlook-updated');
+  return draft
+ }
+
+ function markSent(draft,method,remote){
+  if(draft.status==='sent')return draft;
+  draft.status='sent';
+  draft.sentAt=remote&&remote.sentDateTime||now();
+  draft.sentMethod=method;
+  draft.remoteFinal=remote||null;
+  draft.localDirty=false;
+  putDraft(draft,'sent');
+  completeDraftTask(draft);
+
+  addActivity(draft.company,{
+   id:makeId('activity'),
+   source:'outlook-email',
+   type:'Email',
+   subject:draft.subject,
+   detail:'Sent through Microsoft 365 from '+currentRep()+'.',
+   bodyHtml:draft.bodyHtml,
+   to:draft.to,
+   cc:draft.cc,
+   bcc:draft.bcc,
+   attachments:arr(draft.attachments).map(function(a){return a.name}),
+   date:draft.sentAt,
+   createdAt:draft.sentAt,
+   updatedAt:draft.sentAt,
+   contactId:draft.contactId,
+   contactName:draft.contactName,
+   templateId:draft.templateId,
+   templateName:draft.templateName,
+   callActivityId:draft.callActivityId,
+   outlookMessageId:draft.outlookMessageId,
+   sentMethod:method
+  });
+
+  if(draft.newContactId){
+   setTimeout(function(){
+    try{
+     _rp2Go('customers');
+     setTimeout(function(){_cw4OpenCompany(encodeURIComponent(draft.company),'relationships')},40)
+    }catch(e){}
+   },80)
+  }
+  return draft
+ }
+
+ async function sendDraft(draft){
+  if(!draft.to.length)throw new Error('Add at least one valid To recipient.');
+  if(!getToken('rep'))throw new Error('Connect Microsoft 365 from My Profile before sending.');
+  if(draft.conflict&&!draft.conflict.acknowledged){
+   throw new Error('A draft conflict must be acknowledged before sending.')
+  }
+
+  await remoteSync(draft,'rep');
+  if(draft.status==='sent')return draft;
+
+  await graph('rep','/me/messages/'+encodeURIComponent(draft.outlookMessageId)+'/send',{
+   method:'POST',body:''
+  });
+
+  var remote=null;
+  for(var attempt=0;attempt<5;attempt++){
+   await new Promise(function(resolve){setTimeout(resolve,600+attempt*450)});
+   try{
+    remote=await graph('rep',
+     '/me/messages/'+encodeURIComponent(draft.outlookMessageId)+
+     '?$select=id,isDraft,sentDateTime,lastModifiedDateTime,subject,toRecipients,ccRecipients,bccRecipients,body'
+    );
+    if(remote&&!remote.isDraft)break
+   }catch(e){}
+  }
+  return markSent(draft,'tracker',remote||{sentDateTime:now()})
+ }
+
+ async function sendTemplateTest(template,context,address){
+  if(!getToken('manager')){
+   connectMicrosoft('manager');
+   throw new Error('Connect the manager test mailbox, then click Send Microsoft test again.')
+  }
+  var state=API.state();
+  var message=await graph('manager','/me/messages',{
+   method:'POST',
+   body:JSON.stringify({
+    subject:'[TEMPLATE TEST] '+API.mergeFields(template.subject,context),
+    body:{
+     contentType:'HTML',
+     content:'<div style="padding:8px;background:#fff5d8"><strong>Template test only.</strong> No company activity or rep task was created.</div>'+
+      API.mergeFields(template.bodyHtml,context)+
+      '<div style="margin-top:18px">'+API.footerHtml()+'</div>'
+    },
+    toRecipients:graphRecipients([address])
+   })
+  });
+
+  for(var i=0;i<arr(template.attachments).length;i++){
+   var attachment=template.attachments[i];
+   var bytes=attachment.contentBytes||String(attachment.dataUrl||'').split(',')[1]||'';
+   if(!bytes)continue;
+   await graph('manager','/me/messages/'+encodeURIComponent(message.id)+'/attachments',{
+    method:'POST',
+    body:JSON.stringify({
+     '@odata.type':'#microsoft.graph.fileAttachment',
+     name:attachment.name,
+     contentType:attachment.type||'application/octet-stream',
+     contentBytes:bytes
+    })
+   })
+  }
+
+  await graph('manager','/me/messages/'+encodeURIComponent(message.id)+'/send',{
+   method:'POST',body:''
+  });
+  return true
+ }
+
+ /* Composer */
+ function contactResolver(draft){
+  if(draft.to.length)return'';
+  var b=account(draft.company,currentRep(),true);
+  var contacts=b.data.contacts.filter(function(c){return validEmail(c.email)});
+
+  return'<div class="em537-missing"><strong>No email address is selected.</strong><br>'+
+   'Select another company contact, add an email to the call contact, create a new contact, or save the draft without a recipient.'+
+   '<div class="em537-contact-options">'+contacts.map(function(c){
+    return'<div class="em537-contact-card" onclick="_em537UseContact(\''+encodeURIComponent(field(c,['id','contactId'],''))+'\')">'+
+     '<strong>'+esc(c.name)+'</strong><span>'+esc(c.email)+'</span></div>'
+   }).join('')+'</div>'+
+   '<div class="em537-new-contact"><input id="em537-current-email" type="email" placeholder="Email for current contact">'+
+    '<button class="em537-secondary" onclick="_em537UpdateContactEmail()">Add email to selected contact</button><span></span></div>'+
+   '<div class="em537-new-contact"><input id="em537-new-name" placeholder="New contact name">'+
+    '<input id="em537-new-title" placeholder="Title / role">'+
+    '<input id="em537-new-email" type="email" placeholder="New contact email"></div>'+
+   '<button class="em537-secondary" style="margin-top:8px" onclick="_em537CreateContact()">Create contact and address email</button>'+
+  '</div>'
+ }
+
+ function composerHtml(draft){
+  var connection=microsoftStatus('rep');
+  var attachments=arr(draft.attachments);
+
+  return'<div class="em537-wrap" onclick="if(event.target===this)_em537Close()">'+
+   '<section class="em537-compose">'+
+    '<header class="em537-head"><div><strong>New message · '+esc(draft.company)+'</strong>'+
+     '<span>'+(draft.templateName?'Template: '+esc(draft.templateName):'Blank company email')+
+      (connection.connected?' · Outlook connected':' · Outlook connection required to send')+'</span></div>'+
+     '<div class="em537-head-actions"><button class="em537-icon" onclick="_em537Close()" title="Save draft and minimize">—</button>'+
+      '<button class="em537-icon" onclick="_em537Close()" title="Save draft and close">×</button></div></header>'+
+    (draft.conflict&&!draft.conflict.acknowledged?
+     '<div class="em537-conflict"><strong>Draft conflict detected.</strong> '+esc(draft.conflict.winner)+
+      ' had the newest saved version. The losing version remains in audit history. '+
+      '<button class="em537-small" onclick="_em537AcknowledgeConflict()">Acknowledge</button></div>':'')+
+    '<div class="em537-fields">'+
+     '<div class="em537-line"><label>To</label><input id="em537-to" value="'+esc(draft.to.join('; '))+'" oninput="_em537Touch()">'+
+      '<div class="em537-rec-actions"><button class="em537-small" onclick="_em537ToggleCc()">Cc/Bcc</button></div></div>'+
+     '<div class="em537-line" id="em537-cc-line" style="'+((draft.cc.length||draft.bcc.length)?'':'display:none')+'"><label>Cc</label>'+
+      '<input id="em537-cc" value="'+esc(draft.cc.join('; '))+'" oninput="_em537Touch()"><span></span></div>'+
+     '<div class="em537-line" id="em537-bcc-line" style="'+((draft.cc.length||draft.bcc.length)?'':'display:none')+'"><label>Bcc</label>'+
+      '<input id="em537-bcc" value="'+esc(draft.bcc.join('; '))+'" oninput="_em537Touch()"><span></span></div>'+
+     '<div class="em537-line"><label>From</label><div class="em537-from">'+
+      esc(connection.address||draft.sigEmail||currentRep()+' · Microsoft 365 not connected')+'</div><span></span></div>'+
+     '<div class="em537-line"><label>Subject</label><input id="em537-subject" value="'+esc(draft.subject)+'" oninput="_em537Touch()"><span></span></div>'+
+    '</div>'+
+    '<div class="em537-toolbar">'+
+     '<button class="em537-tool" onclick="_em537Cmd(\'bold\')"><b>B</b></button>'+
+     '<button class="em537-tool" onclick="_em537Cmd(\'italic\')"><i>I</i></button>'+
+     '<button class="em537-tool" onclick="_em537Cmd(\'underline\')"><u>U</u></button>'+
+     '<button class="em537-tool" onclick="_em537Cmd(\'insertUnorderedList\')">• List</button>'+
+     '<button class="em537-tool" onclick="_em537Link()">🔗</button>'+
+     '<button class="em537-tool" onclick="_em537AddFiles()">📎</button>'+
+    '</div>'+
+    '<div class="em537-body-shell">'+contactResolver(draft)+
+     '<div id="em537-body" class="em537-body" contenteditable="true" oninput="_em537Touch()">'+(draft.bodyHtml||'<p></p>')+'</div>'+
+     '<div class="em537-signature"><strong style="font-size:10px;color:#475569">Rep signature · editable for this email</strong>'+
+      '<div class="em537-sig-grid">'+
+       '<input id="em537-sig-name" value="'+esc(draft.sigName)+'" placeholder="Name">'+
+       '<input id="em537-sig-title" value="'+esc(draft.sigTitle)+'" placeholder="Title">'+
+       '<input id="em537-sig-phone" value="'+esc(draft.sigPhone)+'" placeholder="Phone">'+
+       '<input id="em537-sig-email" value="'+esc(draft.sigEmail)+'" placeholder="Email">'+
+       '<input id="em537-sig-calendar" value="'+esc(draft.sigCalendar)+'" placeholder="Calendar link">'+
+      '</div>'+
+      '<div class="em537-footer-lock">'+draft.footerHtml+'</div>'+
+     '</div>'+
+    '</div>'+
+    '<div class="em537-attachments">'+
+     '<button class="em537-secondary" onclick="_em537AddFiles()">＋ Attach from device</button>'+
+     '<button class="em537-secondary" onclick="_em537CompanyAttachments()">Company files</button>'+
+     attachments.map(function(a,index){
+      return'<span class="em537-attachment">📎 '+esc(a.name)+' <button onclick="_em537RemoveAttachment('+index+')">×</button></span>'
+     }).join('')+
+     '<input id="em537-file-input" type="file" multiple style="display:none" onchange="_em537FilesSelected(event)">'+
+    '</div>'+
+    '<footer class="em537-foot"><div class="em537-draft-status" id="em537-save-status">Autosaving to the tracker'+
+     (connection.connected?' and Outlook Drafts':'')+'…</div>'+
+     '<div class="em537-foot-actions">'+
+      (!connection.connected?'<button class="em537-secondary" onclick="TCP537.connectMicrosoft(\'rep\')">Connect Outlook</button>':'')+
+      '<button class="em537-secondary" onclick="_em537Close()">Save draft & close</button>'+
+      '<button class="em537-send" onclick="_em537Send()">Send</button>'+
+     '</div></footer>'+
+   '</section>'+
+  '</div>'
+ }
+
+ function renderComposer(){
+  var host=document.getElementById('em537-host');
+  if(!host){
+   host=document.createElement('div');
+   host.id='em537-host';
+   (document.getElementById('rp-overlay')||document.body).appendChild(host)
+  }
+  var draft=emailDraft(window._em537ActiveId);
+  host.innerHTML=draft&&draft.status!=='sent'?composerHtml(draft):'';
+  if(draft&&draft.status!=='sent')startAutosave();
+  else stopAutosave()
+ }
+
+ function startAutosave(){
+  stopAutosave();
+  autosaveTimer=setInterval(function(){
+   var draft=emailDraft(window._em537ActiveId);
+   if(!draft||draft.status==='sent')return;
+   composerFromDom(draft);
+   putDraft(draft,'autosave');
+   var status=document.getElementById('em537-save-status');
+   if(status)status.textContent='Saved '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+   if((draft.localVersion||0)%4===0)remoteSync(draft,'rep').catch(function(){})
+  },2500)
+ }
+
+ function stopAutosave(){
+  if(autosaveTimer){clearInterval(autosaveTimer);autosaveTimer=null}
+ }
+
+ function closeComposer(createTask){
+  var draft=emailDraft(window._em537ActiveId);
+  if(draft&&draft.status!=='sent'){
+   composerFromDom(draft);
+   putDraft(draft,'closed');
+   if(createTask!==false)ensureDraftTask(draft);
+   remoteSync(draft,'rep').catch(function(){})
+  }
+  window._em537ActiveId='';
+  renderComposer();
+  stopAutosave()
+ }
+
+ window._em537OpenDraft=function(encoded){
+  var draft=emailDraft(decodeURIComponent(encoded||''));
+  if(!draft){alert('Draft not found.');return}
+  window._em537ActiveId=draft.id;
+  renderComposer();
+  remoteSync(draft,'rep').then(renderComposer).catch(function(){})
+ };
+ window._em537Touch=function(){var s=document.getElementById('em537-save-status');if(s)s.textContent='Saving…'};
+ window._em537ToggleCc=function(){['em537-cc-line','em537-bcc-line'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=''})};
+ window._em537Cmd=function(command){document.execCommand(command,false,null);var body=document.getElementById('em537-body');if(body)body.focus();window._em537Touch()};
+ window._em537Link=function(){var url=prompt('Link URL');if(url)document.execCommand('createLink',false,url)};
+ window._em537Close=function(){closeComposer(true)};
+ window._em537AcknowledgeConflict=function(){
+  var draft=emailDraft(window._em537ActiveId);
+  if(draft&&draft.conflict){draft.conflict.acknowledged=true;putDraft(draft,'conflict-acknowledged');renderComposer()}
+ };
+
+ window._em537UseContact=function(encoded){
+  var draft=emailDraft(window._em537ActiveId);
+  var contact=contactById(draft.company,decodeURIComponent(encoded));
+  if(contact&&contact.email){
+   draft.contactId=field(contact,['id','contactId'],'');
+   draft.contactName=contact.name;
+   draft.to=[contact.email];
+   putDraft(draft,'recipient-selected');
+   renderComposer()
+  }
+ };
+
+ window._em537UpdateContactEmail=function(){
+  var draft=emailDraft(window._em537ActiveId);
+  var email=val('em537-current-email');
+  if(!validEmail(email)){alert('Enter a valid email address.');return}
+  var b=account(draft.company,currentRep(),true);
+  var contact=b.data.contacts.filter(function(c){
+   return String(field(c,['id','contactId'],'')||'')===String(draft.contactId||'')
+  })[0];
+  if(!contact){alert('The selected contact could not be found. Create a new contact instead.');return}
+  contact.email=email;contact.updatedAt=now();
+  saveAccount(b);
+  draft.to=[email];
+  putDraft(draft,'contact-email-added');
+  renderComposer()
+ };
+
+ window._em537CreateContact=function(){
+  var draft=emailDraft(window._em537ActiveId);
+  var name=val('em537-new-name'),title=val('em537-new-title'),email=val('em537-new-email');
+  if(!name||!validEmail(email)){alert('Enter the new contact name and a valid email address.');return}
+  var b=account(draft.company,currentRep(),true);
+  var contact={
+   id:makeId('contact'),name:name,title:title,email:email,phone:'',
+   buyingRole:'',decisionMaker:false,createdAt:now(),updatedAt:now(),source:'email-composer'
+  };
+  b.data.contacts.push(contact);
+  saveAccount(b);
+  draft.contactId=contact.id;
+  draft.contactName=contact.name;
+  draft.to=[email];
+  draft.newContactId=contact.id;
+  putDraft(draft,'contact-created');
+  renderComposer()
+ };
+
+ window._em537AddFiles=function(){var input=document.getElementById('em537-file-input');if(input)input.click()};
+
+ window._em537FilesSelected=function(event){
+  var draft=emailDraft(window._em537ActiveId);
+  var files=arr(event.target.files),remaining=files.length;
+  if(!remaining)return;
+
+  var currentBytes=arr(draft.attachments).reduce(function(sum,a){return sum+(Number(a.size)||0)},0);
+  files.forEach(function(file){
+   if(file.size>2*1024*1024||currentBytes+file.size>4*1024*1024){
+    alert(file.name+' exceeds the v537 direct-upload limit. Use a smaller file or a company-hosted document.');
+    if(--remaining===0)renderComposer();
+    return
+   }
+   currentBytes+=file.size;
+   var reader=new FileReader();
+   reader.onload=function(){
+    draft.attachments.push({
+     id:makeId('attachment'),name:file.name,type:file.type||'application/octet-stream',
+     size:file.size,dataUrl:reader.result,contentBytes:String(reader.result).split(',')[1]||'',
+     source:'device'
+    });
+    putDraft(draft,'attachment-added');
+    if(--remaining===0)renderComposer()
+   };
+   reader.readAsDataURL(file)
+  })
+ };
+
+ window._em537RemoveAttachment=function(index){
+  var draft=emailDraft(window._em537ActiveId);
+  var removed=draft.attachments.splice(index,1)[0];
+  if(removed&&removed.remoteId){
+   draft.removedRemoteAttachmentIds=arr(draft.removedRemoteAttachmentIds);
+   draft.removedRemoteAttachmentIds.push(removed.remoteId)
+  }
+  putDraft(draft,'attachment-removed');
+  renderComposer()
+ };
+
+ window._em537CompanyAttachments=function(){
+  var draft=emailDraft(window._em537ActiveId);
+  var b=account(draft.company,currentRep(),true);
+  var files=arr(b.data.files).filter(function(f){return f.dataUrl||f.contentBytes});
+  window._em537Picker={type:'attachments',files:files};
+  renderPicker()
+ };
+
+ window._em537Send=async function(){
+  var draft=emailDraft(window._em537ActiveId);
+  composerFromDom(draft);
+  putDraft(draft,'send-requested');
+  var button=document.querySelector('.em537-send');
+  if(button){button.disabled=true;button.textContent='Sending…'}
+  try{
+   await sendDraft(draft);
+   window._em537ActiveId='';
+   renderComposer();
+   alert('Email sent from your Outlook mailbox.')
+  }catch(e){
+   alert(e.message);
+   renderComposer()
+  }
+ };
+
+ function pickerHtml(){
+  var picker=window._em537Picker;
+  if(!picker)return'';
+
+  if(picker.type==='start'){
+   return'<div class="em537-picker" onclick="if(event.target===this)_em537ClosePicker()">'+
+    '<div class="em537-picker-card"><div class="em537-picker-head"><div><strong>Email '+esc(picker.company)+'</strong>'+
+     '<div style="margin-top:4px;color:#8f9db2;font-size:9px">Recommended industry matches appear first, followed by all active templates.</div></div>'+
+     '<button class="em537-icon" onclick="_em537ClosePicker()">×</button></div>'+
+     '<div class="em537-picker-body">'+
+      '<div class="em537-template-option" onclick="_em537ChooseTemplate(\'\')"><strong>＋ Blank email</strong><span>Start with recipients, editable signature, and locked company footer.</span></div>'+
+      arr(picker.templates).map(function(row){
+       return'<div class="em537-template-option" onclick="_em537ChooseTemplate(\''+row.template.id+'\')">'+
+        '<strong>'+esc(row.template.name)+(row.recommended?' · Recommended':'')+'</strong>'+
+        '<span>'+esc(row.template.primaryType+' · '+row.template.outcome+(row.template.secondaryPurpose?' · '+row.template.secondaryPurpose:''))+'</span>'+
+        (!row.recommended?'<div class="em537-warning">This template does not match the company’s approved industry tags. Continuing records an override.</div>':'')+
+       '</div>'
+      }).join('')+
+     '</div></div></div>'
+  }
+
+  if(picker.type==='attachments'){
+   return'<div class="em537-picker" onclick="if(event.target===this)_em537ClosePicker()">'+
+    '<div class="em537-picker-card"><div class="em537-picker-head"><strong>Company files</strong>'+
+     '<button class="em537-icon" onclick="_em537ClosePicker()">×</button></div>'+
+     '<div class="em537-picker-body">'+
+      (picker.files.length?picker.files.map(function(file,index){
+       return'<div class="em537-template-option" onclick="_em537ChooseCompanyAttachment('+index+')">'+
+        '<strong>📎 '+esc(file.name||file.fileName||'Company file')+'</strong>'+
+        '<span>'+esc(file.type||file.mimeType||'Attached company file')+'</span></div>'
+      }).join(''):'<div class="em537-template-option"><strong>No sendable company files</strong><span>Files must include stored file content to attach directly.</span></div>')+
+     '</div></div></div>'
+  }
+
+  return''
+ }
+
+ function renderPicker(){
+  var host=document.getElementById('em537-picker-host');
+  if(!host){
+   host=document.createElement('div');
+   host.id='em537-picker-host';
+   (document.getElementById('rp-overlay')||document.body).appendChild(host)
+  }
+  host.innerHTML=pickerHtml()
+ }
+
+ window._em537ClosePicker=function(){window._em537Picker=null;renderPicker()};
+
+ window._em537ChooseTemplate=function(templateId){
+  var picker=window._em537Picker;
+  var state=API.state();
+  var template=templateId?state.templates.filter(function(t){return t.id===templateId})[0]:null;
+  var b=account(picker.company,currentRep(),true);
+  var contact=b.data.contacts.filter(function(c){return validEmail(c.email)})[0]||b.data.contacts[0]||{};
+  var tags=companyTags(picker.company);
+  var recommended=!template||template.allIndustries||arr(template.industries).some(function(industry){
+   return tags.some(function(tag){return norm(tag)===norm(industry)})
+  });
+
+  if(template&&!recommended&&!confirm('This template does not match the company’s approved industry tags. Continue and record the override?'))return;
+
+  var draft=createDraft({
+   company:picker.company,
+   contact:contact,
+   template:template,
+   templateOverride:!!(template&&!recommended),
+   source:'manual-company-email'
+  });
+
+  if(draft.templateOverride){
+   API.saveState(state,'Template industry override',
+    currentRep()+' · '+picker.company+' · '+template.name+
+    ' · company tags: '+tags.join(', ')+' · template tags: '+arr(template.industries).join(', ')
+   )
+  }
+
+  window._em537Picker=null;
+  window._em537ActiveId=draft.id;
+  renderPicker();
+  renderComposer()
+ };
+
+ window._em537ChooseCompanyAttachment=function(index){
+  var picker=window._em537Picker;
+  var draft=emailDraft(window._em537ActiveId);
+  var file=picker.files[index];
+  if(file){
+   draft.attachments.push({
+    id:makeId('attachment'),
+    name:file.name||file.fileName||'Company file',
+    type:file.type||file.mimeType||'application/octet-stream',
+    size:file.size||0,
+    dataUrl:file.dataUrl||'',
+    contentBytes:file.contentBytes||String(file.dataUrl||'').split(',')[1]||'',
+    source:'company'
+   });
+   putDraft(draft,'company-attachment-added')
+  }
+  window._em537Picker=null;
+  renderPicker();
+  renderComposer()
+ };
+
+ window._em537Start=function(encoded){
+  var company=decodeURIComponent(encoded||'');
+  var state=API.state();
+  var tags=companyTags(company);
+  var rows=state.templates.filter(function(t){return t.active}).map(function(template){
+   var recommended=template.allIndustries||arr(template.industries).some(function(industry){
+    return tags.some(function(tag){return norm(tag)===norm(industry)})
+   });
+   return{template:template,recommended:recommended}
+  }).sort(function(a,b){
+   return Number(b.recommended)-Number(a.recommended)||a.template.name.localeCompare(b.template.name)
+  });
+
+  window._em537Picker={type:'start',company:company,templates:rows};
+  renderPicker()
+ };
+
+ /* Post-call automation */
+ window._at537AfterCall=function(payload){
+  var callDraft=payload.draft||{};
+  var company=payload.company;
+  var contact=payload.contact||{};
+  if(callDraft.callType!=='Account Updating Call'||callDraft.outcome!=='Left voicemail')return;
+
+  var template=API.findTemplate(
+   callDraft.callType,
+   callDraft.outcome,
+   callDraft.secondaryPurpose,
+   companyTags(company)
+  );
+
+  if(!template){
+   alert('Call saved. No active industry-specific or All Industries voicemail template is available. Create one in Automation & Templates.');
+   return
+  }
+
+  var draft=createDraft({
+   company:company,
+   contact:contact,
+   template:template,
+   callDraft:callDraft,
+   callActivityId:payload.activity&&payload.activity.id||'',
+   source:'post-call-automation'
+  });
+
+  window._em537ActiveId=draft.id;
+  renderComposer()
+ };
+
+ /* Replace mailto company action with the in-app composer. */
+ window._cw5Email=function(encoded){window._em537Start(encoded)};
+
+ /* My Profile Microsoft connection card */
+ function installMicrosoftCard(){
+  if(!window._rp2||_rp2.page!=='profile')return;
+  var page=document.getElementById('rp2-page');
+  if(!page||document.getElementById('ms537-profile-card'))return;
+
+  var status=microsoftStatus('rep');
+  var card=document.createElement('div');
+  card.id='ms537-profile-card';
+  card.className='ms537-card';
+  card.innerHTML='<strong>Microsoft 365 Connection</strong>'+
+   '<p>'+(status.connected?
+    ('Connected as '+esc(status.address)+'. Outlook drafts and sent mail are linked to the tracker.'):
+    'Connect your Triple Crown Outlook account once to send email, synchronize drafts, and reconcile messages sent directly from Outlook.')+
+   '</p><button onclick="'+(status.connected?"TCP537.disconnectMicrosoft('rep')":"TCP537.connectMicrosoft('rep')")+'">'+
+    (status.connected?'Disconnect Microsoft 365':'Connect Microsoft 365')+'</button>';
+  page.insertBefore(card,page.firstChild)
+ }
+
+ /* Today’s Business draft task route */
+ var businessBase=window._ud4OpenBusiness;
+ window._ud4OpenBusiness=function(page,encoded){
+  if(page==='emaildraft'){
+   var company=decodeURIComponent(encoded||'');
+   var b=emailStore();
+   var draft=Object.keys(b.data.drafts).map(function(k){return b.data.drafts[k]}).filter(function(item){
+    return item.status!=='sent'&&norm(item.company)===norm(company)
+   }).sort(function(a,b){return String(b.updatedAt).localeCompare(String(a.updatedAt))})[0];
+   if(draft){window._em537OpenDraft(encodeURIComponent(draft.id));return}
+   alert('The linked email draft was not found.');
+   return
+  }
+  return typeof businessBase==='function'?businessBase.apply(this,arguments):undefined
+ };
+
+ /* Outlook reconciliation */
+ async function reconcile(){
+  if(!currentRep()||!getToken('rep'))return;
+  var b=emailStore();
+  var drafts=Object.keys(b.data.drafts).map(function(k){return b.data.drafts[k]}).filter(function(d){
+   return d.status!=='sent'&&d.outlookMessageId
+  });
+
+  for(var i=0;i<drafts.length;i++){
+   try{
+    var remote=await graph('rep',
+     '/me/messages/'+encodeURIComponent(drafts[i].outlookMessageId)+
+     '?$select=id,isDraft,sentDateTime,lastModifiedDateTime,subject,body,toRecipients,ccRecipients,bccRecipients'
+    );
+    if(remote&&!remote.isDraft)markSent(drafts[i],'outlook',remote);
+    else await remoteSync(drafts[i],'rep')
+   }catch(e){}
+  }
+ }
+
+ function refreshCurrent(){
+  try{
+   var manager=document.getElementById('pg-automations');
+   if(manager&&manager.classList.contains('active'))API.renderManager()
+  }catch(e){}
+  try{installMicrosoftCard();API.installIndustryCard();renderComposer()}catch(e){}
+ }
+
+ Object.assign(window.TCP537,{
+  connectMicrosoft:connectMicrosoft,
+  disconnectMicrosoft:disconnectMicrosoft,
+  microsoftStatus:microsoftStatus,
+  graph:graph,
+  sendTemplateTest:sendTemplateTest,
+  emailStore:emailStore,
+  emailDraft:emailDraft,
+  createDraft:createDraft,
+  remoteSync:remoteSync,
+  sendDraft:sendDraft,
+  reconcile:reconcile
+ });
+
+ window._ms537Connect=connectMicrosoft;
+ window._ms537Disconnect=disconnectMicrosoft;
+ window._ms537Status=microsoftStatus;
+ window._em537Reconcile=reconcile;
+
+ window._at537Diagnostics=function(){
+  var core=window._at537DiagnosticsCore();
+  var b=emailStore();
+  return Object.assign({},core,{
+   drafts:Object.keys(b.data.drafts).length,
+   managerConnected:microsoftStatus('manager').connected,
+   repConnected:microsoftStatus('rep').connected
+  })
+ };
+
+ var afterBase=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof afterBase==='function'?afterBase.apply(this,arguments):undefined;
+  setTimeout(function(){installMicrosoftCard();renderComposer()},0);
+  return result
+ };
+
+ var goBase=window._rp2Go;
+ window._rp2Go=function(){
+  var result=goBase.apply(this,arguments);
+  setTimeout(installMicrosoftCard,60);
+  return result
+ };
+
+ window.addEventListener('message',function(event){
+  if(event.origin!==location.origin||!event.data)return;
+  if(event.data.type==='tcp-ms365-connected-v537'){
+   alert('Microsoft 365 connected: '+(event.data.account&&event.data.account.mail||event.data.account&&event.data.account.userPrincipalName||''));
+   refreshCurrent()
+  }
+  if(event.data.type==='tcp-ms365-error-v537')alert(event.data.message)
+ });
+
+ window.addEventListener('beforeunload',function(){
+  var draft=emailDraft(window._em537ActiveId);
+  if(draft&&draft.status!=='sent'){
+   composerFromDom(draft);
+   putDraft(draft,'before-unload');
+   ensureDraftTask(draft)
+  }
+ });
+
+ handleAuthCallback();
+ setTimeout(refreshCurrent,0);
+ setTimeout(refreshCurrent,600);
+ setTimeout(reconcile,2500);
+ reconcileTimer=setInterval(reconcile,120000);
 })();
 </script>
 
