@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v540 — Embedded Call Workspace 2.0</title>
+<title>Sales Tracker v541 — Executive-Scale Rep Portal</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,14 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v546 · CLASSIC CLOUD SYNC
+     Restores the original simple Test / Save / Load Gist workflow.
+     All added cloud-safety, dangerous-drop, restore-guard, and handler layers
+     have been removed.
+     ========================================================================== -->
+
 <div class="wrap">
 <div class="top-bar">
   <div style="display:flex;align-items:center;gap:7px;">
@@ -5103,14 +5111,6 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <button class="sbtn" onclick="document.getElementById('gistTokenInput').type=document.getElementById('gistTokenInput').type==='password'?'text':'password'">Show/hide token</button>
       </div>
       <div id="gistStatus" class="admin-feed-status">Cloud status will appear here.</div>
-      <div class="admin-note tcp-cloud-safety-note">
-        <strong>Deployment-safe sync:</strong> the tracker now checks the current Gist revision before every write, waits for IndexedDB hydration, blocks dangerous data drops, never creates a new Gist automatically, and stores a local safety snapshot before cloud replacement. The GitHub token is never included in this HTML.
-      </div>
-      <div class="admin-button-row">
-        <button class="sbtn" onclick="_tcpCloudSafetyCheckV539()">🛡 Check cloud safety</button>
-        <button class="sbtn" onclick="_tcpRestoreCloudSafetyV539()">↩ Restore local safety copy</button>
-      </div>
-      <div id="tcpCloudSafetyStatus" class="admin-feed-status">Cloud guard will initialize when the page loads.</div>
     </div>
 
 
@@ -15310,7 +15310,7 @@ var GIST_FILENAME='tcp_tracker_data.json';
 // Token/API key are entered in the UI and kept only in this browser.
 var BAKED_API_KEY='';
 var BAKED_GIST_TOKEN='';
-var BAKED_GIST_ID='b48945c1b432e584fb47b5d2fe382011'; // Gist locator only; NEVER embed a GitHub token
+var BAKED_GIST_ID='b48945c1b432e584fb47b5d2fe382011'; // non-secret Gist ID
 
 // Prime localStorage only from safe baked values if present (gist ID is not secret).
 (function _primeBakedCredentials(){
@@ -15504,7 +15504,7 @@ async function _readCloudContentFromGist(gistData){
 // Try a GitHub API request with Bearer, falling back to token-prefix on 401.
 async function _gistFetch(url,token,opts){
   opts=opts||{};
-  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2026-03-10'},opts.headers||{});
+  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json'},opts.headers||{});
   var h1=Object.assign({},baseHeaders);
   if(token)h1['Authorization']='Bearer '+token;
   var resp=await fetch(url,Object.assign({},opts,{headers:h1}));
@@ -45543,15 +45543,6 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   box-shadow:inset 3px 0 0 rgba(250,135,61,.65)!important;
 }
 
-/* Cloud safety card */
-.tcp-cloud-safety-note{
-  border-left:3px solid #00AFEF!important;
-  background:rgba(0,175,239,.055)!important;
-}
-#tcpCloudSafetyStatus[data-state="safe"]{color:#5DCAA5!important}
-#tcpCloudSafetyStatus[data-state="checking"]{color:#66D4FA!important}
-#tcpCloudSafetyStatus[data-state="blocked"]{color:#EF9F27!important}
-#tcpCloudSafetyStatus[data-state="error"]{color:#F09595!important}
 
 /* Scrollbars and selection */
 ::selection{background:rgba(250,135,61,.42);color:#fff}
@@ -45562,478 +45553,6 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   html body{background:#fff!important;color:#000!important;font-family:'Open Sans',Arial,sans-serif!important}
 }
 </style>
-
-
-<script id="tcp-cloud-safety-v539-js">
-(function(){
- 'use strict';
-
- var DEFAULT_GIST_ID='b48945c1b432e584fb47b5d2fe382011';
- var BASELINE_KEY='tcp_cloud_baseline_v539';
- var SAFETY_META_KEY='tcp_cloud_safety_meta_v539';
- var LOCAL_EDIT_KEY='_tcp_local_edit_at_v539';
- var GUARD=window._tcpCloudGuardV539=window._tcpCloudGuardV539||{
-  status:'booting',ready:false,autosaveAllowed:false,conflict:false,
-  lastCheck:'',message:'Waiting for startup cloud verification.'
- };
-
- function clean(v){return String(v==null?'':v).trim()}
- function now(){return new Date().toISOString()}
- function read(k,d){try{var x=JSON.parse(localStorage.getItem(k)||'null');return x==null?d:x}catch(e){return d}}
- function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
- function setStatus(message,state){
-  GUARD.message=message;GUARD.status=state||GUARD.status;GUARD.lastCheck=now();
-  var el=document.getElementById('tcpCloudSafetyStatus');
-  if(el){el.textContent=message;el.dataset.state=state||''}
- }
- function gistId(){
-  var id='';
-  try{id=clean(localStorage.getItem(GIST_ID_STORE)||BAKED_GIST_ID||DEFAULT_GIST_ID)}catch(e){id=DEFAULT_GIST_ID}
-  return id||DEFAULT_GIST_ID
- }
- function token(){
-  try{return clean(localStorage.getItem(GIST_TOKEN_STORE)||'').replace(/\s+/g,'')}catch(e){return''}
- }
- function fnvUpdate(hash,value){
-  value=String(value==null?'':value);
-  for(var i=0;i<value.length;i++){hash^=value.charCodeAt(i);hash=Math.imul(hash,16777619)}
-  return hash>>>0
- }
- function authoritativeKey(k){
-  return k===STORE_KEY||
-   /^tcp_rp_company_crm_/.test(k)||
-   /^tcp_rp_action_center_/.test(k)||
-   /^tcp_email_composer_/.test(k)||
-   /^tcp_automation_templates_/.test(k)||
-   /^salesTracker_photo_/.test(k)
- }
- function fingerprint(data){
-  var h=2166136261;
-  Object.keys(data||{}).filter(authoritativeKey).sort().forEach(function(k){
-   h=fnvUpdate(h,k);h=fnvUpdate(h,'\u0000');h=fnvUpdate(h,data[k]);h=fnvUpdate(h,'\u0001')
-  });
-  return(h>>>0).toString(36)
- }
- function count(v){
-  if(Array.isArray(v))return v.length;
-  if(v&&typeof v==='object')return Object.keys(v).length;
-  return 0
- }
- function parseCore(data){
-  var raw=data&&data[STORE_KEY];
-  if(!raw)return null;
-  try{return typeof raw==='string'?JSON.parse(raw):raw}catch(e){return null}
- }
- function parseAux(data,key){
-  try{
-   var raw=data&&data[key];
-   return typeof raw==='string'?JSON.parse(raw):raw||null
-  }catch(e){return null}
- }
- function summarize(data){
-  var s=parseCore(data)||{};
-  var crm=parseAux(data,'tcp_rp_company_crm_v510')||{};
-  var accounts=0;
-  Object.keys(crm.reps||{}).forEach(function(rep){accounts+=count(crm.reps[rep]&&crm.reps[rep].accounts)});
-  var reps=count(s.reps),weekly=count(s.data),customers=count(s.customers),orders=count(s.orders);
-  var lineItems=count(s.orderLineItems),reviews=count(s.reviews&&s.reviews.rows),activities=accounts;
-  var score=reps+(weekly*4)+(customers*.25)+(orders*.5)+(lineItems*.03)+(reviews*.1)+(accounts*2);
-  return{
-   reps:reps,weekly:weekly,customers:customers,orders:orders,lineItems:lineItems,
-   reviews:reviews,accounts:accounts,score:score
-  }
- }
- function dangerousDrop(local,remote){
-  if(!remote||remote.score<8)return false;
-  if(remote.weekly>=3&&local.weekly===0)return true;
-  if(remote.customers>=20&&local.customers===0)return true;
-  if(remote.orders>=20&&local.orders===0)return true;
-  if(remote.lineItems>=100&&local.lineItems===0)return true;
-  if(remote.accounts>=10&&local.accounts===0)return true;
-  if(remote.reps>=4&&local.reps<Math.max(1,Math.floor(remote.reps*.5)))return true;
-  return remote.score>=25&&local.score<remote.score*.42
- }
- function summaryText(s){
-  return s.reps+' reps · '+s.weekly+' weeks · '+s.customers+' companies · '+s.orders+
-   ' orders · '+s.lineItems+' line items · '+s.accounts+' CRM accounts'
- }
- function baseline(){return read(BASELINE_KEY,null)}
- function saveBaseline(remote){
-  var value={
-   gistId:remote.gistId,version:remote.version,hash:remote.hash,exportedAt:remote.exportedAt||'',
-   updatedAt:remote.updatedAt||'',verifiedAt:now(),summary:remote.summary
-  };
-  write(BASELINE_KEY,value);return value
- }
- async function awaitHydration(){
-  var waits=[];
-  if(window._tcpLargeHydrationPromise)waits.push(Promise.resolve(window._tcpLargeHydrationPromise).catch(function(){return null}));
-  if(window._tcpLargeSavePromise)waits.push(Promise.resolve(window._tcpLargeSavePromise).catch(function(){return null}));
-  if(!waits.length)return;
-  await Promise.race([
-   Promise.all(waits),
-   new Promise(function(resolve){setTimeout(resolve,15000)})
-  ])
- }
- async function fetchRemote(id,authToken){
-  var resp=await _gistFetch('https://api.github.com/gists/'+encodeURIComponent(id),authToken||'');
-  if(!resp||!resp.ok){
-   var detail='';try{detail=(await resp.text()).slice(0,220)}catch(e){}
-   throw new Error('GitHub API '+(resp&&resp.status||'unavailable')+(detail?': '+detail:''))
-  }
-  var gist=await resp.json();
-  var content=await _readCloudContentFromGist(gist);
-  content=await _decompressPayload(content);
-  var parsed=JSON.parse(content);
-  if(!parsed||!parsed.data||parsed.version!=='TCP_Tracker_Backup_v1'){
-   throw new Error('The selected Gist does not contain a valid TCP Tracker backup.')
-  }
-  var core=parseCore(parsed.data);
-  if(!core||!core.reps)throw new Error('Cloud backup is missing a valid tracker core.');
-  return{
-   gistId:id,
-   gist:gist,
-   parsed:parsed,
-   version:(gist.history&&gist.history[0]&&gist.history[0].version)||gist.updated_at||'',
-   updatedAt:gist.updated_at||'',
-   exportedAt:parsed.exportedAt||'',
-   hash:fingerprint(parsed.data),
-   summary:summarize(parsed.data)
-  }
- }
- function localSnapshot(){
-  var payload=_buildCloudPayload();
-  return{
-   payload:payload,
-   data:payload.data,
-   hash:fingerprint(payload.data),
-   summary:summarize(payload.data)
-  }
- }
- async function storeSafetySnapshot(kind,value){
-  try{
-   if(window._tcpStorageV528&&_tcpStorageV528.largePut){
-    await _tcpStorageV528.largePut('cloud-safety-'+kind,value);
-    write(SAFETY_META_KEY,{kind:kind,savedAt:now(),summary:value&&value.summary||null});
-    return true
-   }
-  }catch(e){console.warn('[v539 safety snapshot]',e)}
-  return false
- }
- async function storeLocalSafety(label){
-  var full=window._tcpStorageV528&&_tcpStorageV528.currentFullState?
-   _tcpStorageV528.currentFullState():_liveTrackerStateForCloud();
-  return storeSafetySnapshot('latest',{label:label,savedAt:now(),state:full,summary:summarize(_buildCloudPayload().data)})
- }
- async function storeRemoteSafety(remote){
-  return storeSafetySnapshot('remote',{label:'Remote before overwrite',savedAt:now(),data:remote.parsed.data,summary:remote.summary})
- }
-
- /* Safe restore: validate and merge tracker-owned keys. Do not delete every
-    tracker key first; an incomplete payload can no longer erase local modules. */
- window._restoreTrackerKeys=function(data){
-  if(!data||typeof data!=='object')throw new Error('No tracker data found to restore.');
-  var core=parseCore(data);
-  if(!core||!core.reps)throw new Error('Cloud tracker core is invalid.');
-  var keepToken=localStorage.getItem(GIST_TOKEN_STORE);
-  var keepId=localStorage.getItem(GIST_ID_STORE);
-  var keepApi=localStorage.getItem(API_KEY_STORE);
-  Object.keys(data).forEach(function(k){
-   if(typeof _isTrackerKey==='function'&&_isTrackerKey(k))localStorage.setItem(k,data[k])
-  });
-  if(keepToken)localStorage.setItem(GIST_TOKEN_STORE,keepToken);
-  if(keepId)localStorage.setItem(GIST_ID_STORE,keepId);
-  if(keepApi)localStorage.setItem(API_KEY_STORE,keepApi);
-  return true
- };
-
- async function restoreRemote(remote,reason){
-  await storeLocalSafety('Before cloud restore · '+reason);
-  _restoreTrackerKeys(remote.parsed.data);
-  saveBaseline(remote);
-  try{localStorage.setItem('_tcp_last_cloud_save',remote.exportedAt||remote.updatedAt||now())}catch(e){}
- }
-
- async function patchRemote(remote,local,authToken,source){
-  var payloadStr=JSON.stringify(local.payload,null,2);
-  var compressed=await _compressPayload(payloadStr);
-  var finalContent=compressed||payloadStr;
-  var files=_buildGistFilesFromContent(finalContent);
-  var body={
-   description:'TCP Sales Tracker data — '+source+' '+new Date().toLocaleString(),
-   files:files
-  };
-  var resp=await _gistFetch('https://api.github.com/gists/'+encodeURIComponent(remote.gistId),authToken,{
-   method:'PATCH',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify(body)
-  });
-  if(!resp.ok){
-   var errorText=await resp.text();
-   throw new Error('GitHub API '+resp.status+': '+errorText.slice(0,240))
-  }
-  var gist=await resp.json();
-  var saved={
-   gistId:remote.gistId,gist:gist,parsed:local.payload,
-   version:(gist.history&&gist.history[0]&&gist.history[0].version)||gist.updated_at||'',
-   updatedAt:gist.updated_at||now(),exportedAt:local.payload.exportedAt,
-   hash:local.hash,summary:local.summary
-  };
-  saveBaseline(saved);
-  try{localStorage.setItem('_tcp_last_cloud_save',now())}catch(e){}
-  GUARD.ready=true;GUARD.autosaveAllowed=true;GUARD.conflict=false;GUARD.status='safe';
-  _updateCloudSaveBadge();
-  return saved
- }
-
- async function startupCheck(forceVisible){
-  var id=gistId();
-  if(!id){setStatus('Cloud guard paused: enter a Gist ID.','blocked');return false}
-  GUARD.status='checking';GUARD.ready=false;
-  setStatus('Checking the cloud before any automatic write…','checking');
-  try{
-   await awaitHydration();
-   var remote=await fetchRemote(id,token());
-   var local=localSnapshot();
-   var hasLocal=!!localStorage.getItem(STORE_KEY);
-   var weak=!hasLocal||!_trackerHasRealData()||dangerousDrop(local.summary,remote.summary);
-
-   if(weak&&remote.summary.score>local.summary.score){
-    setStatus('Local data looks incomplete. Restoring the verified cloud copy before autosave…','checking');
-    await restoreRemote(remote,'startup deployment guard');
-    GUARD.ready=true;GUARD.autosaveAllowed=true;GUARD.status='safe';
-    setStatus('Cloud copy restored safely. Reloading the tracker…','safe');
-    setTimeout(function(){location.reload()},450);
-    return true
-   }
-
-   var base=baseline();
-   if(local.hash===remote.hash){
-    saveBaseline(remote);
-    GUARD.ready=true;GUARD.autosaveAllowed=true;GUARD.conflict=false;GUARD.status='safe';
-    setStatus('Cloud verified. Local and cloud data match. '+summaryText(remote.summary)+'.','safe');
-    return true
-   }
-
-   if(base&&base.gistId===id&&base.version===remote.version){
-    GUARD.ready=true;GUARD.autosaveAllowed=true;GUARD.conflict=false;GUARD.status='safe';
-    setStatus('Cloud revision verified. Local changes may sync safely. Local: '+summaryText(local.summary)+'.','safe');
-    return true
-   }
-
-   GUARD.ready=true;GUARD.autosaveAllowed=false;GUARD.conflict=true;GUARD.status='blocked';
-   setStatus('Automatic upload paused: local and cloud differ and no trusted baseline exists. Use Load from cloud or Save to cloud after reviewing the counts. Cloud: '+summaryText(remote.summary)+'; local: '+summaryText(local.summary)+'.','blocked');
-   if(forceVisible)_gistStatus('⚠ Cloud safety paused automatic upload because local and cloud differ. Review the counts below before choosing Save or Load.','#EF9F27');
-   return false
-  }catch(e){
-   GUARD.ready=false;GUARD.autosaveAllowed=false;GUARD.conflict=true;GUARD.status='error';
-   setStatus('Cloud guard could not verify the Gist: '+e.message,'error');
-   if(forceVisible)_gistStatus('❌ Cloud safety check failed: '+esc_html(e.message),'#F09595');
-   return false
-  }
- }
-
- window._tcpCloudSafetyCheckV539=function(){return startupCheck(true)};
-
- window._tcpRestoreCloudSafetyV539=async function(){
-  try{
-   if(!window._tcpStorageV528||!_tcpStorageV528.largeGet)throw new Error('IndexedDB safety storage is unavailable.');
-   var saved=await _tcpStorageV528.largeGet('cloud-safety-latest');
-   if(!saved||!saved.state)throw new Error('No local safety copy has been created yet.');
-   if(!confirm('Restore the local safety copy from '+new Date(saved.savedAt).toLocaleString()+'?\n\nThis replaces the current in-memory tracker and reloads the page.'))return;
-   _tcpStorageV528.applyState(saved.state);
-   persist();
-   await awaitHydration();
-   setTimeout(function(){location.reload()},350)
-  }catch(e){alert('Could not restore the safety copy: '+e.message)}
- };
-
- /* Manual save: existing Gist only, fresh remote preflight, safety snapshot,
-    revision conflict check, and dangerous-drop protection. */
- window.saveToCloud=async function(){
-  var authToken=((document.getElementById('gistTokenInput')||{}).value||token()).replace(/\s+/g,'');
-  var id=((document.getElementById('gistIdInput')||{}).value||gistId()).trim();
-  if(!authToken){_gistStatus('⚠ Enter a fresh GitHub token first. Tokens are stored only in this browser and never in the HTML.','#EF9F27');return}
-  if(!id){_gistStatus('⚠ Enter the existing Gist ID. Automatic creation of a new Gist is disabled for data safety.','#EF9F27');return}
-  try{
-   localStorage.setItem(GIST_TOKEN_STORE,authToken);
-   localStorage.setItem(GIST_ID_STORE,id)
-  }catch(e){}
-
-  var btn=document.getElementById('gistSaveBtn');
-  if(btn){btn.disabled=true;btn.textContent='Safety checking…'}
-  _gistStatus('Checking the current cloud revision before saving…','#66D4FA');
-
-  try{
-   persist();
-   await awaitHydration();
-   var remote=await fetchRemote(id,authToken);
-   var local=localSnapshot();
-   var base=baseline();
-
-   if(dangerousDrop(local.summary,remote.summary)){
-    var typed=prompt(
-     'CLOUD SAVE BLOCKED\n\nThe local tracker contains substantially less data than the current cloud copy.\n\nCloud: '+summaryText(remote.summary)+
-     '\nLocal: '+summaryText(local.summary)+
-     '\n\nThis usually means the page has not restored or hydrated yet. To intentionally replace the cloud anyway, type:\nOVERWRITE CLOUD'
-    );
-    if(typed!=='OVERWRITE CLOUD')throw new Error('Save cancelled by dangerous-data-drop protection.')
-   }
-
-   if(base&&base.gistId===id&&base.version!==remote.version&&remote.hash!==local.hash){
-    if(!confirm(
-     'The Gist changed after this browser last verified it.\n\nCloud: '+summaryText(remote.summary)+
-     '\nLocal: '+summaryText(local.summary)+
-     '\n\nCancel is safest. Click OK only to intentionally overwrite the newer cloud revision; GitHub revision history will remain available.'
-    ))throw new Error('Save cancelled because a newer cloud revision exists.')
-   }else if(!base&&remote.hash!==local.hash){
-    if(!confirm(
-     'This browser has no trusted cloud baseline yet.\n\nCloud: '+summaryText(remote.summary)+
-     '\nLocal: '+summaryText(local.summary)+
-     '\n\nClick OK only if the local tracker is the copy you intend to save.'
-    ))throw new Error('Save cancelled until the local/cloud difference is reviewed.')
-   }
-
-   if(remote.hash===local.hash){
-    saveBaseline(remote);
-    GUARD.ready=true;GUARD.autosaveAllowed=true;GUARD.conflict=false;
-    _gistStatus('✅ Cloud already matches this tracker. No files were rewritten.','#5DCAA5');
-    setStatus('Cloud verified. Local and cloud data match.','safe');
-    return
-   }
-
-   await storeLocalSafety('Before manual cloud save');
-   await storeRemoteSafety(remote);
-   var saved=await patchRemote(remote,local,authToken,'manual save');
-   _gistStatus('✅ Safely saved to the existing Gist at '+new Date().toLocaleTimeString()+'. Revision '+esc_html(String(saved.version).slice(0,10))+'.','#5DCAA5');
-   setStatus('Cloud save completed with revision verification and local safety snapshots.','safe')
-  }catch(e){
-   _gistStatus('❌ Save stopped: '+esc_html(e.message),'#F09595');
-   setStatus('Cloud save stopped: '+e.message,e.message.indexOf('cancelled')>=0?'blocked':'error')
-  }finally{
-   if(btn){btn.disabled=false;btn.innerHTML='☁⬇ Save to cloud'}
-  }
- };
-
- /* Explicit load: snapshot local first, validate remote, merge safely, reload. */
- window.loadFromCloud=async function(){
-  var authToken=((document.getElementById('gistTokenInput')||{}).value||token()).replace(/\s+/g,'');
-  var id=((document.getElementById('gistIdInput')||{}).value||gistId()).trim();
-  if(!id){_gistStatus('⚠ Enter the Gist ID to load from.','#EF9F27');return}
-  if(!confirm('LOAD VERIFIED CLOUD COPY\n\nA local IndexedDB safety copy will be created first. The cloud tracker core will replace the current tracker, while local credentials and unrelated browser storage remain untouched.\n\nContinue?'))return;
-  var btn=document.getElementById('gistLoadBtn');
-  if(btn){btn.disabled=true;btn.textContent='Verifying…'}
-  try{
-   await awaitHydration();
-   var remote=await fetchRemote(id,authToken);
-   await restoreRemote(remote,'manual cloud load');
-   _gistStatus('✅ Verified cloud copy loaded. Reloading…','#5DCAA5');
-   setStatus('Verified cloud copy restored safely.','safe');
-   setTimeout(function(){location.reload()},500)
-  }catch(e){
-   _gistStatus('❌ Load failed: '+esc_html(e.message),'#F09595');
-   setStatus('Cloud load failed: '+e.message,'error')
-  }finally{
-   if(btn){btn.disabled=false;btn.innerHTML='☁⬆ Load from cloud'}
-  }
- };
-
- /* Automatic save cannot create a Gist, cannot run before startup verification,
-    cannot write during hydration, and cannot overwrite a changed remote revision. */
- window._gistAutoSave=async function(){
-  var authToken=token(),id=gistId();
-  if(!authToken||!id)return false;
-  if(!GUARD.ready||!GUARD.autosaveAllowed)return false;
-  if(!_trackerHasRealData())return false;
-  try{
-   persist();
-   await awaitHydration();
-   var remote=await fetchRemote(id,authToken);
-   var local=localSnapshot();
-   var base=baseline();
-
-   if(dangerousDrop(local.summary,remote.summary)){
-    GUARD.autosaveAllowed=false;GUARD.conflict=true;
-    setStatus('Automatic upload blocked because local data is substantially smaller than cloud data. Run Check cloud safety.','blocked');
-    return false
-   }
-   if(!base||base.gistId!==id){
-    GUARD.autosaveAllowed=false;GUARD.conflict=true;
-    setStatus('Automatic upload paused because this browser has no trusted Gist baseline.','blocked');
-    return false
-   }
-   if(base.version!==remote.version&&remote.hash!==local.hash){
-    GUARD.autosaveAllowed=false;GUARD.conflict=true;
-    setStatus('Automatic upload paused because the cloud changed in another browser. Load or manually save after reviewing.','blocked');
-    return false
-   }
-   if(remote.hash===local.hash){
-    saveBaseline(remote);
-    try{localStorage.setItem('_tcp_last_cloud_save',now())}catch(e){}
-    _updateCloudSaveBadge();
-    return true
-   }
-
-   await storeLocalSafety('Before automatic cloud save');
-   await patchRemote(remote,local,authToken,'verified auto-sync');
-   setStatus('Automatic cloud sync completed safely.','safe');
-   return true
-  }catch(e){
-   GUARD.autosaveAllowed=false;GUARD.conflict=true;
-   setStatus('Automatic cloud sync paused: '+e.message,'error');
-   console.warn('[v539 safe auto-sync]',e);
-   return false
-  }
- };
-
- /* Startup auto-load is now a cloud-first deployment guard, not a simple
-    "STORE_KEY exists" check. It runs before automatic writes. */
- window._gistAutoLoad=function(){return startupCheck(false)};
-
- /* Track real local edits so diagnostics can explain unsynced changes. */
- var originalMarkDirty=window.markDirty;
- window.markDirty=function(){
-  try{localStorage.setItem(LOCAL_EDIT_KEY,now())}catch(e){}
-  return typeof originalMarkDirty==='function'?originalMarkDirty.apply(this,arguments):undefined
- };
-
- /* Ensure the safe Gist locator survives a newly deployed HTML file.
-    No token is embedded. */
- try{
-  BAKED_GIST_ID=DEFAULT_GIST_ID;
-  if(!localStorage.getItem(GIST_ID_STORE))localStorage.setItem(GIST_ID_STORE,DEFAULT_GIST_ID)
- }catch(e){}
-
- window._tcpCloudSafetyV539={
-  guard:GUARD,
-  fingerprint:fingerprint,
-  summarize:summarize,
-  dangerousDrop:dangerousDrop,
-  fetchRemote:fetchRemote,
-  localSnapshot:localSnapshot,
-  startupCheck:startupCheck,
-  baseline:baseline,
-  gistId:gistId,
-  diagnostics:function(){
-   var local=null;try{local=localSnapshot()}catch(e){}
-   return{
-    gistId:gistId(),tokenEmbedded:false,guard:GUARD,baseline:baseline(),
-    localSummary:local&&local.summary||null,
-    lastLocalEdit:(function(){try{return localStorage.getItem(LOCAL_EDIT_KEY)||''}catch(e){return''}})()
-   }
-  }
- };
-
- setTimeout(function(){
-  var input=document.getElementById('gistIdInput');
-  if(input&&!clean(input.value))input.value=gistId();
-  setStatus('Cloud guard is checking the configured Gist before automatic writes.','checking')
- },0);
-})();
-</script>
-
-
-
 <style id="tcp-call-workspace-v540-css">
 /* ==========================================================================
    EMBEDDED CALL WORKSPACE 2.0 · BUILD v540
@@ -47214,6 +46733,828 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   importantDatesFor:importantDatesFor,selectionSnapshot:selectionSnapshot,generateTalkingPoints:generateTalkingPoints,
   promotion:promotion,addActivity:addActivity,render:render,diagnostics:window._rp2CallDiagnostics
  };
+})();
+</script>
+
+
+
+<style id="tcp-rep-executive-scale-v541-css">
+/* ==========================================================================
+   REP PORTAL EXECUTIVE SCALE 3.0 · BUILD v541
+
+   The rep workspace must always feel like the manager tracker:
+   big hierarchy, bold headings, generous cards, readable controls.
+   ========================================================================== */
+
+/* Permanent executive-scale portal shell */
+#rp-overlay .rp2-app,
+#rp-overlay[data-rp-scale="manager"] .rp2-app,
+#rp-overlay[data-rp-scale="compact"] .rp2-app{
+  font-size:16px!important;
+}
+#rp-overlay .rp2-main,
+#rp-overlay[data-rp-scale="manager"] .rp2-main,
+#rp-overlay[data-rp-scale="compact"] .rp2-main{
+  padding-left:38px!important;
+  padding-right:38px!important;
+  padding-bottom:100px!important;
+}
+#rp-overlay #rp2-page,
+#rp-overlay[data-rp-scale="manager"] #rp2-page,
+#rp-overlay[data-rp-scale="compact"] #rp2-page{
+  width:100%!important;
+  max-width:1820px!important;
+  padding-bottom:120px!important;
+}
+#rp-overlay .rp2-side,
+#rp-overlay[data-rp-scale="manager"] .rp2-side,
+#rp-overlay[data-rp-scale="compact"] .rp2-side{
+  width:282px!important;
+  flex:0 0 282px!important;
+}
+#rp-overlay .rp2-nav,
+#rp-overlay[data-rp-scale="manager"] .rp2-nav,
+#rp-overlay[data-rp-scale="compact"] .rp2-nav{
+  min-height:48px!important;
+  padding:12px 14px!important;
+  border-radius:12px!important;
+  font-size:14px!important;
+  line-height:1.25!important;
+}
+#rp-overlay .rp2-navg,
+#rp-overlay[data-rp-scale="manager"] .rp2-navg,
+#rp-overlay[data-rp-scale="compact"] .rp2-navg{
+  font-size:10px!important;
+  letter-spacing:1.35px!important;
+}
+#rp-overlay .rp2-top,
+#rp-overlay[data-rp-scale="manager"] .rp2-top,
+#rp-overlay[data-rp-scale="compact"] .rp2-top{
+  min-height:92px!important;
+  padding-top:20px!important;
+  padding-bottom:20px!important;
+}
+#rp-overlay .rp2-hi,
+#rp-overlay[data-rp-scale="manager"] .rp2-hi,
+#rp-overlay[data-rp-scale="compact"] .rp2-hi{
+  font-size:27px!important;
+  line-height:1.1!important;
+  letter-spacing:-.025em!important;
+}
+#rp-overlay .rp2-sub,
+#rp-overlay[data-rp-scale="manager"] .rp2-sub,
+#rp-overlay[data-rp-scale="compact"] .rp2-sub{
+  margin-top:7px!important;
+  font-size:13px!important;
+  line-height:1.45!important;
+}
+#rp-overlay .rp2-context-field span{
+  font-size:10px!important;
+}
+#rp-overlay .rp2-context-select,
+#rp-overlay .rp2-readonly{
+  min-height:44px!important;
+  font-size:12px!important;
+}
+#rp-overlay .rp2-scale-control{
+  min-height:44px!important;
+  padding:0 14px!important;
+  font-size:11px!important;
+  cursor:default!important;
+}
+
+/* Call Workspace — hero */
+#rp-overlay .cl2-shell{gap:20px!important;padding-bottom:60px!important}
+#rp-overlay .cl2-hero{
+  padding:30px 32px!important;
+  border-radius:27px!important;
+  box-shadow:0 26px 76px rgba(0,0,0,.34)!important;
+}
+#rp-overlay .cl2-hero-top{
+  grid-template-columns:minmax(0,1.35fr) minmax(360px,.55fr)!important;
+  gap:30px!important;
+}
+#rp-overlay .cl2-kick{
+  font-size:10px!important;
+  letter-spacing:1.2px!important;
+}
+#rp-overlay .cl2-hero-title{
+  margin-top:9px!important;
+  font-size:42px!important;
+  line-height:1.02!important;
+  letter-spacing:-.045em!important;
+}
+#rp-overlay .cl2-hero-copy{
+  max-width:930px!important;
+  margin-top:13px!important;
+  font-size:13px!important;
+  line-height:1.72!important;
+}
+#rp-overlay .cl2-hero-status{
+  min-width:360px!important;
+  padding:20px 21px!important;
+  border-radius:18px!important;
+}
+#rp-overlay .cl2-hero-status span{
+  font-size:9px!important;
+  letter-spacing:.7px!important;
+}
+#rp-overlay .cl2-hero-status strong{
+  margin-top:8px!important;
+  font-size:23px!important;
+  line-height:1.18!important;
+}
+#rp-overlay .cl2-hero-status p{
+  margin-top:8px!important;
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+#rp-overlay .cl2-pills{
+  gap:8px!important;
+  margin-top:17px!important;
+}
+#rp-overlay .cl2-pill{
+  padding:8px 11px!important;
+  font-size:10px!important;
+}
+#rp-overlay .cl2-queue-wrap{
+  margin-top:21px!important;
+  padding-top:18px!important;
+}
+#rp-overlay .cl2-queue-head{
+  margin-bottom:11px!important;
+}
+#rp-overlay .cl2-queue-head strong{
+  font-size:13px!important;
+}
+#rp-overlay .cl2-queue-head span{
+  font-size:10px!important;
+}
+#rp-overlay .cl2-queue{
+  grid-auto-columns:minmax(270px,330px)!important;
+  gap:10px!important;
+  padding-bottom:10px!important;
+}
+#rp-overlay .cl2-qcard{
+  min-height:112px!important;
+  padding:15px 16px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .cl2-qname{
+  font-size:14px!important;
+  line-height:1.25!important;
+}
+#rp-overlay .cl2-qrank{
+  font-size:10px!important;
+}
+#rp-overlay .cl2-qreason{
+  margin-top:8px!important;
+  font-size:10.5px!important;
+  line-height:1.5!important;
+}
+#rp-overlay .cl2-qmeta{
+  margin-top:8px!important;
+  font-size:9px!important;
+}
+
+/* Three-column workbench */
+#rp-overlay .cl2-workbench{
+  grid-template-columns:minmax(310px,.58fr) minmax(720px,1.45fr) minmax(365px,.72fr)!important;
+  gap:18px!important;
+}
+#rp-overlay .cl2-panel{
+  border-radius:22px!important;
+  box-shadow:0 20px 56px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+#rp-overlay .cl2-panel-head{
+  padding:22px 22px!important;
+  gap:15px!important;
+}
+#rp-overlay .cl2-panel-title{
+  margin-top:7px!important;
+  font-size:20px!important;
+  line-height:1.22!important;
+}
+#rp-overlay .cl2-panel-copy{
+  margin-top:7px!important;
+  font-size:11px!important;
+  line-height:1.62!important;
+}
+#rp-overlay .cl2-body{
+  padding:18px!important;
+}
+#rp-overlay .cl2-scroll{
+  max-height:1040px!important;
+}
+
+/* Embedded dialer */
+#rp-overlay .cl2-dialer-display{
+  padding:22px!important;
+  border-radius:17px!important;
+}
+#rp-overlay .cl2-dialer-status{
+  gap:8px!important;
+  font-size:10px!important;
+}
+#rp-overlay .cl2-live-dot{
+  width:9px!important;
+  height:9px!important;
+}
+#rp-overlay .cl2-phone-number{
+  margin-top:14px!important;
+  font-size:22px!important;
+}
+#rp-overlay .cl2-dialer-timer{
+  margin-top:10px!important;
+  font-size:34px!important;
+}
+#rp-overlay .cl2-dialer-contact{
+  gap:9px!important;
+  margin-top:15px!important;
+}
+#rp-overlay .cl2-dialer-contact label{
+  font-size:9px!important;
+  letter-spacing:.55px!important;
+}
+#rp-overlay .cl2-dialer-contact select,
+#rp-overlay .cl2-dialer-contact input{
+  min-height:46px!important;
+  padding:0 12px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+}
+#rp-overlay .cl2-keypad{
+  gap:9px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .cl2-key{
+  height:58px!important;
+  border-radius:14px!important;
+  font-size:19px!important;
+}
+#rp-overlay .cl2-key span{
+  margin-top:3px!important;
+  font-size:7px!important;
+}
+#rp-overlay .cl2-dial-actions{
+  gap:9px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .cl2-dial-btn{
+  min-height:50px!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+}
+#rp-overlay .cl2-outcome-buttons{
+  gap:8px!important;
+  margin-top:10px!important;
+}
+#rp-overlay .cl2-outcome-buttons button{
+  min-height:40px!important;
+  border-radius:10px!important;
+  font-size:10px!important;
+}
+#rp-overlay .cl2-dial-quick{
+  gap:8px!important;
+  margin-top:11px!important;
+}
+#rp-overlay .cl2-provider{
+  margin-top:14px!important;
+  padding:13px!important;
+  border-radius:11px!important;
+  font-size:9.5px!important;
+  line-height:1.55!important;
+}
+
+/* Active customer and workflow */
+#rp-overlay .cl2-active-head{
+  padding:23px 24px!important;
+}
+#rp-overlay .cl2-active-name{
+  font-size:32px!important;
+  line-height:1.08!important;
+}
+#rp-overlay .cl2-active-sub{
+  margin-top:8px!important;
+  font-size:11px!important;
+  line-height:1.5!important;
+}
+#rp-overlay .cl2-workflow-tabs{
+  gap:8px!important;
+  margin-top:18px!important;
+}
+#rp-overlay .cl2-wtab{
+  min-height:48px!important;
+  border-radius:11px!important;
+  font-size:10px!important;
+  letter-spacing:.35px!important;
+}
+#rp-overlay .cl2-center-body{
+  padding:20px!important;
+  gap:16px!important;
+}
+#rp-overlay .cl2-section{
+  padding:20px!important;
+  border-radius:17px!important;
+}
+#rp-overlay .cl2-section-title{
+  font-size:17px!important;
+  line-height:1.25!important;
+}
+#rp-overlay .cl2-section-copy{
+  margin-top:7px!important;
+  font-size:10.5px!important;
+  line-height:1.6!important;
+}
+
+/* Preparation tabs, filters, and records */
+#rp-overlay .cl2-prep-toolbar{
+  gap:12px!important;
+  margin-top:15px!important;
+}
+#rp-overlay .cl2-prep-tabs{
+  gap:7px!important;
+}
+#rp-overlay .cl2-prep-tab{
+  min-height:41px!important;
+  padding:0 13px!important;
+  border-radius:10px!important;
+  font-size:10px!important;
+}
+#rp-overlay .cl2-selection-summary{
+  font-size:9.5px!important;
+}
+#rp-overlay .cl2-filter-row{
+  gap:9px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .cl2-filter-row select{
+  min-height:44px!important;
+  padding:0 11px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+#rp-overlay .cl2-list-actions{
+  gap:8px!important;
+  margin-top:12px!important;
+}
+#rp-overlay .cl2-mini-btn{
+  min-height:38px!important;
+  padding:0 11px!important;
+  border-radius:9px!important;
+  font-size:9.5px!important;
+}
+#rp-overlay .cl2-record-grid{
+  gap:11px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .cl2-record{
+  padding:16px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .cl2-record-check{
+  top:15px!important;
+  right:15px!important;
+  width:17px!important;
+  height:17px!important;
+}
+#rp-overlay .cl2-record-kicker{
+  padding-right:32px!important;
+  font-size:9px!important;
+  letter-spacing:.55px!important;
+}
+#rp-overlay .cl2-record-title{
+  margin-top:7px!important;
+  font-size:14px!important;
+  line-height:1.38!important;
+}
+#rp-overlay .cl2-record-meta{
+  margin-top:8px!important;
+  font-size:10px!important;
+  line-height:1.55!important;
+}
+#rp-overlay .cl2-record-stats{
+  gap:7px!important;
+  margin-top:10px!important;
+}
+#rp-overlay .cl2-record-stats span{
+  padding:6px 8px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .cl2-art-record{
+  grid-template-columns:110px minmax(0,1fr)!important;
+  gap:14px!important;
+}
+#rp-overlay .cl2-art-image{
+  width:110px!important;
+  height:96px!important;
+  border-radius:11px!important;
+  font-size:9px!important;
+}
+#rp-overlay .cl2-empty{
+  padding:36px 22px!important;
+  border-radius:14px!important;
+  font-size:11px!important;
+  line-height:1.6!important;
+}
+#rp-overlay .cl2-empty strong{
+  margin-bottom:7px!important;
+  font-size:15px!important;
+}
+#rp-overlay .cl2-season{
+  margin-top:14px!important;
+  padding:15px!important;
+  border-radius:13px!important;
+}
+#rp-overlay .cl2-season-title{
+  font-size:11px!important;
+}
+#rp-overlay .cl2-month-bars{
+  height:92px!important;
+  gap:6px!important;
+  margin-top:13px!important;
+}
+#rp-overlay .cl2-month span{
+  font-size:8px!important;
+}
+#rp-overlay .cl2-ai-actions{
+  gap:12px!important;
+  margin-top:15px!important;
+  padding-top:15px!important;
+}
+#rp-overlay .cl2-ai-actions p{
+  font-size:10px!important;
+  line-height:1.55!important;
+}
+
+/* Form controls and completion */
+#rp-overlay .cl2-grid-2,
+#rp-overlay .cl2-grid-3{
+  gap:11px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .cl2-field{
+  gap:7px!important;
+}
+#rp-overlay .cl2-field label{
+  font-size:9px!important;
+  letter-spacing:.5px!important;
+}
+#rp-overlay .cl2-field input,
+#rp-overlay .cl2-field select{
+  min-height:47px!important;
+  padding:0 12px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+}
+#rp-overlay .cl2-field textarea{
+  min-height:145px!important;
+  padding:12px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+  line-height:1.6!important;
+}
+#rp-overlay .cl2-checkline{
+  gap:10px!important;
+  padding:13px!important;
+  border-radius:11px!important;
+  font-size:10px!important;
+  line-height:1.55!important;
+}
+#rp-overlay .cl2-checkline input{
+  width:17px!important;
+  height:17px!important;
+}
+#rp-overlay .cl2-readonly{
+  margin-top:12px!important;
+  padding:13px!important;
+  border-radius:11px!important;
+}
+#rp-overlay .cl2-readonly label{
+  font-size:8.5px!important;
+}
+#rp-overlay .cl2-industry-chips{
+  gap:7px!important;
+  margin-top:8px!important;
+}
+#rp-overlay .cl2-industry-chips span{
+  padding:7px 9px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .cl2-complete-top{
+  gap:15px!important;
+  padding:17px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .cl2-complete-top strong{
+  font-size:13px!important;
+}
+#rp-overlay .cl2-complete-top span{
+  margin-top:5px!important;
+  font-size:9.5px!important;
+}
+#rp-overlay .cl2-complete-button{
+  min-height:50px!important;
+  padding:0 20px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+}
+#rp-overlay .cl2-success{
+  padding:20px!important;
+  border-radius:15px!important;
+}
+#rp-overlay .cl2-success strong{
+  font-size:17px!important;
+}
+#rp-overlay .cl2-success p{
+  margin-top:8px!important;
+  font-size:11px!important;
+}
+#rp-overlay .cl2-saved-summary{
+  gap:9px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .cl2-saved-row{
+  padding:13px!important;
+  border-radius:11px!important;
+}
+#rp-overlay .cl2-saved-row span{
+  font-size:8.5px!important;
+}
+#rp-overlay .cl2-saved-row strong{
+  margin-top:6px!important;
+  font-size:11px!important;
+  line-height:1.45!important;
+}
+
+/* Right-side intelligence */
+#rp-overlay .cl2-right .cl2-body{
+  padding:18px!important;
+}
+#rp-overlay .cl2-promo{
+  padding:17px!important;
+  border-radius:15px!important;
+}
+#rp-overlay .cl2-promo span{
+  font-size:8.5px!important;
+}
+#rp-overlay .cl2-promo strong{
+  margin-top:7px!important;
+  font-size:15px!important;
+  line-height:1.3!important;
+}
+#rp-overlay .cl2-promo p{
+  margin-top:8px!important;
+  font-size:10.5px!important;
+  line-height:1.6!important;
+}
+#rp-overlay .cl2-talk{
+  margin-top:12px!important;
+  padding:16px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .cl2-talk-head strong{
+  font-size:13px!important;
+}
+#rp-overlay .cl2-talk-list{
+  gap:8px!important;
+  margin-top:11px!important;
+}
+#rp-overlay .cl2-talk-item{
+  padding:11px!important;
+  border-radius:10px!important;
+  font-size:10px!important;
+  line-height:1.58!important;
+}
+#rp-overlay .cl2-context-card{
+  margin-top:12px!important;
+  padding:16px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .cl2-context-card>span{
+  font-size:8.5px!important;
+}
+#rp-overlay .cl2-context-card>strong{
+  margin-top:7px!important;
+  font-size:13px!important;
+  line-height:1.35!important;
+}
+#rp-overlay .cl2-context-card>p{
+  margin-top:7px!important;
+  font-size:10px!important;
+  line-height:1.55!important;
+}
+#rp-overlay .cl2-context-list{
+  gap:8px!important;
+  margin-top:11px!important;
+}
+#rp-overlay .cl2-context-row{
+  padding:11px!important;
+  border-radius:10px!important;
+}
+#rp-overlay .cl2-context-row strong{
+  font-size:10.5px!important;
+}
+#rp-overlay .cl2-context-row span{
+  margin-top:5px!important;
+  font-size:9px!important;
+  line-height:1.5!important;
+}
+
+/* Floating call console should match the same scale */
+#rp-overlay .fc1-console,
+#rp-overlay[data-rp-scale="manager"] .fc1-console,
+#rp-overlay[data-rp-scale="compact"] .fc1-console{
+  width:560px!important;
+}
+#rp-overlay .fc1-company{font-size:21px!important}
+#rp-overlay .fc1-contact{font-size:11px!important}
+#rp-overlay .fc1-body{padding:18px!important;gap:14px!important;max-height:650px!important}
+#rp-overlay .fc1-section{padding:17px!important}
+#rp-overlay .fc1-section-title{font-size:14px!important}
+#rp-overlay .fc1-section-copy{font-size:10px!important}
+#rp-overlay .fc1-field label{font-size:9px!important}
+#rp-overlay .fc1-field input,
+#rp-overlay .fc1-field select{min-height:45px!important;font-size:12px!important}
+#rp-overlay .fc1-field textarea{min-height:120px!important;font-size:12px!important}
+#rp-overlay .fc1-btn{min-height:45px!important;font-size:11px!important}
+#rp-overlay .fc1-timer strong{font-size:28px!important}
+
+/* Local email composer readability */
+#rp-overlay .ce540-card{
+  width:min(980px,96vw)!important;
+}
+#rp-overlay .ce540-head{
+  padding:16px 18px!important;
+}
+#rp-overlay .ce540-head strong{
+  font-size:18px!important;
+}
+#rp-overlay .ce540-head span{
+  margin-top:4px!important;
+  font-size:10px!important;
+}
+#rp-overlay .ce540-line{
+  grid-template-columns:78px minmax(0,1fr)!important;
+  min-height:50px!important;
+  padding:5px 17px!important;
+}
+#rp-overlay .ce540-line label{
+  font-size:12px!important;
+}
+#rp-overlay .ce540-line input{
+  font-size:13px!important;
+}
+#rp-overlay .ce540-body{
+  min-height:390px!important;
+  padding:21px!important;
+  font-size:14px!important;
+}
+#rp-overlay .ce540-foot{
+  padding:13px 17px!important;
+}
+#rp-overlay .ce540-foot span{
+  font-size:10px!important;
+}
+#rp-overlay .ce540-btn{
+  min-height:43px!important;
+  padding:0 15px!important;
+  font-size:11px!important;
+}
+
+/* Responsive layouts stack before text is compressed */
+@media(max-width:1600px){
+  #rp-overlay .cl2-workbench{
+    grid-template-columns:310px minmax(650px,1fr)!important;
+  }
+  #rp-overlay .cl2-right{
+    grid-column:1/-1!important;
+  }
+  #rp-overlay .cl2-right .cl2-body{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:13px!important;
+  }
+  #rp-overlay .cl2-right .cl2-talk,
+  #rp-overlay .cl2-right .cl2-context-card{
+    margin-top:0!important;
+  }
+}
+@media(max-width:1160px){
+  #rp-overlay .rp2-main,
+  #rp-overlay[data-rp-scale="manager"] .rp2-main,
+  #rp-overlay[data-rp-scale="compact"] .rp2-main{
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+  #rp-overlay .cl2-hero-top,
+  #rp-overlay .cl2-workbench{
+    grid-template-columns:1fr!important;
+  }
+  #rp-overlay .cl2-hero-status{
+    min-width:0!important;
+  }
+  #rp-overlay .cl2-right .cl2-body{
+    grid-template-columns:1fr 1fr!important;
+  }
+}
+@media(max-width:780px){
+  #rp-overlay .rp2-main,
+  #rp-overlay[data-rp-scale="manager"] .rp2-main,
+  #rp-overlay[data-rp-scale="compact"] .rp2-main{
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+  #rp-overlay .cl2-hero{
+    padding:23px 20px!important;
+  }
+  #rp-overlay .cl2-hero-title{
+    font-size:34px!important;
+  }
+  #rp-overlay .cl2-right .cl2-body,
+  #rp-overlay .cl2-record-grid,
+  #rp-overlay .cl2-filter-row,
+  #rp-overlay .cl2-grid-2,
+  #rp-overlay .cl2-grid-3{
+    grid-template-columns:1fr!important;
+  }
+  #rp-overlay .cl2-art-record{
+    grid-template-columns:1fr!important;
+  }
+  #rp-overlay .cl2-art-image{
+    width:100%!important;
+    height:170px!important;
+  }
+}
+</style>
+
+
+<script id="tcp-rep-executive-scale-v541-js">
+(function(){
+ 'use strict';
+
+ var KEY='tcp_rp_display_scale_v533';
+
+ function forceExecutive(){
+  try{localStorage.setItem(KEY,'manager')}catch(e){}
+  var overlay=document.getElementById('rp-overlay');
+  if(overlay)overlay.setAttribute('data-rp-scale','manager');
+
+  var button=document.getElementById('rp2-scale-control');
+  if(button){
+   button.setAttribute('aria-label','Executive Scale is the permanent rep display standard');
+   button.setAttribute('title','Rep Portal uses the same large visual scale as the manager tracker.');
+   button.innerHTML='<span>▣</span><b>Executive Scale</b>';
+   button.onclick=function(){
+    forceExecutive();
+    if(typeof toast==='function')toast('Executive Scale is the permanent rep display standard.');
+   };
+  }
+ }
+
+ window._rp2SetScale=function(){forceExecutive();return'manager'};
+ window._rp2ToggleScale=function(){forceExecutive();return'manager'};
+ window._rp2ScaleMode=function(){return'manager'};
+
+ var previousInstall=window._rp2InstallScaleControl;
+ window._rp2InstallScaleControl=function(){
+  var result=typeof previousInstall==='function'?previousInstall.apply(this,arguments):true;
+  forceExecutive();
+  return result
+ };
+
+ var previousAfter=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof previousAfter==='function'?previousAfter.apply(this,arguments):undefined;
+  setTimeout(forceExecutive,0);
+  return result
+ };
+
+ var previousGo=window._rp2Go;
+ window._rp2Go=function(){
+  var result=typeof previousGo==='function'?previousGo.apply(this,arguments):undefined;
+  setTimeout(forceExecutive,0);
+  return result
+ };
+
+ window.TCP_REP_SCALE_V541={
+  mode:'executive',
+  permanent:true,
+  apply:forceExecutive,
+  diagnostics:function(){
+   var overlay=document.getElementById('rp-overlay');
+   return{
+    version:'v541',
+    mode:overlay&&overlay.getAttribute('data-rp-scale')||'not-open',
+    permanent:true,
+    callWorkspace:!!document.querySelector('.cl2-shell')
+   }
+  }
+ };
+
+ forceExecutive();
+ setTimeout(forceExecutive,50);
+ setTimeout(forceExecutive,600);
 })();
 </script>
 
