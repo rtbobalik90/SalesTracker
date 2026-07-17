@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v544 — Single-File Core Tracker</title>
+<title>Sales Tracker v545 — Cloud Restore Handler Repair</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3476,6 +3476,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 <body>
 
 <!-- ==========================================================================
+     SALES TRACKER v545 · CLOUD RESTORE HANDLER REPAIR
+     The Gist load button is capture-intercepted and permanently routed through
+     the v543 IndexedDB large-data restore engine.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
      SALES TRACKER v544 · SINGLE-FILE CORE TRACKER
      No website catalog, no catalog feed, no crawler, no GitHub Actions required.
      Retains v543 large-cloud restore and adaptive IndexedDB persistence.
@@ -5106,7 +5113,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       <div class="admin-button-row">
         <button class="sbtn" id="gistTestBtn" onclick="testGistToken()">🧪 Test token</button>
         <button class="sbtn entry-primary" id="gistSaveBtn" onclick="saveToCloud()">☁ Save to cloud</button>
-        <button class="sbtn" id="gistLoadBtn" onclick="loadFromCloud()">☁ Load from cloud</button>
+        <button class="sbtn" id="gistLoadBtn" onclick="return _tcpLoadFromCloudV545(event)">☁ Load from cloud · IndexedDB safe</button>
         <button class="sbtn" onclick="document.getElementById('gistTokenInput').type=document.getElementById('gistTokenInput').type==='password'?'text':'password'">Show/hide token</button>
       </div>
       <div id="gistStatus" class="admin-feed-status">Cloud status will appear here.</div>
@@ -15620,40 +15627,11 @@ async function saveToCloud(){
   }
 }
 
-async function loadFromCloud(){
-  var token=((document.getElementById('gistTokenInput')||{}).value||'').replace(/\s+/g,'');
-  var gistId=((document.getElementById('gistIdInput')||{}).value||'').trim();
-  if(!gistId){_gistStatus('\u26A0 Enter the Gist ID to load from.','#EF9F27');return;}
-  if(!confirm('LOAD FROM CLOUD:\n\nThis REPLACES all current tracker data with the cloud copy. Any local changes since the last save will be lost.\n\nThe page will reload afterward. Continue?'))return;
-  var btn=document.getElementById('gistLoadBtn');
-  if(btn){btn.disabled=true;btn.textContent='Loading...';}
-  _gistStatus('Pulling data from the cloud...','#8EDCFA');
-  try{
-    var resp=await _gistFetch('https://api.github.com/gists/'+gistId,token);
-    if(!resp.ok){
-      var errTxt=await resp.text();
-      throw new Error('GitHub API '+resp.status+': '+(errTxt.substring(0,200)));
-    }
-    var data=await resp.json();
-    var content=await _readCloudContentFromGist(data);
-    // Decompress if it's a gzipped payload (new format); pass-through for legacy uncompressed
-    content=await _decompressPayload(content);
-    var parsed=JSON.parse(content);
-    if(!parsed||!parsed.data||parsed.version!=='TCP_Tracker_Backup_v1'){
-      throw new Error('Cloud data isn\u0027t a valid TCP Tracker backup.');
-    }
-    // Restore only tracker-owned keys; preserve local secrets and other apps' storage.
-    _restoreTrackerKeys(parsed.data);
-    _gistStatus('\u2705 Loaded from cloud (saved '+(parsed.exportedAt?new Date(parsed.exportedAt).toLocaleString():'?')+'). Reloading...','#5DCAA5');
-    setTimeout(function(){location.reload();},800);
-  }catch(e){
-    console.error('[cloud load]',e);
-    var hint='';
-    if(String(e.message).indexOf('404')>=0)hint=' \u2014 Gist ID not found or token can\u0027t access it.';
-    else if(String(e.message).indexOf('401')>=0)hint=' \u2014 token not recognized by GitHub. It may be incomplete, expired, or revoked. Generate a fresh classic token with the gist scope, copy it with GitHub\u0027s copy button, and try Save to cloud first to confirm it works.';
-    _gistStatus('\u274C Load failed: '+esc_html(e.message)+hint,'#F09595');
-    if(btn){btn.disabled=false;btn.innerHTML='\u2601\uFE0F\u2B06 Load from cloud';}
+async function loadFromCloud(event){
+  if(typeof window._tcpLoadFromCloudV545==='function'){
+    return window._tcpLoadFromCloudV545(event);
   }
+  throw new Error('The v545 IndexedDB-safe cloud restore handler has not initialized.');
 }
 
 // Diagnostic: show what's in the cloud payload by key, sorted by size
@@ -48523,5 +48501,266 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
  }
 })();
 </script>
+
+
+<style id="tcp-cloud-handler-v545-css">
+/* CLOUD RESTORE HANDLER REPAIR · BUILD v545 */
+.tcp545-active{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;
+  margin-top:11px;padding:11px 12px;border-radius:10px;
+  border:1px solid rgba(93,202,165,.22);
+  background:linear-gradient(135deg,rgba(93,202,165,.055),rgba(0,175,239,.035));
+}
+.tcp545-active strong{display:block;color:#a9e7d0;font-size:10px}
+.tcp545-active span{display:block;margin-top:3px;color:#8e9cab;font-size:8.5px;line-height:1.45}
+.tcp545-active b{
+  flex:0 0 auto;padding:6px 8px;border-radius:999px;
+  border:1px solid rgba(93,202,165,.22);background:rgba(93,202,165,.06);
+  color:#a9e7d0;font-size:7.5px;text-transform:uppercase
+}
+#gistLoadBtn[data-v545-safe="true"]{
+  border-color:rgba(0,175,239,.32)!important;
+  background:linear-gradient(135deg,rgba(0,175,239,.10),rgba(250,135,61,.08))!important;
+  color:#dff7ff!important;
+}
+</style>
+
+
+<script id="tcp-cloud-handler-v545-js">
+(function(){
+ 'use strict';
+
+ var ACTIVE_ID='tcp545-restore-active';
+ var running=false;
+
+ function clean(v){return String(v==null?'':v).trim()}
+ function safeText(v){
+  var s=String(v==null?'':v);
+  return typeof esc_html==='function'?esc_html(s):s.replace(/[&<>"]/g,function(c){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]
+  })
+ }
+ function setGist(message,color){
+  try{
+   if(typeof _gistStatus==='function')_gistStatus(message,color);
+   else{
+    var el=document.getElementById('gistStatus');
+    if(el){el.textContent=message;if(color)el.style.color=color}
+   }
+  }catch(e){}
+ }
+ function clearLegacyErrors(){
+  var gist=document.getElementById('gistStatus');
+  if(gist&&/exceeded the quota|cloud load failed|load failed/i.test(gist.textContent||'')){
+   gist.textContent='v545 restore handler is active. The next cloud load will bypass localStorage for large collections.';
+   gist.style.color='#A9E7D0'
+  }
+  var cloud=document.getElementById('tcpCloudSafetyStatus');
+  if(cloud&&/exceeded the quota|cloud load failed|load failed/i.test(cloud.textContent||'')){
+   cloud.textContent='v545 restore handler is active. Large cloud data will restore through IndexedDB.';
+   cloud.dataset.state='safe'
+  }
+ }
+ function decorate(){
+  var button=document.getElementById('gistLoadBtn');
+  if(button){
+   button.dataset.v545Safe='true';
+   button.innerHTML='☁ Load from cloud · IndexedDB safe';
+   button.removeAttribute('onclick');
+   button.onclick=function(event){
+    event.preventDefault();
+    event.stopPropagation();
+    return window._tcpLoadFromCloudV545(event)
+   }
+  }
+
+  var status=document.getElementById('gistStatus');
+  if(status&&!document.getElementById(ACTIVE_ID)){
+   var marker=document.createElement('div');
+   marker.id=ACTIVE_ID;
+   marker.className='tcp545-active';
+   marker.innerHTML=
+    '<div><strong>v545 IndexedDB-safe restore is active</strong>'+
+    '<span>This button is intercepted before every legacy cloud handler. The complete tracker will not be written into localStorage.</span></div>'+
+    '<b>Handler repaired</b>';
+   status.parentNode.insertBefore(marker,status.nextSibling)
+  }
+
+  clearLegacyErrors()
+ }
+
+ async function waitForLargeStorage(){
+  var started=Date.now();
+  while((!window._tcpStorageV528||!_tcpStorageV528.largePut)&&Date.now()-started<12000){
+   await new Promise(function(resolve){setTimeout(resolve,100)})
+  }
+  if(!window._tcpStorageV528||!_tcpStorageV528.largePut){
+   throw new Error('IndexedDB storage did not initialize. Reload the page and try again.')
+  }
+ }
+
+ async function restore(event){
+  if(event){
+   try{event.preventDefault()}catch(e){}
+   try{event.stopPropagation()}catch(e){}
+   try{event.stopImmediatePropagation()}catch(e){}
+  }
+  if(running)return false;
+  running=true;
+
+  var button=document.getElementById('gistLoadBtn');
+  var original=button&&button.innerHTML;
+  if(button){button.disabled=true;button.innerHTML='Restoring through IndexedDB…'}
+
+  try{
+   decorate();
+   await waitForLargeStorage();
+
+   var token=clean(
+    (document.getElementById('gistTokenInput')||{}).value||
+    localStorage.getItem(GIST_TOKEN_STORE)||''
+   ).replace(/\s+/g,'');
+   var gistId=clean(
+    (document.getElementById('gistIdInput')||{}).value||
+    localStorage.getItem(GIST_ID_STORE)||
+    window.BAKED_GIST_ID||''
+   );
+
+   if(!gistId)throw new Error('Enter the existing Gist ID first.');
+
+   if(!confirm(
+    'LOAD CLOUD DATA — INDEXEDDB SAFE\n\n'+
+    'This will replace the current tracker with the verified cloud copy.\n\n'+
+    'Large customers, orders, line items, reviews, and sales records will be written directly to IndexedDB. They will not be placed into localStorage.\n\nContinue?'
+   ))return false;
+
+   setGist('Verifying the Gist and preparing the IndexedDB-safe restore…','#66D4FA');
+
+   var cloudApi=window._tcpCloudSafetyV539;
+   if(!cloudApi||typeof cloudApi.fetchRemote!=='function'){
+    throw new Error('The cloud verification service is unavailable.')
+   }
+
+   var restoreApi=window.TCP_CLOUD_RESTORE_V543;
+   if(!restoreApi||typeof restoreApi.restoreData!=='function'){
+    throw new Error('The large-data restore engine is unavailable.')
+   }
+
+   var remote=await cloudApi.fetchRemote(gistId,token);
+   var result=await restoreApi.restoreData(remote.parsed.data,remote);
+
+   if(window._tcpLargeHydrationPromise){
+    await Promise.resolve(window._tcpLargeHydrationPromise)
+   }
+
+   var metrics=result&&result.parts&&result.parts.metrics||{};
+   var format=function(value){
+    value=Number(value)||0;
+    if(value<1024*1024)return(value/1024).toFixed(1)+' KB';
+    return(value/1024/1024).toFixed(2)+' MB'
+   };
+
+   setGist(
+    '✅ Cloud restored through IndexedDB. Full payload '+format(metrics.full)+
+    ' · local boot record '+format(metrics.core)+
+    ' · IndexedDB '+format(metrics.heavy)+'. Reloading…',
+    '#5DCAA5'
+   );
+
+   try{
+    localStorage.setItem('tcp_cloud_restore_handler_v545',JSON.stringify({
+     restoredAt:new Date().toISOString(),
+     gistId:gistId,
+     metrics:metrics,
+     handler:'v545'
+    }))
+   }catch(e){}
+
+   setTimeout(function(){location.reload()},1100);
+   return true
+  }catch(error){
+   var message=(error&&error.message)||String(error);
+   console.error('[v545 cloud restore]',error);
+   setGist('❌ IndexedDB-safe cloud restore stopped: '+safeText(message),'#F09595');
+   var cloud=document.getElementById('tcpCloudSafetyStatus');
+   if(cloud){
+    cloud.textContent='v545 restore stopped: '+message;
+    cloud.dataset.state='error'
+   }
+   return false
+  }finally{
+   running=false;
+   if(button){
+    button.disabled=false;
+    button.innerHTML=original||'☁ Load from cloud · IndexedDB safe'
+   }
+   decorate()
+  }
+ }
+
+ window._tcpLoadFromCloudV545=restore;
+
+ /* All legacy global routes are made aliases of the same safe function. */
+ window.loadFromCloud=restore;
+ try{
+  Object.defineProperty(window,'loadFromCloud',{
+   configurable:true,
+   enumerable:true,
+   get:function(){return restore},
+   set:function(value){
+    /* Ignore late legacy assignments. Only this safe handler owns the route. */
+    if(value===restore)return
+   }
+  })
+ }catch(e){
+  window.loadFromCloud=restore
+ }
+
+ /* Capture phase runs before inline onclick handlers. */
+ document.addEventListener('click',function(event){
+  var target=event.target&&event.target.closest?event.target.closest('#gistLoadBtn'):null;
+  if(!target)return;
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  restore(event)
+ },true);
+
+ /* Admin cards may be rebuilt dynamically. Keep the visible button rebound. */
+ var observer=new MutationObserver(function(){decorate()});
+ observer.observe(document.documentElement,{childList:true,subtree:true});
+
+ var previousGt=window.gt;
+ if(typeof previousGt==='function'){
+  window.gt=function(){
+   var result=previousGt.apply(this,arguments);
+   setTimeout(decorate,0);
+   setTimeout(decorate,120);
+   return result
+  }
+ }
+
+ window.TCP_CLOUD_HANDLER_V545={
+  version:'v545',
+  restore:restore,
+  decorate:decorate,
+  diagnostics:function(){
+   var button=document.getElementById('gistLoadBtn');
+   return{
+    active:true,
+    running:running,
+    buttonSafe:!!(button&&button.dataset.v545Safe==='true'),
+    largeRestoreAvailable:!!(window.TCP_CLOUD_RESTORE_V543&&TCP_CLOUD_RESTORE_V543.restoreData),
+    indexedDbAvailable:!!(window._tcpStorageV528&&_tcpStorageV528.largePut)
+   }
+  }
+ };
+
+ decorate();
+ setTimeout(decorate,0);
+ setTimeout(decorate,500);
+})();
+</script>
+
 </body>
 </html>
