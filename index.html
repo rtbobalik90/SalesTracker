@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v561 — Rep Header & Call Cycle Simplify</title>
+<title>Sales Tracker v562 — Project Simplify Call Workspace</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,14 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v562 · PROJECT SIMPLIFY CALL WORKSPACE
+     Rebuilds the rep calling experience around one active customer command bar,
+     an embedded dialer, focused conversation builder, persistent customer
+     context, and a sticky queue preview.
+     ========================================================================== -->
+
 
 <!-- ==========================================================================
      SALES TRACKER v561 · REP HEADER & CALL CYCLE SIMPLIFY
@@ -55711,6 +55719,1060 @@ body.ps58-dashboard-active .wrap:after{
   }catch(error){console.warn('[v561 rep simplify]',error)}
  },0);
  setTimeout(removeLegacy,500)
+})();
+</script>
+
+
+
+<style id="tcp-project-simplify-call-v562-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · CALL WORKSPACE · BUILD v562
+   ========================================================================== */
+#rp-overlay .ps62-shell{
+  display:grid;
+  gap:11px;
+  min-width:0;
+  padding-bottom:24px;
+}
+#rp-overlay .ps62-command{
+  display:grid;
+  grid-template-columns:minmax(185px,.42fr) minmax(300px,1.05fr) minmax(315px,.9fr) auto;
+  gap:16px;
+  align-items:center;
+  min-height:111px;
+  padding:15px 18px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:15px;
+  background:
+    radial-gradient(circle at 91% 15%,rgba(250,135,61,.11),transparent 31%),
+    radial-gradient(circle at 10% 100%,rgba(0,175,239,.075),transparent 36%),
+    linear-gradient(145deg,#101B27,#09121B);
+  box-shadow:0 16px 44px rgba(0,0,0,.22);
+}
+#rp-overlay .ps62-command-label{
+  padding-right:15px;
+  border-right:1px solid rgba(148,163,184,.13);
+}
+#rp-overlay .ps62-command-label strong{
+  display:block;
+  color:#F8FAFC;
+  font-size:13px;
+  font-weight:950;
+}
+#rp-overlay .ps62-command-label span{
+  display:block;
+  margin-top:4px;
+  color:#748397;
+  font-size:7px;
+}
+#rp-overlay .ps62-company-line{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+}
+#rp-overlay .ps62-company-line h1{
+  margin:0;
+  color:#fff;
+  font-size:22px;
+  font-weight:950;
+  letter-spacing:-.035em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#rp-overlay .ps62-active{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#77E2BB;
+  font-size:7px;
+  font-weight:900;
+}
+#rp-overlay .ps62-active:before{
+  content:"";
+  width:6px;height:6px;border-radius:50%;
+  background:#5DCAA5;
+  box-shadow:0 0 10px #5DCAA5;
+}
+#rp-overlay .ps62-command-pills{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  margin-top:9px;
+}
+#rp-overlay .ps62-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:23px;
+  padding:0 7px;
+  border:1px solid rgba(148,163,184,.13);
+  border-radius:6px;
+  background:rgba(255,255,255,.024);
+  color:#9BA8B8;
+  font-size:6.5px;
+  font-weight:850;
+  white-space:nowrap;
+}
+#rp-overlay .ps62-pill.rank{color:#83DFF8;border-color:rgba(0,175,239,.20);background:rgba(0,175,239,.055)}
+#rp-overlay .ps62-pill.quiet{color:#F5C57A;border-color:rgba(239,159,39,.20);background:rgba(239,159,39,.055)}
+#rp-overlay .ps62-pill.quote{color:#9BE5C8;border-color:rgba(93,202,165,.20);background:rgba(93,202,165,.055)}
+#rp-overlay .ps62-pill.opp{color:#CBAFFF;border-color:rgba(169,112,255,.20);background:rgba(169,112,255,.055)}
+
+#rp-overlay .ps62-stepper{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  align-items:start;
+  min-width:315px;
+}
+#rp-overlay .ps62-step{
+  position:relative;
+  display:grid;
+  justify-items:center;
+  gap:5px;
+  border:0;
+  background:transparent;
+  color:#718095;
+  font-size:6.8px;
+  font-weight:850;
+  cursor:pointer;
+}
+#rp-overlay .ps62-step:not(:last-child):before{
+  content:"";
+  position:absolute;
+  left:58%;
+  right:-42%;
+  top:14px;
+  height:1px;
+  background:#2A3541;
+}
+#rp-overlay .ps62-step i{
+  position:relative;
+  z-index:1;
+  width:29px;height:29px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:50%;
+  background:#15202C;
+  color:#A2AFBE;
+  font-style:normal;
+  font-size:9px;
+  font-weight:950;
+}
+#rp-overlay .ps62-step.on{color:#fff}
+#rp-overlay .ps62-step.on i{
+  border-color:rgba(250,135,61,.50);
+  background:rgba(250,135,61,.11);
+  color:#FFD3B3;
+  box-shadow:0 0 18px rgba(250,135,61,.22);
+}
+#rp-overlay .ps62-command-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  min-width:240px;
+}
+#rp-overlay .ps62-command-actions button{
+  min-height:39px;
+  padding:0 11px;
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:9px;
+  background:#0D1823;
+  color:#D8E1E9;
+  font-size:7.5px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+#rp-overlay .ps62-command-actions button.primary{
+  border:0;
+  background:linear-gradient(135deg,#FA873D,#F27C2D 55%,#00AFEF);
+  color:#fff;
+}
+#rp-overlay .ps62-command-actions button:hover{filter:brightness(1.08)}
+
+#rp-overlay .ps62-workbench{
+  display:grid;
+  grid-template-columns:minmax(252px,.56fr) minmax(610px,1.45fr) minmax(315px,.78fr);
+  gap:10px;
+  align-items:start;
+}
+#rp-overlay .ps62-panel{
+  min-width:0;
+  border:1px solid rgba(148,163,184,.17);
+  border-radius:14px;
+  background:linear-gradient(145deg,#0E1A26,#07111A);
+  overflow:hidden;
+  box-shadow:0 15px 38px rgba(0,0,0,.18);
+}
+#rp-overlay .ps62-panel-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  padding:13px 14px;
+  border-bottom:1px solid rgba(148,163,184,.12);
+}
+#rp-overlay .ps62-panel-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#fff;
+  font-size:12px;
+  font-weight:950;
+}
+#rp-overlay .ps62-panel-title i{
+  color:#75DDF8;
+  font-style:normal;
+}
+#rp-overlay .ps62-panel-copy{
+  margin-top:4px;
+  color:#748397;
+  font-size:7px;
+  line-height:1.45;
+}
+#rp-overlay .ps62-panel-action{
+  border:0;
+  background:transparent;
+  color:#70DBF7;
+  font-size:7px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* Reuse and elevate the proven v540 dialer controls. */
+#rp-overlay .ps62-dialer>.cl2-panel{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#rp-overlay .ps62-dialer .cl2-panel-head,
+#rp-overlay .ps62-center .cl2-active-head{
+  display:none!important;
+}
+#rp-overlay .ps62-dialer .cl2-body{
+  padding:11px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dialer-contact{
+  margin:0 0 9px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dialer-contact select,
+#rp-overlay .ps62-dialer .cl2-dialer-contact input{
+  min-height:38px!important;
+  border-color:rgba(148,163,184,.15)!important;
+  background:#09131D!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dialer-display{
+  padding:11px!important;
+  border-radius:10px!important;
+  border-color:rgba(0,175,239,.17)!important;
+}
+#rp-overlay .ps62-dialer .cl2-phone-number{
+  font-size:15px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dialer-timer{
+  font-size:21px!important;
+}
+#rp-overlay .ps62-dialer .cl2-keypad{
+  gap:5px!important;
+  margin-top:9px!important;
+}
+#rp-overlay .ps62-dialer .cl2-key{
+  height:37px!important;
+  border-radius:8px!important;
+  font-size:11px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dial-actions{
+  gap:6px!important;
+  margin-top:9px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dial-btn{
+  min-height:37px!important;
+  border-radius:8px!important;
+  font-size:7px!important;
+}
+#rp-overlay .ps62-dialer .cl2-outcome-buttons button{
+  min-height:29px!important;
+  font-size:6px!important;
+}
+#rp-overlay .ps62-dialer .cl2-provider{display:none!important}
+#rp-overlay .ps62-dialer .cl2-dial-quick{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+}
+#rp-overlay .ps62-dialer .cl2-mini-btn{
+  min-height:31px!important;
+}
+
+/* Conversation builder */
+#rp-overlay .ps62-center{
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto;
+}
+#rp-overlay .ps62-center-body{
+  min-height:600px;
+}
+#rp-overlay .ps62-center .cl2-center-body{
+  padding:10px!important;
+  gap:9px!important;
+}
+#rp-overlay .ps62-center .cl2-section{
+  padding:11px!important;
+  border-radius:10px!important;
+  border-color:rgba(148,163,184,.13)!important;
+  background:rgba(255,255,255,.012)!important;
+}
+#rp-overlay .ps62-center .cl2-section-title{
+  font-size:9px!important;
+}
+#rp-overlay .ps62-center .cl2-section-copy{
+  font-size:6.8px!important;
+}
+#rp-overlay .ps62-center .cl2-prep-toolbar{
+  margin-top:8px!important;
+}
+#rp-overlay .ps62-center .cl2-prep-tabs{
+  width:100%;
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:0!important;
+  border-bottom:1px solid rgba(148,163,184,.14);
+}
+#rp-overlay .ps62-center .cl2-prep-tab{
+  min-height:36px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#8391A4!important;
+  font-size:7px!important;
+}
+#rp-overlay .ps62-center .cl2-prep-tab.on{
+  color:#fff!important;
+  box-shadow:inset 0 -2px 0 #FA873D!important;
+}
+#rp-overlay .ps62-center .cl2-filter-row{
+  gap:6px!important;
+  margin-top:9px!important;
+}
+#rp-overlay .ps62-center .cl2-filter-row select{
+  min-height:33px!important;
+}
+#rp-overlay .ps62-center .cl2-record{
+  min-height:48px!important;
+  padding:8px!important;
+  border-radius:8px!important;
+}
+#rp-overlay .ps62-center .cl2-record-name{
+  font-size:8px!important;
+}
+#rp-overlay .ps62-center .cl2-record-meta{
+  font-size:6.5px!important;
+}
+#rp-overlay .ps62-center .cl2-talk{
+  border-color:rgba(250,135,61,.13)!important;
+  background:linear-gradient(145deg,rgba(250,135,61,.035),rgba(0,175,239,.02))!important;
+}
+#rp-overlay .ps62-center .cl2-talk-item{
+  font-size:7.2px!important;
+  line-height:1.45!important;
+}
+#rp-overlay .ps62-center textarea{
+  min-height:100px!important;
+}
+#rp-overlay .ps62-center-footer{
+  display:grid;
+  grid-template-columns:.72fr 1.05fr .78fr;
+  gap:8px;
+  padding:10px 13px;
+  border-top:1px solid rgba(148,163,184,.12);
+  background:#09131D;
+}
+#rp-overlay .ps62-center-footer button{
+  min-height:38px;
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:8px;
+  background:#101C28;
+  color:#DDE5EC;
+  font-size:7.5px;
+  font-weight:900;
+  cursor:pointer;
+}
+#rp-overlay .ps62-center-footer button.primary{
+  border:0;
+  background:linear-gradient(135deg,#FA873D,#F27C2D 58%,#00AFEF);
+  color:#fff;
+}
+#rp-overlay .ps62-center-footer button.good{
+  color:#9AE7C9;
+  border-color:rgba(93,202,165,.24);
+  background:rgba(93,202,165,.06);
+}
+
+/* Customer context */
+#rp-overlay .ps62-context-body{
+  display:grid;
+  gap:9px;
+  padding:10px;
+  max-height:730px;
+  overflow:auto;
+}
+#rp-overlay .ps62-context-card{
+  padding:10px;
+  border:1px solid rgba(148,163,184,.13);
+  border-radius:10px;
+  background:rgba(255,255,255,.015);
+}
+#rp-overlay .ps62-context-card.promo{
+  border-color:rgba(169,112,255,.19);
+  background:linear-gradient(145deg,rgba(169,112,255,.055),rgba(0,175,239,.02));
+}
+#rp-overlay .ps62-context-kick{
+  color:#748397;
+  font-size:6px;
+  font-weight:950;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+}
+#rp-overlay .ps62-context-card h3{
+  margin:5px 0 0;
+  color:#fff;
+  font-size:11px;
+}
+#rp-overlay .ps62-context-card p{
+  margin:5px 0 0;
+  color:#8290A2;
+  font-size:7px;
+  line-height:1.45;
+}
+#rp-overlay .ps62-contact{
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) auto;
+  gap:9px;
+  align-items:center;
+}
+#rp-overlay .ps62-avatar{
+  width:52px;height:52px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:linear-gradient(135deg,#FA873D,#00AFEF);
+  color:#fff;
+  font-size:13px;
+  font-weight:950;
+}
+#rp-overlay .ps62-contact strong{
+  display:block;
+  color:#fff;
+  font-size:10px;
+}
+#rp-overlay .ps62-contact span{
+  display:block;
+  margin-top:3px;
+  color:#7E8C9F;
+  font-size:6.8px;
+  line-height:1.35;
+}
+#rp-overlay .ps62-contact-actions{
+  display:grid;
+  gap:5px;
+}
+#rp-overlay .ps62-contact-actions button{
+  width:29px;height:29px;
+  border:1px solid rgba(0,175,239,.18);
+  border-radius:7px;
+  background:rgba(0,175,239,.045);
+  color:#7FE1FA;
+  cursor:pointer;
+}
+#rp-overlay .ps62-snapshot-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  padding:7px 0;
+  border-bottom:1px solid rgba(148,163,184,.09);
+}
+#rp-overlay .ps62-snapshot-row:last-child{border-bottom:0}
+#rp-overlay .ps62-snapshot-row span{
+  color:#8B98AA;
+  font-size:7px;
+}
+#rp-overlay .ps62-snapshot-row strong{
+  color:#E7EDF3;
+  font-size:7.5px;
+  text-align:right;
+}
+#rp-overlay .ps62-fact{
+  display:grid;
+  grid-template-columns:15px minmax(0,1fr);
+  gap:6px;
+  align-items:start;
+  padding:5px 0;
+  color:#A3AFBE;
+  font-size:7px;
+  line-height:1.4;
+}
+#rp-overlay .ps62-fact i{
+  width:13px;height:13px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#5DCAA5;
+  color:#07140F;
+  font-style:normal;
+  font-size:7px;
+  font-weight:950;
+}
+#rp-overlay .ps62-context-select{
+  width:100%;
+  min-height:32px;
+  margin-top:7px;
+  padding:0 8px;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:7px;
+  background:#09131D;
+  color:#DDE5EC;
+  font-size:7px;
+}
+
+/* Sticky queue preview */
+#rp-overlay .ps62-queue-strip{
+  position:sticky;
+  bottom:8px;
+  z-index:35;
+  display:grid;
+  grid-template-columns:145px minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  min-height:70px;
+  padding:8px 11px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:13px;
+  background:rgba(7,15,23,.96);
+  box-shadow:0 18px 45px rgba(0,0,0,.42);
+  backdrop-filter:blur(18px);
+}
+#rp-overlay .ps62-queue-label{
+  color:#72DDF8;
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+}
+#rp-overlay .ps62-queue-label strong{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font-size:9px;
+  letter-spacing:0;
+  text-transform:none;
+}
+#rp-overlay .ps62-queue-cards{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(170px,1fr));
+  gap:7px;
+  min-width:0;
+}
+#rp-overlay .ps62-qcard{
+  display:grid;
+  grid-template-columns:27px minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+  min-width:0;
+  min-height:51px;
+  padding:7px 8px;
+  border:1px solid rgba(148,163,184,.11);
+  border-radius:8px;
+  background:rgba(255,255,255,.015);
+  cursor:pointer;
+}
+#rp-overlay .ps62-qcard.on{
+  border-color:rgba(250,135,61,.30);
+  background:linear-gradient(135deg,rgba(250,135,61,.075),rgba(0,175,239,.035));
+}
+#rp-overlay .ps62-qrank{
+  width:27px;height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#172330;
+  color:#90A0B3;
+  font-size:7px;
+  font-weight:950;
+}
+#rp-overlay .ps62-qcard.on .ps62-qrank{
+  color:#9AE7C9;
+  background:rgba(93,202,165,.12);
+}
+#rp-overlay .ps62-qname{
+  min-width:0;
+  color:#fff;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#rp-overlay .ps62-qcopy{
+  margin-top:2px;
+  color:#718095;
+  font-size:6.2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#rp-overlay .ps62-qdue{
+  color:#A9B5C3;
+  font-size:6.2px;
+  white-space:nowrap;
+}
+#rp-overlay .ps62-view-queue{
+  border:0;
+  background:transparent;
+  color:#72DDF8;
+  font-size:7px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+/* Evidence indicator */
+#rp-overlay .ps62-evidence{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  margin-top:7px;
+}
+#rp-overlay .ps62-evidence span{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  min-height:21px;
+  padding:0 6px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:999px;
+  color:#8391A4;
+  font-size:6px;
+  font-weight:900;
+}
+#rp-overlay .ps62-evidence span.done{
+  color:#9AE7C9;
+  border-color:rgba(93,202,165,.22);
+  background:rgba(93,202,165,.055);
+}
+#rp-overlay .ps62-evidence span.done:before{content:"✓"}
+#rp-overlay .ps62-evidence span.wait:before{content:"○"}
+
+@media(max-width:1500px){
+  #rp-overlay .ps62-command{
+    grid-template-columns:160px minmax(280px,1fr) minmax(270px,.8fr) auto;
+  }
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:minmax(235px,.52fr) minmax(540px,1.34fr) minmax(290px,.72fr);
+  }
+}
+@media(max-width:1250px){
+  #rp-overlay .ps62-command{
+    grid-template-columns:1fr 1fr;
+  }
+  #rp-overlay .ps62-command-label{border-right:0}
+  #rp-overlay .ps62-stepper{min-width:0}
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:minmax(235px,.5fr) minmax(0,1.25fr);
+  }
+  #rp-overlay .ps62-context{grid-column:1/-1}
+  #rp-overlay .ps62-context-body{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    max-height:none;
+  }
+}
+@media(max-width:900px){
+  #rp-overlay .ps62-command,
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:1fr;
+  }
+  #rp-overlay .ps62-command-actions{
+    grid-template-columns:1fr 1fr;
+    min-width:0;
+  }
+  #rp-overlay .ps62-queue-strip{
+    position:relative;
+    bottom:auto;
+    grid-template-columns:1fr;
+  }
+  #rp-overlay .ps62-queue-cards{
+    grid-template-columns:1fr;
+  }
+  #rp-overlay .ps62-context-body{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+
+<script id="tcp-project-simplify-call-v562-js">
+(function(){
+ 'use strict';
+
+ var legacyRender=window.TCP_CALL_V540&&TCP_CALL_V540.render;
+ var legacyData=window.TCP_CALL_V540&&TCP_CALL_V540.currentData;
+ var legacyPromotion=window.TCP_CALL_V540&&TCP_CALL_V540.promotion;
+ var baseSendEmail=window._call540SendEmail;
+ var baseStartDial=window._call540StartDial;
+ var baseEndDial=window._call540EndDial;
+ var baseComplete=window._call540CompleteCall;
+ var baseNext=window._call532Next;
+ var baseGoTab=window._call540GoTab;
+ var basePrepTab=window._call540PrepTabGo;
+ var baseToggle=window._call540Toggle;
+ var baseClear=window._call540Clear;
+ var baseSelectAll=window._call540SelectAll;
+ var baseSelectArtwork=window._call540SelectArtworkMethod;
+ var baseFilter=window._call540Filter;
+ var baseGenerate=window._call540GenerateTalkingPoints;
+ var baseSelectCompany=window._call540SelectCompany;
+ var baseContactChanged=window._call540ContactChanged;
+ var baseResetCurrent=window._call532ResetCurrent;
+
+ function n(value){var number=Number(value);return isFinite(number)?number:0}
+ function arr(value){
+  if(Array.isArray(value))return value;
+  if(!value)return[];
+  try{
+   if(typeof value.length==='number'&&typeof value!=='string')return Array.prototype.slice.call(value);
+   if(typeof value==='object')return Object.keys(value).map(function(key){return value[key]}).filter(Boolean)
+  }catch(error){}
+  return[]
+ }
+ function clean(value){return String(value==null?'':value).trim()}
+ function norm(value){return clean(value).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(value){
+  return typeof _rp2Esc==='function'?_rp2Esc(String(value==null?'':value)):
+   String(value==null?'':value).replace(/[&<>"]/g,function(character){
+    return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[character]
+   })
+ }
+ function field(object,names,def){
+  for(var i=0;i<names.length;i++){
+   var value=object&&object[names[i]];
+   if(value!=null&&clean(value)!=='')return value
+  }
+  return def==null?'':def
+ }
+ function money(value){
+  return typeof _rp2$==='function'?_rp2$(n(value)):'$'+Math.round(n(value)).toLocaleString()
+ }
+ function fmt(value){
+  if(!value)return'—';
+  try{
+   var date=/^\d{4}-\d{2}-\d{2}$/.test(String(value))?new Date(String(value)+'T12:00:00'):new Date(value);
+   return isNaN(date.getTime())?'—':date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+  }catch(error){return'—'}
+ }
+ function initials(name){
+  return clean(name).split(/\s+/).map(function(part){return part[0]||''}).slice(0,2).join('').toUpperCase()
+ }
+ function current(){
+  return typeof legacyData==='function'?legacyData():{
+   company:window._call532&&_call532.company||'',
+   g:{calls:[],quotes:[],opps:[]},c:{contacts:[]},orders:[],products:[],artwork:[],dates:[],account:{data:null}
+  }
+ }
+ function promotion(){
+  try{return typeof legacyPromotion==='function'?legacyPromotion():{promotionTitle:'Monthly promotion',promotionBody:'',promotionOffer:'',promotionCta:''}}catch(error){
+   return{promotionTitle:'Monthly promotion',promotionBody:'',promotionOffer:'',promotionCta:''}
+  }
+ }
+ function queueItem(data){
+  return arr(data.g&&data.g.calls).filter(function(item){return norm(item.customer)===norm(data.company)})[0]||null
+ }
+ function contacts(data){
+  var list=arr(data.c&&data.c.contacts);
+  if(data.account&&data.account.data)list=list.concat(arr(data.account.data.contacts));
+  var seen={};
+  return list.filter(function(contact){
+   var key=clean(field(contact,['id','contactId','email','name'],''));
+   if(!key||seen[key])return false;seen[key]=true;return true
+  })
+ }
+ function primaryContact(data){
+  var draft=window._call532&&_call532.draft||{};
+  var list=contacts(data);
+  return list.filter(function(contact){
+   return String(field(contact,['id','contactId'],''))===String(draft.contactId||'')
+  })[0]||data.c&&data.c.primary||list[0]||{}
+ }
+ function openQuotes(data){
+  return arr(data.g&&data.g.quotes).filter(function(quote){
+   return norm(quote.company)===norm(data.company)&&!/closed|lost|expired/i.test(clean(quote.status))
+  })
+ }
+ function openOpps(data){
+  return arr(data.g&&data.g.opps).filter(function(opp){
+   return norm(opp.company)===norm(data.company)&&!/closed|lost|won/i.test(clean(opp.stage||opp.status))
+  })
+ }
+ function daysQuiet(data){
+  var last=field(data.c||{},['lastContactDate'],'')||
+   field(data.account&&data.account.data&&data.account.data.profile||{},['lastContactAt'],'');
+  if(!last)return null;
+  try{
+   var date=new Date(last),today=new Date();
+   if(isNaN(date.getTime()))return null;
+   return Math.max(0,Math.floor((today-date)/86400000))
+  }catch(error){return null}
+ }
+ function activityEvidence(data){
+  var activities=arr(data.account&&data.account.data&&data.account.data.activities);
+  var currentCompany=norm(data.company);
+  var call=false,email=false;
+  activities.forEach(function(activity){
+   var source=clean(field(activity,['source'],''));
+   var type=clean(field(activity,['type'],''));
+   if(/embedded-dialer-v540|call attempt|^call$/i.test(source+' '+type))call=true;
+   if(/embedded-email-v540|^email$/i.test(source+' '+type)&&!/draft/i.test(clean(field(activity,['status','deliveryStatus'],''))))email=true
+  });
+  return{call:call,email:email,complete:call&&email}
+ }
+ function annualSales(data){
+  var year=new Date().getFullYear();
+  return arr(data.orders).filter(function(order){
+   try{return new Date(order.date).getFullYear()===year}catch(error){return false}
+  }).reduce(function(sum,order){return sum+n(order.total)},0)
+ }
+ function loyalty(data){
+  var store={};
+  try{store=JSON.parse(localStorage.getItem('tcp_call_cycle_engine_v547')||'{}')||{}}catch(error){}
+  var settings=store.settings&&store.settings.loyalty||{
+   silver:0,gold:10000,platinum:25000,diamond:50000,
+   closeSilverGold:2500,closeGoldPlatinum:5000,closePlatinumDiamond:10000
+  };
+  var sales=annualSales(data),tier='Silver',next='Gold',threshold=n(settings.gold);
+  if(sales>=n(settings.diamond)){tier='Diamond';next='Top tier';threshold=n(settings.diamond)}
+  else if(sales>=n(settings.platinum)){tier='Platinum';next='Diamond';threshold=n(settings.diamond)}
+  else if(sales>=n(settings.gold)){tier='Gold';next='Platinum';threshold=n(settings.platinum)}
+  return{sales:sales,tier:tier,next:next,gap:Math.max(0,threshold-sales)}
+ }
+ function expectedChristmas(data){
+  var profile=data.account&&data.account.data&&data.account.data.profile||{};
+  var rows=profile.expectedChristmasOrders||{};
+  var year=new Date().getFullYear();
+  var row=rows[year]||rows[String(year)]||{};
+  return clean(typeof row==='string'?row:row.value||'Not answered')||'Not answered'
+ }
+ function reorderWindow(data){
+  var counts={};
+  arr(data.orders).forEach(function(order){
+   try{
+    var date=new Date(order.date);
+    if(!isNaN(date.getTime())){
+     var month=date.toLocaleDateString('en-US',{month:'long'});
+     counts[month]=(counts[month]||0)+1
+    }
+   }catch(error){}
+  });
+  var best=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]})[0];
+  return best?best+' is the strongest loaded reorder month':'No recurring order month identified'
+ }
+ function stage(){
+  return window._call540Tab||'prep'
+ }
+ function stageButton(key,index,label){
+  return'<button class="ps62-step '+(stage()===key?'on':'')+'" onclick="_call540GoTab(\''+key+'\')"><i>'+index+'</i><span>'+label+'</span></button>'
+ }
+ function command(data){
+  var queue=queueItem(data),quotes=openQuotes(data),opps=openOpps(data),quiet=daysQuiet(data);
+  return'<section class="ps62-command">'+
+   '<div class="ps62-command-label"><strong>Call Workspace</strong><span>Active Customer</span></div>'+
+   '<div><div class="ps62-company-line"><h1>'+esc(data.company||'Choose a customer')+'</h1><span class="ps62-active">Active</span></div>'+
+    '<div class="ps62-command-pills">'+
+     '<span class="ps62-pill rank">Ranked #'+esc(queue&&queue.rank||'—')+'</span>'+
+     '<span class="ps62-pill quiet">'+(quiet==null?'No contact history':quiet+' days quiet')+'</span>'+
+     '<span class="ps62-pill quote">'+(quotes.length?'Open Quote '+money(field(quotes[0],['amount','total'],0)):'No open quote')+'</span>'+
+     '<span class="ps62-pill opp">'+opps.length+' opportunit'+(opps.length===1?'y':'ies')+'</span>'+
+     '<span class="ps62-pill">'+esc(queue&&queue.reason||'Direct customer call')+'</span>'+
+    '</div></div>'+
+   '<div class="ps62-stepper">'+stageButton('prep',1,'Prepare')+stageButton('conversation',2,'Call')+stageButton('complete',3,'Complete')+'</div>'+
+   '<div class="ps62-command-actions"><button class="primary" onclick="_ps62NextCustomer()">Next Customer →</button><button onclick="_call532OpenCustomer()">Open Full Profile ↗</button></div>'+
+  '</section>'
+ }
+ function extractLegacy(){
+  var html=typeof legacyRender==='function'?legacyRender():'';
+  var parser=new DOMParser();
+  var doc=parser.parseFromString('<div id="ps62-legacy">'+html+'</div>','text/html');
+  var root=doc.getElementById('ps62-legacy');
+  var dialer=root&&root.querySelector('.cl2-dialer');
+  var center=root&&root.querySelector('.cl2-workbench > main.cl2-panel');
+  return{
+   dialer:dialer?dialer.outerHTML:'<aside class="cl2-panel cl2-dialer"><div class="cl2-body">Dialer unavailable.</div></aside>',
+   center:center?center.outerHTML:'<main class="cl2-panel"><div class="cl2-center-body">Conversation builder unavailable.</div></main>'
+  }
+ }
+ function prepareDialer(html){
+  var parser=new DOMParser(),doc=parser.parseFromString(html,'text/html'),panel=doc.body.firstElementChild;
+  if(!panel)return html;
+  panel.classList.add('ps62-dialer');
+  var oldHead=panel.querySelector('.cl2-panel-head');
+  if(oldHead)oldHead.remove();
+  var contact=panel.querySelector('.cl2-dialer-contact');
+  var display=panel.querySelector('.cl2-dialer-display');
+  var body=panel.querySelector('.cl2-body');
+  if(contact&&display&&body&&contact.nextElementSibling!==display)body.insertBefore(contact,display);
+  return panel.innerHTML
+ }
+ function prepareCenter(html,data){
+  var parser=new DOMParser(),doc=parser.parseFromString(html,'text/html'),panel=doc.body.firstElementChild;
+  if(!panel)return html;
+  panel.classList.add('ps62-center');
+  var active=panel.querySelector('.cl2-active-head');
+  if(active)active.remove();
+  var evidence=activityEvidence(data);
+  return'<main class="ps62-panel ps62-center">'+
+   '<header class="ps62-panel-head"><div><div class="ps62-panel-title"><i>◌</i> Conversation Builder</div><div class="ps62-panel-copy">Use customer evidence to prepare, conduct, and document the conversation.</div>'+
+    '<div class="ps62-evidence"><span class="'+(evidence.call?'done':'wait')+'">Call attempt</span><span class="'+(evidence.email?'done':'wait')+'">Follow-up email</span></div></div>'+
+    '<button class="ps62-panel-action" onclick="_call540GenerateTalkingPoints()">Regenerate talking points ↻</button></header>'+
+   '<div class="ps62-center-body">'+panel.innerHTML+'</div>'+
+   '<footer class="ps62-center-footer"><button onclick="_call532Draft()">Save Notes</button><button class="primary" onclick="_ps62CompleteCall()">Complete Call</button><button class="good" onclick="_ps62NextCustomer()">Move to Next Customer →</button></footer>'+
+  '</main>'
+ }
+ function snapshotRow(label,value,cls){
+  return'<div class="ps62-snapshot-row"><span>'+esc(label)+'</span><strong class="'+(cls||'')+'">'+esc(value)+'</strong></div>'
+ }
+ function context(data){
+  var promo=promotion(),contact=primaryContact(data),quotes=openQuotes(data),opps=openOpps(data);
+  var last=arr(data.orders)[0],top=arr(data.products)[0],quiet=daysQuiet(data),loyal=loyalty(data),queue=queueItem(data);
+  var facts=[];
+  if(queue)facts.push(queue.reason+' — '+clean(queue.copy));
+  if(top)facts.push(top.name+' is the strongest loaded product signal with '+Math.round(n(top.units)).toLocaleString()+' units.');
+  facts.push(reorderWindow(data)+'.');
+  if(quotes[0])facts.push('An open quote remains active for '+money(field(quotes[0],['amount','total'],0))+'.');
+  if(opps[0])facts.push('An open opportunity is valued at '+money(field(opps[0],['amount'],0))+'.');
+  var currentExpected=expectedChristmas(data);
+  var year=new Date().getFullYear();
+  return'<aside class="ps62-panel ps62-context">'+
+   '<header class="ps62-panel-head"><div><div class="ps62-panel-title"><i>♟</i> Customer Context</div><div class="ps62-panel-copy">The most useful account facts remain visible throughout the call.</div></div></header>'+
+   '<div class="ps62-context-body">'+
+    '<section class="ps62-context-card promo"><div class="ps62-context-kick">Current Monthly Promotion</div><h3>'+esc(promo.promotionTitle||'Monthly promotion')+'</h3><p>'+esc(promo.promotionBody||promo.promotionOffer||'Use current customer history to identify the right next need.')+'</p></section>'+
+    '<section class="ps62-context-card"><div class="ps62-context-kick">Primary Contact</div><div class="ps62-contact"><div class="ps62-avatar">'+esc(initials(field(contact,['name'],'Contact')))+'</div><div><strong>'+esc(field(contact,['name'],'Not recorded'))+'</strong><span>'+esc(field(contact,['title','buyingRole'],'Role not recorded'))+'</span><span>'+esc(field(contact,['phone','mobile'],'No phone'))+'</span><span>'+esc(field(contact,['email'],'No email'))+'</span></div><div class="ps62-contact-actions"><button onclick="_call540StartDial()" title="Call">☎</button><button onclick="_call540OpenEmail()" title="Email">✉</button></div></div></section>'+
+    '<section class="ps62-context-card"><div class="ps62-context-kick">Account Snapshot</div>'+
+     snapshotRow('Last Order',last?(fmt(last.date)+' · '+money(last.total)):'No loaded order')+
+     snapshotRow('Open Quotes',quotes.length+' · '+money(quotes.reduce(function(sum,row){return sum+n(field(row,['amount','total'],0))},0)))+
+     snapshotRow('Open Opportunities',opps.length+' · '+money(opps.reduce(function(sum,row){return sum+n(field(row,['amount'],0))},0)))+
+     snapshotRow('Top Purchase Category',top&&top.name||'Not identified')+
+     snapshotRow('Last Contact',quiet==null?'Not recorded':quiet+' days ago')+
+     snapshotRow('Loyalty Status',loyal.tier+(loyal.next!=='Top tier'?' · '+money(loyal.gap)+' to '+loyal.next:''))+
+    '</section>'+
+    '<section class="ps62-context-card"><div class="ps62-context-kick">Expected Christmas Order · '+year+'</div><select class="ps62-context-select" onchange="_cc547SetChristmas(\''+encodeURIComponent(window._rp2&&_rp2.rep||'')+'\',\''+encodeURIComponent(data.company)+'\','+year+',this.value,\'call-workspace-v562\')">'+
+     ['Yes','No','Not answered'].map(function(value){return'<option '+(currentExpected===value?'selected':'')+'>'+value+'</option>'}).join('')+
+    '</select><p>July–October answers feed the November calling campaign.</p></section>'+
+    '<section class="ps62-context-card"><div class="ps62-context-kick">Talking Points & Quick Facts</div>'+
+     facts.slice(0,5).map(function(fact){return'<div class="ps62-fact"><i>✓</i><span>'+esc(fact)+'</span></div>'}).join('')+
+     '<button class="ps62-panel-action" style="margin-top:7px" onclick="_call532OpenCustomer()">View all notes & history →</button></section>'+
+   '</div></aside>'
+ }
+ function queuePreview(data){
+  var queue=arr(data.g&&data.g.calls),index=queue.findIndex(function(item){return norm(item.customer)===norm(data.company)});
+  if(index<0)index=0;
+  var visible=[];
+  for(var i=0;i<Math.min(3,queue.length);i++)visible.push(queue[(index+i)%queue.length]);
+  return'<section class="ps62-queue-strip"><div class="ps62-queue-label">Queue Preview<strong>Up next</strong></div>'+
+   '<div class="ps62-queue-cards">'+(visible.length?visible.map(function(item,position){
+    var active=norm(item.customer)===norm(data.company);
+    return'<article class="ps62-qcard '+(active?'on':'')+'" onclick="_call540SelectCompany(\''+encodeURIComponent(item.customer)+'\')"><span class="ps62-qrank">'+(item.rank||position+1)+'</span><div><div class="ps62-qname">'+esc(item.customer)+'</div><div class="ps62-qcopy">'+esc(item.reason||item.copy||'Customer call')+'</div></div><span class="ps62-qdue">'+esc(item.due?fmt(item.due):'Due today')+'</span></article>'
+   }).join(''):'<div class="ps62-qcard"><div class="ps62-qname">No ranked queue is loaded.</div></div>')+'</div>'+
+   '<button class="ps62-view-queue" onclick="_rp2Go(\'home\')">View full queue →</button></section>'
+ }
+ function render(){
+  try{
+   var data=current(),legacy=extractLegacy();
+   return'<div class="ps62-shell">'+command(data)+'<div class="ps62-workbench">'+
+    '<aside class="ps62-panel ps62-dialer"><header class="ps62-panel-head"><div><div class="ps62-panel-title"><i>☎</i> Dialer</div><div class="ps62-panel-copy">Contact, call controls, outcome, and follow-up tools.</div></div></header>'+prepareDialer(legacy.dialer)+'</aside>'+
+    prepareCenter(legacy.center,data)+context(data)+'</div>'+queuePreview(data)+'</div>'
+  }catch(error){
+   console.error('[Project Simplify Call Workspace v562]',error);
+   return'<div class="ps62-shell"><section class="ps62-command"><div><div class="ps62-company-line"><h1>Call Workspace</h1></div><div class="ps62-command-pills"><span class="ps62-pill quiet">Compatibility issue</span></div></div></section><section class="ps62-panel"><div class="ps62-context-card"><h3>The call workspace could not render.</h3><p>'+esc(error&&error.message||String(error))+'</p></div></section></div>'
+  }
+ }
+ function rerender(){
+  if(window._rp2&&_rp2.page==='call'){
+   var page=document.getElementById('rp2-page');
+   if(page)page.innerHTML=render();
+   try{if(typeof window._rp2CallDraw==='function')window._rp2CallDraw()}catch(error){}
+  }
+ }
+ window._rp2CallV1=render;
+ window._ps62NextCustomer=function(){
+  if(typeof baseNext==='function')baseNext.apply(this,arguments);
+  setTimeout(rerender,0)
+ };
+ window._ps62CompleteCall=function(){
+  try{if(typeof window._call532Draft==='function')window._call532Draft()}catch(error){}
+  var result=typeof baseComplete==='function'?baseComplete.apply(this,arguments):undefined;
+  setTimeout(rerender,0);
+  return result
+ };
+ if(typeof baseSendEmail==='function'){
+  window._call540SendEmail=function(){
+   var result=baseSendEmail.apply(this,arguments);
+   setTimeout(rerender,0);
+   return result
+  }
+ }
+ if(typeof baseStartDial==='function'){
+  window._call540StartDial=function(){
+   var result=baseStartDial.apply(this,arguments);
+   setTimeout(rerender,400);
+   return result
+  }
+ }
+ if(typeof baseEndDial==='function'){
+  window._call540EndDial=function(){
+   var result=baseEndDial.apply(this,arguments);
+   setTimeout(rerender,0);
+   return result
+  }
+ }
+ function keepSimplified(name,base,delay){
+  if(typeof base!=='function')return;
+  window[name]=function(){
+   var result=base.apply(this,arguments);
+   setTimeout(rerender,delay||0);
+   return result
+  }
+ }
+ keepSimplified('_call540GoTab',baseGoTab,0);
+ keepSimplified('_call540PrepTabGo',basePrepTab,0);
+ keepSimplified('_call540Toggle',baseToggle,0);
+ keepSimplified('_call540Clear',baseClear,0);
+ keepSimplified('_call540SelectAll',baseSelectAll,0);
+ keepSimplified('_call540SelectArtworkMethod',baseSelectArtwork,0);
+ keepSimplified('_call540Filter',baseFilter,0);
+ keepSimplified('_call540GenerateTalkingPoints',baseGenerate,0);
+ keepSimplified('_call540SelectCompany',baseSelectCompany,0);
+ keepSimplified('_call540ContactChanged',baseContactChanged,0);
+ keepSimplified('_call532ResetCurrent',baseResetCurrent,0);
+ var oldAfter=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof oldAfter==='function'?oldAfter.apply(this,arguments):undefined;
+  if(window._rp2&&_rp2.page==='call')setTimeout(rerender,0);
+  return result
+ };
+ window.TCP_PROJECT_SIMPLIFY_CALL_V562={
+  version:'v562',
+  render:render,
+  current:current,
+  context:context,
+  command:command,
+  queuePreview:queuePreview,
+  activityEvidence:activityEvidence,
+  loyalty:loyalty
+ };
+ setTimeout(function(){
+  if(window._rp2&&_rp2.page==='call')rerender()
+ },0)
 })();
 </script>
 
