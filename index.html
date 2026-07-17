@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v555 — Daily Calendar Flow Fix</title>
+<title>Sales Tracker v556 — Compact Daily Activity Breakdown</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v556 · COMPACT DAILY ACTIVITY BREAKDOWN
+     Restores the compact ranked daily-sales popup, adds rep calls, and adds
+     total calls plus top caller directly to each populated calendar day.
+     ========================================================================== -->
+
 
 <!-- ==========================================================================
      SALES TRACKER v555 · DAILY CALENDAR FLOW FIX
@@ -51729,6 +51736,369 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
 
  setTimeout(applyDailyFlow,180);
  setTimeout(applyDailyFlow,700)
+})();
+</script>
+
+
+
+<style id="tcp-compact-daily-breakdown-v556-css">
+/* ==========================================================================
+   COMPACT DAILY ACTIVITY BREAKDOWN · BUILD v556
+   ========================================================================== */
+
+/* Replace the wide v555 presentation with the compact historical panel style. */
+#v556-daily-modal.r3m-ov{
+  z-index:100000;
+  align-items:center;
+  justify-content:center;
+  padding:18px
+}
+#v556-daily-modal .v556-compact-card{
+  position:relative;
+  width:min(520px,calc(100vw - 28px));
+  max-height:min(875px,calc(100vh - 28px));
+  overflow:auto;
+  padding:0!important;
+  border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  background:#101724!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.58)!important
+}
+#v556-daily-modal .v556-compact-head{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 42px 10px 12px;
+  border-bottom:1px solid rgba(255,255,255,.07)
+}
+#v556-daily-modal .v556-day-pill{
+  flex:0 0 auto;
+  display:inline-flex;align-items:center;
+  min-height:23px;padding:0 9px;border-radius:999px;
+  border:1px solid rgba(166,145,255,.27);
+  background:rgba(123,92,208,.25);
+  color:#D8CAFF;font-size:8px;font-weight:950;
+  letter-spacing:.42px;text-transform:uppercase
+}
+#v556-daily-modal .v556-day-title{
+  color:#fff;font-size:14px;font-weight:950;letter-spacing:-.02em
+}
+#v556-daily-modal .v556-close{
+  position:absolute;right:9px;top:8px;
+  display:grid;place-items:center;width:28px;height:28px;
+  padding:0;border:0;border-radius:8px;background:transparent;
+  color:#A8B4C5;font-size:20px;font-weight:800;cursor:pointer
+}
+#v556-daily-modal .v556-close:hover{background:rgba(255,255,255,.06);color:#fff}
+
+#v556-daily-modal .v556-summary{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:10px 10px 0;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;background:#111A28;overflow:hidden
+}
+#v556-daily-modal .v556-summary-item{
+  min-width:0;padding:10px 10px 9px;
+  border-right:1px solid rgba(255,255,255,.075)
+}
+#v556-daily-modal .v556-summary-item:last-child{border-right:0}
+#v556-daily-modal .v556-summary-item span{
+  display:block;color:#8794A8;font-size:7px;font-weight:950;
+  letter-spacing:.45px;text-transform:uppercase;white-space:nowrap
+}
+#v556-daily-modal .v556-summary-item strong{
+  display:block;margin-top:5px;color:#fff;
+  font-size:15px;font-weight:950;letter-spacing:-.035em;
+  white-space:nowrap
+}
+#v556-daily-modal .v556-summary-item.sales strong{color:#FFE06D}
+#v556-daily-modal .v556-summary-item.calls strong{color:#78DFFF}
+
+#v556-daily-modal .v556-list-head{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;
+  padding:12px 10px 8px;
+  color:#8E9CAF;font-size:7px;font-weight:950;
+  letter-spacing:.5px;text-transform:uppercase
+}
+#v556-daily-modal .v556-list-head strong{
+  color:#CBD5E1;font-size:8px;white-space:nowrap
+}
+#v556-daily-modal .v556-ranked-list{
+  margin:0 7px 8px;border-top:1px solid rgba(255,255,255,.075)
+}
+#v556-daily-modal .v556-ranked-row{
+  display:grid;
+  grid-template-columns:24px minmax(120px,1fr) minmax(130px,.9fr);
+  gap:6px;align-items:center;
+  min-height:36px;padding:5px 4px;
+  border-bottom:1px solid rgba(255,255,255,.075)
+}
+#v556-daily-modal .v556-ranked-row:last-child{border-bottom:0}
+#v556-daily-modal .v556-rank{
+  color:#B9C5D4;font-size:9px;font-weight:800;text-align:center
+}
+#v556-daily-modal .v556-rep-name{
+  min-width:0;color:#fff;font-size:9px;font-weight:950;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+#v556-daily-modal .v556-badges{
+  display:inline-flex;gap:4px;vertical-align:middle;margin-left:5px
+}
+#v556-daily-modal .v556-top-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  min-height:18px;padding:0 6px;border-radius:999px;
+  border:1px solid rgba(251,191,36,.38);
+  background:rgba(251,191,36,.08);
+  color:#FFD761;font-size:6.5px;font-weight:950;
+  letter-spacing:.25px;text-transform:uppercase
+}
+#v556-daily-modal .v556-top-badge.calls{
+  border-color:rgba(0,175,239,.34);
+  background:rgba(0,175,239,.07);
+  color:#91E6FF
+}
+#v556-daily-modal .v556-row-values{
+  min-width:0;text-align:right
+}
+#v556-daily-modal .v556-sales-line,
+#v556-daily-modal .v556-call-line{
+  display:flex;justify-content:flex-end;gap:5px;align-items:baseline;
+  white-space:nowrap
+}
+#v556-daily-modal .v556-sales-line strong{
+  color:#83F3B5;font-size:9px;font-weight:950
+}
+#v556-daily-modal .v556-call-line strong{
+  color:#79DFFF;font-size:8px;font-weight:950
+}
+#v556-daily-modal .v556-sales-line span,
+#v556-daily-modal .v556-call-line span{
+  color:#93A1B4;font-size:7.5px
+}
+#v556-daily-modal .v556-call-line{margin-top:2px}
+#v556-daily-modal .v556-empty{
+  padding:24px 16px;text-align:center;color:#8C99AB;
+  font-size:9px;line-height:1.55
+}
+
+/* Calendar call presentation now mirrors the sales presentation. */
+#pg-daily .v552-call-day{display:none!important}
+#pg-daily .v556-calendar-calls{
+  margin-top:5px;padding-top:5px;
+  border-top:1px solid rgba(0,175,239,.12)
+}
+#pg-daily .v556-day-call-total{
+  color:#8DE6FF;font-size:10px;font-weight:950;letter-spacing:-.015em
+}
+#pg-daily .v556-day-top-caller{
+  margin-top:3px;color:#A8E9FA;font-size:8px;font-weight:850;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+#pg-daily .v556-day-call-wtd{
+  margin-top:2px;color:#718298;font-size:7.5px;font-weight:750
+}
+#pg-daily .daily-day-cell.has-calls{
+  border-color:rgba(0,175,239,.24);
+  box-shadow:inset 0 -2px 0 rgba(0,175,239,.08)
+}
+#pg-daily .daily-day-cell.has-sales.has-calls{
+  background:
+    linear-gradient(145deg,rgba(71,209,108,var(--daily-intensity,.16)),rgba(0,175,239,.075))
+}
+@media(max-width:600px){
+  #v556-daily-modal .v556-summary{grid-template-columns:1fr 1fr}
+  #v556-daily-modal .v556-summary-item:nth-child(2){border-right:0}
+  #v556-daily-modal .v556-summary-item:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.075)}
+  #v556-daily-modal .v556-ranked-row{
+    grid-template-columns:20px minmax(100px,1fr) minmax(118px,.9fr)
+  }
+}
+</style>
+
+
+<script id="tcp-compact-daily-breakdown-v556-js">
+(function(){
+ 'use strict';
+
+ var VERSION='v556';
+ var baseRenderDailyLog=window.renderDailyLog;
+ var baseSetupDailyTab=window.setupDailyTab;
+
+ function clean(value){return String(value==null?'':value).trim()}
+ function n(value){var number=Number(value);return isFinite(number)?number:0}
+ function esc(value){
+  var string=String(value==null?'':value);
+  return typeof esc_html==='function'?esc_html(string):string.replace(/[&<>"]/g,function(character){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[character]
+  })
+ }
+ function money(value){return '$'+Math.round(n(value)).toLocaleString()}
+ function shortName(name){
+  var parts=clean(name).split(/\s+/);
+  return parts[0]||clean(name)
+ }
+ function salesTotals(dateISO){
+  try{
+   if(window.TCP_DAILY_CALENDAR_FLOW_V555&&typeof TCP_DAILY_CALENDAR_FLOW_V555.salesTotals==='function'){
+    return TCP_DAILY_CALENDAR_FLOW_V555.salesTotals(dateISO)
+   }
+  }catch(e){}
+  return{rows:[],smbDay:0,corpDay:0,totalDay:0,totalCum:0}
+ }
+ function callTotals(dateISO){
+  try{
+   if(window.TCP_DAILY_SALES_CALLS_V552&&typeof TCP_DAILY_SALES_CALLS_V552.callTotals==='function'){
+    return TCP_DAILY_SALES_CALLS_V552.callTotals(dateISO)
+   }
+  }catch(e){}
+  return{rows:[],daily:0,cumulative:0,top:null}
+ }
+ function combinedRows(dateISO,sales,calls){
+  try{
+   if(window.TCP_DAILY_CALENDAR_FLOW_V555&&typeof TCP_DAILY_CALENDAR_FLOW_V555.combinedRows==='function'){
+    return TCP_DAILY_CALENDAR_FLOW_V555.combinedRows(dateISO,sales,calls)
+   }
+  }catch(e){}
+  var map={};
+  (sales.rows||[]).forEach(function(row){
+   map[row.name]=map[row.name]||{name:row.name,salesDay:0,salesCum:0,callsDay:0,callsCum:0};
+   map[row.name].salesDay=n(row.day);map[row.name].salesCum=n(row.cum)
+  });
+  (calls.rows||[]).forEach(function(row){
+   map[row.name]=map[row.name]||{name:row.name,salesDay:0,salesCum:0,callsDay:0,callsCum:0};
+   map[row.name].callsDay=n(row.day);map[row.name].callsCum=n(row.cumulative)
+  });
+  return Object.keys(map).map(function(key){return map[key]}).filter(function(row){
+   return row.salesDay||row.salesCum||row.callsDay||row.callsCum
+  }).sort(function(a,b){
+   return b.salesDay-a.salesDay||b.callsDay-a.callsDay||b.salesCum-a.salesCum||a.name.localeCompare(b.name)
+  })
+ }
+ function closeModal(){
+  var modal=document.getElementById('v556-daily-modal');
+  if(modal)modal.remove()
+ }
+ function topSalesName(rows){
+  var candidates=(rows||[]).filter(function(row){return n(row.salesDay)>0});
+  if(!candidates.length)return'';
+  return candidates.slice().sort(function(a,b){return b.salesDay-a.salesDay||b.salesCum-a.salesCum})[0].name
+ }
+ function topCallsName(rows){
+  var candidates=(rows||[]).filter(function(row){return n(row.callsDay)>0});
+  if(!candidates.length)return'';
+  return candidates.slice().sort(function(a,b){return b.callsDay-a.callsDay||b.callsCum-a.callsCum})[0].name
+ }
+ function openCompactBreakdown(dateISO){
+  var sales=salesTotals(dateISO),calls=callTotals(dateISO),rows=combinedRows(dateISO,sales,calls);
+  var label=typeof formatDateShort==='function'?formatDateShort(dateISO):dateISO;
+  var topSales=topSalesName(rows),topCalls=topCallsName(rows);
+
+  var rowHtml=rows.length?rows.map(function(row,index){
+   var badges='';
+   if(row.name===topSales)badges+='<span class="v556-top-badge">★ Top</span>';
+   if(row.name===topCalls)badges+='<span class="v556-top-badge calls">☎ Caller</span>';
+   return'<div class="v556-ranked-row">'+
+    '<div class="v556-rank">'+(index+1)+'</div>'+
+    '<div class="v556-rep-name">'+esc(row.name)+(badges?'<span class="v556-badges">'+badges+'</span>':'')+'</div>'+
+    '<div class="v556-row-values">'+
+      '<div class="v556-sales-line"><strong>+'+money(row.salesDay)+'</strong><span>'+money(row.salesCum)+' cum</span></div>'+
+      '<div class="v556-call-line"><strong>+'+Math.round(n(row.callsDay)).toLocaleString()+' calls</strong><span>'+Math.round(n(row.callsCum)).toLocaleString()+' cum</span></div>'+
+    '</div>'+
+   '</div>'
+  }).join(''):'<div class="v556-empty">No per-rep sales or calls were saved for this date.</div>';
+
+  closeModal();
+  var overlay=document.createElement('div');
+  overlay.id='v556-daily-modal';
+  overlay.className='r3m-ov';
+  overlay.innerHTML=
+   '<div class="r3m-card v556-compact-card">'+
+    '<div class="v556-compact-head"><span class="v556-day-pill">Daily Sales &amp; Calls</span><div class="v556-day-title">'+esc(label)+'</div></div>'+
+    '<button class="v556-close" onclick="_v556CloseDailyModal()" aria-label="Close">×</button>'+
+    '<div class="v556-summary">'+
+      '<div class="v556-summary-item sales"><span>SMB (Day)</span><strong>+'+money(sales.smbDay)+'</strong></div>'+
+      '<div class="v556-summary-item"><span>CORP (Day)</span><strong>+'+money(sales.corpDay)+'</strong></div>'+
+      '<div class="v556-summary-item"><span>Total (Day)</span><strong>+'+money(sales.totalDay)+'</strong></div>'+
+      '<div class="v556-summary-item calls"><span>Calls (Day)</span><strong>+'+Math.round(n(calls.daily)).toLocaleString()+'</strong></div>'+
+    '</div>'+
+    '<div class="v556-list-head"><span>Rep Activity · Ranked (Day · Cumulative)</span><strong>Σ '+money(sales.totalCum)+' · '+Math.round(n(calls.cumulative)).toLocaleString()+' calls</strong></div>'+
+    '<div class="v556-ranked-list">'+rowHtml+'</div>'+
+   '</div>';
+
+  overlay.addEventListener('click',function(event){
+   if(event.target===overlay)closeModal()
+  });
+  document.body.appendChild(overlay)
+ }
+ function decorateCalendarCalls(){
+  document.querySelectorAll('#pg-daily .daily-day-cell[data-date]').forEach(function(cell){
+   var date=cell.dataset.date;
+   var old=cell.querySelector('.v556-calendar-calls');
+   if(old)old.remove();
+   var legacy=cell.querySelector('.v552-call-day');
+   if(legacy)legacy.remove();
+
+   var totals=callTotals(date);
+   var explicit=!!(window.S&&S.dailyCalls&&Object.prototype.hasOwnProperty.call(S.dailyCalls,date));
+   var hasCalls=explicit||n(totals.daily)>0;
+   cell.classList.toggle('has-calls',hasCalls);
+
+   if(!hasCalls)return;
+
+   var top=(totals.rows||[]).filter(function(row){return n(row.day)>0}).sort(function(a,b){
+    return n(b.day)-n(a.day)||n(b.cumulative)-n(a.cumulative)
+   })[0]||null;
+
+   var block=document.createElement('div');
+   block.className='v556-calendar-calls';
+   block.innerHTML=
+    '<div class="v556-day-call-total">Calls +'+Math.round(n(totals.daily)).toLocaleString()+'</div>'+
+    (top?'<div class="v556-day-top-caller">☎ '+esc(shortName(top.name))+' +'+Math.round(n(top.day)>0?n(top.day):n(top.cumulative)).toLocaleString()+'</div>':'')+
+    '<div class="v556-day-call-wtd">Σ '+Math.round(n(totals.cumulative)).toLocaleString()+' calls WTD</div>';
+
+   var deleteButton=cell.querySelector('.daily-delete-btn');
+   if(deleteButton)cell.insertBefore(block,deleteButton);
+   else cell.appendChild(block);
+
+   cell.classList.add('daily-clickable');
+   cell.setAttribute('onclick',"dailyOpenDayDetail('"+date+"')");
+   cell.setAttribute('title','Click for per-rep daily sales and calls')
+  })
+ }
+ function apply(){
+  decorateCalendarCalls()
+ }
+
+ window._v556CloseDailyModal=closeModal;
+ window.dailyOpenDayDetail=openCompactBreakdown;
+ window.drDayPopup=openCompactBreakdown;
+
+ window.renderDailyLog=function(){
+  var result=typeof baseRenderDailyLog==='function'?baseRenderDailyLog.apply(this,arguments):undefined;
+  setTimeout(apply,10);
+  setTimeout(apply,100);
+  return result
+ };
+
+ if(typeof baseSetupDailyTab==='function'){
+  window.setupDailyTab=function(){
+   var result=baseSetupDailyTab.apply(this,arguments);
+   setTimeout(apply,20);
+   setTimeout(apply,140);
+   return result
+  }
+ }
+
+ window.TCP_COMPACT_DAILY_BREAKDOWN_V556={
+  version:VERSION,
+  openDay:openCompactBreakdown,
+  close:closeModal,
+  decorateCalendar:decorateCalendarCalls,
+  combinedRows:combinedRows,
+  topSalesName:topSalesName,
+  topCallsName:topCallsName
+ };
+
+ setTimeout(apply,220);
+ setTimeout(apply,750)
 })();
 </script>
 
