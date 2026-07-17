@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v558 — Project Simplify Dashboard</title>
+<title>Sales Tracker v559 — Dashboard Scale & Frame Fix</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v559 · DASHBOARD SCALE & FRAME FIX
+     Removes the legacy shell gutter/frame and establishes permanent executive
+     scale for Project Simplify dashboards in expanded and collapsed navigation.
+     ========================================================================== -->
+
 
 <!-- ==========================================================================
      SALES TRACKER v558 · PROJECT SIMPLIFY DASHBOARD
@@ -53769,6 +53776,526 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important}
   var dashboard=document.getElementById('pg-dash');
   if(dashboard&&dashboard.classList.contains('active'))render()
  },100);
+})();
+</script>
+
+
+
+<style id="tcp-dashboard-scale-frame-v559-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · EXECUTIVE SCALE + CLEAN FRAME · BUILD v559
+   ========================================================================== */
+
+/*
+  The legacy application shell reserved an extra 26px outside the fixed
+  navigation, while the Project Simplify canvas also centered itself at a
+  1480px maximum. Together those rules created the black seam/frame and made
+  the dashboard smaller whenever the navigation changed width.
+*/
+body.ps58-dashboard-active{
+  background:#060A0E!important;
+  overflow-x:hidden!important
+}
+body.ps58-dashboard-active .wrap{
+  width:100%!important;
+  max-width:none!important;
+  min-height:100vh!important;
+  margin:0!important;
+  padding:0 0 38px var(--tcp-nav-expanded)!important;
+  background:#060A0E!important;
+  overflow:visible!important
+}
+body.ps58-dashboard-active.nav-rail .wrap{
+  padding-left:var(--tcp-nav-rail)!important
+}
+body.ps58-dashboard-active #tabBar{
+  box-shadow:none!important;
+  border-right:1px solid rgba(148,163,184,.15)!important
+}
+body.ps58-dashboard-active #pg-dash.ps58-dashboard{
+  width:100%!important;
+  max-width:none!important;
+  min-height:100vh!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:#060A0E!important
+}
+body.ps58-dashboard-active #pg-dash.ps58-dashboard:before,
+body.ps58-dashboard-active #pg-dash.ps58-dashboard:after,
+body.ps58-dashboard-active .wrap:before,
+body.ps58-dashboard-active .wrap:after{
+  display:none!important;
+  content:none!important
+}
+#pg-dash .ps58-shell{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:28px clamp(24px,2vw,38px) 42px!important
+}
+
+/* Permanent executive scale */
+#pg-dash .ps58-title{
+  font-size:clamp(38px,2.55vw,48px)!important;
+  line-height:1!important
+}
+#pg-dash .ps58-context{
+  gap:10px!important;
+  margin-top:11px!important;
+  font-size:12px!important
+}
+#pg-dash .ps58-header{
+  gap:30px!important;
+  margin-bottom:16px!important
+}
+#pg-dash .ps58-periods{
+  grid-template-columns:repeat(4,minmax(94px,1fr)) auto!important;
+  gap:9px!important
+}
+#pg-dash .ps58-period{
+  gap:7px!important;
+  font-size:8.5px!important
+}
+#pg-dash .ps58-period select{
+  min-width:98px!important;
+  min-height:48px!important;
+  padding:0 12px!important;
+  border-radius:11px!important;
+  font-size:12px!important
+}
+#pg-dash .ps58-live{
+  min-height:48px!important;
+  padding:0 15px!important;
+  border-radius:11px!important;
+  font-size:9.5px!important
+}
+
+#pg-dash .ps58-brief{
+  grid-template-columns:42px minmax(0,1fr)!important;
+  gap:13px!important;
+  min-height:70px!important;
+  margin-bottom:23px!important;
+  padding:13px 17px!important;
+  border-radius:14px!important
+}
+#pg-dash .ps58-brief-icon{
+  width:38px!important;
+  height:38px!important;
+  border-radius:11px!important;
+  font-size:18px!important
+}
+#pg-dash .ps58-brief-copy{
+  font-size:11.5px!important;
+  line-height:1.6!important
+}
+
+#pg-dash .ps58-section-label{
+  font-size:9.5px!important;
+  letter-spacing:1.3px!important
+}
+#pg-dash .ps58-section-head{
+  margin-bottom:12px!important
+}
+#pg-dash .ps58-section-head h2,
+#pg-dash .ps58-panel-head h2{
+  font-size:20px!important;
+  line-height:1.15!important
+}
+#pg-dash .ps58-section-head p{
+  font-size:10px!important
+}
+
+#pg-dash .ps58-kpi-grid{
+  gap:13px!important;
+  margin-bottom:24px!important
+}
+#pg-dash .ps58-kpi{
+  min-height:205px!important;
+  padding:18px!important;
+  border-radius:16px!important
+}
+#pg-dash .ps58-kpi-label{
+  gap:9px!important;
+  font-size:9px!important
+}
+#pg-dash .ps58-kpi-icon{
+  width:34px!important;
+  height:34px!important;
+  font-size:15px!important
+}
+#pg-dash .ps58-kpi-state{
+  max-width:175px!important;
+  padding:5px 8px!important;
+  font-size:7.5px!important
+}
+#pg-dash .ps58-kpi-value{
+  margin-top:21px!important;
+  font-size:clamp(31px,2vw,39px)!important
+}
+#pg-dash .ps58-kpi-sub{
+  margin-top:7px!important;
+  font-size:10.5px!important
+}
+#pg-dash .ps58-track{
+  height:10px!important;
+  margin-top:18px!important
+}
+#pg-dash .ps58-kpi-foot{
+  margin-top:14px!important;
+  font-size:9px!important
+}
+
+#pg-dash .ps58-main-grid{
+  grid-template-columns:minmax(0,1.58fr) minmax(360px,.72fr)!important;
+  gap:15px!important;
+  margin-bottom:15px!important
+}
+#pg-dash .ps58-card{
+  border-radius:17px!important
+}
+#pg-dash .ps58-chart-card,
+#pg-dash .ps58-progress-card,
+#pg-dash .ps58-side-card{
+  padding:18px!important
+}
+#pg-dash .ps58-chart-wrap{
+  height:410px!important;
+  margin-top:8px!important
+}
+#pg-dash .ps58-chart-progress{
+  margin-top:12px!important;
+  padding-top:13px!important
+}
+#pg-dash .ps58-chart-progress-head{
+  font-size:9px!important
+}
+#pg-dash .ps58-chart-progress-bar{
+  height:10px!important;
+  margin-top:10px!important
+}
+#pg-dash .ps58-chart-progress-copy{
+  margin-top:10px!important;
+  font-size:9.5px!important
+}
+
+#pg-dash .ps58-progress-block{
+  padding:18px 0!important
+}
+#pg-dash .ps58-progress-head span{
+  font-size:9px!important
+}
+#pg-dash .ps58-progress-head b{
+  padding:5px 8px!important;
+  font-size:7.5px!important
+}
+#pg-dash .ps58-progress-value{
+  margin-top:9px!important;
+  font-size:24px!important
+}
+#pg-dash .ps58-marker-track{
+  height:10px!important;
+  margin-top:16px!important
+}
+#pg-dash .ps58-marker-track em{
+  top:-5px!important;
+  height:20px!important
+}
+#pg-dash .ps58-marker-labels{
+  margin-top:10px!important;
+  font-size:8.5px!important
+}
+#pg-dash .ps58-marker-labels strong{
+  font-size:10px!important
+}
+
+#pg-dash .ps58-panel-head{
+  padding:17px 18px!important
+}
+#pg-dash .ps58-tabs{
+  gap:24px!important;
+  padding:0 17px!important
+}
+#pg-dash .ps58-tab{
+  min-height:47px!important;
+  font-size:9.5px!important
+}
+#pg-dash .ps58-action-list{
+  min-height:300px!important
+}
+#pg-dash .ps58-action-row{
+  grid-template-columns:12px 41px minmax(0,1fr) auto 20px!important;
+  gap:11px!important;
+  min-height:75px!important;
+  padding:11px 15px!important
+}
+#pg-dash .ps58-action-icon{
+  width:37px!important;
+  height:37px!important;
+  font-size:15px!important
+}
+#pg-dash .ps58-action-title{
+  font-size:10.5px!important
+}
+#pg-dash .ps58-action-copy{
+  margin-top:4px!important;
+  font-size:9px!important
+}
+#pg-dash .ps58-severity{
+  font-size:9px!important
+}
+#pg-dash .ps58-action-arrow{
+  font-size:16px!important
+}
+
+#pg-dash .ps58-side-card+.ps58-side-card{
+  margin-top:15px!important
+}
+#pg-dash .ps58-side-row{
+  gap:12px!important;
+  padding:13px 0!important
+}
+#pg-dash .ps58-side-row span{
+  font-size:10px!important
+}
+#pg-dash .ps58-side-row strong{
+  font-size:12px!important
+}
+#pg-dash .ps58-side-row small{
+  margin-top:3px!important;
+  font-size:8.5px!important
+}
+#pg-dash .ps58-link{
+  margin-top:12px!important;
+  font-size:9.5px!important
+}
+
+#pg-dash .ps58-rep-table{
+  min-width:900px!important
+}
+#pg-dash .ps58-rep-table th,
+#pg-dash .ps58-rep-table td{
+  padding:12px 13px!important
+}
+#pg-dash .ps58-rep-table th{
+  font-size:8.5px!important
+}
+#pg-dash .ps58-rep-table td{
+  font-size:10px!important
+}
+#pg-dash .ps58-rep-name-cell{
+  min-width:190px!important;
+  gap:10px!important
+}
+#pg-dash .ps58-rep-name-cell strong{
+  font-size:10.5px!important
+}
+#pg-dash .ps58-rep-light{
+  width:9px!important;
+  height:9px!important
+}
+#pg-dash .ps58-mini-track{
+  width:76px!important;
+  height:7px!important;
+  margin-left:8px!important
+}
+#pg-dash .ps58-flag{
+  width:21px!important;
+  height:21px!important;
+  font-size:7.5px!important
+}
+
+#pg-dash .ps58-notes-card{
+  margin-top:17px!important
+}
+#pg-dash .ps58-notes-grid{
+  gap:13px!important;
+  padding:13px!important
+}
+#pg-dash .ps58-note-panel{
+  min-height:205px!important;
+  padding:15px!important;
+  border-radius:13px!important
+}
+#pg-dash .ps58-note-title{
+  font-size:9px!important
+}
+#pg-dash .ps58-priority{
+  grid-template-columns:33px minmax(0,1fr)!important;
+  gap:10px!important;
+  padding:10px 0!important
+}
+#pg-dash .ps58-priority b{
+  width:30px!important;
+  height:30px!important;
+  font-size:9px!important
+}
+#pg-dash .ps58-priority strong{
+  font-size:10px!important
+}
+#pg-dash .ps58-priority span{
+  margin-top:3px!important;
+  font-size:8.5px!important
+}
+#pg-dash #wkManagerNotes{
+  height:128px!important;
+  margin-top:11px!important;
+  padding:12px!important;
+  font-size:10.5px!important
+}
+#pg-dash .ps58-note-actions button,
+#pg-dash .ps58-footer button{
+  min-height:38px!important;
+  padding:0 13px!important;
+  font-size:9px!important
+}
+#pg-dash .ps58-review-empty{
+  min-height:140px!important;
+  font-size:9.5px!important
+}
+#pg-dash .ps58-recent-note{
+  padding:10px 0!important
+}
+#pg-dash .ps58-recent-note strong{
+  font-size:9.5px!important
+}
+#pg-dash .ps58-recent-note span{
+  margin-top:4px!important;
+  font-size:8.5px!important
+}
+
+#pg-dash .ps58-footer{
+  margin-top:13px!important;
+  padding:11px 13px!important;
+  border-radius:12px!important
+}
+#pg-dash .ps58-footer-status{
+  gap:10px!important;
+  font-size:8.5px!important
+}
+
+/* Keep the larger scale useful rather than cramped on medium desktops. */
+@media(max-width:1450px){
+  #pg-dash .ps58-shell{
+    padding:24px 24px 36px!important
+  }
+  #pg-dash .ps58-title{
+    font-size:38px!important
+  }
+  #pg-dash .ps58-main-grid{
+    grid-template-columns:minmax(0,1.5fr) minmax(330px,.72fr)!important
+  }
+  #pg-dash .ps58-chart-wrap{
+    height:370px!important
+  }
+}
+@media(max-width:1180px){
+  #pg-dash .ps58-main-grid{
+    grid-template-columns:1fr!important
+  }
+  #pg-dash .ps58-chart-wrap{
+    height:390px!important
+  }
+}
+@media(max-width:1050px){
+  body.ps58-dashboard-active .wrap,
+  body.ps58-dashboard-active.nav-rail .wrap{
+    padding:0 0 28px!important
+  }
+  body.ps58-dashboard-active #tabBar{
+    border-right:0!important;
+    border-bottom:1px solid rgba(148,163,184,.15)!important
+  }
+  #pg-dash .ps58-shell{
+    padding:20px 16px 30px!important
+  }
+}
+@media(max-width:760px){
+  #pg-dash .ps58-title{
+    font-size:34px!important
+  }
+  #pg-dash .ps58-periods{
+    grid-template-columns:1fr 1fr!important
+  }
+  #pg-dash .ps58-kpi{
+    min-height:184px!important
+  }
+  #pg-dash .ps58-chart-wrap{
+    height:330px!important
+  }
+}
+</style>
+
+
+<script id="tcp-dashboard-scale-frame-v559-js">
+(function(){
+ 'use strict';
+
+ function syncDashboardFrame(){
+  var dashboard=document.getElementById('pg-dash');
+  var active=!!(dashboard&&dashboard.classList.contains('active'));
+  document.body.classList.toggle('ps58-dashboard-active',active);
+  if(!active)return;
+
+  /*
+    A nav width change can happen without a dashboard render. Force the chart
+    and responsive cards to measure the newly available width immediately.
+  */
+  requestAnimationFrame(function(){
+   window.dispatchEvent(new Event('resize'));
+   try{
+    if(window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558&&
+       typeof TCP_PROJECT_SIMPLIFY_DASHBOARD_V558.render==='function'&&
+       !document.querySelector('#pg-dash .ps58-shell')){
+      TCP_PROJECT_SIMPLIFY_DASHBOARD_V558.render()
+    }
+   }catch(error){
+    console.warn('[v559 dashboard frame]',error)
+   }
+  })
+ }
+
+ var bodyObserver=new MutationObserver(function(mutations){
+  var relevant=mutations.some(function(mutation){
+   return mutation.type==='attributes'&&
+    (mutation.target===document.body||mutation.target&&mutation.target.id==='pg-dash')
+  });
+  if(relevant)syncDashboardFrame()
+ });
+
+ if(document.body){
+  bodyObserver.observe(document.body,{attributes:true,attributeFilter:['class']})
+ }
+ var dashboard=document.getElementById('pg-dash');
+ if(dashboard){
+  bodyObserver.observe(dashboard,{attributes:true,attributeFilter:['class']})
+ }
+
+ window.addEventListener('resize',function(){
+  if(document.body.classList.contains('ps58-dashboard-active')){
+   document.documentElement.style.setProperty(
+    '--ps59-dashboard-width',
+    Math.max(0,document.documentElement.clientWidth-
+     (document.body.classList.contains('nav-rail')?78:248))+'px'
+   )
+  }
+ });
+
+ window.TCP_DASHBOARD_SCALE_FRAME_V559={
+  version:'v559',
+  sync:syncDashboardFrame,
+  availableWidth:function(){
+   return Math.max(0,document.documentElement.clientWidth-
+    (document.body.classList.contains('nav-rail')?78:248))
+  }
+ };
+
+ syncDashboardFrame();
+ window.dispatchEvent(new Event('resize'))
 })();
 </script>
 
