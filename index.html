@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v556 — Compact Daily Activity Breakdown</title>
+<title>Sales Tracker v557 — Split Sales and Calls Rankings</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v557 · SPLIT SALES AND CALLS RANKINGS
+     Daily calendar detail uses separate side-by-side Sales and Calls boards,
+     each with its own TOP badge and movement versus the prior saved day.
+     ========================================================================== -->
+
 
 <!-- ==========================================================================
      SALES TRACKER v556 · COMPACT DAILY ACTIVITY BREAKDOWN
@@ -52099,6 +52106,512 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
 
  setTimeout(apply,220);
  setTimeout(apply,750)
+})();
+</script>
+
+
+
+<style id="tcp-split-daily-rankings-v557-css">
+/* ==========================================================================
+   SPLIT SALES AND CALLS RANKINGS · BUILD v557
+   ========================================================================== */
+#v557-daily-modal.r3m-ov{
+  z-index:100000;
+  align-items:center;
+  justify-content:center;
+  padding:18px
+}
+#v557-daily-modal .v557-modal-card{
+  position:relative;
+  width:min(1080px,calc(100vw - 30px));
+  max-height:min(900px,calc(100vh - 30px));
+  overflow:auto;
+  padding:0!important;
+  border-radius:15px!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  background:#0E1521!important;
+  box-shadow:0 30px 90px rgba(0,0,0,.62)!important
+}
+#v557-daily-modal .v557-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 46px 10px 13px;
+  border-bottom:1px solid rgba(255,255,255,.075)
+}
+#v557-daily-modal .v557-day-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:23px;
+  padding:0 9px;
+  border-radius:999px;
+  border:1px solid rgba(166,145,255,.28);
+  background:rgba(123,92,208,.25);
+  color:#D8CAFF;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.42px;
+  text-transform:uppercase
+}
+#v557-daily-modal .v557-day-title{
+  color:#fff;
+  font-size:15px;
+  font-weight:950;
+  letter-spacing:-.025em
+}
+#v557-daily-modal .v557-close{
+  position:absolute;
+  right:9px;
+  top:8px;
+  display:grid;
+  place-items:center;
+  width:29px;
+  height:29px;
+  padding:0;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#A8B4C5;
+  font-size:20px;
+  font-weight:850;
+  cursor:pointer
+}
+#v557-daily-modal .v557-close:hover{
+  color:#fff;
+  background:rgba(255,255,255,.06)
+}
+
+#v557-daily-modal .v557-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:10px 10px 0;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  background:#111A28;
+  overflow:hidden
+}
+#v557-daily-modal .v557-summary-item{
+  min-width:0;
+  padding:10px 11px 9px;
+  border-right:1px solid rgba(255,255,255,.075)
+}
+#v557-daily-modal .v557-summary-item:last-child{border-right:0}
+#v557-daily-modal .v557-summary-item span{
+  display:block;
+  color:#8794A8;
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+  white-space:nowrap
+}
+#v557-daily-modal .v557-summary-item strong{
+  display:block;
+  margin-top:5px;
+  color:#fff;
+  font-size:16px;
+  font-weight:950;
+  letter-spacing:-.04em;
+  white-space:nowrap
+}
+#v557-daily-modal .v557-summary-item.sales strong{color:#FFE06D}
+#v557-daily-modal .v557-summary-item.calls strong{color:#78DFFF}
+
+#v557-daily-modal .v557-board-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px
+}
+#v557-daily-modal .v557-board{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:11px;
+  background:#101826
+}
+#v557-daily-modal .v557-board.sales{
+  box-shadow:inset 0 3px 0 rgba(250,135,61,.55)
+}
+#v557-daily-modal .v557-board.calls{
+  box-shadow:inset 0 3px 0 rgba(0,175,239,.58)
+}
+#v557-daily-modal .v557-board-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  min-height:42px;
+  padding:10px 10px 8px;
+  border-bottom:1px solid rgba(255,255,255,.075)
+}
+#v557-daily-modal .v557-board-head span{
+  color:#8E9CAF;
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.5px;
+  text-transform:uppercase
+}
+#v557-daily-modal .v557-board-head strong{
+  color:#D4DDE7;
+  font-size:8px;
+  white-space:nowrap
+}
+#v557-daily-modal .v557-board.calls .v557-board-head strong{color:#8DE6FF}
+#v557-daily-modal .v557-board.sales .v557-board-head strong{color:#FFE06D}
+
+#v557-daily-modal .v557-ranked-list{
+  min-height:430px
+}
+#v557-daily-modal .v557-ranked-row{
+  display:grid;
+  grid-template-columns:24px minmax(126px,1fr) minmax(98px,.65fr);
+  gap:6px;
+  align-items:center;
+  min-height:37px;
+  padding:5px 7px 5px 4px;
+  border-bottom:1px solid rgba(255,255,255,.072)
+}
+#v557-daily-modal .v557-ranked-row:last-child{border-bottom:0}
+#v557-daily-modal .v557-rank{
+  color:#BBC7D5;
+  font-size:9px;
+  font-weight:850;
+  text-align:center
+}
+#v557-daily-modal .v557-name-wrap{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:5px
+}
+#v557-daily-modal .v557-rep-name{
+  min-width:0;
+  color:#fff;
+  font-size:9px;
+  font-weight:950;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+#v557-daily-modal .v557-top-badge{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  min-height:18px;
+  padding:0 6px;
+  border-radius:999px;
+  border:1px solid rgba(251,191,36,.40);
+  background:rgba(251,191,36,.08);
+  color:#FFD761;
+  font-size:6.5px;
+  font-weight:950;
+  letter-spacing:.25px;
+  text-transform:uppercase
+}
+#v557-daily-modal .v557-board.calls .v557-top-badge{
+  border-color:rgba(0,175,239,.38);
+  background:rgba(0,175,239,.08);
+  color:#90E7FF
+}
+#v557-daily-modal .v557-move{
+  flex:0 0 auto;
+  min-width:25px;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-height:17px;
+  padding:0 5px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.035);
+  color:#8D9BAD;
+  font-size:6.5px;
+  font-weight:950;
+  letter-spacing:.15px
+}
+#v557-daily-modal .v557-move.up{
+  color:#83F3B5;
+  border-color:rgba(93,202,165,.28);
+  background:rgba(93,202,165,.07)
+}
+#v557-daily-modal .v557-move.down{
+  color:#F3A4A4;
+  border-color:rgba(240,149,149,.27);
+  background:rgba(240,149,149,.065)
+}
+#v557-daily-modal .v557-move.new{
+  color:#F5CD7B;
+  border-color:rgba(239,159,39,.27);
+  background:rgba(239,159,39,.065)
+}
+#v557-daily-modal .v557-value{
+  min-width:0;
+  text-align:right
+}
+#v557-daily-modal .v557-value strong{
+  display:block;
+  font-size:9px;
+  font-weight:950;
+  white-space:nowrap
+}
+#v557-daily-modal .v557-board.sales .v557-value strong{color:#83F3B5}
+#v557-daily-modal .v557-board.calls .v557-value strong{color:#79DFFF}
+#v557-daily-modal .v557-value span{
+  display:block;
+  margin-top:2px;
+  color:#93A1B4;
+  font-size:7.5px;
+  white-space:nowrap
+}
+#v557-daily-modal .v557-prior-note{
+  padding:8px 10px;
+  border-top:1px solid rgba(255,255,255,.065);
+  color:#718095;
+  font-size:7.5px;
+  line-height:1.45
+}
+#v557-daily-modal .v557-empty{
+  padding:28px 14px;
+  text-align:center;
+  color:#8C99AB;
+  font-size:9px;
+  line-height:1.55
+}
+
+@media(max-width:850px){
+  #v557-daily-modal .v557-board-grid{grid-template-columns:1fr}
+  #v557-daily-modal .v557-ranked-list{min-height:0}
+}
+@media(max-width:580px){
+  #v557-daily-modal .v557-summary{grid-template-columns:1fr 1fr}
+  #v557-daily-modal .v557-summary-item:nth-child(2){border-right:0}
+  #v557-daily-modal .v557-summary-item:nth-child(-n+2){
+    border-bottom:1px solid rgba(255,255,255,.075)
+  }
+  #v557-daily-modal .v557-ranked-row{
+    grid-template-columns:20px minmax(112px,1fr) minmax(88px,.6fr)
+  }
+}
+</style>
+
+
+<script id="tcp-split-daily-rankings-v557-js">
+(function(){
+ 'use strict';
+
+ var VERSION='v557';
+
+ function clean(value){return String(value==null?'':value).trim()}
+ function n(value){var number=Number(value);return isFinite(number)?number:0}
+ function esc(value){
+  var string=String(value==null?'':value);
+  return typeof esc_html==='function'?esc_html(string):string.replace(/[&<>"]/g,function(character){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[character]
+  })
+ }
+ function money(value){return '$'+Math.round(n(value)).toLocaleString()}
+ function activeRepNames(){
+  try{
+   return activeReps().map(function(rep){return rep.name})
+  }catch(e){
+   return(S.reps||[]).filter(function(rep){return rep&&!rep.retired}).map(function(rep){return rep.name})
+  }
+ }
+ function dateObject(dateISO){
+  var date=new Date(String(dateISO||'')+'T12:00:00');
+  return isNaN(date.getTime())?null:date
+ }
+ function isoDate(date){
+  return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')
+ }
+ function weekStart(dateISO){
+  var date=dateObject(dateISO);
+  if(!date)return'';
+  date.setDate(date.getDate()-date.getDay());
+  return isoDate(date)
+ }
+ function salesTotals(dateISO){
+  try{
+   if(window.TCP_DAILY_CALENDAR_FLOW_V555&&typeof TCP_DAILY_CALENDAR_FLOW_V555.salesTotals==='function'){
+    return TCP_DAILY_CALENDAR_FLOW_V555.salesTotals(dateISO)
+   }
+  }catch(e){}
+  return{rows:[],smbDay:0,corpDay:0,totalDay:0,totalCum:0}
+ }
+ function callTotals(dateISO){
+  try{
+   if(window.TCP_DAILY_SALES_CALLS_V552&&typeof TCP_DAILY_SALES_CALLS_V552.callTotals==='function'){
+    return TCP_DAILY_SALES_CALLS_V552.callTotals(dateISO)
+   }
+  }catch(e){}
+  return{rows:[],daily:0,cumulative:0}
+ }
+ function salesForRep(dateISO,rep){
+  var day=0,cumulative=0;
+  try{
+   if(typeof _drRepDay==='function')day=n(_drRepDay(dateISO,rep))
+  }catch(e){}
+  try{
+   if(typeof _drWTD==='function')cumulative=n(_drWTD(dateISO,rep))
+  }catch(e){}
+  if(day===0||cumulative===0){
+   var totals=salesTotals(dateISO);
+   var row=(totals.rows||[]).find(function(item){return item.name===rep});
+   if(row){
+    if(day===0)day=n(row.day);
+    if(cumulative===0)cumulative=n(row.cum)
+   }
+  }
+  return{day:day,cumulative:cumulative}
+ }
+ function callsForRep(dateISO,rep){
+  var day=0,cumulative=0;
+  try{
+   if(window.TCP_DAILY_SALES_CALLS_V552){
+    if(typeof TCP_DAILY_SALES_CALLS_V552.callDay==='function')day=n(TCP_DAILY_SALES_CALLS_V552.callDay(dateISO,rep));
+    if(typeof TCP_DAILY_SALES_CALLS_V552.callLatest==='function')cumulative=n(TCP_DAILY_SALES_CALLS_V552.callLatest(dateISO,rep))
+   }
+  }catch(e){}
+  if(day===0&&cumulative===0){
+   var totals=callTotals(dateISO);
+   var row=(totals.rows||[]).find(function(item){return item.name===rep});
+   if(row){day=n(row.day);cumulative=n(row.cumulative)}
+  }
+  return{day:day,cumulative:cumulative}
+ }
+ function salesRows(dateISO){
+  return activeRepNames().map(function(name){
+   var value=salesForRep(dateISO,name);
+   return{name:name,day:value.day,cumulative:value.cumulative}
+  }).sort(function(a,b){
+   return b.day-a.day||b.cumulative-a.cumulative||a.name.localeCompare(b.name)
+  })
+ }
+ function callRows(dateISO){
+  return activeRepNames().map(function(name){
+   var value=callsForRep(dateISO,name);
+   return{name:name,day:value.day,cumulative:value.cumulative}
+  }).sort(function(a,b){
+   return b.day-a.day||b.cumulative-a.cumulative||a.name.localeCompare(b.name)
+  })
+ }
+ function savedDates(kind){
+  var source=kind==='sales'?(S.dailyRep||{}):(S.dailyCalls||{});
+  return Object.keys(source).filter(function(date){
+   return /^\d{4}-\d{2}-\d{2}$/.test(date)
+  }).sort()
+ }
+ function previousSavedDate(kind,dateISO){
+  var start=weekStart(dateISO);
+  var dates=savedDates(kind).filter(function(date){
+   return date<dateISO&&date>=start
+  });
+  return dates.length?dates[dates.length-1]:''
+ }
+ function rankMap(rows){
+  var map={};
+  (rows||[]).forEach(function(row,index){map[row.name]=index+1});
+  return map
+ }
+ function movement(currentRows,previousRows,hasPrevious){
+  var previous=rankMap(previousRows);
+  return currentRows.map(function(row,index){
+   var currentRank=index+1;
+   if(!hasPrevious||previous[row.name]==null){
+    return Object.assign({},row,{rank:currentRank,move:{key:'new',label:'NEW',value:null}})
+   }
+   var difference=previous[row.name]-currentRank;
+   if(difference>0){
+    return Object.assign({},row,{rank:currentRank,move:{key:'up',label:'▲'+difference,value:difference}})
+   }
+   if(difference<0){
+    return Object.assign({},row,{rank:currentRank,move:{key:'down',label:'▼'+Math.abs(difference),value:difference}})
+   }
+   return Object.assign({},row,{rank:currentRank,move:{key:'same',label:'—',value:0}})
+  })
+ }
+ function closeModal(){
+  var old=document.getElementById('v557-daily-modal');
+  if(old)old.remove();
+  var legacy=document.getElementById('v556-daily-modal');
+  if(legacy)legacy.remove();
+  var wide=document.getElementById('v555-daily-modal');
+  if(wide)wide.remove()
+ }
+ function movementHtml(move){
+  return'<span class="v557-move '+esc(move.key)+'">'+esc(move.label)+'</span>'
+ }
+ function boardRows(rows,type){
+  if(!rows.length)return'<div class="v557-empty">No rep activity is available for this date.</div>';
+  return rows.map(function(row,index){
+   var top=index===0?'<span class="v557-top-badge">★ Top</span>':'';
+   var primary=type==='sales'?('+'+money(row.day)):('+'+Math.round(row.day).toLocaleString()+' calls');
+   var cumulative=type==='sales'?(money(row.cumulative)+' cum'):(Math.round(row.cumulative).toLocaleString()+' cum');
+   return'<div class="v557-ranked-row">'+
+    '<div class="v557-rank">'+row.rank+'</div>'+
+    '<div class="v557-name-wrap"><span class="v557-rep-name">'+esc(row.name)+'</span>'+top+movementHtml(row.move)+'</div>'+
+    '<div class="v557-value"><strong>'+primary+'</strong><span>'+cumulative+'</span></div>'+
+   '</div>'
+  }).join('')
+ }
+ function openSplitBreakdown(dateISO){
+  var sales=salesTotals(dateISO);
+  var calls=callTotals(dateISO);
+  var salesPreviousDate=previousSavedDate('sales',dateISO);
+  var callsPreviousDate=previousSavedDate('calls',dateISO);
+  var rankedSales=movement(salesRows(dateISO),salesPreviousDate?salesRows(salesPreviousDate):[],!!salesPreviousDate);
+  var rankedCalls=movement(callRows(dateISO),callsPreviousDate?callRows(callsPreviousDate):[],!!callsPreviousDate);
+  var label=typeof formatDateShort==='function'?formatDateShort(dateISO):dateISO;
+
+  closeModal();
+  var overlay=document.createElement('div');
+  overlay.id='v557-daily-modal';
+  overlay.className='r3m-ov';
+  overlay.innerHTML=
+   '<div class="r3m-card v557-modal-card">'+
+    '<div class="v557-head"><span class="v557-day-pill">Daily Sales &amp; Calls</span><div class="v557-day-title">'+esc(label)+'</div></div>'+
+    '<button class="v557-close" onclick="_v557CloseDailyModal()" aria-label="Close">×</button>'+
+    '<div class="v557-summary">'+
+      '<div class="v557-summary-item sales"><span>SMB (Day)</span><strong>+'+money(sales.smbDay)+'</strong></div>'+
+      '<div class="v557-summary-item"><span>CORP (Day)</span><strong>+'+money(sales.corpDay)+'</strong></div>'+
+      '<div class="v557-summary-item"><span>Total Sales (Day)</span><strong>+'+money(sales.totalDay)+'</strong></div>'+
+      '<div class="v557-summary-item calls"><span>Total Calls (Day)</span><strong>+'+Math.round(n(calls.daily)).toLocaleString()+'</strong></div>'+
+    '</div>'+
+    '<div class="v557-board-grid">'+
+      '<section class="v557-board sales">'+
+        '<div class="v557-board-head"><span>Rep Sales · Ranked (Day · Cumulative)</span><strong>Σ '+money(sales.totalCum)+'</strong></div>'+
+        '<div class="v557-ranked-list">'+boardRows(rankedSales,'sales')+'</div>'+
+        '<div class="v557-prior-note">'+(salesPreviousDate?'Movement compared with '+esc(typeof formatDateShort==='function'?formatDateShort(salesPreviousDate):salesPreviousDate)+'.':'No earlier saved sales day is available for movement comparison.')+'</div>'+
+      '</section>'+
+      '<section class="v557-board calls">'+
+        '<div class="v557-board-head"><span>Rep Calls · Ranked (Day · Cumulative)</span><strong>Σ '+Math.round(n(calls.cumulative)).toLocaleString()+' calls</strong></div>'+
+        '<div class="v557-ranked-list">'+boardRows(rankedCalls,'calls')+'</div>'+
+        '<div class="v557-prior-note">'+(callsPreviousDate?'Movement compared with '+esc(typeof formatDateShort==='function'?formatDateShort(callsPreviousDate):callsPreviousDate)+'.':'No earlier saved call day is available for movement comparison.')+'</div>'+
+      '</section>'+
+    '</div>'+
+   '</div>';
+
+  overlay.addEventListener('click',function(event){
+   if(event.target===overlay)closeModal()
+  });
+  document.body.appendChild(overlay)
+ }
+ window._v557CloseDailyModal=closeModal;
+ window.dailyOpenDayDetail=openSplitBreakdown;
+ window.drDayPopup=openSplitBreakdown;
+
+ window.TCP_SPLIT_DAILY_RANKINGS_V557={
+  version:VERSION,
+  openDay:openSplitBreakdown,
+  close:closeModal,
+  salesRows:salesRows,
+  callRows:callRows,
+  previousSavedDate:previousSavedDate,
+  movement:movement,
+  rankMap:rankMap
+ };
 })();
 </script>
 
