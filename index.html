@@ -4305,7 +4305,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v416 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v553 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -5144,7 +5144,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
       <div class="admin-panel-head"><div><div class="admin-sys-kicker">Cloud Sync</div><h2>GitHub cloud data</h2><p>Shared cloud storage for the hosted GitHub version.</p></div><span class="admin-big-icon">☁</span></div>
       <div class="cloud-admin-grid">
         <label class="admin-label">GitHub token<input type="password" id="gistTokenInput" placeholder="github_pat_... or ghp_..." oninput="saveGistToken()" autocomplete="off" spellcheck="false"></label>
-        <label class="admin-label">Gist ID<input type="text" id="gistIdInput" placeholder="a1b2c3d4e5f6..." oninput="saveGistId()" autocomplete="off" spellcheck="false"></label>
+        <label class="admin-label">Gist ID<input type="text" id="gistIdInput" placeholder="a1b2c3d4e5f6..." oninput="saveGistId()" autocomplete="off" spellcheck="false"><button class="sbtn" style="margin-top:6px;" onclick="tcpRecoverPreRestore()" title="Restore what was on this device before the last cloud/file restore">↩️ Recover pre-restore data</button></label>
       </div>
       <div class="admin-button-row">
         <button class="sbtn" id="gistTestBtn" onclick="testGistToken()">🧪 Test token</button>
@@ -7717,6 +7717,19 @@ async function _rpProfileSavePw(rep){ if(!rep){alert('Open a rep first.');return
 function _rpCopyRepLinkFor(rep){ var link=_rpRepLinkFor(rep); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert(rep+'\u2019s portal link copied \u2014 send it to them:\n\n'+link); } else { prompt('Copy '+rep+'\u2019s portal link:', link); } }catch(e){ prompt('Copy '+rep+'\u2019s portal link:', link); } }
 async function _rpPullGist(gistId){
   try{
+    /* SAFETY GUARD: if this device has local edits newer than its last successful cloud push,
+       pulling would DESTROY un-synced work. Keep local, render from it, and say so. */
+    try{
+      var _le=localStorage.getItem('_tcp_last_local_edit');
+      var _cs=localStorage.getItem('_tcp_last_cloud_save');
+      var _hasData=!!localStorage.getItem(STORE_KEY)&&_trackerHasRealData();
+      if(_hasData&&_le&&(!_cs||new Date(_le)>new Date(_cs))){
+        window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:true,skipped:'local-newer',error:''};
+        console.warn('[rep portal] pull skipped: this device has un-synced edits ('+_le+') newer than last cloud push ('+(_cs||'never')+'). Local data preserved.');
+        if(typeof loadFromStorage==='function')loadFromStorage();
+        return true;
+      }
+    }catch(_ge){}
     var resp=await _gistFetch('https://api.github.com/gists/'+gistId,'');
     if(!resp||!resp.ok){
       window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'GitHub API '+(resp&&resp.status||'unavailable')};
@@ -9215,7 +9228,23 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},orderLineItems:S.orderLineItems||[],orderLineItemsMeta:S.orderLineItemsMeta||{version:1,imports:[]},orderLineItemsUnmatched:S.orderLineItemsUnmatched||[],gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;if(el){el.textContent='Save failed — use Export JSON.';el.style.color='#F09595';}}}
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},orderLineItems:S.orderLineItems||[],orderLineItemsMeta:S.orderLineItemsMeta||{version:1,imports:[]},orderLineItemsUnmatched:S.orderLineItemsUnmatched||[],gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;
+  try{_tcpSaveFailureAlarm(e);}catch(_a){}
+  if(el){el.textContent='\u26a0 SAVE FAILED \u2014 see banner';el.style.color='#F09595';}}}
+function _tcpSaveFailureAlarm(err){
+  var b=document.getElementById('tcp-savefail-banner');
+  if(!b){
+    b=document.createElement('div');b.id='tcp-savefail-banner';
+    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#7F1D1D;color:#fff;padding:10px 16px;font:700 13px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap;box-shadow:0 4px 20px rgba(0,0,0,.5);';
+    b.innerHTML='<span>\u26a0\ufe0f DATA IS NOT SAVING on this device ('+((err&&err.name)||'storage error')+'). Your work only exists in this open tab \u2014 do NOT close or refresh. A backup file is downloading now; keep it safe.</span>'
+      +'<button onclick="try{exportAllData()}catch(e){alert(e)}" style="background:#fff;color:#7F1D1D;border:0;border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer;">Download backup again</button>';
+    document.body.appendChild(b);
+  }
+  if(!window._tcpEmergencyExported){
+    window._tcpEmergencyExported=true;
+    try{exportAllData();}catch(_e){}
+  }
+}
 function _liveTrackerStateForCloud(){
   return {
     reps:(S.reps||[]).map(function(r){
@@ -9276,6 +9305,7 @@ function _queuePortalCloudSync(){
 }
 function markDirty(){
   _dataDirty=true;
+  try{var _set=(typeof _originalSetItem==='function')?_originalSetItem:localStorage.setItem.bind(localStorage);_set('_tcp_last_local_edit',new Date().toISOString());}catch(_e){}
   var el=document.getElementById('saveStatus');
   if(el&&_lsAvailable()){el.textContent='Unsaved changes…';el.style.color='#EF9F27';}
   debouncedPersist();
@@ -15435,6 +15465,15 @@ function _trackerHasRealData(){
 }
 
 function _restoreTrackerKeys(data){
+  /* SAFETY: snapshot current data before ANY restore so an overwrite is always one-click recoverable */
+  try{
+    var _cur=localStorage.getItem(STORE_KEY);
+    if(_cur&&_cur.length>50){
+      var _set=(typeof _originalSetItem==='function')?_originalSetItem:localStorage.setItem.bind(localStorage);
+      _set('_tcp_prepull_snapshot',_cur);
+      _set('_tcp_prepull_ts',new Date().toISOString());
+    }
+  }catch(_se){}
   if(!data||typeof data!=='object')throw new Error('No tracker data found to restore.');
   var keepToken=localStorage.getItem(GIST_TOKEN_STORE);
   var keepId=localStorage.getItem(GIST_ID_STORE);
@@ -15768,6 +15807,39 @@ function _updateCloudSaveBadge(){
 }
 
 // First-load auto-pull: if no local data but creds are set, pull from cloud
+
+function tcpRecoverPreRestore(){
+  var snap=localStorage.getItem('_tcp_prepull_snapshot');
+  var ts=localStorage.getItem('_tcp_prepull_ts')||'unknown time';
+  if(!snap){alert('No pre-restore snapshot found on this device.');return;}
+  if(!confirm('Recover the data that was on THIS device before the last cloud/file restore ('+ts+')?\n\nCurrent data will be replaced by that snapshot.'))return;
+  try{
+    localStorage.setItem(STORE_KEY,snap);
+    alert('Recovered. Reloading\u2026');
+    location.reload();
+  }catch(e){alert('Recovery failed: '+((e&&e.message)||e));}
+}
+window.tcpRecoverPreRestore=tcpRecoverPreRestore;
+
+function _tcpSyncChip(){
+  try{
+    var token=localStorage.getItem(GIST_TOKEN_STORE)||'';
+    var fileOk=!!_linkedFileHandle;
+    var problems=[];
+    if(!token)problems.push('cloud sync OFF (no token)');
+    if(!fileOk&&window.showSaveFilePicker&&localStorage.getItem('_tcp_last_autosave'))problems.push('file autosave paused');
+    var el=document.getElementById('tcp-sync-chip');
+    if(!problems.length){if(el)el.remove();return;}
+    if(!el){
+      el=document.createElement('div');el.id='tcp-sync-chip';
+      el.style.cssText='position:fixed;bottom:14px;right:14px;z-index:9999;background:#78350F;color:#FDE68A;border:1px solid #B45309;border-radius:99px;padding:7px 14px;font:700 11px -apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+      el.onclick=function(){try{var btns=document.querySelectorAll('#tabBar button');for(var i=0;i<btns.length;i++){if((btns[i].getAttribute('onclick')||'').indexOf("gt('admin'")>=0){btns[i].click();return;}}}catch(e){}};
+      document.body.appendChild(el);
+    }
+    el.textContent='\u26a0 '+problems.join(' \u00b7 ')+' \u2014 tap to fix in Admin';
+  }catch(e){}
+}
+window.addEventListener('load',function(){setTimeout(_tcpSyncChip,2500);setInterval(_tcpSyncChip,60000);});
 async function _gistAutoLoad(){
   var token=localStorage.getItem(GIST_TOKEN_STORE);
   var gistId=localStorage.getItem(GIST_ID_STORE);
@@ -19613,7 +19685,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:473,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:553,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
