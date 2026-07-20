@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v563 — Smart Order Import</title>
+<title>Sales Tracker v564 — Data Integrity Sweep</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+<!-- SALES TRACKER v564 · DATA INTEGRITY SWEEP -->
 
 <!-- ==========================================================================
      SALES TRACKER v563 · SMART ORDER IMPORT
@@ -15518,7 +15519,10 @@ async function _decompressPayload(content){
 function _isTrackerKey(k){
   if(!k||typeof k!=='string')return false;
   if(k===GIST_TOKEN_STORE||k===GIST_ID_STORE||k===API_KEY_STORE)return false;
-  return k.indexOf('salesTracker_')===0||k.indexOf('_tcp_')===0;
+  var low=k.toLowerCase();
+  if(/(?:api[_-]?key|token|secret|password)/i.test(low))return false;
+  if(/^(?:tcp_rp_session|tcp_nav_rail|tcp_rp_display_scale_v533|tcp_rp_floating_call_console_v534|tcp_autosnap|tcp_autosnap_meta|tcp_last_backup_ts)$/i.test(k))return false;
+  return k.indexOf('salesTracker_')===0||k.indexOf('_tcp_')===0||k.indexOf('tcp_')===0||k==='dismissedProfileAlerts';
 }
 
 function _trackerHasRealData(){
@@ -49069,6 +49073,9 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   })
  }
  function repScore(rep,period,yr,q){
+  if(period!=='year'&&window.TCP_DATA_INTEGRITY_V564&&typeof TCP_DATA_INTEGRITY_V564.scoreAsOf==='function'){
+   return TCP_DATA_INTEGRITY_V564.scoreAsOf(rep,yr,q)
+  }
   return period==='year'?yearScore(rep,yr):quarterScore(rep,yr,q)
  }
  function badge(s){return'<span class="'+s.className+'">'+s.label+'</span>'}
@@ -53279,13 +53286,17 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important}
    var creditRate=n(total.revenue)>0?creditCost/n(total.revenue)*100:0;
    var weighted={total:0,status:{key:'red',label:'Red',color:'#F09595'}};
    try{
-    weighted=TCP_TRAFFIC_SCORE_V548.scoreFromMetrics({
-     sales:salesPace,
-     outbound:callPace,
-     hours:hourPace,
-     art:qualityScore,
-     creditRate:creditRate
-    })
+    if(window.TCP_DATA_INTEGRITY_V564&&typeof TCP_DATA_INTEGRITY_V564.scoreAsOf==='function'){
+     weighted=TCP_DATA_INTEGRITY_V564.scoreAsOf(rep.name,context.year,context.quarter,context.selected&&context.selected.key)
+    }else{
+     weighted=TCP_TRAFFIC_SCORE_V548.scoreFromMetrics({
+      sales:salesPace,
+      outbound:callPace,
+      hours:hourPace,
+      art:qualityScore,
+      creditRate:creditRate
+     })
+    }
    }catch(e){}
    var flags=[];
    if(salesPace<80)flags.push('R');
@@ -57111,13 +57122,115 @@ body.ps58-dashboard-active .wrap:after{
   }catch(error){}
   return null
  }
+ function weeklySummaryCandidate(sheet){
+  var header=findHeader(sheet.grid,['Rep','Total Sales','Total Orders']);
+  var normalized=header.headers.map(norm);
+  var hasRep=normalized.indexOf(norm('Rep'))>=0||normalized.indexOf(norm('Rep Name'))>=0;
+  var hasSales=normalized.indexOf(norm('Total Sales'))>=0||normalized.indexOf(norm('Sales Revenue ($)'))>=0;
+  var hasOrders=normalized.indexOf(norm('Total Orders'))>=0||normalized.indexOf(norm('Orders Taken'))>=0;
+  return hasRep&&hasSales&&hasOrders?{sheet:sheet,header:header}:null
+ }
+ function parseWeeklySummary(candidate){
+  if(!candidate)return[];
+  var grid=candidate.sheet.grid,hi=candidate.header.index,H=headersAt(grid,hi);
+  var index={
+   rep:colIndex(H,['Rep','Rep Name','Sales Rep']),
+   repId:colIndex(H,['Rep ID','RepID']),
+   sales:colIndex(H,['Total Sales','Sales Revenue ($)','Revenue']),
+   orders:colIndex(H,['Total Orders','Orders Taken','Orders']),
+   newCustomers:colIndex(H,['New Customers','New Customer']),
+   aov:colIndex(H,['Avg Order Value','Average Order Value']),
+   lastOrder:colIndex(H,['Last Order Date']),
+   vsPrior:colIndex(H,['Vs Week 28 %','Vs Prior Week %','Week over Week %'])
+  };
+  var rows=[];
+  for(var r=hi+1;r<grid.length;r++){
+   var row=arr(grid[r]),rep=index.rep>=0?clean(row[index.rep]):'';
+   if(!rep)continue;
+   rows.push({
+    rep:rep,repId:index.repId>=0?clean(row[index.repId]):'',
+    totalSales:index.sales>=0?n(row[index.sales]):0,
+    totalOrders:index.orders>=0?Math.round(n(row[index.orders])):0,
+    newCustomers:index.newCustomers>=0?Math.round(n(row[index.newCustomers])):0,
+    avgOrderValue:index.aov>=0?n(row[index.aov]):0,
+    lastOrderDate:index.lastOrder>=0?clean(row[index.lastOrder]):'',
+    vsPriorWeek:index.vsPrior>=0?n(row[index.vsPrior]):0
+   })
+  }
+  return rows
+ }
+ function inferWeeklyPeriod(rows,fileName){
+  var counts={},details={};
+  rows.forEach(function(row){
+   try{
+    var iso=typeof _ordDateISO==='function'?_ordDateISO(row.orderDate):clean(row.orderDate);
+    var wk=typeof _ordWeekForDate==='function'?_ordWeekForDate(iso):null;
+    if(wk&&wk.key){counts[wk.key]=(counts[wk.key]||0)+1;details[wk.key]=wk}
+   }catch(error){}
+  });
+  var key=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]})[0];
+  if(key)return details[key];
+  try{
+   var selected=typeof getCWK==='function'?getCWK():'';
+   var parts=selected.split('_');
+   if(parts.length>=4)return{key:selected,yr:parts[0],q:parts[1]}
+  }catch(error){}
+  return null
+ }
+ function summaryReconciliation(summaryRows,detailRows){
+  var detail={};
+  detailRows.forEach(function(row){
+   var key=norm(row.rep),x=detail[key]||(detail[key]={sales:0,orders:0});
+   x.sales+=n(row.total);x.orders++
+  });
+  var mismatches=[];
+  summaryRows.forEach(function(row){
+   var x=detail[norm(row.rep)]||{sales:0,orders:0};
+   if(Math.abs(x.sales-n(row.totalSales))>.01||x.orders!==Math.round(n(row.totalOrders))){
+    mismatches.push({rep:row.rep,summarySales:n(row.totalSales),detailSales:x.sales,summaryOrders:Math.round(n(row.totalOrders)),detailOrders:x.orders})
+   }
+  });
+  return{matched:summaryRows.length-mismatches.length,mismatches:mismatches}
+ }
+ function applyWeeklySummary(summaryRows,detailRows,period,fileName){
+  if(!period||!period.key)return{updated:0,skipped:summaryRows.length,weekKey:'',reconciliation:summaryReconciliation(summaryRows,detailRows)};
+  var byRep={};
+  detailRows.forEach(function(row){
+   var matched=typeof _ordMatchRep==='function'?_ordMatchRep(row.rep):clean(row.rep);
+   if(!matched)return;
+   var x=byRep[matched]||(byRep[matched]={topSale:0,topSaleCustomer:''});
+   if(n(row.total)>x.topSale){x.topSale=n(row.total);x.topSaleCustomer=clean(row.customer)}
+  });
+  var updated=0,skipped=0;
+  summaryRows.forEach(function(row){
+   var rep=typeof _ordMatchRep==='function'?_ordMatchRep(row.rep):clean(row.rep);
+   if(!rep){skipped++;return}
+   var key=rep+'|'+period.key,existing=typeof gd==='function'?gd(key):((S.data||{})[key]||{}),next=Object.assign({},existing);
+   next.revenue=n(row.totalSales);
+   next.orders=Math.round(n(row.totalOrders));
+   next.newCustomers=Math.round(n(row.newCustomers));
+   next.avgOrderValue=n(row.avgOrderValue)||(next.orders?next.revenue/next.orders:0);
+   next.lastOrderDate=clean(row.lastOrderDate)||next.lastOrderDate||'';
+   next.vsPriorWeek=n(row.vsPriorWeek);
+   if(byRep[rep]&&byRep[rep].topSale>0){next.topSale=byRep[rep].topSale;next.topSaleCustomer=byRep[rep].topSaleCustomer}
+   delete next._dailyLive;
+   next._weeklyOrderSummary={version:'v564',fileName:fileName||'',weekKey:period.key,importedAt:new Date().toISOString()};
+   if(typeof sd==='function')sd(key,next);else{S.data=S.data||{};S.data[key]=next}
+   updated++
+  });
+  try{if(typeof _v552CaptureWeeklyUpload==='function')_v552CaptureWeeklyUpload()}catch(error){}
+  try{if(typeof markDirty==='function')markDirty()}catch(error){}
+  return{updated:updated,skipped:skipped,weekKey:period.key,reconciliation:summaryReconciliation(summaryRows,detailRows)}
+ }
  function classifyWorkbook(workbook,fileName){
-  var sheets=workbookSheets(workbook),line=[],weekly=[];
+  var sheets=workbookSheets(workbook),line=[],weekly=[],summaries=[];
   sheets.forEach(function(sheet){
    var item=lineItemCandidate(sheet,fileName);
    if(item)line.push(item);
    var legacy=legacyCandidate(sheet);
-   if(legacy)weekly.push(legacy)
+   if(legacy)weekly.push(legacy);
+   var summary=weeklySummaryCandidate(sheet);
+   if(summary)summaries.push(summary)
   });
   if(line.length){
    line.sort(function(a,b){return b.parsed.records.length-a.parsed.records.length});
@@ -57129,9 +57242,13 @@ body.ps58-dashboard-active .wrap:after{
     var bOrders=/^orders?$/i.test(b.sheet.name)?1:0;
     return bOrders-aOrders||b.sheet.grid.length-a.sheet.grid.length
    });
-   return{type:'weekly-summary',candidate:weekly[0],sheets:sheets}
+   summaries.sort(function(a,b){
+    var an=/^summary$/i.test(a.sheet.name)?1:0,bn=/^summary$/i.test(b.sheet.name)?1:0;
+    return bn-an||b.sheet.grid.length-a.sheet.grid.length
+   });
+   return{type:'weekly-summary',candidate:weekly[0],summaryCandidate:summaries[0]||null,sheets:sheets}
   }
-  return{type:'unknown',candidate:null,sheets:sheets}
+  return{type:'unknown',candidate:null,summaryCandidate:null,sheets:sheets}
  }
  function colIndex(headers,names){
   var compact=headers.map(norm);
@@ -57199,23 +57316,22 @@ body.ps58-dashboard-active .wrap:after{
    return'<tr><td>'+esc(row.rep)+'</td><td>'+esc(row.customer)+'</td><td>'+esc(row.orderNum)+'</td><td>'+esc(row.orderDate)+'</td><td>'+money(row.total)+'</td></tr>'
   }).join('')
  }
- function showWeeklyReview(fileName,candidate,rows){
+ function showWeeklyReview(fileName,candidate,rows,summaryRows){
   closeModal();
-  var analysis=weeklyAnalysis(rows);
-  state={type:'weekly-summary',fileName:fileName,sheetName:candidate.sheet.name,rows:rows,analysis:analysis};
+  var analysis=weeklyAnalysis(rows),period=inferWeeklyPeriod(rows,fileName),recon=summaryReconciliation(summaryRows||[],rows);
+  state={type:'weekly-summary',fileName:fileName,sheetName:candidate.sheet.name,rows:rows,summaryRows:summaryRows||[],analysis:analysis,period:period,reconciliation:recon};
+  var hasSummary=state.summaryRows.length>0,reconGood=hasSummary&&recon.mismatches.length===0;
   var overlay=document.createElement('div');
-  overlay.id='si563-modal';
-  overlay.className='si563-modal-wrap';
+  overlay.id='si563-modal';overlay.className='si563-modal-wrap';
   overlay.innerHTML='<div class="si563-modal">'+
-   '<div class="si563-modal-head"><div><div class="si563-modal-kick">Smart Order Import · Weekly Format Detected</div><h2>Review weekly order summary</h2><div class="si563-modal-copy">'+esc(fileName)+' · '+esc(candidate.sheet.name)+' sheet · header row '+(candidate.header.index+1)+'. This is the SalesRepPerformance format and will be routed to the weekly order engine automatically.</div></div><button class="si563-close" onclick="_si563Close()">×</button></div>'+
-   '<div class="si563-detected"><span class="si563-chip good">✓ Weekly SalesRepPerformance workbook</span><span class="si563-chip">Orders sheet</span><span class="si563-chip">Order # header</span><span class="si563-chip warn">Order-level summary</span></div>'+
-   '<div class="si563-kpis"><div class="si563-kpi"><span>Order rows</span><strong>'+analysis.rows.toLocaleString()+'</strong></div><div class="si563-kpi"><span>Reps found</span><strong>'+analysis.reps+'</strong></div><div class="si563-kpi"><span>Customers</span><strong>'+analysis.customers.toLocaleString()+'</strong></div><div class="si563-kpi"><span>Net total</span><strong>'+money(analysis.net)+'</strong></div><div class="si563-kpi"><span>Sheet</span><strong>'+esc(candidate.sheet.name)+'</strong></div></div>'+
+   '<div class="si563-modal-head"><div><div class="si563-modal-kick">Smart Order Import · Weekly Format Detected</div><h2>Review weekly order summary</h2><div class="si563-modal-copy">'+esc(fileName)+' · '+esc(candidate.sheet.name)+' detail sheet'+(hasSummary?' · Summary sheet detected':'')+'. The app will update detailed order history and the official weekly revenue/order totals together.</div></div><button class="si563-close" onclick="_si563Close()">×</button></div>'+
+   '<div class="si563-detected"><span class="si563-chip good">✓ Weekly SalesRepPerformance workbook</span><span class="si563-chip">'+esc(period&&period.key||'Selected tracker week')+'</span><span class="si563-chip '+(reconGood?'good':'warn')+'">'+(reconGood?'✓ Summary matches detail':hasSummary?(recon.mismatches.length+' summary mismatch(es)'):'No Summary sheet')+'</span></div>'+
+   '<div class="si563-kpis"><div class="si563-kpi"><span>Order rows</span><strong>'+analysis.rows.toLocaleString()+'</strong></div><div class="si563-kpi"><span>Reps found</span><strong>'+analysis.reps+'</strong></div><div class="si563-kpi"><span>Customers</span><strong>'+analysis.customers.toLocaleString()+'</strong></div><div class="si563-kpi"><span>Net total</span><strong>'+money(analysis.net)+'</strong></div><div class="si563-kpi"><span>Weekly summaries</span><strong>'+state.summaryRows.length+'</strong></div></div>'+
    '<div class="si563-table-wrap"><table class="si563-table"><thead><tr><th>Rep</th><th>Customer</th><th>Order #</th><th>Order Date</th><th>Total</th></tr></thead><tbody>'+previewRows(rows)+'</tbody></table></div>'+
-   '<div class="si563-warning"><strong>What this updates:</strong> weekly orders, sales totals, order counts, new-customer counts, rep order history, and the Orders page.<br><strong>What it cannot add:</strong> individual products, quantities, decoration methods, or SKU purchase history because those columns are not included in this workbook.</div>'+
-   '<div class="si563-actions"><button onclick="_si563Close()">Cancel</button><button class="primary" onclick="_si563CommitWeekly()">Import weekly orders</button></div>'+
+   '<div class="si563-warning"><strong>Linked update:</strong> the Orders sheet builds customer/order history. The Summary sheet updates the same week in manager dashboards, rep dashboards, rankings, forecasts, and reports. Existing calls and work hours are preserved because this workbook does not contain those columns.<br><strong>Product limitation:</strong> individual products, quantities, decoration methods, and SKUs still require the monthly line-item report.</div>'+
+   '<div class="si563-actions"><button onclick="_si563Close()">Cancel</button><button class="primary" onclick="_si563CommitWeekly()">Import and link weekly data</button></div>'+
   '</div>';
-  overlay.addEventListener('click',function(event){if(event.target===overlay)closeModal()});
-  document.body.appendChild(overlay)
+  overlay.addEventListener('click',function(event){if(event.target===overlay)closeModal()});document.body.appendChild(overlay)
  }
  function showUnknown(fileName,result){
   closeModal();
@@ -57233,26 +57349,22 @@ body.ps58-dashboard-active .wrap:after{
  function commitWeekly(){
   if(!state||state.type!=='weekly-summary')return;
   var result=typeof _ordImportRows==='function'?_ordImportRows(state.rows):null;
-  if(!result){
-   alert('The weekly order engine is not available.');
-   return
-  }
+  if(!result){alert('The weekly order engine is not available.');return}
+  var linked=state.summaryRows&&state.summaryRows.length?applyWeeklySummary(state.summaryRows,state.rows,state.period,state.fileName):{updated:0,skipped:0,weekKey:state.period&&state.period.key||''};
   if(!S.ordersMeta)S.ordersMeta={};
-  S.ordersMeta.lastUpload=new Date().toISOString();
-  S.ordersMeta.lastFile=state.fileName;
-  S.ordersMeta.lastFormat='weekly-summary-auto-detected';
-  S.ordersMeta.lastSheet=state.sheetName;
+  S.ordersMeta.lastUpload=new Date().toISOString();S.ordersMeta.lastFile=state.fileName;
+  S.ordersMeta.lastFormat='weekly-summary-linked-v564';S.ordersMeta.lastSheet=state.sheetName;
+  S.ordersMeta.lastWeekKey=linked.weekKey||'';S.ordersMeta.lastSummaryRows=linked.updated||0;
   if(typeof _ordDirty==='function')_ordDirty();
-  closeModal();
-  if(typeof renderOrdersPage==='function')renderOrdersPage();
+  try{if(window.TCP_PERSISTENT_DATA_V550)TCP_PERSISTENT_DATA_V550.saveNow('weekly-order-summary-v564')}catch(error){}
+  closeModal();if(typeof renderOrdersPage==='function')renderOrdersPage();
   setTimeout(function(){
    var host=document.getElementById('li524-manager-card');
    if(host){
-    host.insertAdjacentHTML('afterbegin','<div class="si563-result" id="si563-result"><strong style="color:#9AE7C9">Weekly order import complete.</strong> Added '+result.added+' rows · '+result.dupes+' duplicates skipped · '+result.dropped+' rows skipped because the rep was not on the active roster.</div>');
-    setTimeout(function(){var message=document.getElementById('si563-result');if(message)message.remove()},12000)
+    host.insertAdjacentHTML('afterbegin','<div class="si563-result" id="si563-result"><strong style="color:#9AE7C9">Weekly order import complete.</strong> '+linked.updated+' official weekly rep record(s) updated · '+result.added+' order rows added · '+result.dupes+' duplicates skipped · '+(result.dropped+linked.skipped)+' unmatched rep rows skipped.</div>');
+    setTimeout(function(){var message=document.getElementById('si563-result');if(message)message.remove()},14000)
    }
-  },40);
-  state=null
+  },40);state=null
  }
  function decorate(){
   var card=document.getElementById('li524-manager-card');
@@ -57265,12 +57377,12 @@ body.ps58-dashboard-active .wrap:after{
    var button=card.querySelector('.li524-actions .li524-btn');
    if(kick)kick.textContent='SMART ORDER IMPORT · AUTO-DETECT · BUILD v563';
    if(title)title.textContent='Upload an order report';
-   if(copy)copy.innerHTML='Use one uploader for both supported formats. The app checks every workbook sheet and automatically routes monthly line-item reports or weekly SalesRepPerformance order summaries to the correct engine.';
+   if(copy)copy.innerHTML='Use one uploader for both supported formats. The app checks every workbook sheet, links weekly Summary totals to the tracker, and sends detailed Orders rows to customer/order history.';
    if(badge)badge.textContent='Auto-detects both formats';
    if(button)button.textContent='⬆ Upload order report (CSV/XLSX)';
    var note=card.querySelector('.li524-note');
    if(note&&!card.querySelector('.si563-format-grid')){
-    note.insertAdjacentHTML('beforebegin','<div class="si563-format-grid"><div class="si563-format line"><strong>Monthly line-item report</strong><span>AccountID · InvoiceNumber · ProductName · QuantityOrdered · ExtendedSalesRevenue. Adds product and decoration intelligence.</span></div><div class="si563-format weekly"><strong>Weekly SalesRepPerformance workbook</strong><span>Rep · Customer · Order # · Order Date · Total. Updates weekly sales, orders, and customer order history.</span></div></div><div class="si563-smart-note">You no longer need to decide which importer to use. Upload the file once and review the detected format before anything is committed.</div>')
+    note.insertAdjacentHTML('beforebegin','<div class="si563-format-grid"><div class="si563-format line"><strong>Monthly line-item report</strong><span>AccountID · InvoiceNumber · ProductName · QuantityOrdered · ExtendedSalesRevenue. Adds product and decoration intelligence.</span></div><div class="si563-format weekly"><strong>Weekly SalesRepPerformance workbook</strong><span>Orders sheet plus Summary sheet. Updates official weekly revenue/orders, detailed order history, rankings, forecasts, and both portals.</span></div></div><div class="si563-smart-note">You no longer need to decide which importer to use. Upload the file once and review the detected format before anything is committed.</div>')
    }
   }
   var details=arr(document.querySelectorAll('#ord-page details.ord-card')).find(function(item){
@@ -57298,7 +57410,8 @@ body.ps58-dashboard-active .wrap:after{
      }
     }else if(result.type==='weekly-summary'){
      var rows=parseWeekly(result.candidate);
-     showWeeklyReview(file.name,result.candidate,rows);
+     var summaryRows=parseWeeklySummary(result.summaryCandidate);
+     showWeeklyReview(file.name,result.candidate,rows,summaryRows);
     }else{
      showUnknown(file.name,result)
     }
@@ -57320,6 +57433,10 @@ body.ps58-dashboard-active .wrap:after{
   version:'v563',
   classifyWorkbook:classifyWorkbook,
   parseWeekly:parseWeekly,
+  parseWeeklySummary:parseWeeklySummary,
+  inferWeeklyPeriod:inferWeeklyPeriod,
+  summaryReconciliation:summaryReconciliation,
+  applyWeeklySummary:applyWeeklySummary,
   weeklyAnalysis:weeklyAnalysis,
   decorate:decorate
  };
@@ -57332,6 +57449,153 @@ body.ps58-dashboard-active .wrap:after{
   }
  }
  setTimeout(decorate,200)
+})();
+</script>
+
+
+
+<style id="tcp-data-integrity-v564-css">
+#tcp-integrity-v564{margin-top:14px;border:1px solid rgba(0,175,239,.20);border-radius:16px;background:linear-gradient(145deg,rgba(10,24,36,.98),rgba(7,14,22,.98));overflow:hidden}
+#tcp-integrity-v564 .di564-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:16px 17px;border-bottom:1px solid rgba(148,163,184,.13)}
+#tcp-integrity-v564 .di564-kick{color:#69DDF8;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#tcp-integrity-v564 h3{margin:5px 0 0;color:#fff;font-family:'Droid Serif',Georgia,serif;font-size:21px}
+#tcp-integrity-v564 .di564-copy{margin-top:5px;color:#8492A5;font-size:9px;line-height:1.5}
+#tcp-integrity-v564 .di564-actions{display:flex;gap:7px;flex-wrap:wrap}
+#tcp-integrity-v564 button{min-height:35px;padding:0 11px;border:1px solid rgba(148,163,184,.15);border-radius:8px;background:#101B26;color:#DCE4EC;font-size:8px;font-weight:900;cursor:pointer}
+#tcp-integrity-v564 button.primary{border:0;background:linear-gradient(135deg,#FA873D,#F27C2D 55%,#00AFEF);color:#fff}
+#tcp-integrity-v564 .di564-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px}
+#tcp-integrity-v564 .di564-kpi{padding:11px;border:1px solid rgba(148,163,184,.12);border-radius:10px;background:rgba(255,255,255,.018)}
+#tcp-integrity-v564 .di564-kpi span{display:block;color:#718095;font-size:6.5px;font-weight:950;text-transform:uppercase}
+#tcp-integrity-v564 .di564-kpi strong{display:block;margin-top:5px;color:#fff;font-size:17px}
+#tcp-integrity-v564 .di564-list{padding:0 12px 12px}
+#tcp-integrity-v564 .di564-row{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:9px;align-items:start;padding:9px 4px;border-bottom:1px solid rgba(148,163,184,.09)}
+#tcp-integrity-v564 .di564-row:last-child{border-bottom:0}
+#tcp-integrity-v564 .di564-icon{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;font-size:8px;font-weight:950}
+#tcp-integrity-v564 .di564-icon.pass{background:rgba(93,202,165,.12);color:#9AE7C9}.di564-icon.warn{background:rgba(239,159,39,.12);color:#F5C57A}.di564-icon.fail{background:rgba(240,149,149,.12);color:#F3A4A4}
+#tcp-integrity-v564 .di564-title{color:#EDF2F7;font-size:9px;font-weight:900}.di564-detail{margin-top:3px;color:#768599;font-size:7.5px;line-height:1.45}
+#tcp-integrity-v564 .di564-status{font-size:7px;font-weight:950;text-transform:uppercase}.di564-status.pass{color:#9AE7C9}.di564-status.warn{color:#F5C57A}.di564-status.fail{color:#F3A4A4}
+@media(max-width:900px){#tcp-integrity-v564 .di564-summary{grid-template-columns:1fr 1fr}}
+</style>
+
+
+<script id="tcp-data-integrity-v564-js">
+(function(){
+ 'use strict';
+ var VERSION='v564';
+ var baseStorage=window._tcpStorageV528||null;
+ var baseApply=baseStorage&&baseStorage.applyState;
+ var baseSplit=baseStorage&&baseStorage.splitState;
+ var baseCurrent=baseStorage&&baseStorage.currentFullState;
+ var baseRepScore=window.TCP_TRAFFIC_SCORE_V548&&TCP_TRAFFIC_SCORE_V548.repScore;
+ var HEAVY={customers:1,orders:1,orderLineItems:1,orderLineItemsUnmatched:1,reviews:1,artErrors:1,cms:1,dailySales:1,dailyRep:1,dailyCalls:1,dailyLiveBridge:1,dailyLiveReconciliation:1,coachingNotes:1,hrViolations:1,activities:1,crmActivities:1,customerActivities:1,accountActivities:1,contacts:1,crmContacts:1,customerContacts:1,accountContacts:1,quotes:1,crmQuotes:1,customerQuotes:1,opportunities:1,crmOpportunities:1,accountOpportunities:1,documents:1,files:1,products:1,catalogProducts:1};
+ function n(v){var x=Number(v);return isFinite(x)?x:0}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function clean(v){return String(v==null?'':v).trim()}
+ function clone(v){if(v==null||typeof v!=='object')return v;try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}catch(e){try{return JSON.parse(JSON.stringify(v))}catch(x){return null}}}
+ function safeKey(k){return !!k&&k!=='__proto__'&&k!=='prototype'&&k!=='constructor'&&k.indexOf('__tcp')!==0}
+ function ensure(){
+  if(!window.S||typeof S!=='object')return;
+  if(!Array.isArray(S.reps))S.reps=[];if(!S.goals)S.goals={};if(!S.data)S.data={};
+  if(!Array.isArray(S.orders))S.orders=[];if(!Array.isArray(S.orderLineItems))S.orderLineItems=[];
+  if(!Array.isArray(S.customers))S.customers=[];if(!Array.isArray(S.cms))S.cms=[];if(!Array.isArray(S.artErrors))S.artErrors=[];
+  if(!S.dailyRep)S.dailyRep={};if(!S.dailyCalls)S.dailyCalls={};if(!S.dailyLiveBridge)S.dailyLiveBridge={};if(!S.dailyLiveReconciliation)S.dailyLiveReconciliation={};
+ }
+ function captureState(){
+  ensure();var state={};
+  Object.keys(S||{}).forEach(function(key){if(!safeKey(key))return;var value=clone(S[key]);if(value!==null||S[key]===null)state[key]=value});
+  state.reps=arr(S.reps).map(function(rep){var copy=clone(rep)||{};if(copy.profile)copy.profile=Object.assign({},copy.profile,{photo:null});return copy});
+  state.dailyCalls=clone(S.dailyCalls||{});state.dailyLiveBridge=clone(S.dailyLiveBridge||{});state.dailyLiveReconciliation=clone(S.dailyLiveReconciliation||{});
+  state.__tcpIntegrity={version:VERSION,capturedAt:new Date().toISOString(),fields:Object.keys(state).filter(function(k){return k!=='__tcpIntegrity'}).sort()};
+  return state
+ }
+ function applyState(state){
+  if(!state||typeof state!=='object')throw new Error('Invalid tracker state');
+  if(typeof baseApply==='function')baseApply(state);
+  Object.keys(state).forEach(function(key){if(!safeKey(key))return;var value=clone(state[key]);if(value!==null||state[key]===null)S[key]=value});
+  ensure();try{window._cw4DirectoryCache=null;window._cw4ProfileCache={}}catch(e){};return true
+ }
+ function splitState(state){
+  var full=clone(state||captureState())||{},core={},heavy={},counts={};
+  Object.keys(full).forEach(function(key){
+   if(key==='__tcpLargeState')return;var value=full[key],size=0;try{size=JSON.stringify(value).length}catch(e){}
+   if(HEAVY[key]||size>50000){heavy[key]=value;counts[key]=Array.isArray(value)?value.length:(value&&typeof value==='object'?Object.keys(value).length:0)}else core[key]=value
+  });
+  core.__tcpLargeState={version:2,key:'manager',fields:Object.keys(heavy),counts:counts,updatedAt:new Date().toISOString()};
+  return{core:core,heavy:heavy}
+ }
+ if(baseStorage){baseStorage.currentFullState=captureState;baseStorage.applyState=applyState;baseStorage.splitState=splitState}
+ window._liveTrackerStateForCloud=captureState;
+
+ function selectedWeek(year,q,weekKey){
+  var weeks=[];try{weeks=gwq(Number(year),q)||[]}catch(e){}
+  var found=weekKey?weeks.find(function(w){return w.key===weekKey}):null;
+  if(!found&&Number(year)===Number(typeof getYr==='function'?getYr():year)&&q===(typeof getQ==='function'?getQ():q)){
+   try{var num=Number(getWN());found=weeks.find(function(w){return Number(w.num)===num})}catch(e){}
+  }
+  if(!found){
+   var now=new Date(),past=Number(year)<now.getFullYear()||(Number(year)===now.getFullYear()&&['Q1','Q2','Q3','Q4'].indexOf(q)<Math.floor(now.getMonth()/3));
+   if(past)found=weeks[weeks.length-1]||null;
+   else{found=weeks.find(function(w){var s=new Date(w.start),e=new Date(w.end);e.setHours(23,59,59,999);return now>=s&&now<=e})||weeks[Math.max(0,Math.min(weeks.length-1,(typeof weeksElapsed==='function'?weeksElapsed(year,q):1)-1))]||null}
+  }
+  return{weeks:weeks,selected:found,index:found?weeks.findIndex(function(w){return w.key===found.key}):-1}
+ }
+ function periodContext(year,q,weekKey){
+  var s=selectedWeek(year,q,weekKey),index=s.index<0?Math.max(0,s.weeks.length-1):s.index,through=s.weeks.slice(0,index+1);
+  return{year:Number(year),q:q,weeks:s.weeks,selected:s.selected,index:index,through:through,elapsed:through.length,progress:s.weeks.length?through.length/s.weeks.length:0}
+ }
+ function scoreAsOf(rep,year,q,weekKey){
+  var ctx=periodContext(year,q,weekKey),tot=typeof totW==='function'?totW(rep,ctx.through):{revenue:0,hours:0,acctsCalled:0,setSize:0,orders:0,art:0,credits:0},goal=typeof repGoalObj==='function'?repGoalObj(rep,year,q):{};
+  var salesTarget=n(goal.rev)*ctx.progress,hoursTarget=n(goal.hrs||42.5)*ctx.elapsed,setTarget=n(tot.setSize)*ctx.progress;
+  var outboundActual=n(tot.acctsCalled),outboundTarget=setTarget,outboundSource='Selected-period account-updating coverage';
+  var now=new Date(),isCurrent=ctx.selected&&new Date(ctx.selected.start)<=now&&new Date(ctx.selected.end)>=now;
+  if(isCurrent&&window.TCP_CALL_CYCLE_V547){try{var pace=TCP_CALL_CYCLE_V547.paceFor(rep,now);if(pace&&n(pace.expected)>0){outboundActual=n(pace.completed);outboundTarget=n(pace.expected);outboundSource='Annual Call Cycle completed through today'}}catch(e){}}
+  var artErrors=n(tot.art),orders=n(tot.orders),artRate=orders?artErrors/orders*100:0,artAccuracy=orders?Math.max(0,100-artRate):100,credits=n(tot.credits),creditRate=n(tot.revenue)?credits/n(tot.revenue)*100:0;
+  var metrics={sales:salesTarget?n(tot.revenue)/salesTarget*100:0,outbound:outboundTarget?outboundActual/outboundTarget*100:0,hours:hoursTarget?n(tot.hours)/hoursTarget*100:0,art:artAccuracy,creditRate:creditRate};
+  var scored=window.TCP_TRAFFIC_SCORE_V548?TCP_TRAFFIC_SCORE_V548.scoreFromMetrics(metrics):{total:0,status:{key:'red',label:'Red'},metrics:metrics,contributions:{},metricStatus:{}};
+  return Object.assign(scored,{rep:rep,yr:Number(year),q:q,period:'quarter',weeks:ctx.through,enteredWeeks:ctx.elapsed,totalWeeks:ctx.weeks.length,tot:tot,goal:goal,selectedWeek:ctx.selected,raw:{salesActual:n(tot.revenue),salesTarget:salesTarget,outboundActual:outboundActual,outboundTarget:outboundTarget,outboundSource:outboundSource,hoursActual:n(tot.hours),hoursTarget:hoursTarget,artErrors:artErrors,orders:orders,artRate:artRate,credits:credits,creditRate:creditRate}})
+ }
+ if(window.TCP_TRAFFIC_SCORE_V548){TCP_TRAFFIC_SCORE_V548.scoreAsOf=scoreAsOf;TCP_TRAFFIC_SCORE_V548.repScore=function(rep,period,yr,q){return period==='year'&&typeof baseRepScore==='function'?baseRepScore(rep,period,yr,q):scoreAsOf(rep,yr,q)}}
+ window._rp2Wks=function(){return periodContext(getYr(),getQ()).through};
+ window._rp2Tot=function(rep){try{return totW(rep,window._rp2Wks())||{revenue:0,orders:0,calls:0}}catch(e){return{revenue:0,orders:0,calls:0}}};
+ window._rp2Ranks=function(){var wks=window._rp2Wks(),reps=typeof activeReps==='function'?activeReps():(S.reps||[]);return reps.map(function(r){var t=totW(r.name,wks);return{name:r.name,rev:n(t.revenue)}}).sort(function(a,b){return b.rev-a.rev||a.name.localeCompare(b.name)})};
+
+ function check(level,title,detail){return{level:level,title:title,detail:detail}}
+ function audit(){
+  ensure();var checks=[],state=captureState(),reps=typeof activeReps==='function'?activeReps():(S.reps||[]);
+  ['dailyCalls','dailyLiveBridge','dailyLiveReconciliation','orders','orderLineItems','customers','cms','artErrors'].forEach(function(key){checks.push(check(Object.prototype.hasOwnProperty.call(state,key)?'pass':'fail',key+' persistence',Object.prototype.hasOwnProperty.call(state,key)?'Included in IndexedDB and cloud snapshots.':'Missing from the captured state.'))});
+  var aux=['tcp_call_cycle_engine_v547','tcp_rp_company_crm_v510','tcp_rp_action_center_v504','tcp_call_workspace_v540','tcp_automation_templates_v537'],captured=aux.filter(function(k){return typeof _isTrackerKey==='function'&&_isTrackerKey(k)}).length;
+  checks.push(check(captured===aux.length?'pass':'fail','Rep workflow auxiliary storage',captured+' of '+aux.length+' critical local stores are included in backups.'));
+  var liveMismatch=0,lockedMismatch=0;
+  Object.keys(S.dailyLiveBridge||{}).forEach(function(weekKey){Object.keys(S.dailyLiveBridge[weekKey]||{}).forEach(function(rep){var b=S.dailyLiveBridge[weekKey][rep]||{},d=typeof gd==='function'?gd(rep+'|'+weekKey):{};var match=Math.abs(n(b.sales)-n(d.revenue))<.01&&Math.round(n(b.calls))===Math.round(n(d.acctsCalled!=null?d.acctsCalled:d.calls));if(!match){if(b.officialLocked)lockedMismatch++;else liveMismatch++}})});
+  checks.push(check(liveMismatch?'fail':'pass','Daily sales/calls live bridge',liveMismatch?liveMismatch+' unlocked weekly records do not match their daily source.':'All unlocked bridge records match the weekly manager/rep source.'));
+  checks.push(check(lockedMismatch?'warn':'pass','Official weekly reconciliation',lockedMismatch?lockedMismatch+' locked records differ from daily entries and need manager review.':'No locked upload mismatches are currently recorded.'));
+  var badOrders=(S.orders||[]).filter(function(o){return !clean(o.rep)||!clean(o.effWeekKey||o.weekKey)}).length;
+  checks.push(check(badOrders?'warn':'pass','Order-to-week linkage',badOrders?badOrders+' order rows are missing a rep or tracker week.':'All loaded order rows have a rep and tracker-week link.'));
+  var scoreMismatch=0,ctx=periodContext(getYr(),getQ());
+  reps.forEach(function(r){var a=scoreAsOf(r.name,getYr(),getQ(),ctx.selected&&ctx.selected.key),b=TCP_TRAFFIC_SCORE_V548.repScore(r.name,'quarter',getYr(),getQ());if(Math.abs(n(a.total)-n(b.total))>.01)scoreMismatch++});
+  checks.push(check(scoreMismatch?'fail':'pass','Manager/rep performance parity',scoreMismatch?scoreMismatch+' reps produce different weighted totals.':'Manager profiles, dashboard rows, coaching, reports, and rep portal use the same as-of score.'));
+  var failures=checks.filter(function(c){return c.level==='fail'}).length,warnings=checks.filter(function(c){return c.level==='warn'}).length;
+  return{version:VERSION,at:new Date().toISOString(),checks:checks,failures:failures,warnings:warnings,passes:checks.length-failures-warnings,stateFields:Object.keys(state).length,activeReps:reps.length}
+ }
+ async function repair(){
+  ensure();var dates=Object.keys(S.dailyCalls||{}).concat(Object.keys(S.dailyRep||{})).filter(function(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)}).sort();
+  if(dates.length&&window.TCP_DAILY_SALES_CALLS_V552){try{TCP_DAILY_SALES_CALLS_V552.syncLiveWeek(dates[dates.length-1])}catch(e){}}
+  try{window._cw4DirectoryCache=null;window._cw4ProfileCache={}}catch(e){}
+  if(window.TCP_PERSISTENT_DATA_V550)await TCP_PERSISTENT_DATA_V550.saveNow('data-integrity-repair-v564');
+  mountAdmin(audit());try{if(typeof renderDash==='function')renderDash()}catch(e){};try{if(window._rp2&&_rp2.rep&&typeof _rp2Go==='function')_rp2Go(_rp2.page||'home')}catch(e){};return true
+ }
+ function row(c){return'<div class="di564-row"><span class="di564-icon '+c.level+'">'+(c.level==='pass'?'✓':c.level==='warn'?'!':'×')+'</span><div><div class="di564-title">'+esc_html(c.title)+'</div><div class="di564-detail">'+esc_html(c.detail)+'</div></div><span class="di564-status '+c.level+'">'+c.level+'</span></div>'}
+ function mountAdmin(report){
+  var page=document.getElementById('pg-admin');if(!page)return;var host=document.getElementById('tcp-integrity-v564');if(!host){host=document.createElement('section');host.id='tcp-integrity-v564';page.appendChild(host)}
+  report=report||audit();host.innerHTML='<div class="di564-head"><div><div class="di564-kick">Data Integrity Center · Build v564</div><h3>Manager ↔ Rep source-of-truth sweep</h3><div class="di564-copy">Checks storage coverage, live bridges, weekly order links, selected-period totals, and weighted-score parity.</div></div><div class="di564-actions"><button onclick="_di564Run()">Run sweep</button><button onclick="_di564Repair()">Repair safe links</button><button class="primary" onclick="_di564Save()">Save verified snapshot</button></div></div><div class="di564-summary"><div class="di564-kpi"><span>Passed</span><strong>'+report.passes+'</strong></div><div class="di564-kpi"><span>Warnings</span><strong>'+report.warnings+'</strong></div><div class="di564-kpi"><span>Failures</span><strong>'+report.failures+'</strong></div><div class="di564-kpi"><span>State fields protected</span><strong>'+report.stateFields+'</strong></div></div><div class="di564-list">'+report.checks.map(row).join('')+'</div>'
+ }
+ window._di564Run=function(){mountAdmin(audit())};
+ window._di564Repair=function(){repair().catch(function(e){alert('Repair failed: '+e.message)})};
+ window._di564Save=function(){if(window.TCP_PERSISTENT_DATA_V550)TCP_PERSISTENT_DATA_V550.saveNow('verified-snapshot-v564').then(function(){mountAdmin(audit())});else if(typeof persist==='function'){persist();mountAdmin(audit())}};
+ var baseInit=window.initAdmin;if(typeof baseInit==='function')window.initAdmin=function(){var r=baseInit.apply(this,arguments);setTimeout(function(){mountAdmin(audit())},0);return r};
+ var baseGt=window.gt;if(typeof baseGt==='function')window.gt=function(){var r=baseGt.apply(this,arguments);setTimeout(function(){var p=document.getElementById('pg-admin');if(p&&p.classList.contains('active'))mountAdmin(audit())},30);return r};
+ window.TCP_DATA_INTEGRITY_V564={version:VERSION,captureState:captureState,applyState:applyState,splitState:splitState,periodContext:periodContext,scoreAsOf:scoreAsOf,audit:audit,repair:repair,mountAdmin:mountAdmin};
+ ensure();setTimeout(function(){var p=document.getElementById('pg-admin');if(p&&p.classList.contains('active'))mountAdmin(audit());try{if(typeof renderDash==='function'&&document.getElementById('pg-dash')&&document.getElementById('pg-dash').classList.contains('active'))renderDash()}catch(e){}},250)
 })();
 </script>
 
