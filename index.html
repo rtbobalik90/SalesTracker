@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v568 — Simplified Rep My Day</title>
+<title>Sales Tracker v569 — Rep My Day Legibility</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -21129,6 +21129,296 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var zip=await JSZip.loadAsync(b64ToUint8(templateB64()));var imageKeys=['CUSTOM_01_IMAGE','CUSTOM_02_IMAGE','CUSTOM_03_IMAGE','SALES_SNAPSHOT_IMAGE'];for(var i=1;i<=3;i++){if(customImages[i])await replaceImagePlaceholder(zip,'{{CUSTOM_0'+i+'_IMAGE}}',customImages[i],'custom_0'+i+'_image');}var files=Object.keys(zip.files).filter(function(n){return /^ppt\/slides\/slide\d+\.xml$/.test(n);});for(var f=0;f<files.length;f++){var name=files[f];var xml=await zip.file(name).async('string');Object.keys(d.map).forEach(function(k){if(imageKeys.indexOf(k)>=0)return;var token='{{'+k+'}}';xml=xml.split(token).join(xmlEsc(d.map[k]));});imageKeys.forEach(function(k){xml=xml.split('{{'+k+'}}').join('');});zip.file(name,xml);}var blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});var a=document.createElement('a');var datePart=(d.dataWeek&&d.dataWeek.year?d.dataWeek.year:'')+'_Wk'+(d.dataWeek&&d.dataWeek.num?d.dataWeek.num:'');a.href=URL.createObjectURL(blob);a.download='Sales_Meeting_'+datePart+'.pptx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1200);setStatus('Downloaded deck for '+((d.dataWeek&&d.dataWeek.label)||'previous week')+'.', '#A7FFC0');}catch(err){console.error(err);setStatus('Generate failed: '+(err&&err.message?err.message:err), '#FFB3C8');alert('Generate failed: '+(err&&err.message?err.message:err));}}
   window.initSlidesPage=initSlidesPage;window.smPopulateWeeks=populateWeeks;window.smRenderPreview=renderPreview;window.smUseTrackerWeek=function(){initSlidesPage();var y=document.getElementById('smYear'),q=document.getElementById('smQuarter'),w=document.getElementById('smWeek');if(y)y.value=getYr();if(q)q.value=getQ();populateWeeks();if(w)w.value=String(getWN());renderPreview();};window.smGeneratePptx=generatePptx;window.smUploadTemplate=function(input){var file=input&&input.files&&input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){var dataUrl=String(e.target.result||'');var b64=dataUrl.split(',')[1]||'';try{localStorage.setItem(TEMPLATE_STORE,b64);localStorage.setItem(TEMPLATE_NAME_STORE,file.name);}catch(err){alert('Could not store template in browser storage. The file may be too large.');return;}var ts=document.getElementById('smTemplateStatus');if(ts)ts.textContent=file.name+' stored as the active template.';setStatus('Template updated.', '#A7FFC0');};reader.readAsDataURL(file);};window.smResetTemplate=function(){try{localStorage.removeItem(TEMPLATE_STORE);localStorage.removeItem(TEMPLATE_NAME_STORE);}catch(e){}var ts=document.getElementById('smTemplateStatus');if(ts)ts.textContent='Built-in Sales Meeting template ready.';setStatus('Using built-in template.', '#A7FFC0');};window.smCustomImage=function(i,input){var f=input&&input.files&&input.files[0];var st=document.getElementById('smImgStatus'+i);if(!f){delete customImages[i];if(st)st.textContent='Optional image placeholder';return;}var r=new FileReader();r.onload=function(e){customImages[i]=e.target.result;if(st)st.textContent='Image ready: '+f.name;};r.readAsDataURL(f);};
   document.addEventListener('DOMContentLoaded',function(){try{if(document.getElementById('pg-slides')&&document.getElementById('pg-slides').classList.contains('active'))initSlidesPage();}catch(e){}});
+})();
+</script>
+
+
+<style id="tcp-simplified-rep-my-day-v569-legibility-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · REP MY DAY LEGIBILITY PASS · BUILD v569
+   Keeps the complete command center on one desktop screen while eliminating
+   micro-type. Long record sets continue to scroll inside their own panels.
+   ========================================================================== */
+
+/* Preserve the one-screen operating model at normal desktop resolutions. */
+#rp-overlay .ps68-home{
+  grid-template-rows:156px minmax(390px,1fr) 104px;
+  gap:13px;
+}
+
+/* Daily command bar: larger supporting copy without growing the banner. */
+#rp-overlay .ps68-command{
+  grid-template-columns:minmax(410px,.92fr) minmax(680px,1.58fr);
+  gap:22px;
+  padding:18px 22px;
+}
+#rp-overlay .ps68-greeting{
+  grid-template-columns:72px minmax(0,1fr);
+  gap:16px;
+}
+#rp-overlay .ps68-target{
+  width:72px;
+  height:72px;
+  box-shadow:inset 0 0 0 9px rgba(0,175,239,.055),inset 0 0 0 19px rgba(0,175,239,.035);
+}
+#rp-overlay .ps68-target:before{width:32px;height:32px}
+#rp-overlay .ps68-target:after{font-size:25px}
+#rp-overlay .ps68-period{
+  min-height:24px;
+  padding:0 9px;
+  font-size:10px;
+  letter-spacing:.5px;
+}
+#rp-overlay .ps68-greeting h1{
+  margin-top:6px;
+  font-size:30px;
+  line-height:1.02;
+}
+#rp-overlay .ps68-greeting p{
+  margin-top:7px;
+  font-size:11px;
+  line-height:1.42;
+  color:#B8C3D2;
+}
+#rp-overlay .ps68-day-stats{
+  gap:24px;
+  margin-top:11px;
+}
+#rp-overlay .ps68-day-stat{gap:9px}
+#rp-overlay .ps68-day-stat i{font-size:18px}
+#rp-overlay .ps68-day-stat strong{font-size:16px}
+#rp-overlay .ps68-day-stat span{
+  margin-top:3px;
+  font-size:10px;
+  color:#8E9CB0;
+}
+
+/* Call-cycle block: no information should render below a readable minimum. */
+#rp-overlay .ps68-cycle{
+  grid-template-columns:minmax(190px,.78fr) minmax(430px,1.58fr) minmax(150px,.55fr);
+  gap:14px;
+  padding-left:20px;
+}
+#rp-overlay .ps68-cycle-kick{
+  font-size:10px;
+  letter-spacing:1px;
+}
+#rp-overlay .ps68-cycle-title{
+  margin-top:6px;
+  font-size:20px;
+}
+#rp-overlay .ps68-cycle-status{
+  min-height:25px;
+  margin-top:8px;
+  padding:0 9px;
+  font-size:10px;
+}
+#rp-overlay .ps68-cycle-metrics{gap:8px}
+#rp-overlay .ps68-cycle-metric{
+  padding:8px 10px;
+  border-radius:10px;
+}
+#rp-overlay .ps68-cycle-metric span{
+  font-size:9.5px;
+  letter-spacing:.45px;
+}
+#rp-overlay .ps68-cycle-metric strong{
+  margin-top:4px;
+  font-size:15px;
+}
+#rp-overlay .ps68-cycle-metric small{
+  margin-top:4px;
+  font-size:9.5px;
+  color:#8A98AA;
+}
+#rp-overlay .ps68-progress-head{
+  margin-top:8px;
+  font-size:9.5px;
+}
+#rp-overlay .ps68-progress{height:7px;margin-top:5px}
+#rp-overlay .ps68-cycle-actions button{
+  min-height:35px;
+  padding:0 11px;
+  border-radius:9px;
+  font-size:11px;
+}
+
+/* Today's Work header and section labels. */
+#rp-overlay .ps68-work{grid-template-rows:50px minmax(0,1fr)}
+#rp-overlay .ps68-work-head{padding:10px 15px}
+#rp-overlay .ps68-work-head-left{gap:11px}
+#rp-overlay .ps68-kick{
+  font-size:10px;
+  letter-spacing:1px;
+}
+#rp-overlay .ps68-work-title{font-size:19px}
+#rp-overlay .ps68-work-copy{
+  font-size:10px;
+  color:#8D9AAD;
+}
+#rp-overlay .ps68-work-link{font-size:11px}
+#rp-overlay .ps68-work-grid{
+  grid-template-columns:minmax(640px,1.72fr) minmax(340px,.84fr);
+  gap:12px;
+  padding:11px;
+}
+
+/* Primary call queue. */
+#rp-overlay .ps68-primary{
+  grid-template-rows:47px minmax(0,1fr) 50px;
+  border-radius:13px;
+}
+#rp-overlay .ps68-card-head{padding:10px 12px}
+#rp-overlay .ps68-card-head strong{font-size:12px}
+#rp-overlay .ps68-count{
+  min-width:29px;
+  min-height:24px;
+  padding:0 8px;
+  font-size:10px;
+}
+#rp-overlay .ps68-queue{padding:4px 10px}
+#rp-overlay .ps68-row{
+  min-height:49px;
+  padding:8px 4px;
+}
+#rp-overlay .ps68-row-name{
+  font-size:12px;
+  line-height:1.25;
+}
+#rp-overlay .ps68-row-sub{
+  margin-top:4px;
+  font-size:10px;
+  line-height:1.3;
+  color:#8B98AA;
+}
+#rp-overlay .ps68-due{
+  min-height:24px;
+  padding:0 8px;
+  border-radius:7px;
+  font-size:9.5px;
+}
+#rp-overlay .ps68-primary-actions{
+  gap:8px;
+  padding:8px;
+}
+#rp-overlay .ps68-primary-actions button,
+#rp-overlay .ps68-other-action{
+  min-height:34px;
+  border-radius:8px;
+  font-size:11px;
+}
+
+/* Secondary work lanes: larger labels and useful empty-state copy. */
+#rp-overlay .ps68-other{gap:9px}
+#rp-overlay .ps68-other-card{border-radius:13px}
+#rp-overlay .ps68-other-inner{grid-template-rows:38px minmax(0,1fr)}
+#rp-overlay .ps68-other-head{padding:8px 10px}
+#rp-overlay .ps68-other-head strong{font-size:11px}
+#rp-overlay .ps68-other-head span{font-size:10px}
+#rp-overlay .ps68-other-list{padding:3px 8px}
+#rp-overlay .ps68-other-row{
+  min-height:39px;
+  padding:6px 2px;
+}
+#rp-overlay .ps68-other-row strong{font-size:11px}
+#rp-overlay .ps68-other-row span{
+  font-size:9.5px;
+  color:#8A98AA;
+}
+#rp-overlay .ps68-other-empty{
+  padding:8px 10px;
+  font-size:10px;
+  color:#8795A8;
+}
+#rp-overlay .ps68-other-action{
+  min-height:28px;
+  padding:0 9px;
+  font-size:10px;
+}
+
+/* Bottom scoreboard: readable at a glance without increasing strip height. */
+#rp-overlay .ps68-score{
+  grid-template-columns:170px minmax(0,1fr) auto;
+  gap:12px;
+  padding:10px 12px;
+}
+#rp-overlay .ps68-score-title strong{
+  margin-top:6px;
+  font-size:16px;
+}
+#rp-overlay .ps68-score-grid{gap:8px}
+#rp-overlay .ps68-score-card{
+  min-height:74px;
+  grid-template-columns:34px minmax(0,1fr);
+  gap:9px;
+  padding:8px 10px;
+  border-radius:10px;
+}
+#rp-overlay .ps68-score-icon{
+  width:34px;
+  height:34px;
+  font-size:15px;
+}
+#rp-overlay .ps68-score-card span{
+  font-size:9.5px;
+  letter-spacing:.25px;
+}
+#rp-overlay .ps68-score-card strong{
+  margin-top:4px;
+  font-size:14px;
+}
+#rp-overlay .ps68-score-card small{
+  margin-top:4px;
+  font-size:9.5px;
+  color:#8795A8;
+}
+#rp-overlay .ps68-score-link{
+  min-height:36px;
+  padding:0 12px;
+  border-radius:9px;
+  font-size:11px;
+}
+
+/* Slightly tighter structure on common 1366–1480px desktops, never tiny type. */
+@media(max-width:1480px){
+  #rp-overlay .ps68-command{
+    grid-template-columns:minmax(380px,.84fr) minmax(620px,1.48fr);
+    gap:18px;
+    padding-left:18px;
+    padding-right:18px;
+  }
+  #rp-overlay .ps68-greeting{grid-template-columns:66px minmax(0,1fr);gap:14px}
+  #rp-overlay .ps68-target{width:66px;height:66px}
+  #rp-overlay .ps68-greeting h1{font-size:27px}
+  #rp-overlay .ps68-cycle{
+    grid-template-columns:178px minmax(385px,1.46fr) 140px;
+    padding-left:17px;
+  }
+  #rp-overlay .ps68-work-grid{
+    grid-template-columns:minmax(590px,1.66fr) minmax(320px,.82fr);
+  }
+  #rp-overlay .ps68-score{grid-template-columns:145px minmax(0,1fr) auto}
+  #rp-overlay .ps68-score-title strong{font-size:15px}
+}
+
+/* Existing responsive stack remains in charge below 1180px. */
+@media(max-width:1180px){
+  #rp-overlay .ps68-home{grid-template-rows:auto auto auto}
+  #rp-overlay .ps68-command{grid-template-columns:1fr}
+  #rp-overlay .ps68-cycle{grid-template-columns:190px minmax(0,1fr) 150px}
+  #rp-overlay .ps68-work-grid{grid-template-columns:1fr}
+  #rp-overlay .ps68-score{grid-template-columns:1fr}
+}
+</style>
+
+<script id="tcp-simplified-rep-my-day-v569-meta-js">
+(function(){
+ 'use strict';
+ window.TCP_SIMPLIFIED_REP_MY_DAY_V569={
+  version:'v569',
+  purpose:'Rep My Day desktop legibility pass',
+  baseline:'v568'
+ };
 })();
 </script>
 
