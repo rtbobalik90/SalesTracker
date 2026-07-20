@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v573 — Compact Work Lanes & Larger Scorecard</title>
+<title>Sales Tracker v578 — Rep Portal Core Repair</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -5456,11 +5456,7 @@ function buildReport(title,sub,badgeText,bodyHtml){
   +'</div>'
   +bodyHtml
   +'<div class="rpt-footer"><span>Triple Crown Products &middot; Confidential</span><span>'+ds+'</span></div>'
-  +'</div>
-
-
-
-</body></html>';
+  +'</div></body></html>';
 }
 
 function rKPI2(v,l,s,col){return'<div class="kpi-cell">'+'<div class="kl">'+l+'</div>'+'<div class="kv"'+(col?' style="color:'+col+';"':'')+'>'+v+'</div>'+(s?'<div class="ks">'+s+'</div>':'')+'</div>';}
