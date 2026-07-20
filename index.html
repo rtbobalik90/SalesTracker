@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v570 — Four-Lane Rep My Day</title>
+<title>Sales Tracker v571 — Single Rep Command Header</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -61690,6 +61690,576 @@ body.ps58-dashboard-active .wrap:after{
 
  setTimeout(enhanceFourLanes,0);
  setTimeout(enhanceFourLanes,250);
+})();
+</script>
+
+
+<style id="tcp-rep-my-day-command-header-v571-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · SINGLE MY DAY COMMAND HEADER · BUILD v571
+   Removes the redundant identity bar on My Day, moves period selectors into
+   the primary command panel, and relocates cloud/read-only controls to Admin.
+   ========================================================================== */
+
+/* Refresh and access mode now live in the Rep Portal Admin page. */
+#rp-overlay .rp2-top .ps61-refresh-wrap,
+#rp-overlay .rp2-top .ps61-readonly{
+  display:none!important;
+}
+
+/* Remove the redundant first Ben header only on My Day. */
+#rp-overlay .rp2-main:has(.ps68-home)>.rp2-top,
+#rp-overlay .rp2-main.ps71-home-mode>.rp2-top{
+  display:none!important;
+}
+#rp-overlay .rp2-main:has(.ps68-home),
+#rp-overlay .rp2-main.ps71-home-mode{
+  padding-top:18px!important;
+  padding-bottom:18px!important;
+}
+#rp-overlay .rp2-main:has(.ps68-home) #rp2-page,
+#rp-overlay .rp2-main.ps71-home-mode #rp2-page{
+  padding-bottom:0!important;
+}
+
+/* Use the recovered vertical space to make the real command header readable. */
+#rp-overlay .ps68-home{
+  height:calc(100vh - 36px)!important;
+  min-height:680px!important;
+  max-height:none!important;
+  grid-template-rows:220px minmax(380px,1fr) 104px!important;
+}
+#rp-overlay .ps68-command{
+  min-height:220px!important;
+  grid-template-columns:minmax(430px,.88fr) minmax(720px,1.52fr)!important;
+  grid-template-rows:52px minmax(0,1fr)!important;
+  column-gap:30px!important;
+  row-gap:15px!important;
+  align-items:center!important;
+  padding:15px 26px 22px!important;
+  border-radius:21px!important;
+}
+
+/* Reporting period is now part of the command center, not a separate bar. */
+#rp-overlay .ps71-period-row{
+  position:relative;
+  z-index:2;
+  grid-column:1/-1;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  min-width:0;
+  padding-bottom:11px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+#rp-overlay .ps71-period-copy{
+  min-width:240px;
+}
+#rp-overlay .ps71-period-copy strong{
+  display:block;
+  color:#FFFFFF;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.02em;
+}
+#rp-overlay .ps71-period-copy span{
+  display:block;
+  margin-top:4px;
+  color:#91A1B7;
+  font-size:10px;
+  line-height:1.35;
+}
+#rp-overlay .ps71-period-row .rp2-context{
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:flex-end!important;
+  gap:10px!important;
+  flex-wrap:nowrap!important;
+  min-width:0!important;
+}
+#rp-overlay .ps71-period-row .rp2-cloud-refresh,
+#rp-overlay .ps71-period-row .rp2-cloud-age,
+#rp-overlay .ps71-period-row .rp2-readonly{
+  display:none!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-field span{
+  margin-bottom:6px!important;
+  color:#8F9EB4!important;
+  font-size:9.5px!important;
+  letter-spacing:.75px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select{
+  min-width:96px!important;
+  min-height:42px!important;
+  padding:0 34px 0 12px!important;
+  border-radius:11px!important;
+  background-color:rgba(3,11,20,.60)!important;
+  border-color:rgba(148,163,184,.20)!important;
+  color:#FFFFFF!important;
+  font-size:13px!important;
+  font-weight:800!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select.week{
+  min-width:225px!important;
+}
+
+/* Larger greeting identity and daily priorities. */
+#rp-overlay .ps68-greeting{
+  grid-row:2;
+  grid-template-columns:100px minmax(0,1fr)!important;
+  gap:21px!important;
+}
+#rp-overlay .ps68-target{
+  width:98px!important;
+  height:98px!important;
+}
+#rp-overlay .ps68-target:before{
+  width:42px!important;
+  height:42px!important;
+  border-width:3px!important;
+}
+#rp-overlay .ps68-target:after{
+  font-size:33px!important;
+}
+#rp-overlay .ps68-period{
+  min-height:27px!important;
+  padding:0 10px!important;
+  font-size:9.5px!important;
+  letter-spacing:.55px!important;
+}
+#rp-overlay .ps68-greeting h1{
+  margin-top:8px!important;
+  font-size:40px!important;
+  line-height:1.02!important;
+}
+#rp-overlay .ps68-greeting p{
+  margin-top:8px!important;
+  color:#BAC5D5!important;
+  font-size:12.5px!important;
+  line-height:1.5!important;
+}
+#rp-overlay .ps68-day-stats{
+  gap:29px!important;
+  margin-top:15px!important;
+}
+#rp-overlay .ps68-day-stat{
+  gap:10px!important;
+}
+#rp-overlay .ps68-day-stat i{
+  font-size:21px!important;
+}
+#rp-overlay .ps68-day-stat strong{
+  font-size:18px!important;
+}
+#rp-overlay .ps68-day-stat span{
+  margin-top:4px!important;
+  color:#93A2B7!important;
+  font-size:9.5px!important;
+}
+
+/* Larger call-cycle information, metrics, progress, and actions. */
+#rp-overlay .ps68-cycle{
+  grid-row:2;
+  grid-template-columns:minmax(220px,.72fr) minmax(450px,1.55fr) minmax(175px,.55fr)!important;
+  gap:17px!important;
+  padding-left:27px!important;
+}
+#rp-overlay .ps68-cycle-kick{
+  font-size:10px!important;
+  letter-spacing:1.05px!important;
+}
+#rp-overlay .ps68-cycle-title{
+  margin-top:7px!important;
+  font-size:25px!important;
+  line-height:1.12!important;
+}
+#rp-overlay .ps68-cycle-status{
+  min-height:29px!important;
+  margin-top:11px!important;
+  padding:0 10px!important;
+  font-size:9.5px!important;
+}
+#rp-overlay .ps68-cycle-metrics{
+  gap:9px!important;
+}
+#rp-overlay .ps68-cycle-metric{
+  min-height:78px!important;
+  padding:11px 12px!important;
+  border-radius:11px!important;
+}
+#rp-overlay .ps68-cycle-metric span{
+  font-size:8.5px!important;
+  letter-spacing:.55px!important;
+}
+#rp-overlay .ps68-cycle-metric strong{
+  margin-top:7px!important;
+  font-size:18px!important;
+}
+#rp-overlay .ps68-cycle-metric small{
+  margin-top:5px!important;
+  color:#93A2B7!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps68-progress-head{
+  margin-top:10px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps68-progress{
+  height:9px!important;
+  margin-top:7px!important;
+}
+#rp-overlay .ps68-cycle-actions{
+  gap:9px!important;
+}
+#rp-overlay .ps68-cycle-actions button{
+  min-height:43px!important;
+  padding:0 13px!important;
+  border-radius:10px!important;
+  font-size:12.5px!important;
+}
+
+/* --------------------------------------------------------------------------
+   Rep Portal Admin
+   -------------------------------------------------------------------------- */
+#rp-overlay .ps71-admin{
+  display:flex;
+  flex-direction:column;
+  gap:17px;
+}
+#rp-overlay .ps71-admin-hero,
+#rp-overlay .ps71-admin-card{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(148,163,184,.15);
+  background:linear-gradient(145deg,#0D1925,#07111A);
+  box-shadow:0 18px 46px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.035);
+}
+#rp-overlay .ps71-admin-hero{
+  min-height:172px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  padding:27px 29px;
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 90% 12%,rgba(0,175,239,.18),transparent 32%),
+    radial-gradient(circle at 8% 100%,rgba(250,135,61,.18),transparent 36%),
+    linear-gradient(135deg,#10263A,#172039 55%,#24201F);
+}
+#rp-overlay .ps71-admin-kick{
+  color:#70E1FA;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+}
+#rp-overlay .ps71-admin-hero h1{
+  margin:8px 0 0;
+  color:#fff;
+  font-family:'Droid Serif',Georgia,serif;
+  font-size:36px;
+  line-height:1.05;
+}
+#rp-overlay .ps71-admin-hero p{
+  max-width:720px;
+  margin:10px 0 0;
+  color:#B6C2D3;
+  font-size:13px;
+  line-height:1.6;
+}
+#rp-overlay .ps71-admin-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:17px;
+}
+#rp-overlay .ps71-admin-card{
+  min-height:260px;
+  padding:21px;
+  border-radius:18px;
+}
+#rp-overlay .ps71-admin-icon{
+  width:47px;
+  height:47px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(0,175,239,.20);
+  border-radius:15px;
+  background:rgba(0,175,239,.07);
+  color:#8BEAFF;
+  font-size:21px;
+}
+#rp-overlay .ps71-admin-card h2{
+  margin:17px 0 0;
+  color:#fff;
+  font-size:20px;
+  font-weight:950;
+}
+#rp-overlay .ps71-admin-card p{
+  margin:9px 0 0;
+  color:#9DAABD;
+  font-size:12px;
+  line-height:1.6;
+}
+#rp-overlay .ps71-admin-status{
+  margin-top:16px;
+  padding:12px 13px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+#rp-overlay .ps71-admin-status span{
+  display:block;
+  color:#7F8EA3;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+}
+#rp-overlay .ps71-admin-status strong{
+  display:block;
+  margin-top:6px;
+  color:#FFFFFF;
+  font-size:15px;
+}
+#rp-overlay .ps71-admin-status.readonly strong{
+  color:#91E5C5;
+}
+#rp-overlay .ps71-admin-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:17px;
+}
+#rp-overlay .ps71-admin-btn{
+  min-height:43px;
+  padding:0 15px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+  color:#E8EEF5;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+#rp-overlay .ps71-admin-btn.primary{
+  border-color:rgba(93,202,165,.28);
+  background:rgba(93,202,165,.08);
+  color:#A6EED2;
+}
+#rp-overlay .ps71-admin-btn:hover{
+  border-color:rgba(250,135,61,.38);
+  color:#fff;
+}
+#rp-overlay .ps71-admin-message{
+  min-height:18px;
+  margin-top:10px;
+  color:#91A1B7;
+  font-size:11px;
+}
+
+@media(max-width:1500px){
+  #rp-overlay .ps68-command{
+    grid-template-columns:minmax(390px,.82fr) minmax(640px,1.38fr)!important;
+    column-gap:22px!important;
+  }
+  #rp-overlay .ps68-greeting h1{font-size:36px!important;}
+  #rp-overlay .ps68-cycle{
+    grid-template-columns:minmax(190px,.68fr) minmax(405px,1.45fr) minmax(155px,.52fr)!important;
+    padding-left:22px!important;
+  }
+  #rp-overlay .ps68-cycle-title{font-size:22px!important;}
+  #rp-overlay .ps68-cycle-metric strong{font-size:16px!important;}
+}
+@media(max-width:1180px){
+  #rp-overlay .rp2-main:has(.ps68-home),
+  #rp-overlay .rp2-main.ps71-home-mode{padding-top:12px!important;}
+  #rp-overlay .ps68-home{
+    height:auto!important;
+    min-height:0!important;
+    grid-template-rows:auto auto auto!important;
+  }
+  #rp-overlay .ps68-command{
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto auto auto!important;
+    min-height:0!important;
+  }
+  #rp-overlay .ps71-period-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  #rp-overlay .ps71-period-row .rp2-context{
+    width:100%!important;
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
+  }
+  #rp-overlay .ps68-greeting,
+  #rp-overlay .ps68-cycle{grid-row:auto!important;}
+  #rp-overlay .ps68-cycle{
+    grid-template-columns:1fr 1.5fr .65fr!important;
+    padding:17px 0 0!important;
+  }
+  #rp-overlay .ps71-admin-grid{grid-template-columns:1fr;}
+}
+@media(max-width:720px){
+  #rp-overlay .ps71-period-row .rp2-context-field,
+  #rp-overlay .ps71-period-row .rp2-context-select,
+  #rp-overlay .ps71-period-row .rp2-context-select.week{
+    width:100%!important;
+    min-width:0!important;
+  }
+  #rp-overlay .ps68-greeting{
+    grid-template-columns:74px minmax(0,1fr)!important;
+  }
+  #rp-overlay .ps68-target{width:72px!important;height:72px!important;}
+  #rp-overlay .ps68-greeting h1{font-size:29px!important;}
+  #rp-overlay .ps68-day-stats{gap:14px!important;flex-wrap:wrap!important;}
+  #rp-overlay .ps68-cycle{grid-template-columns:1fr!important;}
+  #rp-overlay .ps71-admin-hero{align-items:flex-start;flex-direction:column;padding:22px;}
+}
+</style>
+
+<script id="tcp-rep-my-day-command-header-v571-js">
+(function(){
+ 'use strict';
+
+ function clean(value){
+  return String(value==null?'':value).trim();
+ }
+ function esc(value){
+  if(typeof window._rp2Esc==='function')return window._rp2Esc(String(value==null?'':value));
+  return String(value==null?'':value).replace(/[&<>\"]/g,function(character){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[character];
+  });
+ }
+ function cloudLabel(){
+  try{
+   if(typeof window._rpCloudAgeLabel==='function')return clean(window._rpCloudAgeLabel());
+  }catch(error){}
+  try{
+   var stamp=window._tcpStorageMeta&&(_tcpStorageMeta.lastHydrated||_tcpStorageMeta.lastSaved);
+   if(stamp){
+    var date=new Date(stamp);
+    if(!isNaN(date.getTime()))return'Cloud updated '+date.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+   }
+  }catch(error){}
+  return'Cloud data available';
+ }
+ function periodControls(){
+  var html='';
+  try{
+   if(typeof window._rp2PeriodControls==='function')html=window._rp2PeriodControls();
+  }catch(error){}
+  if(!html)return'';
+  var wrapper=document.createElement('div');
+  wrapper.innerHTML=html;
+  var context=wrapper.querySelector('.rp2-context');
+  if(!context)return'';
+  Array.prototype.forEach.call(
+   context.querySelectorAll('.rp2-cloud-refresh,.rp2-cloud-age,.rp2-readonly'),
+   function(node){node.remove();}
+  );
+  return context.outerHTML;
+ }
+ function ensurePeriodRow(){
+  var command=document.querySelector('#rp-overlay .ps68-command');
+  if(!command||command.querySelector('.ps71-period-row'))return;
+  var row=document.createElement('div');
+  row.className='ps71-period-row';
+  row.innerHTML='<div class="ps71-period-copy"><strong>My Day Command Center</strong><span>Select the reporting period without leaving today’s workspace.</span></div>'+periodControls();
+  command.insertBefore(row,command.firstChild);
+ }
+ function applyMode(){
+  var main=document.querySelector('#rp-overlay .rp2-main');
+  if(!main)return;
+  var home=!!main.querySelector('.ps68-home');
+  main.classList.toggle('ps71-home-mode',home);
+  if(home)ensurePeriodRow();
+ }
+ function installAdminNav(){
+  try{
+   if(typeof RP2_NAV!=='undefined'&&Array.isArray(RP2_NAV)){
+    var exists=RP2_NAV.some(function(group){
+     return Array.isArray(group.items)&&group.items.some(function(item){return item&&item[0]==='portaladmin';});
+    });
+    if(!exists)RP2_NAV.push({g:'System',items:[['portaladmin','Admin','⚙️']]});
+   }
+  }catch(error){console.warn('[v571 admin nav]',error);}
+ }
+ function adminPage(){
+  return'<div class="ps71-admin">'+
+   '<section class="ps71-admin-hero"><div><div class="ps71-admin-kick">Rep Portal Administration</div><h1>Admin & Data Access</h1><p>Cloud refresh, access mode, and portal-level system information are kept here so the My Day workspace stays focused on customers and selling activity.</p></div><button class="ps71-admin-btn" onclick="_rp2Go(\'home\')">Return to My Day →</button></section>'+
+   '<div class="ps71-admin-grid">'+
+    '<section class="ps71-admin-card"><div class="ps71-admin-icon">↻</div><h2>Cloud Data</h2><p>Pull the newest manager-saved cloud snapshot into the Rep Portal. This refreshes portal data without changing the rep’s read-only access level.</p><div class="ps71-admin-status"><span>Current cloud status</span><strong id="ps71-cloud-label">'+esc(cloudLabel())+'</strong></div><div class="ps71-admin-actions"><button class="ps71-admin-btn primary" onclick="_ps71RefreshCloud(this)">Refresh Cloud Data</button></div><div id="ps71-admin-message" class="ps71-admin-message"></div></section>'+
+    '<section class="ps71-admin-card"><div class="ps71-admin-icon">●</div><h2>Access Mode</h2><p>The Rep Portal is intentionally read only for shared manager-controlled records. Rep actions and allowed local workflow updates continue to use their existing controls.</p><div class="ps71-admin-status readonly"><span>Portal permission</span><strong>● Read Only</strong></div></section>'+
+    '<section class="ps71-admin-card"><div class="ps71-admin-icon">▦</div><h2>Reporting Period</h2><p>Year, quarter, month, and week selectors now live inside the My Day command header. This keeps the selected context visible without a second identity bar.</p><div class="ps71-admin-status"><span>Current selection</span><strong>'+esc((function(){try{return getQ()+' '+getYr();}catch(error){return'Current period';}})())+'</strong></div><div class="ps71-admin-actions"><button class="ps71-admin-btn" onclick="_rp2Go(\'home\')">Open Period Controls</button></div></section>'+
+   '</div></div>';
+ }
+
+ window._ps71RefreshCloud=function(button){
+  var message=document.getElementById('ps71-admin-message');
+  if(message)message.textContent='Refreshing cloud data…';
+  try{
+   var result=typeof window._rp2RefreshCloud==='function'?window._rp2RefreshCloud(button,false):null;
+   Promise.resolve(result).then(function(){
+    setTimeout(function(){
+     var label=document.getElementById('ps71-cloud-label');
+     if(label)label.textContent=cloudLabel();
+     var current=document.getElementById('ps71-admin-message');
+     if(current)current.textContent='Cloud refresh complete.';
+    },120);
+   }).catch(function(error){
+    var current=document.getElementById('ps71-admin-message');
+    if(current)current.textContent='Cloud refresh did not complete: '+clean(error&&error.message||error);
+   });
+  }catch(error){
+   if(message)message.textContent='Cloud refresh did not complete: '+clean(error&&error.message||error);
+  }
+ };
+
+ installAdminNav();
+
+ var priorPage=window._rp2Page;
+ window._rp2Page=function(){
+  if(window._rp2&&_rp2.page==='portaladmin')return adminPage();
+  return typeof priorPage==='function'?priorPage.apply(this,arguments):'';
+ };
+
+ var priorAfter=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof priorAfter==='function'?priorAfter.apply(this,arguments):undefined;
+  installAdminNav();
+  setTimeout(applyMode,0);
+  return result;
+ };
+
+ var priorGo=window._rp2Go;
+ if(typeof priorGo==='function'&&!priorGo._ps71){
+  var go=function(){
+   installAdminNav();
+   var result=priorGo.apply(this,arguments);
+   setTimeout(applyMode,0);
+   return result;
+  };
+  go._ps71=true;
+  window._rp2Go=go;
+ }
+
+ window.TCP_REP_MY_DAY_COMMAND_HEADER_V571={
+  version:'v571',
+  applyMode:applyMode,
+  adminPage:adminPage,
+  installAdminNav:installAdminNav
+ };
+
+ setTimeout(function(){
+  try{
+   installAdminNav();
+   if(window._rp2&&_rp2.rep&&typeof window._rp2Go==='function')window._rp2Go(_rp2.page||'home');
+   else applyMode();
+  }catch(error){console.warn('[v571 command header]',error);}
+ },0);
 })();
 </script>
 
