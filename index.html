@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v566 — Automatic Company Call Link</title>
+<title>Sales Tracker v567 — Rep Executive Scale & Queue Scroll</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v567 · REP EXECUTIVE SCALE & QUEUE SCROLL
+     Restores manager-level readability across the Rep Portal and renders the
+     complete Today’s Calls queue inside a true independently scrollable list.
+     ========================================================================== -->
+
 
 <!-- ==========================================================================
      SALES TRACKER v566 · AUTOMATIC COMPANY CALL LINK
@@ -54962,7 +54969,7 @@ body.ps58-dashboard-active .wrap:after{
   return{label:'Scheduled',cls:'scheduled'}
  }
  function focusRows(rows,type){
-  rows=arr(rows).slice(0,5);
+  rows=arr(rows).slice(0,250);
   if(!rows.length)return'<div class="ps60-empty">Nothing is currently waiting in this queue.</div>';
   return rows.map(function(item){
    var name=clean(item.customer||item.company||item.title||item.number||'Item');
@@ -59127,6 +59134,827 @@ body.ps58-dashboard-active .wrap:after{
   setTimeout(decorate,20)
  });
  var overlay=document.getElementById&&document.getElementById('rp-overlay');
+ if(overlay){
+  observer.observe(overlay,{childList:true,subtree:true})
+ }
+})();
+</script>
+
+
+
+<style id="tcp-rep-executive-scale-queue-v567-css">
+/* ==========================================================================
+   REP PORTAL · PERMANENT EXECUTIVE SCALE + COMPLETE QUEUE · BUILD v567
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Portal shell — match the manager tracker's visual weight.
+   -------------------------------------------------------------------------- */
+#rp-overlay .rp2-app,
+#rp-overlay[data-rp-scale="manager"] .rp2-app,
+#rp-overlay[data-rp-scale="compact"] .rp2-app{
+  font-size:16px!important;
+  min-width:1260px!important;
+}
+#rp-overlay .rp2-side,
+#rp-overlay[data-rp-scale="manager"] .rp2-side,
+#rp-overlay[data-rp-scale="compact"] .rp2-side{
+  width:272px!important;
+  flex:0 0 272px!important;
+  padding:22px 16px 20px!important;
+}
+#rp-overlay .rp2-logo{
+  padding:10px 11px 21px!important;
+  font-size:19px!important;
+}
+#rp-overlay .rp2-logo span{
+  margin-top:9px!important;
+  font-size:9px!important;
+  letter-spacing:1.65px!important;
+}
+#rp-overlay .rp2-navg{
+  margin-top:8px!important;
+  padding:15px 10px 8px!important;
+  font-size:10px!important;
+  letter-spacing:1.35px!important;
+}
+#rp-overlay .rp2-nav{
+  min-height:49px!important;
+  gap:12px!important;
+  padding:12px 13px!important;
+  border-radius:11px!important;
+  font-size:14px!important;
+  line-height:1.25!important;
+}
+#rp-overlay .rp2-nav span{
+  width:22px!important;
+  font-size:16px!important;
+}
+#rp-overlay .rp2-main,
+#rp-overlay[data-rp-scale="manager"] .rp2-main,
+#rp-overlay[data-rp-scale="compact"] .rp2-main{
+  padding:0 35px 95px!important;
+}
+#rp-overlay #rp2-page{
+  width:100%!important;
+  max-width:none!important;
+  padding-bottom:120px!important;
+}
+#rp-overlay .rp2-top,
+#rp-overlay .rp2-top.ps61-clean-top{
+  min-height:98px!important;
+  margin:0 -35px 20px!important;
+  padding:17px 35px!important;
+}
+#rp-overlay .rp2-person{
+  gap:15px!important;
+}
+#rp-overlay .rp2-person-mark{
+  width:57px!important;
+  height:57px!important;
+  flex-basis:57px!important;
+  border-radius:16px!important;
+  font-size:16px!important;
+}
+#rp-overlay .rp2-hi{
+  font-size:28px!important;
+  line-height:1.08!important;
+}
+#rp-overlay .rp2-sub{
+  margin-top:6px!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+}
+#rp-overlay .rp2-context-field span{
+  margin-bottom:6px!important;
+  font-size:9px!important;
+  letter-spacing:.65px!important;
+}
+#rp-overlay .rp2-context-field select{
+  min-width:88px!important;
+  min-height:46px!important;
+  padding:0 11px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+#rp-overlay .ps61-refresh,
+#rp-overlay .ps61-readonly{
+  min-height:46px!important;
+  padding:0 15px!important;
+  border-radius:10px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps61-cloud-age{
+  font-size:8px!important;
+}
+
+/* --------------------------------------------------------------------------
+   My Day hero and call-cycle status.
+   -------------------------------------------------------------------------- */
+#rp-overlay .ps60-shell{
+  gap:16px!important;
+}
+#rp-overlay .ps60-hero{
+  min-height:174px!important;
+  padding:25px 29px!important;
+  border-radius:18px!important;
+}
+#rp-overlay .ps60-hero-main{
+  grid-template-columns:112px minmax(0,1fr)!important;
+  gap:22px!important;
+}
+#rp-overlay .ps60-target{
+  width:106px!important;
+  height:106px!important;
+}
+#rp-overlay .ps60-target:after{
+  font-size:35px!important;
+}
+#rp-overlay .ps61-hero-period{
+  margin-bottom:10px!important;
+  padding:6px 10px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps60-hero h1{
+  font-size:42px!important;
+  line-height:1.03!important;
+}
+#rp-overlay .ps60-hero p{
+  margin-top:9px!important;
+  font-size:12px!important;
+  line-height:1.6!important;
+}
+#rp-overlay .ps60-hero-stats{
+  gap:30px!important;
+  margin-top:20px!important;
+}
+#rp-overlay .ps60-hero-stat{
+  gap:10px!important;
+}
+#rp-overlay .ps60-hero-stat i{
+  font-size:22px!important;
+}
+#rp-overlay .ps60-hero-stat strong{
+  font-size:17px!important;
+}
+#rp-overlay .ps60-hero-stat span{
+  margin-top:3px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps60-hero-action{
+  min-width:190px!important;
+  min-height:48px!important;
+  border-radius:11px!important;
+  font-size:10px!important;
+}
+
+#rp-overlay .ps61-cycle{
+  min-height:166px!important;
+  padding:19px 20px!important;
+  gap:17px!important;
+  border-radius:16px!important;
+}
+#rp-overlay .ps61-cycle-kick{
+  font-size:8.5px!important;
+}
+#rp-overlay .ps61-cycle-title{
+  margin-top:6px!important;
+  font-size:22px!important;
+}
+#rp-overlay .ps61-cycle-copy{
+  margin-top:7px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps61-cycle-progress-head{
+  margin-top:14px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps61-cycle-bar{
+  height:9px!important;
+  margin-top:8px!important;
+}
+#rp-overlay .ps61-cycle-metrics{
+  gap:10px!important;
+}
+#rp-overlay .ps61-cycle-metric{
+  min-height:92px!important;
+  padding:13px!important;
+  border-radius:11px!important;
+}
+#rp-overlay .ps61-cycle-metric span{
+  font-size:7.5px!important;
+}
+#rp-overlay .ps61-cycle-metric strong{
+  margin-top:7px!important;
+  font-size:18px!important;
+}
+#rp-overlay .ps61-cycle-metric small{
+  margin-top:6px!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps61-pace{
+  padding:12px!important;
+  border-radius:10px!important;
+}
+#rp-overlay .ps61-pace span{
+  font-size:7px!important;
+}
+#rp-overlay .ps61-pace strong{
+  margin-top:5px!important;
+  font-size:15px!important;
+}
+#rp-overlay .ps61-pace small{
+  margin-top:4px!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps61-cycle-btn{
+  min-height:39px!important;
+  padding:0 11px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .cc566-auto-source{
+  margin-top:11px!important;
+  font-size:8px!important;
+}
+
+/* --------------------------------------------------------------------------
+   Today’s Focus — full queue rendering and real internal scrolling.
+   -------------------------------------------------------------------------- */
+#rp-overlay .ps60-section{
+  border-radius:17px!important;
+}
+#rp-overlay .ps60-section-head{
+  padding:18px 20px!important;
+}
+#rp-overlay .ps60-kick{
+  font-size:9px!important;
+  letter-spacing:1.15px!important;
+}
+#rp-overlay .ps60-section-title{
+  margin-top:5px!important;
+  font-size:20px!important;
+}
+#rp-overlay .ps60-section-copy{
+  margin-top:5px!important;
+  font-size:9.5px!important;
+}
+#rp-overlay .ps60-link{
+  font-size:9.5px!important;
+}
+#rp-overlay .ps60-focus-grid{
+  gap:13px!important;
+  padding:13px!important;
+}
+#rp-overlay .ps60-focus-card{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+  min-width:0!important;
+  height:438px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .ps60-focus-card-head{
+  min-height:55px!important;
+  padding:13px 14px!important;
+}
+#rp-overlay .ps60-focus-card-head strong{
+  font-size:11.5px!important;
+}
+#rp-overlay .ps60-focus-card-head span{
+  font-size:9px!important;
+}
+#rp-overlay .ps60-focus-list{
+  width:100%!important;
+  height:326px!important;
+  min-height:326px!important;
+  max-height:326px!important;
+  padding:6px 10px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable!important;
+  touch-action:pan-y!important;
+}
+#rp-overlay .ps60-focus-list::-webkit-scrollbar{
+  width:12px!important;
+}
+#rp-overlay .ps60-focus-list::-webkit-scrollbar-track{
+  border-radius:999px!important;
+  background:rgba(255,255,255,.035)!important;
+}
+#rp-overlay .ps60-focus-list::-webkit-scrollbar-thumb{
+  min-height:42px!important;
+  border:3px solid transparent!important;
+  border-radius:999px!important;
+  background:linear-gradient(#FA873D,#00AFEF) padding-box!important;
+}
+#rp-overlay .ps60-focus-list{
+  scrollbar-width:auto!important;
+  scrollbar-color:#FA873D rgba(255,255,255,.035)!important;
+}
+#rp-overlay .ps60-focus-row{
+  grid-template-columns:minmax(0,1fr) auto!important;
+  min-height:52px!important;
+  padding:10px 5px!important;
+}
+#rp-overlay .ps60-focus-name{
+  font-size:10.5px!important;
+  line-height:1.3!important;
+}
+#rp-overlay .ps60-focus-sub{
+  margin-top:4px!important;
+  font-size:8.2px!important;
+}
+#rp-overlay .ps60-status{
+  min-height:24px!important;
+  padding:0 8px!important;
+  border-radius:7px!important;
+  font-size:7px!important;
+}
+#rp-overlay .ps60-empty{
+  min-height:306px!important;
+  padding:20px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps60-focus-actions{
+  gap:8px!important;
+  padding:10px!important;
+}
+#rp-overlay .ps60-focus-actions button{
+  min-height:39px!important;
+  border-radius:8px!important;
+  font-size:9px!important;
+}
+
+/* --------------------------------------------------------------------------
+   Scoreboard and lower cards.
+   -------------------------------------------------------------------------- */
+#rp-overlay .ps60-scoreboard{
+  gap:11px!important;
+  padding:13px!important;
+}
+#rp-overlay .ps60-score{
+  min-height:112px!important;
+  padding:15px!important;
+  border-radius:13px!important;
+}
+#rp-overlay .ps60-score-top{
+  gap:11px!important;
+}
+#rp-overlay .ps60-score-icon{
+  width:44px!important;
+  height:44px!important;
+  font-size:19px!important;
+}
+#rp-overlay .ps60-score span{
+  font-size:8.5px!important;
+}
+#rp-overlay .ps60-score strong{
+  margin-top:5px!important;
+  font-size:21px!important;
+}
+#rp-overlay .ps60-score small{
+  margin-top:5px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps60-bottom-grid{
+  gap:13px!important;
+}
+#rp-overlay .ps60-bottom-card{
+  border-radius:15px!important;
+}
+#rp-overlay .ps60-bottom-head{
+  padding:15px 16px!important;
+}
+#rp-overlay .ps60-bottom-head strong{
+  font-size:12px!important;
+}
+#rp-overlay .ps60-bottom-head span{
+  margin-top:4px!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps60-bottom-body{
+  padding:11px!important;
+}
+#rp-overlay .ps60-schedule-row,
+#rp-overlay .ps60-attention-row,
+#rp-overlay .ps60-action-row{
+  min-height:52px!important;
+  padding:10px 7px!important;
+}
+#rp-overlay .ps60-row-title{
+  font-size:9.5px!important;
+}
+#rp-overlay .ps60-row-copy{
+  margin-top:3px!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps60-small-btn{
+  min-height:31px!important;
+  padding:0 9px!important;
+  font-size:7.5px!important;
+}
+#rp-overlay .ps60-performance{
+  padding:15px!important;
+}
+#rp-overlay .ps60-performance-main{
+  grid-template-columns:118px minmax(0,1fr)!important;
+  gap:15px!important;
+}
+#rp-overlay .ps60-performance-score{
+  width:112px!important;
+  height:112px!important;
+}
+#rp-overlay .ps60-performance-score-in{
+  width:86px!important;
+  height:86px!important;
+}
+#rp-overlay .ps60-performance-score strong{
+  font-size:25px!important;
+}
+#rp-overlay .ps60-performance-score span{
+  font-size:8px!important;
+}
+#rp-overlay .ps60-performance-summary strong{
+  font-size:14px!important;
+}
+#rp-overlay .ps60-performance-summary p{
+  margin-top:7px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps60-metrics{
+  gap:7px!important;
+  margin-top:14px!important;
+}
+#rp-overlay .ps60-metric{
+  padding:9px 6px!important;
+}
+#rp-overlay .ps60-metric span{
+  font-size:6.7px!important;
+}
+#rp-overlay .ps60-metric strong{
+  margin-top:4px!important;
+  font-size:10px!important;
+}
+
+/* --------------------------------------------------------------------------
+   Project Simplify Call Workspace — later v562 styles were also too small.
+   -------------------------------------------------------------------------- */
+#rp-overlay .ps62-shell{
+  gap:14px!important;
+}
+#rp-overlay .ps62-command{
+  min-height:137px!important;
+  padding:19px 21px!important;
+  gap:19px!important;
+  border-radius:17px!important;
+}
+#rp-overlay .ps62-command-label strong{
+  font-size:15px!important;
+}
+#rp-overlay .ps62-command-label span{
+  margin-top:5px!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps62-company-line h1{
+  font-size:29px!important;
+}
+#rp-overlay .ps62-active{
+  font-size:8.5px!important;
+}
+#rp-overlay .ps62-command-pills{
+  gap:7px!important;
+  margin-top:11px!important;
+}
+#rp-overlay .ps62-pill{
+  min-height:28px!important;
+  padding:0 9px!important;
+  font-size:7.7px!important;
+}
+#rp-overlay .ps62-step{
+  gap:7px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps62-step i{
+  width:35px!important;
+  height:35px!important;
+  font-size:11px!important;
+}
+#rp-overlay .ps62-step:not(:last-child):before{
+  top:17px!important;
+}
+#rp-overlay .ps62-command-actions{
+  min-width:280px!important;
+  gap:9px!important;
+}
+#rp-overlay .ps62-command-actions button{
+  min-height:46px!important;
+  padding:0 14px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps62-workbench{
+  grid-template-columns:minmax(285px,.58fr) minmax(650px,1.45fr) minmax(345px,.8fr)!important;
+  gap:13px!important;
+}
+#rp-overlay .ps62-panel{
+  border-radius:16px!important;
+}
+#rp-overlay .ps62-panel-head{
+  padding:16px 17px!important;
+}
+#rp-overlay .ps62-panel-title{
+  gap:9px!important;
+  font-size:15px!important;
+}
+#rp-overlay .ps62-panel-copy{
+  margin-top:5px!important;
+  font-size:8.8px!important;
+}
+#rp-overlay .ps62-panel-action{
+  font-size:8.5px!important;
+}
+#rp-overlay .ps62-center-body{
+  min-height:690px!important;
+}
+#rp-overlay .ps62-center-footer{
+  gap:10px!important;
+  padding:13px 16px!important;
+}
+#rp-overlay .ps62-center-footer button{
+  min-height:45px!important;
+  font-size:9px!important;
+}
+#rp-overlay .ps62-context-body{
+  gap:11px!important;
+  padding:12px!important;
+}
+#rp-overlay .ps62-context-card{
+  padding:13px!important;
+  border-radius:12px!important;
+}
+#rp-overlay .ps62-context-kick{
+  font-size:7.5px!important;
+}
+#rp-overlay .ps62-context-card h3{
+  margin-top:6px!important;
+  font-size:13px!important;
+}
+#rp-overlay .ps62-context-card p{
+  margin-top:6px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps62-contact strong{
+  font-size:12px!important;
+}
+#rp-overlay .ps62-contact span{
+  margin-top:4px!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps62-snapshot-row{
+  padding:9px 0!important;
+}
+#rp-overlay .ps62-snapshot-row span,
+#rp-overlay .ps62-snapshot-row strong{
+  font-size:8.5px!important;
+}
+#rp-overlay .ps62-fact{
+  padding:6px 0!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps62-queue-strip{
+  min-height:82px!important;
+  padding:10px 13px!important;
+  border-radius:15px!important;
+}
+#rp-overlay .ps62-queue-label{
+  font-size:8px!important;
+}
+#rp-overlay .ps62-queue-label strong{
+  margin-top:5px!important;
+  font-size:11px!important;
+}
+#rp-overlay .ps62-qcard{
+  min-height:61px!important;
+  padding:9px 10px!important;
+}
+#rp-overlay .ps62-qname{
+  font-size:9.5px!important;
+}
+#rp-overlay .ps62-qcopy,
+#rp-overlay .ps62-qdue{
+  font-size:7.5px!important;
+}
+
+/* --------------------------------------------------------------------------
+   Company Workspace directory and tables.
+   -------------------------------------------------------------------------- */
+#rp-overlay .cw4-directory-title{
+  font-size:39px!important;
+  line-height:1.12!important;
+}
+#rp-overlay .cw4-directory-copy{
+  font-size:12px!important;
+  line-height:1.6!important;
+}
+#rp-overlay .cw4-directory-hero{
+  padding:28px 31px!important;
+}
+#rp-overlay .cw4-kick{
+  font-size:9px!important;
+}
+#rp-overlay .cw4-btn{
+  min-height:44px!important;
+  padding:0 14px!important;
+  font-size:9px!important;
+}
+#rp-overlay .cw4-kpi strong{
+  font-size:24px!important;
+}
+#rp-overlay .cw4-kpi span{
+  font-size:8px!important;
+}
+#rp-overlay .cw4-company-table,
+#rp-overlay .cw4-table{
+  font-size:11px!important;
+}
+#rp-overlay .cw4-company-table th,
+#rp-overlay .cw4-table th{
+  font-size:8px!important;
+}
+#rp-overlay .cw4-company-table td,
+#rp-overlay .cw4-table td{
+  padding-top:13px!important;
+  padding-bottom:13px!important;
+}
+
+/* Stack before compressing typography. */
+@media(max-width:1500px){
+  #rp-overlay .ps60-focus-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
+  #rp-overlay .ps60-focus-card{
+    height:420px!important;
+  }
+  #rp-overlay .ps60-focus-list{
+    height:308px!important;
+    min-height:308px!important;
+    max-height:308px!important;
+  }
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:minmax(275px,.55fr) minmax(600px,1.3fr)!important;
+  }
+  #rp-overlay .ps62-context{
+    grid-column:1/-1!important;
+  }
+}
+@media(max-width:1120px){
+  #rp-overlay .rp2-main{
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+  #rp-overlay .rp2-top,
+  #rp-overlay .rp2-top.ps61-clean-top{
+    margin-left:-22px!important;
+    margin-right:-22px!important;
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+  #rp-overlay .ps60-hero{
+    grid-template-columns:1fr!important;
+  }
+  #rp-overlay .ps61-cycle{
+    grid-template-columns:1fr 1fr!important;
+  }
+}
+@media(max-width:850px){
+  #rp-overlay .rp2-app{
+    min-width:0!important;
+  }
+  #rp-overlay .rp2-main{
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+  #rp-overlay .ps60-focus-grid,
+  #rp-overlay .ps60-scoreboard,
+  #rp-overlay .ps60-bottom-grid,
+  #rp-overlay .ps61-cycle,
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:1fr!important;
+  }
+}
+</style>
+
+
+<script id="tcp-rep-executive-scale-queue-v567-js">
+(function(){
+ 'use strict';
+
+ function focusLists(){
+  return Array.prototype.slice.call(
+   document.querySelectorAll('#rp-overlay .ps60-focus-list')
+  )
+ }
+ function preserveScrollPositions(){
+  var positions=focusLists().map(function(list){
+   var card=list.closest('.ps60-focus-card');
+   var title=card&&card.querySelector('.ps60-focus-card-head strong');
+   return{
+    key:title?title.textContent.trim():'',
+    top:list.scrollTop
+   }
+  });
+  try{
+   sessionStorage.setItem('tcp_rep_focus_scroll_v567',JSON.stringify(positions))
+  }catch(error){}
+ }
+ function restoreScrollPositions(){
+  var positions=[];
+  try{
+   positions=JSON.parse(
+    sessionStorage.getItem('tcp_rep_focus_scroll_v567')||'[]'
+   )
+  }catch(error){}
+  focusLists().forEach(function(list){
+   var card=list.closest('.ps60-focus-card');
+   var title=card&&card.querySelector('.ps60-focus-card-head strong');
+   var key=title?title.textContent.trim():'';
+   var row=positions.filter(function(item){return item.key===key})[0];
+   if(row)list.scrollTop=row.top
+  })
+ }
+ function enhanceLists(){
+  focusLists().forEach(function(list){
+   if(list.getAttribute('data-v567-scroll')==='1')return;
+   list.setAttribute('data-v567-scroll','1');
+   list.setAttribute('tabindex','0');
+   list.setAttribute('role','region');
+
+   var card=list.closest('.ps60-focus-card');
+   var title=card&&card.querySelector('.ps60-focus-card-head strong');
+   list.setAttribute(
+    'aria-label',
+    (title?title.textContent.trim():'Work queue')+' — scroll to view all records'
+   );
+
+   list.addEventListener('scroll',function(){
+    preserveScrollPositions()
+   },{passive:true});
+
+   /*
+     Stop the page from stealing the wheel until the internal queue reaches
+     the beginning or end. This makes mouse-wheel scrolling predictable.
+   */
+   list.addEventListener('wheel',function(event){
+    var atTop=list.scrollTop<=0;
+    var atBottom=Math.ceil(list.scrollTop+list.clientHeight)>=list.scrollHeight;
+    if((event.deltaY<0&&!atTop)||(event.deltaY>0&&!atBottom)){
+     event.stopPropagation()
+    }
+   },{passive:true})
+  });
+  restoreScrollPositions()
+ }
+ function forceScale(){
+  var overlay=document.getElementById('rp-overlay');
+  if(overlay)overlay.setAttribute('data-rp-scale','manager');
+  try{
+   localStorage.setItem('tcp_rp_display_scale_v533','manager')
+  }catch(error){}
+  enhanceLists()
+ }
+ var oldAfter=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof oldAfter==='function'?
+   oldAfter.apply(this,arguments):
+   undefined;
+  setTimeout(forceScale,0);
+  return result
+ };
+ var oldGo=window._rp2Go;
+ if(typeof oldGo==='function'&&!oldGo._v567){
+  var go=function(){
+   preserveScrollPositions();
+   var result=oldGo.apply(this,arguments);
+   setTimeout(forceScale,0);
+   return result
+  };
+  go._v567=true;
+  window._rp2Go=go
+ }
+ window.TCP_REP_EXECUTIVE_SCALE_QUEUE_V567={
+  version:'v567',
+  enhanceLists:enhanceLists,
+  forceScale:forceScale,
+  focusLists:focusLists
+ };
+ forceScale();
+ setTimeout(forceScale,100);
+ setTimeout(forceScale,700);
+ setTimeout(forceScale,1800);
+
+ var observer=new MutationObserver(function(){
+  setTimeout(forceScale,20)
+ });
+ var overlay=document.getElementById('rp-overlay');
  if(overlay){
   observer.observe(overlay,{childList:true,subtree:true})
  }
