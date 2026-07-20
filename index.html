@@ -5456,7 +5456,11 @@ function buildReport(title,sub,badgeText,bodyHtml){
   +'</div>'
   +bodyHtml
   +'<div class="rpt-footer"><span>Triple Crown Products &middot; Confidential</span><span>'+ds+'</span></div>'
-  +'</div></body></html>';
+  +'</div>
+
+
+
+</body></html>';
 }
 
 function rKPI2(v,l,s,col){return'<div class="kpi-cell">'+'<div class="kl">'+l+'</div>'+'<div class="kv"'+(col?' style="color:'+col+';"':'')+'>'+v+'</div>'+(s?'<div class="ks">'+s+'</div>':'')+'</div>';}
@@ -63932,6 +63936,269 @@ body.ps58-dashboard-active .wrap:after{
  window._rp2CompanyProfileV3=renderEnhanced;
  window.TCP_CUSTOMER_COMMAND_CENTER_V576={version:'v576',base:BASE,render:renderEnhanced};
 })();
+</script>
+
+<style id="tcp-customer-command-center-v577-polish">
+/* ===== v577 CUSTOMER COMMAND CENTER VISUAL POLISH =====
+   More breathing room, a wider relationship brief, and centered glass
+   navigation cards with stronger icon and type hierarchy. */
+#rp-overlay .cux8-shell{
+  gap:20px!important;
+}
+#rp-overlay .cux8-overview{
+  grid-template-columns:minmax(420px,.88fr) minmax(0,1.62fr)!important;
+  gap:22px!important;
+  align-items:stretch!important;
+}
+
+/* Wider, easier-to-read relationship brief. */
+#rp-overlay .cux8-brief{
+  padding:25px 26px!important;
+  border-radius:25px!important;
+  border-color:rgba(255,255,255,.13)!important;
+  background:
+    radial-gradient(circle at 92% 2%,rgba(0,175,239,.16),transparent 34%),
+    linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.024)),
+    rgba(8,18,31,.72)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+  backdrop-filter:blur(20px) saturate(130%);
+  box-shadow:0 24px 58px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.085)!important;
+}
+#rp-overlay .cux8-brief:after{
+  right:-62px!important;
+  top:-54px!important;
+  width:220px!important;
+  height:220px!important;
+  background:radial-gradient(circle,rgba(0,175,239,.18),transparent 68%)!important;
+}
+#rp-overlay .cux8-kicker{
+  font-size:9.5px!important;
+  letter-spacing:1.2px!important;
+}
+#rp-overlay .cux8-brief-title{
+  margin-top:8px!important;
+  font-size:25px!important;
+  line-height:1.08!important;
+}
+#rp-overlay .cux8-brief-copy{
+  margin-top:10px!important;
+  max-width:94%!important;
+  font-size:11.5px!important;
+  line-height:1.65!important;
+  color:#A2B0C3!important;
+}
+#rp-overlay .cux8-next{
+  margin-top:19px!important;
+  padding:17px 18px!important;
+  border-radius:18px!important;
+  border-color:rgba(250,135,61,.30)!important;
+  background:
+    linear-gradient(135deg,rgba(250,135,61,.135),rgba(0,175,239,.065)),
+    rgba(255,255,255,.025)!important;
+}
+#rp-overlay .cux8-next span{
+  font-size:8.8px!important;
+  letter-spacing:1px!important;
+}
+#rp-overlay .cux8-next strong{
+  margin-top:8px!important;
+  font-size:16px!important;
+  line-height:1.32!important;
+}
+#rp-overlay .cux8-next p{
+  margin-top:8px!important;
+  font-size:10.6px!important;
+  line-height:1.62!important;
+  color:#AAB6C8!important;
+}
+#rp-overlay .cux8-facts{
+  gap:10px!important;
+  margin-top:16px!important;
+}
+#rp-overlay .cux8-fact{
+  padding:13px 14px!important;
+  border-radius:15px!important;
+  border-color:rgba(255,255,255,.09)!important;
+  background:rgba(255,255,255,.038)!important;
+}
+#rp-overlay .cux8-fact span{
+  font-size:8.4px!important;
+  letter-spacing:.82px!important;
+}
+#rp-overlay .cux8-fact strong{
+  margin-top:7px!important;
+  font-size:11.3px!important;
+  line-height:1.42!important;
+}
+#rp-overlay .cux8-health{
+  gap:8px!important;
+  margin-top:16px!important;
+}
+#rp-overlay .cux8-health span{
+  padding:7px 10px!important;
+  font-size:9px!important;
+  line-height:1.25!important;
+}
+#rp-overlay .cux8-brief-foot{
+  gap:9px!important;
+  margin-top:18px!important;
+  padding-top:17px!important;
+}
+#rp-overlay .cux8-brief-foot .cux8-action{
+  min-height:42px!important;
+  padding:0 15px!important;
+  font-size:10.8px!important;
+}
+
+/* Airier two-row module grid. */
+#rp-overlay .cux8-modules{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:repeat(2,minmax(245px,1fr))!important;
+  gap:18px!important;
+}
+#rp-overlay .cux8-tile{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:center!important;
+  padding:27px 24px 58px!important;
+  border-radius:25px!important;
+  border-color:color-mix(in srgb,var(--tile) 30%,rgba(255,255,255,.16))!important;
+  background:
+    radial-gradient(circle at 50% -14%,color-mix(in srgb,var(--tile) 27%,transparent),transparent 52%),
+    linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.024)),
+    rgba(8,17,30,.64)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(135%);
+  backdrop-filter:blur(20px) saturate(135%);
+  box-shadow:0 22px 52px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+#rp-overlay .cux8-tile:before{
+  left:50%!important;
+  right:auto!important;
+  top:-82px!important;
+  width:255px!important;
+  height:220px!important;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,color-mix(in srgb,var(--tile) 30%,transparent),transparent 67%)!important;
+  opacity:.72;
+}
+#rp-overlay .cux8-tile:after{
+  right:18px!important;
+  bottom:16px!important;
+  width:31px!important;
+  height:31px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid color-mix(in srgb,var(--tile) 28%,rgba(255,255,255,.12));
+  border-radius:999px;
+  background:rgba(2,9,17,.28);
+  font-size:17px!important;
+}
+#rp-overlay .cux8-tile:hover{
+  transform:translateY(-4px)!important;
+  border-color:color-mix(in srgb,var(--tile) 68%,white)!important;
+  box-shadow:0 28px 62px rgba(0,0,0,.34),0 0 34px color-mix(in srgb,var(--tile) 14%,transparent),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+#rp-overlay .cux8-tile-icon{
+  position:relative!important;
+  z-index:1;
+  width:78px!important;
+  height:78px!important;
+  flex:0 0 78px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:2px auto 0!important;
+  border-radius:25px!important;
+  border-color:color-mix(in srgb,var(--tile) 38%,rgba(255,255,255,.16))!important;
+  background:
+    linear-gradient(145deg,color-mix(in srgb,var(--tile) 18%,rgba(255,255,255,.08)),rgba(255,255,255,.025)),
+    rgba(255,255,255,.025)!important;
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+  box-shadow:0 16px 36px color-mix(in srgb,var(--tile) 18%,transparent),inset 0 1px 0 rgba(255,255,255,.15)!important;
+  font-size:35px!important;
+  line-height:1!important;
+}
+#rp-overlay .cux8-tile-name{
+  position:relative!important;
+  z-index:1;
+  display:block!important;
+  width:100%!important;
+  margin:18px 0 0!important;
+  color:#fff!important;
+  font-size:21px!important;
+  line-height:1.12!important;
+  font-weight:950!important;
+  letter-spacing:-.028em!important;
+  text-align:center!important;
+}
+#rp-overlay .cux8-tile-copy{
+  position:relative!important;
+  z-index:1;
+  display:block!important;
+  width:auto!important;
+  max-width:88%!important;
+  margin:10px auto 0!important;
+  color:#A1AFC2!important;
+  font-size:11.1px!important;
+  line-height:1.62!important;
+  text-align:center!important;
+}
+#rp-overlay .cux8-tile-meta{
+  left:50%!important;
+  right:auto!important;
+  bottom:18px!important;
+  transform:translateX(-50%);
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+  font-size:8.8px!important;
+  letter-spacing:.72px!important;
+}
+#rp-overlay .cux8-tile-meta b{
+  min-width:28px!important;
+  height:27px!important;
+  font-size:9.5px!important;
+}
+
+@media(max-width:1450px){
+  #rp-overlay .cux8-overview{
+    grid-template-columns:minmax(380px,.82fr) minmax(0,1.55fr)!important;
+    gap:18px!important;
+  }
+  #rp-overlay .cux8-modules{
+    grid-template-rows:repeat(2,minmax(230px,1fr))!important;
+    gap:15px!important;
+  }
+  #rp-overlay .cux8-tile{
+    padding:24px 20px 54px!important;
+  }
+  #rp-overlay .cux8-tile-icon{
+    width:70px!important;height:70px!important;flex-basis:70px!important;font-size:31px!important;
+  }
+  #rp-overlay .cux8-tile-name{font-size:19px!important;margin-top:15px!important}
+  #rp-overlay .cux8-tile-copy{font-size:10.2px!important;line-height:1.56!important}
+}
+@media(max-width:1180px){
+  #rp-overlay .cux8-overview{grid-template-columns:1fr!important}
+  #rp-overlay .cux8-modules{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(225px,1fr))!important;
+  }
+}
+@media(max-width:760px){
+  #rp-overlay .cux8-brief{padding:21px!important}
+  #rp-overlay .cux8-facts{grid-template-columns:1fr!important}
+  #rp-overlay .cux8-modules{
+    grid-template-columns:1fr!important;
+    grid-template-rows:repeat(6,minmax(220px,auto))!important;
+  }
+}
+</style>
+<script id="tcp-customer-command-center-v577-version">
+window.TCP_CUSTOMER_COMMAND_CENTER_V577={version:'v577',base:'v576',focus:'glass tiles and relationship brief legibility'};
 </script>
 
 </body>
