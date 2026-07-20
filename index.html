@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v572 — Redesigned My Day Command Bar</title>
+<title>Sales Tracker v573 — Compact Work Lanes & Larger Scorecard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -21421,6 +21421,193 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  };
 })();
 </script>
+
+
+<style id="tcp-rep-my-day-balance-pass-v573-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · MY DAY BALANCE PASS · BUILD v573
+   Removes the redundant work banner, reduces the work-lane footprint,
+   simplifies the command rail, and strengthens the scorecard.
+   ========================================================================== */
+
+/* Rebalance the page: slightly shorter work area and a larger scorecard. */
+#rp-overlay .ps68-home{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  grid-template-rows:195px 410px 120px!important;
+  gap:12px!important;
+}
+
+/* Compact the command bar without sacrificing the readable greeting. */
+#rp-overlay .ps68-command{
+  min-height:195px!important;
+  grid-template-rows:48px minmax(0,1fr)!important;
+  padding:0 24px 15px!important;
+  column-gap:24px!important;
+}
+#rp-overlay .ps71-period-row{
+  min-height:48px!important;
+  padding-top:1px!important;
+  gap:14px!important;
+}
+
+/* Keep only the actual reporting period at the left. */
+#rp-overlay .ps72-kicker,
+#rp-overlay .ps71-period-copy > strong{
+  display:none!important;
+}
+#rp-overlay .ps71-period-copy{
+  min-width:0!important;
+  flex:0 0 auto!important;
+  gap:0!important;
+}
+#rp-overlay .ps71-period-copy .ps72-period-label{
+  min-height:24px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#8EE9FF!important;
+  font-size:10.5px!important;
+  font-weight:950!important;
+  letter-spacing:.25px!important;
+  text-transform:uppercase!important;
+}
+
+/* Smaller period selectors free space and reduce visual weight. */
+#rp-overlay .ps71-period-row .rp2-context{
+  gap:7px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-field span{
+  margin:0 0 3px 2px!important;
+  font-size:7px!important;
+  letter-spacing:.7px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select{
+  min-width:82px!important;
+  min-height:33px!important;
+  height:33px!important;
+  padding:0 27px 0 10px!important;
+  border-radius:9px!important;
+  font-size:10.5px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select.week{
+  min-width:198px!important;
+}
+
+/* Remove the two redundant command buttons and let the metrics breathe. */
+#rp-overlay .ps68-cycle{
+  grid-template-columns:minmax(185px,.56fr) minmax(0,1.44fr)!important;
+  gap:17px!important;
+  padding-left:24px!important;
+}
+#rp-overlay .ps68-cycle-actions{
+  display:none!important;
+}
+#rp-overlay .ps68-cycle-metrics{
+  gap:9px!important;
+}
+#rp-overlay .ps68-cycle-metric{
+  min-height:72px!important;
+}
+
+/* Remove the entire Today's Work banner and use the recovered height. */
+#rp-overlay .ps68-work{
+  grid-template-rows:minmax(0,1fr)!important;
+  border-radius:18px!important;
+}
+#rp-overlay .ps68-work-head{
+  display:none!important;
+}
+#rp-overlay .ps68-work-grid{
+  grid-row:1!important;
+  height:100%!important;
+  padding:10px!important;
+  gap:12px!important;
+}
+#rp-overlay .ps68-primary,
+#rp-overlay .ps68-other-card{
+  border-radius:15px!important;
+}
+
+/* Increase the scorecard roughly fifteen percent for better legibility. */
+#rp-overlay .ps68-score{
+  grid-template-columns:165px minmax(0,1fr) auto!important;
+  gap:12px!important;
+  min-height:120px!important;
+  padding:12px 14px!important;
+  border-radius:17px!important;
+}
+#rp-overlay .ps68-score-title .ps68-kick{
+  font-size:7px!important;
+  letter-spacing:.9px!important;
+}
+#rp-overlay .ps68-score-title strong{
+  margin-top:6px!important;
+  font-size:16px!important;
+  line-height:1.12!important;
+}
+#rp-overlay .ps68-score-grid{
+  gap:8px!important;
+}
+#rp-overlay .ps68-score-card{
+  min-height:83px!important;
+  grid-template-columns:36px minmax(0,1fr)!important;
+  gap:9px!important;
+  padding:9px 10px!important;
+  border-radius:11px!important;
+}
+#rp-overlay .ps68-score-icon{
+  width:36px!important;
+  height:36px!important;
+  font-size:16px!important;
+}
+#rp-overlay .ps68-score-card span{
+  font-size:7px!important;
+}
+#rp-overlay .ps68-score-card strong{
+  margin-top:5px!important;
+  font-size:14px!important;
+}
+#rp-overlay .ps68-score-card small{
+  margin-top:4px!important;
+  font-size:7px!important;
+}
+#rp-overlay .ps68-score-link{
+  min-height:40px!important;
+  padding:0 12px!important;
+  border-radius:9px!important;
+  font-size:9px!important;
+}
+
+/* Keep the full layout inside shorter laptop screens. */
+@media(max-height:800px) and (min-width:1181px){
+  #rp-overlay .ps68-home{
+    grid-template-rows:180px 350px 112px!important;
+    gap:10px!important;
+  }
+  #rp-overlay .ps68-command{
+    min-height:180px!important;
+    grid-template-rows:44px minmax(0,1fr)!important;
+    padding-bottom:12px!important;
+  }
+  #rp-overlay .ps71-period-row{min-height:44px!important;}
+  #rp-overlay .ps68-greeting{padding-top:9px!important;}
+  #rp-overlay .ps68-cycle{padding-top:9px!important;}
+  #rp-overlay .ps68-score{min-height:112px!important;}
+  #rp-overlay .ps68-score-card{min-height:76px!important;}
+}
+
+@media(max-width:1180px){
+  #rp-overlay .ps68-home{
+    height:auto!important;
+    grid-template-rows:auto auto auto!important;
+  }
+  #rp-overlay .ps68-work{min-height:700px!important;}
+  #rp-overlay .ps68-work-head{display:none!important;}
+  #rp-overlay .ps68-score{grid-template-columns:1fr!important;}
+}
+</style>
 
 </body>
 </html>
