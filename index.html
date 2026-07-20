@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v569 — Rep My Day Legibility</title>
+<title>Sales Tracker v570 — Four-Lane Rep My Day</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -61350,6 +61350,346 @@ body.ps58-dashboard-active .wrap:after{
    console.warn('[v568 My Day]',error)
   }
  },0)
+})();
+</script>
+
+
+
+<style id="tcp-four-lane-rep-my-day-v570-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · FOUR-LANE REP MY DAY · BUILD v570
+   Turns Today's Work into four large side-by-side work lanes. Every lane owns
+   its vertical scroll so the entire operating view remains on one screen.
+   ========================================================================== */
+
+/* Keep the command center and scoreboard visible while giving work more room. */
+#rp-overlay .ps68-home{
+  grid-template-rows:156px minmax(440px,1fr) 104px!important;
+  gap:13px!important;
+}
+#rp-overlay .ps68-work{
+  grid-template-rows:56px minmax(0,1fr)!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+}
+#rp-overlay .ps68-work-head{
+  padding:11px 17px!important;
+}
+#rp-overlay .ps68-work-head-left{
+  gap:13px!important;
+}
+#rp-overlay .ps68-work-title{
+  font-size:20px!important;
+  line-height:1.1!important;
+}
+#rp-overlay .ps68-work-copy{
+  font-size:10.5px!important;
+  line-height:1.35!important;
+  color:#A0ADBE!important;
+}
+#rp-overlay .ps68-work-link{
+  font-size:12px!important;
+  padding:7px 9px!important;
+}
+
+/* Four substantial columns across the full operating canvas. */
+#rp-overlay .ps68-work-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.12fr) repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  gap:13px!important;
+  align-items:stretch!important;
+  min-height:0!important;
+  padding:13px!important;
+  overflow:hidden!important;
+}
+#rp-overlay .ps68-other{
+  display:contents!important;
+}
+#rp-overlay .ps68-primary,
+#rp-overlay .ps68-other-card{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.012))!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#rp-overlay .ps68-primary{
+  grid-template-rows:54px minmax(0,1fr) 56px!important;
+  border-top:3px solid #5DCAA5!important;
+}
+#rp-overlay .ps68-other-card{
+  grid-template-columns:7px minmax(0,1fr)!important;
+  border-top:1px solid color-mix(in srgb,var(--ps68-accent) 55%,transparent)!important;
+}
+#rp-overlay .ps68-other-accent{
+  width:7px!important;
+  box-shadow:0 0 18px color-mix(in srgb,var(--ps68-accent) 45%,transparent)!important;
+}
+#rp-overlay .ps68-other-inner{
+  grid-template-rows:54px minmax(0,1fr)!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+/* Larger lane headers and counts. */
+#rp-overlay .ps68-card-head,
+#rp-overlay .ps68-other-head{
+  min-height:54px!important;
+  padding:11px 13px!important;
+  border-bottom:1px solid rgba(148,163,184,.13)!important;
+  background:rgba(3,10,17,.20)!important;
+}
+#rp-overlay .ps68-card-head strong,
+#rp-overlay .ps68-other-head strong{
+  color:#FFFFFF!important;
+  font-size:14px!important;
+  line-height:1.2!important;
+  font-weight:950!important;
+}
+#rp-overlay .ps68-count,
+#rp-overlay .ps68-other-head span{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:30px!important;
+  min-height:27px!important;
+  padding:0 8px!important;
+  border:1px solid rgba(0,175,239,.22)!important;
+  border-radius:999px!important;
+  background:rgba(0,175,239,.06)!important;
+  color:#9BEAFF!important;
+  font-size:11px!important;
+  font-weight:950!important;
+}
+
+/* Each lane scrolls independently; no page-level scrolling is needed. */
+#rp-overlay .ps68-queue,
+#rp-overlay .ps68-other-list,
+#rp-overlay .ps68-other-empty{
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:#FA873D rgba(255,255,255,.035)!important;
+}
+#rp-overlay .ps68-queue,
+#rp-overlay .ps68-other-list{
+  padding:5px 10px!important;
+}
+#rp-overlay .ps68-queue::-webkit-scrollbar,
+#rp-overlay .ps68-other-list::-webkit-scrollbar,
+#rp-overlay .ps68-other-empty::-webkit-scrollbar{
+  width:9px!important;
+}
+#rp-overlay .ps68-queue::-webkit-scrollbar-track,
+#rp-overlay .ps68-other-list::-webkit-scrollbar-track,
+#rp-overlay .ps68-other-empty::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.025)!important;
+  border-radius:999px!important;
+}
+#rp-overlay .ps68-queue::-webkit-scrollbar-thumb,
+#rp-overlay .ps68-other-list::-webkit-scrollbar-thumb,
+#rp-overlay .ps68-other-empty::-webkit-scrollbar-thumb{
+  min-height:38px!important;
+  border:2px solid transparent!important;
+  border-radius:999px!important;
+  background:linear-gradient(#FA873D,#00AFEF) padding-box!important;
+}
+
+/* Larger customer rows with stronger contrast. */
+#rp-overlay .ps68-row{
+  min-height:61px!important;
+  gap:10px!important;
+  padding:10px 4px!important;
+}
+#rp-overlay .ps68-row-name{
+  font-size:13px!important;
+  line-height:1.28!important;
+  font-weight:950!important;
+}
+#rp-overlay .ps68-row-sub{
+  margin-top:5px!important;
+  font-size:10.5px!important;
+  line-height:1.35!important;
+  color:#91A0B4!important;
+}
+#rp-overlay .ps68-due{
+  min-height:27px!important;
+  padding:0 8px!important;
+  border-radius:8px!important;
+  font-size:9.5px!important;
+  letter-spacing:.2px!important;
+}
+#rp-overlay .ps68-other-row{
+  display:block!important;
+  min-height:62px!important;
+  padding:10px 4px!important;
+}
+#rp-overlay .ps68-other-row strong{
+  font-size:13px!important;
+  line-height:1.3!important;
+  font-weight:950!important;
+}
+#rp-overlay .ps68-other-row span{
+  display:block!important;
+  margin-top:5px!important;
+  font-size:10.5px!important;
+  line-height:1.35!important;
+  color:#91A0B4!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+/* Empty lanes still read as large, intentional work boxes. */
+#rp-overlay .ps68-other-empty{
+  height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  gap:18px!important;
+  padding:20px!important;
+  color:#A6B3C5!important;
+  font-size:12px!important;
+  line-height:1.5!important;
+  text-align:center!important;
+}
+#rp-overlay .ps68-other-action{
+  width:100%!important;
+  min-height:40px!important;
+  padding:0 12px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+}
+
+/* Keep the call controls easy to hit. */
+#rp-overlay .ps68-primary-actions{
+  gap:8px!important;
+  padding:9px!important;
+}
+#rp-overlay .ps68-primary-actions button{
+  min-height:38px!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+}
+
+/* Protect the one-screen desktop experience. */
+#rp-overlay .rp2-main:has(.ps68-home),
+#rp-overlay #rp2-page:has(.ps68-home){
+  overflow:hidden!important;
+}
+
+/* Two-by-two tablet layout; still preserves large type. */
+@media(max-width:1180px){
+  #rp-overlay .ps68-home{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    grid-template-rows:auto auto auto!important;
+    overflow:visible!important;
+  }
+  #rp-overlay .ps68-work{min-height:760px!important;}
+  #rp-overlay .ps68-work-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,minmax(330px,1fr))!important;
+    overflow:visible!important;
+  }
+  #rp-overlay .ps68-primary,
+  #rp-overlay .ps68-other-card{min-height:330px!important;}
+  #rp-overlay .rp2-main:has(.ps68-home),
+  #rp-overlay #rp2-page:has(.ps68-home){overflow:auto!important;}
+}
+@media(max-width:720px){
+  #rp-overlay .ps68-work{min-height:0!important;}
+  #rp-overlay .ps68-work-grid{
+    grid-template-columns:1fr!important;
+    grid-template-rows:repeat(4,360px)!important;
+  }
+  #rp-overlay .ps68-work-head-left{display:block!important;}
+  #rp-overlay .ps68-work-copy{display:block!important;margin-top:5px!important;white-space:normal!important;}
+}
+</style>
+
+<script id="tcp-four-lane-rep-my-day-v570-js">
+(function(){
+ 'use strict';
+
+ function safeText(node){
+  return String(node&&node.textContent||'').replace(/\s+/g,' ').trim();
+ }
+ function scrollKey(index){
+  return 'tcp_ps70_lane_scroll_'+index;
+ }
+ function enhanceFourLanes(){
+  var work=document.querySelector('#rp-overlay .ps68-work-grid');
+  if(!work)return;
+
+  var lanes=work.querySelectorAll('.ps68-queue,.ps68-other-list,.ps68-other-empty');
+  Array.prototype.forEach.call(lanes,function(lane,index){
+   if(lane.getAttribute('data-ps70-scroll')==='1')return;
+   lane.setAttribute('data-ps70-scroll','1');
+   lane.setAttribute('tabindex','0');
+   lane.setAttribute('role','region');
+
+   var card=lane.closest('.ps68-primary,.ps68-other-card');
+   var heading=card&&card.querySelector('.ps68-card-head strong,.ps68-other-head strong');
+   var label=safeText(heading)||('Work lane '+(index+1));
+   lane.setAttribute('aria-label',label+' — scroll for all items');
+
+   try{
+    var stored=Number(sessionStorage.getItem(scrollKey(index))||0);
+    if(stored>0)lane.scrollTop=stored;
+   }catch(error){}
+
+   lane.addEventListener('scroll',function(){
+    try{sessionStorage.setItem(scrollKey(index),String(lane.scrollTop));}catch(error){}
+   },{passive:true});
+
+   lane.addEventListener('wheel',function(event){
+    var atTop=lane.scrollTop<=0;
+    var atBottom=Math.ceil(lane.scrollTop+lane.clientHeight)>=lane.scrollHeight;
+    if((event.deltaY<0&&!atTop)||(event.deltaY>0&&!atBottom))event.stopPropagation();
+   },{passive:true});
+  });
+ }
+
+ function refresh(){
+  if(window._rp2&&_rp2.page==='home')setTimeout(enhanceFourLanes,0);
+ }
+
+ var priorAfter=window._rp2After;
+ window._rp2After=function(){
+  var result=typeof priorAfter==='function'?priorAfter.apply(this,arguments):undefined;
+  refresh();
+  return result;
+ };
+
+ var priorGo=window._rp2Go;
+ if(typeof priorGo==='function'&&!priorGo._ps70){
+  var go=function(){
+   var result=priorGo.apply(this,arguments);
+   refresh();
+   return result;
+  };
+  go._ps70=true;
+  window._rp2Go=go;
+ }
+
+ window.TCP_FOUR_LANE_REP_MY_DAY_V570={
+  version:'v570',
+  enhanceFourLanes:enhanceFourLanes
+ };
+
+ setTimeout(enhanceFourLanes,0);
+ setTimeout(enhanceFourLanes,250);
 })();
 </script>
 
