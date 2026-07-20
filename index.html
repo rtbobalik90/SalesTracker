@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v571 — Single Rep Command Header</title>
+<title>Sales Tracker v572 — Redesigned My Day Command Bar</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -62260,6 +62260,396 @@ body.ps58-dashboard-active .wrap:after{
    else applyMode();
   }catch(error){console.warn('[v571 command header]',error);}
  },0);
+})();
+</script>
+
+
+
+<style id="tcp-rep-my-day-command-bar-v572-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · REDESIGNED MY DAY COMMAND BAR · BUILD v572
+   A clean two-tier header: context controls above, selling priorities below.
+   ========================================================================== */
+
+#rp-overlay .ps68-home{
+  grid-template-rows:210px minmax(370px,1fr) 96px!important;
+}
+
+#rp-overlay .ps68-command{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(460px,.92fr) minmax(690px,1.48fr)!important;
+  grid-template-rows:56px minmax(0,1fr)!important;
+  column-gap:30px!important;
+  row-gap:0!important;
+  min-height:210px!important;
+  padding:0 24px 18px!important;
+  align-items:stretch!important;
+  overflow:hidden!important;
+  border:1px solid rgba(0,175,239,.22)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(250,135,61,.18),transparent 34%),
+    radial-gradient(circle at 0% 100%,rgba(0,175,239,.16),transparent 38%),
+    linear-gradient(112deg,#0D263B 0%,#15233B 52%,#2A211F 100%)!important;
+  box-shadow:0 20px 58px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+#rp-overlay .ps68-command:before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:3px;
+  background:linear-gradient(90deg,#00AFEF 0%,#5DCAA5 38%,#FA873D 100%);
+  opacity:.9;
+  pointer-events:none;
+}
+#rp-overlay .ps68-command:after{
+  right:-150px!important;
+  bottom:-245px!important;
+  width:430px!important;
+  height:430px!important;
+  opacity:.48!important;
+}
+
+/* Tier 1: one compact context rail with a clear title and aligned selectors. */
+#rp-overlay .ps71-period-row{
+  grid-column:1/-1!important;
+  grid-row:1!important;
+  min-height:56px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:22px!important;
+  padding:3px 0 0!important;
+  border-bottom:1px solid rgba(255,255,255,.11)!important;
+}
+#rp-overlay .ps71-period-copy{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-width:315px!important;
+  white-space:nowrap!important;
+}
+#rp-overlay .ps72-kicker{
+  display:inline-flex;
+  align-items:center;
+  min-height:25px;
+  padding:0 9px;
+  border:1px solid rgba(0,175,239,.28);
+  border-radius:999px;
+  background:rgba(0,175,239,.08);
+  color:#86E8FF;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+#rp-overlay .ps71-period-copy strong{
+  display:inline!important;
+  color:#FFFFFF!important;
+  font-size:14px!important;
+  font-weight:950!important;
+  letter-spacing:0!important;
+}
+#rp-overlay .ps71-period-copy .ps72-period-label{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:25px!important;
+  margin:0!important;
+  padding:0 9px!important;
+  border:1px solid rgba(250,135,61,.24)!important;
+  border-radius:999px!important;
+  background:rgba(250,135,61,.08)!important;
+  color:#FFD3B7!important;
+  font-size:9.5px!important;
+  font-weight:850!important;
+  line-height:1!important;
+}
+#rp-overlay .ps71-period-row .rp2-context{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:9px!important;
+  flex-wrap:nowrap!important;
+  min-width:0!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-field{
+  min-width:0!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-field span{
+  display:block!important;
+  margin:0 0 4px 2px!important;
+  color:#91A1B7!important;
+  font-size:8px!important;
+  font-weight:950!important;
+  letter-spacing:.85px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select{
+  min-width:94px!important;
+  min-height:38px!important;
+  height:38px!important;
+  padding:0 31px 0 11px!important;
+  border:1px solid rgba(148,163,184,.22)!important;
+  border-radius:10px!important;
+  background-color:rgba(3,10,18,.66)!important;
+  color:#FFFFFF!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select.week{
+  min-width:224px!important;
+}
+
+/* Tier 2 left: greeting, purpose, and the three daily priorities. */
+#rp-overlay .ps68-greeting{
+  grid-column:1!important;
+  grid-row:2!important;
+  display:grid!important;
+  grid-template-columns:88px minmax(0,1fr)!important;
+  gap:20px!important;
+  align-items:center!important;
+  min-width:0!important;
+  padding:14px 0 0!important;
+}
+#rp-overlay .ps68-target{
+  width:86px!important;
+  height:86px!important;
+  box-shadow:inset 0 0 0 12px rgba(0,175,239,.055),inset 0 0 0 24px rgba(0,175,239,.03),0 12px 30px rgba(0,0,0,.16)!important;
+}
+#rp-overlay .ps68-target:before{
+  width:38px!important;
+  height:38px!important;
+  border-width:3px!important;
+}
+#rp-overlay .ps68-target:after{
+  font-size:30px!important;
+}
+#rp-overlay .ps68-period{
+  display:none!important;
+}
+#rp-overlay .ps68-greeting h1{
+  margin:0!important;
+  color:#FFFFFF!important;
+  font-size:36px!important;
+  line-height:1.02!important;
+  letter-spacing:-.035em!important;
+  white-space:nowrap!important;
+}
+#rp-overlay .ps68-greeting p{
+  max-width:500px!important;
+  margin:8px 0 0!important;
+  color:#BBC7D8!important;
+  font-size:11.5px!important;
+  line-height:1.45!important;
+}
+#rp-overlay .ps68-day-stats{
+  display:flex!important;
+  align-items:center!important;
+  gap:24px!important;
+  margin-top:13px!important;
+}
+#rp-overlay .ps68-day-stat{
+  gap:8px!important;
+}
+#rp-overlay .ps68-day-stat i{
+  width:24px;
+  color:#72E6FF!important;
+  font-size:18px!important;
+  text-align:center;
+}
+#rp-overlay .ps68-day-stat strong{
+  font-size:16px!important;
+}
+#rp-overlay .ps68-day-stat span{
+  margin-top:3px!important;
+  color:#91A1B7!important;
+  font-size:8.5px!important;
+}
+
+/* Tier 2 right: a balanced cycle command center with no squeezed columns. */
+#rp-overlay .ps68-cycle{
+  grid-column:2!important;
+  grid-row:2!important;
+  display:grid!important;
+  grid-template-columns:minmax(175px,.62fr) minmax(430px,1.48fr) minmax(155px,.5fr)!important;
+  gap:16px!important;
+  align-items:center!important;
+  min-width:0!important;
+  padding:14px 0 0 28px!important;
+  border-left:1px solid rgba(255,255,255,.11)!important;
+}
+#rp-overlay .ps68-cycle-kick{
+  color:#72E6FF!important;
+  font-size:9px!important;
+  letter-spacing:1px!important;
+}
+#rp-overlay .ps68-cycle-title{
+  margin-top:7px!important;
+  color:#FFFFFF!important;
+  font-size:23px!important;
+  line-height:1.08!important;
+}
+#rp-overlay .ps68-cycle-status{
+  min-height:27px!important;
+  margin-top:10px!important;
+  padding:0 10px!important;
+  font-size:8.5px!important;
+}
+#rp-overlay .ps68-cycle-metrics{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+#rp-overlay .ps68-cycle-metric{
+  min-height:70px!important;
+  padding:10px 11px!important;
+  border-color:rgba(148,163,184,.14)!important;
+  border-radius:11px!important;
+  background:rgba(4,11,19,.28)!important;
+}
+#rp-overlay .ps68-cycle-metric span{
+  color:#8F9EB4!important;
+  font-size:7.5px!important;
+  letter-spacing:.6px!important;
+}
+#rp-overlay .ps68-cycle-metric strong{
+  margin-top:6px!important;
+  font-size:16px!important;
+}
+#rp-overlay .ps68-cycle-metric small{
+  margin-top:4px!important;
+  color:#8C9BAF!important;
+  font-size:7.5px!important;
+}
+#rp-overlay .ps68-progress-head{
+  margin-top:9px!important;
+  color:#91A1B7!important;
+  font-size:8px!important;
+}
+#rp-overlay .ps68-progress{
+  height:8px!important;
+  margin-top:6px!important;
+}
+#rp-overlay .ps68-cycle-actions{
+  display:grid!important;
+  gap:8px!important;
+}
+#rp-overlay .ps68-cycle-actions button{
+  min-height:40px!important;
+  padding:0 12px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+
+@media(max-width:1500px){
+  #rp-overlay .ps68-command{
+    grid-template-columns:minmax(420px,.86fr) minmax(630px,1.34fr)!important;
+    column-gap:22px!important;
+  }
+  #rp-overlay .ps71-period-copy{min-width:280px!important;}
+  #rp-overlay .ps68-greeting{grid-template-columns:78px minmax(0,1fr)!important;gap:16px!important;}
+  #rp-overlay .ps68-target{width:76px!important;height:76px!important;}
+  #rp-overlay .ps68-greeting h1{font-size:32px!important;}
+  #rp-overlay .ps68-greeting p{font-size:10.5px!important;}
+  #rp-overlay .ps68-day-stats{gap:17px!important;}
+  #rp-overlay .ps68-cycle{
+    grid-template-columns:minmax(150px,.55fr) minmax(390px,1.4fr) minmax(140px,.48fr)!important;
+    gap:12px!important;
+    padding-left:20px!important;
+  }
+  #rp-overlay .ps68-cycle-title{font-size:20px!important;}
+  #rp-overlay .ps68-cycle-metric{padding:9px!important;}
+  #rp-overlay .ps68-cycle-metric strong{font-size:14px!important;}
+  #rp-overlay .ps68-cycle-actions button{font-size:10px!important;}
+}
+
+@media(max-width:1180px){
+  #rp-overlay .ps68-home{
+    height:auto!important;
+    min-height:0!important;
+    grid-template-rows:auto auto auto!important;
+  }
+  #rp-overlay .ps68-command{
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto auto auto!important;
+    min-height:0!important;
+    padding:0 18px 18px!important;
+  }
+  #rp-overlay .ps71-period-row{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    padding:14px 0!important;
+  }
+  #rp-overlay .ps71-period-row .rp2-context{
+    width:100%!important;
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
+  }
+  #rp-overlay .ps68-greeting,
+  #rp-overlay .ps68-cycle{
+    grid-column:1!important;
+    grid-row:auto!important;
+  }
+  #rp-overlay .ps68-greeting{padding:18px 0!important;}
+  #rp-overlay .ps68-cycle{
+    grid-template-columns:minmax(170px,.6fr) minmax(420px,1.5fr) minmax(150px,.5fr)!important;
+    padding:18px 0 0!important;
+    border-left:0!important;
+    border-top:1px solid rgba(255,255,255,.10)!important;
+  }
+}
+
+@media(max-width:760px){
+  #rp-overlay .ps71-period-copy{
+    min-width:0!important;
+    flex-wrap:wrap!important;
+    white-space:normal!important;
+  }
+  #rp-overlay .ps71-period-row .rp2-context-field,
+  #rp-overlay .ps71-period-row .rp2-context-select,
+  #rp-overlay .ps71-period-row .rp2-context-select.week{
+    width:100%!important;
+    min-width:0!important;
+  }
+  #rp-overlay .ps68-greeting{
+    grid-template-columns:68px minmax(0,1fr)!important;
+  }
+  #rp-overlay .ps68-target{width:66px!important;height:66px!important;}
+  #rp-overlay .ps68-greeting h1{font-size:27px!important;white-space:normal!important;}
+  #rp-overlay .ps68-day-stats{gap:13px!important;flex-wrap:wrap!important;}
+  #rp-overlay .ps68-cycle{grid-template-columns:1fr!important;}
+}
+</style>
+
+<script id="tcp-rep-my-day-command-bar-v572-js">
+(function(){
+ 'use strict';
+ function clean(value){return String(value==null?'':value).trim();}
+ function redesign(){
+  var command=document.querySelector('#rp-overlay .ps68-command');
+  if(!command)return;
+  var copy=command.querySelector('.ps71-period-copy');
+  if(!copy)return;
+  var period=clean((command.querySelector('.ps68-period')||{}).textContent)||'Current period';
+  var signature=period.toLowerCase();
+  if(copy.getAttribute('data-ps72-period')===signature)return;
+  copy.setAttribute('data-ps72-period',signature);
+  copy.innerHTML='<span class="ps72-kicker">My Day</span><strong>Customer Action Center</strong><span class="ps72-period-label"></span>';
+  var label=copy.querySelector('.ps72-period-label');
+  if(label)label.textContent=period;
+ }
+ function schedule(){
+  setTimeout(redesign,0);
+  setTimeout(redesign,80);
+  setTimeout(redesign,300);
+ }
+ schedule();
+ var overlay=document.getElementById('rp-overlay');
+ if(overlay){
+  new MutationObserver(function(){schedule();}).observe(overlay,{childList:true,subtree:true});
+  overlay.addEventListener('change',schedule,true);
+ }
+ window.TCP_REP_MY_DAY_COMMAND_BAR_V572={version:'v572',redesign:redesign};
 })();
 </script>
 
