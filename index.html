@@ -63260,5 +63260,679 @@ body.ps58-dashboard-active .wrap:after{
  window.TCP_REP_MY_DAY_LAYOUT_HOTFIX_V574={version:'v574',mark:mark};
 })();
 </script>
+
+
+<style id="tcp-rep-my-day-full-height-v575-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · MY DAY FULL-HEIGHT BALANCE · BUILD v575
+   Restores the four work lanes as the dominant full-height workspace,
+   keeps the scorecard only modestly enlarged, and vertically centers the
+   reporting-period controls inside the command banner.
+   ========================================================================== */
+
+/* Fill the visible portal canvas. The middle workspace receives all remaining
+   height instead of being fixed to a short 330px track. */
+#rp-overlay .ps68-home{
+  display:grid!important;
+  grid-template-rows:198px minmax(0,1fr) 112px!important;
+  gap:12px!important;
+  width:100%!important;
+  height:calc(100dvh - 36px)!important;
+  min-height:690px!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+
+/* Top banner: controls sit comfortably inside the banner rather than riding
+   against its top edge. */
+#rp-overlay .ps68-command{
+  height:198px!important;
+  min-height:198px!important;
+  grid-template-columns:minmax(430px,.90fr) minmax(650px,1.40fr)!important;
+  grid-template-rows:54px minmax(0,1fr)!important;
+  column-gap:25px!important;
+  row-gap:0!important;
+  padding:9px 24px 15px!important;
+  overflow:hidden!important;
+}
+#rp-overlay .ps71-period-row{
+  grid-column:1/-1!important;
+  grid-row:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  min-height:54px!important;
+  height:54px!important;
+  padding:2px 0 7px!important;
+  gap:18px!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  box-sizing:border-box!important;
+}
+#rp-overlay .ps71-period-copy{
+  display:flex!important;
+  align-items:center!important;
+  min-width:0!important;
+  flex:1 1 auto!important;
+  white-space:nowrap!important;
+}
+#rp-overlay .ps71-period-copy .ps75-period-only{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:25px!important;
+  padding:0 10px!important;
+  border:1px solid rgba(250,135,61,.28)!important;
+  border-radius:999px!important;
+  background:rgba(250,135,61,.09)!important;
+  color:#FFD5BB!important;
+  font-size:9.5px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  letter-spacing:.25px!important;
+}
+#rp-overlay .ps71-period-copy > :not(.ps75-period-only){display:none!important;}
+#rp-overlay .ps71-period-row .rp2-context{
+  display:flex!important;
+  align-items:center!important;
+  align-self:stretch!important;
+  justify-content:flex-end!important;
+  gap:8px!important;
+  flex-wrap:nowrap!important;
+  min-width:0!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-field{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  min-width:0!important;
+  height:44px!important;
+  margin:0!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-field span{
+  display:block!important;
+  margin:0 0 3px 2px!important;
+  color:#91A1B7!important;
+  font-size:7px!important;
+  font-weight:950!important;
+  line-height:1!important;
+  letter-spacing:.75px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select{
+  min-width:84px!important;
+  width:auto!important;
+  min-height:33px!important;
+  height:33px!important;
+  padding:0 27px 0 10px!important;
+  border-radius:9px!important;
+  font-size:10.5px!important;
+  line-height:33px!important;
+}
+#rp-overlay .ps71-period-row .rp2-context-select.week{
+  min-width:202px!important;
+}
+
+/* Keep the main command information clean and use the former button area for
+   the call-cycle metrics. */
+#rp-overlay .ps68-greeting{
+  grid-column:1!important;
+  grid-row:2!important;
+  align-self:center!important;
+  padding:7px 0 0!important;
+}
+#rp-overlay .ps68-cycle{
+  grid-column:2!important;
+  grid-row:2!important;
+  display:grid!important;
+  grid-template-columns:minmax(175px,.48fr) minmax(0,1.52fr)!important;
+  align-self:center!important;
+  gap:17px!important;
+  padding:7px 0 0 24px!important;
+}
+#rp-overlay .ps68-cycle-actions{display:none!important;}
+
+/* Work lanes: the section and every lane stretch through the entire middle
+   track. Only the content inside each lane scrolls. */
+#rp-overlay .ps68-work{
+  display:grid!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+}
+#rp-overlay .ps68-work-head{display:none!important;}
+#rp-overlay .ps68-work-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.12fr) repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  align-items:stretch!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  gap:12px!important;
+  padding:10px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+#rp-overlay .ps68-other{display:contents!important;}
+#rp-overlay .ps68-primary,
+#rp-overlay .ps68-other-card{
+  align-self:stretch!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+#rp-overlay .ps68-primary{
+  display:grid!important;
+  grid-template-rows:48px minmax(0,1fr) 48px!important;
+}
+#rp-overlay .ps68-other-card{
+  display:grid!important;
+  grid-template-columns:6px minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+}
+#rp-overlay .ps68-other-inner{
+  display:grid!important;
+  grid-template-rows:48px minmax(0,1fr)!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#rp-overlay .ps68-queue,
+#rp-overlay .ps68-other-list,
+#rp-overlay .ps68-other-empty{
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+
+/* Scorecard: about 15% taller than the earlier 96px bar—not the oversized
+   132px hotfix. */
+#rp-overlay .ps68-score{
+  grid-template-columns:158px minmax(0,1fr) auto!important;
+  min-height:112px!important;
+  height:112px!important;
+  padding:10px 13px!important;
+  gap:10px!important;
+}
+#rp-overlay .ps68-score-title strong{
+  font-size:15.5px!important;
+  line-height:1.12!important;
+}
+#rp-overlay .ps68-score-card{
+  min-height:78px!important;
+  height:78px!important;
+  grid-template-columns:34px minmax(0,1fr)!important;
+  gap:8px!important;
+  padding:9px!important;
+}
+#rp-overlay .ps68-score-icon{
+  width:34px!important;
+  height:34px!important;
+  font-size:15px!important;
+}
+#rp-overlay .ps68-score-card span{font-size:6.8px!important;}
+#rp-overlay .ps68-score-card strong{font-size:13px!important;}
+#rp-overlay .ps68-score-card small{font-size:7.2px!important;}
+
+/* Laptop-height screens retain the same structure, with the work lanes still
+   receiving the flexible remainder. */
+@media(max-height:820px) and (min-width:1181px){
+  #rp-overlay .ps68-home{
+    grid-template-rows:184px minmax(0,1fr) 106px!important;
+    height:calc(100dvh - 28px)!important;
+    min-height:640px!important;
+  }
+  #rp-overlay .ps68-command{
+    height:184px!important;
+    min-height:184px!important;
+    grid-template-rows:50px minmax(0,1fr)!important;
+    padding:7px 22px 13px!important;
+  }
+  #rp-overlay .ps71-period-row{height:50px!important;min-height:50px!important;padding-bottom:5px!important;}
+  #rp-overlay .ps68-score{height:106px!important;min-height:106px!important;}
+  #rp-overlay .ps68-score-card{height:74px!important;min-height:74px!important;}
+}
+
+@media(max-width:1180px){
+  #rp-overlay .ps68-home{
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+    grid-template-rows:auto auto auto!important;
+  }
+  #rp-overlay .ps68-command{height:auto!important;min-height:0!important;}
+  #rp-overlay .ps68-work{height:auto!important;min-height:680px!important;}
+  #rp-overlay .ps68-work-grid{
+    height:auto!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,330px)!important;
+    overflow:visible!important;
+  }
+  #rp-overlay .ps68-primary,
+  #rp-overlay .ps68-other-card{height:330px!important;min-height:330px!important;}
+  #rp-overlay .ps68-score{height:auto!important;min-height:0!important;}
+}
+@media(max-width:720px){
+  #rp-overlay .ps71-period-row{height:auto!important;min-height:0!important;align-items:flex-start!important;}
+  #rp-overlay .ps71-period-row .rp2-context{width:100%!important;align-items:stretch!important;flex-wrap:wrap!important;}
+  #rp-overlay .ps71-period-row .rp2-context-field{height:auto!important;}
+  #rp-overlay .ps68-work{min-height:0!important;}
+  #rp-overlay .ps68-work-grid{grid-template-columns:1fr!important;grid-template-rows:repeat(4,350px)!important;}
+  #rp-overlay .ps68-primary,
+  #rp-overlay .ps68-other-card{height:350px!important;min-height:350px!important;}
+}
+</style>
+
+<script id="tcp-rep-my-day-full-height-v575-js">
+(function(){
+ 'use strict';
+ function clean(value){return String(value==null?'':value).trim();}
+ function normalize(){
+  var command=document.querySelector('#rp-overlay .ps68-command');
+  if(!command)return;
+
+  var hiddenPeriod=command.querySelector('.ps68-period');
+  var period=clean(hiddenPeriod&&hiddenPeriod.textContent)||'Current period';
+  var copy=command.querySelector('.ps71-period-copy');
+  if(copy){
+   var signature=period.toLowerCase();
+   var current=copy.querySelector('.ps75-period-only');
+   if(!current||clean(current.textContent)!==period||copy.children.length!==1){
+    copy.setAttribute('data-ps72-period',signature);
+    copy.innerHTML='<span class="ps75-period-only"></span>';
+    copy.querySelector('.ps75-period-only').textContent=period;
+   }else{
+    copy.setAttribute('data-ps72-period',signature);
+   }
+  }
+
+  var actions=command.querySelector('.ps68-cycle-actions');
+  if(actions)actions.remove();
+
+  var workHead=document.querySelector('#rp-overlay .ps68-work-head');
+  if(workHead)workHead.remove();
+
+  var home=document.querySelector('#rp-overlay .ps68-home');
+  if(home)home.setAttribute('data-layout-build','v575');
+ }
+ function schedule(){
+  setTimeout(normalize,0);
+  setTimeout(normalize,60);
+  setTimeout(normalize,220);
+ }
+ schedule();
+ var overlay=document.getElementById('rp-overlay');
+ if(overlay){
+  new MutationObserver(schedule).observe(overlay,{childList:true,subtree:true});
+  overlay.addEventListener('change',schedule,true);
+ }
+ window.TCP_REP_MY_DAY_FULL_HEIGHT_V575={version:'v575',normalize:normalize};
+})();
+</script>
+
+
+<style id="tcp-customer-command-center-v576-css">
+/* ===== v576 CUSTOMER COMMAND CENTER =====
+   A clean customer overview with six large navigation modules. Detailed
+   sections reuse the existing customer data/renderers and return through a
+   consistent back-to-overview workflow. */
+#rp-overlay .cux8-shell{
+  --cux8-cyan:#00AFEF;
+  --cux8-orange:#FA873D;
+  --cux8-green:#47D16C;
+  --cux8-purple:#9B6BFF;
+  --cux8-blue:#4C9DFF;
+  display:grid;
+  gap:16px;
+  padding-bottom:34px;
+  min-width:0;
+}
+#rp-overlay .cux8-stage{min-width:0;animation:cux8Forward .28s cubic-bezier(.2,.72,.2,1) both}
+#rp-overlay .cux8-stage.back{animation-name:cux8Back}
+@keyframes cux8Forward{from{opacity:.25;transform:translateX(42px)}to{opacity:1;transform:none}}
+@keyframes cux8Back{from{opacity:.25;transform:translateX(-42px)}to{opacity:1;transform:none}}
+
+#rp-overlay .cux8-hero{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:25px;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(0,175,239,.25),transparent 34%),
+    radial-gradient(circle at 92% 4%,rgba(250,135,61,.22),transparent 34%),
+    linear-gradient(135deg,#132942 0%,#18223a 58%,#38251f 100%);
+  box-shadow:0 22px 64px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
+  padding:22px 24px 0;
+}
+#rp-overlay .cux8-hero:after{content:"";position:absolute;right:-135px;bottom:-180px;width:430px;height:430px;border-radius:50%;border:1px solid rgba(255,255,255,.055);pointer-events:none}
+#rp-overlay .cux8-hero-top{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding-bottom:18px}
+#rp-overlay .cux8-identity{display:flex;align-items:center;gap:15px;min-width:0}
+#rp-overlay .cux8-back{
+  width:42px;height:42px;display:grid;place-items:center;flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.13);border-radius:14px;
+  background:rgba(3,10,18,.34);color:#fff;font-size:18px;font-weight:900;cursor:pointer;
+}
+#rp-overlay .cux8-back:hover{border-color:rgba(0,175,239,.58);background:rgba(0,175,239,.12)}
+#rp-overlay .cux8-avatar{
+  width:64px;height:64px;display:grid;place-items:center;flex:0 0 auto;
+  border-radius:20px;border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(135deg,#FA873D,#00AFEF);color:#fff;
+  box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.24);
+  font-size:19px;font-weight:950;
+}
+#rp-overlay .cux8-name{color:#fff;font-size:31px;line-height:1.03;font-weight:950;letter-spacing:-.045em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cux8-sub{margin-top:6px;color:#B7C3D7;font-size:11.5px;line-height:1.45}
+#rp-overlay .cux8-contact{margin-top:8px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#91A2BA;font-size:10px}
+#rp-overlay .cux8-contact strong{color:#F4F7FF;font-size:10.5px}
+#rp-overlay .cux8-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.28)}
+#rp-overlay .cux8-actions{display:flex;justify-content:flex-end;gap:7px;flex-wrap:wrap;max-width:610px}
+#rp-overlay .cux8-action{
+  min-height:39px;padding:0 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(4,10,19,.36);color:#E7EEF8;font-size:10px;font-weight:900;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055);transition:.16s ease;
+}
+#rp-overlay .cux8-action:hover{transform:translateY(-1px);border-color:rgba(0,175,239,.44);background:rgba(0,175,239,.10)}
+#rp-overlay .cux8-action.primary{border-color:rgba(71,209,108,.32);background:rgba(71,209,108,.10);color:#A9FFD0}
+#rp-overlay .cux8-action.orange{border-color:rgba(250,135,61,.34);background:rgba(250,135,61,.10);color:#FFD7BC}
+
+#rp-overlay .cux8-metrics{position:relative;z-index:1;display:grid;grid-template-columns:minmax(245px,1.6fr) repeat(6,minmax(115px,1fr));gap:8px;padding:0 0 17px}
+#rp-overlay .cux8-metric{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(4,10,19,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
+#rp-overlay .cux8-metric:first-child{border-color:rgba(0,175,239,.22);background:linear-gradient(135deg,rgba(0,175,239,.10),rgba(4,10,19,.35))}
+#rp-overlay .cux8-metric span{display:block;color:#74849D;font-size:7.6px;font-weight:950;letter-spacing:.75px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cux8-metric strong{display:block;margin-top:6px;color:#fff;font-size:16px;line-height:1.15;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cux8-metric:first-child strong{font-size:13px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
+#rp-overlay .cux8-overview{display:grid;grid-template-columns:minmax(310px,.72fr) minmax(0,1.55fr);gap:16px;align-items:stretch}
+#rp-overlay .cux8-brief{
+  position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:22px;
+  background:linear-gradient(145deg,rgba(18,28,44,.97),rgba(9,16,28,.99));
+  box-shadow:0 18px 46px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.05);padding:19px;
+}
+#rp-overlay .cux8-brief:after{content:"";position:absolute;right:-70px;top:-75px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(0,175,239,.13),transparent 68%);pointer-events:none}
+#rp-overlay .cux8-kicker{position:relative;color:#00AFEF;font-size:8px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .cux8-brief-title{position:relative;margin-top:5px;color:#fff;font-size:20px;font-weight:950;letter-spacing:-.025em}
+#rp-overlay .cux8-brief-copy{position:relative;margin-top:7px;color:#8E9DB2;font-size:9.5px;line-height:1.55}
+#rp-overlay .cux8-next{position:relative;margin-top:14px;padding:14px;border-radius:15px;border:1px solid rgba(250,135,61,.22);background:linear-gradient(135deg,rgba(250,135,61,.11),rgba(0,175,239,.045))}
+#rp-overlay .cux8-next span{display:block;color:#F0AB79;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.8px}
+#rp-overlay .cux8-next strong{display:block;margin-top:6px;color:#fff;font-size:13.5px;line-height:1.25;font-weight:950}
+#rp-overlay .cux8-next p{margin:6px 0 0;color:#9CA9BB;font-size:9px;line-height:1.52}
+#rp-overlay .cux8-facts{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+#rp-overlay .cux8-fact{min-width:0;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.065);background:rgba(255,255,255,.025)}
+#rp-overlay .cux8-fact span{display:block;color:#718097;font-size:7.2px;font-weight:950;text-transform:uppercase;letter-spacing:.65px}
+#rp-overlay .cux8-fact strong{display:block;margin-top:5px;color:#E9EFF7;font-size:9.5px;line-height:1.35;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cux8-health{position:relative;display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+#rp-overlay .cux8-health span{padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.025);color:#97A5B8;font-size:7.8px;font-weight:850}
+#rp-overlay .cux8-brief-foot{position:relative;display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07)}
+
+#rp-overlay .cux8-modules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(190px,1fr));gap:13px;min-width:0}
+#rp-overlay .cux8-tile{
+  --tile:#00AFEF;position:relative;overflow:hidden;text-align:left;cursor:pointer;
+  min-width:0;border:1px solid color-mix(in srgb,var(--tile) 32%,rgba(255,255,255,.06));border-radius:22px;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--tile) 12%,#142033),#0B1422 72%);
+  box-shadow:0 18px 44px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06);
+  padding:18px;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+#rp-overlay .cux8-tile:before{content:"";position:absolute;right:-44px;top:-50px;width:165px;height:165px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--tile) 25%,transparent),transparent 66%);pointer-events:none}
+#rp-overlay .cux8-tile:after{content:"→";position:absolute;right:18px;bottom:16px;color:color-mix(in srgb,var(--tile) 74%,white);font-size:19px;font-weight:950;transition:transform .18s ease}
+#rp-overlay .cux8-tile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--tile) 65%,white);box-shadow:0 24px 52px rgba(0,0,0,.32),0 0 0 1px color-mix(in srgb,var(--tile) 12%,transparent)}
+#rp-overlay .cux8-tile:hover:after{transform:translateX(4px)}
+#rp-overlay .cux8-tile-icon{position:relative;width:47px;height:47px;display:grid;place-items:center;border-radius:16px;border:1px solid color-mix(in srgb,var(--tile) 30%,rgba(255,255,255,.09));background:color-mix(in srgb,var(--tile) 13%,rgba(255,255,255,.035));font-size:21px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+#rp-overlay .cux8-tile-name{position:relative;margin-top:16px;color:#fff;font-size:19px;font-weight:950;letter-spacing:-.025em}
+#rp-overlay .cux8-tile-copy{position:relative;margin-top:6px;max-width:92%;color:#8797AD;font-size:9.5px;line-height:1.52}
+#rp-overlay .cux8-tile-meta{position:absolute;left:18px;bottom:17px;display:inline-flex;align-items:center;gap:6px;color:color-mix(in srgb,var(--tile) 72%,white);font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.65px}
+#rp-overlay .cux8-tile-meta b{min-width:24px;height:23px;display:grid;place-items:center;border-radius:999px;background:color-mix(in srgb,var(--tile) 10%,rgba(255,255,255,.035));border:1px solid color-mix(in srgb,var(--tile) 24%,rgba(255,255,255,.07));font-size:8.5px}
+
+#rp-overlay .cux8-section-head{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;
+  border:1px solid rgba(255,255,255,.095);border-radius:22px;padding:18px 20px;
+  background:radial-gradient(circle at 95% 0%,color-mix(in srgb,var(--section,#00AFEF) 17%,transparent),transparent 38%),linear-gradient(145deg,#14243A,#0C1625);
+  box-shadow:0 18px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.055)
+}
+#rp-overlay .cux8-section-id{display:flex;align-items:center;gap:13px;min-width:0}
+#rp-overlay .cux8-section-icon{width:48px;height:48px;display:grid;place-items:center;flex:0 0 auto;border-radius:16px;border:1px solid color-mix(in srgb,var(--section,#00AFEF) 30%,rgba(255,255,255,.08));background:color-mix(in srgb,var(--section,#00AFEF) 11%,rgba(255,255,255,.025));font-size:21px}
+#rp-overlay .cux8-section-company{color:#7D8BA0;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.85px}
+#rp-overlay .cux8-section-title{margin-top:4px;color:#fff;font-size:23px;font-weight:950;letter-spacing:-.035em}
+#rp-overlay .cux8-section-copy{margin-top:5px;color:#91A0B5;font-size:9.5px;line-height:1.45}
+#rp-overlay .cux8-section-actions{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap}
+#rp-overlay .cux8-content{min-width:0;animation:cux8Content .24s ease both}
+@keyframes cux8Content{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+#rp-overlay .cux8-content>.cw4-section-head:first-child{display:none}
+#rp-overlay .cux8-content .cw4-section-head{margin-top:16px}
+#rp-overlay .cux8-content .cw4-actions:first-of-type{margin-top:0}
+#rp-overlay .cux8-content .cw7-subnav{margin-bottom:12px}
+
+@media(max-width:1480px){
+  #rp-overlay .cux8-metrics{grid-template-columns:minmax(220px,1.5fr) repeat(3,minmax(120px,1fr));}
+  #rp-overlay .cux8-metric:nth-child(n+5){display:none}
+}
+@media(max-width:1180px){
+  #rp-overlay .cux8-hero-top{grid-template-columns:1fr}
+  #rp-overlay .cux8-actions{justify-content:flex-start;max-width:none}
+  #rp-overlay .cux8-overview{grid-template-columns:1fr}
+  #rp-overlay .cux8-modules{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,190px)}
+}
+@media(max-width:760px){
+  #rp-overlay .cux8-hero{padding:17px 17px 0}
+  #rp-overlay .cux8-identity{align-items:flex-start;flex-wrap:wrap}
+  #rp-overlay .cux8-name{font-size:25px;white-space:normal}
+  #rp-overlay .cux8-metrics{grid-template-columns:1fr 1fr}
+  #rp-overlay .cux8-metric:nth-child(n){display:block}
+  #rp-overlay .cux8-metric:first-child{grid-column:1/-1}
+  #rp-overlay .cux8-modules{grid-template-columns:1fr;grid-template-rows:repeat(6,185px)}
+  #rp-overlay .cux8-section-head{grid-template-columns:1fr}
+  #rp-overlay .cux8-section-actions{justify-content:flex-start}
+}
+</style>
+
+<script id="tcp-customer-command-center-v576-js">
+(function(){
+ 'use strict';
+ if(window.TCP_CUSTOMER_COMMAND_CENTER_V576)return;
+ var BASE=window._rp2CustomersV2;
+ if(typeof BASE!=='function')return;
+
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]})}
+ function text(el){return el?String(el.textContent||'').replace(/\s+/g,' ').trim():''}
+ function html(el){return el?el.innerHTML:''}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function openAccount(){return !!(window._rp2CompanyOpenKey||window._cw4CompanyName)}
+ function currentTab(){return String(window._rp2CompanyProfileTab||'overview').toLowerCase()}
+ function currentName(doc){return text(doc.querySelector('.cw4-head-name'))||window._cw4CompanyName||'Customer'}
+ function initials(name){return String(name||'CO').trim().split(/\s+/).slice(0,2).map(function(x){return x.charAt(0).toUpperCase()}).join('')||'CO'}
+ function numberFrom(value){var m=String(value||'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0}
+
+ function baseFor(tab,salesView){
+  var oldTab=window._rp2CompanyProfileTab,oldSales=window._cw6SalesView;
+  try{
+   window._rp2CompanyProfileTab=tab;
+   if(salesView)window._cw6SalesView=salesView;
+   return BASE();
+  }finally{
+   window._rp2CompanyProfileTab=oldTab;
+   window._cw6SalesView=oldSales;
+  }
+ }
+ function outerModal(doc){var m=doc.querySelector('.cw4-modal-wrap');return m?m.outerHTML:''}
+ function profileContent(doc){var c=doc.querySelector('.cw5-tab-content');return c?c.cloneNode(true):null}
+ function removeFirstSectionHead(node){if(!node)return node;var first=node.querySelector('.cw4-section-head');if(first)first.remove();return node}
+ function findCard(doc,title){
+  var cards=Array.prototype.slice.call(doc.querySelectorAll('.cw4-card'));
+  return cards.filter(function(card){return text(card.querySelector('.cw4-card-title')).toLowerCase().indexOf(String(title).toLowerCase())>=0})[0]||null;
+ }
+ function factsFrom(doc){
+  var card=findCard(doc,'Stable customer context'),rows=card?card.querySelectorAll('.cw4-field-row'):[];
+  return Array.prototype.slice.call(rows).map(function(r){return {label:text(r.querySelector('.cw4-field-label')),value:text(r.querySelector('.cw4-field-value'))}}).filter(function(x){return x.label}).slice(0,8)
+ }
+ function healthFrom(doc){
+  return Array.prototype.slice.call(doc.querySelectorAll('.cw5-health-row')).map(function(r){return text(r.querySelector('strong'))+': '+text(r.querySelector('b'))}).filter(Boolean).slice(0,4)
+ }
+ function metricFrom(doc){
+  return Array.prototype.slice.call(doc.querySelectorAll('.cw5-head-metric')).map(function(m){return {label:text(m.querySelector('span')),value:text(m.querySelector('strong'))}}).filter(function(x){return x.label||x.value})
+ }
+ function groupCount(doc,heading,selector){
+  var heads=Array.prototype.slice.call(doc.querySelectorAll('.cw4-section-head')),target=heads.filter(function(h){return text(h.querySelector('.cw4-section-title')).toLowerCase().indexOf(heading.toLowerCase())>=0})[0];
+  if(!target)return 0;
+  var count=0,node=target.nextElementSibling;
+  while(node&&!node.classList.contains('cw4-section-head')){count+=node.matches&&node.matches(selector)?1:node.querySelectorAll?node.querySelectorAll(selector).length:0;node=node.nextElementSibling}
+  return count
+ }
+ function salesCount(doc){
+  var btn=Array.prototype.slice.call(doc.querySelectorAll('.cw7-subnav button')).filter(function(b){return /command center/i.test(text(b))})[0];
+  if(btn)return numberFrom(text(btn));
+  return doc.querySelectorAll('.cw7-order-card').length
+ }
+ function recordValue(doc,sourceNeedle,titleNeedle){
+  var cards=Array.prototype.slice.call(doc.querySelectorAll('.cw4-record'));
+  var card=cards.filter(function(c){return text(c.querySelector('.cw4-record-source')).toLowerCase().indexOf(sourceNeedle.toLowerCase())>=0&&text(c.querySelector('.cw4-record-title')).toLowerCase().indexOf(titleNeedle.toLowerCase())>=0})[0];
+  return card?numberFrom(text(card.querySelector('.cw4-record-value'))):0
+ }
+ function tile(icon,name,copy,count,section,color){
+  return '<button class="cux8-tile" style="--tile:'+color+'" onclick="_cux8Open(\''+section+'\')"><span class="cux8-tile-icon">'+icon+'</span><span class="cux8-tile-name">'+esc(name)+'</span><span class="cux8-tile-copy">'+esc(copy)+'</span><span class="cux8-tile-meta"><b>'+Number(count||0).toLocaleString()+'</b> connected records</span></button>'
+ }
+ function actionButtons(){
+  return '<div class="cux8-actions">'
+   +'<button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button>'
+   +'<button class="cux8-action" onclick="_cux8Action(\'email\')">✉ Email</button>'
+   +'<button class="cux8-action" onclick="_cux8Action(\'note\')">＋ Add Note</button>'
+   +'<button class="cux8-action orange" onclick="_cux8Action(\'quote\')">Create Quote</button>'
+   +'<button class="cux8-action" onclick="_cux8Action(\'activity\')">Log Activity</button>'
+   +'</div>'
+ }
+ function hero(doc,name,compact){
+  var sub=text(doc.querySelector('.cw4-head-sub'));
+  var contact=doc.querySelector('.cw5-contact-block');
+  var contactName=text(contact&&contact.querySelector('strong'));
+  var contactCopy=text(contact&&contact.querySelector('span'));
+  var metrics=metricFrom(doc);
+  window._cux8CurrentName=name;
+  var metricHtml=metrics.map(function(m){return '<div class="cux8-metric"><span>'+esc(m.label)+'</span><strong>'+esc(m.value||'—')+'</strong></div>'}).join('');
+  return '<section class="cux8-hero"><div class="cux8-hero-top"><div class="cux8-identity">'
+   +'<button class="cux8-back" title="Back to companies" onclick="_cw4CloseCompany()">←</button>'
+   +'<div class="cux8-avatar">'+esc(initials(name))+'</div><div style="min-width:0"><div class="cux8-name">'+esc(name)+'</div><div class="cux8-sub">'+esc(sub||'Customer account')+'</div>'
+   +'<div class="cux8-contact"><strong>'+esc(contactName||'Primary contact not recorded')+'</strong>'+(contactCopy?'<span class="cux8-dot"></span><span>'+esc(contactCopy)+'</span>':'')+'</div></div></div>'
+   +actionButtons()+'</div><div class="cux8-metrics">'+metricHtml+'</div></section>'
+ }
+ function buildOverview(markup){
+  var doc=parse(markup),name=currentName(doc),modal=outerModal(doc);
+  var nextTitle=text(doc.querySelector('.cw4-card.hot .cw4-nba-title'))||'Review the account and set the next customer action';
+  var nextCopy=text(doc.querySelector('.cw4-card.hot .cw4-nba-copy'))||'Use the connected customer history to decide the next useful step.';
+  var facts=factsFrom(doc),health=healthFrom(doc);
+
+  var productDoc=parse(baseFor('products'));
+  var salesDoc=parse(baseFor('sales','command'));
+  var relationshipDoc=parse(baseFor('relationships'));
+  var filesDoc=parse(baseFor('files'));
+  var eventDoc=parse(baseFor('sales','calendar'));
+  var productCount=productDoc.querySelectorAll('.cw6-product-card').length;
+  var orderCount=salesCount(salesDoc);
+  var contactCount=relationshipDoc.querySelectorAll('.cw4-contact').length;
+  var activityCount=groupCount(relationshipDoc,'Communication history','.cw4-record');
+  var artworkCount=recordValue(filesDoc,'Artwork','Artwork and logo records')||groupCount(filesDoc,'Artwork library','.cw4-record');
+  var eventCount=eventDoc.querySelectorAll('.cw7-event').length;
+
+  var factHtml=facts.length?facts.map(function(f){return '<div class="cux8-fact"><span>'+esc(f.label)+'</span><strong>'+esc(f.value||'Not recorded')+'</strong></div>'}).join(''):'<div class="cux8-fact"><span>Account details</span><strong>Complete the customer profile</strong></div>';
+  var healthHtml=health.length?health.map(function(h){return '<span>'+esc(h)+'</span>'}).join(''):'<span>Account health will populate from connected records</span>';
+  var modules=''
+   +tile('👕','Products','Purchase history, buying patterns, reorder timing, and product opportunities.',productCount,'products','#47D16C')
+   +tile('📦','Orders','Open commitments, completed order history, financial detail, and customer deadlines.',orderCount,'orders','#FA873D')
+   +tile('👥','Contacts','Primary contacts, decision makers, buying roles, and relationship coverage.',contactCount,'contacts','#9B6BFF')
+   +tile('🕘','Activity Timeline','Calls, emails, meetings, notes, promises, and future follow-up dates.',activityCount,'activity','#00AFEF')
+   +tile('🎨','Artwork','Logos, proofs, approvals, decoration files, and customer account documents.',artworkCount,'artwork','#B36CFF')
+   +tile('📅','Events','Order dates, customer deadlines, quote decisions, tasks, and upcoming opportunities.',eventCount,'events','#4C9DFF');
+
+  return '<div class="cux8-shell"><div class="cux8-stage '+(window._cux8Direction==='back'?'back':'')+'">'+hero(doc,name)
+   +'<div class="cux8-overview"><aside class="cux8-brief"><div class="cux8-kicker">Relationship Brief</div><div class="cux8-brief-title">Account intelligence</div><div class="cux8-brief-copy">The essentials a rep should understand before starting the next customer conversation.</div>'
+   +'<div class="cux8-next"><span>Next best action</span><strong>'+esc(nextTitle)+'</strong><p>'+esc(nextCopy)+'</p></div>'
+   +'<div class="cux8-facts">'+factHtml+'</div><div class="cux8-health">'+healthHtml+'</div>'
+   +'<div class="cux8-brief-foot"><button class="cux8-action primary" onclick="_cux8Action(\'task\')">Create Next Action</button><button class="cux8-action" onclick="_cux8Open(\'service\')">Service & Approvals</button></div></aside>'
+   +'<main class="cux8-modules">'+modules+'</main></div></div></div>'+modal
+ }
+ function filterRelationships(content,mode){
+  if(!content)return content;
+  var allowed=mode==='activity'?['upcoming relationship work','communication history']:['relationship map','coverage and cadence'];
+  var children=Array.prototype.slice.call(content.children),keep=true,seenFirst=false;
+  children.forEach(function(child){
+   if(child.classList&&child.classList.contains('cw4-section-head')){
+    var title=text(child.querySelector('.cw4-section-title')).toLowerCase();
+    if(!seenFirst){seenFirst=true;child.remove();keep=true;return}
+    keep=allowed.some(function(a){return title.indexOf(a)>=0});
+    if(!keep)child.remove();
+   }else if(seenFirst&&!keep){child.remove()}
+  });
+  return content
+ }
+ function sectionMeta(section){
+  var map={
+   products:{title:'Products',icon:'👕',copy:'Purchase history, reorder intelligence, product detail, and new category opportunities.',color:'#47D16C'},
+   orders:{title:'Orders',icon:'📦',copy:'Open commitments, completed history, customer dates, and connected sales records.',color:'#FA873D'},
+   contacts:{title:'Contacts',icon:'👥',copy:'People, buying roles, decision authority, and relationship coverage.',color:'#9B6BFF'},
+   activity:{title:'Activity Timeline',icon:'🕘',copy:'Customer conversations, notes, outcomes, promises, and future follow-ups.',color:'#00AFEF'},
+   artwork:{title:'Artwork & Files',icon:'🎨',copy:'Logos, proofs, approvals, decoration records, and account documents.',color:'#B36CFF'},
+   events:{title:'Customer Events',icon:'📅',copy:'Order dates, quote decisions, opportunity steps, tasks, and reorder reminders.',color:'#4C9DFF'},
+   service:{title:'Service & Approvals',icon:'🛡',copy:'Customer issues, promises, approvals, quality records, and customer voice.',color:'#F56B7B'}
+  };return map[section]||map.products
+ }
+ function buildSection(markup,section){
+  var doc=parse(markup),name=currentName(doc),modal=outerModal(doc),content=profileContent(doc),meta=sectionMeta(section);
+  if(section==='contacts'||section==='activity')content=filterRelationships(content,section);
+  else content=removeFirstSectionHead(content);
+  var body=content?content.innerHTML:'<div class="cw4-empty"><strong>No section content is available</strong></div>';
+  window._cux8CurrentName=name;
+  return '<div class="cux8-shell"><div class="cux8-stage '+(window._cux8Direction==='back'?'back':'')+'">'
+   +'<section class="cux8-section-head" style="--section:'+meta.color+'"><div class="cux8-section-id"><button class="cux8-back" title="Back to customer overview" onclick="_cux8Back()">←</button><div class="cux8-section-icon">'+meta.icon+'</div><div><div class="cux8-section-company">'+esc(name)+' · Customer Command Center</div><div class="cux8-section-title">'+esc(meta.title)+'</div><div class="cux8-section-copy">'+esc(meta.copy)+'</div></div></div><div class="cux8-section-actions"><button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button><button class="cux8-action" onclick="_cux8Action(\'activity\')">Log Activity</button><button class="cux8-action orange" onclick="_cux8Action(\'quote\')">Create Quote</button></div></section>'
+   +'<div class="cux8-content">'+body+'</div></div></div>'+modal
+ }
+ function renderEnhanced(){
+  var markup=BASE();
+  if(!openAccount())return markup;
+  var tab=currentTab(),section=window._cux8Section||'overview';
+  if(tab==='overview'||section==='overview')return buildOverview(markup);
+  if(tab==='products')section='products';
+  else if(tab==='files')section='artwork';
+  else if(tab==='service')section='service';
+  else if(tab==='sales')section=(window._cw6SalesView==='calendar'?'events':'orders');
+  else if(tab==='relationships'&&section!=='activity')section='contacts';
+  window._cux8Section=section;
+  return buildSection(markup,section)
+ }
+
+ window._cux8Open=function(section){
+  window._cux8Direction='forward';window._cux8Section=section;
+  var tab=section;
+  if(section==='orders'){window._cw6SalesView='command';tab='sales'}
+  else if(section==='events'){window._cw6SalesView='calendar';tab='sales'}
+  else if(section==='contacts'||section==='activity')tab='relationships';
+  else if(section==='artwork')tab='files';
+  if(typeof window._cw4SetTab==='function')window._cw4SetTab(tab)
+ };
+ window._cux8Back=function(){window._cux8Direction='back';window._cux8Section='overview';if(typeof window._cw4SetTab==='function')window._cw4SetTab('overview')};
+ window._cux8Action=function(action){
+  var name=window._cux8CurrentName||window._cw4CompanyName||'';
+  var encoded=encodeURIComponent(name);
+  if(action==='call'&&typeof window._cw5Call==='function')return window._cw5Call(encoded);
+  if(action==='email'&&typeof window._cw5Email==='function')return window._cw5Email(encoded);
+  if(action==='quote'&&typeof window._cw4StartQuote==='function')return window._cw4StartQuote(encoded);
+  if(action==='task'&&typeof window._cw4OpenModal==='function')return window._cw4OpenModal('task');
+  if((action==='activity'||action==='note')&&typeof window._cw4OpenModal==='function'){
+   window._cw4OpenModal('activity');
+   if(action==='note')setTimeout(function(){var e=document.getElementById('cw4-f-type');if(e)e.value='Note'},40);
+  }
+ };
+
+ window._rp2CustomersV2=renderEnhanced;
+ window._rp2CompanyProfileV3=renderEnhanced;
+ window.TCP_CUSTOMER_COMMAND_CENTER_V576={version:'v576',base:BASE,render:renderEnhanced};
+})();
+</script>
+
 </body>
 </html>
