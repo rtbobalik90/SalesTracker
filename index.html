@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v562 — Project Simplify Call Workspace</title>
+<title>Sales Tracker v563 — Smart Order Import</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3474,6 +3474,13 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 
 </head>
 <body>
+
+<!-- ==========================================================================
+     SALES TRACKER v563 · SMART ORDER IMPORT
+     One Orders-page uploader automatically distinguishes monthly line-item
+     reports from weekly SalesRepPerformance order-summary workbooks.
+     ========================================================================== -->
+
 
 <!-- ==========================================================================
      SALES TRACKER v562 · PROJECT SIMPLIFY CALL WORKSPACE
@@ -56773,6 +56780,558 @@ body.ps58-dashboard-active .wrap:after{
  setTimeout(function(){
   if(window._rp2&&_rp2.page==='call')rerender()
  },0)
+})();
+</script>
+
+
+
+<style id="tcp-smart-order-import-v563-css">
+/* ==========================================================================
+   PROJECT SIMPLIFY · SMART ORDER IMPORT · BUILD v563
+   ========================================================================== */
+#ord-page #li524-manager-card .li524-kick{
+  color:#67DDF8!important
+}
+#ord-page #li524-manager-card .li524-actions .li524-badge{
+  color:#9AE7C9!important;
+  border-color:rgba(93,202,165,.24)!important;
+  background:rgba(93,202,165,.06)!important
+}
+#ord-page #li524-manager-card .li524-copy{
+  max-width:920px
+}
+#ord-page .si563-format-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:11px
+}
+#ord-page .si563-format{
+  padding:10px 11px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:10px;
+  background:rgba(255,255,255,.018)
+}
+#ord-page .si563-format strong{
+  display:block;
+  color:#F3F6F9;
+  font-size:9px
+}
+#ord-page .si563-format span{
+  display:block;
+  margin-top:4px;
+  color:#78879A;
+  font-size:7.5px;
+  line-height:1.45
+}
+#ord-page .si563-format.line{
+  border-top:2px solid #00AFEF
+}
+#ord-page .si563-format.weekly{
+  border-top:2px solid #FA873D
+}
+#ord-page .si563-smart-note{
+  margin-top:10px;
+  padding:9px 10px;
+  border:1px solid rgba(0,175,239,.16);
+  border-radius:9px;
+  background:rgba(0,175,239,.035);
+  color:#8290A2;
+  font-size:7.8px;
+  line-height:1.5
+}
+#ord-page details.ord-card.si563-legacy-fallback{
+  opacity:.78
+}
+#ord-page details.ord-card.si563-legacy-fallback summary{
+  padding-top:11px!important;
+  padding-bottom:11px!important
+}
+
+.si563-modal-wrap{
+  position:fixed;
+  inset:0;
+  z-index:1000010;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(2,7,12,.80);
+  backdrop-filter:blur(10px)
+}
+.si563-modal{
+  width:min(840px,96vw);
+  max-height:92vh;
+  overflow:auto;
+  padding:20px;
+  border:1px solid rgba(0,175,239,.24);
+  border-radius:17px;
+  background:linear-gradient(145deg,#101B27,#07111A);
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+  color:#E7EDF4
+}
+.si563-modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  padding-bottom:14px;
+  border-bottom:1px solid rgba(148,163,184,.13)
+}
+.si563-modal-kick{
+  color:#69DDF8;
+  font-size:7.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase
+}
+.si563-modal h2{
+  margin:6px 0 0;
+  color:#fff;
+  font-family:'Droid Serif',Georgia,serif;
+  font-size:24px;
+  line-height:1.12
+}
+.si563-modal-copy{
+  margin-top:7px;
+  color:#8997A9;
+  font-size:9px;
+  line-height:1.55
+}
+.si563-close{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:9px;
+  background:rgba(255,255,255,.025);
+  color:#AAB6C5;
+  font-size:18px;
+  cursor:pointer
+}
+.si563-detected{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:13px
+}
+.si563-chip{
+  display:inline-flex;
+  align-items:center;
+  min-height:25px;
+  padding:0 8px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.02);
+  color:#9CA8B8;
+  font-size:7px;
+  font-weight:900
+}
+.si563-chip.good{
+  color:#9AE7C9;
+  border-color:rgba(93,202,165,.22);
+  background:rgba(93,202,165,.055)
+}
+.si563-chip.warn{
+  color:#F5C57A;
+  border-color:rgba(239,159,39,.22);
+  background:rgba(239,159,39,.055)
+}
+.si563-kpis{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+  margin-top:14px
+}
+.si563-kpi{
+  padding:11px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:10px;
+  background:rgba(255,255,255,.018)
+}
+.si563-kpi span{
+  display:block;
+  color:#718095;
+  font-size:6.5px;
+  font-weight:950;
+  text-transform:uppercase
+}
+.si563-kpi strong{
+  display:block;
+  margin-top:5px;
+  color:#fff;
+  font-size:16px
+}
+.si563-table-wrap{
+  margin-top:14px;
+  overflow:auto;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:10px
+}
+.si563-table{
+  width:100%;
+  min-width:700px;
+  border-collapse:collapse
+}
+.si563-table th,
+.si563-table td{
+  padding:8px 9px;
+  border-bottom:1px solid rgba(148,163,184,.09);
+  text-align:left
+}
+.si563-table th{
+  color:#748397;
+  background:rgba(255,255,255,.02);
+  font-size:6.5px;
+  text-transform:uppercase
+}
+.si563-table td{
+  color:#D7E0E8;
+  font-size:8px
+}
+.si563-warning{
+  margin-top:13px;
+  padding:10px 11px;
+  border:1px solid rgba(239,159,39,.17);
+  border-radius:10px;
+  background:rgba(239,159,39,.045);
+  color:#A6B1BF;
+  font-size:8px;
+  line-height:1.55
+}
+.si563-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:15px;
+  padding-top:14px;
+  border-top:1px solid rgba(148,163,184,.12)
+}
+.si563-actions button{
+  min-height:38px;
+  padding:0 13px;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:9px;
+  background:#101C27;
+  color:#DCE4EC;
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer
+}
+.si563-actions button.primary{
+  border:0;
+  background:linear-gradient(135deg,#FA873D,#F27C2D 56%,#00AFEF);
+  color:#fff
+}
+.si563-actions button.good{
+  color:#9AE7C9;
+  border-color:rgba(93,202,165,.24);
+  background:rgba(93,202,165,.06)
+}
+.si563-result{
+  margin:12px 0 0;
+  padding:10px 11px;
+  border:1px solid rgba(93,202,165,.18);
+  border-radius:10px;
+  background:rgba(93,202,165,.045);
+  color:#A6B5C3;
+  font-size:8.5px;
+  line-height:1.55
+}
+@media(max-width:850px){
+  #ord-page .si563-format-grid{grid-template-columns:1fr}
+  .si563-kpis{grid-template-columns:1fr 1fr}
+}
+</style>
+
+
+<script id="tcp-smart-order-import-v563-js">
+(function(){
+ 'use strict';
+
+ var baseLineRead=window._liImportRead;
+ var state=null;
+
+ function arr(value){return Array.isArray(value)?value:[]}
+ function clean(value){return String(value==null?'':value).trim()}
+ function norm(value){return clean(value).toLowerCase().replace(/\ufeff/g,'').replace(/[^a-z0-9]+/g,'')}
+ function n(value){
+  var text=clean(value).replace(/[$,%(),]/g,'').replace(/\s+/g,'');
+  var negative=/^\(.*\)$/.test(clean(value))||/^-\$|^\$-/.test(clean(value));
+  var number=parseFloat(text);
+  if(isNaN(number))return 0;
+  return negative?-Math.abs(number):number
+ }
+ function esc(value){
+  if(typeof _rp2Esc==='function')return _rp2Esc(String(value==null?'':value));
+  if(typeof _m2esc==='function')return _m2esc(String(value==null?'':value));
+  return String(value==null?'':value).replace(/[&<>"]/g,function(character){
+   return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[character]
+  })
+ }
+ function money(value){
+  var number=n(value);
+  return(number<0?'-$':'$')+Math.abs(number).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2})
+ }
+ function headersAt(grid,index){return arr(grid[index]).map(clean)}
+ function findHeader(grid,required){
+  var best={index:-1,score:0,headers:[]};
+  for(var row=0;row<Math.min(grid.length,30);row++){
+   var headers=headersAt(grid,row),set={};
+   headers.forEach(function(header){set[norm(header)]=1});
+   var score=required.reduce(function(total,key){return total+(set[norm(key)]?1:0)},0);
+   if(score>best.score)best={index:row,score:score,headers:headers}
+  }
+  return best
+ }
+ function workbookSheets(workbook){
+  return arr(workbook&&workbook.SheetNames).map(function(name){
+   var sheet=workbook.Sheets[name];
+   var grid=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:false});
+   return{name:name,grid:grid}
+  })
+ }
+ function legacyCandidate(sheet){
+  var header=findHeader(sheet.grid,['Rep','Customer','Order #','Order Date','Total']);
+  var normalized=header.headers.map(norm);
+  var hasOrder=normalized.indexOf(norm('Order #'))>=0||normalized.indexOf(norm('Order Number'))>=0;
+  var hasRep=normalized.indexOf(norm('Rep'))>=0||normalized.indexOf(norm('Rep Name'))>=0||normalized.indexOf(norm('Sales Rep'))>=0;
+  var hasCustomer=normalized.indexOf(norm('Customer'))>=0||normalized.indexOf(norm('Customer Name'))>=0;
+  var hasTotal=normalized.indexOf(norm('Total'))>=0||normalized.indexOf(norm('Amount'))>=0||normalized.indexOf(norm('Order Total'))>=0;
+  return hasOrder&&hasRep&&hasCustomer&&hasTotal?{sheet:sheet,header:header}:null
+ }
+ function lineItemCandidate(sheet,fileName){
+  try{
+   if(typeof window._li524NormalizeRows!=='function')return null;
+   var parsed=window._li524NormalizeRows(sheet.grid,fileName);
+   if(parsed&&arr(parsed.records).length){
+    return{sheet:sheet,parsed:parsed}
+   }
+  }catch(error){}
+  return null
+ }
+ function classifyWorkbook(workbook,fileName){
+  var sheets=workbookSheets(workbook),line=[],weekly=[];
+  sheets.forEach(function(sheet){
+   var item=lineItemCandidate(sheet,fileName);
+   if(item)line.push(item);
+   var legacy=legacyCandidate(sheet);
+   if(legacy)weekly.push(legacy)
+  });
+  if(line.length){
+   line.sort(function(a,b){return b.parsed.records.length-a.parsed.records.length});
+   return{type:'line-item',candidate:line[0],sheets:sheets}
+  }
+  if(weekly.length){
+   weekly.sort(function(a,b){
+    var aOrders=/^orders?$/i.test(a.sheet.name)?1:0;
+    var bOrders=/^orders?$/i.test(b.sheet.name)?1:0;
+    return bOrders-aOrders||b.sheet.grid.length-a.sheet.grid.length
+   });
+   return{type:'weekly-summary',candidate:weekly[0],sheets:sheets}
+  }
+  return{type:'unknown',candidate:null,sheets:sheets}
+ }
+ function colIndex(headers,names){
+  var compact=headers.map(norm);
+  for(var x=0;x<names.length;x++){
+   var index=compact.indexOf(norm(names[x]));
+   if(index>=0)return index
+  }
+  return-1
+ }
+ function parseWeekly(candidate){
+  var grid=candidate.sheet.grid,hi=candidate.header.index,H=headersAt(grid,hi);
+  var index={
+   rep:colIndex(H,['Rep','Rep Name','Sales Rep']),
+   customer:colIndex(H,['Customer','Customer Name']),
+   order:colIndex(H,['Order #','Order#','Order Number','SO','SO #']),
+   date:colIndex(H,['Order Date','Date']),
+   last:colIndex(H,['Last Order Date']),
+   type:colIndex(H,['Order Type','Type','Source']),
+   newCustomer:colIndex(H,['New Customer']),
+   status:colIndex(H,['Status']),
+   total:colIndex(H,['Total','Amount','Order Total'])
+  };
+  var rows=[];
+  for(var rowIndex=hi+1;rowIndex<grid.length;rowIndex++){
+   var row=arr(grid[rowIndex]);
+   var order=index.order>=0?clean(row[index.order]):'';
+   if(!order)continue;
+   rows.push({
+    rep:index.rep>=0?row[index.rep]:'',
+    customer:index.customer>=0?row[index.customer]:'',
+    orderNum:order,
+    orderDate:index.date>=0?row[index.date]:'',
+    lastOrderDate:index.last>=0?row[index.last]:'',
+    placement:index.type>=0?row[index.type]:'',
+    newCustomer:index.newCustomer>=0?row[index.newCustomer]:'',
+    status:index.status>=0?row[index.status]:'',
+    total:index.total>=0?row[index.total]:0
+   })
+  }
+  return rows
+ }
+ function weeklyAnalysis(rows){
+  var reps={},customers={},dates=[],total=0;
+  rows.forEach(function(row){
+   if(clean(row.rep))reps[clean(row.rep)]=1;
+   if(clean(row.customer))customers[clean(row.customer)]=1;
+   total+=n(row.total);
+   if(clean(row.orderDate))dates.push(clean(row.orderDate))
+  });
+  return{
+   rows:rows.length,
+   reps:Object.keys(reps).length,
+   customers:Object.keys(customers).length,
+   net:total,
+   first:dates[0]||'',
+   last:dates[dates.length-1]||''
+  }
+ }
+ function closeModal(){
+  var modal=document.getElementById('si563-modal');
+  if(modal)modal.remove()
+ }
+ function previewRows(rows){
+  return rows.slice(0,8).map(function(row){
+   return'<tr><td>'+esc(row.rep)+'</td><td>'+esc(row.customer)+'</td><td>'+esc(row.orderNum)+'</td><td>'+esc(row.orderDate)+'</td><td>'+money(row.total)+'</td></tr>'
+  }).join('')
+ }
+ function showWeeklyReview(fileName,candidate,rows){
+  closeModal();
+  var analysis=weeklyAnalysis(rows);
+  state={type:'weekly-summary',fileName:fileName,sheetName:candidate.sheet.name,rows:rows,analysis:analysis};
+  var overlay=document.createElement('div');
+  overlay.id='si563-modal';
+  overlay.className='si563-modal-wrap';
+  overlay.innerHTML='<div class="si563-modal">'+
+   '<div class="si563-modal-head"><div><div class="si563-modal-kick">Smart Order Import · Weekly Format Detected</div><h2>Review weekly order summary</h2><div class="si563-modal-copy">'+esc(fileName)+' · '+esc(candidate.sheet.name)+' sheet · header row '+(candidate.header.index+1)+'. This is the SalesRepPerformance format and will be routed to the weekly order engine automatically.</div></div><button class="si563-close" onclick="_si563Close()">×</button></div>'+
+   '<div class="si563-detected"><span class="si563-chip good">✓ Weekly SalesRepPerformance workbook</span><span class="si563-chip">Orders sheet</span><span class="si563-chip">Order # header</span><span class="si563-chip warn">Order-level summary</span></div>'+
+   '<div class="si563-kpis"><div class="si563-kpi"><span>Order rows</span><strong>'+analysis.rows.toLocaleString()+'</strong></div><div class="si563-kpi"><span>Reps found</span><strong>'+analysis.reps+'</strong></div><div class="si563-kpi"><span>Customers</span><strong>'+analysis.customers.toLocaleString()+'</strong></div><div class="si563-kpi"><span>Net total</span><strong>'+money(analysis.net)+'</strong></div><div class="si563-kpi"><span>Sheet</span><strong>'+esc(candidate.sheet.name)+'</strong></div></div>'+
+   '<div class="si563-table-wrap"><table class="si563-table"><thead><tr><th>Rep</th><th>Customer</th><th>Order #</th><th>Order Date</th><th>Total</th></tr></thead><tbody>'+previewRows(rows)+'</tbody></table></div>'+
+   '<div class="si563-warning"><strong>What this updates:</strong> weekly orders, sales totals, order counts, new-customer counts, rep order history, and the Orders page.<br><strong>What it cannot add:</strong> individual products, quantities, decoration methods, or SKU purchase history because those columns are not included in this workbook.</div>'+
+   '<div class="si563-actions"><button onclick="_si563Close()">Cancel</button><button class="primary" onclick="_si563CommitWeekly()">Import weekly orders</button></div>'+
+  '</div>';
+  overlay.addEventListener('click',function(event){if(event.target===overlay)closeModal()});
+  document.body.appendChild(overlay)
+ }
+ function showUnknown(fileName,result){
+  closeModal();
+  var sheets=result.sheets.map(function(sheet){return sheet.name}).join(', ')||'None';
+  var headers=result.sheets.map(function(sheet){
+   var h=findHeader(sheet.grid,['AccountID','InvoiceNumber','Order #','Rep','Customer']);
+   return'<div class="si563-format"><strong>'+esc(sheet.name)+'</strong><span>'+esc(h.headers.slice(0,10).join(' · ')||'No readable header row')+'</span></div>'
+  }).join('');
+  var overlay=document.createElement('div');
+  overlay.id='si563-modal';
+  overlay.className='si563-modal-wrap';
+  overlay.innerHTML='<div class="si563-modal"><div class="si563-modal-head"><div><div class="si563-modal-kick">Smart Order Import</div><h2>Order format not recognized</h2><div class="si563-modal-copy">'+esc(fileName)+' contains these sheets: '+esc(sheets)+'. The app checked every sheet instead of only the first one, but neither supported order format was found.</div></div><button class="si563-close" onclick="_si563Close()">×</button></div><div class="si563-format-grid">'+headers+'</div><div class="si563-warning">Supported monthly format: AccountID, InvoiceNumber, OrderDate, ProductName, QuantityOrdered, ExtendedSalesRevenue.<br>Supported weekly format: Rep, Customer, Order #, Order Date, Total.</div><div class="si563-actions"><button onclick="_si563Close()">Close</button></div></div>';
+  document.body.appendChild(overlay)
+ }
+ function commitWeekly(){
+  if(!state||state.type!=='weekly-summary')return;
+  var result=typeof _ordImportRows==='function'?_ordImportRows(state.rows):null;
+  if(!result){
+   alert('The weekly order engine is not available.');
+   return
+  }
+  if(!S.ordersMeta)S.ordersMeta={};
+  S.ordersMeta.lastUpload=new Date().toISOString();
+  S.ordersMeta.lastFile=state.fileName;
+  S.ordersMeta.lastFormat='weekly-summary-auto-detected';
+  S.ordersMeta.lastSheet=state.sheetName;
+  if(typeof _ordDirty==='function')_ordDirty();
+  closeModal();
+  if(typeof renderOrdersPage==='function')renderOrdersPage();
+  setTimeout(function(){
+   var host=document.getElementById('li524-manager-card');
+   if(host){
+    host.insertAdjacentHTML('afterbegin','<div class="si563-result" id="si563-result"><strong style="color:#9AE7C9">Weekly order import complete.</strong> Added '+result.added+' rows · '+result.dupes+' duplicates skipped · '+result.dropped+' rows skipped because the rep was not on the active roster.</div>');
+    setTimeout(function(){var message=document.getElementById('si563-result');if(message)message.remove()},12000)
+   }
+  },40);
+  state=null
+ }
+ function decorate(){
+  var card=document.getElementById('li524-manager-card');
+  if(card&&!card.getAttribute('data-si563')){
+   card.setAttribute('data-si563','1');
+   var kick=card.querySelector('.li524-kick');
+   var title=card.querySelector('.li524-title');
+   var copy=card.querySelector('.li524-copy');
+   var badge=card.querySelector('.li524-actions .li524-badge');
+   var button=card.querySelector('.li524-actions .li524-btn');
+   if(kick)kick.textContent='SMART ORDER IMPORT · AUTO-DETECT · BUILD v563';
+   if(title)title.textContent='Upload an order report';
+   if(copy)copy.innerHTML='Use one uploader for both supported formats. The app checks every workbook sheet and automatically routes monthly line-item reports or weekly SalesRepPerformance order summaries to the correct engine.';
+   if(badge)badge.textContent='Auto-detects both formats';
+   if(button)button.textContent='⬆ Upload order report (CSV/XLSX)';
+   var note=card.querySelector('.li524-note');
+   if(note&&!card.querySelector('.si563-format-grid')){
+    note.insertAdjacentHTML('beforebegin','<div class="si563-format-grid"><div class="si563-format line"><strong>Monthly line-item report</strong><span>AccountID · InvoiceNumber · ProductName · QuantityOrdered · ExtendedSalesRevenue. Adds product and decoration intelligence.</span></div><div class="si563-format weekly"><strong>Weekly SalesRepPerformance workbook</strong><span>Rep · Customer · Order # · Order Date · Total. Updates weekly sales, orders, and customer order history.</span></div></div><div class="si563-smart-note">You no longer need to decide which importer to use. Upload the file once and review the detected format before anything is committed.</div>')
+   }
+  }
+  var details=arr(document.querySelectorAll('#ord-page details.ord-card')).find(function(item){
+   return /legacy weekly summary importer/i.test(clean(item.textContent))
+  });
+  if(details)details.classList.add('si563-legacy-fallback')
+ }
+ window._liImportRead=function(input){
+  var file=input&&input.files&&input.files[0];
+  if(!file)return;
+  if(typeof XLSX==='undefined'){
+   alert('Spreadsheet reader is not available.');
+   input.value='';
+   return
+  }
+  var reader=new FileReader();
+  reader.onload=function(event){
+   try{
+    var workbook=XLSX.read(event.target.result,{type:'array'});
+    var result=classifyWorkbook(workbook,file.name);
+    if(result.type==='line-item'){
+     if(typeof baseLineRead==='function'){
+      baseLineRead(input);
+      return
+     }
+    }else if(result.type==='weekly-summary'){
+     var rows=parseWeekly(result.candidate);
+     showWeeklyReview(file.name,result.candidate,rows);
+    }else{
+     showUnknown(file.name,result)
+    }
+   }catch(error){
+    showUnknown(file.name,{sheets:[]});
+    console.error('[Smart Order Import v563]',error)
+   }
+   input.value=''
+  };
+  reader.onerror=function(){
+   alert('The order report could not be read.');
+   input.value=''
+  };
+  reader.readAsArrayBuffer(file)
+ };
+ window._si563Close=closeModal;
+ window._si563CommitWeekly=commitWeekly;
+ window.TCP_SMART_ORDER_IMPORT_V563={
+  version:'v563',
+  classifyWorkbook:classifyWorkbook,
+  parseWeekly:parseWeekly,
+  weeklyAnalysis:weeklyAnalysis,
+  decorate:decorate
+ };
+ var baseRender=window.renderOrdersPage;
+ if(typeof baseRender==='function'){
+  window.renderOrdersPage=function(){
+   var result=baseRender.apply(this,arguments);
+   setTimeout(decorate,0);
+   return result
+  }
+ }
+ setTimeout(decorate,200)
 })();
 </script>
 
