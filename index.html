@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v586 — Viewport-Balanced Customer Profile</title>
+<title>Sales Tracker v587 — Viewport-Balanced Customer Profile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v586 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v587 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19790,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:586,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:587,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -65299,11 +65299,15 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
   }
   #rp-overlay .cux8-overview .cux8-tile:after{right:clamp(10px,.9vw,14px)!important;bottom:clamp(8px,1.1vh,13px)!important;}
 
-  /* v585: hide the do-nothing scrollbars on the two side columns (still scroll if ever needed) */
+  /* v585/v587: hide the do-nothing scrollbars on the two side columns AND every scroller inside them */
   #rp-overlay .cux8-overview .cux8-brief,
-  #rp-overlay .cux8-overview .cux10-notes{scrollbar-width:none!important;}
+  #rp-overlay .cux8-overview .cux8-brief *,
+  #rp-overlay .cux8-overview .cux10-notes,
+  #rp-overlay .cux8-overview .cux10-notes *{scrollbar-width:none!important;}
   #rp-overlay .cux8-overview .cux8-brief::-webkit-scrollbar,
-  #rp-overlay .cux8-overview .cux10-notes::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}
+  #rp-overlay .cux8-overview .cux8-brief *::-webkit-scrollbar,
+  #rp-overlay .cux8-overview .cux10-notes::-webkit-scrollbar,
+  #rp-overlay .cux8-overview .cux10-notes *::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}
 
   /* v585: readability bump — brief column */
   #rp-overlay .cux8-overview .cux8-kicker{font-size:9.6px!important;}
@@ -65337,7 +65341,8 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 /* v585 (all sizes): breathing room at the top of the portal */
 #rp-overlay .cux8-shell{padding-top:14px!important;}
 
-/* v585 (all sizes): kill the doubled scrollbar — lock the dead page scroll behind the fixed portal overlay */
+/* v585/v587: kill the doubled scrollbar — page scroll locks whenever the portal is open (class set by JS, no selector guessing) */
+html.tcp-portal-open,html.tcp-portal-open body{overflow:hidden!important;height:100%!important;}
 body:has(#rp-overlay[style*="display: block"]),
 body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
 /* and keep the overlay's own scrollbar slim + quiet */
@@ -65346,3 +65351,19 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
 #rp-overlay::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16)!important;border-radius:999px!important;}
 #rp-overlay::-webkit-scrollbar-track{background:transparent!important;}
 </style>
+
+<script>
+(function(){
+  function lock(on){try{document.documentElement.classList.toggle('tcp-portal-open',!!on);}catch(e){}}
+  try{
+    if(/[?&]portal=/.test(location.search))lock(true);
+    /* also observe the overlay for programmatic open/close */
+    var mo=new MutationObserver(function(){
+      var ov=document.getElementById('rp-overlay');
+      lock(ov&&ov.style.display!=='none'&&ov.offsetParent!==null||(/[?&]portal=/.test(location.search)));
+    });
+    function arm(){var ov=document.getElementById('rp-overlay');if(ov)mo.observe(ov,{attributes:true,attributeFilter:['style']});}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arm,{once:true});else arm();
+  }catch(e){}
+})();
+</script>
