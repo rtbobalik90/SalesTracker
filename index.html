@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v592 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v593 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -66533,3 +66533,222 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
 })();
 </script>
 
+
+
+<!-- ======================================================================
+     v593 · RESPONSIVE CALL WORKSPACE + SINGLE PAGE SCROLL
+     Final cascade repair. Removes fixed panel heights/internal vertical
+     scrollers and lets CSS reflow the command/workbench by available width.
+     ====================================================================== -->
+<style id="tcp-v593-responsive-page-scroll-call-workspace">
+/* The main portal canvas is the only vertical scroller for this page. */
+#rp-overlay .rp2-main{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  height:100vh!important;
+  min-height:0!important;
+  scroll-behavior:smooth!important;
+  scrollbar-gutter:auto!important;
+}
+#rp-overlay #rp2-page{max-width:none!important;padding-bottom:120px!important;}
+#rp-overlay .ps62-shell{
+  width:100%!important;
+  max-width:1920px!important;
+  margin:0 auto!important;
+  display:grid!important;
+  gap:clamp(14px,1.05vw,22px)!important;
+  padding-bottom:72px!important;
+  overflow:visible!important;
+}
+
+/* Fluid command banner. Grid areas prevent wide displays from stretching
+   awkwardly and let narrower displays move the stepper to a second row. */
+#rp-overlay .ps62-command{
+  grid-template-columns:minmax(150px,.36fr) minmax(360px,1.08fr) minmax(285px,.80fr) minmax(275px,.72fr) 64px!important;
+  grid-template-areas:"label company steps actions queue"!important;
+  column-gap:clamp(12px,1vw,20px)!important;
+  row-gap:12px!important;
+  align-items:center!important;
+  min-height:0!important;
+  height:auto!important;
+  padding:clamp(17px,1.25vw,24px)!important;
+  overflow:visible!important;
+}
+#rp-overlay .ps62-command-label{grid-area:label!important;min-width:0!important;}
+#rp-overlay .ps62-command>div:nth-child(2){grid-area:company!important;min-width:0!important;}
+#rp-overlay .ps62-stepper{grid-area:steps!important;min-width:0!important;width:100%!important;}
+#rp-overlay .ps62-command-actions{
+  grid-area:actions!important;
+  width:100%!important;
+  min-width:0!important;
+  grid-template-columns:minmax(125px,1fr) minmax(125px,1fr)!important;
+}
+#rp-overlay .ps90-queue-toggle{grid-area:queue!important;justify-self:end!important;align-self:center!important;}
+#rp-overlay .ps62-company-line h1{
+  font-size:clamp(27px,1.85vw,38px)!important;
+  line-height:1.05!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+
+/* Three balanced desktop columns. Widths are fluid, capped, and based on the
+   available content area rather than viewport height. */
+#rp-overlay .ps62-workbench{
+  display:grid!important;
+  grid-template-columns:clamp(290px,20vw,350px) minmax(560px,1fr) clamp(340px,24vw,430px)!important;
+  gap:clamp(14px,1.05vw,22px)!important;
+  align-items:start!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#rp-overlay .ps62-panel,
+#rp-overlay .ps62-dialer,
+#rp-overlay .ps62-center,
+#rp-overlay .ps62-context{
+  position:relative!important;
+  top:auto!important;
+  align-self:start!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+}
+#rp-overlay .ps62-panel{overflow:hidden!important;}
+#rp-overlay .ps62-dialer,
+#rp-overlay .ps62-center,
+#rp-overlay .ps62-context{display:block!important;}
+
+/* Remove every nested vertical viewport on the call page. The content expands
+   naturally and the portal page handles scrolling. */
+#rp-overlay .ps62-dialer>.cl2-body,
+#rp-overlay .ps62-dialer .cl2-body,
+#rp-overlay .ps62-center-body,
+#rp-overlay .ps62-center .cl2-center-body,
+#rp-overlay .ps62-center .cl2-scroll,
+#rp-overlay .ps62-context-body,
+#rp-overlay .ps62-context .cl2-body,
+#rp-overlay .ps62-context .cl2-scroll{
+  position:relative!important;
+  top:auto!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  overscroll-behavior:auto!important;
+}
+#rp-overlay .ps62-context-body{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:clamp(12px,.9vw,17px)!important;
+  padding:clamp(14px,1vw,18px)!important;
+}
+#rp-overlay .ps62-center-body{padding:clamp(14px,1vw,20px)!important;}
+#rp-overlay .ps62-center .cl2-center-body{padding:0!important;gap:clamp(14px,1vw,20px)!important;}
+#rp-overlay .ps62-dialer>.cl2-body{padding:clamp(14px,1vw,18px)!important;}
+
+/* The workflow buttons belong after the content; they must not cover fields. */
+#rp-overlay .ps62-center-footer,
+#rp-overlay .cl592-footer{
+  position:static!important;
+  inset:auto!important;
+  width:auto!important;
+  margin:0!important;
+  padding:clamp(13px,1vw,18px)!important;
+  background:#09131D!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+/* Let call-stage guidance and live-assist cards size to their content. */
+#rp-overlay .cl592-call-top{align-items:start!important;gap:clamp(14px,1vw,20px)!important;}
+#rp-overlay .cl592-ai-card,
+#rp-overlay .cl592-live-card,
+#rp-overlay .cl592-live-grid article{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#rp-overlay .cl592-live-grid{align-items:stretch!important;}
+#rp-overlay .cl592-note-section textarea{min-height:180px!important;resize:vertical!important;}
+
+/* Product/history grids stay readable as the center column changes width. */
+#rp-overlay .ps62-center .cl2-record-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:clamp(10px,.85vw,15px)!important;
+}
+#rp-overlay .ps62-panel-head{
+  padding:clamp(16px,1.1vw,22px)!important;
+}
+#rp-overlay .ps62-panel-title{font-size:clamp(17px,1.1vw,21px)!important;}
+#rp-overlay .ps62-panel-copy{font-size:clamp(10px,.62vw,12px)!important;}
+
+/* The queue tray remains intentionally horizontal; it is the only nested
+   scroller on the page and matches the requested left-to-right interaction. */
+#rp-overlay .ps90-queue-tray{width:100%!important;}
+#rp-overlay .ps90-track{overflow-x:auto!important;overflow-y:hidden!important;}
+
+/* Normal desktop/laptop: keep three columns as long as they genuinely fit. */
+@media(max-width:1640px){
+  #rp-overlay .ps62-command{
+    grid-template-columns:minmax(145px,.34fr) minmax(0,1fr) minmax(270px,.76fr) 64px!important;
+    grid-template-areas:
+      "label company actions queue"
+      "label steps steps queue"!important;
+  }
+  #rp-overlay .ps62-stepper{max-width:760px!important;justify-self:center!important;}
+}
+
+/* Mid-width screens: two content columns, with Context flowing below. */
+@media(max-width:1450px){
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:minmax(290px,360px) minmax(0,1fr)!important;
+  }
+  #rp-overlay .ps62-context{grid-column:1/-1!important;}
+  #rp-overlay .ps62-context-body{
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;
+  }
+}
+
+/* Tablet/narrow browser windows: a true single-column document flow. */
+@media(max-width:1040px){
+  #rp-overlay .ps62-command{
+    grid-template-columns:minmax(0,1fr) 60px!important;
+    grid-template-areas:
+      "company queue"
+      "steps steps"
+      "actions actions"!important;
+  }
+  #rp-overlay .ps62-command-label{display:none!important;}
+  #rp-overlay .ps62-command-actions{grid-template-columns:1fr 1fr!important;}
+  #rp-overlay .ps62-workbench{grid-template-columns:1fr!important;}
+  #rp-overlay .ps62-context{grid-column:auto!important;}
+  #rp-overlay .ps62-context-body{grid-template-columns:1fr!important;}
+  #rp-overlay .cl592-call-top{grid-template-columns:1fr!important;}
+  #rp-overlay .cl592-live-card{grid-column:auto!important;}
+}
+
+@media(max-width:760px){
+  #rp-overlay .ps62-command-actions{grid-template-columns:1fr!important;}
+  #rp-overlay .ps62-stepper{gap:4px!important;}
+  #rp-overlay .ps62-center .cl2-record-grid,
+  #rp-overlay .cl592-live-grid,
+  #rp-overlay .cl2-grid-2,
+  #rp-overlay .cl2-grid-3,
+  #rp-overlay .cl2-filter-row{grid-template-columns:1fr!important;}
+  #rp-overlay .cl592-footer[data-stage]{grid-template-columns:1fr!important;}
+  #rp-overlay .ps90-queue-toggle{width:52px!important;height:52px!important;}
+}
+</style>
+<script id="tcp-v593-responsive-page-scroll-version">
+window.TCP_CALL_WORKSPACE_V593={
+  version:'v593',
+  base:'v592',
+  focus:'responsive width-driven layout and single main-page vertical scrolling'
+};
+</script>
