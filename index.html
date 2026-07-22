@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v590 — Call Queue Tray Rebuild</title>
+<title>Sales Tracker v591 — Product History Repair</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -46757,9 +46757,25 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   for(var i=0;i<known.length;i++)if(norm(name).indexOf(norm(known[i]))>=0)return known[i];
   return'Not recorded'
  }
- function lineItems(company){
-  var Sx=window.S||{},rows=arr(Sx.orderLineItems),target=norm(company);
+ function lineItems(company,c){
+  var Sx=window.S||{},rows=arr(Sx.orderLineItems),target=norm(company),rep=currentRep();
+  var profile=c&&c.profile||{},customerId=clean(field(profile,['customerNumber','custId','customerId','accountId'],'')||field(c||{},['customerNumber','custId','customerId','accountId'],''));
+  if(!customerId){
+   var imported=arr(Sx.customers).filter(function(customer){
+    var name=field(customer,['name','customer','company'],'');
+    var owner=field(customer,['rep','salesRep','owner'],'');
+    return norm(name)===target&&(!owner||!rep||norm(owner)===norm(rep))
+   })[0];
+   if(imported)customerId=clean(field(imported,['customerNumber','custId','customerId','accountId'],'')||'')
+  }
+  function idKey(value){return clean(value).replace(/\.0$/,'').replace(/^0+(?=\d)/,'')}
+  var wantedId=idKey(customerId);
   return rows.filter(function(row){
+   if(!row)return false;
+   var rowRep=clean(field(row,['rep','salesRep','owner'],'')||'');
+   if(rowRep&&rep&&norm(rowRep)!==norm(rep))return false;
+   var rowId=idKey(field(row,['accountId','customerNumber','custId','customerId'],''));
+   if(wantedId&&rowId&&rowId===wantedId)return true;
    var companyValue=field(row,['company','companyName','customer','customerName','accountName','AccountName','shipToName','billToName'],'');
    return norm(companyValue)===target
   })
@@ -46789,29 +46805,44 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   }).sort(function(a,b){return String(b.date||'').localeCompare(String(a.date||''))})
  }
  function productsFor(company,c){
-  var rows=lineItems(company),map={};
-  rows.forEach(function(row,index){
-   var name=clean(field(row,['productName','product','itemDescription','description','styleDescription','itemName','sku','style'],''));
-   if(!name||/setup|shipping|freight|discount|tax|screen charge|embroidery charge/i.test(name))return;
-   var style=clean(field(row,['style','styleNumber','sku','itemNumber'],''));
+  var rows=lineItems(company,c),map={};
+  function addProduct(row,sourceOrder){
+   if(!row)return;
+   var lineClass=clean(field(row,['lineClass','class'],'')||'').toLowerCase();
+   if(lineClass&&lineClass!=='product')return;
+   var name=clean(field(row,['productName','product','itemDescription','productDescription','description','styleDescription','itemName','name','sku','style'],''));
+   if(!name||/setup|set-up|shipping|freight|discount|tax|screen charge|embroidery charge|digitiz|run charge|art charge/i.test(name))return;
+   var style=clean(field(row,['style','styleNumber','sku','itemNumber','productCode'],''));
    var brand=clean(field(row,['brand','manufacturer','vendor','productBrand'],'')||inferBrand(name));
-   var type=clean(field(row,['productType','category','categoryName','itemCategory'],'')||inferType(name));
-   var decoration=clean(field(row,['decorationMethod','decoration','imprintMethod','logoMethod','method'],'')||'Not recorded');
+   var type=clean(field(row,['productType','productCategory','category','categoryName','itemCategory'],'')||inferType(name));
+   var decoration=clean(field(row,['decorationMethod','decorationType','decoration','imprintMethod','logoMethod','method'],'')||'Not recorded');
    var key=norm(name+'|'+style+'|'+brand+'|'+decoration);
    if(!map[key])map[key]={
     id:'product_'+hash(key),name:name,style:style,brand:brand,type:type,decoration:decoration,
     units:0,revenue:0,lastDate:'',orders:{}
    };
-   map[key].units+=n(field(row,['quantity','qty','units'],0));
-   map[key].revenue+=n(field(row,['netRevenue','revenue','amount','total'],0));
+   map[key].units+=n(field(row,['quantityOrdered','quantity','qty','units'],0));
+   map[key].revenue+=n(field(row,['extendedSalesRevenue','netRevenue','revenue','amount','total'],0));
    var date=field(row,['orderDate','invoiceDate','date','createdAt'],'');
    if(String(date)>String(map[key].lastDate))map[key].lastDate=date;
-   var orderNo=field(row,['orderNumber','orderNum','so','salesOrder','invoiceNumber'],'');
+   var orderNo=sourceOrder||field(row,['orderNumber','orderNum','so','salesOrder','invoiceNumber'],'');
    if(orderNo)map[key].orders[String(orderNo)]=1
-  });
+  }
+  rows.forEach(function(row){addProduct(row,'')});
+  if(!Object.keys(map).length){
+   var target=norm(company),profile=c&&c.profile||{},customerId=clean(field(profile,['customerNumber','custId','customerId','accountId'],'')||field(c||{},['customerNumber','custId','customerId','accountId'],''));
+   arr(window.S&&S.orders).forEach(function(order){
+    if(!order)return;
+    var orderCompany=field(order,['customer','company','companyName','customerName','accountName'],'');
+    var orderId=clean(field(order,['accountId','customerNumber','custId','customerId'],'')||'');
+    if(norm(orderCompany)!==target&&!(customerId&&orderId&&String(customerId)===String(orderId)))return;
+    var orderNo=field(order,['orderNum','orderNumber','so','salesOrder','invoiceNumber','number'],'');
+    arr(field(order,['topProducts','products','items','lineItems'],[])).forEach(function(item){addProduct(item,orderNo)})
+   })
+  }
   var result=Object.keys(map).map(function(key){
    var p=map[key];p.orderCount=Object.keys(p.orders).length;return p
-  });
+  }).sort(function(a,b){return b.units-a.units||String(b.lastDate||'').localeCompare(String(a.lastDate||''))||a.name.localeCompare(b.name)});
   if(!result.length){
    Object.keys(c.products||{}).forEach(function(name){
     result.push({
@@ -47111,7 +47142,7 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
      '<div class="cl2-record-kicker">'+esc(p.type)+' · '+esc(p.brand)+'</div><div class="cl2-record-title">'+esc(p.name)+'</div>'+
      '<div class="cl2-record-meta">'+esc([p.style,p.decoration,p.lastDate&&('Last '+fmt(p.lastDate))].filter(Boolean).join(' · ')||'Product detail from loaded history')+'</div>'+
      '<div class="cl2-record-stats"><span>'+Math.round(p.units).toLocaleString()+' units</span><span>'+p.orderCount+' orders</span>'+(p.revenue?'<span>'+money(p.revenue)+'</span>':'')+'</div></article>'
-   }).join('')+'</div>':'<div class="cl2-empty"><strong>No purchased products match these filters</strong>Product cards populate from loaded line-item and customer order history.</div>')
+   }).join('')+'</div>':(data.company?'<div class="cl2-empty"><strong>No purchased products are matched to this customer</strong>Product cards use the monthly line-item report. Confirm the customer AccountID mapping, then refresh the portal. Weekly summary spreadsheets do not contain product detail.</div>':'<div class="cl2-empty"><strong>Choose a customer to load product history</strong>The product list is customer-specific and appears after a customer is selected.</div>'))
  }
  function artworkPanel(data,ui){
   var artwork=data.artwork.filter(function(a){return ui.artDecoration==='All'||a.decoration===ui.artDecoration}).sort(function(a,b){
@@ -65220,6 +65251,20 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 })();
 </script>
 
+
+<script id="tcp-product-history-diagnostics-v591">
+(function(){
+ window._tcpProductHistoryDiagnostics=function(company){
+  function arr(v){return Array.isArray(v)?v:[]}
+  function clean(v){return String(v==null?'':v).trim()}
+  function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+  var state=window.S||{},target=norm(company||''),customers=arr(state.customers),customer=customers.filter(function(c){return norm(c&&c.name||c&&c.customer||c&&c.company)===target})[0]||null;
+  var cid=clean(customer&&(customer.customerNumber||customer.custId||customer.customerId||customer.accountId)||'');
+  var all=arr(state.orderLineItems),matched=all.filter(function(x){var rid=clean(x&&(x.accountId||x.customerNumber||x.custId||x.customerId)||'');var cname=norm(x&&(x.customer||x.company||x.companyName||x.customerName||x.accountName)||'');return(cid&&rid&&cid===rid)||(target&&cname===target)});
+  return{company:company||'',customerId:cid,customers:customers.length,totalLineItems:all.length,matchedLineItems:matched.length,productLines:matched.filter(function(x){return!x.lineClass||x.lineClass==='product'}).length,imports:arr(state.orderLineItemsMeta&&state.orderLineItemsMeta.imports).length,unmatched:arr(state.orderLineItemsUnmatched).length,lastImport:state.orderLineItemsMeta&&state.orderLineItemsMeta.lastImport||null};
+ }
+})();
+</script>
 </body>
 </html>
 
