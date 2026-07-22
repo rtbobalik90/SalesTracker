@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v596 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v597 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v596 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v597 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19790,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:596,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:597,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -64467,12 +64467,15 @@ window._cxp588Render=function(){
     +'<button class="cux8-action" onclick="_cw4OpenCenter(\'orders\',\''+enc+'\')">Open Orders</button>'
     +'<button class="cux8-action" onclick="_cw4InlineEdit(\'buying\')">Edit buying profile</button>'
     +'</div>';
-  var tiles=cats.length?('<div class="cxp588-cath">Catalog \u00b7 shop by category</div><div class="cxp588-cats">'+cats.map(function(b){
-    return '<button class="cxp588-cat" onclick="_cxp588OpenCat(\''+encodeURIComponent(b.cat)+'\')">'
+  var _pal=['#47D16C','#FA873D','#9B6BFF','#4C9DFF','#00AFEF','#FBBF24','#FB7185','#34D399'];
+  var tiles=cats.length?('<div class="cxp588-cath">Catalog \u00b7 shop by category</div><div class="cxp588-cats">'+cats.map(function(b,bi){
+    var col=_pal[bi%_pal.length];
+    return '<button class="cxp588-cat" style="--c:'+col+';" onclick="_cxp588OpenCat(\''+encodeURIComponent(b.cat)+'\')">'
       +(b.due?'<span class="cxp588-cat-due">'+b.due+' due</span>':'')
       +'<span class="cxp588-cat-ic">'+_cxp588Icon(b.cat)+'</span>'
       +'<strong>'+esc(b.cat)+'</strong>'
-      +'<span class="cxp588-cat-meta">'+b.n+' product'+(b.n>1?'s':'')+' \u00b7 '+_cxp588Money(b.rev)+'</span>'
+      +'<span class="cxp588-cat-copy">'+(b.top?('Top: '+esc(b.top.sku||b.top.name)):'')+'</span>'
+      +'<span class="cxp588-cat-meta"><b>'+b.n+'</b><i>product'+(b.n>1?'s':'')+' \u00b7 '+_cxp588Money(b.rev)+'</i><span class="cxp588-cat-arrow">\u2192</span></span>'
       +'</button>';
   }).join('')+'</div>')
   :('<div class="cxp588-empty"><strong>No purchase history loaded for '+esc(name)+' yet.</strong><br>The industry opportunities below are the starting points \u2014 each category shows what similar '+(function(){var iv=(window._cx586Get&&_cx586Get(name,'industry'))||'';return iv?esc(iv.toLowerCase())+' customers':'customers in their industry';})()+' typically buy.</div>');
@@ -65750,12 +65753,17 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 .cxp588-stat em{display:block;margin-top:3px;color:#8797AD;font-size:9.4px;font-style:normal;}
 .cxp588-actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;}
 .cxp588-cath{margin:4px 0 9px;color:#9DDCFF;font-size:9.6px;font-weight:950;text-transform:uppercase;letter-spacing:.8px;}
-.cxp588-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px;}
-.cxp588-cat{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 15px 14px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:linear-gradient(160deg,rgba(14,24,40,.92),rgba(7,12,22,.95));cursor:pointer;text-align:left;transition:.16s;}
-.cxp588-cat:hover{border-color:rgba(0,175,239,.5);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.35);}
-.cxp588-cat-ic{font-size:26px;line-height:1;}
-.cxp588-cat strong{color:#F0F5FC;font-size:15px;font-weight:900;letter-spacing:.2px;}
-.cxp588-cat-meta{color:#8797AD;font-size:9.8px;font-weight:700;}
+.cxp588-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
+.cxp588-cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:0;padding:20px 15px 14px;border:1px solid color-mix(in srgb,var(--c,#4C9DFF) 38%,transparent);border-radius:18px;background:radial-gradient(90% 70% at 50% 0%,color-mix(in srgb,var(--c,#4C9DFF) 14%,transparent),transparent 70%),linear-gradient(160deg,rgba(14,24,40,.92),rgba(7,12,22,.95));cursor:pointer;text-align:center;transition:.16s;}
+.cxp588-cat:hover{border-color:color-mix(in srgb,var(--c,#4C9DFF) 75%,transparent);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.4),0 0 24px color-mix(in srgb,var(--c,#4C9DFF) 18%,transparent);}
+.cxp588-cat-ic{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:16px;font-size:25px;line-height:1;background:color-mix(in srgb,var(--c,#4C9DFF) 20%,rgba(255,255,255,.03));border:1px solid color-mix(in srgb,var(--c,#4C9DFF) 45%,transparent);box-shadow:0 0 22px color-mix(in srgb,var(--c,#4C9DFF) 30%,transparent);}
+.cxp588-cat strong{margin-top:11px;color:#F0F5FC;font-size:16px;font-weight:900;letter-spacing:.2px;}
+.cxp588-cat-copy{margin-top:4px;color:#8797AD;font-size:9.6px;min-height:12px;max-width:92%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cxp588-cat-meta{display:flex;align-items:center;gap:7px;margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.07);width:100%;justify-content:center;}
+.cxp588-cat-meta b{display:flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:color-mix(in srgb,var(--c,#4C9DFF) 25%,transparent);border:1px solid color-mix(in srgb,var(--c,#4C9DFF) 55%,transparent);color:#fff;font-size:9.6px;font-weight:950;}
+.cxp588-cat-meta i{color:color-mix(in srgb,var(--c,#4C9DFF) 80%,#fff);font-size:8.8px;font-weight:950;font-style:normal;text-transform:uppercase;letter-spacing:.6px;}
+.cxp588-cat-arrow{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;border:1px solid color-mix(in srgb,var(--c,#4C9DFF) 55%,transparent);color:color-mix(in srgb,var(--c,#4C9DFF) 85%,#fff);font-size:12px;margin-left:2px;transition:.15s;}
+.cxp588-cat:hover .cxp588-cat-arrow{background:color-mix(in srgb,var(--c,#4C9DFF) 25%,transparent);transform:translateX(2px);}
 .cxp588-cat-due{position:absolute;top:10px;right:10px;padding:3px 9px;border-radius:999px;border:1px solid rgba(250,135,61,.5);background:rgba(250,135,61,.12);color:#FFC79A;font-size:8.6px;font-weight:950;text-transform:uppercase;letter-spacing:.4px;}
 .cxp588-banner{position:relative;margin:2px 0 12px;padding:20px 20px 16px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:linear-gradient(120deg,rgba(0,175,239,.14),rgba(7,12,22,.9) 55%),linear-gradient(160deg,rgba(14,24,40,.92),rgba(7,12,22,.95));overflow:hidden;}
 .cxp588-backbtn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#C7D6EA;border-radius:999px;padding:6px 13px;font-size:10px;font-weight:900;cursor:pointer;margin-bottom:8px;}
@@ -65837,6 +65845,7 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
   #rp-overlay .cux8-overview .cux8-brief{overflow:auto!important;padding:clamp(14px,2vh,20px)!important;}
   #rp-overlay .cux8-overview .cux10-notes{overflow:auto!important;}
   #rp-overlay .cux8-overview .cux8-modules{
+    padding-top:10px!important;box-sizing:border-box!important;
     display:grid!important;
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
     grid-template-rows:repeat(3,minmax(0,1fr))!important;
