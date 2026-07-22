@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v583 — Viewport-Balanced Customer Profile</title>
+<title>Sales Tracker v584 — Viewport-Balanced Customer Profile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v553 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v584 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19789,7 +19789,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:553,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:584,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -21751,7 +21751,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   var viewport=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
   var available=Math.floor(viewport-top-10);
   /* Protect very short windows while preventing the old fixed 728px overflow. */
-  available=Math.max(500,Math.min(760,available));
+  available=Math.max(480,Math.min(Math.floor(viewport*0.86),available));
   var next=available+'px';
   if(root.style.getPropertyValue('--cux583-work-h')!==next)root.style.setProperty('--cux583-work-h',next);
  }
@@ -65101,3 +65101,58 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 
 </body>
 </html>
+
+<style id="cux584-final-viewport-authority">
+/* ===== v584 FINAL AUTHORITY — customer profile must fit the viewport =====
+   Appended last on purpose: later !important wins the cascade, ending the
+   fixed-pixel (728px/232px) vs viewport-fit rule war. Scope: rep portal
+   customer overview only, wide screens only. */
+@media (min-width:1200px){
+  #rp-overlay .cux8-overview{
+    height:var(--cux583-work-h,auto)!important;
+    min-height:0!important;max-height:none!important;
+    align-items:stretch!important;
+    overflow:hidden!important;
+  }
+  #rp-overlay .cux8-overview .cux8-brief,
+  #rp-overlay .cux8-overview .cux8-modules,
+  #rp-overlay .cux8-overview .cux10-notes{
+    height:100%!important;min-height:0!important;max-height:none!important;align-self:stretch!important;
+  }
+  #rp-overlay .cux8-overview .cux8-brief{overflow:auto!important;padding:clamp(14px,2vh,20px)!important;}
+  #rp-overlay .cux8-overview .cux10-notes{overflow:auto!important;}
+  #rp-overlay .cux8-overview .cux8-modules{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    grid-auto-rows:minmax(0,1fr)!important;
+    gap:clamp(10px,1.3vh,16px)!important;
+    align-content:stretch!important;
+    overflow:hidden!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile{
+    min-height:0!important;height:auto!important;
+    display:flex!important;flex-direction:column!important;
+    align-items:center!important;justify-content:center!important;
+    padding:clamp(10px,1.4vh,18px) clamp(12px,1vw,18px) clamp(30px,4.4vh,48px)!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile-icon{
+    width:clamp(42px,5.8vh,62px)!important;height:clamp(42px,5.8vh,62px)!important;
+    flex:0 0 auto!important;margin:0 auto!important;
+    border-radius:clamp(14px,2.1vh,20px)!important;font-size:clamp(20px,2.9vh,28px)!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile-name{
+    margin-top:clamp(6px,1vh,12px)!important;font-size:clamp(13.5px,1.85vh,18px)!important;line-height:1.1!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile-copy{
+    margin-top:clamp(4px,.65vh,8px)!important;font-size:clamp(8.4px,1.02vh,10.2px)!important;
+    line-height:1.4!important;max-width:94%!important;
+    display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;overflow:hidden!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile-meta{
+    position:absolute!important;left:50%!important;right:auto!important;
+    bottom:clamp(7px,1.1vh,13px)!important;transform:translateX(-50%)!important;margin:0!important;white-space:nowrap!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile:after{right:clamp(10px,.9vw,14px)!important;bottom:clamp(8px,1.1vh,13px)!important;}
+}
+</style>
