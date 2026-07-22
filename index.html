@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v584 — Viewport-Balanced Customer Profile</title>
+<title>Sales Tracker v585 — Viewport-Balanced Customer Profile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v584 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v585 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19789,7 +19789,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:584,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:585,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -65154,5 +65154,51 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
     bottom:clamp(7px,1.1vh,13px)!important;transform:translateX(-50%)!important;margin:0!important;white-space:nowrap!important;
   }
   #rp-overlay .cux8-overview .cux8-tile:after{right:clamp(10px,.9vw,14px)!important;bottom:clamp(8px,1.1vh,13px)!important;}
+
+  /* v585: hide the do-nothing scrollbars on the two side columns (still scroll if ever needed) */
+  #rp-overlay .cux8-overview .cux8-brief,
+  #rp-overlay .cux8-overview .cux10-notes{scrollbar-width:none!important;}
+  #rp-overlay .cux8-overview .cux8-brief::-webkit-scrollbar,
+  #rp-overlay .cux8-overview .cux10-notes::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}
+
+  /* v585: readability bump — brief column */
+  #rp-overlay .cux8-overview .cux8-kicker{font-size:9.6px!important;}
+  #rp-overlay .cux8-overview .cux8-brief-title{font-size:clamp(21px,2.7vh,25px)!important;}
+  #rp-overlay .cux8-overview .cux8-brief-copy{font-size:clamp(10.6px,1.3vh,12.2px)!important;line-height:1.58!important;}
+  #rp-overlay .cux8-overview .cux8-next span{font-size:8.8px!important;}
+  #rp-overlay .cux8-overview .cux8-next strong{font-size:clamp(14px,1.75vh,16.5px)!important;line-height:1.28!important;}
+  #rp-overlay .cux8-overview .cux8-next p{font-size:clamp(10px,1.2vh,11.6px)!important;line-height:1.55!important;}
+  #rp-overlay .cux8-overview .cux8-fact span{font-size:8.4px!important;}
+  #rp-overlay .cux8-overview .cux8-fact strong{font-size:clamp(10.6px,1.3vh,12px)!important;line-height:1.38!important;}
+  #rp-overlay .cux8-overview .cux8-health span{font-size:9.2px!important;padding:7px 9px!important;}
+  #rp-overlay .cux8-overview .cux8-brief-foot .cux8-action{font-size:10.4px!important;}
+
+  /* v585: readability bump — tiles */
+  #rp-overlay .cux8-overview .cux8-tile-name{font-size:clamp(15px,2vh,19px)!important;}
+  #rp-overlay .cux8-overview .cux8-tile-copy{font-size:clamp(9.6px,1.16vh,11.2px)!important;line-height:1.45!important;}
+  #rp-overlay .cux8-overview .cux8-tile-meta{font-size:clamp(8.2px,1vh,9.4px)!important;}
+
+  /* v585: readability bump — notes column */
+  #rp-overlay .cux10-notes .cux10-kicker,#rp-overlay .cux10-notes .cux10-card-kick{font-size:clamp(8.8px,1.02vh,9.8px)!important;}
+  #rp-overlay .cux10-notes .cux10-card-title{font-size:clamp(13.5px,1.75vh,16.5px)!important;}
+  #rp-overlay .cux10-notes .cux10-card-copy,
+  #rp-overlay .cux10-notes .cux10-copy,
+  #rp-overlay .cux10-notes .cux10-log-copy{font-size:clamp(10.2px,1.25vh,12px)!important;line-height:1.58!important;}
+  #rp-overlay .cux10-notes .cux10-log-title{font-size:clamp(11px,1.35vh,13px)!important;}
+  #rp-overlay .cux10-notes .cux10-chip{font-size:clamp(9.2px,1.1vh,10.8px)!important;}
+  #rp-overlay .cux10-notes .cux10-disclaimer,
+  #rp-overlay .cux10-notes .cux10-log-meta{font-size:clamp(8.8px,1.02vh,10px)!important;line-height:1.5!important;}
 }
+
+/* v585 (all sizes): breathing room at the top of the portal */
+#rp-overlay .cux8-shell{padding-top:14px!important;}
+
+/* v585 (all sizes): kill the doubled scrollbar — lock the dead page scroll behind the fixed portal overlay */
+body:has(#rp-overlay[style*="display: block"]),
+body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
+/* and keep the overlay's own scrollbar slim + quiet */
+#rp-overlay{scrollbar-width:thin!important;scrollbar-color:rgba(255,255,255,.18) transparent!important;}
+#rp-overlay::-webkit-scrollbar{width:7px!important;}
+#rp-overlay::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16)!important;border-radius:999px!important;}
+#rp-overlay::-webkit-scrollbar-track{background:transparent!important;}
 </style>
