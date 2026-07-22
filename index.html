@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v597 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v598 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v597 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v598 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19790,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:597,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:598,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -64363,6 +64363,30 @@ window._cxp588Quote=function(singleKey){
     if(tries<20)setTimeout(fill,120);
   })();
 };
+window._cxp588CloseWrap=(function(){
+  var orig=null;
+  return function(){
+    if(orig)return;
+    orig=window._cw4CloseModal;
+    if(typeof orig!=='function')return;
+    window._cw4CloseModal=function(){
+      try{
+        var shell=document.querySelector('.cux8-shell.cxp588-detail-open');
+        var panel=shell?document.querySelector('.cw6-detail-modal'):null;
+        if(panel&&window.innerWidth>=1100){
+          panel.classList.add('cxp588-slide-out');
+          var done=false;
+          var fin=function(){if(done)return;done=true;orig();};
+          panel.addEventListener('transitionend',fin,{once:true});
+          setTimeout(fin,340);
+          return;
+        }
+      }catch(e){}
+      orig();
+    };
+  };
+})();
+window.addEventListener('load',function(){setTimeout(function(){try{_cxp588CloseWrap();}catch(e){}},1500);});
 window._cxp588OpenCat=function(enc){window._cxp588Cat=decodeURIComponent(enc);_cxp588Redraw();};
 window._cxp588Back=function(){window._cxp588Cat=null;_cxp588Redraw();};
 window._cxp588Redraw=function(){
@@ -64536,7 +64560,8 @@ window._cxp588Body=function(content,name){
     }catch(_pe){console.warn('[cxp588 fallback]',_pe);}
     finally{window._cxp588All=false;window._cw5ProductSearch=_ps;window._cw5ProductStatus=_pst;}
   }
-  return '<div class="cux8-shell"><div class="cux8-stage '+(window._cux8Direction==='back'?'back':'')+'">'
+  var _dOpen=(section==='products'&&modal&&modal.indexOf('cw6-detail-modal')>=0)?' cxp588-detail-open':'';
+  return '<div class="cux8-shell'+_dOpen+'"><div class="cux8-stage '+(window._cux8Direction==='back'?'back':'')+'">'
    +'<section class="cux8-section-head" style="--section:'+meta.color+'"><div class="cux8-section-id"><button class="cux8-back" title="Back to customer overview" onclick="_cux8Back()">←</button><div class="cux8-section-icon">'+meta.icon+'</div><div><div class="cux8-section-company">'+esc(name)+' · Customer Command Center</div><div class="cux8-section-title">'+esc(meta.title)+'</div><div class="cux8-section-copy">'+esc(meta.copy)+'</div></div></div><div class="cux8-section-actions"><button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button><button class="cux8-action" onclick="_cux8Action(\'activity\')">Log Activity</button><button class="cux8-action orange" onclick="_cux8Action(\'quote\')">Create Quote</button></div></section>'
    +'<div class="cux8-content">'+body+'</div></div></div>'+modal
  }
@@ -65824,6 +65849,40 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 .cxp588-cart-empty{color:#8797AD;font-size:10.6px;padding:14px 4px;line-height:1.6;}
 .cxp588-cart-foot{display:flex;gap:9px;justify-content:flex-end;padding:12px 14px;border-top:1px solid rgba(255,255,255,.08);}
 @media(max-width:900px){.cxp588-stats{grid-template-columns:1fr 1fr;}.cxp588-banner-word{font-size:26px;}}
+
+/* ---- product detail header fix: kicker no longer overlaps the title ---- */
+.cw6-detail-modal .cw4-modal-icon{width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;background:none!important;border:0!important;box-shadow:none!important;display:block!important;font-size:9.5px!important;font-weight:950!important;letter-spacing:.9px!important;color:#9DDCFF!important;white-space:nowrap!important;margin:0 0 5px!important;padding:0!important;line-height:1.2!important;}
+.cw6-detail-head{align-items:flex-start!important;}
+
+/* ---- master-detail: slide-in panel + stacked product rail ---- */
+@media(min-width:1100px){
+  .cxp588-detail-open .cw6-detail-wrap{background:transparent!important;backdrop-filter:none!important;pointer-events:none!important;justify-content:flex-start!important;align-items:stretch!important;padding:0!important;}
+  .cxp588-detail-open .cw6-detail-modal{
+    pointer-events:auto!important;
+    position:fixed!important;left:0!important;top:0!important;bottom:0!important;
+    width:66vw!important;max-width:66vw!important;height:100vh!important;max-height:100vh!important;
+    margin:0!important;border-radius:0 20px 20px 0!important;
+    border-right:1px solid rgba(0,175,239,.3)!important;
+    box-shadow:24px 0 70px rgba(0,0,0,.55)!important;
+    overflow:auto!important;
+    transform:translateX(0);
+    animation:cxp588SlideIn .3s cubic-bezier(.22,.8,.3,1) both;
+    transition:transform .3s cubic-bezier(.55,.06,.68,.19);
+  }
+  .cxp588-detail-open .cw6-detail-modal.cxp588-slide-out{transform:translateX(115vw)!important;}
+  /* squeeze the category view into the right column: banner, filters, and cards stack + scroll */
+  .cxp588-detail-open .cux8-content{margin-left:calc(66vw + 14px)!important;}
+  .cxp588-detail-open .cxp588-grid{grid-template-columns:1fr!important;gap:9px!important;}
+  .cxp588-detail-open .cxp588-banner-word{font-size:22px!important;}
+  .cxp588-detail-open .cxp588-banner{padding:12px 14px 10px!important;}
+  .cxp588-detail-open .cxp588-banner-stats{gap:12px!important;}
+  .cxp588-detail-open .cxp588-banner-stats strong{font-size:12.5px!important;}
+  .cxp588-detail-open .cxp588-card-img{height:64px!important;margin:12px 0 7px!important;}
+  .cxp588-detail-open .cxp588-card-emoji{font-size:26px!important;}
+  .cxp588-detail-open .cxp588-stats,.cxp588-detail-open .cxp588-actions,.cxp588-detail-open .cxp588-cats{grid-template-columns:1fr!important;}
+  .cxp588-detail-open .cxp588-bar{display:none!important;}
+}
+@keyframes cxp588SlideIn{from{transform:translateX(-105%);}to{transform:translateX(0);}}
 </style>
 <style id="cux584-final-viewport-authority">
 /* ===== v584 FINAL AUTHORITY — customer profile must fit the viewport =====
