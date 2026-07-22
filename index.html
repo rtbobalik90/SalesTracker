@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v579 — Customer Page Spacing</title>
+<title>Sales Tracker v581 — Wide Customer Notes & Two-Column Modules</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -64574,5 +64574,178 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V579={version:'v579',base:'v578',focus:'non-h
 })();
 </script>
 
+
+
+<style id="tcp-customer-command-center-v581-layout-correction">
+/* ===== v581 CUSTOMER OVERVIEW PROPORTION CORRECTION =====
+   Restore the larger customer navigation cards in a 2 x 3 arrangement and
+   give Notes & Communications enough width, height, and typography to read. */
+#rp-overlay .cux8-overview{
+  grid-template-columns:minmax(285px,.58fr) minmax(550px,1.22fr) minmax(410px,.92fr)!important;
+  gap:18px!important;
+  align-items:start!important;
+}
+
+/* Two columns, three rows: restore the roomier v579 card proportions. */
+#rp-overlay .cux8-modules{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:repeat(3,minmax(232px,auto))!important;
+  grid-auto-rows:minmax(232px,auto)!important;
+  gap:16px!important;
+  align-content:start!important;
+}
+#rp-overlay .cux8-tile{
+  min-height:232px!important;
+  padding:22px 20px 18px!important;
+  border-radius:25px!important;
+  justify-content:flex-start!important;
+}
+#rp-overlay .cux8-tile-icon{
+  width:70px!important;
+  height:70px!important;
+  flex:0 0 70px!important;
+  margin:0 auto!important;
+  border-radius:23px!important;
+  font-size:31px!important;
+}
+#rp-overlay .cux8-tile-name{
+  margin-top:14px!important;
+  font-size:19px!important;
+  line-height:1.12!important;
+}
+#rp-overlay .cux8-tile-copy{
+  max-width:92%!important;
+  margin-top:8px!important;
+  font-size:10.3px!important;
+  line-height:1.52!important;
+}
+#rp-overlay .cux8-tile-meta{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  margin:16px auto 0!important;
+  font-size:8.8px!important;
+  letter-spacing:.7px!important;
+}
+#rp-overlay .cux8-tile-meta b{
+  min-width:28px!important;
+  height:27px!important;
+  font-size:9.5px!important;
+}
+#rp-overlay .cux8-tile:after{
+  right:15px!important;
+  bottom:14px!important;
+  width:31px!important;
+  height:31px!important;
+  font-size:17px!important;
+}
+
+/* Notes desk now matches the height of the 3-row module stack. */
+#rp-overlay .cux10-notes{
+  min-height:728px!important;
+  height:728px!important;
+  max-height:728px!important;
+  padding:22px!important;
+  border-radius:25px!important;
+}
+#rp-overlay .cux10-head{gap:16px!important}
+#rp-overlay .cux10-kicker{font-size:9.3px!important;letter-spacing:1.1px!important}
+#rp-overlay .cux10-title{margin-top:7px!important;font-size:24px!important;line-height:1.08!important}
+#rp-overlay .cux10-copy{max-width:94%!important;margin-top:8px!important;font-size:10.8px!important;line-height:1.6!important}
+#rp-overlay .cux10-add{
+  min-height:40px!important;
+  padding:0 14px!important;
+  border-radius:12px!important;
+  font-size:10px!important;
+}
+#rp-overlay .cux10-tabs{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:6px!important;
+  margin-top:18px!important;
+  padding:5px!important;
+  border-radius:15px!important;
+}
+#rp-overlay .cux10-tab{
+  min-height:38px!important;
+  padding:0 7px!important;
+  border-radius:10px!important;
+  font-size:9.2px!important;
+}
+#rp-overlay .cux10-tab b{
+  min-width:19px!important;
+  height:19px!important;
+  margin-left:4px!important;
+  font-size:7.8px!important;
+}
+#rp-overlay .cux10-body{
+  margin-top:16px!important;
+  padding-right:7px!important;
+}
+#rp-overlay .cux10-summary-grid{gap:12px!important}
+#rp-overlay .cux10-summary-card{
+  padding:15px 16px!important;
+  border-radius:16px!important;
+}
+#rp-overlay .cux10-card-kick{font-size:8.3px!important;letter-spacing:.9px!important}
+#rp-overlay .cux10-card-title{margin-top:7px!important;font-size:14px!important;line-height:1.35!important}
+#rp-overlay .cux10-card-copy{margin-top:7px!important;font-size:10.3px!important;line-height:1.6!important}
+#rp-overlay .cux10-list{gap:7px!important;margin-top:10px!important}
+#rp-overlay .cux10-chip{padding:6px 9px!important;font-size:8.8px!important}
+#rp-overlay .cux10-promo-offer{margin-top:9px!important;font-size:9.7px!important;line-height:1.5!important}
+#rp-overlay .cux10-disclaimer{margin-top:10px!important;font-size:8.6px!important;line-height:1.5!important}
+#rp-overlay .cux10-log{gap:10px!important}
+#rp-overlay .cux10-log-row{
+  grid-template-columns:82px minmax(0,1fr)!important;
+  gap:12px!important;
+  padding:13px 14px!important;
+  border-radius:15px!important;
+}
+#rp-overlay .cux10-log-meta{font-size:8.3px!important;line-height:1.5!important}
+#rp-overlay .cux10-log-title{font-size:11.8px!important;line-height:1.4!important}
+#rp-overlay .cux10-log-copy{margin-top:6px!important;font-size:9.7px!important;line-height:1.55!important}
+#rp-overlay .cux10-empty{min-height:360px!important;padding:24px!important;font-size:10.3px!important;line-height:1.65!important}
+#rp-overlay .cux10-empty strong{font-size:13px!important;margin-bottom:7px!important}
+
+/* Keep the three-panel desktop composition until the workspace genuinely
+   becomes too narrow. */
+@media(max-width:1530px){
+  #rp-overlay .cux8-overview{
+    grid-template-columns:minmax(280px,.64fr) minmax(520px,1.22fr)!important;
+  }
+  #rp-overlay .cux10-notes{
+    grid-column:1/-1!important;
+    min-height:560px!important;
+    height:560px!important;
+    max-height:560px!important;
+  }
+}
+@media(max-width:1180px){
+  #rp-overlay .cux8-overview{grid-template-columns:1fr!important}
+  #rp-overlay .cux8-modules{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(225px,auto))!important;
+  }
+  #rp-overlay .cux10-notes{
+    grid-column:auto!important;
+    min-height:540px!important;
+    height:540px!important;
+    max-height:540px!important;
+  }
+}
+@media(max-width:760px){
+  #rp-overlay .cux8-modules{
+    grid-template-columns:1fr!important;
+    grid-template-rows:repeat(6,minmax(220px,auto))!important;
+  }
+  #rp-overlay .cux10-notes{height:auto!important;max-height:none!important;min-height:560px!important}
+  #rp-overlay .cux10-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #rp-overlay .cux10-tab:first-child{grid-column:1/-1!important}
+}
+</style>
+<script id="tcp-customer-command-center-v581-version">
+window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-column modules and expanded readable communications desk'};
+</script>
 </body>
 </html>
