@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v587 — Viewport-Balanced Customer Profile</title>
+<title>Sales Tracker v588 — Call Workspace Readability & Queue</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -65365,5 +65365,469 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
     function arm(){var ov=document.getElementById('rp-overlay');if(ov)mo.observe(ov,{attributes:true,attributeFilter:['style']});}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arm,{once:true});else arm();
   }catch(e){}
+})();
+</script>
+
+<!-- ======================================================================
+     v588 · CALL WORKSPACE READABILITY + COLLAPSIBLE DAILY QUEUE
+     Built on the user-supplied v587 baseline. Appended last intentionally.
+     ====================================================================== -->
+<style id="tcp-v588-call-workspace-readability-queue">
+/* The old sticky preview consumed valuable vertical room. The daily queue now
+   opens from a compact control in the command bar. */
+#rp-overlay .ps62-queue-strip{display:none!important;}
+
+/* Give the workspace one predictable viewport footprint. Each main panel
+   scrolls internally only when its own content exceeds the available height. */
+#rp-overlay .ps62-shell{
+  gap:14px!important;
+  padding-bottom:10px!important;
+}
+#rp-overlay .ps62-command{
+  position:relative!important;
+  overflow:visible!important;
+  min-height:122px!important;
+  padding:18px 20px!important;
+  gap:18px!important;
+  border-radius:18px!important;
+}
+#rp-overlay .ps62-workbench{
+  height:clamp(555px,calc(100dvh - 184px),760px)!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(300px,.62fr) minmax(0,1.5fr) minmax(360px,.84fr)!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+#rp-overlay .ps62-panel{
+  min-height:0!important;
+  height:100%!important;
+  border-radius:18px!important;
+}
+#rp-overlay .ps62-dialer,
+#rp-overlay .ps62-center,
+#rp-overlay .ps62-context{
+  min-height:0!important;
+  height:100%!important;
+}
+#rp-overlay .ps62-dialer{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+}
+#rp-overlay .ps62-dialer>.cl2-body{
+  min-height:0!important;
+  overflow:auto!important;
+  padding:15px!important;
+}
+#rp-overlay .ps62-center{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+}
+#rp-overlay .ps62-center-body{
+  min-height:0!important;
+  height:auto!important;
+  overflow:auto!important;
+}
+#rp-overlay .ps62-context{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+}
+#rp-overlay .ps62-context-body{
+  min-height:0!important;
+  max-height:none!important;
+  overflow:auto!important;
+  gap:12px!important;
+  padding:14px!important;
+}
+
+/* Command bar hierarchy */
+#rp-overlay .ps62-command-label strong{font-size:16px!important;line-height:1.2!important;}
+#rp-overlay .ps62-command-label span{font-size:9.5px!important;line-height:1.35!important;}
+#rp-overlay .ps62-company-line h1{font-size:clamp(27px,1.9vw,34px)!important;line-height:1.05!important;}
+#rp-overlay .ps62-active{font-size:9.5px!important;}
+#rp-overlay .ps62-command-pills{gap:7px!important;margin-top:12px!important;}
+#rp-overlay .ps62-pill{
+  min-height:29px!important;
+  padding:0 10px!important;
+  border-radius:8px!important;
+  font-size:9.5px!important;
+}
+#rp-overlay .ps62-step{font-size:10px!important;gap:7px!important;}
+#rp-overlay .ps62-step i{width:37px!important;height:37px!important;font-size:12px!important;}
+#rp-overlay .ps62-step:not(:last-child):before{top:18px!important;}
+#rp-overlay .ps62-command-actions{
+  min-width:355px!important;
+  grid-template-columns:1fr 1fr auto!important;
+  gap:9px!important;
+}
+#rp-overlay .ps62-command-actions button{
+  min-height:46px!important;
+  padding:0 14px!important;
+  font-size:10.5px!important;
+  border-radius:11px!important;
+}
+
+/* Main panel headings */
+#rp-overlay .ps62-panel-head{padding:17px 18px!important;}
+#rp-overlay .ps62-panel-title{font-size:17px!important;gap:10px!important;}
+#rp-overlay .ps62-panel-copy{font-size:10.5px!important;line-height:1.5!important;margin-top:6px!important;}
+#rp-overlay .ps62-panel-action{font-size:10.5px!important;}
+#rp-overlay .ps62-evidence span{font-size:8.5px!important;min-height:24px!important;padding:0 8px!important;}
+
+/* Dialer */
+#rp-overlay .ps62-dialer .cl2-dialer-contact{gap:8px!important;margin-bottom:11px!important;}
+#rp-overlay .ps62-dialer .cl2-dialer-contact label,
+#rp-overlay .ps62-dialer .cl2-field label{font-size:10px!important;letter-spacing:.55px!important;}
+#rp-overlay .ps62-dialer .cl2-dialer-contact select,
+#rp-overlay .ps62-dialer .cl2-dialer-contact input,
+#rp-overlay .ps62-dialer .cl2-field select,
+#rp-overlay .ps62-dialer .cl2-field input{
+  min-height:42px!important;
+  font-size:11.5px!important;
+  border-radius:11px!important;
+}
+#rp-overlay .ps62-dialer .cl2-dialer-display{padding:15px!important;border-radius:13px!important;}
+#rp-overlay .ps62-dialer .cl2-dialer-status{font-size:9.5px!important;}
+#rp-overlay .ps62-dialer .cl2-phone-number{font-size:16px!important;line-height:1.25!important;}
+#rp-overlay .ps62-dialer .cl2-dialer-timer{font-size:27px!important;margin-top:10px!important;}
+#rp-overlay .ps62-dialer .cl2-keypad{gap:7px!important;margin-top:11px!important;}
+#rp-overlay .ps62-dialer .cl2-key{height:44px!important;font-size:14px!important;border-radius:10px!important;}
+#rp-overlay .ps62-dialer .cl2-key span{font-size:6.5px!important;}
+#rp-overlay .ps62-dialer .cl2-dial-actions{gap:8px!important;margin-top:11px!important;}
+#rp-overlay .ps62-dialer .cl2-dial-btn{min-height:42px!important;font-size:9.5px!important;border-radius:10px!important;}
+#rp-overlay .ps62-dialer .cl2-outcome-buttons button{min-height:34px!important;font-size:8.5px!important;}
+#rp-overlay .ps62-dialer .cl2-mini-btn{min-height:35px!important;font-size:8.5px!important;}
+#rp-overlay .ps62-dialer .cl2-checkline,
+#rp-overlay .ps62-dialer .cl2-check,
+#rp-overlay .ps62-dialer .cl2-note{font-size:9.5px!important;line-height:1.5!important;}
+
+/* Conversation builder */
+#rp-overlay .ps62-center .cl2-center-body{padding:14px!important;gap:12px!important;}
+#rp-overlay .ps62-center .cl2-section{padding:14px!important;border-radius:13px!important;}
+#rp-overlay .ps62-center .cl2-section-title{font-size:12.5px!important;}
+#rp-overlay .ps62-center .cl2-section-copy{font-size:9.5px!important;line-height:1.5!important;}
+#rp-overlay .ps62-center .cl2-prep-tab{min-height:40px!important;font-size:9.5px!important;}
+#rp-overlay .ps62-center .cl2-selection-summary{font-size:9.5px!important;}
+#rp-overlay .ps62-center .cl2-filter-row{gap:8px!important;margin-top:11px!important;}
+#rp-overlay .ps62-center .cl2-filter-row select{min-height:38px!important;font-size:10.5px!important;}
+#rp-overlay .ps62-center .cl2-mini-btn{min-height:35px!important;font-size:9px!important;}
+#rp-overlay .ps62-center .cl2-record{min-height:62px!important;padding:11px!important;border-radius:11px!important;}
+#rp-overlay .ps62-center .cl2-record-kicker{font-size:8px!important;}
+#rp-overlay .ps62-center .cl2-record-title,
+#rp-overlay .ps62-center .cl2-record-name{font-size:11px!important;}
+#rp-overlay .ps62-center .cl2-record-meta{font-size:9px!important;line-height:1.45!important;}
+#rp-overlay .ps62-center .cl2-record-stats span{font-size:8px!important;}
+#rp-overlay .ps62-center .cl2-empty{font-size:10.5px!important;line-height:1.55!important;padding:30px 16px!important;}
+#rp-overlay .ps62-center .cl2-empty strong{font-size:13px!important;}
+#rp-overlay .ps62-center .cl2-talk-item{font-size:10px!important;line-height:1.55!important;padding:10px!important;}
+#rp-overlay .ps62-center .cl2-ai-actions p{font-size:9.5px!important;}
+#rp-overlay .ps62-center .cl2-field label{font-size:9.5px!important;}
+#rp-overlay .ps62-center .cl2-field input,
+#rp-overlay .ps62-center .cl2-field select,
+#rp-overlay .ps62-center .cl2-field textarea{font-size:11px!important;}
+#rp-overlay .ps62-center textarea{min-height:120px!important;}
+#rp-overlay .ps62-center-footer{padding:12px 15px!important;gap:10px!important;}
+#rp-overlay .ps62-center-footer button{min-height:43px!important;font-size:10px!important;}
+
+/* Customer context */
+#rp-overlay .ps62-context-card{padding:14px!important;border-radius:13px!important;}
+#rp-overlay .ps62-context-kick{font-size:9px!important;letter-spacing:.65px!important;}
+#rp-overlay .ps62-context-card h3{font-size:15px!important;line-height:1.25!important;margin-top:7px!important;}
+#rp-overlay .ps62-context-card p{font-size:10px!important;line-height:1.55!important;margin-top:7px!important;}
+#rp-overlay .ps62-contact{grid-template-columns:58px minmax(0,1fr) auto!important;gap:11px!important;}
+#rp-overlay .ps62-avatar{width:58px!important;height:58px!important;font-size:15px!important;border-radius:13px!important;}
+#rp-overlay .ps62-contact strong{font-size:13px!important;}
+#rp-overlay .ps62-contact span{font-size:9.5px!important;line-height:1.4!important;}
+#rp-overlay .ps62-contact-actions button{width:34px!important;height:34px!important;font-size:13px!important;}
+#rp-overlay .ps62-snapshot-row{padding:10px 0!important;}
+#rp-overlay .ps62-snapshot-row span,
+#rp-overlay .ps62-snapshot-row strong{font-size:10px!important;line-height:1.4!important;}
+#rp-overlay .ps62-fact{font-size:10px!important;line-height:1.5!important;padding:7px 0!important;}
+#rp-overlay .ps62-fact i{width:17px!important;height:17px!important;font-size:9px!important;}
+#rp-overlay .ps62-context-select{min-height:39px!important;font-size:10.5px!important;border-radius:10px!important;}
+
+/* Compact dropdown control in the command bar */
+#rp-overlay .ps88-queue-toggle{
+  min-width:96px!important;
+  padding:0 11px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  color:#8FE6FF!important;
+  border-color:rgba(0,175,239,.28)!important;
+  background:rgba(0,175,239,.07)!important;
+}
+#rp-overlay .ps88-queue-toggle b{font-size:11px;color:#fff;}
+#rp-overlay .ps88-queue-toggle .ps88-arrow{font-size:13px;transition:transform .16s ease;}
+#rp-overlay .ps88-queue-toggle[aria-expanded="true"] .ps88-arrow{transform:rotate(180deg);}
+#rp-overlay .ps88-queue-panel{
+  position:absolute;
+  z-index:260;
+  top:calc(100% + 10px);
+  right:18px;
+  width:min(460px,calc(100vw - 320px));
+  max-height:min(590px,calc(100dvh - 170px));
+  display:none;
+  grid-template-rows:auto minmax(0,1fr) auto;
+  overflow:hidden;
+  border:1px solid rgba(148,163,184,.24);
+  border-radius:18px;
+  background:linear-gradient(160deg,rgba(18,31,44,.985),rgba(5,13,21,.985));
+  box-shadow:0 28px 80px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.07);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+}
+#rp-overlay .ps88-queue-panel.open{display:grid;}
+#rp-overlay .ps88-queue-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px 16px;
+  border-bottom:1px solid rgba(148,163,184,.13);
+  background:linear-gradient(90deg,rgba(250,135,61,.09),rgba(0,175,239,.05));
+}
+#rp-overlay .ps88-queue-kick{font-size:9px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;color:#78DDF7;}
+#rp-overlay .ps88-queue-head strong{display:block;margin-top:4px;font-size:17px;line-height:1.15;color:#fff;}
+#rp-overlay .ps88-queue-head span{font-size:10px;color:#8B98AA;white-space:nowrap;}
+#rp-overlay .ps88-queue-list{
+  min-height:0;
+  overflow:auto;
+  padding:8px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.18) transparent;
+}
+#rp-overlay .ps88-queue-item{
+  width:100%;
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr) auto;
+  gap:11px;
+  align-items:center;
+  min-height:72px;
+  padding:10px 11px;
+  margin:0 0 7px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:13px;
+  background:rgba(255,255,255,.022);
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .14s ease,border-color .14s ease,transform .14s ease;
+}
+#rp-overlay .ps88-queue-item:hover{transform:translateY(-1px);background:rgba(0,175,239,.055);border-color:rgba(0,175,239,.28);}
+#rp-overlay .ps88-queue-item.current{background:linear-gradient(135deg,rgba(250,135,61,.10),rgba(0,175,239,.055));border-color:rgba(250,135,61,.38);}
+#rp-overlay .ps88-rank{
+  width:38px;height:38px;display:grid;place-items:center;border-radius:50%;
+  background:#172431;color:#9DAABB;font-size:11px;font-weight:950;
+}
+#rp-overlay .ps88-queue-item.current .ps88-rank{background:rgba(93,202,165,.14);color:#A3F1D3;}
+#rp-overlay .ps88-qname{font-size:13px;font-weight:950;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .ps88-qreason{margin-top:4px;font-size:10px;line-height:1.4;color:#8492A5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .ps88-qdue{font-size:9.5px;font-weight:850;color:#B8C4D0;white-space:nowrap;text-align:right;}
+#rp-overlay .ps88-queue-foot{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-top:1px solid rgba(148,163,184,.13);
+  background:rgba(0,0,0,.14);
+}
+#rp-overlay .ps88-showing{font-size:9.5px;color:#8290A2;}
+#rp-overlay .ps88-load-more{
+  min-height:39px;
+  padding:0 13px;
+  border:1px solid rgba(93,202,165,.28);
+  border-radius:11px;
+  background:rgba(93,202,165,.08);
+  color:#A4EBCF;
+  font-size:10px;
+  font-weight:950;
+  cursor:pointer;
+}
+#rp-overlay .ps88-load-more:hover{background:rgba(93,202,165,.16);border-color:rgba(93,202,165,.46);}
+#rp-overlay .ps88-queue-empty{padding:28px 16px;text-align:center;color:#8B98AA;font-size:11px;line-height:1.5;}
+
+@media(max-width:1500px) and (min-width:1280px){
+  #rp-overlay .ps62-workbench{
+    grid-template-columns:minmax(285px,.58fr) minmax(0,1.42fr) minmax(335px,.80fr)!important;
+  }
+  #rp-overlay .ps62-command{
+    grid-template-columns:155px minmax(280px,1fr) minmax(250px,.78fr) auto!important;
+  }
+}
+@media(max-width:1279px){
+  #rp-overlay .ps62-workbench{
+    height:auto!important;
+    grid-template-columns:minmax(285px,.58fr) minmax(0,1.42fr)!important;
+  }
+  #rp-overlay .ps62-panel{height:auto!important;}
+  #rp-overlay .ps62-center-body{max-height:680px!important;}
+  #rp-overlay .ps62-context{grid-column:1/-1!important;}
+  #rp-overlay .ps62-context-body{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-height:none!important;}
+}
+@media(max-width:900px){
+  #rp-overlay .ps62-command-actions{min-width:0!important;grid-template-columns:1fr 1fr auto!important;}
+  #rp-overlay .ps62-workbench{grid-template-columns:1fr!important;}
+  #rp-overlay .ps62-context-body{grid-template-columns:1fr!important;}
+  #rp-overlay .ps88-queue-panel{
+    position:fixed;
+    top:130px;
+    left:14px;
+    right:14px;
+    width:auto;
+    max-height:calc(100dvh - 150px);
+  }
+}
+</style>
+
+<script id="tcp-v588-call-workspace-readability-queue-js">
+(function(){
+  'use strict';
+  var state=window._ps88QueueState||(window._ps88QueueState={open:false,limit:5});
+  var scheduled=false;
+
+  function arr(value){
+    if(Array.isArray(value))return value;
+    if(!value)return[];
+    try{return typeof value.length==='number'&&typeof value!=='string'?Array.prototype.slice.call(value):Object.keys(value).map(function(k){return value[k]}).filter(Boolean)}catch(e){return[]}
+  }
+  function clean(value){return String(value==null?'':value).trim()}
+  function norm(value){return clean(value).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+  function data(){
+    try{return window.TCP_CALL_V540&&typeof window.TCP_CALL_V540.currentData==='function'?window.TCP_CALL_V540.currentData():null}catch(e){return null}
+  }
+  function queue(){var d=data();return arr(d&&d.g&&d.g.calls)}
+  function currentCompany(){var d=data();return clean(d&&d.company)}
+  function signature(){
+    var rows=queue();
+    return [state.open?'1':'0',state.limit,currentCompany(),rows.length].concat(rows.map(function(item){
+      return [clean(item&&item.customer),clean(item&&item.rank),clean(item&&item.due),clean(item&&item.reason||item&&item.copy)].join('~')
+    })).join('|');
+  }
+  function dueText(item){
+    var value=item&&item.due;
+    if(!value)return'Due today';
+    try{
+      var dt=/^\d{4}-\d{2}-\d{2}$/.test(String(value))?new Date(String(value)+'T12:00:00'):new Date(value);
+      return isNaN(dt.getTime())?'Due today':dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    }catch(e){return'Due today'}
+  }
+  function itemButton(item,index,active){
+    var button=document.createElement('button');
+    button.type='button';
+    button.className='ps88-queue-item'+(active?' current':'');
+    button.setAttribute('data-company',clean(item&&item.customer));
+
+    var rank=document.createElement('span');rank.className='ps88-rank';rank.textContent=clean(item&&item.rank)||String(index+1);
+    var main=document.createElement('span');
+    var name=document.createElement('span');name.className='ps88-qname';name.textContent=clean(item&&item.customer)||'Unnamed customer';
+    var reason=document.createElement('span');reason.className='ps88-qreason';reason.textContent=clean(item&&item.reason||item&&item.copy)||'Customer call';
+    main.appendChild(name);main.appendChild(reason);
+    var due=document.createElement('span');due.className='ps88-qdue';due.textContent=dueText(item);
+    button.appendChild(rank);button.appendChild(main);button.appendChild(due);
+    button.addEventListener('click',function(){
+      state.open=false;
+      var company=button.getAttribute('data-company')||'';
+      if(company&&typeof window._call540SelectCompany==='function')window._call540SelectCompany(encodeURIComponent(company));
+      setTimeout(schedule,0);
+    });
+    return button;
+  }
+  function renderPanel(panel,toggle){
+    var rows=queue(),company=currentCompany();
+    if(state.limit<5)state.limit=5;
+    if(state.limit>rows.length&&rows.length)state.limit=Math.max(5,rows.length);
+    toggle.setAttribute('aria-expanded',state.open?'true':'false');
+    toggle.querySelector('b').textContent=String(rows.length);
+    panel.classList.toggle('open',state.open);
+    panel.innerHTML='';
+
+    var head=document.createElement('div');head.className='ps88-queue-head';
+    var hleft=document.createElement('div');
+    var kick=document.createElement('div');kick.className='ps88-queue-kick';kick.textContent="Today's call plan";
+    var title=document.createElement('strong');title.textContent='Customers to call';
+    hleft.appendChild(kick);hleft.appendChild(title);
+    var total=document.createElement('span');total.textContent=rows.length+' queued';
+    head.appendChild(hleft);head.appendChild(total);
+
+    var list=document.createElement('div');list.className='ps88-queue-list';
+    var shown=Math.min(state.limit,rows.length);
+    if(rows.length){
+      rows.slice(0,shown).forEach(function(item,index){list.appendChild(itemButton(item,index,norm(item&&item.customer)===norm(company)))});
+    }else{
+      var empty=document.createElement('div');empty.className='ps88-queue-empty';empty.textContent='No customers are currently loaded in today\'s call queue.';list.appendChild(empty);
+    }
+
+    var foot=document.createElement('div');foot.className='ps88-queue-foot';
+    var showing=document.createElement('div');showing.className='ps88-showing';showing.textContent=rows.length?'Showing '+shown+' of '+rows.length+' customers':'Queue is empty';
+    foot.appendChild(showing);
+    if(shown<rows.length){
+      var more=document.createElement('button');more.type='button';more.className='ps88-load-more';more.textContent='＋ Load 5 More';
+      more.addEventListener('click',function(e){e.stopPropagation();state.limit+=5;renderPanel(panel,toggle)});
+      foot.appendChild(more);
+    }
+    panel.appendChild(head);panel.appendChild(list);panel.appendChild(foot);
+    panel.setAttribute('data-ps88-signature',signature());
+  }
+  function enhance(){
+    scheduled=false;
+    var shell=document.querySelector('#rp-overlay .ps62-shell');
+    if(!shell)return;
+    var old=shell.querySelector('.ps62-queue-strip');
+    if(old)old.remove();
+    var command=shell.querySelector('.ps62-command');
+    var actions=command&&command.querySelector('.ps62-command-actions');
+    if(!command||!actions)return;
+
+    var toggle=actions.querySelector('.ps88-queue-toggle');
+    var panel=command.querySelector('.ps88-queue-panel');
+    if(!toggle){
+      toggle=document.createElement('button');
+      toggle.type='button';
+      toggle.className='ps88-queue-toggle';
+      toggle.title="Open today's customer call queue";
+      toggle.innerHTML='<span>Queue</span><b>0</b><span class="ps88-arrow">⌄</span>';
+      actions.appendChild(toggle);
+    }
+    if(!panel){
+      panel=document.createElement('div');
+      panel.className='ps88-queue-panel';
+      command.appendChild(panel);
+    }
+    if(toggle.getAttribute('data-ps88-bound')!=='1'){
+      toggle.setAttribute('data-ps88-bound','1');
+      toggle.addEventListener('click',function(e){
+        e.stopPropagation();state.open=!state.open;renderPanel(panel,toggle);
+      });
+    }
+    var sig=signature();
+    if(panel.getAttribute('data-ps88-signature')!==sig)renderPanel(panel,toggle);
+  }
+  function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(enhance)}
+
+  if(!window._ps88QueueGlobalBound){
+    window._ps88QueueGlobalBound=true;
+    document.addEventListener('click',function(event){
+      if(!state.open)return;
+      var command=event.target&&event.target.closest&&event.target.closest('#rp-overlay .ps62-command');
+      if(command)return;
+      state.open=false;schedule();
+    });
+    document.addEventListener('keydown',function(event){if(event.key==='Escape'&&state.open){state.open=false;schedule()}});
+  }
+
+  function arm(){
+    var host=document.getElementById('rp-overlay');
+    if(host){
+      new MutationObserver(schedule).observe(host,{childList:true,subtree:true});
+      schedule();
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arm,{once:true});else arm();
+  setTimeout(schedule,250);
+  setTimeout(schedule,1000);
 })();
 </script>
