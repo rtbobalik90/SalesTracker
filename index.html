@@ -64290,5 +64290,289 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V577={version:'v577',base:'v576',focus:'glass
 window.TCP_CUSTOMER_COMMAND_CENTER_V579={version:'v579',base:'v578',focus:'non-home header removal and customer spacing'};
 </script>
 
+<style id="tcp-customer-command-center-v580-layout">
+/* ===== v580 CUSTOMER OVERVIEW: ACCOUNT INTELLIGENCE + 3x2 MODULES + COMMUNICATION DESK ===== */
+#rp-overlay .cux8-overview{
+  grid-template-columns:minmax(285px,.70fr) minmax(610px,1.46fr) minmax(350px,.86fr)!important;
+  gap:16px!important;
+  align-items:start!important;
+}
+
+/* Slightly tighter account intelligence column without sacrificing readability. */
+#rp-overlay .cux8-brief{
+  padding:20px 20px!important;
+  border-radius:23px!important;
+}
+#rp-overlay .cux8-kicker{font-size:8.8px!important}
+#rp-overlay .cux8-brief-title{margin-top:6px!important;font-size:22px!important}
+#rp-overlay .cux8-brief-copy{margin-top:7px!important;font-size:10.2px!important;line-height:1.52!important}
+#rp-overlay .cux8-next{margin-top:14px!important;padding:13px 14px!important;border-radius:16px!important}
+#rp-overlay .cux8-next span{font-size:8px!important}
+#rp-overlay .cux8-next strong{margin-top:6px!important;font-size:14px!important;line-height:1.25!important}
+#rp-overlay .cux8-next p{margin-top:6px!important;font-size:9.4px!important;line-height:1.48!important}
+#rp-overlay .cux8-facts{gap:8px!important;margin-top:12px!important}
+#rp-overlay .cux8-fact{padding:10px 11px!important;border-radius:13px!important}
+#rp-overlay .cux8-fact span{font-size:7.6px!important}
+#rp-overlay .cux8-fact strong{margin-top:5px!important;font-size:10.3px!important;line-height:1.32!important}
+#rp-overlay .cux8-health{gap:6px!important;margin-top:12px!important}
+#rp-overlay .cux8-health span{padding:6px 8px!important;font-size:8.1px!important}
+#rp-overlay .cux8-brief-foot{gap:7px!important;margin-top:14px!important;padding-top:13px!important}
+#rp-overlay .cux8-brief-foot .cux8-action{min-height:38px!important;padding:0 11px!important;font-size:9.4px!important}
+
+/* Six navigation modules stay in a true two-row / three-column block. */
+#rp-overlay .cux8-modules{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:none!important;
+  grid-auto-rows:minmax(188px,auto)!important;
+  gap:12px!important;
+  align-content:start!important;
+}
+#rp-overlay .cux8-tile{
+  min-height:188px!important;
+  padding:16px 14px 13px!important;
+  border-radius:22px!important;
+}
+#rp-overlay .cux8-tile-icon{
+  width:56px!important;height:56px!important;flex-basis:56px!important;
+  border-radius:19px!important;font-size:26px!important;
+}
+#rp-overlay .cux8-tile-name{margin-top:11px!important;font-size:16.5px!important;line-height:1.1!important}
+#rp-overlay .cux8-tile-copy{max-width:96%!important;margin-top:6px!important;font-size:8.9px!important;line-height:1.42!important}
+#rp-overlay .cux8-tile-meta{margin-top:10px!important;font-size:7.8px!important;letter-spacing:.58px!important}
+#rp-overlay .cux8-tile-meta b{min-width:24px!important;height:23px!important;font-size:8.5px!important}
+#rp-overlay .cux8-tile:after{right:12px!important;bottom:11px!important;width:27px!important;height:27px!important;font-size:15px!important}
+
+/* Communication & notes desk */
+#rp-overlay .cux10-notes{
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  min-height:388px;
+  max-height:430px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:23px;
+  background:
+    radial-gradient(circle at 92% 2%,rgba(155,107,255,.16),transparent 35%),
+    linear-gradient(145deg,rgba(255,255,255,.072),rgba(255,255,255,.022)),
+    rgba(8,18,31,.76);
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+  backdrop-filter:blur(20px) saturate(130%);
+  box-shadow:0 24px 58px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.08);
+  padding:18px;
+}
+#rp-overlay .cux10-notes:after{
+  content:"";position:absolute;right:-58px;top:-62px;width:190px;height:190px;border-radius:50%;
+  background:radial-gradient(circle,rgba(155,107,255,.18),transparent 68%);pointer-events:none;
+}
+#rp-overlay .cux10-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+#rp-overlay .cux10-kicker{color:#BDA7FF;font-size:8.4px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+#rp-overlay .cux10-title{margin-top:6px;color:#fff;font-size:21px;font-weight:950;letter-spacing:-.025em}
+#rp-overlay .cux10-copy{margin-top:6px;color:#96A6BB;font-size:9.5px;line-height:1.48}
+#rp-overlay .cux10-add{
+  position:relative;z-index:1;flex:0 0 auto;min-height:34px;padding:0 10px;border-radius:11px;
+  border:1px solid rgba(71,209,108,.30);background:rgba(71,209,108,.10);color:#A9FFD0;
+  font-size:8.8px;font-weight:900;cursor:pointer;
+}
+#rp-overlay .cux10-add:hover{background:rgba(71,209,108,.18);border-color:rgba(71,209,108,.5)}
+#rp-overlay .cux10-tabs{
+  position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;
+  margin-top:14px;padding:4px;border:1px solid rgba(255,255,255,.075);border-radius:13px;background:rgba(0,0,0,.16)
+}
+#rp-overlay .cux10-tab{
+  min-width:0;min-height:32px;padding:0 5px;border:1px solid transparent;border-radius:9px;
+  background:transparent;color:#8290A5;font-size:7.8px;font-weight:900;white-space:nowrap;cursor:pointer;
+}
+#rp-overlay .cux10-tab:hover{color:#fff;background:rgba(255,255,255,.045)}
+#rp-overlay .cux10-tab.on{color:#fff;border-color:rgba(155,107,255,.32);background:linear-gradient(135deg,rgba(155,107,255,.20),rgba(0,175,239,.10))}
+#rp-overlay .cux10-tab b{display:inline-grid;place-items:center;min-width:17px;height:17px;margin-left:3px;border-radius:999px;background:rgba(255,255,255,.08);font-size:7px}
+#rp-overlay .cux10-body{
+  position:relative;z-index:1;min-height:0;flex:1;overflow:auto;margin-top:12px;padding-right:4px;
+  scrollbar-width:thin;scrollbar-color:rgba(155,107,255,.46) transparent;
+}
+#rp-overlay .cux10-body::-webkit-scrollbar{width:5px}
+#rp-overlay .cux10-body::-webkit-scrollbar-thumb{background:rgba(155,107,255,.46);border-radius:999px}
+#rp-overlay .cux10-summary-grid{display:grid;gap:8px}
+#rp-overlay .cux10-summary-card{
+  border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(255,255,255,.032);padding:11px 12px
+}
+#rp-overlay .cux10-summary-card.promo{border-color:rgba(250,135,61,.20);background:linear-gradient(135deg,rgba(250,135,61,.09),rgba(255,255,255,.025))}
+#rp-overlay .cux10-card-kick{color:#8EDCFA;font-size:7.3px;font-weight:950;letter-spacing:.8px;text-transform:uppercase}
+#rp-overlay .cux10-summary-card.promo .cux10-card-kick{color:#FFBC8D}
+#rp-overlay .cux10-card-title{margin-top:5px;color:#fff;font-size:11.5px;font-weight:900;line-height:1.3}
+#rp-overlay .cux10-card-copy{margin-top:5px;color:#9BA9BC;font-size:8.8px;line-height:1.48}
+#rp-overlay .cux10-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+#rp-overlay .cux10-chip{padding:5px 7px;border-radius:999px;border:1px solid rgba(71,209,108,.22);background:rgba(71,209,108,.075);color:#B9F9CD;font-size:7.8px;font-weight:800}
+#rp-overlay .cux10-promo-offer{margin-top:7px;color:#FFD4B6;font-size:8.4px;font-weight:850;line-height:1.4}
+#rp-overlay .cux10-disclaimer{margin-top:8px;color:#718096;font-size:7.4px;line-height:1.4}
+#rp-overlay .cux10-log{display:grid;gap:7px}
+#rp-overlay .cux10-log-row{
+  display:grid;grid-template-columns:64px minmax(0,1fr);gap:9px;padding:10px 11px;
+  border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.028)
+}
+#rp-overlay .cux10-log-meta{color:#7F8DA2;font-size:7.3px;font-weight:850;line-height:1.4;text-transform:uppercase;letter-spacing:.45px}
+#rp-overlay .cux10-log-title{color:#fff;font-size:10px;font-weight:900;line-height:1.32}
+#rp-overlay .cux10-log-copy{margin-top:4px;color:#93A1B5;font-size:8.2px;line-height:1.43}
+#rp-overlay .cux10-empty{display:grid;place-items:center;min-height:190px;text-align:center;border:1px dashed rgba(255,255,255,.10);border-radius:15px;background:rgba(255,255,255,.018);padding:18px;color:#8E9DB2;font-size:9px;line-height:1.55}
+#rp-overlay .cux10-empty strong{display:block;color:#fff;font-size:11px;margin-bottom:5px}
+
+@media(max-width:1530px){
+  #rp-overlay .cux8-overview{grid-template-columns:minmax(290px,.72fr) minmax(0,1.55fr)!important}
+  #rp-overlay .cux10-notes{grid-column:1/-1;max-height:470px;min-height:360px}
+}
+@media(max-width:1180px){
+  #rp-overlay .cux8-overview{grid-template-columns:1fr!important}
+  #rp-overlay .cux8-modules{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(190px,auto)!important}
+  #rp-overlay .cux10-notes{grid-column:auto;max-height:none}
+}
+@media(max-width:760px){
+  #rp-overlay .cux8-modules{grid-template-columns:1fr!important}
+  #rp-overlay .cux10-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #rp-overlay .cux10-tab:first-child{grid-column:1/-1}
+}
+</style>
+
+<script id="tcp-customer-command-center-v580-js">
+(function(){
+ 'use strict';
+ if(window.TCP_CUSTOMER_COMMAND_CENTER_V580)return;
+ var CURRENT=window._rp2CustomersV2;
+ var RAW=window.TCP_CUSTOMER_COMMAND_CENTER_V576&&window.TCP_CUSTOMER_COMMAND_CENTER_V576.base;
+ if(typeof CURRENT!=='function')return;
+
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]})}
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function text(el){return el?clean(el.textContent):''}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var box=document.createElement('div');box.appendChild(frag.cloneNode(true));return box.innerHTML}
+ function rawFor(tab,salesView){
+  if(typeof RAW!=='function')return'';
+  var oldTab=window._rp2CompanyProfileTab,oldSales=window._cw6SalesView;
+  try{window._rp2CompanyProfileTab=tab;if(salesView)window._cw6SalesView=salesView;return RAW()}
+  catch(e){console.warn('[v580 raw customer read]',e);return''}
+  finally{window._rp2CompanyProfileTab=oldTab;window._cw6SalesView=oldSales}
+ }
+ function sectionRecords(markup,heading){
+  var frag=parse(markup),heads=Array.prototype.slice.call(frag.querySelectorAll('.cw4-section-head'));
+  var head=heads.filter(function(h){return text(h.querySelector('.cw4-section-title')).toLowerCase().indexOf(String(heading).toLowerCase())>=0})[0];
+  if(!head)return[];
+  var rows=[],node=head.nextElementSibling;
+  while(node&&!node.classList.contains('cw4-section-head')){
+   var cards=[];
+   if(node.matches&&node.matches('.cw4-record'))cards.push(node);
+   if(node.querySelectorAll)cards=cards.concat(Array.prototype.slice.call(node.querySelectorAll('.cw4-record')));
+   cards.forEach(function(card){
+    rows.push({source:text(card.querySelector('.cw4-record-source'))||'Activity',title:text(card.querySelector('.cw4-record-title'))||'Customer activity',date:text(card.querySelector('.cw4-record-value'))||'',copy:text(card.querySelector('.cw4-record-copy'))||''})
+   });
+   node=node.nextElementSibling;
+  }
+  return rows;
+ }
+ function productRows(){
+  var frag=parse(rawFor('products'));
+  return Array.prototype.slice.call(frag.querySelectorAll('.cw6-product-card')).map(function(card){
+   return {name:text(card.querySelector('.cw6-product-name'))||'Purchased product',meta:text(card.querySelector('.cw6-product-meta')),status:text(card.querySelector('.cw4-pill'))}
+  }).filter(function(x){return x.name}).slice(0,6)
+ }
+ function typeOf(row){
+  var s=(row.source+' '+row.title+' '+row.copy).toLowerCase();
+  if(/\b(email|e-mail)\b/.test(s))return'email';
+  if(/\b(text|sms|message)\b/.test(s))return'text';
+  if(/\b(call|phone|voicemail|dial)\b/.test(s))return'call';
+  if(/\b(note|meeting|visit|conversation|activity)\b/.test(s))return'note';
+  return'note';
+ }
+ function industryFrom(frag){
+  var facts=Array.prototype.slice.call(frag.querySelectorAll('.cux8-fact'));
+  var hit=facts.filter(function(f){return /industry/i.test(text(f.querySelector('span')))})[0];
+  return hit?text(hit.querySelector('strong')):''
+ }
+ function fallbackProducts(industry){
+  var i=String(industry||'').toLowerCase(),rows;
+  if(/construct|contract|landscap|trade|electric|plumb|hvac/.test(i))rows=['Hi-vis safety apparel','Durable workwear','Crew drinkware'];
+  else if(/health|medical|clinic|dental/.test(i))rows=['Branded polos','Staff recognition items','Patient-facing giveaways'];
+  else if(/manufactur|industrial|warehouse|logistic|transport/.test(i))rows=['Uniform programs','Safety recognition','New-hire kits'];
+  else if(/school|education|college|university/.test(i))rows=['Staff apparel','Event merchandise','Student recognition'];
+  else if(/hospitality|restaurant|hotel|bar/.test(i))rows=['Uniform apparel','Guest promotions','Event drinkware'];
+  else rows=['Branded apparel','Employee recognition','Event and outreach items'];
+  return rows.map(function(name){return{name:name,meta:'Recommended starting point',status:'Review'}})
+ }
+ function promotion(){
+  try{
+   var p=typeof window._call540PromotionSnapshot==='function'?window._call540PromotionSnapshot():null;
+   if(p)return{title:clean(p.title||p.promotionTitle)||'Current monthly promotion',body:clean(p.body||p.promotionBody),offer:clean(p.offer||p.promotionOffer),cta:clean(p.cta||p.promotionCta)}
+  }catch(e){}
+  return{title:'No current promotion loaded',body:'A manager-configured monthly promotion will appear here when available.',offer:'',cta:''}
+ }
+ function buildPayload(frag){
+  var rows=sectionRecords(rawFor('relationships'),'Communication history');
+  var accountNotes=sectionRecords(rawFor('files'),'Account notes');
+  accountNotes.forEach(function(r){r.source=r.source||'Account note'});
+  var grouped={note:accountNotes.slice(),call:[],email:[],text:[]};
+  rows.forEach(function(r){grouped[typeOf(r)].push(r)});
+  var products=productRows(),industry=industryFrom(frag);
+  if(!products.length)products=fallbackProducts(industry);
+  return{name:text(frag.querySelector('.cux8-name'))||window._cw4CompanyName||'Customer',rows:rows,grouped:grouped,products:products,promo:promotion(),industry:industry}
+ }
+ function summaryText(p){
+  if(!p.rows.length)return'No customer conversations are recorded yet. Add the first call, email, meeting, note, or text so the account brief can identify themes and commitments.';
+  var counts=[];
+  if(p.grouped.call.length)counts.push(p.grouped.call.length+' call'+(p.grouped.call.length===1?'':'s'));
+  if(p.grouped.email.length)counts.push(p.grouped.email.length+' email'+(p.grouped.email.length===1?'':'s'));
+  if(p.grouped.text.length)counts.push(p.grouped.text.length+' text'+(p.grouped.text.length===1?'':'s'));
+  if(p.grouped.note.length)counts.push(p.grouped.note.length+' note'+(p.grouped.note.length===1?'':'s'));
+  var latest=p.rows[0],themes=p.rows.slice(0,3).map(function(r){return r.title}).filter(Boolean).join('; ');
+  return p.rows.length+' recorded conversation'+(p.rows.length===1?'':'s')+' across '+(counts.join(', ')||'the account timeline')+'. Most recent: '+latest.title+(latest.date?' ('+latest.date+')':'')+'.'+(themes?' Recent themes include '+themes+'.':'')
+ }
+ function summaryBody(p){
+  var productHtml=p.products.slice(0,4).map(function(x){return'<span class="cux10-chip">'+esc(x.name)+'</span>'}).join('');
+  var promo=p.promo,hasPromo=promo.title&&promo.title!=='No current promotion loaded';
+  return '<div class="cux10-summary-grid">'
+   +'<section class="cux10-summary-card"><div class="cux10-card-kick">AI conversation summary</div><div class="cux10-card-title">What the record says right now</div><div class="cux10-card-copy">'+esc(summaryText(p))+'</div><div class="cux10-disclaimer">Drafted from loaded account records. The rep should verify context before using it with the customer.</div></section>'
+   +'<section class="cux10-summary-card"><div class="cux10-card-kick">Recommended products</div><div class="cux10-card-title">Best starting points for the next conversation</div><div class="cux10-list">'+productHtml+'</div><div class="cux10-disclaimer">'+(p.products.length?'Prior purchases are shown first; otherwise recommendations use the recorded industry.':'No product or industry evidence is loaded yet.')+'</div></section>'
+   +'<section class="cux10-summary-card promo"><div class="cux10-card-kick">Current promotion · '+(hasPromo?'Review for fit':'Not configured')+'</div><div class="cux10-card-title">'+esc(promo.title)+'</div><div class="cux10-card-copy">'+esc(promo.body||'Use the customer’s current needs and timing to determine whether this promotion is relevant.')+'</div>'+(promo.offer?'<div class="cux10-promo-offer">'+esc(promo.offer)+'</div>':'')+(promo.cta?'<div class="cux10-disclaimer">Suggested close: '+esc(promo.cta)+'</div>':'')+'</section>'
+   +'</div>'
+ }
+ function logBody(rows,label){
+  if(!rows.length)return'<div class="cux10-empty"><div><strong>No '+esc(label.toLowerCase())+' recorded</strong>Use Add Note or Log Activity to begin building the customer communication history.</div></div>';
+  return'<div class="cux10-log">'+rows.map(function(r){return'<article class="cux10-log-row"><div class="cux10-log-meta">'+esc(r.source)+'<br>'+esc(r.date||'Date not recorded')+'</div><div><div class="cux10-log-title">'+esc(r.title)+'</div>'+(r.copy?'<div class="cux10-log-copy">'+esc(r.copy)+'</div>':'')+'</div></article>'}).join('')+'</div>'
+ }
+ function bodyFor(tab,p){
+  if(tab==='notes')return logBody(p.grouped.note,'Notes and meetings');
+  if(tab==='calls')return logBody(p.grouped.call,'Calls');
+  if(tab==='emails')return logBody(p.grouped.email,'Emails');
+  if(tab==='texts')return logBody(p.grouped.text,'Texts');
+  return summaryBody(p)
+ }
+ function tabButton(key,label,count,active){return'<button class="cux10-tab '+(active===key?'on':'')+'" data-cux10-tab="'+key+'" onclick="_cux10SetTab(\''+key+'\')">'+label+(typeof count==='number'?'<b>'+count+'</b>':'')+'</button>'}
+ function panel(p){
+  var tab=window._cux10NotesTab||'summary';
+  return '<aside class="cux10-notes"><div class="cux10-head"><div><div class="cux10-kicker">Account memory</div><div class="cux10-title">Notes & communications</div><div class="cux10-copy">Conversation intelligence and channel-specific history for this customer.</div></div><button class="cux10-add" onclick="_cux8Action(\'note\')">＋ Add Note</button></div>'
+   +'<div class="cux10-tabs">'+tabButton('summary','AI Summary',null,tab)+tabButton('notes','Notes',p.grouped.note.length,tab)+tabButton('calls','Calls',p.grouped.call.length,tab)+tabButton('emails','Emails',p.grouped.email.length,tab)+tabButton('texts','Texts',p.grouped.text.length,tab)+'</div>'
+   +'<div class="cux10-body" id="cux10-notes-body">'+bodyFor(tab,p)+'</div></aside>'
+ }
+ function render(){
+  var markup=CURRENT();
+  if(String(markup).indexOf('cux8-overview')<0)return markup;
+  var frag=parse(markup),overview=frag.querySelector('.cux8-overview');
+  if(!overview||overview.querySelector('.cux10-notes'))return markup;
+  var payload=buildPayload(frag);window._cux10NotePayload=payload;
+  var t=document.createElement('template');t.innerHTML=panel(payload);overview.appendChild(t.content.firstElementChild);
+  return stringify(frag)
+ }
+ window._cux10SetTab=function(tab){
+  window._cux10NotesTab=tab;
+  var p=window._cux10NotePayload,body=document.getElementById('cux10-notes-body');
+  if(!p||!body)return;
+  body.innerHTML=bodyFor(tab,p);body.scrollTop=0;
+  Array.prototype.slice.call(document.querySelectorAll('[data-cux10-tab]')).forEach(function(btn){btn.classList.toggle('on',btn.getAttribute('data-cux10-tab')===tab)})
+ };
+ window._rp2CustomersV2=render;
+ window._rp2CompanyProfileV3=render;
+ window.TCP_CUSTOMER_COMMAND_CENTER_V580={version:'v580',base:'v579',render:render,focus:'three-column customer overview and communications desk'};
+})();
+</script>
+
 </body>
 </html>
