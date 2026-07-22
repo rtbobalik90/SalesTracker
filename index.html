@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v593 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v595 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v587 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v595 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19790,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:587,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:595,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -39316,7 +39316,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  }
  function productCard(g,p){
   var status=reorderStatusLabel(p),image=p.imageUrl?'<img src="'+esc(p.imageUrl)+'" alt="">':'<span>'+(/hat|cap|headwear/i.test(p.category+' '+p.name)?'🧢':/jacket|outerwear|vest/i.test(p.category+' '+p.name)?'🧥':/drink|tumbler|bottle/i.test(p.category+' '+p.name)?'🥤':'👕')+'</span>';
-  return '<article class="cw6-product-card" data-status="'+p.reorderStatus+'" data-search="'+esc((p.name+' '+p.sku+' '+p.category+' '+p.subcategory+' '+p.decoration).toLowerCase())+'"><button class="cw6-product-image" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+image+'</button><div class="cw6-product-body"><div class="cw6-product-top"><div><div class="cw6-product-brand">'+esc(p.brand||'Purchased product')+(p.sku?' · '+esc(p.sku):'')+'</div><button class="cw6-product-name" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+esc(p.name)+'</button><div class="cw6-product-meta">'+esc(p.category)+(p.subcategory?' · '+esc(p.subcategory):'')+'</div></div><span class="cw4-pill '+status.tone+'">'+status.label+'</span></div><div class="cw6-product-kpis"><div><span>Units</span><strong>'+Math.round(p.units).toLocaleString()+'</strong></div><div><span>Revenue</span><strong>'+money(p.revenue)+'</strong></div><div><span>Orders</span><strong>'+p.orderCount+'</strong></div><div><span>Last qty</span><strong>'+p.lastQty.toLocaleString()+'</strong></div></div><div class="cw6-forecast"><div><span>Directional reorder forecast</span><strong>'+fmt(p.nextForecast)+'</strong><small>'+esc(status.copy)+'</small></div><div class="cw6-confidence"><b>'+p.confidence.score+'%</b><span>'+p.confidence.label+' confidence</span></div></div><div class="cw6-product-copy">'+esc(p.decoration?('Decoration: '+p.decoration):'Decoration method not recorded')+' · '+esc(p.seasonality)+' purchase pattern · '+p.artwork.length+' linked artwork/file record'+(p.artwork.length===1?'':'s')+'</div><div class="cw4-mini-actions"><button class="cw4-mini-btn blue" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">Open product history</button><button class="cw4-mini-btn" onclick="_cw5Reorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.name)+'\')">Create reorder reminder</button><button class="cw4-mini-btn" onclick="_cw5StartReorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.key)+'\')">Start reorder</button></div></div></article>'
+  return '<article class="cw6-product-card" data-status="'+p.reorderStatus+'" data-p588key="'+encodeURIComponent(p.key)+'" data-p588name="'+esc(p.name)+'" data-p588sku="'+esc(p.sku||'')+'" data-p588brand="'+esc(p.brand||'')+'" data-p588cat="'+esc(p.category||'')+'" data-p588sub="'+esc(p.subcategory||'')+'" data-p588units="'+Math.round(p.units||0)+'" data-p588rev="'+Math.round(p.revenue||0)+'" data-p588orders="'+(p.orderCount||0)+'" data-p588lastqty="'+(p.lastQty||0)+'" data-p588last="'+(p.lastDate?p.lastDate.toISOString().slice(0,10):'')+'" data-p588gap="'+(p.forecastGap==null?'':p.forecastGap)+' data-search="'+esc((p.name+' '+p.sku+' '+p.category+' '+p.subcategory+' '+p.decoration).toLowerCase())+'"><button class="cw6-product-image" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+image+'</button><div class="cw6-product-body"><div class="cw6-product-top"><div><div class="cw6-product-brand">'+esc(p.brand||'Purchased product')+(p.sku?' · '+esc(p.sku):'')+'</div><button class="cw6-product-name" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+esc(p.name)+'</button><div class="cw6-product-meta">'+esc(p.category)+(p.subcategory?' · '+esc(p.subcategory):'')+'</div></div><span class="cw4-pill '+status.tone+'">'+status.label+'</span></div><div class="cw6-product-kpis"><div><span>Units</span><strong>'+Math.round(p.units).toLocaleString()+'</strong></div><div><span>Revenue</span><strong>'+money(p.revenue)+'</strong></div><div><span>Orders</span><strong>'+p.orderCount+'</strong></div><div><span>Last qty</span><strong>'+p.lastQty.toLocaleString()+'</strong></div></div><div class="cw6-forecast"><div><span>Directional reorder forecast</span><strong>'+fmt(p.nextForecast)+'</strong><small>'+esc(status.copy)+'</small></div><div class="cw6-confidence"><b>'+p.confidence.score+'%</b><span>'+p.confidence.label+' confidence</span></div></div><div class="cw6-product-copy">'+esc(p.decoration?('Decoration: '+p.decoration):'Decoration method not recorded')+' · '+esc(p.seasonality)+' purchase pattern · '+p.artwork.length+' linked artwork/file record'+(p.artwork.length===1?'':'s')+'</div><div class="cw4-mini-actions"><button class="cw4-mini-btn blue" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">Open product history</button><button class="cw4-mini-btn" onclick="_cw5Reorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.name)+'\')">Create reorder reminder</button><button class="cw4-mini-btn" onclick="_cw5StartReorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.key)+'\')">Start reorder</button></div></div></article>'
  }
  function productHistoryDetail(g,key){
   var rows=productHistoryRows(g),p=rows.filter(function(x){return x.key===key})[0];if(!p)return'';
@@ -39345,7 +39345,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
    var order={overdue:0,due:1,upcoming:2,later:3,insufficient:4};
    return(order[a.reorderStatus]-order[b.reorderStatus])||(b.confidence.score-a.confidence.score)||(b.revenue-a.revenue)
   });
-  var due=allRows.filter(function(x){return x.reorderDue}),upcoming=allRows.filter(function(x){return x.reorderStatus==='upcoming'}),p=g.purchase||{categories:[],decorations:[],units:0,lineCount:0},coverage=g.lineItemCoverage||{},industry=clean(g.profile.industry)||'Industry not recorded';
+  var due=allRows.filter(function(x){return x.reorderDue}),upcoming=allRows.filter(function(x){return x.reorderStatus==='upcoming'}),p=g.purchase||{categories:[],decorations:[],units:0,lineCount:0},coverage=g.lineItemCoverage||{},industry=(window._cx586Get?_cx586Get(g.name,'industry'):'')||clean(g.profile.industry)||'Industry not recorded';
   var ideas=industryIdeas(industry).map(function(x){return{category:x[0],reason:x[1],purchased:categoryPurchased(allRows,x[0])}}),gaps=ideas.filter(function(x){return !x.purchased});
   var recs=g.recommendations.slice(0,9).map(function(r){return recordCard('Product recommendation',String(field(r,['productName','title','name'],'Product recommendation')),field(r,['planningTotal','total'],0)?money(field(r,['planningTotal','total'],0)):'',String(field(r,['status','tier','decoration'],'Recommendation')))}).join('');
   var samples=g.samples.slice(0,9).map(function(s){return recordCard('Sample',String(field(s,['productName','title'],'Product sample')),String(field(s,['status'],'Open')),String(field(s,['color','size','notes'],'Sample record')))}).join('');
@@ -39353,7 +39353,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
    +'<div class="cw4-actions" style="justify-content:flex-start"><button class="cw4-btn primary" onclick="_cw4OpenCenter(\'products\',\''+encodeURIComponent(g.name)+'\')">Open Product Studio</button><button class="cw4-btn" onclick="_cw4OpenCenter(\'orders\',\''+encodeURIComponent(g.name)+'\')">Open Orders</button><button class="cw4-btn" onclick="_cw4InlineEdit(\'buying\')">Edit buying profile</button></div>'
    +'<div class="cw5-summary-grid">'+recordCard('Purchase history','Purchased products',String(allRows.length),p.lineCount+' loaded line items')+recordCard('Reorder forecast','Review now',String(due.length),due.length?'Directional reorder dates have arrived or passed.':'No current product forecast is due.')+recordCard('Reorder forecast','Upcoming 60 days',String(upcoming.length),upcoming.length?'Plan customer conversations before the forecast window.':'No forecast falls in the next 60 days.')+recordCard('Growth gaps',industry,String(gaps.length),gaps.length+' industry-relevant categor'+(gaps.length===1?'y has':'ies have')+' no loaded purchase evidence')+'</div>'
    +'<div class="cw6-product-controls"><input id="cw6-product-search" value="'+esc(window._cw5ProductSearch)+'" placeholder="Search purchased products or SKU" oninput="_cw5ProductFilter()"><select id="cw6-product-status" onchange="_cw5ProductFilter()"><option value="all">All reorder states</option><option value="overdue" '+(statusFilter==='overdue'?'selected':'')+'>Past forecast</option><option value="due" '+(statusFilter==='due'?'selected':'')+'>Review now</option><option value="upcoming" '+(statusFilter==='upcoming'?'selected':'')+'>Upcoming</option><option value="later" '+(statusFilter==='later'?'selected':'')+'>Later</option><option value="insufficient" '+(statusFilter==='insufficient'?'selected':'')+'>Not enough history</option></select><select id="cw6-product-sort" onchange="_cw5ProductFilter()"><option value="reorder" '+(sort==='reorder'?'selected':'')+'>Sort: reorder priority</option><option value="revenue" '+(sort==='revenue'?'selected':'')+'>Sort: historical revenue</option><option value="units" '+(sort==='units'?'selected':'')+'>Sort: units</option><option value="recent" '+(sort==='recent'?'selected':'')+'>Sort: most recent</option></select><span>'+rows.length+' of '+allRows.length+' products</span></div>'
-   +(rows.length?'<div class="cw6-product-grid">'+rows.slice(0,36).map(function(x){return productCard(g,x)}).join('')+'</div>':empty('No purchased products match these filters','Clear the search or choose another reorder state.'))
+   +(rows.length?'<div class="cw6-product-grid">'+rows.slice(0,(window._cxp588All?100000:36)).map(function(x){return productCard(g,x)}).join('')+'</div>':empty('No purchased products match these filters','Clear the search or choose another reorder state.'))
    +sectionHead('Industry growth map','Categories relevant to '+industry+' compared with the loaded buying history','These are discovery prompts—not claims that the customer needs or will buy the category.')
    +'<div class="cw6-growth-grid">'+ideas.map(function(x){return '<div class="cw6-growth '+(x.purchased?'covered':'gap')+'"><div><span>'+esc(x.purchased?'Purchase evidence':'Growth gap')+'</span><strong>'+esc(x.category)+'</strong><p>'+esc(x.reason)+'</p></div><button class="cw4-mini-btn '+(x.purchased?'':'blue')+'" onclick="_cw5ExploreCategory(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(x.category)+'\')">'+(x.purchased?'Explore expansion':'Build options')+'</button></div>'}).join('')+'</div>'
    +sectionHead('Category and decoration mix','How loaded purchase history is distributed','Revenue and usage reflect only the report coverage '+(coverage.start&&coverage.end?fmt(coverage.start)+' – '+fmt(coverage.end):'currently available')+'.')
@@ -46926,10 +46926,13 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   var store=selectionStore(),rep=store.reps[currentRep()];
   rep.companies[norm(company)]=rep.companies[norm(company)]||{
    products:[],artwork:[],orders:[],dates:[],talkingPoints:[],
-   productType:'All',productBrand:'All',productDecoration:'All',productSort:'units',
+   productType:'All',productBrand:'All',productDecoration:'All',productSort:'units',productLimit:'10',
    artDecoration:'All',artSort:'name'
   };
-  return{store:store,data:rep.companies[norm(company)]}
+  var data=rep.companies[norm(company)];
+  if(data.productLimit==null||data.productLimit==='')data.productLimit='10';
+  if(!data.productSort)data.productSort='units';
+  return{store:store,data:data}
  }
  function saveCompanyUi(company,data){
   var store=selectionStore();
@@ -47121,26 +47124,55 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
  function optionHtml(values,selected){
   return values.map(function(value){return'<option '+(String(selected)===String(value)?'selected':'')+'>'+esc(value)+'</option>'}).join('')
  }
- function productPanel(data,ui){
-  var products=data.products.filter(function(p){
+ function labeledOptionHtml(values,selected){
+  return values.map(function(item){
+   var value=Array.isArray(item)?item[0]:item,label=Array.isArray(item)?item[1]:item;
+   return'<option value="'+esc(value)+'" '+(String(selected)===String(value)?'selected':'')+'>'+esc(label)+'</option>'
+  }).join('')
+ }
+ function productSortLabel(key){
+  var labels={units:'Most units purchased',revenue:'Highest revenue',orders:'Most orders',recent:'Most recently purchased',average:'Highest units per order',name:'Product name A–Z',category:'Product category A–Z'};
+  return labels[key]||labels.units
+ }
+ function sortProducts(items,key){
+  return arr(items).slice().sort(function(a,b){
+   if(key==='revenue')return n(b.revenue)-n(a.revenue)||n(b.units)-n(a.units);
+   if(key==='orders')return n(b.orderCount)-n(a.orderCount)||n(b.units)-n(a.units);
+   if(key==='recent')return String(b.lastDate||'').localeCompare(String(a.lastDate||''))||n(b.units)-n(a.units);
+   if(key==='average')return (n(b.units)/Math.max(1,n(b.orderCount)))-(n(a.units)/Math.max(1,n(a.orderCount)))||n(b.units)-n(a.units);
+   if(key==='name')return clean(a.name).localeCompare(clean(b.name));
+   if(key==='category')return clean(a.type).localeCompare(clean(b.type))||clean(a.name).localeCompare(clean(b.name));
+   return n(b.units)-n(a.units)||n(b.revenue)-n(a.revenue)
+  })
+ }
+ function filteredProducts(data,ui){
+  return sortProducts(arr(data.products).filter(function(p){
    return(ui.productType==='All'||p.type===ui.productType)&&
     (ui.productBrand==='All'||p.brand===ui.productBrand)&&
     (ui.productDecoration==='All'||p.decoration===ui.productDecoration)
-  }).sort(function(a,b){
-   if(ui.productSort==='recent')return String(b.lastDate||'').localeCompare(String(a.lastDate||''));
-   if(ui.productSort==='name')return a.name.localeCompare(b.name);
-   return b.units-a.units
-  });
-  return'<div class="cl2-filter-row"><select onchange="_call540Filter(\'productType\',this.value)">'+optionHtml(uniqueOptions(data.products,'type'),ui.productType)+'</select>'+
-   '<select onchange="_call540Filter(\'productBrand\',this.value)">'+optionHtml(uniqueOptions(data.products,'brand'),ui.productBrand)+'</select>'+
-   '<select onchange="_call540Filter(\'productDecoration\',this.value)">'+optionHtml(uniqueOptions(data.products,'decoration'),ui.productDecoration)+'</select>'+
-   '<select onchange="_call540Filter(\'productSort\',this.value)">'+optionHtml(['units','recent','name'],ui.productSort)+'</select></div>'+
-   '<div class="cl2-list-actions"><button class="cl2-mini-btn primary" onclick="_call540SelectAll(\'products\')">Select all shown</button><button class="cl2-mini-btn" onclick="_call540Clear(\'products\')">Clear products</button></div>'+
-   (products.length?'<div class="cl2-record-grid">'+products.map(function(p){
+  }),ui.productSort||'units')
+ }
+ function visibleProducts(data,ui){
+  var rows=filteredProducts(data,ui),limit=String(ui.productLimit||'10');
+  return limit==='All'?rows:rows.slice(0,Math.max(1,parseInt(limit,10)||10))
+ }
+ function productPanel(data,ui){
+  var products=filteredProducts(data,ui),visible=visibleProducts(data,ui),shown=visible.length,total=products.length;
+  var sortOptions=[['units','Most units purchased'],['revenue','Highest revenue'],['orders','Most orders'],['recent','Most recently purchased'],['average','Highest units per order'],['name','Product name A–Z'],['category','Product category A–Z']];
+  var limitOptions=[['10','10 products'],['25','25 products'],['50','50 products'],['100','100 products'],['All','All products']];
+  return'<div class="cl2-product-controls">'+
+   '<label><span>Product type</span><select onchange="_call540Filter(\'productType\',this.value)">'+optionHtml(uniqueOptions(data.products,'type'),ui.productType)+'</select></label>'+ 
+   '<label><span>Brand</span><select onchange="_call540Filter(\'productBrand\',this.value)">'+optionHtml(uniqueOptions(data.products,'brand'),ui.productBrand)+'</select></label>'+ 
+   '<label><span>Decoration</span><select onchange="_call540Filter(\'productDecoration\',this.value)">'+optionHtml(uniqueOptions(data.products,'decoration'),ui.productDecoration)+'</select></label>'+ 
+   '<label><span>Show</span><select onchange="_call540Filter(\'productLimit\',this.value)">'+labeledOptionHtml(limitOptions,ui.productLimit||'10')+'</select></label>'+ 
+   '<label><span>Sort by</span><select onchange="_call540Filter(\'productSort\',this.value)">'+labeledOptionHtml(sortOptions,ui.productSort||'units')+'</select></label></div>'+ 
+   '<div class="cl2-product-toolbar"><div class="cl2-list-actions"><button class="cl2-mini-btn primary" onclick="_call540SelectAll(\'products\')">Select all shown</button><button class="cl2-mini-btn" onclick="_call540Clear(\'products\')">Clear products</button></div>'+ 
+   '<div class="cl2-product-count">Showing <strong>'+shown+'</strong> of <strong>'+total+'</strong> products · '+esc(productSortLabel(ui.productSort||'units'))+'</div></div>'+ 
+   (visible.length?'<div class="cl2-record-grid">'+visible.map(function(p){
     var on=isSelected('products',p.id);
     return'<article class="cl2-record '+(on?'on':'')+'" onclick="_call540Toggle(\'products\',\''+p.id+'\')"><input class="cl2-record-check" type="checkbox" '+(on?'checked':'')+' onclick="event.preventDefault()">'+
-     '<div class="cl2-record-kicker">'+esc(p.type)+' · '+esc(p.brand)+'</div><div class="cl2-record-title">'+esc(p.name)+'</div>'+
-     '<div class="cl2-record-meta">'+esc([p.style,p.decoration,p.lastDate&&('Last '+fmt(p.lastDate))].filter(Boolean).join(' · ')||'Product detail from loaded history')+'</div>'+
+     '<div class="cl2-record-kicker">'+esc(p.type)+' · '+esc(p.brand)+'</div><div class="cl2-record-title">'+esc(p.name)+'</div>'+ 
+     '<div class="cl2-record-meta">'+esc([p.style,p.decoration,p.lastDate&&('Last '+fmt(p.lastDate))].filter(Boolean).join(' · ')||'Product detail from loaded history')+'</div>'+ 
      '<div class="cl2-record-stats"><span>'+Math.round(p.units).toLocaleString()+' units</span><span>'+p.orderCount+' orders</span>'+(p.revenue?'<span>'+money(p.revenue)+'</span>':'')+'</div></article>'
    }).join('')+'</div>':(data.company?'<div class="cl2-empty"><strong>No purchased products are matched to this customer</strong>Product cards use the monthly line-item report. Confirm the customer AccountID mapping, then refresh the portal. Weekly summary spreadsheets do not contain product detail.</div>':'<div class="cl2-empty"><strong>Choose a customer to load product history</strong>The product list is customer-specific and appears after a customer is selected.</div>'))
  }
@@ -47447,7 +47479,7 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
  window._call540SelectAll=function(kind){
   var data=currentData(),b=companyUi(data.company),items=kind==='products'?data.products:kind==='artwork'?data.artwork:kind==='orders'?data.orders:data.dates;
   if(kind==='products'){
-   items=items.filter(function(p){return(b.data.productType==='All'||p.type===b.data.productType)&&(b.data.productBrand==='All'||p.brand===b.data.productBrand)&&(b.data.productDecoration==='All'||p.decoration===b.data.productDecoration)})
+   items=visibleProducts(data,b.data)
   }
   if(kind==='artwork')items=items.filter(function(a){return b.data.artDecoration==='All'||a.decoration===b.data.artDecoration});
   b.data[kind]=items.map(function(item){return item.id});saveCompanyUi(data.company,b.data);rerender()
@@ -64224,12 +64256,194 @@ window._cx586Brief=function(name,facts,health){
    service:{title:'Service & Approvals',icon:'🛡',copy:'Customer issues, promises, approvals, quality records, and customer voice.',color:'#F56B7B'}
   };return map[section]||map.products
  }
+ /* ===== CXP588: Products page rebuild — history-first, checkbox reorder, chip opportunities ===== */
+window._cxp588Esc=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+window._cxp588Status=function(st){
+  var m={overdue:{l:'Overdue',c:'#FB7185'},due:{l:'Due',c:'#FA873D'},upcoming:{l:'Coming up',c:'#4C9DFF'},later:{l:'OK',c:'#47D16C'},insufficient:{l:'\u2014',c:'#74849D'}};
+  return m[st]||m.insufficient;
+};
+window._cxp588Money=function(n){n=Number(n)||0;return n>=1000000?('$'+(n/1000000).toFixed(1).replace(/\.0$/,'')+'M'):('$'+Math.round(n).toLocaleString());};
+window._cxp588Sel={};
+window._cxp588Toggle=function(cb){
+  var k=cb.dataset.key;
+  if(cb.checked)_cxp588Sel[k]={name:cb.dataset.name,sku:cb.dataset.sku,rev:cb.dataset.rev,lastqty:cb.dataset.lastqty,cat:cb.dataset.cat};
+  else delete _cxp588Sel[k];
+  _cxp588Bar();
+};
+window._cxp588Bar=function(){
+  var bar=document.getElementById('cxp588-bar');if(!bar)return;
+  var n=Object.keys(_cxp588Sel).length;
+  bar.style.display=n?'flex':'none';
+  var b=document.getElementById('cxp588-bar-btn');
+  if(b)b.textContent='Create quote with '+n+' product'+(n>1?'s':'');
+};
+window._cxp588Clear=function(){
+  window._cxp588Sel={};
+  document.querySelectorAll('.cxp588-cb').forEach(function(cb){cb.checked=false;});
+  _cxp588Bar();
+};
+window._cxp588PrefillText=function(name,items){
+  var lines=['Reorder quote \u2014 '+name,''];
+  items.forEach(function(it,i){
+    lines.push((i+1)+'. '+it.name+(it.sku?' ('+it.sku+')':'')+(it.lastqty&&Number(it.lastqty)>0?' \u2014 last qty '+it.lastqty:'')+(it.rev&&Number(it.rev)>0?' \u00b7 '+_cxp588Money(it.rev)+' lifetime':''));
+  });
+  return lines.join('\n');
+};
+window._cxp588Quote=function(singleKey){
+  var name=window._cux8CurrentName||window._cw4CompanyName||'';
+  var items;
+  if(singleKey&&window._cxp588RowData&&_cxp588RowData[singleKey])items=[_cxp588RowData[singleKey]];
+  else items=Object.keys(_cxp588Sel).map(function(k){return _cxp588Sel[k];});
+  if(!items.length)return;
+  var txt=_cxp588PrefillText(name,items);
+  if(typeof window._cw4StartQuote==='function')window._cw4StartQuote(encodeURIComponent(name));
+  var tries=0;
+  (function fill(){
+    tries++;
+    var t=document.getElementById('dd3-f-title'),d=document.getElementById('dd3-f-description');
+    if(t||d){
+      if(t&&!t.value)t.value='Reorder \u2014 '+name;
+      if(d&&!d.value)d.value=txt;
+      var n2=document.getElementById('dd3-f-notes');
+      if(n2&&!n2.value&&!d)n2.value=txt;
+      return;
+    }
+    if(tries<20)setTimeout(fill,120);
+  })();
+};
+window._cxp588Filter=function(){
+  var q=((document.getElementById('cxp588-q')||{}).value||'').toLowerCase().trim();
+  var st=((document.getElementById('cxp588-st')||{}).value||'all');
+  var shown=0,total=0;
+  document.querySelectorAll('.cxp588-row').forEach(function(r){
+    total++;
+    var okQ=!q||(r.dataset.search||'').indexOf(q)>=0;
+    var okS=st==='all'||r.dataset.status===st||(st==='duenow'&&(r.dataset.status==='overdue'||r.dataset.status==='due'));
+    var on=okQ&&okS;
+    r.style.display=on?'':'none';
+    if(on)shown++;
+  });
+  var ct=document.getElementById('cxp588-count');
+  if(ct)ct.textContent=shown+' of '+total;
+  var emp=document.getElementById('cxp588-nomatch');
+  if(emp)emp.style.display=(total>0&&shown===0)?'block':'none';
+};
+window._cxp588Body=function(content,name){
+  try{
+    var esc=_cxp588Esc;
+    var cards=content?content.querySelectorAll('.cw6-product-card[data-p588name]'):[];
+    var rowsData=[];
+    Array.prototype.slice.call(cards).forEach(function(a){
+      rowsData.push({
+        key:a.getAttribute('data-p588key')||'',name:a.getAttribute('data-p588name')||'',sku:a.getAttribute('data-p588sku')||'',
+        brand:a.getAttribute('data-p588brand')||'',cat:a.getAttribute('data-p588cat')||'',sub:a.getAttribute('data-p588sub')||'',
+        status:a.getAttribute('data-status')||'insufficient',units:Number(a.getAttribute('data-p588units'))||0,
+        rev:Number(a.getAttribute('data-p588rev'))||0,orders:Number(a.getAttribute('data-p588orders'))||0,
+        lastqty:Number(a.getAttribute('data-p588lastqty'))||0,last:a.getAttribute('data-p588last')||'',
+        gap:a.getAttribute('data-p588gap')||'',search:a.getAttribute('data-search')||''
+      });
+    });
+    window._cxp588RowData={};rowsData.forEach(function(r){_cxp588RowData[r.key]={name:r.name,sku:r.sku,rev:r.rev,lastqty:r.lastqty,cat:r.cat};});
+    window._cxp588Sel={};
+    // stats
+    var dueNow=rowsData.filter(function(r){return r.status==='overdue'||r.status==='due';}).length;
+    var lifetime=rowsData.reduce(function(s,r){return s+r.rev;},0);
+    var byCat={};rowsData.forEach(function(r){if(r.cat)byCat[r.cat]=(byCat[r.cat]||0)+r.rev;});
+    var topCat=Object.keys(byCat).sort(function(a,b){return byCat[b]-byCat[a];})[0]||'';
+    function stat(l,v,s2,col){return '<div class="cxp588-stat"><span>'+l+'</span><strong'+(col?' style="color:'+col+';"':'')+'>'+v+'</strong>'+(s2?'<em>'+s2+'</em>':'')+'</div>';}
+    var stats='<div class="cxp588-stats">'
+      +stat('Products purchased',String(rowsData.length),rowsData.length?'':'no line items loaded')
+      +stat('Reorder due now',String(dueNow),dueNow?'overdue or due':'',dueNow?'#FA873D':null)
+      +stat('Lifetime product $',_cxp588Money(lifetime),'')
+      +stat('Top category',topCat?esc(topCat):'\u2014',topCat?_cxp588Money(byCat[topCat]):'')
+      +'</div>';
+    // header buttons (reuse existing handlers)
+    var enc=encodeURIComponent(name);
+    var btns='<div class="cxp588-actions">'
+      +'<button class="cux8-action primary" onclick="_cw4OpenCenter(\'products\',\''+enc+'\')">Open Product Studio</button>'
+      +'<button class="cux8-action" onclick="_cw4OpenCenter(\'orders\',\''+enc+'\')">Open Orders</button>'
+      +'<button class="cux8-action" onclick="_cw4InlineEdit(\'buying\')">Edit buying profile</button>'
+      +'</div>';
+    // filter row
+    var filt='<div class="cxp588-filter"><input id="cxp588-q" class="cxp588-in" placeholder="Search products, SKU, category\u2026" oninput="_cxp588Filter()">'
+      +'<select id="cxp588-st" class="cxp588-in" style="max-width:170px;" onchange="_cxp588Filter()"><option value="all">All reorder states</option><option value="duenow">Due now (overdue + due)</option><option value="overdue">Overdue</option><option value="due">Due</option><option value="upcoming">Coming up</option><option value="later">OK</option><option value="insufficient">No forecast</option></select>'
+      +'<select id="cxp588-sort" class="cxp588-in" style="max-width:150px;" onchange="_cxp588SortRows()"><option value="priority">Sort: priority</option><option value="revenue">Sort: revenue</option><option value="units">Sort: units</option><option value="recent">Sort: recent</option></select>'
+      +'<span id="cxp588-count" class="cxp588-count">'+rowsData.length+' of '+rowsData.length+'</span></div>';
+    // rows
+    var sorted=rowsData.slice().sort(function(a,b){
+      var ord={overdue:0,due:1,upcoming:2,later:3,insufficient:4};
+      return (ord[a.status]-ord[b.status])||(b.rev-a.rev);
+    });
+    var rowsHtml=sorted.map(function(r){
+      var st=_cxp588Status(r.status);
+      var dAgo='';
+      if(r.last){var dd=Math.floor((Date.now()-new Date(r.last+'T12:00:00'))/864e5);if(dd>=0)dAgo=dd+'d ago';}
+      return '<div class="cxp588-row" data-status="'+r.status+'" data-search="'+esc(r.search)+'" data-rev="'+r.rev+'" data-units="'+r.units+'" data-last="'+esc(r.last)+'">'
+        +'<label class="cxp588-check"><input type="checkbox" class="cxp588-cb" data-key="'+esc(r.key)+'" data-name="'+esc(r.name)+'" data-sku="'+esc(r.sku)+'" data-rev="'+r.rev+'" data-lastqty="'+r.lastqty+'" data-cat="'+esc(r.cat)+'" onchange="_cxp588Toggle(this)"></label>'
+        +'<div class="cxp588-main"><button class="cxp588-name" onclick="_cw5OpenProduct(\''+esc(r.key)+'\')">'+esc(r.name)+'</button><div class="cxp588-sub">'+esc(r.brand||'')+(r.sku?' \u00b7 '+esc(r.sku):'')+(r.cat?' \u00b7 '+esc(r.cat):'')+'</div></div>'
+        +'<span class="cxp588-pill" style="border-color:'+st.c+'66;color:'+st.c+';">'+st.l+'</span>'
+        +'<div class="cxp588-cell"><span>Last</span><strong>'+(r.last?esc(r.last):'\u2014')+'</strong><em>'+dAgo+'</em></div>'
+        +'<div class="cxp588-cell"><span>Orders</span><strong>'+r.orders+'</strong><em>'+(r.lastqty?('last qty '+r.lastqty):'')+'</em></div>'
+        +'<div class="cxp588-cell"><span>Lifetime</span><strong>'+_cxp588Money(r.rev)+'</strong></div>'
+        +'<button class="cxp588-quote" onclick="_cxp588Quote(\''+esc(r.key)+'\')">Quote</button>'
+        +'</div>';
+    }).join('');
+    var listHtml=rowsData.length
+      ?('<div class="cxp588-list">'+rowsHtml+'</div><div id="cxp588-nomatch" class="cxp588-empty" style="display:none;">No products match \u2014 clear the search or pick another reorder state.</div>')
+      :('<div class="cxp588-empty"><strong>No purchase history loaded for '+esc(name)+' yet.</strong><br>The industry opportunities below are the starting points \u2014 each category shows what similar '+ (function(){var iv=(window._cx586Get&&_cx586Get(name,'industry'))||'';return iv?esc(iv.toLowerCase())+' customers':'customers in their industry';})() +' typically buy.</div>');
+    // opportunities chips from growth cards
+    var chips='';
+    try{
+      var gcards=content?content.querySelectorAll('.cw6-growth'):[];
+      chips=Array.prototype.slice.call(gcards).map(function(g){
+        var cat=(g.querySelector('strong')||{}).textContent||'';
+        var why=(g.querySelector('p')||{}).textContent||'';
+        var btn=g.querySelector('button');
+        var oc=btn?btn.getAttribute('onclick'):'';
+        var covered=g.classList.contains('covered');
+        return '<button class="cxp588-chip'+(covered?' covered':'')+'"'+(oc?' onclick="'+esc(oc)+'"':'')+' title="'+esc(why)+'">'
+          +'<b>'+esc(cat)+'</b><span>'+(covered?esc(why):('No purchases in this category yet \u2014 '+esc(why).toLowerCase()))+'</span></button>';
+      }).join('');
+    }catch(e){}
+    var opp=chips?('<div class="cxp588-opp-h">Opportunities \u00b7 what they don\u2019t buy yet</div><div class="cxp588-chips">'+chips+'</div>'):'';
+    // selection bar
+    var bar='<div id="cxp588-bar" class="cxp588-bar"><span class="cxp588-bar-note">Reorder selection</span><button id="cxp588-bar-btn" class="cux8-action orange" onclick="_cxp588Quote()">Create quote</button><button class="cux8-action" onclick="_cxp588Clear()">Clear</button></div>';
+    return stats+btns+filt+listHtml+opp+bar;
+  }catch(e){console.warn('[cxp588]',e);return '';}
+};
+
+window._cxp588SortRows=function(){
+  var sel=document.getElementById('cxp588-sort');if(!sel)return;
+  var mode=sel.value;
+  var list=document.querySelector('.cxp588-list');if(!list)return;
+  var rows=Array.prototype.slice.call(list.querySelectorAll('.cxp588-row'));
+  var ord={overdue:0,due:1,upcoming:2,later:3,insufficient:4};
+  rows.sort(function(a,b){
+    if(mode==='revenue')return (Number(b.dataset.rev)||0)-(Number(a.dataset.rev)||0);
+    if(mode==='units')return (Number(b.dataset.units)||0)-(Number(a.dataset.units)||0);
+    if(mode==='recent')return String(b.dataset.last||'').localeCompare(String(a.dataset.last||''));
+    return (ord[a.dataset.status]-ord[b.dataset.status])||((Number(b.dataset.rev)||0)-(Number(a.dataset.rev)||0));
+  });
+  rows.forEach(function(r){list.appendChild(r);});
+};
+
  function buildSection(markup,section){
   var doc=parse(markup),name=currentName(doc),modal=outerModal(doc),content=profileContent(doc),meta=sectionMeta(section);
   if(section==='contacts'||section==='activity')content=filterRelationships(content,section);
   else content=removeFirstSectionHead(content);
   var body=content?content.innerHTML:'<div class="cw4-empty"><strong>No section content is available</strong></div>';
   window._cux8CurrentName=name;
+  if(section==='products'){
+    var _ps=window._cw5ProductSearch,_pst=window._cw5ProductStatus;
+    try{
+      window._cxp588All=true;window._cw5ProductSearch='';window._cw5ProductStatus='all';
+      var _doc2=parse(baseFor('products'));
+      var _c2=profileContent(_doc2);_c2=removeFirstSectionHead(_c2);
+      var _nb=_cxp588Body(_c2,name);
+      if(_nb)body=_nb;
+    }catch(_pe){console.warn('[cxp588 fallback]',_pe);}
+    finally{window._cxp588All=false;window._cw5ProductSearch=_ps;window._cw5ProductStatus=_pst;}
+  }
   return '<div class="cux8-shell"><div class="cux8-stage '+(window._cux8Direction==='back'?'back':'')+'">'
    +'<section class="cux8-section-head" style="--section:'+meta.color+'"><div class="cux8-section-id"><button class="cux8-back" title="Back to customer overview" onclick="_cux8Back()">←</button><div class="cux8-section-icon">'+meta.icon+'</div><div><div class="cux8-section-company">'+esc(name)+' · Customer Command Center</div><div class="cux8-section-title">'+esc(meta.title)+'</div><div class="cux8-section-copy">'+esc(meta.copy)+'</div></div></div><div class="cux8-section-actions"><button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button><button class="cux8-action" onclick="_cux8Action(\'activity\')">Log Activity</button><button class="cux8-action orange" onclick="_cux8Action(\'quote\')">Create Quote</button></div></section>'
    +'<div class="cux8-content">'+body+'</div></div></div>'+modal
@@ -65438,6 +65652,44 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 .cx586-vempty{color:#718097;font-size:9.6px;margin-top:6px;}
 .cx586-health-line{display:flex;align-items:center;gap:8px;margin-top:13px;padding:9px 12px;border:1px solid;border-radius:12px;background:rgba(255,255,255,.02);color:#DCE6F2;font-size:11px;font-weight:850;}
 .cx586-dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 10px currentColor;flex:none;}
+</style>
+<style id="cxp588-products">
+.cxp588-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:2px 0 12px;}
+.cxp588-stat{border:1px solid rgba(255,255,255,.09);border-radius:14px;background:linear-gradient(160deg,rgba(13,22,36,.9),rgba(7,12,22,.94));padding:11px 13px;}
+.cxp588-stat span{display:block;color:#718097;font-size:8.6px;font-weight:950;text-transform:uppercase;letter-spacing:.7px;}
+.cxp588-stat strong{display:block;margin-top:4px;color:#F0F5FC;font-size:19px;font-weight:900;line-height:1.05;}
+.cxp588-stat em{display:block;margin-top:3px;color:#8797AD;font-size:9.4px;font-style:normal;}
+.cxp588-actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;}
+.cxp588-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px;}
+.cxp588-in{flex:1;min-width:180px;box-sizing:border-box;padding:9px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.11);background:rgba(4,10,19,.55);color:#EAF2FC;font-size:11.5px;font-weight:650;outline:none;}
+.cxp588-in:focus{border-color:rgba(0,175,239,.5);}
+.cxp588-count{color:#718097;font-size:10px;font-weight:800;white-space:nowrap;}
+.cxp588-list{display:flex;flex-direction:column;gap:7px;}
+.cxp588-row{display:grid;grid-template-columns:30px minmax(0,1.5fr) 92px minmax(0,.9fr) minmax(0,.8fr) minmax(0,.7fr) 66px;gap:10px;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:linear-gradient(160deg,rgba(13,22,36,.75),rgba(7,12,22,.85));padding:9px 12px;transition:border-color .15s;}
+.cxp588-row:hover{border-color:rgba(0,175,239,.35);}
+.cxp588-check{display:flex;align-items:center;justify-content:center;}
+.cxp588-cb{width:16px;height:16px;accent-color:#FA873D;cursor:pointer;}
+.cxp588-name{display:block;background:none;border:0;padding:0;color:#F0F5FC;font-size:12.5px;font-weight:900;text-align:left;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.cxp588-name:hover{color:#7CD7FF;}
+.cxp588-sub{color:#8797AD;font-size:9.4px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cxp588-pill{justify-self:start;padding:4px 10px;border:1px solid;border-radius:999px;font-size:9.4px;font-weight:950;letter-spacing:.4px;text-transform:uppercase;background:rgba(255,255,255,.03);}
+.cxp588-cell span{display:block;color:#718097;font-size:8.2px;font-weight:950;text-transform:uppercase;letter-spacing:.6px;}
+.cxp588-cell strong{display:block;color:#E6EEF8;font-size:11.5px;font-weight:850;margin-top:2px;}
+.cxp588-cell em{display:block;color:#74849D;font-size:9px;font-style:normal;margin-top:1px;}
+.cxp588-quote{padding:7px 0;border-radius:10px;border:1px solid rgba(250,135,61,.45);background:rgba(250,135,61,.1);color:#FFC79A;font-size:10px;font-weight:900;cursor:pointer;}
+.cxp588-quote:hover{background:rgba(250,135,61,.22);}
+.cxp588-empty{border:1px dashed rgba(255,255,255,.14);border-radius:13px;padding:16px;color:#9AA7BC;font-size:11.5px;line-height:1.6;margin:4px 0 10px;}
+.cxp588-opp-h{margin:16px 0 8px;color:#9DDCFF;font-size:9.6px;font-weight:950;text-transform:uppercase;letter-spacing:.8px;}
+.cxp588-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.cxp588-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;max-width:280px;padding:9px 12px;border-radius:13px;border:1px solid rgba(76,157,255,.32);background:rgba(76,157,255,.07);cursor:pointer;text-align:left;transition:.15s;}
+.cxp588-chip:hover{border-color:rgba(76,157,255,.6);background:rgba(76,157,255,.13);}
+.cxp588-chip b{color:#BFDCFF;font-size:11px;font-weight:900;}
+.cxp588-chip span{color:#8FA5C2;font-size:9.2px;line-height:1.45;}
+.cxp588-chip.covered{border-color:rgba(71,209,108,.3);background:rgba(71,209,108,.06);}
+.cxp588-chip.covered b{color:#B8F0CB;}
+.cxp588-bar{position:sticky;bottom:10px;display:none;gap:10px;align-items:center;justify-content:flex-end;margin-top:12px;padding:10px 14px;border:1px solid rgba(250,135,61,.4);border-radius:14px;background:rgba(20,12,6,.92);backdrop-filter:blur(8px);box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.cxp588-bar-note{margin-right:auto;color:#FFC79A;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.6px;}
+@media(max-width:1100px){.cxp588-row{grid-template-columns:26px minmax(0,1fr) 80px 62px;} .cxp588-row .cxp588-cell:nth-of-type(2),.cxp588-row .cxp588-cell:nth-of-type(3){display:none;} .cxp588-stats{grid-template-columns:1fr 1fr;}}
 </style>
 <style id="cux584-final-viewport-authority">
 /* ===== v584 FINAL AUTHORITY — customer profile must fit the viewport =====
@@ -66745,6 +66997,25 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
   #rp-overlay .ps90-queue-toggle{width:52px!important;height:52px!important;}
 }
 </style>
+
+<style id="tcp-v594-product-limit-sort-controls">
+/* ===== v594 Product visibility + context-aware sorting ===== */
+#rp-overlay .cl2-product-controls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px;}
+#rp-overlay .cl2-product-controls label{display:grid;gap:6px;min-width:0;}
+#rp-overlay .cl2-product-controls label>span{color:#8FA0B4;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;}
+#rp-overlay .cl2-product-controls select{width:100%;min-width:0;min-height:40px;padding:0 30px 0 10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:#0B151D;color:#F4F7FB;font-size:10.5px;font-weight:750;}
+#rp-overlay .cl2-product-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;}
+#rp-overlay .cl2-product-toolbar .cl2-list-actions{margin-top:0!important;}
+#rp-overlay .cl2-product-count{color:#8795A7;font-size:9.5px;line-height:1.4;text-align:right;}
+#rp-overlay .cl2-product-count strong{color:#F4F7FB;font-weight:900;}
+@media(max-width:1500px){#rp-overlay .cl2-product-controls{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:980px){#rp-overlay .cl2-product-controls{grid-template-columns:repeat(2,minmax(0,1fr));}#rp-overlay .cl2-product-count{text-align:left;}}
+@media(max-width:620px){#rp-overlay .cl2-product-controls{grid-template-columns:1fr;}}
+</style>
+<script id="tcp-v594-product-controls-version">
+window.TCP_CALL_PRODUCT_CONTROLS_V594={version:'v594',defaultVisible:10,visibleOptions:[10,25,50,100,'All'],sortOptions:['units','revenue','orders','recent','average','name','category']};
+</script>
+
 <script id="tcp-v593-responsive-page-scroll-version">
 window.TCP_CALL_WORKSPACE_V593={
   version:'v593',
