@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v585 — Viewport-Balanced Customer Profile</title>
+<title>Sales Tracker v586 — Viewport-Balanced Customer Profile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v585 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v586 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -9329,7 +9329,7 @@ function persistPhoto(repName,photoData){if(!_lsAvailable())return;try{if(photoD
 function loadPhotos(){if(!_lsAvailable())return;S.reps.forEach(function(r){var p=localStorage.getItem(PHOTO_KEY_PREFIX+r.name);if(p&&r.profile)r.profile.photo=p;});}
 function migratePhotoKey(oldName,newName){if(!_lsAvailable())return;var p=localStorage.getItem(PHOTO_KEY_PREFIX+oldName);if(p){localStorage.setItem(PHOTO_KEY_PREFIX+newName,p);localStorage.removeItem(PHOTO_KEY_PREFIX+oldName);}}
 var STORE_KEY='salesTracker_v2';var _dataDirty=false;var _persistTimer=null;
-function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},orderLineItems:S.orderLineItems||[],orderLineItemsMeta:S.orderLineItemsMeta||{version:1,imports:[]},orderLineItemsUnmatched:S.orderLineItemsUnmatched||[],gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},dailyRep:S.dailyRep||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;
+function persist(){var el=document.getElementById('saveStatus');var dataToSave={reps:S.reps.map(function(r){return Object.assign({},r,{profile:r.profile?Object.assign({},r.profile,{photo:null}):r.profile});}),goals:S.goals,data:S.data,cms:S.cms,artErrors:S.artErrors,artErrorSource:S.artErrorSource||{url:"",lastSync:null,lastCount:0},artErrorIgnored:S.artErrorIgnored||[],hrViolations:S.hrViolations,coachingNotes:S.coachingNotes,dailySales:S.dailySales||[],customers:S.customers||[],reviews:S.reviews||{},orders:S.orders||[],ordersMeta:S.ordersMeta||{},orderLineItems:S.orderLineItems||[],orderLineItemsMeta:S.orderLineItemsMeta||{version:1,imports:[]},orderLineItemsUnmatched:S.orderLineItemsUnmatched||[],gamestorm:S.gamestorm||{projects:[],activeId:null},priorYear:S.priorYear||{},repPortal:S.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false},dailyRep:S.dailyRep||{},cx586ov:S.cx586ov||{},companyKnowledge:S.companyKnowledge||{categories:{},freeform:'',lastUpdated:null},teamGoals:S.teamGoals||{}};var json=JSON.stringify(dataToSave);try{if(_lsAvailable()){localStorage.setItem(STORE_KEY,json);_dataDirty=false;if(el){var t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});el.textContent='Auto-saved '+t;el.style.color='#5DCAA5';}}else{_dataDirty=true;if(el){el.innerHTML='⚠️ Storage blocked — use <strong style="color:#EF9F27;">Export JSON</strong> to save.';el.style.color='#EF9F27';}}}catch(e){_dataDirty=true;
   try{_tcpSaveFailureAlarm(e);}catch(_a){}
   if(el){el.textContent='\u26a0 SAVE FAILED \u2014 see banner';el.style.color='#F09595';}}}
 function _tcpSaveFailureAlarm(err){
@@ -9435,6 +9435,7 @@ function loadFromStorage(){
     S.reviews=saved.reviews||{url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{}};
     S.orders=saved.orders||[];S.ordersMeta=saved.ordersMeta||{};S.orderLineItems=saved.orderLineItems||[];S.orderLineItemsMeta=saved.orderLineItemsMeta||{version:1,imports:[]};S.orderLineItemsUnmatched=saved.orderLineItemsUnmatched||[];S.gamestorm=saved.gamestorm||{projects:[],activeId:null};S.priorYear=saved.priorYear||{};S.repPortal=saved.repPortal||{managerHash:'',accounts:{},sections:['sales','orders','art','credits','reviews','coaching','rank'],enabled:false};
     S.dailyRep=saved.dailyRep||{};
+    S.cx586ov=saved.cx586ov||{};
     S.companyKnowledge=saved.companyKnowledge||{categories:{},freeform:'',lastUpdated:null};S.customers=saved.customers||S.customers||[];S.orders=saved.orders||S.orders||[];S.ordersMeta=saved.ordersMeta||S.ordersMeta||{};S.orderLineItems=saved.orderLineItems||[];S.orderLineItemsMeta=saved.orderLineItemsMeta||{version:1,imports:[]};S.orderLineItemsUnmatched=saved.orderLineItemsUnmatched||[];
     S.teamGoals=saved.teamGoals||{};
     S.reps.forEach(function(r){if(!r.profile)r.profile={};if(r.retired===undefined)r.retired=false;});
@@ -19789,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:585,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:586,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -63988,6 +63989,125 @@ body.ps58-dashboard-active .wrap:after{
    +'<div class="cux8-contact"><strong>'+esc(contactName||'Primary contact not recorded')+'</strong>'+(contactCopy?'<span class="cux8-dot"></span><span>'+esc(contactCopy)+'</span>':'')+'</div></div></div>'
    +actionButtons()+'</div><div class="cux8-metrics">'+metricHtml+'</div></section>'
  }
+ /* ===== CX586: Account Intelligence rebuild — editable facts + vitals tabs + health line ===== */
+window._cx586Esc=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+window._cx586Get=function(name,field){try{var ov=(S.cx586ov||{})[String(name||'').toLowerCase().trim()];return ov?(ov[field]||''):'';}catch(e){return '';}};
+window._cx586Set=function(name,field,val){try{S.cx586ov=S.cx586ov||{};var k=String(name||'').toLowerCase().trim();S.cx586ov[k]=S.cx586ov[k]||{};S.cx586ov[k][field]=String(val||'').trim();if(typeof markDirty==='function')markDirty();}catch(e){}};
+window._cx586Orders=function(name){
+  var nm=String(name||'').toLowerCase().trim();
+  var rows=((typeof S!=='undefined'&&S.orders)||[]).filter(function(o){return String(o.customer||'').toLowerCase().trim()===nm&&o.orderDate;});
+  rows.sort(function(a,b){return String(a.orderDate).localeCompare(String(b.orderDate));});
+  return rows;
+};
+window._cx586Vitals=function(name){
+  var rows=_cx586Orders(name);
+  var last=rows.length?rows[rows.length-1]:null;
+  var lastDate=last?String(last.orderDate):'';
+  var lastTotal=last?(Number(last.total)||0):0;
+  var daysLastOrder=lastDate?Math.floor((Date.now()-new Date(lastDate+'T12:00:00'))/864e5):null;
+  var gaps=[];for(var i=1;i<rows.length;i++){var g=(new Date(rows[i].orderDate)-new Date(rows[i-1].orderDate))/864e5;if(g>0&&g<400)gaps.push(g);}
+  var cad=gaps.length?Math.round(gaps.reduce(function(s,v){return s+v;},0)/gaps.length):null;
+  var due=(cad!=null&&daysLastOrder!=null)?(daysLastOrder>=cad):false;
+  var nums={};rows.forEach(function(o){if(o.orderNum)nums[String(o.orderNum).toLowerCase()]=1;if(o.base)nums[String(o.base).toLowerCase()]=1;});
+  var nm=String(name||'').toLowerCase().trim(),prod={};
+  ((typeof S!=='undefined'&&S.orderLineItems)||[]).forEach(function(li){
+    if(!li||typeof li!=='object')return;
+    var on=String(li.orderNum||li.order||li.orderNumber||li.base||'').toLowerCase();
+    var cn=String(li.customer||li.customerName||li.accountName||li.account||'').toLowerCase().trim();
+    if(!((on&&nums[on])||(cn&&cn===nm)))return;
+    var p=String(li.product||li.productName||li.item||li.description||li.style||'').trim();
+    if(!p)return;
+    var amt=Number(li.total||li.amount||li.ext||li.extPrice||li.lineTotal||li.price||0)||0;
+    prod[p]=(prod[p]||0)+amt;
+  });
+  var top=Object.keys(prod).map(function(p){return {p:p,amt:prod[p]};}).sort(function(a,b){return b.amt-a.amt;}).slice(0,3);
+  var lastTouch=null,openFu=0;
+  try{
+    var ac=JSON.parse(localStorage.getItem('tcp_rp_action_center_v504')||'null')||{};
+    var pools=[];Object.keys(ac).forEach(function(k){if(Array.isArray(ac[k]))pools.push(ac[k]);});
+    pools.forEach(function(arr){arr.forEach(function(x){
+      if(!x||typeof x!=='object')return;
+      var comp=String(x.company||x.customer||'').toLowerCase().trim();
+      if(!comp||comp!==nm)return;
+      var d=x.date||x.when||x.dueDate||x.completedAt||x.createdAt||x.ts;
+      if(d){var t=new Date(d).getTime();if(t&&t<=Date.now()&&(!lastTouch||t>lastTouch))lastTouch=t;}
+      var st=String(x.status||x.state||'').toLowerCase();
+      if(st==='open')openFu++;
+    });});
+  }catch(e){}
+  var daysTouch=lastTouch!=null?Math.floor((Date.now()-lastTouch)/864e5):null;
+  return {lastDate:lastDate,lastTotal:lastTotal,daysLastOrder:daysLastOrder,cad:cad,due:due,top:top,daysTouch:daysTouch,openFu:openFu,orderCount:rows.length};
+};
+window._cx586Health=function(v){
+  if(v.daysLastOrder==null)return {txt:'No orders recorded yet',col:'#9AA0B3'};
+  var st=v.daysLastOrder<60?['Active','#47D16C']:v.daysLastOrder<120?['Cooling','#FBBF24']:['Dormant','#FB7185'];
+  return {txt:st[0]+' \u00b7 last order '+v.daysLastOrder+'d ago'+(v.due?' \u00b7 reorder due':''),col:st[1]};
+};
+window._cx586Tab=function(btn){
+  var wrap=btn.closest('.cx586-wrap');if(!wrap)return;
+  wrap.querySelectorAll('.cx586-tab').forEach(function(b){b.classList.toggle('on',b===btn);});
+  wrap.querySelectorAll('.cx586-pane').forEach(function(p){p.classList.toggle('on',p.dataset.pane===btn.dataset.t);});
+};
+window._cx586Edit=function(icon,name,field){
+  var row=icon.closest('.cux8-fact');if(!row)return;
+  var strong=row.querySelector('strong');if(!strong)return;
+  var cur=_cx586Get(name,field)||((strong.textContent||'').trim());
+  if(/^not recorded$/i.test(cur))cur='';
+  var inp=document.createElement('input');
+  inp.type='text';inp.value=cur;inp.className='cx586-edit-in';
+  inp.placeholder=field==='industry'?'e.g. Construction':'e.g. Waukesha, WI';
+  strong.replaceWith(inp);inp.focus();try{inp.setSelectionRange(cur.length,cur.length);}catch(e){}
+  var done=false;
+  function save(){
+    if(done)return;done=true;
+    var val=inp.value.trim();
+    _cx586Set(name,field,val);
+    var ns=document.createElement('strong');
+    ns.textContent=val||'Not recorded';
+    inp.replaceWith(ns);
+    var chip=document.getElementById('cx586-saved');
+    if(chip){chip.style.opacity='1';setTimeout(function(){chip.style.opacity='0';},1800);}
+  }
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')save();if(e.key==='Escape'){done=true;var ns=document.createElement('strong');ns.textContent=cur||'Not recorded';inp.replaceWith(ns);}});
+  inp.addEventListener('blur',save);
+};
+window._cx586Brief=function(name,facts,health){
+  var esc=_cx586Esc;
+  function pick(re){var f=(facts||[]).filter(function(x){return re.test(String(x.label||''));})[0];return f?String(f.value||'').trim():'';}
+  var factDefs=[
+    {label:'Customer number',val:pick(/customer number|customer id|account number/i)},
+    {label:'Industry',val:_cx586Get(name,'industry')||pick(/industry/i),edit:'industry'},
+    {label:'Customer level',val:pick(/level|tier/i)},
+    {label:'Location',val:_cx586Get(name,'location')||pick(/location|city|address/i),edit:'location'},
+    {label:'Owner',val:pick(/owner/i)},
+    {label:'Assignment status',val:pick(/assignment/i)}
+  ];
+  var factHtml=factDefs.map(function(f){
+    var v=f.val||'Not recorded';
+    return '<div class="cux8-fact'+(f.edit?' cx586-editable':'')+'"><span>'+esc(f.label)
+      +(f.edit?'<button class="cx586-pencil" title="Edit '+esc(f.label.toLowerCase())+'" onclick="_cx586Edit(this,\''+esc(name).replace(/'/g,"\\'")+'\',\''+f.edit+'\')">&#9998;</button>':'')
+      +'</span><strong>'+esc(v)+'</strong></div>';
+  }).join('');
+  var v=_cx586Vitals(name);
+  function money(n){return '$'+Math.round(Number(n)||0).toLocaleString();}
+  function vrow(l,val,sub){return '<div class="cx586-vrow"><span class="cx586-vl">'+l+'</span><span class="cx586-vv">'+val+(sub?' <em>'+sub+'</em>':'')+'</span></div>';}
+  var topHtml=v.top.length?('<div class="cx586-chips">'+v.top.map(function(t){return '<span class="cx586-chip">'+esc(t.p)+' <b>'+money(t.amt)+'</b></span>';}).join('')+'</div>'):'<div class="cx586-vempty">No line-item history loaded yet.</div>';
+  var vitalsHtml=''
+    +vrow('Last order',v.lastDate?(money(v.lastTotal)):'&mdash;',v.lastDate?esc(v.lastDate)+(v.daysLastOrder!=null?' \u00b7 '+v.daysLastOrder+'d ago':''):'none recorded')
+    +vrow('Last contact',v.daysTouch!=null?(v.daysTouch+'d ago'):'&mdash;',v.daysTouch==null?'no logged activity':'')
+    +vrow('Buying cadence',v.cad!=null?('~every '+v.cad+'d'):'&mdash;',v.cad!=null?(v.due?'<b class="cx586-due">reorder due</b>':'next expected in ~'+Math.max(0,v.cad-(v.daysLastOrder||0))+'d'):(v.orderCount<2?'needs 2+ orders':''))
+    +vrow('Open follow-ups',String(v.openFu),v.openFu>0?'in Action Center':'')
+    +'<div class="cx586-vl" style="margin-top:9px;">Top products</div>'+topHtml;
+  var h=_cx586Health(v);
+  return ''
+    +'<div class="cx586-wrap">'
+    +'<div class="cx586-tabs"><button class="cx586-tab on" data-t="facts" onclick="_cx586Tab(this)">Facts</button><button class="cx586-tab" data-t="vitals" onclick="_cx586Tab(this)">Vitals</button><span id="cx586-saved" class="cx586-saved">\u2713 saved</span></div>'
+    +'<div class="cx586-pane on" data-pane="facts"><div class="cux8-facts">'+factHtml+'</div></div>'
+    +'<div class="cx586-pane" data-pane="vitals">'+vitalsHtml+'</div>'
+    +'<div class="cx586-health-line" style="border-color:'+h.col+'55;"><span class="cx586-dot" style="background:'+h.col+';"></span>'+esc(h.txt)+'</div>'
+    +'</div>';
+};
+
  function buildOverview(markup){
   var doc=parse(markup),name=currentName(doc),modal=outerModal(doc);
   var nextTitle=text(doc.querySelector('.cw4-card.hot .cw4-nba-title'))||'Review the account and set the next customer action';
@@ -64019,7 +64139,7 @@ body.ps58-dashboard-active .wrap:after{
   return '<div class="cux8-shell"><div class="cux8-stage '+(window._cux8Direction==='back'?'back':'')+'">'+hero(doc,name)
    +'<div class="cux8-overview"><aside class="cux8-brief"><div class="cux8-kicker">Relationship Brief</div><div class="cux8-brief-title">Account intelligence</div><div class="cux8-brief-copy">The essentials a rep should understand before starting the next customer conversation.</div>'
    +'<div class="cux8-next"><span>Next best action</span><strong>'+esc(nextTitle)+'</strong><p>'+esc(nextCopy)+'</p></div>'
-   +'<div class="cux8-facts">'+factHtml+'</div><div class="cux8-health">'+healthHtml+'</div>'
+   +_cx586Brief(name,facts,health)
    +'<div class="cux8-brief-foot"><button class="cux8-action primary" onclick="_cux8Action(\'task\')">Create Next Action</button><button class="cux8-action" onclick="_cux8Open(\'service\')">Service & Approvals</button></div></aside>'
    +'<main class="cux8-modules">'+modules+'</main></div></div></div>'+modal
  }
@@ -64651,6 +64771,7 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V579={version:'v579',base:'v578',focus:'non-h
   return'note';
  }
  function industryFrom(frag){
+  try{var _n=text(frag.querySelector('.cux8-name'))||window._cw4CompanyName||'';var _o=window._cx586Get?_cx586Get(_n,'industry'):'';if(_o)return _o;}catch(e){}
   var facts=Array.prototype.slice.call(frag.querySelectorAll('.cux8-fact'));
   var hit=facts.filter(function(f){return /industry/i.test(text(f.querySelector('span')))})[0];
   return hit?text(hit.querySelector('strong')):''
@@ -65102,6 +65223,29 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 </body>
 </html>
 
+<style id="cx586-brief-tabs">
+.cx586-tabs{position:relative;display:flex;gap:4px;margin-top:14px;padding:4px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(4,10,19,.4);}
+.cx586-tab{flex:1;min-height:32px;border:0;border-radius:10px;background:transparent;color:#8797AD;font-size:10.5px;font-weight:900;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;transition:.15s ease;}
+.cx586-tab.on{background:linear-gradient(135deg,rgba(0,175,239,.22),rgba(0,175,239,.08));color:#EAF6FF;box-shadow:inset 0 1px 0 rgba(255,255,255,.1);}
+.cx586-saved{position:absolute;right:10px;top:-20px;color:#47D16C;font-size:9px;font-weight:900;opacity:0;transition:opacity .3s;}
+.cx586-pane{display:none;margin-top:11px;}
+.cx586-pane.on{display:block;animation:cux8Content .2s ease both;}
+.cx586-editable span{display:flex!important;align-items:center;gap:6px;}
+.cx586-pencil{border:0;background:transparent;color:#00AFEF;font-size:11px;cursor:pointer;padding:0 2px;line-height:1;opacity:.75;}
+.cx586-pencil:hover{opacity:1;transform:scale(1.15);}
+.cx586-edit-in{width:100%;box-sizing:border-box;margin-top:4px;padding:6px 8px;border-radius:8px;border:1px solid rgba(0,175,239,.5);background:rgba(0,20,35,.6);color:#fff;font-size:11px;font-weight:800;outline:none;}
+.cx586-vrow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.06);}
+.cx586-vl{color:#718097;font-size:8.6px;font-weight:950;text-transform:uppercase;letter-spacing:.7px;}
+.cx586-vv{color:#F0F5FC;font-size:12.5px;font-weight:900;text-align:right;}
+.cx586-vv em{display:block;color:#8797AD;font-size:9.4px;font-weight:600;font-style:normal;margin-top:2px;}
+.cx586-due{color:#FA873D;}
+.cx586-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;}
+.cx586-chip{padding:6px 9px;border-radius:999px;border:1px solid rgba(71,209,108,.28);background:rgba(71,209,108,.08);color:#C9F5D8;font-size:9.6px;font-weight:800;}
+.cx586-chip b{color:#7BF0A5;}
+.cx586-vempty{color:#718097;font-size:9.6px;margin-top:6px;}
+.cx586-health-line{display:flex;align-items:center;gap:8px;margin-top:13px;padding:9px 12px;border:1px solid;border-radius:12px;background:rgba(255,255,255,.02);color:#DCE6F2;font-size:11px;font-weight:850;}
+.cx586-dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 10px currentColor;flex:none;}
+</style>
 <style id="cux584-final-viewport-authority">
 /* ===== v584 FINAL AUTHORITY — customer profile must fit the viewport =====
    Appended last on purpose: later !important wins the cascade, ending the
