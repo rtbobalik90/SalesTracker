@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v581 — Wide Customer Notes & Two-Column Modules</title>
+<title>Sales Tracker v582 — Adaptive Customer Profile & Equal Height</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -64747,5 +64747,190 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V579={version:'v579',base:'v578',focus:'non-h
 <script id="tcp-customer-command-center-v581-version">
 window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-column modules and expanded readable communications desk'};
 </script>
+
+
+<style id="tcp-customer-command-center-v582-adaptive-equal-height">
+/* ===== v582 CUSTOMER PROFILE RESPONSIVE BALANCE =====
+   Keep the three customer work areas visually aligned, remove the seasonal
+   planning block from the profile, and preserve the closeout dropdown only
+   inside the Call Workspace completion step. */
+
+/* The standalone Christmas planning record no longer belongs on the customer
+   overview. It remains available as a compact call-closeout dropdown. */
+#rp-overlay #cc547-company-panel,
+#rp-overlay .cc547-company-panel{
+  display:none!important;
+}
+
+/* The overview's three working areas share one visual baseline. */
+#rp-overlay .cux8-overview{
+  align-items:stretch!important;
+}
+#rp-overlay .cux8-brief{
+  align-self:stretch!important;
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:728px!important;
+  height:auto!important;
+}
+#rp-overlay .cux8-brief-foot{
+  margin-top:auto!important;
+}
+#rp-overlay .cux8-modules,
+#rp-overlay .cux10-notes{
+  align-self:stretch!important;
+}
+
+/* Keep the same three-column composition across normal laptop and desktop
+   workspaces; the columns flex rather than abruptly changing composition. */
+@media(min-width:1360px){
+  #rp-overlay .cux8-overview{
+    grid-template-columns:minmax(245px,.58fr) minmax(500px,1.24fr) minmax(325px,.92fr)!important;
+    gap:clamp(14px,1vw,18px)!important;
+  }
+  #rp-overlay .cux10-notes{
+    grid-column:auto!important;
+    min-height:728px!important;
+    height:728px!important;
+    max-height:728px!important;
+  }
+}
+
+/* Medium workspaces keep Account Intelligence level with the 3-row module
+   stack, while Notes becomes a full-width readable desk below. */
+@media(min-width:901px) and (max-width:1359px){
+  #rp-overlay .cux8-overview{
+    grid-template-columns:minmax(255px,.62fr) minmax(500px,1.38fr)!important;
+    align-items:stretch!important;
+  }
+  #rp-overlay .cux8-brief{
+    min-height:728px!important;
+  }
+  #rp-overlay .cux10-notes{
+    grid-column:1/-1!important;
+    min-height:520px!important;
+    height:clamp(520px,62vh,650px)!important;
+    max-height:650px!important;
+  }
+}
+
+/* Stacked layouts use content height and retain the same spacing rhythm. */
+@media(max-width:900px){
+  #rp-overlay .cux8-overview{
+    grid-template-columns:1fr!important;
+    align-items:start!important;
+  }
+  #rp-overlay .cux8-brief{
+    min-height:0!important;
+    height:auto!important;
+  }
+  #rp-overlay .cux10-notes{
+    min-height:540px!important;
+    height:min(650px,72vh)!important;
+    max-height:650px!important;
+  }
+}
+
+/* Compact closeout-only seasonal selector. */
+#rp-overlay .cc547-christmas-card.cc582-closeout-select{
+  display:grid!important;
+  grid-template-columns:minmax(180px,.72fr) minmax(190px,1fr)!important;
+  align-items:center!important;
+  gap:10px 18px!important;
+  margin:0 0 12px!important;
+  padding:13px 15px!important;
+  border-radius:14px!important;
+}
+#rp-overlay .cc547-christmas-card.cc582-closeout-select label,
+#rp-overlay .cc547-christmas-card.cc582-closeout-select strong,
+#rp-overlay .cc547-christmas-card.cc582-closeout-select p{
+  grid-column:1!important;
+}
+#rp-overlay .cc547-christmas-card.cc582-closeout-select select{
+  grid-column:2!important;
+  grid-row:1/4!important;
+  margin:0!important;
+  min-height:42px!important;
+}
+@media(max-width:700px){
+  #rp-overlay .cc547-christmas-card.cc582-closeout-select{
+    grid-template-columns:1fr!important;
+  }
+  #rp-overlay .cc547-christmas-card.cc582-closeout-select select{
+    grid-column:1!important;
+    grid-row:auto!important;
+    margin-top:4px!important;
+  }
+}
+</style>
+
+<script id="tcp-customer-command-center-v582-behavior">
+(function(){
+ 'use strict';
+ if(window.TCP_CUSTOMER_COMMAND_CENTER_V582)return;
+ var scheduled=false;
+ function isCompleteTab(){
+  if(window._call540Tab==='complete')return true;
+  var active=document.querySelector('#rp-overlay .cl2-wtab.on');
+  return !!(active&&/complete call/i.test(active.textContent||''));
+ }
+ function normalizeSeasonalControl(){
+  /* Remove the old full-width customer-profile planning block every time an
+     older renderer tries to add it. */
+  Array.prototype.slice.call(document.querySelectorAll('#rp-overlay #cc547-company-panel,#rp-overlay .cc547-company-panel')).forEach(function(el){el.remove()});
+
+  var cards=Array.prototype.slice.call(document.querySelectorAll('#rp-overlay .cc547-christmas-card'));
+  if(!cards.length)return;
+  /* The legacy installer can add another card after a rerender. Keep only the
+     newest control so there is never a duplicate. */
+  var card=cards[cards.length-1];
+  cards.slice(0,-1).forEach(function(el){el.remove()});
+  card.classList.add('cc582-closeout-select');
+
+  if(!isCompleteTab()){
+   card.style.display='none';
+   return;
+  }
+  var center=document.querySelector('#rp-overlay .cl2-center-body');
+  if(!center){card.style.display='none';return}
+  var firstSection=center.querySelector('.cl2-section');
+  if(card.parentNode!==center){
+   if(firstSection)center.insertBefore(card,firstSection);
+   else center.appendChild(card);
+  }else if(firstSection&&card.nextElementSibling!==firstSection){
+   center.insertBefore(card,firstSection);
+  }
+  card.style.display='grid';
+ }
+ function schedule(){
+  if(scheduled)return;
+  scheduled=true;
+  setTimeout(function(){scheduled=false;normalizeSeasonalControl()},20);
+ }
+ var oldGoTab=window._call540GoTab;
+ if(typeof oldGoTab==='function'){
+  window._call540GoTab=function(){
+   var result=oldGoTab.apply(this,arguments);
+   schedule();
+   return result;
+  };
+ }
+ var observer=new MutationObserver(schedule);
+ function start(){
+  var root=document.getElementById('rp-overlay')||document.body;
+  observer.observe(root,{childList:true,subtree:true});
+  schedule();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+ else start();
+ window.TCP_CUSTOMER_COMMAND_CENTER_V582={
+  version:'v582',
+  base:'v581',
+  focus:'adaptive customer layout, equal-height account intelligence, and call-closeout-only seasonal selector',
+  normalizeSeasonalControl:normalizeSeasonalControl
+ };
+})();
+</script>
+
 </body>
 </html>
