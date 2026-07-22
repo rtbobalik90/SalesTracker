@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v578 — Rep Portal Core Repair</title>
+<title>Sales Tracker v579 — Customer Page Spacing</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -64195,6 +64195,99 @@ body.ps58-dashboard-active .wrap:after{
 </style>
 <script id="tcp-customer-command-center-v577-version">
 window.TCP_CUSTOMER_COMMAND_CENTER_V577={version:'v577',base:'v576',focus:'glass tiles and relationship brief legibility'};
+</script>
+
+
+
+<style id="tcp-customer-command-center-v579-spacing">
+/* ===== v579 CUSTOMER PAGE SHELL + TILE SPACING =====
+   The rep identity and reporting controls belong only on My Day. All other
+   Rep Portal pages use the reclaimed space for their own page-level header. */
+
+/* My Day already carries the rep name and period inside its command hero. */
+#rp-overlay .rp2-main > .rp2-top{
+  display:none!important;
+}
+#rp-overlay .rp2-main{
+  padding-top:16px!important;
+}
+#rp-overlay #rp2-page{
+  padding-top:0!important;
+}
+
+/* Give the customer identity banner and the overview a clear visual break. */
+#rp-overlay .cux8-stage > .cux8-hero + .cux8-overview{
+  margin-top:22px!important;
+}
+#rp-overlay .cux8-overview{
+  align-items:start!important;
+}
+
+/* Let each tile size around its content instead of stretching to the height
+   of the Account Intelligence panel. This removes the large empty lower area. */
+#rp-overlay .cux8-modules{
+  grid-template-rows:none!important;
+  grid-auto-rows:minmax(232px,auto)!important;
+  align-content:start!important;
+}
+#rp-overlay .cux8-tile{
+  min-height:232px!important;
+  padding:22px 20px 18px!important;
+  justify-content:flex-start!important;
+}
+#rp-overlay .cux8-tile-icon{
+  width:70px!important;
+  height:70px!important;
+  flex-basis:70px!important;
+  margin:0 auto!important;
+  border-radius:23px!important;
+  font-size:31px!important;
+}
+#rp-overlay .cux8-tile-name{
+  margin-top:14px!important;
+  font-size:19px!important;
+}
+#rp-overlay .cux8-tile-copy{
+  max-width:92%!important;
+  margin-top:8px!important;
+  font-size:10.3px!important;
+  line-height:1.52!important;
+}
+#rp-overlay .cux8-tile-meta{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  margin:16px auto 0!important;
+}
+#rp-overlay .cux8-tile:after{
+  right:15px!important;
+  bottom:14px!important;
+}
+
+@media(max-width:1450px){
+  #rp-overlay .cux8-stage > .cux8-hero + .cux8-overview{margin-top:18px!important}
+  #rp-overlay .cux8-modules{grid-auto-rows:minmax(220px,auto)!important}
+  #rp-overlay .cux8-tile{min-height:220px!important;padding:20px 18px 16px!important}
+  #rp-overlay .cux8-tile-icon{width:64px!important;height:64px!important;flex-basis:64px!important;font-size:29px!important}
+  #rp-overlay .cux8-tile-name{margin-top:12px!important;font-size:18px!important}
+  #rp-overlay .cux8-tile-copy{font-size:9.8px!important}
+  #rp-overlay .cux8-tile-meta{margin-top:14px!important}
+}
+@media(max-width:1180px){
+  #rp-overlay .rp2-main{padding-top:12px!important}
+  #rp-overlay .cux8-modules{grid-auto-rows:minmax(218px,auto)!important}
+}
+@media(max-width:760px){
+  #rp-overlay .rp2-main{padding-top:10px!important}
+  #rp-overlay .cux8-stage > .cux8-hero + .cux8-overview{margin-top:14px!important}
+  #rp-overlay .cux8-modules{grid-auto-rows:minmax(210px,auto)!important}
+  #rp-overlay .cux8-tile{min-height:210px!important}
+}
+</style>
+<script id="tcp-customer-command-center-v579-version">
+window.TCP_CUSTOMER_COMMAND_CENTER_V579={version:'v579',base:'v578',focus:'non-home header removal and customer spacing'};
 </script>
 
 </body>
