@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v588 — Call Workspace Readability & Queue</title>
+<title>Sales Tracker v590 — Call Queue Tray Rebuild</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -65834,178 +65834,189 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
 
 
 <!-- ======================================================================
-     v589 · HORIZONTAL CALL QUEUE DRAWER
-     Replaces the v588 top-right queue dropdown with a small lower-left
-     banner handle and a horizontally scrolling customer strip.
+     v590 · CALL QUEUE TRAY REBUILD
+     Matches the supplied reference: large circular chevron at the right of
+     the command banner and a full-width horizontal customer tray below it.
      ====================================================================== -->
-<style id="tcp-v589-horizontal-call-queue-drawer">
-/* Retire the v588 queue control without disturbing the readability work. */
+<style id="tcp-v590-call-queue-tray">
+/* Retire both earlier queue experiments. */
 #rp-overlay .ps88-queue-toggle,
-#rp-overlay .ps88-queue-panel{display:none!important;}
+#rp-overlay .ps88-queue-panel,
+#rp-overlay .ps89-queue-handle,
+#rp-overlay .ps89-queue-drawer,
+#rp-overlay .ps62-queue-strip{display:none!important;}
 
+/* The toggle is a real fifth command-bar column, matching the reference. */
 #rp-overlay .ps62-command{
   position:relative!important;
-  overflow:visible!important;
-  z-index:45!important;
+  overflow:hidden!important;
+  z-index:3!important;
+  grid-template-columns:minmax(160px,.42fr) minmax(330px,1.05fr) minmax(315px,.82fr) minmax(300px,auto) 64px!important;
+  column-gap:16px!important;
 }
-
-/* Small arrow handle anchored to the lower-left edge of the banner. */
-#rp-overlay .ps89-queue-handle{
-  position:absolute;
-  left:18px;
-  bottom:-15px;
-  z-index:8;
-  min-width:48px;
-  height:31px;
-  padding:0 9px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  border:1px solid rgba(0,175,239,.34);
-  border-radius:0 0 12px 12px;
-  background:linear-gradient(180deg,#102334,#0A1722);
-  color:#8DE8FF;
-  box-shadow:0 10px 24px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.07);
-  cursor:pointer;
-  font-family:inherit;
-  transition:background .16s ease,border-color .16s ease,transform .16s ease;
+#rp-overlay .ps62-command-actions{
+  min-width:300px!important;
+  grid-template-columns:1fr 1fr!important;
 }
-#rp-overlay .ps89-queue-handle:hover{
-  background:linear-gradient(180deg,#173247,#0E2231);
-  border-color:rgba(0,175,239,.58);
-}
-#rp-overlay .ps89-queue-handle:active{transform:translateY(1px);}
-#rp-overlay .ps89-queue-handle .ps89-arrow{
-  display:block;
-  font-size:17px;
-  line-height:1;
-  font-weight:950;
-  transition:transform .22s ease;
-}
-#rp-overlay .ps89-queue-handle[aria-expanded="true"] .ps89-arrow{transform:rotate(180deg);}
-#rp-overlay .ps89-queue-handle .ps89-count{
+#rp-overlay .ps90-queue-toggle{
+  width:58px;
+  height:58px;
+  padding:0;
   display:grid;
   place-items:center;
-  min-width:19px;
-  height:19px;
-  padding:0 5px;
-  border-radius:999px;
-  background:rgba(0,175,239,.14);
-  color:#C6F5FF;
-  font-size:8.5px;
-  font-weight:950;
+  justify-self:end;
+  border:3px solid transparent;
+  border-radius:50%;
+  background:
+    linear-gradient(145deg,#10202C,#08131D) padding-box,
+    linear-gradient(135deg,#FA873D 0%,#F5A15E 30%,#00AFEF 78%,#60DCF8 100%) border-box;
+  color:#EEF9FF;
+  box-shadow:0 12px 28px rgba(0,0,0,.36),0 0 20px rgba(0,175,239,.10),inset 0 1px 0 rgba(255,255,255,.10);
+  cursor:pointer;
+  transition:transform .17s ease,filter .17s ease,box-shadow .17s ease;
 }
+#rp-overlay .ps90-queue-toggle:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.12);
+  box-shadow:0 15px 32px rgba(0,0,0,.42),0 0 24px rgba(0,175,239,.18),inset 0 1px 0 rgba(255,255,255,.12);
+}
+#rp-overlay .ps90-queue-toggle:active{transform:translateY(1px);}
+#rp-overlay .ps90-chevrons{
+  width:24px;
+  height:25px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  transition:transform .22s ease;
+}
+#rp-overlay .ps90-chevrons i{
+  display:block;
+  width:12px;
+  height:12px;
+  border-right:3px solid currentColor;
+  border-bottom:3px solid currentColor;
+  transform:rotate(45deg);
+  border-radius:1px;
+}
+#rp-overlay .ps90-queue-toggle[aria-expanded="true"] .ps90-chevrons{transform:rotate(180deg);}
 
-/* Drawer overlays the top of the workbench, avoiding a page-height jump. */
-#rp-overlay .ps89-queue-drawer{
-  position:absolute;
-  left:0;
-  right:0;
-  top:calc(100% + 8px);
-  z-index:7;
+/* Full-width tray sits in normal flow and cleanly pushes the workbench down. */
+#rp-overlay .ps90-queue-tray{
+  position:relative;
+  z-index:2;
   max-height:0;
-  padding:0 14px;
+  min-height:0;
+  margin-top:-14px;
+  padding:0 16px;
   overflow:hidden;
   opacity:0;
   pointer-events:none;
-  transform:translateY(-14px) scaleY(.94);
-  transform-origin:top;
-  border:1px solid transparent;
-  border-radius:0 0 18px 18px;
-  background:linear-gradient(180deg,rgba(9,21,31,.985),rgba(7,15,24,.985));
-  box-shadow:0 24px 52px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.06);
-  transition:max-height .25s ease,padding .25s ease,opacity .18s ease,transform .25s ease,border-color .18s ease;
+  border:0 solid transparent;
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(250,135,61,.08),transparent 32%),
+    linear-gradient(145deg,#0D1823,#07111A);
+  box-shadow:0 18px 46px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.055);
+  transform:translateY(-8px);
+  transition:max-height .25s ease,margin .25s ease,padding .25s ease,opacity .16s ease,transform .25s ease,border-color .18s ease;
 }
-#rp-overlay .ps89-queue-drawer.open{
+#rp-overlay .ps90-queue-tray.open{
   max-height:178px;
-  padding:12px 14px 13px;
+  margin-top:-2px;
+  padding:13px 14px 12px;
   opacity:1;
   pointer-events:auto;
-  transform:translateY(0) scaleY(1);
-  border-color:rgba(0,175,239,.22);
+  transform:translateY(0);
+  border-width:1px;
+  border-color:rgba(250,135,61,.20);
 }
-#rp-overlay .ps89-queue-meta{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin:0 2px 9px;
-}
-#rp-overlay .ps89-queue-meta strong{
-  color:#F7FBFF;
+#rp-overlay .ps90-queue-title{
+  margin:0 0 9px 2px;
+  color:#F3F7FB;
   font-size:11px;
   font-weight:950;
   letter-spacing:.01em;
 }
-#rp-overlay .ps89-queue-meta span{
-  color:#7F91A3;
-  font-size:9px;
-  font-weight:800;
-}
-#rp-overlay .ps89-queue-track{
-  display:flex;
-  align-items:stretch;
-  gap:10px;
-  width:100%;
-  overflow-x:auto;
-  overflow-y:hidden;
-  scroll-behavior:smooth;
-  scroll-snap-type:x proximity;
-  overscroll-behavior-inline:contain;
-  padding:0 2px 7px;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(0,175,239,.42) rgba(255,255,255,.04);
-}
-#rp-overlay .ps89-queue-track::-webkit-scrollbar{height:7px;}
-#rp-overlay .ps89-queue-track::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:999px;}
-#rp-overlay .ps89-queue-track::-webkit-scrollbar-thumb{background:rgba(0,175,239,.42);border-radius:999px;}
-
-#rp-overlay .ps89-customer-card{
-  flex:0 0 clamp(225px,19vw,292px);
-  min-width:0;
-  height:91px;
+#rp-overlay .ps90-queue-row{
   display:grid;
-  grid-template-columns:34px minmax(0,1fr) auto;
+  grid-template-columns:34px minmax(0,1fr) 34px;
   align-items:center;
   gap:10px;
-  padding:11px 12px;
-  border:1px solid rgba(148,163,184,.14);
-  border-radius:14px;
-  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
-  color:inherit;
-  text-align:left;
-  cursor:pointer;
-  scroll-snap-align:start;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
-  transition:transform .15s ease,border-color .15s ease,background .15s ease;
-  font-family:inherit;
+  min-width:0;
 }
-#rp-overlay .ps89-customer-card:hover{
-  transform:translateY(-1px);
-  border-color:rgba(0,175,239,.40);
-  background:linear-gradient(145deg,rgba(0,175,239,.095),rgba(255,255,255,.02));
-}
-#rp-overlay .ps89-customer-card.current{
-  border-color:rgba(93,202,165,.48);
-  background:linear-gradient(145deg,rgba(93,202,165,.115),rgba(0,175,239,.055));
-}
-#rp-overlay .ps89-card-rank{
+#rp-overlay .ps90-scroll-btn{
   width:34px;
   height:34px;
   display:grid;
   place-items:center;
+  padding:0;
+  border:2px solid transparent;
   border-radius:50%;
-  background:#162635;
-  color:#A9BBCB;
-  font-size:10px;
-  font-weight:950;
+  background:
+    linear-gradient(#10202C,#10202C) padding-box,
+    linear-gradient(135deg,#FA873D,#00AFEF) border-box;
+  color:#DFF7FF;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(0,0,0,.30);
+  transition:transform .15s ease,filter .15s ease;
 }
-#rp-overlay .ps89-customer-card.current .ps89-card-rank{background:rgba(93,202,165,.17);color:#A7F0D4;}
-#rp-overlay .ps89-card-main{min-width:0;display:block;}
-#rp-overlay .ps89-card-name{
-  display:block;
-  color:#fff;
+#rp-overlay .ps90-scroll-btn:hover{transform:scale(1.05);filter:brightness(1.14);}
+#rp-overlay .ps90-scroll-btn:disabled{opacity:.30;cursor:default;filter:none;transform:none;}
+#rp-overlay .ps90-track{
+  min-width:0;
+  display:flex;
+  align-items:stretch;
+  gap:10px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:0 0 8px;
+  scroll-behavior:smooth;
+  scroll-snap-type:x proximity;
+  overscroll-behavior-inline:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(206,217,226,.70) rgba(255,255,255,.055);
+}
+#rp-overlay .ps90-track::-webkit-scrollbar{height:6px;}
+#rp-overlay .ps90-track::-webkit-scrollbar-track{background:rgba(255,255,255,.055);border-radius:999px;}
+#rp-overlay .ps90-track::-webkit-scrollbar-thumb{background:rgba(206,217,226,.72);border-radius:999px;}
+#rp-overlay .ps90-customer-card{
+  position:relative;
+  flex:0 0 clamp(184px,14.2vw,218px);
+  min-width:0;
+  height:82px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  padding:11px 42px 10px 13px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:11px;
+  background:linear-gradient(145deg,rgba(255,255,255,.042),rgba(255,255,255,.014));
+  color:inherit;
+  text-align:left;
+  font-family:inherit;
+  cursor:pointer;
+  scroll-snap-align:start;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+  transition:transform .15s ease,border-color .15s ease,background .15s ease,box-shadow .15s ease;
+}
+#rp-overlay .ps90-customer-card:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,175,239,.44);
+  background:linear-gradient(145deg,rgba(0,175,239,.085),rgba(255,255,255,.018));
+}
+#rp-overlay .ps90-customer-card.current{
+  border-color:#FA873D;
+  background:linear-gradient(145deg,rgba(250,135,61,.11),rgba(0,175,239,.06));
+  box-shadow:0 0 0 1px rgba(250,135,61,.36),0 10px 28px rgba(0,175,239,.10),inset 0 1px 0 rgba(255,255,255,.06);
+}
+#rp-overlay .ps90-card-name{
+  width:100%;
+  color:#F7FAFD;
   font-size:11.5px;
   line-height:1.2;
   font-weight:950;
@@ -66013,197 +66024,275 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
   overflow:hidden;
   text-overflow:ellipsis;
 }
-#rp-overlay .ps89-card-reason{
-  display:-webkit-box;
+#rp-overlay .ps90-card-location,
+#rp-overlay .ps90-card-last{
+  width:100%;
   margin-top:5px;
-  color:#8192A5;
-  font-size:9px;
-  line-height:1.35;
-  overflow:hidden;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-}
-#rp-overlay .ps89-card-due{
-  align-self:start;
-  color:#AFC0CF;
-  font-size:8px;
-  line-height:1.25;
-  font-weight:900;
+  color:#8A99A9;
+  font-size:8.5px;
+  line-height:1.2;
   white-space:nowrap;
-  text-align:right;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-
-/* Plus card always sits at the end of the currently loaded set. */
-#rp-overlay .ps89-load-card{
-  flex:0 0 126px;
-  height:91px;
+#rp-overlay .ps90-card-last{margin-top:4px;color:#A5B3C1;}
+#rp-overlay .ps90-card-check{
+  position:absolute;
+  right:11px;
+  top:50%;
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  transform:translateY(-50%);
+  border:1px solid rgba(93,202,165,.68);
+  border-radius:50%;
+  background:rgba(93,202,165,.08);
+  color:#8FE6C7;
+  font-size:15px;
+  opacity:0;
+}
+#rp-overlay .ps90-customer-card.current .ps90-card-check{opacity:1;}
+#rp-overlay .ps90-load-card{
+  flex:0 0 116px;
+  height:82px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:4px;
-  border:1px dashed rgba(93,202,165,.42);
-  border-radius:14px;
+  border:1px dashed rgba(93,202,165,.44);
+  border-radius:11px;
   background:rgba(93,202,165,.055);
   color:#A9EFD6;
+  font-family:inherit;
   cursor:pointer;
   scroll-snap-align:end;
-  font-family:inherit;
-  transition:background .15s ease,border-color .15s ease,transform .15s ease;
+  transition:transform .15s ease,background .15s ease,border-color .15s ease;
 }
-#rp-overlay .ps89-load-card:hover{transform:translateY(-1px);background:rgba(93,202,165,.12);border-color:rgba(93,202,165,.68);}
-#rp-overlay .ps89-load-card b{font-size:24px;line-height:1;font-weight:600;}
-#rp-overlay .ps89-load-card span{font-size:9px;font-weight:950;}
-#rp-overlay .ps89-load-card small{font-size:7.5px;color:#7FA895;}
-#rp-overlay .ps89-queue-empty{
+#rp-overlay .ps90-load-card:hover{transform:translateY(-1px);background:rgba(93,202,165,.12);border-color:rgba(93,202,165,.70);}
+#rp-overlay .ps90-load-card b{font-size:24px;line-height:1;font-weight:500;}
+#rp-overlay .ps90-load-card span{font-size:8.5px;font-weight:950;}
+#rp-overlay .ps90-load-card small{font-size:7px;color:#7EA493;}
+#rp-overlay .ps90-empty{
   flex:1 0 100%;
-  min-height:88px;
+  height:82px;
   display:grid;
   place-items:center;
   border:1px dashed rgba(148,163,184,.16);
-  border-radius:14px;
-  color:#8090A2;
+  border-radius:11px;
+  color:#8190A0;
   font-size:10px;
 }
 
-@media(max-width:900px){
-  #rp-overlay .ps89-queue-handle{left:12px;}
-  #rp-overlay .ps89-queue-drawer{left:-1px;right:-1px;top:calc(100% + 7px);}
-  #rp-overlay .ps89-customer-card{flex-basis:245px;}
+@media(max-width:1450px){
+  #rp-overlay .ps62-command{
+    grid-template-columns:150px minmax(280px,1fr) minmax(275px,.78fr) minmax(265px,auto) 58px!important;
+    gap:13px!important;
+  }
+  #rp-overlay .ps62-command-actions{min-width:265px!important;}
+  #rp-overlay .ps90-queue-toggle{width:54px;height:54px;}
+  #rp-overlay .ps90-customer-card{flex-basis:190px;}
+}
+@media(max-width:1180px){
+  #rp-overlay .ps62-command{
+    grid-template-columns:minmax(150px,.45fr) minmax(330px,1fr) 58px!important;
+  }
+  #rp-overlay .ps62-stepper{grid-column:1/3;}
+  #rp-overlay .ps62-command-actions{grid-column:2/3;grid-row:2;}
+  #rp-overlay .ps90-queue-toggle{grid-column:3;grid-row:1/3;align-self:center;}
+}
+@media(max-width:760px){
+  #rp-overlay .ps62-command{grid-template-columns:1fr 54px!important;}
+  #rp-overlay .ps62-command-label{grid-column:1;}
+  #rp-overlay .ps62-command>div:nth-child(2){grid-column:1/3;}
+  #rp-overlay .ps62-stepper{grid-column:1/3;}
+  #rp-overlay .ps62-command-actions{grid-column:1/3;grid-row:auto;}
+  #rp-overlay .ps90-queue-toggle{grid-column:2;grid-row:1;}
+  #rp-overlay .ps90-queue-row{grid-template-columns:30px minmax(0,1fr) 30px;gap:7px;}
+  #rp-overlay .ps90-scroll-btn{width:30px;height:30px;}
+  #rp-overlay .ps90-customer-card{flex-basis:205px;}
 }
 </style>
 
-<script id="tcp-v589-horizontal-call-queue-drawer-js">
+<script id="tcp-v590-call-queue-tray-js">
 (function(){
   'use strict';
-  var state=window._ps89QueueState||(window._ps89QueueState={open:false,limit:5});
+  var state=window._ps90QueueState||(window._ps90QueueState={open:false,limit:7});
   var scheduled=false;
 
   function arr(value){
     if(Array.isArray(value))return value;
     if(!value)return[];
-    try{return typeof value.length==='number'&&typeof value!=='string'?Array.prototype.slice.call(value):Object.keys(value).map(function(k){return value[k]}).filter(Boolean)}catch(e){return[]}
+    try{
+      if(typeof value.length==='number'&&typeof value!=='string')return Array.prototype.slice.call(value);
+      return Object.keys(value).map(function(key){return value[key]}).filter(Boolean)
+    }catch(error){return[]}
   }
   function clean(value){return String(value==null?'':value).trim()}
   function norm(value){return clean(value).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
-  function currentData(){
-    try{return window.TCP_CALL_V540&&typeof window.TCP_CALL_V540.currentData==='function'?window.TCP_CALL_V540.currentData():null}catch(e){return null}
+  function field(object,names,def){
+    for(var i=0;i<names.length;i++){
+      var value=object&&object[names[i]];
+      if(value!=null&&clean(value)!=='')return value
+    }
+    return def==null?'':def
   }
-  function rows(){var data=currentData();return arr(data&&data.g&&data.g.calls)}
-  function currentCompany(){var data=currentData();return clean(data&&data.company)}
-  function dueText(item){
-    var value=item&&item.due;
-    if(!value)return'Due today';
+  function data(){
+    try{return window.TCP_CALL_V540&&typeof window.TCP_CALL_V540.currentData==='function'?window.TCP_CALL_V540.currentData():null}catch(error){return null}
+  }
+  function queue(){var current=data();return arr(current&&current.g&&current.g.calls)}
+  function currentCompany(){var current=data();return clean(current&&current.company)}
+  function customerRecord(company){
+    var candidates=[];
+    try{candidates=candidates.concat(arr(S&&S.customers),arr(S&&S.customerRecords),arr(S&&S.companies))}catch(error){}
+    return candidates.filter(function(customer){
+      return norm(field(customer,['name','customer','company','companyName'],''))===norm(company)
+    })[0]||null
+  }
+  function locationText(item){
+    var record=customerRecord(clean(item&&item.customer));
+    var profile=record&&record.profile||record||{};
+    var city=field(profile,['city','locationCity'],''),stateName=field(profile,['state','province','locationState'],''),location=field(profile,['location','address','address1'],'');
+    if(city||stateName)return[city,stateName].filter(Boolean).join(', ');
+    if(location)return clean(location).split(/\n|\r/)[0];
+    return clean(item&&item.contact)||clean(item&&item.source)||clean(item&&item.reason)||'Customer account'
+  }
+  function relativeDate(value){
+    if(!value)return'';
     try{
       var date=/^\d{4}-\d{2}-\d{2}$/.test(String(value))?new Date(String(value)+'T12:00:00'):new Date(value);
-      return isNaN(date.getTime())?'Due today':date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    }catch(e){return'Due today'}
+      if(isNaN(date.getTime()))return'';
+      var days=Math.max(0,Math.floor((Date.now()-date.getTime())/86400000));
+      if(days===0)return'today';
+      if(days===1)return'1d ago';
+      if(days<7)return days+'d ago';
+      if(days<35)return Math.floor(days/7)+'w ago';
+      if(days<365)return Math.floor(days/30)+'mo ago';
+      return Math.floor(days/365)+'y ago'
+    }catch(error){return''}
+  }
+  function lastContactText(item){
+    var record=customerRecord(clean(item&&item.customer));
+    var profile=record&&record.profile||record||{};
+    var last=field(record||{},['lastContactDate','lastContactAt','lastCallDate'],'')||field(profile,['lastContactDate','lastContactAt','lastCallDate'],'')||field(item||{},['lastContactDate','lastContactAt','lastCallDate'],'');
+    var relative=relativeDate(last);
+    if(relative)return'Last call '+relative;
+    var due=field(item||{},['due','dueDate'],'');
+    var dueRelative=relativeDate(due);
+    return dueRelative?'Due '+dueRelative:'No recent call history'
   }
   function signature(){
-    var list=rows();
-    return [state.open?'1':'0',state.limit,currentCompany(),list.length].concat(list.map(function(item){
-      return [clean(item&&item.customer),clean(item&&item.rank),clean(item&&item.due),clean(item&&item.reason||item&&item.copy)].join('~');
-    })).join('|');
+    var list=queue();
+    return [list.length,currentCompany(),state.limit].concat(list.map(function(item){return clean(item&&item.customer)+'~'+clean(item&&item.due)+'~'+clean(item&&item.reason)})).join('|')
   }
-  function makeCustomerCard(item,index,active){
+  function card(item,index){
+    var company=clean(item&&item.customer)||'Unnamed customer';
+    var active=norm(company)===norm(currentCompany());
     var button=document.createElement('button');
     button.type='button';
-    button.className='ps89-customer-card'+(active?' current':'');
-    button.setAttribute('data-company',clean(item&&item.customer));
-
-    var rank=document.createElement('span');
-    rank.className='ps89-card-rank';
-    rank.textContent=clean(item&&item.rank)||String(index+1);
-
-    var main=document.createElement('span');
-    main.className='ps89-card-main';
-    var name=document.createElement('span');
-    name.className='ps89-card-name';
-    name.textContent=clean(item&&item.customer)||'Unnamed customer';
-    var reason=document.createElement('span');
-    reason.className='ps89-card-reason';
-    reason.textContent=clean(item&&item.reason||item&&item.copy)||'Customer call';
-    main.appendChild(name);
-    main.appendChild(reason);
-
-    var due=document.createElement('span');
-    due.className='ps89-card-due';
-    due.textContent=dueText(item);
-
-    button.appendChild(rank);
-    button.appendChild(main);
-    button.appendChild(due);
-    button.addEventListener('click',function(){
-      var company=button.getAttribute('data-company')||'';
+    button.className='ps90-customer-card'+(active?' current':'');
+    button.setAttribute('data-company',company);
+    button.innerHTML='<span class="ps90-card-name"></span><span class="ps90-card-location"></span><span class="ps90-card-last"></span><span class="ps90-card-check">✓</span>';
+    button.querySelector('.ps90-card-name').textContent=company;
+    button.querySelector('.ps90-card-location').textContent=locationText(item);
+    button.querySelector('.ps90-card-last').textContent=lastContactText(item);
+    button.addEventListener('click',function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      var selected=button.getAttribute('data-company')||'';
       state.open=false;
-      if(company&&typeof window._call540SelectCompany==='function')window._call540SelectCompany(encodeURIComponent(company));
-      setTimeout(schedule,0);
+      if(selected&&typeof window._call540SelectCompany==='function'){
+        window._call540SelectCompany(encodeURIComponent(selected));
+      }
+      setTimeout(schedule,0)
     });
-    return button;
+    return button
   }
-  function bindHorizontalWheel(track){
-    if(track.getAttribute('data-ps89-wheel')==='1')return;
-    track.setAttribute('data-ps89-wheel','1');
+  function updateScrollButtons(tray){
+    var track=tray&&tray.querySelector('.ps90-track');
+    var previous=tray&&tray.querySelector('[data-dir="-1"]');
+    var next=tray&&tray.querySelector('[data-dir="1"]');
+    if(!track||!previous||!next)return;
+    var max=Math.max(0,track.scrollWidth-track.clientWidth-1);
+    previous.disabled=track.scrollLeft<=1;
+    next.disabled=track.scrollLeft>=max
+  }
+  function rebuild(tray){
+    var list=queue();
+    if(state.limit<7)state.limit=7;
+    if(list.length&&state.limit>list.length)state.limit=list.length;
+    var shown=Math.min(state.limit,list.length);
+    tray.innerHTML='';
+
+    var title=document.createElement('div');
+    title.className='ps90-queue-title';
+    title.textContent='Select a customer';
+
+    var row=document.createElement('div');
+    row.className='ps90-queue-row';
+    var previous=document.createElement('button');
+    previous.type='button';
+    previous.className='ps90-scroll-btn';
+    previous.setAttribute('data-dir','-1');
+    previous.setAttribute('aria-label','Scroll customer queue left');
+    previous.textContent='‹';
+    var track=document.createElement('div');
+    track.className='ps90-track';
+    var next=document.createElement('button');
+    next.type='button';
+    next.className='ps90-scroll-btn';
+    next.setAttribute('data-dir','1');
+    next.setAttribute('aria-label','Scroll customer queue right');
+    next.textContent='›';
+
+    if(list.length){
+      list.slice(0,shown).forEach(function(item,index){track.appendChild(card(item,index))});
+      if(shown<list.length){
+        var more=document.createElement('button');
+        more.type='button';
+        more.className='ps90-load-card';
+        more.innerHTML='<b>＋</b><span>Load 5 more</span><small>'+shown+' of '+list.length+' shown</small>';
+        more.addEventListener('click',function(event){
+          event.preventDefault();event.stopPropagation();
+          state.limit=Math.min(list.length,state.limit+5);
+          rebuild(tray);
+          requestAnimationFrame(function(){track.scrollTo({left:track.scrollWidth,behavior:'smooth'})})
+        });
+        track.appendChild(more)
+      }
+    }else{
+      var empty=document.createElement('div');
+      empty.className='ps90-empty';
+      empty.textContent='No customers are currently loaded in today\'s call queue.';
+      track.appendChild(empty)
+    }
+
+    function scroll(direction){
+      var amount=Math.max(240,Math.round(track.clientWidth*.72));
+      track.scrollBy({left:direction*amount,behavior:'smooth'})
+    }
+    previous.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();scroll(-1)});
+    next.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();scroll(1)});
+    track.addEventListener('scroll',function(){updateScrollButtons(tray)},{passive:true});
     track.addEventListener('wheel',function(event){
       if(track.scrollWidth<=track.clientWidth)return;
       var delta=Math.abs(event.deltaY)>=Math.abs(event.deltaX)?event.deltaY:event.deltaX;
       if(!delta)return;
       track.scrollLeft+=delta;
-      event.preventDefault();
+      event.preventDefault()
     },{passive:false});
+
+    row.appendChild(previous);row.appendChild(track);row.appendChild(next);
+    tray.appendChild(title);tray.appendChild(row);
+    tray.setAttribute('data-ps90-signature',signature());
+    requestAnimationFrame(function(){updateScrollButtons(tray)})
   }
-  function render(drawer,handle,scrollToEnd){
-    var list=rows();
-    if(state.limit<5)state.limit=5;
-    if(list.length&&state.limit>list.length)state.limit=list.length;
-    var shown=Math.min(state.limit,list.length);
-    var company=currentCompany();
-
-    handle.setAttribute('aria-expanded',state.open?'true':'false');
-    var count=handle.querySelector('.ps89-count');
-    if(count)count.textContent=String(list.length);
-    drawer.classList.toggle('open',state.open);
-    drawer.innerHTML='';
-
-    var meta=document.createElement('div');
-    meta.className='ps89-queue-meta';
-    var title=document.createElement('strong');
-    title.textContent="Today's customers";
-    var status=document.createElement('span');
-    status.textContent=list.length?'Showing '+shown+' of '+list.length+' · scroll left or right':'No calls loaded';
-    meta.appendChild(title);
-    meta.appendChild(status);
-
-    var track=document.createElement('div');
-    track.className='ps89-queue-track';
-    if(list.length){
-      list.slice(0,shown).forEach(function(item,index){
-        track.appendChild(makeCustomerCard(item,index,norm(item&&item.customer)===norm(company)));
-      });
-      if(shown<list.length){
-        var more=document.createElement('button');
-        more.type='button';
-        more.className='ps89-load-card';
-        more.innerHTML='<b>＋</b><span>Load 5 more</span><small>'+shown+' of '+list.length+' shown</small>';
-        more.addEventListener('click',function(event){
-          event.stopPropagation();
-          state.limit=Math.min(list.length,state.limit+5);
-          render(drawer,handle,true);
-        });
-        track.appendChild(more);
-      }
-    }else{
-      var empty=document.createElement('div');
-      empty.className='ps89-queue-empty';
-      empty.textContent='No customers are currently loaded in today\'s call queue.';
-      track.appendChild(empty);
-    }
-
-    drawer.appendChild(meta);
-    drawer.appendChild(track);
-    drawer.setAttribute('data-ps89-signature',signature());
-    bindHorizontalWheel(track);
-    if(scrollToEnd)requestAnimationFrame(function(){track.scrollTo({left:track.scrollWidth,behavior:'smooth'})});
+  function applyState(command,toggle,tray){
+    toggle.setAttribute('aria-expanded',state.open?'true':'false');
+    toggle.setAttribute('aria-label',state.open?'Close customer queue':'Open customer queue');
+    tray.classList.toggle('open',state.open);
+    command.classList.toggle('ps90-queue-open',state.open)
   }
   function enhance(){
     scheduled=false;
@@ -66211,63 +66300,43 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
     var command=shell&&shell.querySelector('.ps62-command');
     if(!shell||!command)return;
 
-    var oldToggle=command.querySelector('.ps88-queue-toggle');
-    var oldPanel=command.querySelector('.ps88-queue-panel');
-    if(oldToggle)oldToggle.setAttribute('aria-hidden','true');
-    if(oldPanel)oldPanel.setAttribute('aria-hidden','true');
-
-    var handle=command.querySelector('.ps89-queue-handle');
-    var drawer=command.querySelector('.ps89-queue-drawer');
-    if(!handle){
-      handle=document.createElement('button');
-      handle.type='button';
-      handle.className='ps89-queue-handle';
-      handle.title="Show today's customer call queue";
-      handle.setAttribute('aria-label',"Show today's customer call queue");
-      handle.innerHTML='<span class="ps89-arrow">⌄</span><span class="ps89-count">0</span>';
-      command.appendChild(handle);
+    var toggle=command.querySelector('.ps90-queue-toggle');
+    if(!toggle){
+      toggle=document.createElement('button');
+      toggle.type='button';
+      toggle.className='ps90-queue-toggle';
+      toggle.innerHTML='<span class="ps90-chevrons" aria-hidden="true"><i></i><i></i></span>';
+      command.appendChild(toggle)
     }
-    if(!drawer){
-      drawer=document.createElement('section');
-      drawer.className='ps89-queue-drawer';
-      drawer.setAttribute('aria-label',"Today's customer call queue");
-      command.appendChild(drawer);
+    var tray=shell.querySelector(':scope > .ps90-queue-tray');
+    if(!tray){
+      tray=document.createElement('section');
+      tray.className='ps90-queue-tray';
+      tray.setAttribute('aria-label',"Today's customer call queue");
+      command.insertAdjacentElement('afterend',tray)
     }
-    if(handle.getAttribute('data-ps89-bound')!=='1'){
-      handle.setAttribute('data-ps89-bound','1');
-      handle.addEventListener('click',function(event){
-        event.stopPropagation();
+    if(toggle.getAttribute('data-ps90-bound')!=='1'){
+      toggle.setAttribute('data-ps90-bound','1');
+      toggle.addEventListener('click',function(event){
+        event.preventDefault();event.stopPropagation();
         state.open=!state.open;
-        render(drawer,handle,false);
-      });
+        applyState(command,toggle,tray);
+        if(state.open)requestAnimationFrame(function(){updateScrollButtons(tray)})
+      })
     }
-    if(drawer.getAttribute('data-ps89-signature')!==signature())render(drawer,handle,false);
+    if(tray.getAttribute('data-ps90-signature')!==signature())rebuild(tray);
+    applyState(command,toggle,tray)
   }
   function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(enhance)}
-
-  if(!window._ps89QueueGlobalBound){
-    window._ps89QueueGlobalBound=true;
-    document.addEventListener('click',function(event){
-      if(!state.open)return;
-      var inside=event.target&&event.target.closest&&event.target.closest('#rp-overlay .ps89-queue-drawer, #rp-overlay .ps89-queue-handle');
-      if(inside)return;
-      state.open=false;
-      schedule();
-    });
-    document.addEventListener('keydown',function(event){
-      if(event.key==='Escape'&&state.open){state.open=false;schedule()}
-    });
-  }
-
   function arm(){
     var host=document.getElementById('rp-overlay');
-    if(host){
-      new MutationObserver(schedule).observe(host,{childList:true,subtree:true});
-      schedule();
-    }
+    if(!host)return;
+    new MutationObserver(schedule).observe(host,{childList:true,subtree:true});
+    schedule()
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arm,{once:true});else arm();
   setTimeout(schedule,250);
-  setTimeout(schedule,1000);
+  setTimeout(schedule,900)
 })();
 </script>
+
