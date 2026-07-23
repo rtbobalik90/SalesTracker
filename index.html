@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v612 — My Day Scorecard Emphasis</title>
+<title>Sales Tracker v613 — My Day Lane & Scorecard Balance</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -68479,3 +68479,128 @@ window.TCP_CALL_WORKSPACE_V593={
  window.addEventListener('load',function(){setTimeout(refreshLoadedPortal,900)});
 })();
 </script>
+
+
+<!-- ======================================================================
+     v613 · MY DAY LANE / SCORECARD BALANCE
+     The approved Full and Phased My Day remain identical. On wide screens,
+     the four execution lanes end higher and the reclaimed lower canvas is
+     assigned to the scorecard so it is easier to read without changing the
+     page structure or data.
+     ====================================================================== -->
+<style id="tcp-v613-my-day-lane-scorecard-balance-css">
+@media(min-width:1181px){
+  #rp-overlay .ps68-home{
+    grid-template-rows:198px minmax(0,1fr) clamp(250px,30dvh,300px)!important;
+  }
+
+  /* The lower report owns the reclaimed space. */
+  #rp-overlay .ps68-score{
+    height:100%!important;
+    min-height:0!important;
+    grid-template-columns:190px minmax(0,1fr) 132px!important;
+    gap:16px!important;
+    align-items:stretch!important;
+    padding:18px!important;
+    border-radius:20px!important;
+  }
+  #rp-overlay .ps68-score-title{
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    min-width:0!important;
+    padding:2px 4px!important;
+  }
+  #rp-overlay .ps68-score-title .ps68-kick{
+    font-size:9.5px!important;
+    letter-spacing:.9px!important;
+  }
+  #rp-overlay .ps68-score-title strong{
+    margin-top:9px!important;
+    font-size:24px!important;
+    line-height:1.08!important;
+  }
+  #rp-overlay .ps68-score-grid{
+    height:100%!important;
+    align-items:stretch!important;
+    gap:11px!important;
+  }
+  #rp-overlay .ps68-score-card{
+    height:100%!important;
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    gap:0!important;
+    padding:16px 14px!important;
+    border-radius:15px!important;
+  }
+  #rp-overlay .ps68-score-icon{
+    width:50px!important;
+    height:50px!important;
+    margin-bottom:14px!important;
+    font-size:21px!important;
+    flex:0 0 auto!important;
+  }
+  #rp-overlay .ps68-score-card>div:last-child{
+    width:100%!important;
+    min-width:0!important;
+  }
+  #rp-overlay .ps68-score-card span{
+    font-size:9px!important;
+    letter-spacing:.55px!important;
+  }
+  #rp-overlay .ps68-score-card strong{
+    margin-top:7px!important;
+    font-size:22px!important;
+    line-height:1.05!important;
+  }
+  #rp-overlay .ps68-score-card small{
+    margin-top:8px!important;
+    font-size:10px!important;
+    line-height:1.35!important;
+  }
+  #rp-overlay .ps68-score-link{
+    align-self:center!important;
+    width:100%!important;
+    min-height:62px!important;
+    padding:0 14px!important;
+    border-radius:13px!important;
+    font-size:11px!important;
+    line-height:1.25!important;
+    white-space:normal!important;
+  }
+}
+
+/* Keep the same visual priority on shorter laptop displays while preserving
+   enough room for the four lanes to remain useful. */
+@media(max-height:820px) and (min-width:1181px){
+  #rp-overlay .ps68-home{
+    grid-template-rows:184px minmax(0,1fr) clamp(220px,28dvh,250px)!important;
+  }
+  #rp-overlay .ps68-score{
+    padding:15px!important;
+    grid-template-columns:176px minmax(0,1fr) 122px!important;
+  }
+  #rp-overlay .ps68-score-title strong{font-size:21px!important;}
+  #rp-overlay .ps68-score-card{padding:13px 12px!important;}
+  #rp-overlay .ps68-score-icon{
+    width:44px!important;
+    height:44px!important;
+    margin-bottom:10px!important;
+    font-size:18px!important;
+  }
+  #rp-overlay .ps68-score-card strong{font-size:18px!important;}
+  #rp-overlay .ps68-score-card small{font-size:8.8px!important;}
+  #rp-overlay .ps68-score-link{min-height:54px!important;font-size:10px!important;}
+}
+
+/* At narrower widths, retain the existing natural-height responsive layout. */
+@media(max-width:1180px){
+  #rp-overlay .ps68-score{
+    height:auto!important;
+    min-height:0!important;
+  }
+}
+</style>
