@@ -68329,3 +68329,132 @@ window.TCP_CALL_WORKSPACE_V593={
  window.addEventListener('load',function(){setTimeout(refreshLoadedPortal,900)});
 })();
 </script>
+
+
+<!-- ======================================================================
+     v609 · SHARED MY DAY LANDING + PHASED CALL WORKSPACE WITHOUT DIALER
+     Full and Phased views now share the same clean My Day launchpad.
+     The embedded dialer remains intact in Full and is presentation-hidden
+     only in Phased mode so the master build is never compromised.
+     ====================================================================== -->
+<style id="tcp-v609-shared-my-day-phased-call-css">
+/* Keep the exact same My Day visual system in both portal modes. */
+#rp-overlay .rp2-full-home .rp2-phase-hero{
+  border-color:rgba(250,135,61,.28);
+  background:
+    radial-gradient(circle at 13% 8%,rgba(250,135,61,.23),transparent 34%),
+    radial-gradient(circle at 88% 18%,rgba(0,175,239,.15),transparent 32%),
+    linear-gradient(135deg,rgba(22,27,48,.96),rgba(9,14,28,.96));
+}
+#rp-overlay .rp2-full-home .rp2-phase-badge{
+  border-color:rgba(250,135,61,.34);
+  background:linear-gradient(145deg,rgba(250,135,61,.24),rgba(0,175,239,.12));
+  box-shadow:0 18px 44px rgba(250,135,61,.18),inset 0 1px 0 rgba(255,255,255,.08);
+}
+#rp-overlay .rp2-full-home .rp2-phase-note{
+  border-color:rgba(250,135,61,.18);
+  background:rgba(250,135,61,.055);
+}
+
+/* Phase 1 intentionally removes only the visible embedded dialer panel.
+   The dialer code/data remains untouched and available in Full Workspace. */
+#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench > .ps62-dialer{
+  display:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench{
+  grid-template-columns:minmax(620px,1.5fr) minmax(340px,.78fr)!important;
+  align-items:start!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-center{
+  grid-column:1!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-context{
+  grid-column:2!important;
+}
+@media(max-width:1450px){
+  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench{
+    grid-template-columns:minmax(0,1fr) minmax(320px,400px)!important;
+  }
+  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-context{
+    grid-column:2!important;
+  }
+}
+@media(max-width:1180px){
+  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench{
+    grid-template-columns:1fr!important;
+  }
+  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-center,
+  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-context{
+    grid-column:auto!important;
+  }
+}
+</style>
+
+<script id="tcp-v609-shared-my-day-phased-call-js">
+(function(){
+ 'use strict';
+ if(!window._rp2Page||!window.TCP_REP_PORTAL_DUAL_VIEW_V608)return;
+ var VERSION='v609';
+ var priorPage=window._rp2Page;
+ function esc(value){
+  return String(value==null?'':value)
+   .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+   .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ }
+ function currentMode(){
+  try{return window.TCP_REP_PORTAL_DUAL_VIEW_V608.getMode((window._rp2&&_rp2.rep)||'')}
+  catch(error){return'full'}
+ }
+ function card(page,icon,title,copy,glow){
+  return'<button class="rp2-phase-card" style="--phase-glow:'+glow+'" onclick="_rp2Go(\''+page+'\')">'
+   +'<div><div class="rp2-phase-card-icon">'+icon+'</div><strong>'+esc(title)+'</strong><p>'+esc(copy)+'</p></div>'
+   +'<span>Open workspace →</span></button>';
+ }
+ function home(mode){
+  var phased=mode==='phased';
+  var first=String((window._rp2&&_rp2.rep)||'Rep').split(/\s+/)[0]||'Rep';
+  var kicker=phased?
+   'PHASED WORKSPACE · FOCUSED ROLLOUT · BUILD '+VERSION:
+   'FULL WORKSPACE · MASTER VIEW · BUILD '+VERSION;
+  var title=phased?first+'’s focused workspace':first+'’s workspace';
+  var copy=phased?
+   'Use the essential customer workflow while new modules are introduced in controlled phases. This view uses the exact same customer, task, call, quote, order, and profile data as Full Workspace—only the presentation and available navigation are simplified.':
+   'Use the same clean daily launchpad as Phased Workspace while retaining every current module and feature in the master navigation. Nothing has been removed from Full Workspace; this simply gives both views one consistent My Day experience.';
+  var badge=phased?'<strong>1</strong><span>Current phase</span>':'<strong>∞</strong><span>Master view</span>';
+  var note=phased?
+   '<b>Full Workspace remains the master build.</b> Switching views does not copy, split, or reset data. Any work completed here is immediately available in the full portal. The embedded dialer is intentionally hidden in the Phased Call Workspace.':
+   '<b>You are in the master build.</b> Every current portal module remains available in the full navigation. Switching to Phased changes only the presentation and approved navigation—not the underlying records or workflows.';
+  return'<div class="rp2-phase-home '+(phased?'':'rp2-full-home')+'">'
+   +'<header class="rp2-phase-hero"><div><div class="rp2-phase-kicker">'+esc(kicker)+'</div><h1>'+esc(title)+'</h1><p>'+esc(copy)+'</p></div><div class="rp2-phase-badge">'+badge+'</div></header>'
+   +'<section class="rp2-phase-section"><div class="rp2-phase-section-head"><div><h2>Core daily workflow</h2><p>The primary path from prioritization through customer execution.</p></div><span class="rp2-phase-pill">Available now</span></div><div class="rp2-phase-grid">'
+    +card('call','☎','Call Workspace',phased?'Prepare the account, conduct the conversation, capture notes, and complete the outcome without the embedded dialer.':'Prepare the account, place the call, capture notes, and complete the outcome.','rgba(0,175,239,.23)')
+    +card('action','☑','Today’s Business','Work commitments, overdue promises, waiting items, and next best actions.','rgba(250,135,61,.24)')
+    +card('customers','🏢','Companies','Open customer profiles, relationship history, products, contacts, and activity.','rgba(71,209,108,.22)')
+   +'</div></section>'
+   +'<section class="rp2-phase-section"><div class="rp2-phase-section-head"><div><h2>Supporting tools</h2><p>Direct access to the transaction and rep records that support the daily workflow.</p></div><span class="rp2-phase-pill">Shared data</span></div><div class="rp2-phase-grid">'
+    +card('dealdesk','📄','Quotes','Review and work customer quote activity.','rgba(250,135,61,.22)')
+    +card('orders','📦','Orders','Review current and historical customer order records.','rgba(239,159,39,.22)')
+    +card('profile','👤','My Profile','View personal information and available performance details.','rgba(155,107,255,.22)')
+   +'</div></section>'
+   +'<div class="rp2-phase-note"><span>ℹ</span><div>'+note+'</div></div>'
+  +'</div>';
+ }
+ window._rp2Page=function(){
+  if(window._rp2&&_rp2.page==='home')return home(currentMode());
+  return priorPage.apply(this,arguments);
+ };
+ window.TCP_REP_PORTAL_SHARED_HOME_V609={
+  version:VERSION,
+  getMode:currentMode,
+  home:home,
+  phasedDialerVisible:false
+ };
+ function refresh(){
+  try{
+   if(window._rp2&&_rp2.rep&&_rp2.page==='home'&&typeof window._rp2Go==='function')window._rp2Go('home');
+  }catch(error){console.warn('[Shared My Day '+VERSION+']',error)}
+ }
+ setTimeout(refresh,0);
+ setTimeout(refresh,650);
+})();
+</script>
