@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v605 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v606 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v605 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v606 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19790,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:605,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:606,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -65988,26 +65988,62 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 @keyframes cxp588SlideIn{from{transform:translateX(105%);}to{transform:translateX(0);}}
 </style>
 <style id="tb605-todays-business">
-#rp-overlay .tb605-hero .tb605-sub{color:#8b95a7;font-size:11px;margin-top:4px;}
-#rp-overlay .tb605-jump{border-color:rgba(251,113,133,.4)!important;background:linear-gradient(160deg,rgba(60,16,24,.35),rgba(10,10,16,.6))!important;}
-#rp-overlay .tb605-row{display:flex;align-items:center;gap:11px;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.06);}
-#rp-overlay .tb605-row:last-child{border-bottom:0;}
-#rp-overlay .tb605-ic{font-size:16px;flex:0 0 auto;}
-#rp-overlay .tb605-main{flex:1;min-width:0;}
-#rp-overlay .tb605-main strong{display:block;color:#F0F5FC;font-size:12px;font-weight:850;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#rp-overlay .tb605-main span{display:block;color:#8b95a7;font-size:9.8px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#rp-overlay .tb605-over{flex:0 0 auto;padding:3px 9px;border-radius:999px;border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.1);color:#FDE68A;font-size:8.8px;font-weight:950;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
-#rp-overlay .tb605-over.hot{border-color:rgba(251,113,133,.55);background:rgba(251,113,133,.12);color:#FECDD3;}
-#rp-overlay .tb605-acts{display:flex;gap:5px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end;}
-#rp-overlay .tb605-act{padding:6px 10px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#C7D6EA;font-size:9.6px;font-weight:850;cursor:pointer;transition:.14s;}
+/* greeting bar */
+#rp-overlay .tb6-greet{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:15px 18px;margin-bottom:18px;border:1px solid rgba(255,255,255,.1);border-radius:17px;background:radial-gradient(80% 120% at 8% 0%,rgba(250,135,61,.12),transparent 55%),linear-gradient(160deg,rgba(14,24,40,.92),rgba(7,12,22,.95));}
+#rp-overlay .tb6-hi{color:#F0F5FC;font-size:18px;font-weight:950;letter-spacing:-.02em;}
+#rp-overlay .tb6-date{color:#8b95a7;font-size:10.6px;margin-top:3px;}
+#rp-overlay .tb6-hotcount{color:#FECDD3;font-weight:900;font-style:normal;}
+#rp-overlay .tb6-greet-r{display:flex;align-items:center;gap:10px;min-width:210px;}
+#rp-overlay .tb6-progress{flex:1;height:9px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;min-width:110px;}
+#rp-overlay .tb6-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#47D16C,#7BF0A5);box-shadow:0 0 12px rgba(71,209,108,.45);transition:width .4s ease;}
+#rp-overlay .tb6-progress-n{color:#B8F0CB;font-size:9.6px;font-weight:900;white-space:nowrap;}
+/* timeline spine */
+#rp-overlay .tb6-timeline{position:relative;padding-left:6px;}
+#rp-overlay .tb6-timeline:before{content:"";position:absolute;left:64px;top:8px;bottom:14px;width:2px;background:linear-gradient(180deg,#FB7185,#FBBF24,#4C9DFF,#47D16C,#9B6BFF);opacity:.35;border-radius:2px;}
+#rp-overlay .tb6-slot{position:relative;display:grid;grid-template-columns:58px minmax(0,1fr);gap:16px;margin-bottom:16px;}
+#rp-overlay .tb6-time{position:relative;text-align:right;padding-top:14px;}
+#rp-overlay .tb6-time-t{color:#8b95a7;font-size:11px;font-weight:950;letter-spacing:.3px;}
+#rp-overlay .tb6-dot{position:absolute;right:-13px;top:17px;width:12px;height:12px;border-radius:50%;background:var(--s,#4C9DFF);box-shadow:0 0 14px var(--s,#4C9DFF),0 0 0 4px color-mix(in srgb,var(--s,#4C9DFF) 18%,transparent);}
+/* agenda block */
+#rp-overlay .tb6-block{border:1px solid color-mix(in srgb,var(--s,#4C9DFF) 32%,transparent);border-radius:17px;padding:13px 15px;background:radial-gradient(90% 90% at 4% 0%,color-mix(in srgb,var(--s,#4C9DFF) 10%,transparent),transparent 60%),linear-gradient(160deg,rgba(13,22,36,.9),rgba(7,12,22,.94));transition:.16s;}
+#rp-overlay .tb6-slot:not(.tb6-slot-clear) .tb6-block:hover{border-color:color-mix(in srgb,var(--s,#4C9DFF) 60%,transparent);box-shadow:0 10px 30px rgba(0,0,0,.3);}
+#rp-overlay .tb6-slot-clear .tb6-block{opacity:.68;}
+#rp-overlay .tb6-block-h{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+#rp-overlay .tb6-block-ic{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:11px;font-size:16px;background:color-mix(in srgb,var(--s,#4C9DFF) 18%,rgba(255,255,255,.03));border:1px solid color-mix(in srgb,var(--s,#4C9DFF) 40%,transparent);flex:0 0 auto;}
+#rp-overlay .tb6-block-h strong{display:block;color:#F0F5FC;font-size:13.5px;font-weight:950;}
+#rp-overlay .tb6-block-h em{display:block;color:#8b95a7;font-size:9.6px;font-style:normal;margin-top:1px;}
+#rp-overlay .tb6-cnt{margin-left:auto;display:flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;border-radius:999px;background:color-mix(in srgb,var(--s,#4C9DFF) 26%,transparent);border:1px solid color-mix(in srgb,var(--s,#4C9DFF) 55%,transparent);color:#fff;font-size:10.5px;font-weight:950;}
+/* agenda item cards */
+#rp-overlay .tb6-item{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:7px;border:1px solid color-mix(in srgb,var(--k,#4C9DFF) 26%,rgba(255,255,255,.04));border-left:3px solid var(--k,#4C9DFF);border-radius:12px;background:rgba(255,255,255,.025);transition:.15s;}
+#rp-overlay .tb6-item:hover{background:color-mix(in srgb,var(--k,#4C9DFF) 7%,rgba(255,255,255,.03));transform:translateX(2px);}
+#rp-overlay .tb6-item-ic{font-size:15px;flex:0 0 auto;}
+#rp-overlay .tb6-item-main{flex:1;min-width:0;}
+#rp-overlay .tb6-item-main strong{display:block;color:#F0F5FC;font-size:12px;font-weight:850;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#rp-overlay .tb6-item-main span{display:block;color:#8b95a7;font-size:9.6px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#rp-overlay .tb6-flame{flex:0 0 auto;padding:4px 10px;border-radius:999px;border:1px solid rgba(251,113,133,.55);background:rgba(251,113,133,.12);color:#FECDD3;font-size:9px;font-weight:950;white-space:nowrap;}
+#rp-overlay .tb6-late{flex:0 0 auto;padding:4px 10px;border-radius:999px;border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.09);color:#FDE68A;font-size:9px;font-weight:950;white-space:nowrap;}
+#rp-overlay .tb6-item-acts{display:flex;gap:5px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end;}
+#rp-overlay .tb605-act{padding:6px 10px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#C7D6EA;font-size:9.4px;font-weight:850;cursor:pointer;transition:.14s;}
 #rp-overlay .tb605-act:hover{border-color:rgba(0,175,239,.5);color:#fff;}
 #rp-overlay .tb605-act.tb605-ok{border-color:rgba(71,209,108,.45);color:#B8F0CB;}
-#rp-overlay .tb605-act.tb605-ok:hover{background:rgba(71,209,108,.14);}
+#rp-overlay .tb605-act.tb605-ok:hover{background:rgba(71,209,108,.16);}
 #rp-overlay .tb605-act.tb605-hot{border-color:rgba(250,135,61,.5);color:#FFC79A;}
 #rp-overlay .tb605-act.tb605-hot:hover{background:rgba(250,135,61,.14);}
-#rp-overlay .tb605-count{margin-left:7px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.07);color:#C7D6EA;font-size:9px;font-weight:900;font-style:normal;}
-#rp-overlay .tb605-clear{color:#8b95a7;font-size:10.6px;padding:8px 2px;}
-@media(max-width:760px){#rp-overlay .tb605-row{flex-wrap:wrap;}#rp-overlay .tb605-acts{width:100%;justify-content:flex-start;}}
+#rp-overlay .tb6-empty{color:#77839a;font-size:10.4px;padding:6px 2px 2px;}
+#rp-overlay .tb6-wrapline{color:#B9C4D8;font-size:11px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+#rp-overlay .tb6-cleared{padding:4px 11px;border-radius:999px;border:1px solid rgba(71,209,108,.4);background:rgba(71,209,108,.09);color:#B8F0CB;font-size:9.4px;font-weight:950;}
+/* NOW line */
+#rp-overlay .tb6-now{position:relative;display:flex;align-items:center;gap:8px;margin:2px 0 14px;padding-left:46px;}
+#rp-overlay .tb6-now-dot{width:10px;height:10px;border-radius:50%;background:#FF5A5A;box-shadow:0 0 12px #FF5A5A;animation:tb6pulse 1.6s ease-in-out infinite;}
+#rp-overlay .tb6-now-lbl{color:#FF8A8A;font-size:8.6px;font-weight:950;letter-spacing:1.2px;}
+#rp-overlay .tb6-now-line{flex:1;height:1.5px;background:linear-gradient(90deg,rgba(255,90,90,.75),transparent);}
+@keyframes tb6pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.35);opacity:.65;}}
+@media(max-width:760px){
+  #rp-overlay .tb6-slot{grid-template-columns:44px minmax(0,1fr);gap:10px;}
+  #rp-overlay .tb6-timeline:before{left:50px;}
+  #rp-overlay .tb6-item{flex-wrap:wrap;}
+  #rp-overlay .tb6-item-acts{width:100%;justify-content:flex-start;}
+}
 </style>
 <style id="cux584-final-viewport-authority">
 /* ===== v584 FINAL AUTHORITY — customer profile must fit the viewport =====
@@ -67485,34 +67521,76 @@ window.TCP_CALL_WORKSPACE_V593={
     }catch(e){}
     _rp2Go('customers');
   };
-  var KINDMETA={art:{i:'\uD83C\uDFA8',l:'Art errors',c:'#FB7185'},fu:{i:'\u2705',l:'Follow-ups & tasks',c:'#FBBF24'},ord:{i:'\uD83D\uDCE6',l:'Orders needing attention',c:'#4C9DFF'},re:{i:'\uD83D\uDD01',l:'Reorders due',c:'#47D16C'}};
-  function row(it){
+  var KINDMETA={art:{i:'\uD83C\uDFA8',l:'Art errors',c:'#FB7185'},fu:{i:'\u2705',l:'Follow-ups',c:'#FBBF24'},ord:{i:'\uD83D\uDCE6',l:'Orders',c:'#4C9DFF'},re:{i:'\uD83D\uDD01',l:'Reorders',c:'#47D16C'}};
+  var SLOTS=[
+    {id:'triage',time:'8:00',h:8,title:'Morning triage',sub:'Blockers and anything burning \u2014 clear these first',icon:'\uD83D\uDD25',c:'#FB7185'},
+    {id:'calls',time:'9:00',h:9,title:'Prime calling block',sub:'Open follow-ups \u2014 best connect rates before lunch',icon:'\uD83D\uDCDE',c:'#FBBF24'},
+    {id:'orders',time:'11:00',h:11,title:'Orders desk',sub:'Orders waiting on action or approval',icon:'\uD83D\uDCE6',c:'#4C9DFF'},
+    {id:'reorders',time:'1:00',h:13,title:'Reorder outreach',sub:'Customers past their buying rhythm \u2014 easy wins',icon:'\uD83D\uDD01',c:'#47D16C'},
+    {id:'wrap',time:'4:30',h:16.5,title:'Wrap up',sub:'Close the loop on today',icon:'\uD83C\uDFC1',c:'#9B6BFF'}
+  ];
+  function slotFor(it){
+    if(it.kind==='art'||it.over>=3)return 'triage';
+    if(it.kind==='fu')return 'calls';
+    if(it.kind==='ord')return 'orders';
+    if(it.kind==='re')return 'reorders';
+    return 'calls';
+  }
+  window._tb605Slot=slotFor;
+  function agendaCard(it){
     var m=KINDMETA[it.kind];
-    var chip=it.over>0?('<span class="tb605-over'+(it.over>=3?' hot':'')+'">'+it.over+'d overdue</span>'):'';
-    return '<div class="tb605-row"><span class="tb605-ic" style="color:'+m.c+';">'+m.i+'</span>'
-      +'<div class="tb605-main"><strong>'+esc(it.title)+'</strong><span>'+esc(it.company&&it.kind!=='re'?it.company+(it.meta?' \u00b7 ':''):'')+esc(it.meta)+'</span></div>'
-      +chip+'<div class="tb605-acts">'+actionsFor(it)+'</div></div>';
+    var flame=it.over>=3?'<span class="tb6-flame">\uD83D\uDD25 '+it.over+'d</span>':(it.over>0?'<span class="tb6-late">'+it.over+'d late</span>':'');
+    return '<div class="tb6-item" style="--k:'+m.c+';">'
+      +'<span class="tb6-item-ic">'+m.i+'</span>'
+      +'<div class="tb6-item-main"><strong>'+esc(it.title)+'</strong>'
+      +'<span>'+esc(it.company&&it.kind!=='re'?(it.company+(it.meta?' \u00b7 ':'')):'')+esc(it.meta)+'</span></div>'
+      +flame
+      +'<div class="tb6-item-acts">'+actionsFor(it)+'</div>'
+      +'</div>';
   }
   var _origActionV2=null;
   function tbPage(){
     var rep=(window._rp2&&_rp2.rep)||'';
     var items=_tb605Model(rep);
-    var jump=items.filter(function(it){return it.over>=3;});
-    var html='<div class="rp2-card tb605-hero"><div class="rp2-ch">Today\u2019s Business</div><div class="tb605-sub">'+items.length+' item'+(items.length!==1?'s':'')+' need'+(items.length===1?'s':'')+' your attention \u00b7 clear them with \u2713 or snooze \uD83D\uDCA4</div></div>';
-    if(jump.length){
-      html+='<div class="rp2-card tb605-jump"><div class="rp2-ch">\uD83D\uDD25 Jumps the line \u00b7 3+ days overdue</div>'+jump.map(row).join('')+'</div>';
-    }
-    ['art','fu','ord','re'].forEach(function(kind){
-      var m=KINDMETA[kind];
-      var list=items.filter(function(it){return it.kind===kind&&it.over<3;});
-      var all=items.filter(function(it){return it.kind===kind;});
-      html+='<div class="rp2-card"><div class="rp2-ch">'+m.i+' '+m.l+' <em class="tb605-count">'+all.length+'</em></div>'
-        +(list.length?list.map(row).join(''):(all.length?'<div class="tb605-clear">Everything here is in the \uD83D\uDD25 strip above.</div>':'<div class="tb605-clear">\u2728 All clear.</div>'))
-        +'</div>';
+    var o=ov();
+    var doneToday=0;
+    try{Object.keys(o.done||{}).forEach(function(k){if(new Date(o.done[k]).toDateString()===new Date().toDateString())doneToday++;});}catch(e){}
+    var total=items.length+doneToday;
+    var pct=total?Math.round(doneToday/total*100):100;
+    var hr=new Date().getHours();
+    var greet=hr<12?'Good morning':(hr<17?'Good afternoon':'Good evening');
+    var dstr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    var hot=items.filter(function(it){return it.over>=3;}).length;
+    var html='<div class="tb6-greet">'
+      +'<div class="tb6-greet-l"><div class="tb6-hi">'+greet+', '+esc(String(rep).split(' ')[0])+' \uD83D\uDC4B</div><div class="tb6-date">'+dstr+' \u00b7 '+items.length+' on the plan'+(hot?' \u00b7 <b class="tb6-hotcount">\uD83D\uDD25 '+hot+' burning</b>':'')+'</div></div>'
+      +'<div class="tb6-greet-r"><div class="tb6-progress"><div class="tb6-progress-fill" style="width:'+pct+'%;"></div></div><span class="tb6-progress-n">'+doneToday+' of '+total+' cleared</span></div>'
+      +'</div>';
+    var nowH=hr+new Date().getMinutes()/60;
+    var nowPlaced=false;
+    html+='<div class="tb6-timeline">';
+    SLOTS.forEach(function(sl,si){
+      var list=sl.id==='wrap'?[]:items.filter(function(it){return slotFor(it)===sl.id;});
+      if(!nowPlaced&&nowH<sl.h){html+='<div class="tb6-now"><span class="tb6-now-dot"></span><span class="tb6-now-lbl">NOW</span><span class="tb6-now-line"></span></div>';nowPlaced=true;}
+      var body='';
+      if(sl.id==='wrap'){
+        body='<div class="tb6-wrapline">'+(items.length===0
+          ?'\uD83C\uDF89 Everything cleared \u2014 plan tomorrow from a clean slate.'
+          :(items.length+' item'+(items.length>1?'s':'')+' still open \u2014 knock out what you can, snooze the rest.'))
+          +(doneToday?'<span class="tb6-cleared">\u2713 '+doneToday+' cleared today</span>':'')+'</div>';
+      }else{
+        body=list.length?list.map(agendaCard).join(''):'<div class="tb6-empty">\u2728 Nothing scheduled here \u2014 clear runway.</div>';
+      }
+      html+='<div class="tb6-slot'+(list.length?'':' tb6-slot-clear')+'" style="--s:'+sl.c+';">'
+        +'<div class="tb6-time"><span class="tb6-time-t">'+sl.time+'</span><span class="tb6-dot"></span></div>'
+        +'<div class="tb6-block">'
+        +'<div class="tb6-block-h"><span class="tb6-block-ic">'+sl.icon+'</span><div><strong>'+sl.title+'</strong><em>'+sl.sub+'</em></div>'+(list.length?'<span class="tb6-cnt">'+list.length+'</span>':'')+'</div>'
+        +body
+        +'</div></div>';
     });
+    if(!nowPlaced)html+='<div class="tb6-now"><span class="tb6-now-dot"></span><span class="tb6-now-lbl">NOW</span><span class="tb6-now-line"></span></div>';
+    html+='</div>';
     return html;
   }
-  // override the action page AFTER the original module defined it
   function arm(){
     if(typeof window._rp2ActionV2==='function'&&window._rp2ActionV2!==tbWrapped){_origActionV2=window._rp2ActionV2;}
     window._rp2ActionV2=tbWrapped;
@@ -67523,6 +67601,4 @@ window.TCP_CALL_WORKSPACE_V593={
   if(document.readyState==='complete')arm();
   else window.addEventListener('load',function(){setTimeout(arm,300);});
   arm();
-})();
-
-</script>
+})();</script>
