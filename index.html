@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v600 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v601 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v600 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v601 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -19790,7 +19790,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:600,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:601,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -65933,7 +65933,14 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
   }
   html.cxp588-master #rp-overlay .cw6-detail-modal.cxp588-slide-out{transform:translateX(115%)!important;}
   /* the catalog squeezes into the LEFT column beside the panel; sidebar stays visible + clickable */
-  html.cxp588-master #rp-overlay .cux8-content{margin-right:calc(66vw - 200px)!important;margin-left:0!important;}
+  /* squeeze the ENTIRE section (hero + banner + cards) into the space left of the panel */
+  html.cxp588-master #rp-overlay .cux8-shell{margin-right:calc(66vw + 10px)!important;}
+  html.cxp588-master #rp-overlay .cux8-content{margin-right:0!important;margin-left:0!important;}
+  html.cxp588-master #rp-overlay .cux8-section-head{flex-wrap:wrap!important;gap:8px!important;padding:12px 14px!important;}
+  html.cxp588-master #rp-overlay .cux8-section-head .cux8-action{font-size:9.5px!important;padding:7px 10px!important;}
+  html.cxp588-master #rp-overlay .cxp588-banner-stats{flex-wrap:wrap!important;}
+  html.cxp588-master #rp-overlay .cxp588-filter .cxp588-in{min-width:120px!important;}
+  html.cxp588-master #rp-overlay .cxp588-card{padding:10px!important;}
   html.cxp588-master #rp-overlay .cxp588-grid{grid-template-columns:1fr!important;gap:9px!important;}
   html.cxp588-master #rp-overlay .cxp588-banner-word{font-size:20px!important;}
   html.cxp588-master #rp-overlay .cxp588-banner{padding:11px 13px 9px!important;}
