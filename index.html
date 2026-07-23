@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v608 — Full & Phased Rep Portal</title>
+<title>Sales Tracker v611 — Shared Approved My Day & Phased Call Without Dialer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -65832,13 +65832,13 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 
 
 <!-- ======================================================================
-     v610 · RESTORE APPROVED FULL MY DAY + PHASED CALL WITHOUT DIALER
-     Based on v608 so Full Workspace keeps the original approved My Day.
-     Phased Workspace retains its separate rollout home and hides only the
-     visible dialer panel in Call Workspace. The underlying dialer remains
+     v611 · SHARE APPROVED FULL MY DAY + PHASED CALL WITHOUT DIALER
+     Based on v610. Full and Phased now render the same approved master My Day.
+     Phased Workspace keeps its reduced navigation and hides only the visible
+     dialer panel in Call Workspace. The underlying dialer remains
      untouched and fully available in Full Workspace.
      ====================================================================== -->
-<style id="tcp-v610-restore-full-my-day-phased-no-dialer-css">
+<style id="tcp-v611-shared-approved-my-day-phased-no-dialer-css">
 /* Phase mode only: hide the visible embedded dialer without removing code. */
 #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench > .ps62-dialer{
   display:none!important;
@@ -68324,7 +68324,7 @@ window.TCP_CALL_WORKSPACE_V593={
   +'</div>'
  }
  window._rp2Page=function(){
-  if(mode()==='phased'&&window._rp2&&_rp2.page==='home')return phaseHome();
+  /* The approved Full Workspace My Day is the source of truth in both modes. */
   return basePage.apply(this,arguments)
  };
  window._rp2Html=function(rep){
