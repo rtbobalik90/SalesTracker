@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v608 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v609 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v608 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v609 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -9525,35 +9525,87 @@ function setGoal(rep,yr,q,f,v){getGoal(rep,yr,q)[f]=v;markDirty();}
 
 // Render the per-rep quarterly customer set size inputs on the Data Entry tab.
 // Reads/writes the same S.goals[rep][yr][q].setSize as the Goals card — overrides weekly-averaged value in totW.
+function _ss608Now(){var n=new Date();return {yr:n.getFullYear(),q:'Q'+(Math.floor(n.getMonth()/3)+1)};}
+window._ss608Locked=function(yr,q,now){
+  now=now||_ss608Now();
+  var qi=parseInt(String(q).replace('Q',''))||1;
+  var ni=parseInt(String(now.q).replace('Q',''))||1;
+  return (yr<now.yr)||(yr===now.yr&&qi<ni);
+};
+window._ss608Sel=window._ss608Sel||null;
+window._ss608Change=function(v){
+  var p=String(v).split('|');
+  window._ss608Sel={yr:parseInt(p[0]),q:p[1]};
+  renderSetSizes();
+};
+window.ssSaveAll=function(){
+  var sel=window._ss608Sel||_ss608Now();
+  if(_ss608Locked(sel.yr,sel.q)){alert('That quarter is locked — historical set sizes can\u2019t be changed.');return;}
+  var n=0;
+  document.querySelectorAll('.ss608-in').forEach(function(inp){
+    var name=inp.getAttribute('data-rep');
+    var v=parseInt(inp.value)||0;
+    setGoal(name,sel.yr,sel.q,'setSize',v);
+    n++;
+  });
+  try{if(typeof markDirty==='function')markDirty();}catch(e){}
+  try{if(typeof renderGoals==='function')renderGoals();}catch(e){}
+  var msg=document.getElementById('ss608-msg');
+  if(msg){msg.textContent='\u2713 Saved '+n+' set sizes \u2014 '+sel.q+' '+sel.yr+' refreshed below';msg.style.display='inline';setTimeout(function(){msg.style.display='none';},3200);}
+  renderSetSizes();
+};
 function renderSetSizes(){
   var body=document.getElementById('setSizeBody');
   if(!body)return;
+  var now=_ss608Now();
+  if(!window._ss608Sel)window._ss608Sel={yr:now.yr,q:now.q};
+  var sel=window._ss608Sel;
+  var locked=_ss608Locked(sel.yr,sel.q,now);
   var lbl=document.getElementById('ssQtrLabel');
-  var yr=getYr(),q=getQ();
-  if(lbl)lbl.textContent='\u2014 '+q+' '+yr;
+  if(lbl)lbl.innerHTML='\u2014 '+sel.q+' '+sel.yr+(locked?' <span style="color:#EF9F27;font-weight:800;">\uD83D\uDD12 locked</span>':'');
   var reps=(typeof activeReps==='function'?activeReps():S.reps.filter(function(r){return r&&!r.retired&&r.name&&r.name.trim();}));
   if(!reps.length){body.innerHTML='<p style="font-size:12px;color:var(--color-text-secondary);">No active reps.</p>';return;}
-  var html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;">';
+  // quarter dropdown: last 2 years through next quarter
+  var opts=[];
+  for(var y=now.yr-2;y<=now.yr;y++){
+    for(var qi=1;qi<=4;qi++){
+      if(y===now.yr&&qi>parseInt(now.q.replace('Q',''))+1)break;
+      opts.push({yr:y,q:'Q'+qi});
+    }
+  }
+  var ddl='<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">'
+    +'<label style="font-size:10px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;font-weight:700;">Quarter</label>'
+    +'<select onchange="_ss608Change(this.value)" style="font-size:12px;font-weight:600;padding:6px 9px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:6px;color:var(--color-text-primary);">'
+    +opts.map(function(o){var v=o.yr+'|'+o.q;var cur=(o.yr===sel.yr&&o.q===sel.q);return '<option value="'+v+'"'+(cur?' selected':'')+'>'+o.q+' '+o.yr+(_ss608Locked(o.yr,o.q,now)?' \uD83D\uDD12':(o.yr===now.yr&&o.q===now.q?' \u2022 current':''))+'</option>';}).join('')
+    +'</select>'
+    +(locked?'<span style="font-size:10.5px;color:#EF9F27;">Historical record \u2014 locked after the quarter ended.</span>':'')
+    +'</div>';
+  var html=ddl+'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;">';
   reps.forEach(function(r){
     var ri=S.reps.indexOf(r);
-    var g=getGoal(r.name,yr,q);
+    var g=getGoal(r.name,sel.yr,sel.q);
     var cur=parseInt(g.setSize)||0;
     var avEl=(typeof avatarEl==='function')?avatarEl(r,ri,28):'';
-    var safeName=(r.name||'').replace(/'/g,"\\'");
-    var _wk=[]; try{gwq(yr,q).forEach(function(w){var d=gd(r.name+'|'+w.key); if(d&&d.setSize>0)_wk.push(d.setSize);});}catch(e){}
+    var safeName=(r.name||'').replace(/"/g,'&quot;');
+    var _wk=[]; try{gwq(sel.yr,sel.q).forEach(function(w){var d=gd(r.name+'|'+w.key); if(d&&d.setSize>0)_wk.push(d.setSize);});}catch(e){}
     var _ref=0; if(_wk.length){_wk.sort(function(a,b){return a-b;}); _ref=Math.round(_wk[Math.floor(_wk.length/2)]);}
-    var _flag=(cur>0&&_ref>0&&(cur>_ref*2.5||cur<_ref/2.5));
-    html+='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:7px 9px;background:var(--color-background-primary);border:0.5px solid '+(_flag?'rgba(240,149,39,.55)':'var(--color-border-tertiary)')+';border-radius:6px;">'
+    var _flag=(!locked&&cur>0&&_ref>0&&(cur>_ref*2.5||cur<_ref/2.5));
+    html+='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:7px 9px;background:var(--color-background-primary);border:0.5px solid '+(_flag?'rgba(240,149,39,.55)':'var(--color-border-tertiary)')+';border-radius:6px;'+(locked?'opacity:.75;':'')+'">'
       +avEl
       +'<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc_html(r.name)+'</div></div>'
-      +'<input type="number" min="0" step="1" value="'+cur+'" '
-      +'oninput="setGoal(\''+safeName+'\','+yr+',\''+q+'\',\'setSize\',parseInt(this.value)||0);_ssDirtyBlip(this);" '
-      +'style="width:78px;font-size:13px;font-weight:600;text-align:right;padding:5px 7px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:5px;color:var(--color-text-primary);">'
+      +'<input type="number" min="0" step="1" class="ss608-in" data-rep="'+safeName+'" value="'+cur+'" '+(locked?'disabled ':'')
+      +'style="width:78px;font-size:13px;font-weight:600;text-align:right;padding:5px 7px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:5px;color:var(--color-text-primary);'+(locked?'cursor:not-allowed;':'')+'">'
       +'<span style="font-size:10px;color:var(--color-text-secondary);">accts</span>'
-      +(_flag?'<div style="flex-basis:100%;font-size:10.5px;color:#EF9F27;display:flex;align-items:center;gap:6px;margin-top:2px;">\u26A0 weekly set ~'+_ref+'/wk \u2014 quarterly value looks off <button type="button" onclick="setGoal(\''+safeName+'\','+yr+',\''+q+'\',\'setSize\','+_ref+');renderSetSizes();" style="font-size:10px;font-weight:700;padding:2px 7px;border:1px solid #EF9F27;border-radius:999px;background:rgba(239,159,39,.12);color:#EF9F27;cursor:pointer;">Use '+_ref+'</button></div>':'')
+      +(_flag?'<div style="flex-basis:100%;font-size:10.5px;color:#EF9F27;display:flex;align-items:center;gap:6px;margin-top:2px;">\u26A0 weekly set ~'+_ref+'/wk \u2014 quarterly value looks off <button type="button" onclick="var i=this.closest(\'div\').parentElement.querySelector(\'.ss608-in\');if(i)i.value='+_ref+';" style="font-size:10px;font-weight:700;padding:2px 7px;border:1px solid #EF9F27;border-radius:999px;background:rgba(239,159,39,.12);color:#EF9F27;cursor:pointer;">Use '+_ref+'</button></div>':'')
       +'</div>';
   });
   html+='</div>';
+  if(!locked){
+    html+='<div style="display:flex;align-items:center;gap:12px;margin-top:12px;">'
+      +'<button class="sbtn entry-primary" onclick="ssSaveAll()">\uD83D\uDCBE Save set sizes</button>'
+      +'<span id="ss608-msg" class="entry-status" style="display:none;"></span>'
+      +'</div>';
+  }
   body.innerHTML=html;
 }
 function _ssDirtyBlip(inp){
@@ -9565,7 +9617,7 @@ function _ssDirtyBlip(inp){
 }
 function copyGoalsFromPrevYear(){var yr=parseInt(document.getElementById('gYr')&&document.getElementById('gYr').value)||getYr();if(yr<=2026){alert('No previous year.');return;}var py=yr-1;S.reps.forEach(function(r){QTRS.forEach(function(q){var p=getGoal(r.name,py,q),cu=getGoal(r.name,yr,q);cu.rev=p.rev;cu.hrs=p.hrs;cu.calls=p.calls;});});markDirty();renderGoals();var m=document.getElementById('gCopyMsg');m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
 function copyQtrToAll(){var rn=document.getElementById('gFillRep')&&document.getElementById('gFillRep').value,fq=document.getElementById('gFillQ')&&document.getElementById('gFillQ').value,yr=parseInt(document.getElementById('gYr')&&document.getElementById('gYr').value)||getYr();if(!rn||!fq)return;var src=getGoal(rn,yr,fq);QTRS.forEach(function(q){if(q!==fq){var g=getGoal(rn,yr,q);g.rev=src.rev;g.hrs=src.hrs;g.calls=src.calls;}});markDirty();renderGoals();var m=document.getElementById('gFillMsg');m.style.display='inline';setTimeout(function(){m.style.display='none';},2500);}
-function downloadEntryTemplate(){if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return;}var yr=getYr(),q=getQ(),cwk=getCWK();var allWeeks=gwq(yr,q);var wkObj=allWeeks.find(function(w){return w.key===cwk;})||allWeeks[0];var weekLabel=wkObj?wkObj.label:'Week';var weekRange=wkObj?(fd(wkObj.start)+' \u2013 '+fd(wkObj.end)):'';var headers=['Rep Name','Week Key','Week Label','Hours Worked','Orders Taken','Sales Revenue ($)','Set Size (Accounts)','Customers Called','Top Single Sale ($)','Top Sale Customer'];var instRow=['INSTRUCTIONS: Fill the metric columns. Do not change Rep Name or Week Key.','','','','','','','','',''];var rows=activeReps().map(function(r){var d=gd(r.name+'|'+cwk);return[r.name,cwk,weekLabel+' ('+weekRange+')',d.hours||'',d.orders||'',d.revenue||'',d.setSize||'',(d.acctsCalled||d.calls||''),d.topSale||'',d.topSaleCustomer||''];});var ws=XLSX.utils.aoa_to_sheet([instRow,headers].concat(rows));ws['!cols']=[{wch:22},{wch:26},{wch:28},{wch:14},{wch:14},{wch:18},{wch:20},{wch:16},{wch:18},{wch:22}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Weekly Entry');var refData=[['Rep Name','Quarter Goal ($)','Hrs/wk','Calls/wk']].concat(activeReps().map(function(r){var g=getGoal(r.name,yr,q);return[r.name,g.rev,g.hrs,g.calls];}));XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(refData),'Goals Reference');XLSX.writeFile(wb,'sales_entry_'+cwk+'.xlsx');var msg=document.getElementById('bulkMsg');if(msg){msg.textContent='Downloaded';msg.style.color='#5DCAA5';}}
+function downloadEntryTemplate(){if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return;}var yr=getYr(),q=getQ(),cwk=getCWK();var allWeeks=gwq(yr,q);var wkObj=allWeeks.find(function(w){return w.key===cwk;})||allWeeks[0];var weekLabel=wkObj?wkObj.label:'Week';var weekRange=wkObj?(fd(wkObj.start)+' \u2013 '+fd(wkObj.end)):'';var headers=['Rep Name','Week Key','Week Label','Hours Worked','Orders Taken','Sales Revenue ($)','Set Size (Accounts)','Customers Called','Top Single Sale ($)','Top Sale Customer'];var instRow=['INSTRUCTIONS: Fill the metric columns. Do not change Rep Name or Week Key.','','','','','','','','',''];var rows=activeReps().map(function(r){var d=gd(r.name+'|'+cwk);return[r.name,cwk,weekLabel+' ('+weekRange+')',d.hours||'',d.orders||'',d.revenue||'',((getGoal(r.name,yr,q).setSize||0)||d.setSize||''),(d.acctsCalled||d.calls||''),d.topSale||'',d.topSaleCustomer||''];});var ws=XLSX.utils.aoa_to_sheet([instRow,headers].concat(rows));ws['!cols']=[{wch:22},{wch:26},{wch:28},{wch:14},{wch:14},{wch:18},{wch:20},{wch:16},{wch:18},{wch:22}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Weekly Entry');var refData=[['Rep Name','Quarter Goal ($)','Hrs/wk','Calls/wk']].concat(activeReps().map(function(r){var g=getGoal(r.name,yr,q);return[r.name,g.rev,g.hrs,g.calls];}));XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(refData),'Goals Reference');XLSX.writeFile(wb,'sales_entry_'+cwk+'.xlsx');var msg=document.getElementById('bulkMsg');if(msg){msg.textContent='Downloaded';msg.style.color='#5DCAA5';}}
 function uploadEntrySheet(event){if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return;}var file=event.target.files[0];if(!file)return;var msg=document.getElementById('bulkMsg');if(msg){msg.textContent='Reading\u2026';msg.style.color='#EF9F27';}var reader=new FileReader();reader.onload=function(e){try{var wb=XLSX.read(e.target.result,{type:'binary'});var ws=wb.Sheets[wb.SheetNames[0]];var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});var hi=rows.findIndex(function(r){return r.some(function(c){return String(c).trim()==='Rep Name';});});if(hi<0){if(msg){msg.textContent='\u274C No header row.';msg.style.color='#F09595';}event.target.value='';return;}var headers=rows[hi].map(function(h){return String(h).trim();});var dataRows=rows.slice(hi+1).filter(function(r){return r[0]&&String(r[0]).trim();});var idx={rep:headers.indexOf('Rep Name'),weekKey:headers.indexOf('Week Key'),hours:headers.indexOf('Hours Worked'),calls:headers.indexOf('Calls Made'),orders:headers.indexOf('Orders Taken'),revenue:headers.indexOf('Sales Revenue ($)'),setSize:headers.indexOf('Set Size (Accounts)'),acctsCalled:headers.indexOf('Accounts Called'),customersCalled:headers.indexOf('Customers Called'),topSale:headers.indexOf('Top Single Sale ($)'),topSaleCustomer:headers.indexOf('Top Sale Customer')};var updated=0,skipped=0,warnings=[];dataRows.forEach(function(row){var repName=String(row[idx.rep]||'').trim();var weekKey=String(row[idx.weekKey]||'').trim();if(!repName||!weekKey){skipped++;return;}var rep=S.reps.find(function(r){return r.name.toLowerCase()===repName.toLowerCase();});if(!rep){warnings.push('Unknown: '+repName);skipped++;return;}var key=rep.name+'|'+weekKey;var existing=gd(key);function num(v){var n=parseFloat(String(v));return isNaN(n)?null:n;}var _cc=num(row[idx.customersCalled]);if(_cc==null)_cc=num(row[idx.calls]);if(_cc==null)_cc=num(row[idx.acctsCalled]);if(_cc==null)_cc=(existing.acctsCalled!=null?existing.acctsCalled:existing.calls);sd(key,{hours:num(row[idx.hours])!=null?num(row[idx.hours]):existing.hours,calls:_cc,orders:num(row[idx.orders])!=null?num(row[idx.orders]):existing.orders,revenue:num(row[idx.revenue])!=null?num(row[idx.revenue]):existing.revenue,setSize:num(row[idx.setSize])!=null?num(row[idx.setSize]):existing.setSize,acctsCalled:_cc,topSale:num(row[idx.topSale])!=null?num(row[idx.topSale]):existing.topSale,topSaleCustomer:String(row[idx.topSaleCustomer]||'').trim()||existing.topSaleCustomer||''});updated++;});try{if(typeof _v552CaptureWeeklyUpload==='function')_v552CaptureWeeklyUpload();}catch(_v552e){}markDirty();var summary='\u2713 Updated '+updated+' rep'+(updated!==1?'s':'')+(skipped?' \u00b7 '+skipped+' skipped':'')+(warnings.length?' \u26A0 '+warnings.slice(0,2).join(', '):'');if(msg){msg.textContent=summary;msg.style.color=warnings.length?'#EF9F27':'#5DCAA5';}if(document.getElementById('pg-entry').classList.contains('active')){loadE();}if(document.getElementById('pg-dash').classList.contains('active')){renderDash();}}catch(err){if(msg){msg.textContent='\u274C Error: '+err.message;msg.style.color='#F09595';}console.error(err);}event.target.value='';};reader.readAsBinaryString(file);}
 function downloadAETemplate(){if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return;}var cwk=getCWK();var headers=['Rep Name','Week Key','SO Number','Issue Type','Description (optional)'];var instRow=['INSTRUCTIONS: One row per art error. SO required. See Issue Type Reference sheet.','','','',''];var rows=activeReps().map(function(r){return[r.name,cwk,'','',''];});var ws=XLSX.utils.aoa_to_sheet([instRow,headers].concat(rows));ws['!cols']=[{wch:24},{wch:26},{wch:16},{wch:22},{wch:38}];var refData=[['Issue Type Value','Display Label'],['color_type','Color type'],['incomplete_art','Incomplete art sheet'],['location','Location'],['missing_info','Missing information'],['order_entry','Order entry'],['size','Size']];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Art Errors');XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(refData),'Issue Type Reference');XLSX.writeFile(wb,'art_errors_'+cwk+'.xlsx');var msg=document.getElementById('aeBulkMsg');if(msg){msg.textContent='Downloaded';msg.style.color='#5DCAA5';}}
 function uploadAESheet(event){if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return;}var file=event.target.files[0];if(!file)return;var msg=document.getElementById('aeBulkMsg');if(msg){msg.textContent='Reading\u2026';msg.style.color='#EF9F27';}var VALID_TYPES={color_type:'color_type',incomplete_art:'incomplete_art',location:'location',missing_info:'missing_info',order_entry:'order_entry',size:'size','color type':'color_type','incomplete art sheet':'incomplete_art','missing information':'missing_info','order entry':'order_entry'};var reader=new FileReader();reader.onload=function(e){try{var wb=XLSX.read(e.target.result,{type:'binary'});var ws=wb.Sheets[wb.SheetNames[0]];var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});var hi=rows.findIndex(function(r){return r.some(function(c){return String(c).trim()==='Rep Name';});});if(hi<0){if(msg){msg.textContent='\u274C No header row.';msg.style.color='#F09595';}event.target.value='';return;}var headers=rows[hi].map(function(h){return String(h).trim().toLowerCase();});var dataRows=rows.slice(hi+1).filter(function(r){return r.some(function(c){return String(c).trim();});});var iRep=headers.findIndex(function(h){return h.includes('rep');}),iWeek=headers.findIndex(function(h){return h.includes('week');}),iSO=headers.findIndex(function(h){return h.includes('so');}),iType=headers.findIndex(function(h){return h.includes('issue')||h.includes('type');}),iDesc=headers.findIndex(function(h){return h.includes('desc');});var added=0,skipped=0,warnings=[];var today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});dataRows.forEach(function(row,ri){var repName=String(row[iRep]||'').trim();var weekKey=String(row[iWeek]||'').trim();var soNum=String(row[iSO]||'').trim();var rawType=String(row[iType]||'').trim().toLowerCase();var desc=String(row[iDesc]||'').trim();if(!repName&&!soNum)return;var rep=S.reps.find(function(r){return r.name.toLowerCase()===repName.toLowerCase();});if(!rep){warnings.push('Row '+(ri+1)+': unknown rep');skipped++;return;}if(!soNum){warnings.push('Row '+(ri+1)+': missing SO');skipped++;return;}var issueType=VALID_TYPES[rawType]||'color_type';var wk=weekKey||getCWK();var parts=wk.split('_');S.artErrors.push({id:Date.now()+added,rep:rep.name,weekKey:wk,yr:parts[0],q:parts[1],so:soNum,type:issueType,desc:desc,date:today});added++;});markDirty();var summary='\u2713 Added '+added+' error'+(added!==1?'s':'')+(skipped?' \u00b7 '+skipped+' skipped':'')+(warnings.length?' \u26A0 '+warnings.slice(0,2).join(', '):'');if(msg){msg.textContent=summary;msg.style.color=warnings.length?'#EF9F27':'#5DCAA5';}if(document.getElementById('pg-art').classList.contains('active')){renderAEL();}}catch(err){if(msg){msg.textContent='\u274C Error: '+err.message;msg.style.color='#F09595';}console.error(err);}event.target.value='';};reader.readAsBinaryString(file);}
@@ -19844,7 +19896,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:608,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:609,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
