@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v609 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v610 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v609 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v610 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -17136,23 +17136,53 @@ function _tcpProfileCallsHtml(rep,yr,q){
   var weeks=_tcpQWeeks(yr,q), nw=Math.max(1,weeks.length), we=weeksElapsed(yr,q), wr=Math.max(0,nw-we);
   var qt=_tcpRepQuarterTotal(rep,yr,q), goal=getGoal(rep,yr,q);
   var made=qt.calls||0, wkGoal=goal.calls||0, qtrGoal=wkGoal*nw;
-  var pct=qtrGoal>0?Math.round(made/qtrGoal*100):0;
-  var wePct=we>0?we/nw:0, paced=qtrGoal*wePct, gap=paced-made;
-  var wkAvg=we>0?made/we:0, needWk=wr>0?Math.max(0,(qtrGoal-made)/wr):0;
-  var pacePct=paced>0?Math.round(made/paced*100):100;
-  var col=pacePct>=95?'#059669':pacePct>=80?'#D97706':'#DC2626';
-  var status=qtrGoal<=0?'No call goal set':((gap<=0?'AHEAD by '+Math.round(-gap):'BEHIND by '+Math.round(gap))+' calls');
-  var barFill=qtrGoal>0?Math.min(100,made/qtrGoal*100):0;
-  var notch=qtrGoal>0?Math.min(100,paced/qtrGoal*100):0;
-  var h='<div class="profile-kpi-grid" style="grid-template-columns:repeat(2,1fr);">'
-    +'<div class="profile-kpi"><div class="profile-kpi-label">Calls made</div><div class="profile-kpi-value">'+made.toLocaleString()+'</div><div class="profile-kpi-sub">'+q+' '+yr+' total</div></div>'
-    +'<div class="profile-kpi"><div class="profile-kpi-label">Call goal ('+q+')</div><div class="profile-kpi-value">'+qtrGoal.toLocaleString()+'</div><div class="profile-kpi-sub">'+wkGoal+'/wk &times; '+nw+' wks</div></div>'
-    +'<div class="profile-kpi"><div class="profile-kpi-label">% to goal</div><div class="profile-kpi-value" style="color:'+(pct>=100?'#059669':pct>=70?'#D97706':'#DC2626')+';">'+pct+'%</div><div class="profile-kpi-sub">'+status+'</div></div>'
-    +'<div class="profile-kpi"><div class="profile-kpi-label">'+(wr>0?'Need each week':'Quarter complete')+'</div><div class="profile-kpi-value" style="color:'+col+';">'+(wr>0?Math.ceil(needWk)+'/wk':'\u2014')+'</div><div class="profile-kpi-sub">avg '+Math.round(wkAvg)+'/wk so far</div></div>'
+  var accts=qt.acctsCalled||qt.accts||0;
+  var setSize=(parseInt(goal.setSize)||0)||(qt.setSize||0);
+  var isCurrent=(function(){var n=new Date();return yr===n.getFullYear()&&q===('Q'+(Math.floor(n.getMonth()/3)+1));})();
+  var plan=(window.tcpCallPlan&&isCurrent)?tcpCallPlan(new Date().getMonth()):null;
+  /* Fallback: no set size or no plan context -> legacy call-volume view */
+  if(!setSize||!plan){
+    var pct0=qtrGoal>0?Math.round(made/qtrGoal*100):0;
+    var wePct0=we>0?we/nw:0, paced0=qtrGoal*wePct0, gap0=paced0-made;
+    var needWk0=wr>0?Math.max(0,(qtrGoal-made)/wr):0, wkAvg0=we>0?made/we:0;
+    var pacePct0=paced0>0?Math.round(made/paced0*100):100;
+    var col0=pacePct0>=95?'#059669':pacePct0>=80?'#D97706':'#DC2626';
+    var status0=qtrGoal<=0?'No call goal set':((gap0<=0?'AHEAD by '+Math.round(-gap0):'BEHIND by '+Math.round(gap0))+' calls');
+    var barFill0=qtrGoal>0?Math.min(100,made/qtrGoal*100):0;
+    var notch0=qtrGoal>0?Math.min(100,paced0/qtrGoal*100):0;
+    return '<div class="profile-kpi-grid" style="grid-template-columns:repeat(2,1fr);">'
+      +'<div class="profile-kpi"><div class="profile-kpi-label">Calls made</div><div class="profile-kpi-value">'+made.toLocaleString()+'</div><div class="profile-kpi-sub">'+q+' '+yr+' total</div></div>'
+      +'<div class="profile-kpi"><div class="profile-kpi-label">Call goal ('+q+')</div><div class="profile-kpi-value">'+qtrGoal.toLocaleString()+'</div><div class="profile-kpi-sub">'+wkGoal+'/wk &times; '+nw+' wks</div></div>'
+      +'<div class="profile-kpi"><div class="profile-kpi-label">% to goal</div><div class="profile-kpi-value" style="color:'+(pct0>=100?'#059669':pct0>=70?'#D97706':'#DC2626')+';">'+pct0+'%</div><div class="profile-kpi-sub">'+status0+'</div></div>'
+      +'<div class="profile-kpi"><div class="profile-kpi-label">'+(wr>0?'Need each week':'Quarter complete')+'</div><div class="profile-kpi-value" style="color:'+col0+';">'+(wr>0?Math.ceil(needWk0)+'/wk':'\u2014')+'</div><div class="profile-kpi-sub">avg '+Math.round(wkAvg0)+'/wk so far</div></div>'
+      +'</div>'
+      +'<div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;"><span>Pacing &middot; Wk '+we+' of '+nw+'</span><span style="color:'+col0+';font-weight:700;">'+pacePct0+'% of paced target</span></div>'
+      +'<div style="position:relative;height:16px;background:#e5e7eb;border-radius:9px;overflow:visible;"><div style="height:100%;width:'+barFill0+'%;background:'+col0+';border-radius:9px;"></div><div style="position:absolute;top:-3px;bottom:-3px;left:'+notch0+'%;width:3px;background:#1a1a1a;border-radius:2px;box-shadow:0 0 0 1.5px white;" title="Where they should be"></div></div></div>';
+  }
+  /* Plan-aware coverage view (matches the rep summary PDF) */
+  var covPct=setSize>0?Math.round(accts/setSize*100):0;
+  var hasT=plan.targetPct!=null;
+  var targetAccts=hasT?Math.ceil(setSize*plan.targetPct/100):0;
+  var delta=hasT?(covPct-plan.targetPct):0;
+  var cp=(window.tcpCheckpoint)?tcpCheckpoint(setSize,accts):{active:false,met:false};
+  var col=!hasT?'#2563EB':(delta>=0?'#059669':delta>=-15?'#D97706':'#DC2626');
+  var status=!hasT?plan.label:(delta>=0?('AHEAD by '+delta+' pts vs plan'):('BEHIND by '+Math.abs(delta)+' pts vs plan'));
+  var needLabel,needVal,needSub;
+  if(cp.active){needLabel='Need each week';needVal=cp.weekly.toLocaleString()+'/wk';needSub=cp.daily+'/day \u00b7 to '+cp.label+' checkpoint';}
+  else if(cp.met){needLabel='Checkpoint';needVal='\u2713 met';needSub=plan.targetPct+'% reached \u2014 pace to quarter';}
+  else{needLabel='This month';needVal='\u2014';needSub='target-list month';}
+  var barFill=Math.min(100,covPct);
+  var notch=hasT?Math.min(100,plan.targetPct):100;
+  var volPace=(function(){var wePct=we>0?we/nw:0,paced=qtrGoal*wePct;return paced>0?Math.round(made/paced*100):100;})();
+  return '<div class="profile-kpi-grid" style="grid-template-columns:repeat(2,1fr);">'
+    +'<div class="profile-kpi"><div class="profile-kpi-label">Accounts called</div><div class="profile-kpi-value">'+accts.toLocaleString()+'</div><div class="profile-kpi-sub">of '+setSize.toLocaleString()+' in set \u00b7 '+q+' '+yr+'</div></div>'
+    +'<div class="profile-kpi"><div class="profile-kpi-label">Plan target ('+plan.short+')</div><div class="profile-kpi-value">'+(hasT?targetAccts.toLocaleString():'\u2014')+'</div><div class="profile-kpi-sub">'+(hasT?(plan.targetPct+'% \u00b7 '+plan.label):plan.label)+'</div></div>'
+    +'<div class="profile-kpi"><div class="profile-kpi-label">Coverage</div><div class="profile-kpi-value" style="color:'+col+';">'+covPct+'%</div><div class="profile-kpi-sub">'+status+'</div></div>'
+    +'<div class="profile-kpi"><div class="profile-kpi-label">'+needLabel+'</div><div class="profile-kpi-value" style="color:'+col+';">'+needVal+'</div><div class="profile-kpi-sub">'+needSub+'</div></div>'
     +'</div>'
-    +'<div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;"><span>Pacing &middot; Wk '+we+' of '+nw+'</span><span style="color:'+col+';font-weight:700;">'+pacePct+'% of paced target</span></div>'
-    +'<div style="position:relative;height:16px;background:#e5e7eb;border-radius:9px;overflow:visible;"><div style="height:100%;width:'+barFill+'%;background:'+col+';border-radius:9px;"></div><div style="position:absolute;top:-3px;bottom:-3px;left:'+notch+'%;width:3px;background:#1a1a1a;border-radius:2px;box-shadow:0 0 0 1.5px white;" title="Where they should be"></div></div></div>';
-  return h;
+    +'<div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;"><span>Coverage vs plan \u00b7 Wk '+we+' of '+nw+'</span><span style="color:'+col+';font-weight:700;">'+covPct+'%'+(hasT?(' vs '+plan.targetPct+'% target'):'')+'</span></div>'
+    +'<div style="position:relative;height:16px;background:#e5e7eb;border-radius:9px;overflow:visible;"><div style="height:100%;width:'+barFill+'%;background:'+col+';border-radius:9px;"></div><div style="position:absolute;top:-3px;bottom:-3px;left:'+notch+'%;width:3px;background:#1a1a1a;border-radius:2px;box-shadow:0 0 0 1.5px white;" title="Plan target"></div></div></div>'
+    +'<div style="margin-top:8px;font-size:10.5px;color:var(--color-text-secondary);">Call volume: '+made.toLocaleString()+' calls \u00b7 goal '+wkGoal+'/wk \u00b7 '+volPace+'% of volume pace</div>';
 }
 function _tcpProfileHRHtml(rep,yr,q){
   var hrV=(S.hrViolations||[]).filter(function(v){return v&&v.rep===rep&&String(v.yr)===String(yr)&&v.q===q;});
@@ -19896,7 +19926,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:609,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:610,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
