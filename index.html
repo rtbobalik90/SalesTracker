@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v607 — Call Workflow & Live Assist Ready</title>
+<title>Sales Tracker v608 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -4406,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v607 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v608 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -13636,6 +13636,20 @@ if(!window.tcpCallPlan){
       return t==null?fallback:(t/100);
     }catch(e){return fallback;}
   };
+  window.tcpCheckpoint=function(setSize,accts,now){
+    now=now||new Date();
+    var p=tcpCallPlan(now.getMonth());
+    if(p.targetPct==null)return {active:false,met:false};
+    var goal=Math.ceil(setSize*p.targetPct/100);
+    var rem=Math.max(0,goal-accts);
+    var end=new Date(now.getFullYear(),now.getMonth()+1,0);
+    var wd=0,d=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    while(d<=end){var dow=d.getDay();if(dow>0&&dow<6)wd++;d.setDate(d.getDate()+1);}
+    var lbl=end.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    var daily=wd>0?Math.ceil(rem/wd):rem;
+    var weekly=Math.min(rem,daily*5);
+    return {active:rem>0,met:rem===0,label:lbl,goal:goal,remaining:rem,workdays:wd,daily:daily,weekly:weekly,targetPct:p.targetPct};
+  };
 }
     // ── CALLS math (33/33/33 set coverage: call every customer once per quarter) ──
   // Quarterly call goal = set size (call every customer in your set once)
@@ -13693,8 +13707,20 @@ if(!window.tcpCallPlan){
     row('Difference',callsDiffLabel,callsDiffColor),
     row('Original Daily Goal ('+_p319.short+')',callsDailyOrig.toLocaleString()+' / day'),
     row('Original Weekly Goal',callsWeeklyOrig.toLocaleString()+' / week'),
-    row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week'),
-    row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day'),
+    (function(){
+      var cp=window.tcpCheckpoint?window.tcpCheckpoint(setSize,acctsCalled):{active:false};
+      if(cp.active){
+        return row('Weekly Adjusted Goal (to '+cp.label+' checkpoint)',cp.weekly.toLocaleString()+' / week','#B45309')
+          +row('Daily Adjusted Goal ('+cp.workdays+' workdays left)',cp.daily.toLocaleString()+' / day','#B45309');
+      }
+      if(cp.met){
+        return row('Checkpoint','\u2713 '+cp.targetPct+'% met \u2014 pacing to quarter','#1D9E75')
+          +row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week')
+          +row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day');
+      }
+      return row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week')
+        +row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day');
+    })(),
     row('Coverage',callsPercent+'%',callsPctColor)
   ].join('');
 
@@ -13731,7 +13757,7 @@ if(!window.tcpCallPlan){
     +'</tbody></table>'
     +coverageBlock
     +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. Targets follow the annual call plan: Q1 + Q2 in thirds (33/33/33), Jul/Aug and Sept/Oct as 50/50 rotations, November = Christmas-intent + historical Sept–Nov buyers, December = Loyalty level-ups and thank-yous. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v320</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v321</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -19818,7 +19844,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:607,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:608,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
