@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v613 — My Day Lane & Scorecard Balance</title>
+<title>Sales Tracker v607 — Call Workflow & Live Assist Ready</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3472,114 +3472,6 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 @media(max-width:700px){.rep-intel-hero{padding:22px 19px;border-radius:22px}.rep-intel-hero h1{font-size:32px}.rep-intel-period-grid{grid-template-columns:1fr}.rep-intel-period-head,.rep-intel-roster-head{align-items:flex-start;flex-direction:column}.rep-intel-roster-grid{grid-template-columns:1fr}.rep-intel-team-pulse{width:100%}.rep-intel-pulse-chip{flex:1}.rep-intel-card-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 
-
-<style id="tcp-my-day-scorecard-emphasis-v612-css">
-/* ==========================================================================
-   PROJECT SIMPLIFY · MY DAY SCORECARD EMPHASIS · BUILD v612
-   Slightly shortens the four work lanes and gives the shared approved
-   Full/Phased My Day scorecard more height, spacing, and readable type.
-   ========================================================================== */
-@media(min-width:1181px){
-  #rp-overlay .ps68-home{
-    grid-template-rows:198px minmax(0,1fr) 140px!important;
-  }
-  #rp-overlay .ps68-score{
-    grid-template-columns:172px minmax(0,1fr) auto!important;
-    min-height:140px!important;
-    height:140px!important;
-    gap:13px!important;
-    padding:13px 15px!important;
-    border-radius:18px!important;
-  }
-  #rp-overlay .ps68-score-title .ps68-kick{
-    font-size:8.5px!important;
-    letter-spacing:.75px!important;
-  }
-  #rp-overlay .ps68-score-title strong{
-    margin-top:7px!important;
-    font-size:18.5px!important;
-    line-height:1.14!important;
-  }
-  #rp-overlay .ps68-score-grid{
-    gap:9px!important;
-  }
-  #rp-overlay .ps68-score-card{
-    min-height:102px!important;
-    height:102px!important;
-    grid-template-columns:42px minmax(0,1fr)!important;
-    gap:10px!important;
-    padding:11px!important;
-    border-radius:12px!important;
-  }
-  #rp-overlay .ps68-score-icon{
-    width:42px!important;
-    height:42px!important;
-    font-size:18px!important;
-  }
-  #rp-overlay .ps68-score-card span{
-    font-size:8px!important;
-    letter-spacing:.35px!important;
-  }
-  #rp-overlay .ps68-score-card strong{
-    margin-top:5px!important;
-    font-size:16px!important;
-    line-height:1.08!important;
-  }
-  #rp-overlay .ps68-score-card small{
-    margin-top:5px!important;
-    font-size:8.5px!important;
-    line-height:1.25!important;
-  }
-  #rp-overlay .ps68-score-link{
-    min-height:46px!important;
-    padding:0 14px!important;
-    font-size:10.5px!important;
-    border-radius:10px!important;
-  }
-}
-
-/* Shorter laptop displays keep the same emphasis without crowding the lanes. */
-@media(max-height:820px) and (min-width:1181px){
-  #rp-overlay .ps68-home{
-    grid-template-rows:184px minmax(0,1fr) 126px!important;
-  }
-  #rp-overlay .ps68-score{
-    min-height:126px!important;
-    height:126px!important;
-    padding:11px 13px!important;
-  }
-  #rp-overlay .ps68-score-card{
-    min-height:90px!important;
-    height:90px!important;
-    grid-template-columns:38px minmax(0,1fr)!important;
-    padding:9px 10px!important;
-  }
-  #rp-overlay .ps68-score-icon{
-    width:38px!important;
-    height:38px!important;
-    font-size:16px!important;
-  }
-  #rp-overlay .ps68-score-card strong{font-size:14.5px!important;}
-  #rp-overlay .ps68-score-card small{font-size:7.8px!important;}
-}
-
-/* Tablet/mobile continue using natural page height and wrapping. */
-@media(max-width:1180px){
-  #rp-overlay .ps68-score{
-    height:auto!important;
-    min-height:0!important;
-    padding:14px!important;
-  }
-  #rp-overlay .ps68-score-card{
-    height:auto!important;
-    min-height:92px!important;
-  }
-  #rp-overlay .ps68-score-title strong{font-size:18px!important;}
-  #rp-overlay .ps68-score-card strong{font-size:15px!important;}
-  #rp-overlay .ps68-score-card small{font-size:8px!important;}
-}
-</style>
-
 </head>
 <body>
 
@@ -4514,7 +4406,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🖨</div>
           <div class="meeting-title">Report format upgrade</div>
-          <p class="meeting-help small">The Print/PDF v606 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+          <p class="meeting-help small">The Print/PDF v607 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
         </div>
         <div class="meeting-panel meeting-mini">
           <div class="meeting-icon-bubble">🔑</div>
@@ -9586,7 +9478,7 @@ function calcSc(rep,tot,ro,nw,hrP,weElapsed){
   var wePct=(weElapsed!=null&&weElapsed>0)?weElapsed/(nw||13):1;
   var revGoalPaced=ro.rev*wePct;
   var hrsGoalPaced=ro.hrs*(weElapsed!=null&&weElapsed>0?weElapsed:(nw||13));
-  var setPaced=tot.setSize*wePct;
+  var setPaced=tot.setSize*((typeof window.tcpCovFrac==='function')?window.tcpCovFrac(wePct):wePct);
   var sp=revGoalPaced>0?(tot.revenue/revGoalPaced)*100:0,ss=spct(sp,[_tR.e5,_tR.e4,_tR.e3,_tR.e2]);
   var cp=setPaced>0?(tot.acctsCalled/setPaced)*100:0,cs=spct(cp,[_tC.e5,_tC.e4,_tC.e3,_tC.e2]);
   var ap=tot.orders>0?(tot.art/tot.orders)*100:0,as2=smet(ap,[_tA.e5,_tA.e4,_tA.e3,_tA.e2]);
@@ -13719,7 +13611,33 @@ function downloadRepSummaryPDF(repName){
   else{salesDiffLabel='$'+salesDiff.toLocaleString()+' to go';salesDiffColor='#B45309';}
   var salesPctColor=salesPercent>=100?'#1D9E75':salesPercent>=85?'#B45309':'#B91C1C';
 
-  // ── CALLS math (33/33/33 set coverage: call every customer once per quarter) ──
+if(!window.tcpCallPlan){
+  window.tcpCallPlan=function(m){
+    // Annual call plan: Q1+Q2 33/33/33 · Jul/Aug 50/50 · Sept/Oct 50/50 · Nov+Dec target lists
+    if(m<=5){var mi=m%3;return {mode:'333',short:'33/33/33',targetPct:[33,66,100][mi],label:'33/33/33 pacing',
+      pace:'Month '+(mi+1)+' of the quarter \u2014 call a third of your set each month.'};}
+    if(m===6)return {mode:'5050',short:'50/50',targetPct:50,label:'Jul/Aug 50/50 rotation',
+      pace:'Month 1 of 2 \u2014 call half your set by end of July, the full set by end of August.'};
+    if(m===7)return {mode:'5050',short:'50/50',targetPct:100,label:'Jul/Aug 50/50 rotation',
+      pace:'Month 2 of 2 \u2014 full set called by end of August.'};
+    if(m===8)return {mode:'5050',short:'50/50',targetPct:100,label:'Sept/Oct 50/50 rotation',
+      pace:'Jul/Aug set complete \u00b7 September starts the Sept/Oct rotation \u2014 first half of the set this cycle (finishes in October).'};
+    if(m===9)return {mode:'5050',short:'50/50',targetPct:50,label:'Sept/Oct 50/50 rotation',
+      pace:'Month 2 of 2 \u2014 Q4 target: 50% of the set called by end of October (completing the rotation started in September).'};
+    if(m===10)return {mode:'list',short:'target list',targetPct:null,label:'November target list',
+      pace:'Call customers who said they\u2019re placing Christmas orders, plus historical Sept\u2013Nov buyers (up to 5 years back) with no order yet this year.'};
+    return {mode:'list',short:'target list',targetPct:null,label:'December loyalty calls',
+      pace:'Call customers close to leveling up to Loyalty, and thank your Loyalty customers.'};
+  };
+  window.tcpCovFrac=function(fallback){
+    try{
+      if(fallback>=0.999)return fallback;
+      var t=tcpCallPlan(new Date().getMonth()).targetPct;
+      return t==null?fallback:(t/100);
+    }catch(e){return fallback;}
+  };
+}
+    // ── CALLS math (33/33/33 set coverage: call every customer once per quarter) ──
   // Quarterly call goal = set size (call every customer in your set once)
   // Total calls = unique accounts called this quarter
   var callsQGoal=Math.round(t.setSize||0);
@@ -13743,9 +13661,11 @@ function downloadRepSummaryPDF(repName){
   var qMonths={Q1:[0,1,2],Q2:[3,4,5],Q3:[6,7,8],Q4:[9,10,11]};
   var mIdx=(qMonths[q]||[0,1,2]).indexOf(new Date().getMonth());
   if(mIdx<0)mIdx=0;
-  var coverageTarget=mIdx===0?33:mIdx===1?66:100;
-  var coverageDelta=coveragePct-coverageTarget;
-  var covCol=coveragePct>=coverageTarget?'#1D9E75':coveragePct>=coverageTarget-15?'#B45309':'#B91C1C';
+  var _p319=window.tcpCallPlan(new Date().getMonth());
+  var coverageTarget=_p319.targetPct==null?0:_p319.targetPct;
+  var _pHasTarget=_p319.targetPct!=null;
+  var coverageDelta=_pHasTarget?(coveragePct-coverageTarget):0;
+  var covCol=!_pHasTarget?'#00AFEF':(coveragePct>=coverageTarget?'#1D9E75':coveragePct>=coverageTarget-15?'#B45309':'#B91C1C');
 
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
 
@@ -13771,7 +13691,7 @@ function downloadRepSummaryPDF(repName){
     row('Quarterly Call Goal',callsQGoal.toLocaleString()+' accts'),
     row('Accounts Called',totalCalls.toLocaleString()),
     row('Difference',callsDiffLabel,callsDiffColor),
-    row('Original Daily Goal (33/33/33)',callsDailyOrig.toLocaleString()+' / day'),
+    row('Original Daily Goal ('+_p319.short+')',callsDailyOrig.toLocaleString()+' / day'),
     row('Original Weekly Goal',callsWeeklyOrig.toLocaleString()+' / week'),
     row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week'),
     row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day'),
@@ -13783,8 +13703,8 @@ function downloadRepSummaryPDF(repName){
   var monthLbl=mIdx===0?'Month 1':mIdx===1?'Month 2':'Month 3';
   var coverageBlock=setSize>0?(
     '<div style="margin-top:14px;padding:10px 14px;background:#f9fafb;border-left:3px solid '+covCol+';border-radius:0 6px 6px 0;font-size:11px;color:#1C1C1C;line-height:1.5;">'
-    +'<strong>33/33/33 pacing:</strong> at '+monthLbl+' of '+q+', target = <strong>'+coverageTarget+'%</strong> coverage. Currently <strong style="color:'+covCol+';">'+coveragePct+'%</strong> '
-    +(coverageDelta>=0?'(<span style="color:#1D9E75;">+'+coverageDelta+' pts ahead</span>)':'(<span style="color:#B91C1C;">'+coverageDelta+' pts behind</span>)')+'.'
+    +'<strong>'+_p319.label+':</strong> '+_p319.pace+(_pHasTarget?(' Target = <strong>'+coverageTarget+'%</strong> coverage. Currently <strong style="color:'+covCol+';">'+coveragePct+'%</strong> '):' Coverage for reference: <strong style="color:'+covCol+';">'+coveragePct+'%</strong> of set called this quarter. ')
+    +(!_pHasTarget?'':((coverageDelta>=0?'(<span style="color:#1D9E75;">+'+coverageDelta+' pts ahead</span>)':'(<span style="color:#B91C1C;">'+coverageDelta+' pts behind</span>)')+'.'))
     +'</div>'
   ):'';
 
@@ -13810,8 +13730,8 @@ function downloadRepSummaryPDF(repName){
     +callsRows
     +'</tbody></table>'
     +coverageBlock
-    +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
-    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v319pi</div>'
+    +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. Targets follow the annual call plan: Q1 + Q2 in thirds (33/33/33), Jul/Aug and Sept/Oct as 50/50 rotations, November = Christmas-intent + historical Sept–Nov buyers, December = Loyalty level-ups and thank-yous. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
+    +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v320</div>'
     +'</body></html>';
   var w=window.open('','_blank');
   if(!w){alert('Pop-up blocked. Allow pop-ups for this page to download the PDF.');return;}
@@ -19898,7 +19818,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ===== MODULE: PHASE1-FOUNDATION (manifest + page purpose headers) ===== */
-const TCP_MANIFEST={version:606,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
+const TCP_MANIFEST={version:607,phase:'Art CSV proxy-fallback fix / Phase 12 base',_note:'Phase 12 — Per-Rep Daily Sales',modules:['tokens','nav-ia','purpose-headers','meeting-report-v2','deadline-calc','daily-sales','inbound','reports']};
 try{console.info('%cTCP Sales Tracker v'+TCP_MANIFEST.version+' · '+TCP_MANIFEST.phase,'color:#FA873D;font-weight:bold;');}catch(e){}
 const PAGE_PURPOSE={
   dash:['Command center','Today\u2019s picture, week in progress, and what needs your attention.'],
@@ -33310,12 +33230,6 @@ body.coach-seated #pg-coach .coach-panel-head,
       }
     })
   };
-  /* v607 bridge: expose the mature Action Center model without duplicating its data logic. */
-  window._rp2ActionBuildV607=build;
-  window._rp2ActionModalHTMLV607=modalHTML;
-  window._rp2ActionDueToneV607=dueTone;
-  window._rp2ActionTaskDueLabelV607=taskDueLabel;
-  window._rp2ActionPostureV607=posture;
 })();
 </script>
 
@@ -65935,50 +65849,6 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
 })();
 </script>
 
-
-
-
-
-<!-- ======================================================================
-     v611 · SHARE APPROVED FULL MY DAY + PHASED CALL WITHOUT DIALER
-     Based on v610. Full and Phased now render the same approved master My Day.
-     Phased Workspace keeps its reduced navigation and hides only the visible
-     dialer panel in Call Workspace. The underlying dialer remains
-     untouched and fully available in Full Workspace.
-     ====================================================================== -->
-<style id="tcp-v611-shared-approved-my-day-phased-no-dialer-css">
-/* Phase mode only: hide the visible embedded dialer without removing code. */
-#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench > .ps62-dialer{
-  display:none!important;
-}
-#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench{
-  grid-template-columns:minmax(620px,1.5fr) minmax(340px,.78fr)!important;
-  align-items:start!important;
-}
-#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-center{
-  grid-column:1!important;
-}
-#rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-context{
-  grid-column:2!important;
-}
-@media(max-width:1450px){
-  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench{
-    grid-template-columns:minmax(0,1fr) minmax(320px,400px)!important;
-  }
-  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-context{
-    grid-column:2!important;
-  }
-}
-@media(max-width:1180px){
-  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-workbench{
-    grid-template-columns:1fr!important;
-  }
-  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-center,
-  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page .ps62-context{
-    grid-column:auto!important;
-  }
-}
-</style>
 </body>
 </html>
 
@@ -67760,847 +67630,3 @@ window.TCP_CALL_WORKSPACE_V593={
   else window.addEventListener('load',function(){setTimeout(arm,300);});
   arm();
 })();</script>
-
-<!-- ========================================================================
-     SALES TRACKER v607 · TODAY'S BUSINESS COMMAND CENTER
-     Replaces the forced time-block planner with a promise-and-execution view:
-     do-now priorities, ownership lanes, upcoming commitments, and closed-loop
-     actions. The Daily page remains the natural future home for scheduling.
-     ======================================================================== -->
-<style id="tcp-todays-business-v607-css">
-#rp-overlay .tb607-shell{
-  width:100%;max-width:1680px;margin:0 auto;padding:2px 0 72px;
-  display:grid;gap:clamp(14px,1.05vw,20px);overflow:visible;
-}
-#rp-overlay .tb607-hero{
-  position:relative;overflow:hidden;display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(315px,.42fr);gap:24px;align-items:stretch;
-  padding:clamp(22px,1.8vw,32px);border:1px solid rgba(255,255,255,.10);border-radius:24px;
-  background:radial-gradient(circle at 8% 5%,rgba(250,135,61,.24),transparent 34%),
-             radial-gradient(circle at 92% 12%,rgba(0,175,239,.16),transparent 34%),
-             linear-gradient(135deg,#12273a 0%,#16203a 52%,#2b1e24 100%);
-  box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.07);
-}
-#rp-overlay .tb607-hero:after{content:"";position:absolute;right:-100px;bottom:-160px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(250,135,61,.18),transparent 66%);pointer-events:none}
-#rp-overlay .tb607-hero-main,#rp-overlay .tb607-hero-side{position:relative;z-index:1;min-width:0}
-#rp-overlay .tb607-kick,#rp-overlay .tb607-section-kick{
-  color:#00AFEF;font-size:9px;font-weight:950;letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px
-}
-#rp-overlay .tb607-title{color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:clamp(30px,2.35vw,44px);line-height:1.02;font-weight:900;letter-spacing:-.035em;margin:0 0 9px}
-#rp-overlay .tb607-sub{max-width:830px;color:#BAC7D8;font-size:clamp(11px,.72vw,13px);line-height:1.65}
-#rp-overlay .tb607-date{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:15px;color:#8FA0B5;font-size:10px;font-weight:750}
-#rp-overlay .tb607-date b{color:#F4F7FB;font-weight:900}
-#rp-overlay .tb607-hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-#rp-overlay .tb607-btn{
-  min-height:38px;padding:0 13px;border-radius:11px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.055);color:#EAF0F8;font:800 10px inherit;cursor:pointer;transition:.15s
-}
-#rp-overlay .tb607-btn:hover{transform:translateY(-1px);border-color:rgba(0,175,239,.45);background:rgba(0,175,239,.10)}
-#rp-overlay .tb607-btn.primary{background:linear-gradient(135deg,#FA873D,#00AFEF);border-color:rgba(255,255,255,.16);color:#fff;box-shadow:0 12px 28px rgba(0,175,239,.20)}
-#rp-overlay .tb607-btn.good{border-color:rgba(71,209,108,.30);color:#A7FFC0;background:rgba(71,209,108,.08)}
-#rp-overlay .tb607-hero-side{
-  display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;align-items:center;
-  padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:rgba(4,10,18,.30)
-}
-#rp-overlay .tb607-progress-ring{
-  --pct:0;position:relative;width:104px;height:104px;border-radius:50%;display:grid;place-items:center;
-  background:conic-gradient(#47D16C calc(var(--pct)*1%),rgba(255,255,255,.08) 0);
-  box-shadow:0 15px 38px rgba(0,0,0,.25)
-}
-#rp-overlay .tb607-progress-ring:before{content:"";position:absolute;inset:9px;border-radius:50%;background:#101923;border:1px solid rgba(255,255,255,.08)}
-#rp-overlay .tb607-progress-ring strong{position:relative;color:#fff;font-size:25px;font-weight:950;letter-spacing:-.04em}
-#rp-overlay .tb607-progress-ring span{position:absolute;z-index:1;bottom:25px;color:#91A0B3;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
-#rp-overlay .tb607-progress-copy b{display:block;color:#fff;font-size:15px;font-weight:950;margin-bottom:5px}
-#rp-overlay .tb607-progress-copy p{margin:0;color:#97A5B8;font-size:10px;line-height:1.55}
-#rp-overlay .tb607-progress-copy small{display:block;margin-top:10px;color:#C9D6E5;font-size:9px}
-
-#rp-overlay .tb607-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
-#rp-overlay .tb607-kpi{
-  position:relative;overflow:hidden;min-height:100px;padding:14px 15px;border:1px solid rgba(255,255,255,.085);border-radius:17px;
-  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.022)),#101923;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)
-}
-#rp-overlay .tb607-kpi:after{content:"";position:absolute;right:-26px;top:-32px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,var(--glow,rgba(0,175,239,.16)),transparent 68%)}
-#rp-overlay .tb607-kpi-label{position:relative;color:#8F9EB2;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.10em;margin-bottom:8px}
-#rp-overlay .tb607-kpi-value{position:relative;color:#fff;font-size:24px;font-weight:950;line-height:1;letter-spacing:-.035em}
-#rp-overlay .tb607-kpi-sub{position:relative;color:#8290A4;font-size:8.5px;line-height:1.4;margin-top:7px}
-
-#rp-overlay .tb607-layout{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(330px,.58fr);gap:clamp(14px,1.05vw,20px);align-items:start}
-#rp-overlay .tb607-panel{
-  position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:22px;
-  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),#0C151E;
-  box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.05);padding:clamp(16px,1.25vw,21px)
-}
-#rp-overlay .tb607-panel:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#FA873D,#00AFEF,#47D16C);opacity:.85}
-#rp-overlay .tb607-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
-#rp-overlay .tb607-section-title{color:#fff;font-size:clamp(18px,1.25vw,23px);font-weight:950;letter-spacing:-.03em;line-height:1.1}
-#rp-overlay .tb607-section-copy{max-width:730px;color:#8F9EB2;font-size:9.5px;line-height:1.55;margin-top:6px}
-#rp-overlay .tb607-count{display:inline-flex;align-items:center;justify-content:center;min-width:31px;height:31px;padding:0 10px;border-radius:999px;border:1px solid rgba(0,175,239,.28);background:rgba(0,175,239,.08);color:#8EDCFA;font-size:10px;font-weight:950}
-
-#rp-overlay .tb607-lanes{display:flex;gap:6px;overflow-x:auto;padding:3px 0 10px;scrollbar-width:none}
-#rp-overlay .tb607-lanes::-webkit-scrollbar{display:none}
-#rp-overlay .tb607-lane{white-space:nowrap;min-height:34px;padding:0 11px;border-radius:10px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#9AA8BA;font:850 9px inherit;cursor:pointer}
-#rp-overlay .tb607-lane:hover{color:#fff;border-color:rgba(0,175,239,.34)}
-#rp-overlay .tb607-lane.on{color:#fff;border-color:rgba(250,135,61,.55);background:linear-gradient(135deg,rgba(250,135,61,.22),rgba(0,175,239,.12))}
-#rp-overlay .tb607-lane b{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;margin-left:5px;border-radius:999px;background:rgba(255,255,255,.08);font-size:8px}
-#rp-overlay .tb607-tools{display:grid;grid-template-columns:minmax(190px,1fr) 190px;gap:9px;margin:2px 0 14px}
-#rp-overlay .tb607-tools input,#rp-overlay .tb607-tools select{
-  width:100%;min-height:39px;padding:0 11px;border-radius:11px;border:1px solid rgba(255,255,255,.10);background:#08121B;color:#F2F6FB;font-size:10px;font-family:inherit
-}
-#rp-overlay .tb607-tools input:focus,#rp-overlay .tb607-tools select:focus{outline:none;border-color:rgba(0,175,239,.65);box-shadow:0 0 0 3px rgba(0,175,239,.10)}
-
-#rp-overlay .tb607-focus{
-  display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:13px;align-items:center;margin-bottom:14px;padding:15px;
-  border:1px solid rgba(250,135,61,.30);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(250,135,61,.16),transparent 45%),rgba(255,255,255,.028)
-}
-#rp-overlay .tb607-focus-rank{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#FA873D,#00AFEF);color:#fff;font-size:20px;font-weight:950;box-shadow:0 12px 28px rgba(0,175,239,.18)}
-#rp-overlay .tb607-focus-label{color:#FFC79A;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.10em;margin-bottom:5px}
-#rp-overlay .tb607-focus-title{color:#fff;font-size:15px;font-weight:950;line-height:1.2}
-#rp-overlay .tb607-focus-copy{color:#9AA8BA;font-size:9.5px;line-height:1.5;margin-top:5px}
-#rp-overlay .tb607-focus-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-
-#rp-overlay .tb607-list{display:grid;gap:9px}
-#rp-overlay .tb607-task{
-  display:grid;grid-template-columns:36px minmax(0,1fr) minmax(145px,.32fr) auto;gap:11px;align-items:center;
-  padding:12px 13px;border:1px solid rgba(255,255,255,.075);border-left:3px solid var(--tone,#00AFEF);border-radius:14px;background:rgba(255,255,255,.026);transition:.14s
-}
-#rp-overlay .tb607-task:hover{transform:translateX(2px);border-color:color-mix(in srgb,var(--tone,#00AFEF) 45%,rgba(255,255,255,.08));background:color-mix(in srgb,var(--tone,#00AFEF) 6%,rgba(255,255,255,.03))}
-#rp-overlay .tb607-task-num{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--tone,#00AFEF) 16%,rgba(255,255,255,.03));border:1px solid color-mix(in srgb,var(--tone,#00AFEF) 36%,transparent);color:#fff;font-size:10px;font-weight:950}
-#rp-overlay .tb607-task-main{min-width:0}
-#rp-overlay .tb607-task-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px}
-#rp-overlay .tb607-tag{display:inline-flex;align-items:center;min-height:19px;padding:0 7px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#9FAFC2;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.055em}
-#rp-overlay .tb607-tag.risk{color:#FECDD3;border-color:rgba(251,113,133,.38);background:rgba(251,113,133,.09)}
-#rp-overlay .tb607-tag.warn{color:#FDE68A;border-color:rgba(251,191,36,.34);background:rgba(251,191,36,.08)}
-#rp-overlay .tb607-tag.good{color:#B8F0CB;border-color:rgba(71,209,108,.32);background:rgba(71,209,108,.08)}
-#rp-overlay .tb607-task-title{color:#F4F7FB;font-size:11.5px;font-weight:900;line-height:1.25}
-#rp-overlay .tb607-task-why{color:#8392A6;font-size:8.8px;line-height:1.45;margin-top:4px}
-#rp-overlay .tb607-task-do{color:#B7C4D4;font-size:8.8px;line-height:1.45;margin-top:5px}
-#rp-overlay .tb607-task-do b{color:#8EDCFA}
-#rp-overlay .tb607-task-meta{display:grid;gap:5px;min-width:0}
-#rp-overlay .tb607-task-meta div{display:flex;justify-content:space-between;gap:8px;color:#7F8EA2;font-size:7.8px}
-#rp-overlay .tb607-task-meta strong{color:#DDE5EF;font-size:8px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:105px}
-#rp-overlay .tb607-task-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
-#rp-overlay .tb607-mini{min-height:30px;padding:0 9px;border-radius:9px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.035);color:#C4CFDC;font:850 8px inherit;cursor:pointer}
-#rp-overlay .tb607-mini:hover{color:#fff;border-color:rgba(0,175,239,.45);background:rgba(0,175,239,.09)}
-#rp-overlay .tb607-mini.primary{color:#B8F0CB;border-color:rgba(71,209,108,.36);background:rgba(71,209,108,.08)}
-#rp-overlay .tb607-empty{padding:28px;border:1px dashed rgba(255,255,255,.12);border-radius:16px;text-align:center;color:#8392A6;font-size:10px;background:rgba(255,255,255,.018)}
-#rp-overlay .tb607-empty strong{display:block;color:#E8EEF6;font-size:13px;margin-bottom:5px}
-
-#rp-overlay .tb607-side{display:grid;gap:14px}
-#rp-overlay .tb607-side-card{padding:16px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:rgba(255,255,255,.026)}
-#rp-overlay .tb607-side-title{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;font-size:12px;font-weight:950;margin-bottom:10px}
-#rp-overlay .tb607-side-title span{color:#8796AA;font-size:8px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
-#rp-overlay .tb607-next{padding:13px;border-radius:14px;border:1px solid rgba(250,135,61,.26);background:linear-gradient(135deg,rgba(250,135,61,.12),rgba(0,175,239,.05))}
-#rp-overlay .tb607-next-label{color:#FFC79A;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.09em}
-#rp-overlay .tb607-next strong{display:block;color:#fff;font-size:13px;line-height:1.25;margin:6px 0}
-#rp-overlay .tb607-next p{margin:0;color:#9AA8BA;font-size:9px;line-height:1.5}
-#rp-overlay .tb607-next .tb607-task-actions{justify-content:flex-start;margin-top:11px}
-#rp-overlay .tb607-watch-list{display:grid;gap:7px}
-#rp-overlay .tb607-watch{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.055)}
-#rp-overlay .tb607-watch:last-child{border-bottom:0}
-#rp-overlay .tb607-watch i{width:8px;height:8px;border-radius:50%;background:var(--dot,#00AFEF);box-shadow:0 0 10px color-mix(in srgb,var(--dot,#00AFEF) 65%,transparent)}
-#rp-overlay .tb607-watch strong{display:block;color:#E8EEF6;font-size:9.5px;line-height:1.3}
-#rp-overlay .tb607-watch span{display:block;color:#7F8EA2;font-size:7.8px;margin-top:2px}
-#rp-overlay .tb607-watch em{color:#AAB7C6;font-size:7.8px;font-style:normal;white-space:nowrap}
-#rp-overlay .tb607-side-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-#rp-overlay .tb607-side-actions .tb607-btn{width:100%}
-#rp-overlay .tb607-footnote{color:#708095;font-size:8px;line-height:1.5;padding:0 4px}
-
-@media(max-width:1450px){
-  #rp-overlay .tb607-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
-  #rp-overlay .tb607-layout{grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr)}
-  #rp-overlay .tb607-task{grid-template-columns:34px minmax(0,1fr) auto}
-  #rp-overlay .tb607-task-meta{grid-column:2/3;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:-3px}
-  #rp-overlay .tb607-task-meta div{display:block}.tb607-task-meta strong{display:block!important;text-align:left!important;margin-top:2px!important;max-width:none!important}
-  #rp-overlay .tb607-task-actions{grid-column:3;grid-row:1/3}
-}
-@media(max-width:1120px){
-  #rp-overlay .tb607-hero{grid-template-columns:1fr}
-  #rp-overlay .tb607-hero-side{grid-template-columns:95px 1fr}
-  #rp-overlay .tb607-progress-ring{width:88px;height:88px}
-  #rp-overlay .tb607-layout{grid-template-columns:1fr}
-  #rp-overlay .tb607-side{grid-template-columns:repeat(2,minmax(0,1fr))}
-  #rp-overlay .tb607-side-card:first-child{grid-column:1/-1}
-}
-@media(max-width:760px){
-  #rp-overlay .tb607-shell{padding-bottom:46px}
-  #rp-overlay .tb607-hero{padding:20px;border-radius:20px}
-  #rp-overlay .tb607-hero-side{grid-template-columns:1fr;text-align:center}
-  #rp-overlay .tb607-progress-ring{margin:auto}
-  #rp-overlay .tb607-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
-  #rp-overlay .tb607-tools{grid-template-columns:1fr}
-  #rp-overlay .tb607-focus{grid-template-columns:44px minmax(0,1fr)}
-  #rp-overlay .tb607-focus-rank{width:42px;height:42px}
-  #rp-overlay .tb607-focus-actions{grid-column:1/-1;justify-content:flex-start}
-  #rp-overlay .tb607-task{grid-template-columns:32px minmax(0,1fr)}
-  #rp-overlay .tb607-task-meta{grid-column:2;grid-row:auto;grid-template-columns:1fr 1fr}
-  #rp-overlay .tb607-task-actions{grid-column:1/-1;grid-row:auto;justify-content:flex-start;padding-left:43px}
-  #rp-overlay .tb607-side{grid-template-columns:1fr}
-  #rp-overlay .tb607-side-card:first-child{grid-column:auto}
-}
-@media(max-width:480px){#rp-overlay .tb607-kpis{grid-template-columns:1fr}#rp-overlay .tb607-task-meta{grid-template-columns:1fr}#rp-overlay .tb607-side-actions{grid-template-columns:1fr}}
-</style>
-
-<script id="tcp-todays-business-v607-js">
-(function(){
- 'use strict';
- var lane=window._tb607Lane||'all',sort=window._tb607Sort||'priority';
- function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
- function n(v){var x=Number(v);return isFinite(x)?x:0}
- function money(v){return '$'+Math.round(n(v)).toLocaleString()}
- function clean(v){return String(v==null?'':v).trim()}
- function parseDate(v){if(!v)return null;var d;try{d=new Date(String(v).length===10?String(v)+'T12:00:00':v)}catch(e){return null}return isNaN(d.getTime())?null:d}
- function dayKey(v){var d=parseDate(v);if(!d)return'';return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
- function todayKey(){return dayKey(new Date())}
- function dueState(t){
-   if(clean(t.status).toLowerCase()==='completed')return'completed';
-   var d=parseDate(t.dueDate),now=new Date();now.setHours(12,0,0,0);if(!d)return'upcoming';d.setHours(12,0,0,0);
-   if(d<now)return'overdue';if(d.getTime()===now.getTime())return'today';return'upcoming'
- }
- function dueLabel(t){
-   if(typeof window._rp2ActionTaskDueLabelV607==='function'){try{return window._rp2ActionTaskDueLabelV607(t)}catch(e){}}
-   var s=dueState(t),d=parseDate(t.dueDate);if(s==='completed')return'Completed';if(s==='overdue')return'Overdue · '+(d?d.toLocaleDateString():'');if(s==='today')return'Due today';return d?'Due '+d.toLocaleDateString():'Upcoming'
- }
- function ownership(t){
-   var z=(clean(t.category)+' '+clean(t.title)+' '+clean(t.why)+' '+clean(t.action)+' '+clean(t.measure)+' '+clean(t.status)).toLowerCase();
-   if(/waiting on customer|customer review|customer approval|customer response|customer decision|customer feedback|awaiting customer|proof approval|artwork approval|deposit|payment from customer|size list|address list/.test(z))return'customer';
-   if(/waiting internally|internal review|production|accounting|art department|vendor|supplier|inventory|purchasing|management approval|credit review|shipping|operations/.test(z))return'internal';
-   return''
- }
- function tone(t){var s=dueState(t);if(s==='overdue')return'#FB7185';if(s==='today')return'#FBBF24';if(ownership(t)==='customer')return'#9B6BFF';if(ownership(t)==='internal')return'#4C9DFF';if(s==='completed')return'#47D16C';return'#00AFEF'}
- function build(){
-   if(typeof window._rp2ActionBuildV607==='function')return window._rp2ActionBuildV607();
-   var rows=typeof window._tb605Model==='function'?window._tb605Model((window._rp2&&_rp2.rep)||''):[];
-   return{tasks:rows,open:rows,todayOpen:[],overdue:[],future:rows,completed:[],completions:[],ctx:{mode:'live',selectedWeek:{label:'Current week'}},liveActionable:true}
- }
- function models(g){
-   var open=(g.open||g.tasks||[]).filter(function(t){return dueState(t)!=='completed'}),completed=(g.completed||[]).slice();
-   var overdue=open.filter(function(t){return dueState(t)==='overdue'}),today=open.filter(function(t){return dueState(t)==='today'}),upcoming=open.filter(function(t){return dueState(t)==='upcoming'}),customer=open.filter(function(t){return ownership(t)==='customer'}),internal=open.filter(function(t){return ownership(t)==='internal'});
-   return{all:open,overdue:overdue,today:today,customer:customer,internal:internal,upcoming:upcoming,completed:completed}
- }
- function doneToday(g){
-   var key=todayKey(),count=0;(g.completions||[]).forEach(function(e){if(dayKey(e.at||e.completedAt)===key)count++});
-   if(!count)(g.completed||[]).forEach(function(t){if(dayKey(t.completedAt)===key)count++});return count
- }
- function valueOf(t){return n(t.value||t.opportunityValue||0)}
- function sorter(a,b){
-   if(sort==='due'){var ad=parseDate(a.dueDate),bd=parseDate(b.dueDate);return (ad?ad.getTime():9e15)-(bd?bd.getTime():9e15)||n(b.score)-n(a.score)}
-   if(sort==='customer')return clean(a.customer).localeCompare(clean(b.customer))||n(b.score)-n(a.score)
-   if(sort==='category')return clean(a.category).localeCompare(clean(b.category))||n(b.score)-n(a.score)
-   if(sort==='value')return valueOf(b)-valueOf(a)||n(b.score)-n(a.score);
-   var weight={overdue:4,today:3,upcoming:2,completed:1};return (weight[dueState(b)]-weight[dueState(a)])||n(b.score)-n(a.score)||valueOf(b)-valueOf(a)
- }
- function tag(text,cls){return'<span class="tb607-tag '+(cls||'')+'">'+esc(text)+'</span>'}
- function openAction(t,label){
-   var page=clean(t.page)||'action',company=clean(t.customer),onclick='';
-   if(company&&page==='customers'&&typeof window._tb605OpenCo==='function')onclick="_tb605OpenCo('"+encodeURIComponent(company)+"')";
-   else onclick="_rp2Go('"+esc(page)+"')";
-   return'<button class="tb607-mini" onclick="'+onclick+'">'+(label||'Open')+'</button>'
- }
- function actionButtons(t,compact,g){
-   var historical=g.ctx&&g.ctx.mode==='historical',id=encodeURIComponent(t.id||''),buttons='';
-   if(dueState(t)!=='completed'){
-     buttons+='<button class="tb607-mini primary" '+(historical?'disabled':'')+' onclick="_rp2ActionComplete(\''+id+'\')">Complete</button>';
-     if(!compact)buttons+='<button class="tb607-mini" '+(historical?'disabled':'')+' onclick="_rp2ActionSnooze(\''+id+'\',1)">Tomorrow</button>';
-     buttons+=openAction(t,'Open');
-   }else buttons+=openAction(t,'Open');
-   return buttons
- }
- function taskCard(t,i,g){
-   var state=dueState(t),own=ownership(t),search=(clean(t.title)+' '+clean(t.customer)+' '+clean(t.orderNum)+' '+clean(t.category)+' '+clean(t.why)).toLowerCase();
-   var cls=state==='overdue'?'risk':state==='today'?'warn':state==='completed'?'good':'';
-   return'<article class="tb607-task" data-tb607="1" data-search="'+esc(search)+'" style="--tone:'+tone(t)+'">'
-    +'<div class="tb607-task-num">'+(state==='completed'?'✓':(i+1))+'</div>'
-    +'<div class="tb607-task-main"><div class="tb607-task-badges">'+tag(t.category||'Action')+tag(t.source==='manager'?'Manager assignment':t.source==='manual'?'Personal task':'Smart priority')+tag(dueLabel(t),cls)+(own?tag(own==='customer'?'Waiting on customer':'Waiting internally',own==='customer'?'':''):'')+'</div>'
-    +'<div class="tb607-task-title">'+esc(t.title||'Customer action')+'</div><div class="tb607-task-why">'+esc(t.why||t.notes||'Complete the next promised action.')+'</div><div class="tb607-task-do"><b>Next move:</b> '+esc(t.action||'Complete the task and record the outcome.')+'</div></div>'
-    +'<div class="tb607-task-meta"><div><span>Customer</span><strong>'+esc(t.customer||'—')+'</strong></div><div><span>Order</span><strong>'+esc(t.orderNum||'—')+'</strong></div><div><span>Impact</span><strong>'+(valueOf(t)?money(valueOf(t)):'—')+'</strong></div></div>'
-    +'<div class="tb607-task-actions">'+actionButtons(t,false,g)+'</div></article>'
- }
- function watchRow(t,color){return'<div class="tb607-watch"><i style="--dot:'+color+'"></i><div><strong>'+esc(t.title||'Action')+'</strong><span>'+esc((t.customer?t.customer+' · ':'')+dueLabel(t))+'</span></div><em>'+esc(t.category||'')+'</em></div>'}
- function render(){
-   var g=build(),m=models(g),active=m[lane]||m.all,done=doneToday(g),due=m.overdue.length+m.today.length,total=due+done,pct=total?Math.round(done/total*100):100;
-   active=active.slice().sort(sorter);var first=(m.overdue.concat(m.today,m.all)).filter(function(t,index,self){return self.indexOf(t)===index})[0]||active[0]||null;
-   var rep=clean(window._rp2&&_rp2.rep)||'Rep',date=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-   var counts={all:m.all.length,overdue:m.overdue.length,today:m.today.length,customer:m.customer.length,internal:m.internal.length,upcoming:m.upcoming.length,completed:m.completed.length};
-   var hero='<header class="tb607-hero"><div class="tb607-hero-main"><div class="tb607-kick">TODAY\'S BUSINESS · PROMISE & EXECUTION CENTER · BUILD v607</div><h1 class="tb607-title">What needs to move today?</h1><div class="tb607-sub">See every commitment in one place, separate work you own from work waiting on someone else, and close the loop without turning the page into a calendar. The schedule concept belongs in Daily Sales & Calls; this page is for execution.</div><div class="tb607-date"><b>'+esc(date)+'</b><span>·</span><span>'+esc(rep)+'</span><span>·</span><span>'+m.all.length+' open commitments</span></div><div class="tb607-hero-actions"><button class="tb607-btn primary" onclick="_rp2ActionNew()">＋ Add task</button><button class="tb607-btn" onclick="_rp2ActionCopyPlan()">Copy today\'s plan</button><button class="tb607-btn" onclick="_rp2RefreshCloud(this,false)">Refresh data</button><button class="tb607-btn good" onclick="_rp2Go(\'daily\')">Open Daily Sales & Calls</button></div></div>'
-    +'<div class="tb607-hero-side"><div class="tb607-progress-ring" style="--pct:'+pct+'"><strong>'+pct+'%</strong><span>cleared</span></div><div class="tb607-progress-copy"><b>'+done+' closed today</b><p>'+(due?due+' due or overdue commitments remain. Clear the oldest promise first, then work the highest-impact customer action.':'The due queue is clear. Pull forward the best upcoming customer or growth action.')+'</p><small>'+counts.customer+' waiting on customers · '+counts.internal+' waiting internally</small></div></div></header>';
-   function kpi(label,val,sub,glow){return'<div class="tb607-kpi" style="--glow:'+glow+'"><div class="tb607-kpi-label">'+label+'</div><div class="tb607-kpi-value">'+val+'</div><div class="tb607-kpi-sub">'+sub+'</div></div>'}
-   var kpis='<div class="tb607-kpis">'+kpi('Do now',counts.overdue+counts.today,'Due today or already late','rgba(250,135,61,.24)')+kpi('Overdue',counts.overdue,'Oldest promises first','rgba(251,113,133,.24)')+kpi('Waiting customer',counts.customer,'Customer owns the next move','rgba(155,107,255,.22)')+kpi('Waiting internally',counts.internal,'TCP or vendor action needed','rgba(76,157,255,.22)')+kpi('Upcoming',counts.upcoming,'Future dated commitments','rgba(0,175,239,.20)')+kpi('Completed',done,'Closed today','rgba(71,209,108,.22)')+'</div>';
-   var defs=[['all','Open',counts.all],['overdue','Overdue',counts.overdue],['today','Due Today',counts.today],['customer','Waiting Customer',counts.customer],['internal','Waiting Internal',counts.internal],['upcoming','Upcoming',counts.upcoming],['completed','Completed',counts.completed]];
-   var lanes='<div class="tb607-lanes">'+defs.map(function(x){return'<button class="tb607-lane '+(lane===x[0]?'on':'')+'" onclick="_tb607SetLane(\''+x[0]+'\')">'+x[1]+'<b>'+x[2]+'</b></button>'}).join('')+'</div>';
-   var focus=first&&lane!=='completed'?'<div class="tb607-focus"><div class="tb607-focus-rank">1</div><div><div class="tb607-focus-label">Next best action</div><div class="tb607-focus-title">'+esc(first.title||'Customer action')+'</div><div class="tb607-focus-copy">'+esc(first.action||first.why||'Complete the next promised action and record the result.')+'</div></div><div class="tb607-focus-actions">'+actionButtons(first,true,g)+'</div></div>':'';
-   var tools='<div class="tb607-tools"><input id="tb607-search" type="search" placeholder="Search customer, task, order, or category…" oninput="_tb607Search()"><select onchange="_tb607Sort(this.value)"><option value="priority" '+(sort==='priority'?'selected':'')+'>Sort: Priority</option><option value="due" '+(sort==='due'?'selected':'')+'>Sort: Due date</option><option value="value" '+(sort==='value'?'selected':'')+'>Sort: Highest impact</option><option value="customer" '+(sort==='customer'?'selected':'')+'>Sort: Customer A–Z</option><option value="category" '+(sort==='category'?'selected':'')+'>Sort: Category</option></select></div>';
-   var list=active.length?'<div id="tb607-list" class="tb607-list">'+active.slice(0,80).map(function(t,i){return taskCard(t,i,g)}).join('')+'</div>':'<div class="tb607-empty"><strong>This lane is clear</strong>No commitments currently match this view.</div>';
-   var main='<section class="tb607-panel"><div class="tb607-panel-head"><div><div class="tb607-section-kick">WORK QUEUE</div><div class="tb607-section-title">Promises, priorities, and next steps</div><div class="tb607-section-copy">The queue uses the mature Action Center model: manager assignments, personal tasks, order and quality risks, customer opportunities, production checks, and dated follow-ups.</div></div><span id="tb607-visible-count" class="tb607-count">'+active.length+'</span></div>'+lanes+tools+focus+list+'</section>';
-   var cust=m.customer.slice().sort(sorter),internal=m.internal.slice().sort(sorter),upcoming=m.upcoming.slice().sort(sorter);
-   var side='<aside class="tb607-panel"><div class="tb607-panel-head"><div><div class="tb607-section-kick">COMMITMENT RADAR</div><div class="tb607-section-title">Who owns the next move?</div><div class="tb607-section-copy">Keep blocked work visible without letting it compete with actions the rep can execute now.</div></div></div><div class="tb607-side">'
-    +'<div class="tb607-side-card"><div class="tb607-side-title">Next move <span>Do this first</span></div>'+(first?'<div class="tb607-next"><div class="tb607-next-label">'+esc(dueLabel(first))+'</div><strong>'+esc(first.title||'Customer action')+'</strong><p>'+esc(first.action||first.why||'Complete the next promised action.')+'</p><div class="tb607-task-actions">'+actionButtons(first,true,g)+'</div></div>':'<div class="tb607-empty"><strong>Nothing urgent</strong>Pull forward an upcoming action or create a personal task.</div>')+'</div>'
-    +'<div class="tb607-side-card"><div class="tb607-side-title">Waiting on others <span>'+cust.length+' customer · '+internal.length+' internal</span></div><div class="tb607-watch-list">'+(cust.length?cust.slice(0,3).map(function(t){return watchRow(t,'#9B6BFF')}).join(''):'')+(internal.length?internal.slice(0,3).map(function(t){return watchRow(t,'#4C9DFF')}).join(''):'')+(!cust.length&&!internal.length?'<div class="tb607-empty"><strong>No blocked work identified</strong>Nothing is currently classified as waiting on a customer or internal team.</div>':'')+'</div></div>'
-    +'<div class="tb607-side-card"><div class="tb607-side-title">Upcoming commitments <span>Next five</span></div><div class="tb607-watch-list">'+(upcoming.length?upcoming.slice(0,5).map(function(t){return watchRow(t,'#00AFEF')}).join(''):'<div class="tb607-empty"><strong>No future commitments</strong>Add a dated task when the next promise is made.</div>')+'</div></div>'
-    +'<div class="tb607-side-card"><div class="tb607-side-title">Quick actions <span>Keep momentum</span></div><div class="tb607-side-actions"><button class="tb607-btn primary" onclick="_rp2ActionNew()">Add task</button><button class="tb607-btn" onclick="_rp2Go(\'call\')">Call Workspace</button><button class="tb607-btn" onclick="_rp2Go(\'dealdesk\')">Quotes</button><button class="tb607-btn good" onclick="_rp2Go(\'daily\')">Daily Sales & Calls</button></div></div>'
-    +'<div class="tb607-footnote">Waiting lanes are inferred from task language such as customer approval, proof feedback, production, accounting, vendor, or internal review. The task detail remains the source of truth.</div></div></aside>';
-   var modal='';if(typeof window._rp2ActionModalHTMLV607==='function'){try{modal=window._rp2ActionModalHTMLV607(g)||''}catch(e){}}
-   return'<div class="tb607-shell">'+hero+kpis+'<div class="tb607-layout">'+main+side+'</div></div>'+modal
- }
- function rerender(){var page=document.getElementById('rp2-page');if(page)page.innerHTML=render();var main=document.querySelector('#rp-overlay .rp2-main');if(main&&main.scrollTop>160)main.scrollTop=0}
- window._tb607SetLane=function(v){lane=window._tb607Lane=v||'all';rerender()};
- window._tb607Sort=function(v){sort=window._tb607Sort=v||'priority';rerender()};
- window._tb607Search=function(){var q=clean((document.getElementById('tb607-search')||{}).value).toLowerCase(),cards=[].slice.call(document.querySelectorAll('[data-tb607="1"]')),shown=0;cards.forEach(function(c){var ok=!q||clean(c.getAttribute('data-search')).indexOf(q)>=0;c.style.display=ok?'grid':'none';if(ok)shown++});var count=document.getElementById('tb607-visible-count');if(count)count.textContent=shown};
- function install(){window._rp2ActionV2=function(){try{return render()}catch(e){console.error('[Today\'s Business v607]',e);return'<div class="tb607-shell"><div class="tb607-panel"><div class="tb607-section-title">Today\'s Business could not render</div><div class="tb607-section-copy">'+esc(e&&e.message||String(e))+'</div></div></div>'}}}
- install();
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(install,480)});else setTimeout(install,480);
- window.addEventListener('load',function(){setTimeout(install,650)});
- window.TCP_TODAYS_BUSINESS_V607={version:'v607',concept:'promise and execution center',render:render};
-})();
-</script>
-
-
-<style id="tcp-rep-portal-dual-view-v608-css">
-/* ========================================================================== 
-   REP PORTAL DUAL VIEW ARCHITECTURE · BUILD v608
-   Full Workspace remains the permanent master portal.
-   Phased Workspace is a focused rollout shell using the same data and pages.
-   ========================================================================== */
-#rp-overlay .rp2-view-mode{
-  margin:0 12px 15px;
-  padding:8px;
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:15px;
-  background:rgba(255,255,255,.035);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-}
-#rp-overlay .rp2-view-mode-label{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  margin:0 2px 7px;
-  color:#8794AF;
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-#rp-overlay .rp2-view-mode-label span:last-child{
-  color:#00AFEF;
-  letter-spacing:.05em;
-}
-#rp-overlay .rp2-view-mode-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:5px;
-  padding:3px;
-  border-radius:11px;
-  background:rgba(0,0,0,.22);
-}
-#rp-overlay .rp2-view-mode-btn{
-  min-width:0;
-  border:1px solid transparent;
-  border-radius:9px;
-  background:transparent;
-  color:#8F9AB5;
-  padding:8px 7px;
-  font:800 10px/1.1 inherit;
-  cursor:pointer;
-  transition:background .16s ease,border-color .16s ease,color .16s ease,transform .16s ease;
-}
-#rp-overlay .rp2-view-mode-btn:hover{
-  color:#fff;
-  background:rgba(255,255,255,.055);
-}
-#rp-overlay .rp2-view-mode-btn.on{
-  color:#fff;
-  border-color:rgba(255,255,255,.13);
-  background:linear-gradient(135deg,rgba(250,135,61,.90),rgba(0,175,239,.72));
-  box-shadow:0 8px 20px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.18);
-}
-#rp-overlay .rp2-view-mode-copy{
-  margin:7px 3px 0;
-  color:#78849E;
-  font-size:9.5px;
-  line-height:1.35;
-}
-#rp-overlay .rp2-app.rp2-mode-phased .ps60-side-progress{
-  display:none!important;
-}
-#rp-overlay .rp2-app.rp2-mode-phased .rp2-top{
-  border-bottom-color:rgba(0,175,239,.14)!important;
-}
-#rp-overlay .rp2-app.rp2-mode-phased .rp2-sub:after{
-  content:" · Phased Workspace";
-  color:#8EDCFA;
-  font-weight:850;
-}
-#rp-overlay .rp2-app.rp2-mode-full .rp2-sub:after{
-  content:" · Full Workspace";
-  color:#FFD8BD;
-  font-weight:850;
-}
-
-#rp-overlay .rp2-phase-home{
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  padding-bottom:28px;
-}
-#rp-overlay .rp2-phase-hero{
-  position:relative;
-  overflow:hidden;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:22px;
-  align-items:center;
-  min-height:190px;
-  padding:28px 30px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:26px;
-  background:radial-gradient(circle at 12% 5%,rgba(250,135,61,.28),transparent 34%),radial-gradient(circle at 88% 18%,rgba(0,175,239,.18),transparent 32%),linear-gradient(135deg,rgba(19,27,48,.96),rgba(9,14,27,.97));
-  box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
-}
-#rp-overlay .rp2-phase-hero:after{
-  content:"";
-  position:absolute;
-  right:-90px;
-  bottom:-140px;
-  width:330px;
-  height:330px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(0,175,239,.18),transparent 67%);
-  pointer-events:none;
-}
-#rp-overlay .rp2-phase-kicker{
-  position:relative;
-  z-index:1;
-  color:#8EDCFA;
-  font-size:10px;
-  font-weight:950;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  margin-bottom:8px;
-}
-#rp-overlay .rp2-phase-hero h1{
-  position:relative;
-  z-index:1;
-  margin:0 0 10px;
-  color:#fff;
-  font-size:34px;
-  line-height:1;
-  font-weight:950;
-  letter-spacing:-.045em;
-}
-#rp-overlay .rp2-phase-hero p{
-  position:relative;
-  z-index:1;
-  max-width:760px;
-  margin:0;
-  color:#B1BCD7;
-  font-size:13px;
-  line-height:1.65;
-}
-#rp-overlay .rp2-phase-badge{
-  position:relative;
-  z-index:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  width:128px;
-  height:128px;
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:34px;
-  background:linear-gradient(145deg,rgba(250,135,61,.20),rgba(0,175,239,.14));
-  box-shadow:0 18px 44px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.10);
-}
-#rp-overlay .rp2-phase-badge strong{
-  color:#fff;
-  font-size:35px;
-  line-height:1;
-  font-weight:950;
-}
-#rp-overlay .rp2-phase-badge span{
-  color:#B9C6E5;
-  margin-top:7px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-}
-#rp-overlay .rp2-phase-section{
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:24px;
-  background:linear-gradient(180deg,rgba(255,255,255,.050),rgba(255,255,255,.020)),rgba(16,21,38,.88);
-  box-shadow:0 18px 46px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.055);
-  padding:20px;
-}
-#rp-overlay .rp2-phase-section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:14px;
-  margin-bottom:15px;
-}
-#rp-overlay .rp2-phase-section-head h2{
-  margin:0;
-  color:#fff;
-  font-size:19px;
-  font-weight:950;
-  letter-spacing:-.03em;
-}
-#rp-overlay .rp2-phase-section-head p{
-  margin:6px 0 0;
-  color:#94A0BD;
-  font-size:11px;
-  line-height:1.5;
-}
-#rp-overlay .rp2-phase-pill{
-  display:inline-flex;
-  align-items:center;
-  white-space:nowrap;
-  border:1px solid rgba(71,209,108,.24);
-  border-radius:999px;
-  background:rgba(71,209,108,.10);
-  color:#A7FFC0;
-  padding:6px 10px;
-  font-size:9.5px;
-  font-weight:950;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-}
-#rp-overlay .rp2-phase-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
-}
-#rp-overlay .rp2-phase-card{
-  position:relative;
-  overflow:hidden;
-  min-height:158px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  text-align:left;
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:20px;
-  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.024));
-  color:#fff;
-  padding:17px;
-  cursor:pointer;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.055);
-  transition:transform .16s ease,border-color .16s ease,background .16s ease;
-}
-#rp-overlay .rp2-phase-card:after{
-  content:"";
-  position:absolute;
-  right:-38px;
-  top:-42px;
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:radial-gradient(circle,var(--phase-glow,rgba(250,135,61,.20)),transparent 68%);
-  pointer-events:none;
-}
-#rp-overlay .rp2-phase-card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(250,135,61,.45);
-  background:linear-gradient(145deg,rgba(250,135,61,.12),rgba(0,175,239,.045));
-}
-#rp-overlay .rp2-phase-card-icon{
-  position:relative;
-  z-index:1;
-  width:43px;
-  height:43px;
-  display:grid;
-  place-items:center;
-  border:1px solid rgba(255,255,255,.11);
-  border-radius:15px;
-  background:linear-gradient(135deg,rgba(250,135,61,.24),rgba(0,175,239,.12));
-  font-size:19px;
-}
-#rp-overlay .rp2-phase-card strong{
-  position:relative;
-  z-index:1;
-  display:block;
-  margin-top:18px;
-  color:#fff;
-  font-size:16px;
-  font-weight:950;
-  letter-spacing:-.025em;
-}
-#rp-overlay .rp2-phase-card p{
-  position:relative;
-  z-index:1;
-  margin:6px 0 0;
-  color:#A4AEC8;
-  font-size:11px;
-  line-height:1.45;
-}
-#rp-overlay .rp2-phase-card span{
-  position:relative;
-  z-index:1;
-  display:block;
-  margin-top:14px;
-  color:#8EDCFA;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.04em;
-}
-#rp-overlay .rp2-phase-note{
-  display:flex;
-  align-items:flex-start;
-  gap:11px;
-  padding:13px 15px;
-  border:1px solid rgba(0,175,239,.16);
-  border-radius:16px;
-  background:rgba(0,175,239,.055);
-  color:#B8C4E2;
-  font-size:11px;
-  line-height:1.55;
-}
-#rp-overlay .rp2-phase-note b{color:#fff}
-@media(max-width:1120px){
-  #rp-overlay .rp2-phase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:1050px){
-  #rp-overlay .rp2-view-mode{min-width:250px;margin:0 0 10px}
-}
-@media(max-width:720px){
-  #rp-overlay .rp2-phase-hero{grid-template-columns:1fr;padding:22px}
-  #rp-overlay .rp2-phase-badge{width:104px;height:104px;border-radius:28px}
-  #rp-overlay .rp2-phase-grid{grid-template-columns:1fr}
-}
-</style>
-
-<script id="tcp-rep-portal-dual-view-v608-js">
-(function(){
- 'use strict';
- if(!window._rp2Html||!window._rp2Page||!window._rp2Go||typeof RP2_NAV==='undefined')return;
- var VERSION='v608';
- var FULL_NAV=JSON.parse(JSON.stringify(RP2_NAV));
- var PHASE_NAV=[
-  {g:'My Day',items:[
-   ['home','My Day','🏠'],
-   ['call','Call Workspace','☎'],
-   ['action','Today’s Business','☑']
-  ]},
-  {g:'Customers & Sales',items:[
-   ['customers','Companies','🏢'],
-   ['dealdesk','Quotes','📄'],
-   ['orders','Orders','📦']
-  ]},
-  {g:'My Profile',items:[
-   ['profile','My Profile','👤']
-  ]}
- ];
- var PHASE_PAGES={home:1,call:1,action:1,customers:1,dealdesk:1,orders:1,profile:1};
- var baseHtml=window._rp2Html;
- var basePage=window._rp2Page;
- var baseGo=window._rp2Go;
- function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
- function storageKey(rep){return'tcp.repPortal.viewMode.v608.'+String(rep||'default').toLowerCase().replace(/[^a-z0-9]+/g,'-')}
- function mode(rep){
-  var m='full';
-  try{m=localStorage.getItem(storageKey(rep||(_rp2&&_rp2.rep)))||'full'}catch(e){}
-  return m==='phased'?'phased':'full'
- }
- function modeSwitch(current){
-  return'<div class="rp2-view-mode" role="group" aria-label="Rep portal view mode">'
-   +'<div class="rp2-view-mode-label"><span>Portal View</span><span>'+(current==='phased'?'Phase 1':'Master')+'</span></div>'
-   +'<div class="rp2-view-mode-buttons">'
-    +'<button type="button" class="rp2-view-mode-btn '+(current==='full'?'on':'')+'" onclick="_rp2SetPortalMode(\'full\')">Full</button>'
-    +'<button type="button" class="rp2-view-mode-btn '+(current==='phased'?'on':'')+'" onclick="_rp2SetPortalMode(\'phased\')">Phased</button>'
-   +'</div>'
-   +'<div class="rp2-view-mode-copy">'+(current==='phased'?'Focused rollout with only approved Phase 1 workflows.':'Complete portal with every current module and feature.')+'</div>'
-  +'</div>'
- }
- function phaseCard(page,icon,title,copy,glow){
-  return'<button class="rp2-phase-card" style="--phase-glow:'+glow+'" onclick="_rp2Go(\''+page+'\')"><div><div class="rp2-phase-card-icon">'+icon+'</div><strong>'+esc(title)+'</strong><p>'+esc(copy)+'</p></div><span>Open workspace →</span></button>'
- }
- function phaseHome(){
-  var first=String((_rp2&&_rp2.rep)||'Rep').split(/\s+/)[0]||'Rep';
-  return'<div class="rp2-phase-home">'
-   +'<header class="rp2-phase-hero"><div><div class="rp2-phase-kicker">PHASED WORKSPACE · FOCUSED ROLLOUT · BUILD '+VERSION+'</div><h1>'+esc(first)+'’s focused workspace</h1><p>Use the essential customer workflow while new modules are introduced in controlled phases. This view uses the exact same customer, task, call, quote, order, and profile data as Full Workspace—only the presentation and available navigation are simplified.</p></div><div class="rp2-phase-badge"><strong>1</strong><span>Current phase</span></div></header>'
-   +'<section class="rp2-phase-section"><div class="rp2-phase-section-head"><div><h2>Core daily workflow</h2><p>The approved Phase 1 path from prioritization through customer execution.</p></div><span class="rp2-phase-pill">Available now</span></div><div class="rp2-phase-grid">'
-    +phaseCard('call','☎','Call Workspace','Prepare the account, place the call, capture notes, and complete the outcome.','rgba(0,175,239,.23)')
-    +phaseCard('action','☑','Today’s Business','Work commitments, overdue promises, waiting items, and next best actions.','rgba(250,135,61,.24)')
-    +phaseCard('customers','🏢','Companies','Open customer profiles, relationship history, products, contacts, and activity.','rgba(71,209,108,.22)')
-   +'</div></section>'
-   +'<section class="rp2-phase-section"><div class="rp2-phase-section-head"><div><h2>Supporting tools</h2><p>Focused access to the transaction and rep records needed by the core workflow.</p></div><span class="rp2-phase-pill">Shared data</span></div><div class="rp2-phase-grid">'
-    +phaseCard('dealdesk','📄','Quotes','Review and work customer quote activity without opening the full portal.','rgba(250,135,61,.22)')
-    +phaseCard('orders','📦','Orders','Review current and historical customer order records.','rgba(239,159,39,.22)')
-    +phaseCard('profile','👤','My Profile','View personal information and the limited performance details released in this phase.','rgba(155,107,255,.22)')
-   +'</div></section>'
-   +'<div class="rp2-phase-note"><span>ℹ</span><div><b>Full Workspace remains the master build.</b> Switching views does not copy, split, or reset data. Any work completed here is immediately available in the full portal.</div></div>'
-  +'</div>'
- }
- window._rp2Page=function(){
-  /* The approved Full Workspace My Day is the source of truth in both modes. */
-  return basePage.apply(this,arguments)
- };
- window._rp2Html=function(rep){
-  var current=mode(rep),previous=RP2_NAV,html='';
-  try{
-   RP2_NAV=current==='phased'?JSON.parse(JSON.stringify(PHASE_NAV)):JSON.parse(JSON.stringify(FULL_NAV));
-   html=baseHtml.call(this,rep)
-  }finally{
-   RP2_NAV=JSON.parse(JSON.stringify(FULL_NAV))
-  }
-  html=String(html||'').replace('class="rp2-app"','class="rp2-app rp2-mode-'+current+'" data-rp-portal-mode="'+current+'"');
-  html=html.replace(/(<div class="rp2-logo">[\s\S]*?<\/div>)/,function(all){return all+modeSwitch(current)});
-  return html
- };
- window._rp2Go=function(page){
-  var current=mode();
-  if(current==='phased'&&!PHASE_PAGES[page])page='home';
-  return baseGo.call(this,page)
- };
- window._rp2SetPortalMode=function(next){
-  next=next==='phased'?'phased':'full';
-  var rep=window._rp2&&_rp2.rep||'';
-  try{localStorage.setItem(storageKey(rep),next)}catch(e){}
-  if(next==='phased'&&(!window._rp2||!PHASE_PAGES[_rp2.page]))_rp2.page='home';
-  if(window._rp2&&_rp2.rep)window._rp2Go(_rp2.page||'home')
- };
- window.TCP_REP_PORTAL_DUAL_VIEW_V608={
-  version:VERSION,
-  fullNav:FULL_NAV,
-  phaseNav:PHASE_NAV,
-  phasePages:PHASE_PAGES,
-  getMode:mode,
-  setMode:window._rp2SetPortalMode,
-  phaseHome:phaseHome
- };
- function refreshLoadedPortal(){
-  try{
-   var overlay=document.getElementById('rp-overlay');
-   if(overlay&&window._rp2&&_rp2.rep&&overlay.querySelector('.rp2-app')&&!overlay.querySelector('.rp2-view-mode'))window._rp2Go(_rp2.page||'home')
-  }catch(e){console.warn('[Rep dual view '+VERSION+']',e)}
- }
- setTimeout(refreshLoadedPortal,0);
- setTimeout(refreshLoadedPortal,700);
- window.addEventListener('load',function(){setTimeout(refreshLoadedPortal,900)});
-})();
-</script>
-
-
-<!-- ======================================================================
-     v613 · MY DAY LANE / SCORECARD BALANCE
-     The approved Full and Phased My Day remain identical. On wide screens,
-     the four execution lanes end higher and the reclaimed lower canvas is
-     assigned to the scorecard so it is easier to read without changing the
-     page structure or data.
-     ====================================================================== -->
-<style id="tcp-v613-my-day-lane-scorecard-balance-css">
-@media(min-width:1181px){
-  #rp-overlay .ps68-home{
-    grid-template-rows:198px minmax(0,1fr) clamp(250px,30dvh,300px)!important;
-  }
-
-  /* The lower report owns the reclaimed space. */
-  #rp-overlay .ps68-score{
-    height:100%!important;
-    min-height:0!important;
-    grid-template-columns:190px minmax(0,1fr) 132px!important;
-    gap:16px!important;
-    align-items:stretch!important;
-    padding:18px!important;
-    border-radius:20px!important;
-  }
-  #rp-overlay .ps68-score-title{
-    display:flex!important;
-    flex-direction:column!important;
-    justify-content:center!important;
-    min-width:0!important;
-    padding:2px 4px!important;
-  }
-  #rp-overlay .ps68-score-title .ps68-kick{
-    font-size:9.5px!important;
-    letter-spacing:.9px!important;
-  }
-  #rp-overlay .ps68-score-title strong{
-    margin-top:9px!important;
-    font-size:24px!important;
-    line-height:1.08!important;
-  }
-  #rp-overlay .ps68-score-grid{
-    height:100%!important;
-    align-items:stretch!important;
-    gap:11px!important;
-  }
-  #rp-overlay .ps68-score-card{
-    height:100%!important;
-    min-height:0!important;
-    display:flex!important;
-    flex-direction:column!important;
-    align-items:flex-start!important;
-    justify-content:center!important;
-    gap:0!important;
-    padding:16px 14px!important;
-    border-radius:15px!important;
-  }
-  #rp-overlay .ps68-score-icon{
-    width:50px!important;
-    height:50px!important;
-    margin-bottom:14px!important;
-    font-size:21px!important;
-    flex:0 0 auto!important;
-  }
-  #rp-overlay .ps68-score-card>div:last-child{
-    width:100%!important;
-    min-width:0!important;
-  }
-  #rp-overlay .ps68-score-card span{
-    font-size:9px!important;
-    letter-spacing:.55px!important;
-  }
-  #rp-overlay .ps68-score-card strong{
-    margin-top:7px!important;
-    font-size:22px!important;
-    line-height:1.05!important;
-  }
-  #rp-overlay .ps68-score-card small{
-    margin-top:8px!important;
-    font-size:10px!important;
-    line-height:1.35!important;
-  }
-  #rp-overlay .ps68-score-link{
-    align-self:center!important;
-    width:100%!important;
-    min-height:62px!important;
-    padding:0 14px!important;
-    border-radius:13px!important;
-    font-size:11px!important;
-    line-height:1.25!important;
-    white-space:normal!important;
-  }
-}
-
-/* Keep the same visual priority on shorter laptop displays while preserving
-   enough room for the four lanes to remain useful. */
-@media(max-height:820px) and (min-width:1181px){
-  #rp-overlay .ps68-home{
-    grid-template-rows:184px minmax(0,1fr) clamp(220px,28dvh,250px)!important;
-  }
-  #rp-overlay .ps68-score{
-    padding:15px!important;
-    grid-template-columns:176px minmax(0,1fr) 122px!important;
-  }
-  #rp-overlay .ps68-score-title strong{font-size:21px!important;}
-  #rp-overlay .ps68-score-card{padding:13px 12px!important;}
-  #rp-overlay .ps68-score-icon{
-    width:44px!important;
-    height:44px!important;
-    margin-bottom:10px!important;
-    font-size:18px!important;
-  }
-  #rp-overlay .ps68-score-card strong{font-size:18px!important;}
-  #rp-overlay .ps68-score-card small{font-size:8.8px!important;}
-  #rp-overlay .ps68-score-link{min-height:54px!important;font-size:10px!important;}
-}
-
-/* At narrower widths, retain the existing natural-height responsive layout. */
-@media(max-width:1180px){
-  #rp-overlay .ps68-score{
-    height:auto!important;
-    min-height:0!important;
-  }
-}
-</style>
