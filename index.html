@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales Tracker v616 — Folder Build Conversion</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="stylesheet" href="./assets/css/app.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="sales-tracker-build" content="v616-folder-build">
+<meta name="sales-tracker-source" content="v615-full-state-anti-wipe-vault">
+</head>
+<body>
+
+<!-- ==========================================================================
+     SALES TRACKER v568 · SIMPLIFIED REP MY DAY
+     One-screen rep landing page: unified command bar, primary call queue,
+     compact secondary work, and a concise performance strip.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v567 · REP EXECUTIVE SCALE & QUEUE SCROLL
+     Restores manager-level readability across the Rep Portal and renders the
+     complete Today’s Calls queue inside a true independently scrollable list.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v566 · AUTOMATIC COMPANY CALL LINK
+     Uses the exact Company Workspace directory as the active call-cycle source.
+     No rep sync button, no manual repair step, and no duplicate source logic.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v565 · COMPANY TO CALL-CYCLE BRIDGE
+     Gives Companies and the Annual Call Cycle one rep-owned company universe,
+     automatically repairs empty frozen sets, and repopulates today's call queue.
+     ========================================================================== -->
+
+<!-- SALES TRACKER v564 · DATA INTEGRITY SWEEP -->
+
+<!-- ==========================================================================
+     SALES TRACKER v563 · SMART ORDER IMPORT
+     One Orders-page uploader automatically distinguishes monthly line-item
+     reports from weekly SalesRepPerformance order-summary workbooks.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v562 · PROJECT SIMPLIFY CALL WORKSPACE
+     Rebuilds the rep calling experience around one active customer command bar,
+     an embedded dialer, focused conversation builder, persistent customer
+     context, and a sticky queue preview.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v561 · REP HEADER & CALL CYCLE SIMPLIFY
+     Places the greeting first, removes duplicate date/header controls, and
+     replaces the oversized annual cycle hero with a compact actionable status.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v560 · PROJECT SIMPLIFY REP MY DAY
+     Rebuilds the rep's default landing screen around today's work, personal
+     performance, and clear next actions while preserving rep privacy.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v559 · DASHBOARD SCALE & FRAME FIX
+     Removes the legacy shell gutter/frame and establishes permanent executive
+     scale for Project Simplify dashboards in expanded and collapsed navigation.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v558 · PROJECT SIMPLIFY DASHBOARD
+     Rebuilds the manager Dashboard around a clear executive reading order:
+     snapshot, performance, actions, reps, supporting intelligence, and notes.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v557 · SPLIT SALES AND CALLS RANKINGS
+     Daily calendar detail uses separate side-by-side Sales and Calls boards,
+     each with its own TOP badge and movement versus the prior saved day.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v556 · COMPACT DAILY ACTIVITY BREAKDOWN
+     Restores the compact ranked daily-sales popup, adds rep calls, and adds
+     total calls plus top caller directly to each populated calendar day.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v555 · DAILY CALENDAR FLOW FIX
+     Entry date lives in the Entry header, the calendar opens a full combined
+     sales/calls breakdown, and reconciliation follows the calendar.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v554 · GIST CREDENTIAL PERSISTENCE FIX
+     Gist ID and token are device-only settings. Business-data saves, cloud
+     loads, file restores, persistent rollback, and HTML updates cannot replace
+     or remove the active cloud connection.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v552 · DAILY SALES & CALLS LIVE BRIDGE
+     Daily cumulative rep sales and calls feed weekly tracker records in real
+     time. The weekly spreadsheet later adds orders/hours and reconciles totals.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v551 · SHARED PERFORMANCE STATUS
+     Removes the redundant Rep 360 card and uses one Red / Yellow / Green
+     metric scorecard across manager profiles, rep portal, and rep reports.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v550 · PERSISTENT DATA ARCHITECTURE
+     Replacing index.html updates the application only. Business data is stored
+     in a stable IndexedDB database with staging, verification, and rollback.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v549 · REP PROFILES TWO-STEP NAVIGATION
+     Rep Profiles opens to the team roster. Clicking a rep opens the individual
+     profile. A dedicated Back to Rep List control returns to the roster.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v548 · RED / YELLOW / GREEN REP PERFORMANCE RANKING
+     Weighted 100-point score: Sales Goal 65%, Outbound Calls 20%,
+     Work Hours 5%, Art Errors 5%, Credit Memos 5%.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v547 · ANNUAL CALLING CYCLE & ADAPTIVE QUEUE ENGINE
+     Automatic cycle resets, frozen rep sets, business-day pacing, November
+     Christmas campaigns, and December loyalty advancement.
+     ========================================================================== -->
+
+
+<!-- ==========================================================================
+     SALES TRACKER v546 · CLASSIC CLOUD SYNC
+     Restores the original simple Test / Save / Load Gist workflow.
+     All added cloud-safety, dangerous-drop, restore-guard, and handler layers
+     have been removed.
+     ========================================================================== -->
+
+<div class="wrap">
+<div class="top-bar">
+  <div style="display:flex;align-items:center;gap:7px;">
+    <span style="font-size:17px;font-weight:500;color:var(--color-text-primary);">Sales tracker</span>
+    <span class="qbadge" id="currentBadge">Q2 2026</span>
+  </div>
+  <div class="nav-row">
+    <span class="nav-lbl">Year</span>
+    <select class="nav-sel" id="selYr" onchange="onYrChange()"><option value="2026">2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select>
+    <span class="nav-lbl">Qtr</span>
+    <select class="nav-sel" id="selQ" onchange="onQChange()"><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
+    <span class="nav-lbl">Month</span>
+    <select class="nav-sel" id="selM" onchange="onMChange()"></select>
+    <span class="nav-lbl">Week</span>
+    <select class="nav-sel" id="selW" onchange="onWChange()"></select>
+    <span class="wr" id="weekRange"></span>
+  </div>
+</div>
+<div class="tabs" id="tabBar">
+  <button class="tab active" onclick="gt('dash',this)">Dashboard</button>
+  <button class="tab" onclick="gt('year',this)">🗓️ Year Overview</button>
+  <button class="tab" onclick="gt('entry',this)">Data entry</button>
+  <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>  <button class="tab" onclick="gt('repportal',this)">&#128272; Rep Portal</button>
+  <button class="tab" onclick="gt('hr',this)">HR &amp; Notes</button>
+  <button class="tab" onclick="gt('credits',this)">Credit memos</button>  <button class="tab" onclick="gt('reviews',this)">⭐ Customer Reviews</button>
+  <button class="tab" onclick="gt('art',this)">Art errors</button>
+  <button class="tab" onclick="gt('perf',this)">Performance</button>
+  <button class="tab" onclick="gt('meeting',this)">Meeting report</button>
+  <button class="tab" onclick="gt('slides',this)">🎬 Sales slides</button>
+  <button class="tab" onclick="gt('review',this)">Reviews</button>
+  <button class="tab" onclick="gt('reports',this)">Reports</button>
+  <button class="tab" onclick="gt('prodintel',this)">&#128202; Production intelligence</button>
+  <button class="tab" onclick="gt('cknow',this)">&#129504; Company knowledge</button>
+  <button class="tab" onclick="gt('inbound',this)">&#128229; Inbound leads</button>  <button class="tab" onclick="gt('customers',this)"> Customers</button>  <button class="tab" onclick="gt('orders',this)">📦 Orders</button>
+  <button class="tab" onclick="gt('history',this)" id="historyTab">&#x1F4CB; Report history</button>
+  <button class="tab" onclick="gt('lb',this)">Leaderboard</button>
+  <button class="tab" onclick="gt('daily',this)">&#128197; Daily sales</button>
+  <button class="tab" onclick="gt('calc',this)">&#128290; Calculator</button>
+  <button class="tab" onclick="gt('intel',this)">&#128197; Forecast</button>
+  <button class="tab" onclick="gt('games',this)">&#127918; Games</button>  <button class="tab" onclick="gt('gamestorm',this)">&#127918; Gamestorm</button>
+  <button class="tab" onclick="gt('gtrack',this)">&#128202; Game tracker</button>
+  <button class="tab" onclick="gt('notifs',this)" id="notifsTab">&#x1F514; Notifications</button>
+  <button class="tab" onclick="gt('admin',this)" style="margin-left:auto;border-color:#FA873D;color:#8EDCFA;opacity:.85;">&#9881;&#xFE0F; Admin</button>
+</div>
+<!-- Welcome-back modal (shown when data is empty on load — Chrome may have wiped storage) -->
+<div id="welcomeBackModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
+  <div style="max-width:540px;width:100%;background:var(--color-background,#0d0d12);border:2px solid #5DCAA5;border-radius:14px;padding:32px 30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);">
+    <div style="font-size:44px;margin-bottom:8px;">&#128075;</div>
+    <h2 style="margin:0 0 12px;color:#5DCAA5;font-size:22px;">Welcome back</h2>
+    <p style="color:var(--color-text-secondary);font-size:13px;line-height:1.6;margin-bottom:22px;">
+      Your tracker data appears empty. Chrome cleared its storage since your last session.<br><br>
+      If you previously set up the auto-save data file, click below and pick that file to restore everything. Your data is safe in the file &mdash; this is just Chrome forgetting where it is.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button onclick="welcomeBackLoadFile()" style="background:#1C2A1A;border:1px solid #1D9E75;color:#5DCAA5;padding:14px 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">&#128279; Load my auto-save data file</button>
+      <button onclick="welcomeBackImport()" style="background:#1C1C1C;border:1px solid #FA873D;color:#8EDCFA;padding:14px 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">&#11014; Import a backup JSON</button>
+      <button onclick="welcomeBackDismiss()" style="background:transparent;border:1px solid var(--color-border-tertiary);color:var(--color-text-secondary);padding:8px 20px;border-radius:8px;font-size:12px;cursor:pointer;margin-top:6px;">Start fresh / dismiss</button>
+    </div>
+    <p style="font-size:10px;color:var(--color-text-secondary);margin-top:18px;line-height:1.5;opacity:.8;">
+      &#128161; After loading, future changes will auto-save back to the same file. You only need to do this once per Chrome session.
+    </p>
+  </div>
+</div>
+
+<div id="pg-dash" class="page active dash-weekly-exec-v298">
+  <div id="dash-cockpit"></div>
+  <section class="wk-exec-hero" id="wkExecHero"></section>
+  <section class="wk-panel" id="wkPulsePanel">
+    <div class="wk-section-head"><div><div class="wk-kicker">Actual vs goal</div><h2>Sales &amp; Customers Breakdown</h2></div><span id="wkPulseBadge" class="wk-pill">This Quarter</span></div>
+    <div id="wkLiveNumbers"></div>
+  </section>
+  <div class="wk-report-actions"><button class="dash-action-btn" onclick="buildQuarterEndReport()">&#128202; Quarter-end report</button><button class="dash-action-btn" onclick="buildDeepQuarterReport()">&#128270; Deep quarter report</button><button class="dash-action-btn" onclick="printDashboard()">&#128424; Print dashboard</button></div>
+  <section class="wk-health-panel">
+    <div class="wk-section-head"><div><div class="wk-kicker">Quarter health</div><h2>Current State of the Business <button class="wk-help-btn" onclick="showDashHelp('quarterHealth')">?</button></h2></div><span id="wkSnapshotBadge" class="wk-pill">Week Snapshot</span></div>
+    <div class="wk-health-grid" id="wkQuarterHealth"></div>
+  </section>
+  <div class="wk-main-grid">
+    <section class="wk-panel wk-team-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">Team management</div><h2>Team Pace Center <button class="wk-help-btn" onclick="showDashHelp('teamPace')">?</button></h2></div><span id="wkTeamCount" class="wk-muted"></span></div>
+      <div id="wkTeamPace"></div>
+    </section>
+    <section class="wk-panel wk-forecast-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">Forecast</div><h2>Forecast Center <button class="wk-help-btn" onclick="showDashHelp('forecastCenter')">?</button></h2></div><span class="wk-pill">Quarter View</span></div>
+      <div id="wkForecastCenter"></div>
+    </section>
+  </div>
+  <div class="wk-main-grid wk-main-grid-secondary">
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">Management intelligence</div><h2>Strategic Watchlist <button class="wk-help-btn" onclick="showDashHelp('strategicWatchlist')">?</button></h2></div><span class="wk-muted">Not daily alerts — weekly business signals</span></div>
+      <div class="wk-watch-grid" id="wkStrategicWatchlist"></div>
+    </section>
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">Production</div><h2>Production Pulse <button class="wk-help-btn" onclick="showDashHelp('productionPulse')">?</button></h2></div><span id="wkProdBadge" class="wk-pill wk-pill-green">Live Feed</span></div>
+      <div id="wkProductionPulse"></div>
+    </section>
+  </div>
+  <section class="wk-panel">
+    <div class="wk-section-head"><div><div class="wk-kicker">Manager action</div><h2>Coaching Queue</h2></div><span id="wkCoachPill" class="wk-pill">0 open</span></div>
+    <div class="mgr-queue" id="wkCoachingQueue"></div>
+  </section>
+  <div class="wk-main-grid">
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">This week</div><h2>Manager Priorities</h2></div></div>
+      <div class="mgr-queue" id="wkMgrPriorities"></div>
+    </section>
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">People rhythm</div><h2>Reviews &amp; Notes</h2></div></div>
+      <div class="mgr-queue" id="wkUpcomingNotes"></div>
+    </section>
+  </div>
+  <div class="wk-main-grid wk-main-grid-secondary">
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">Historical memory</div><h2>Manager Notes <button class="wk-help-btn" onclick="showDashHelp('managerNotes')">?</button></h2></div><span id="wkNotesLabel" class="wk-muted"></span></div>
+      <textarea id="wkManagerNotes" class="wk-notes" placeholder="Add notes for this selected week: trade show pushes, staffing context, production delays, coaching focus, major wins..."></textarea>
+      <div class="wk-note-actions"><button class="sbtn" onclick="saveWeeklyManagerNotes()">Save Week Notes</button><span id="wkNotesStatus" class="wk-muted"></span></div>
+    </section>
+    <section class="wk-panel">
+      <div class="wk-section-head"><div><div class="wk-kicker">Wins board</div><h2>Positive Momentum <button class="wk-help-btn" onclick="showDashHelp('winsBoard')">?</button></h2></div><span class="wk-muted">Selected week context</span></div>
+      <div id="wkWinsBoard"></div>
+    </section>
+  </div>
+</div>
+<div id="wkHelpPop" class="wk-help-pop" onclick="if(event.target===this)hideDashHelp()">
+  <div class="wk-help-card">
+    <button class="wk-help-close" onclick="hideDashHelp()">×</button>
+    <div class="wk-help-sub" id="wkHelpSub">Dashboard guide</div>
+    <h3 class="wk-help-title" id="wkHelpTitle">Dashboard Help</h3>
+    <div class="wk-help-body" id="wkHelpBody"></div>
+  </div>
+</div>
+
+<div id="pg-year" class="page year-overview-page">
+  <section class="yo-hero"><div><div class="yo-kicker">Executive year view</div><h1 id="yoTitle">Year Overview</h1><p id="yoSubtitle">Bird’s-eye view of revenue, pace, calls, coverage, quality, production, and report activity across the selected year.</p></div><div class="yo-actions"><button class="sbtn" onclick="renderYearOverview()">Refresh</button><button class="sbtn entry-primary" onclick="printYearOverview()">Print / PDF</button></div></section>
+  <section class="yo-score-grid" id="yoScoreGrid"></section>
+  <section class="yo-layout"><div class="yo-main"><section class="yo-panel"><div class="yo-section-head"><div><div class="yo-kicker">Quarter map</div><h2>Year at a glance</h2></div><span class="yo-pill" id="yoCurrentContext">Selected year</span></div><div id="yoQuarterCards" class="yo-quarter-grid"></div></section><section class="yo-panel"><div class="yo-section-head"><div><div class="yo-kicker">Trend</div><h2>Monthly revenue trend</h2></div><span class="yo-muted">Weekly data grouped by month</span></div><canvas id="yoRevenueChart" height="110"></canvas><div id="yoMonthlyTable" class="yo-table-wrap"></div></section><section class="yo-panel"><div class="yo-section-head"><div><div class="yo-kicker">Team performance</div><h2>Year-to-date team leaders</h2></div><span class="yo-muted">Based on selected year</span></div><div id="yoTeamLeaders"></div></section></div><aside class="yo-side"><section class="yo-panel"><div class="yo-section-head"><div><div class="yo-kicker">Health</div><h2>Annual health signals</h2></div></div><div id="yoHealthSignals"></div></section><section class="yo-panel"><div class="yo-section-head"><div><div class="yo-kicker">Highlights</div><h2>Best of the year</h2></div></div><div id="yoBestBoard"></div></section><section class="yo-panel"><div class="yo-section-head"><div><div class="yo-kicker">Records</div><h2>Year notes</h2></div></div><textarea id="yoManagerNotes" class="yo-notes" placeholder="Add year-level notes: staffing changes, promotions, major wins, production challenges, strategy shifts..."></textarea><div class="yo-note-actions"><button class="sbtn" onclick="saveYearNotes()">Save Year Notes</button><span id="yoNotesStatus" class="yo-muted"></span></div></section></aside></section>
+</div>
+
+<div id="pg-entry" class="page data-entry-command">
+<div id="entry-missing"></div>
+  <div class="entry-hero">
+    <div>
+      <div class="eyebrow">Operations input center</div>
+      <h1>Data entry cockpit</h1>
+      <p>Log weekly rep activity, manage customer sets, and upload team sheets from one focused operations workspace.</p>
+    </div>
+    <div class="entry-hero-actions">
+      <button class="sbtn entry-primary" onclick="saveE()">&#10003; Save weekly entry</button>
+      <button class="sbtn" onclick="downloadEntryTemplate()">&#8595; Entry template</button>
+      <button class="sbtn" onclick="gt('admin',document.querySelector('[onclick*='admin']'))">&#9881; Admin tools</button>
+    </div>
+  </div>
+
+  <div class="entry-workflow">
+    <div class="entry-main-stack">
+      <div class="entry-panel entry-panel-hot">
+        <div class="entry-panel-head">
+          <div>
+            <div class="entry-section-kicker">Step 01</div>
+            <div class="entry-section-title">Weekly metrics</div>
+          </div>
+          <span class="entry-pill">Current week</span>
+        </div>
+        <div class="entry-picker-row">
+          <div class="ig"><label>Rep</label><select id="eR"></select></div>
+          <div class="ig"><label>Week loaded</label><div id="ewl" class="entry-week-chip"></div></div>
+          <button class="sbtn" onclick="loadE()">Load rep data</button>
+        </div>
+        <div class="entry-metric-grid">
+          <div class="entry-metric-card"><div class="ig"><label>Hours worked</label><input type="number" id="iH" min="0" placeholder="0"></div></div>
+          <div class="entry-metric-card"><div class="ig"><label>Orders taken</label><input type="number" id="iO" min="0" placeholder="0"></div></div>
+          <div class="entry-metric-card"><div class="ig"><label>Sales revenue ($)</label><input type="number" id="iRv" min="0" placeholder="0"></div></div>
+          <div class="entry-metric-card"><div class="ig"><label>Set size (accounts)</label><input type="number" id="iSs" min="0" placeholder="0"></div></div>
+          <div class="entry-metric-card"><div class="ig"><label>Customers called</label><input type="number" id="iAc" min="0" placeholder="0"></div></div>
+          <div class="entry-metric-card"><div class="ig"><label>Top single sale ($)</label><input type="number" id="iTS" min="0" placeholder="0"></div></div>
+          <div class="entry-metric-card"><div class="ig"><label>Top sale customer</label><input type="text" id="iTSC" placeholder="Customer name"></div></div>
+        </div>
+        <div class="entry-action-strip">
+          <button class="sbtn entry-primary" onclick="saveE()">Save entry</button>
+          <span id="sMsg" class="entry-status" style="display:none;">&#10003; Saved!</span>
+        </div>
+      </div>
+
+      <div class="entry-panel">
+        <div class="entry-panel-head">
+          <div>
+            <div class="entry-section-kicker">Step 02</div>
+            <div class="entry-section-title">Customer set sizes <span id="ssQtrLabel" class="entry-muted-inline"></span></div>
+          </div>
+          <span class="entry-pill entry-pill-purple">Authority</span>
+        </div>
+        <p class="entry-help">Set each rep's authoritative customer-set count for the current quarter. This overrides weekly uploads so reports show the real number.</p>
+        <div id="setSizeBody" class="entry-table-shell"></div>
+      </div>
+
+      <div class="entry-panel">
+        <div class="entry-panel-head">
+          <div>
+            <div class="entry-section-kicker">Step 03</div>
+            <div class="entry-section-title">Manage reps</div>
+          </div>
+          <span class="entry-pill entry-pill-blue">Roster</span>
+        </div>
+        <p class="entry-help">Hover a rep name to edit. Use &#x1F6A7; Retire to hide a rep without deleting historical data.</p>
+        <div class="entry-add-row">
+          <input id="nR" type="text" placeholder="Rep name">
+          <button class="sbtn" onclick="addRep()">+ Add rep</button>
+        </div>
+        <div id="rList" class="entry-list-shell"></div>
+      </div>
+    </div>
+
+    <div class="entry-side-stack">
+      <div class="entry-panel entry-mini-panel">
+        <div class="entry-panel-head compact">
+          <div>
+            <div class="entry-section-kicker">Bulk update</div>
+            <div class="entry-section-title">Team sheet</div>
+          </div>
+          <span class="entry-icon-bubble">&#128196;</span>
+        </div>
+        <p class="entry-help">Download the template, fill one row per rep, then upload the sheet for the selected week.</p>
+        <div class="entry-button-stack">
+          <button class="sbtn" onclick="downloadEntryTemplate()">&#8595; Download entry template</button>
+          <button class="sbtn entry-primary" onclick="document.getElementById('bulkUploadFile').click()">&#8593; Upload filled sheet</button>
+          <input type="file" id="bulkUploadFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadEntrySheet(event)">
+          <span id="bulkMsg" class="entry-status"></span>
+        </div>
+      </div>
+
+      <div class="entry-panel entry-mini-panel entry-admin-note">
+        <div class="entry-panel-head compact">
+          <div>
+            <div class="entry-section-kicker">Moved</div>
+            <div class="entry-section-title">Admin tools</div>
+          </div>
+          <span class="entry-icon-bubble">&#9881;</span>
+        </div>
+        <p class="entry-help">API keys, browser save, JSON backup, cloud sync, and recovery tools now live in Admin so this page stays focused on weekly input.</p>
+        <button class="sbtn" onclick="gt('admin',document.querySelector('[onclick*=\'admin\']'))">Open Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-panel entry-goals-panel">
+    <div class="entry-panel-head">
+      <div>
+        <div class="entry-section-kicker">Planning</div>
+        <div class="entry-section-title">Rep goals by quarter</div>
+      </div>
+      <span class="entry-pill entry-pill-orange">Auto-save</span>
+    </div>
+    <p class="entry-help">&#9733; = current quarter. Changes save instantly.</p>
+    <div class="entry-tools-row">
+      <span class="nav-lbl">Goals for year:</span>
+      <select class="nav-sel" id="gYr" onchange="renderGoals()"></select>
+      <button class="sbtn" onclick="copyGoalsFromPrevYear()">Copy from previous year</button>
+      <span id="gCopyMsg" class="entry-status" style="display:none;">&#10003; Copied!</span>
+    </div>
+    <div class="entry-tools-row">
+      <button class="sbtn" onclick="downloadGoalsTemplate()">&#8595; Download goals template</button>
+      <button class="sbtn entry-primary" onclick="document.getElementById('goalsUploadFile').click()">&#8593; Upload goals sheet</button>
+      <input type="file" id="goalsUploadFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadGoalsSheet(event)">
+      <span id="goalsUploadMsg" class="entry-status"></span>
+    </div>
+    <div class="copy-row entry-copy-row">
+      <span class="nav-lbl">Quick fill:</span>
+      <select class="nav-sel" id="gFillRep"></select>
+      <select class="nav-sel" id="gFillQ"><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select>
+      <span class="nav-lbl">&#8594; copy to all quarters</span>
+      <button class="sbtn" onclick="copyQtrToAll()">Apply</button>
+      <span id="gFillMsg" class="entry-status" style="display:none;">&#10003; Applied!</span>
+    </div>
+    <div id="gTable" class="entry-table-shell"></div>
+  </div>
+</div>
+
+<div id="pg-profiles" class="page rep-intelligence-page" data-rep-view="roster">
+  <section class="rep-intel-hero">
+    <div class="rep-intel-hero-copy">
+      <div class="rep-intel-kicker"><span class="rep-intel-live-dot"></span> Team intelligence workspace</div>
+      <h1>Rep Intelligence Center</h1>
+      <p>One immersive workspace for rep performance, weekly movement, quarter pace, coaching, quality, history, and manager follow-through.</p>
+      <div class="rep-intel-context-line" id="repIntelContextLine">Loading tracker context…</div>
+    </div>
+    <div class="rep-intel-hero-actions">
+      <div class="rep-intel-selected-label">Selected rep</div>
+      <select id="repQuickSelect" class="rep-intel-rep-select" onchange="repIntelSelectRep(this.value)"></select>
+      <div class="rep-intel-selected-meta" id="repIntelSelectedMeta">Choose a rep to open their command view.</div>
+    </div>
+  </section>
+
+  <section class="rep-intel-period-shell" aria-label="Rep reporting period controls">
+    <div class="rep-intel-period-head">
+      <div>
+        <div class="rep-intel-section-kicker">Reporting context</div>
+        <h2>Change the period without leaving the rep workspace</h2>
+      </div>
+      <div class="rep-intel-period-badge" id="repIntelPeriodBadge">Tracker context</div>
+    </div>
+    <div class="rep-intel-period-grid">
+      <label class="rep-intel-control"><span>Year</span><select id="repCtxYr" onchange="repIntelSetContext('year',this.value)"></select></label>
+      <label class="rep-intel-control"><span>Quarter</span><select id="repCtxQ" onchange="repIntelSetContext('quarter',this.value)"></select></label>
+      <label class="rep-intel-control"><span>Month</span><select id="repCtxM" onchange="repIntelSetContext('month',this.value)"></select></label>
+      <label class="rep-intel-control rep-intel-control-week"><span>Week</span><select id="repCtxW" onchange="repIntelSetContext('week',this.value)"></select></label>
+    </div>
+  </section>
+
+  <div id="profileAlerts" class="rep-intel-alerts"></div>
+
+  <section class="rep-intel-roster-shell">
+    <div class="rep-intel-roster-head">
+      <div>
+        <div class="rep-intel-section-kicker">Team roster</div>
+        <h2>Choose a rep</h2>
+      </div>
+      <div class="rep-intel-team-pulse" id="repIntelTeamPulse"></div>
+    </div>
+    <div id="repCards" class="rep-intel-roster-grid"></div>
+  </section>
+
+  <div id="profileDetail" class="rep-intel-detail"></div>
+  <div id="custIntelPanel" style="margin-top:0;"></div>
+</div>
+<div id="pg-hr" class="page hr-command-page">
+  <div class="hr-hero">
+    <div>
+      <div class="hr-eyebrow">People Operations Command Center</div>
+      <h1>HR &amp; Notes</h1>
+      <p>Log HR events, coaching conversations, observations, recognition, and late/call-in notes from one clean manager workspace.</p>
+    </div>
+    <div class="hr-hero-actions">
+      <button class="hr-action-btn primary" onclick="document.getElementById('cnNote')?.focus()">+ Add coaching note</button>
+      <button class="hr-action-btn" onclick="document.getElementById('hrDesc')?.focus()">Log HR event</button>
+    </div>
+  </div>
+
+  <div class="hr-workspace">
+    <div class="hr-entry-panel hr-entry-hot">
+      <div class="hr-panel-head">
+        <div>
+          <div class="hr-step">Step 01</div>
+          <div class="hr-panel-title">Log HR violation</div>
+        </div>
+        <button onclick="event.stopPropagation();showHelp('hr-violations')" title="What is this?" class="hr-help-btn">?</button>
+      </div>
+      <div class="hr-form-grid">
+        <div class="ig"><label>Rep</label><select id="hrRep"></select></div>
+        <div class="ig"><label>Date</label><input type="date" id="hrDate"></div>
+        <div class="ig"><label>Category</label>
+          <select id="hrCat" onchange="updateHRPoints()">
+            <option value="tardy">Tardy</option><option value="absence">Unexcused absence</option><option value="conduct">Conduct issue</option><option value="performance">Performance warning</option><option value="verbal">Verbal warning</option><option value="written">Written warning</option><option value="final">Final written warning</option><option value="pip">PIP</option>
+          </select>
+        </div>
+        <div class="ig"><label>HR points</label><input type="number" id="hrPts" min="0" max="10"></div>
+        <div class="ig"><label>Tied to week</label><select id="hrWeek"><option value="">None</option></select></div>
+      </div>
+      <div id="hrCatNote" class="hr-alert-note" style="display:none;"></div>
+      <div class="ig hr-textarea"><label>Details</label><textarea id="hrDesc" placeholder="Describe the incident, context, action taken, and any follow-up needed..."></textarea></div>
+      <div class="hr-action-strip"><button class="hr-primary-btn" onclick="saveHR()">Log violation</button><span id="hrMsg" class="hr-save-msg" style="display:none;">&#10003; Logged!</span></div>
+    </div>
+
+    <div class="hr-entry-panel">
+      <div class="hr-panel-head">
+        <div>
+          <div class="hr-step">Step 02</div>
+          <div class="hr-panel-title">Log note, observation, or late/call-in</div>
+        </div>
+        <span class="hr-pill">Manager log</span>
+      </div>
+      <div class="hr-form-grid">
+        <div class="ig"><label>Rep</label><select id="cnRep"></select></div>
+        <div class="ig"><label>Date</label><input type="date" id="cnDate"></div>
+        <div class="ig"><label>Note type</label>
+          <select id="cnType" onchange="_cnUpdatePlaceholder()">
+            <option value="coaching">Coaching session</option><option value="positive">Positive recognition</option><option value="concern">Performance concern</option><option value="warning">Warning discussion</option><option value="pip">PIP check-in</option><option value="observation">Observation</option><option value="latecallin">Late / call-in</option>
+          </select>
+        </div>
+        <div class="ig"><label>Tied to week</label><select id="cnWeek"><option value="">None</option></select></div>
+      </div>
+      <div class="ig hr-textarea"><label>Note</label><textarea id="cnNote" placeholder="What was discussed, recognized, observed, or agreed to..."></textarea></div>
+      <div class="hr-action-strip"><button class="hr-primary-btn" onclick="saveCN()">Save note</button><span id="cnMsg" class="hr-save-msg" style="display:none;">&#10003; Saved!</span></div>
+    </div>
+  </div>
+
+  <div class="hr-log-grid">
+    <div class="hr-log-panel">
+      <div class="hr-panel-head compact">
+        <div>
+          <div class="hr-step">Violation timeline</div>
+          <div class="hr-panel-title">HR violation log</div>
+        </div>
+        <span class="hr-subtle">Hover to edit</span>
+      </div>
+      <div class="hr-filter-bar"><label>Rep:</label><select id="hrFR" onchange="renderHRL()"><option value="all">All reps</option></select><label>Cat:</label><select id="hrFC" onchange="renderHRL()"><option value="all">All</option><option value="tardy">Tardy</option><option value="absence">Absence</option><option value="conduct">Conduct</option><option value="performance">Performance</option><option value="verbal">Verbal</option><option value="written">Written</option><option value="final">Final</option><option value="pip">PIP</option></select><label>Year:</label><select id="hrFYr" onchange="renderHRL()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+      <div class="chips hr-chip-row" id="hrSum"></div><div id="hrLog" class="hr-timeline-box"></div>
+    </div>
+
+    <div class="hr-log-panel">
+      <div class="hr-panel-head compact">
+        <div>
+          <div class="hr-step">Coaching timeline</div>
+          <div class="hr-panel-title">Notes &amp; observations</div>
+        </div>
+        <span class="hr-subtle">Hover to edit</span>
+      </div>
+      <div class="hr-filter-bar"><label>Rep:</label><select id="cnFR" onchange="renderCNL()"><option value="all">All reps</option></select><label>Type:</label><select id="cnFT" onchange="renderCNL()"><option value="all">All</option><option value="coaching">Coaching</option><option value="positive">Positive</option><option value="concern">Concern</option><option value="warning">Warning</option><option value="pip">PIP</option><option value="observation">Observation</option><option value="latecallin">Late / call-in</option></select><label>Year:</label><select id="cnFYr" onchange="renderCNL()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+      <div id="cnLog" class="hr-timeline-box"></div>
+    </div>
+  </div>
+
+  <div class="hr-summary-panel">
+    <div class="hr-panel-head compact">
+      <div>
+        <div class="hr-step">Team overview</div>
+        <div class="hr-panel-title">HR summary by rep</div>
+      </div>
+      <span class="hr-pill">Current quarter</span>
+    </div>
+    <div id="hrSummaryByRep" class="hr-summary-table"></div>
+  </div>
+</div>
+<div id="pg-credits" class="page credit-command-page">
+  <div class="credit-hero">
+    <div>
+      <div class="credit-eyebrow">Quality &amp; Cost Recovery Center</div>
+      <h1>Credit memos</h1>
+      <p>Capture credit memo issues, review rep/customer/vendor fault, and track where margin is leaking without changing the existing memo data logic.</p>
+    </div>
+  </div>
+
+  <div class="credit-kpi-grid">
+    <div class="credit-kpi" style="--cm-accent:#FA873D;--cm-glow:rgba(250,135,61,.28);">
+      <div class="credit-kpi-icon">&#128179;</div>
+      <div class="credit-kpi-label">Filtered total</div>
+      <div class="credit-kpi-value" id="cmKpiTotal">$0.00</div>
+      <div class="credit-kpi-sub" id="cmKpiCount">0 memos in current view</div>
+    </div>
+    <div class="credit-kpi" style="--cm-accent:#FA873D;--cm-glow:rgba(250,135,61,.22);">
+      <div class="credit-kpi-icon">&#9888;</div>
+      <div class="credit-kpi-label">Rep fault</div>
+      <div class="credit-kpi-value" id="cmKpiRep">$0.00</div>
+      <div class="credit-kpi-sub" id="cmKpiRepSub">0% of filtered dollars</div>
+    </div>
+    <div class="credit-kpi" style="--cm-accent:#00AFEF;--cm-glow:rgba(0,175,239,.18);">
+      <div class="credit-kpi-icon">&#128101;</div>
+      <div class="credit-kpi-label">Customer fault</div>
+      <div class="credit-kpi-value" id="cmKpiCust">$0.00</div>
+      <div class="credit-kpi-sub" id="cmKpiCustSub">0% of filtered dollars</div>
+    </div>
+    <div class="credit-kpi" style="--cm-accent:#FA873D;--cm-glow:rgba(250,135,61,.18);">
+      <div class="credit-kpi-icon">&#128202;</div>
+      <div class="credit-kpi-label">Average memo</div>
+      <div class="credit-kpi-value" id="cmKpiAvg">$0.00</div>
+      <div class="credit-kpi-sub">Based on filtered view</div>
+    </div>
+  </div>
+
+  <div class="credit-layout">
+    <div class="credit-main-stack">
+      <div class="credit-panel credit-panel-hot">
+        <div class="credit-panel-head">
+          <div>
+            <div class="credit-section-kicker">PDF intake</div>
+            <div class="credit-section-title">Read a credit memo PDF</div>
+            <p class="credit-help">Upload a filled-out credit memo PDF. The tracker reads the form fields directly — no AI or internet required.</p>
+          </div>
+          <div class="credit-icon-bubble">&#128229;</div>
+        </div>
+        <div id="cmDropZone" class="credit-drop-zone" ondragover="_cmDragOver(event)" ondragleave="_cmDragLeave(event)" ondrop="_cmDropFile(event)" onclick="document.getElementById('cmScanFile').click()">
+          <input type="file" id="cmScanFile" accept="image/*,.pdf" style="display:none" onchange="handleCMScan(event)">
+          <div class="credit-drop-icon">&#128196;</div>
+          <div class="credit-drop-title">Drop a PDF here</div>
+          <div class="credit-drop-sub">or click to browse and extract fields</div>
+          <div id="cmScanStatus" class="credit-status"></div>
+        </div>
+        <div id="cmScanPreview" class="credit-scan-preview" style="display:none;">
+          <div class="credit-success-pill">&#10003; Fields extracted — review, choose fault, then confirm</div>
+          <div id="cmScanDateStatus" class="credit-inline-status" style="display:none;"></div>
+          <div class="credit-form-grid compact">
+            <div class="ig"><label>Rep matched</label><select id="cmScanRep"></select></div>
+            <div class="ig"><label>Year</label><select id="cmScanYr" onchange="_cmScanRebuildWeeks()"></select></div>
+            <div class="ig"><label>Quarter</label><select id="cmScanQ" onchange="_cmScanRebuildWeeks()"><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+            <div class="ig"><label>Week</label><select id="cmScanWeek"></select></div>
+            <div class="ig"><label>Customer name</label><input type="text" id="cmScanCustName" placeholder="From form"></div>
+            <div class="ig"><label>Customer ID</label><input type="text" id="cmScanCustId" placeholder="From form"></div>
+            <div class="ig"><label>Sales order #</label><input type="text" id="cmScanSO" placeholder="From form"></div>
+            <div class="ig"><label>Invoice #</label><input type="text" id="cmScanInv" placeholder="From form"></div>
+            <div class="ig"><label>Total amount ($)</label><input type="number" id="cmScanAmt" min="0" step="0.01" placeholder="0.00"></div>
+          </div>
+          <div class="ig"><label>Notes / description</label><textarea id="cmScanDesc" placeholder="Rep notes from form..."></textarea></div>
+          <div class="credit-action-row">
+            <div class="ig credit-fault-select">
+              <label>Fault type</label>
+              <select id="cmScanFault" oninput="updateScanFN()">
+                <option value="">— select fault —</option>
+                <option value="screen_print">Screen print</option><option value="embroidery">Embroidery</option><option value="art">Art</option><option value="shipping">Shipping</option><option value="vendor">Vendor</option><option value="rep">Rep</option><option value="customer">Customer</option><option value="other">Other</option>
+              </select>
+            </div>
+            <div id="cmScanFaultNote" class="credit-fault-note" style="display:none;"></div>
+            <button class="pbtn" onclick="confirmCMScan()">&#10003; Confirm &amp; add</button>
+            <button class="sbtn credit-danger" onclick="cancelCMScan()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="credit-panel">
+        <div class="credit-panel-head">
+          <div>
+            <div class="credit-section-kicker">Manual entry</div>
+            <div class="credit-section-title">Log a credit memo <button onclick="event.stopPropagation();showHelp('credit-memos')" title="What is this?" class="credit-help-btn">?</button></div>
+          </div>
+          <div class="credit-icon-bubble">&#9997;</div>
+        </div>
+        <div class="credit-form-grid">
+          <div class="ig"><label>Rep</label><select id="cmRep"></select></div>
+          <div class="ig"><label>Week</label><select id="cmWeek"></select></div>
+          <div class="ig"><label>Amount ($)</label><input type="number" id="cmAmt" min="0" placeholder="0.00" step="0.01"></div>
+          <div class="ig"><label>Fault</label><select id="cmFault" oninput="updateFN()"><option value="screen_print">Screen print</option><option value="embroidery">Embroidery</option><option value="art">Art</option><option value="shipping">Shipping</option><option value="vendor">Vendor</option><option value="rep">Rep</option><option value="customer">Customer</option><option value="other">Other</option></select></div>
+        </div>
+        <div id="faultNote" class="credit-fault-note" style="display:none;"></div>
+        <div class="credit-form-grid">
+          <div class="ig"><label>Customer ID</label><input type="text" id="cmCustId" placeholder="e.g. 10045"></div>
+          <div class="ig"><label>Customer name</label><input type="text" id="cmCustName" placeholder="e.g. Acme Corp"></div>
+          <div class="ig"><label>Sales order #</label><input type="text" id="cmSO" placeholder="e.g. SO-88234"></div>
+          <div class="ig"><label>Invoice #</label><input type="text" id="cmInv" placeholder="e.g. INV-2026-441"></div>
+        </div>
+        <div class="ig"><label>Description</label><textarea id="cmDesc" placeholder="Describe the issue..."></textarea></div>
+        <div class="credit-action-row"><button class="pbtn" onclick="saveCM()">+ Add memo</button><span id="cmMsg" class="credit-saved-msg" style="display:none;">&#10003; Added!</span></div>
+      </div>
+    </div>
+
+    <div class="credit-side-stack">
+      <div class="credit-panel credit-insight-panel">
+        <div class="credit-panel-head compact">
+          <div>
+            <div class="credit-section-kicker">Manager readout</div>
+            <div class="credit-section-title">Quality snapshot</div>
+          </div>
+        </div>
+        <div id="cmQualityReadout" class="credit-readout">No credit memos in the current view.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="credit-panel credit-log-panel">
+    <div class="credit-panel-head compact">
+      <div>
+        <div class="credit-section-kicker">Audit trail</div>
+        <div class="credit-section-title">Credit memo log <span>Hover a row to edit</span></div>
+      </div>
+    </div>
+    <div class="credit-log-filters" style="display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin:6px 0 12px;padding:12px;border:1px solid var(--tcp-line,rgba(255,255,255,.08));border-radius:12px;background:rgba(255,255,255,.02);"><div style="display:flex;gap:6px;flex-wrap:wrap;flex-basis:100%;margin-bottom:2px;"><button class="sbtn" onclick="cmSetView('week')">Current week</button><button class="sbtn" onclick="cmSetView('current')">Current quarter</button><button class="sbtn" onclick="cmSetView('rep')">Rep-fault only</button><button class="sbtn" onclick="cmSetView('all')">All records</button></div><div class="cmf-ig"><label>Rep</label><select id="cmFR" onchange="renderCML()"><option value="all">All reps</option></select></div><div class="cmf-ig"><label>Fault</label><select id="cmFF" onchange="renderCML()"><option value="all">All</option><option value="screen_print">Screen print</option><option value="embroidery">Embroidery</option><option value="art">Art</option><option value="shipping">Shipping</option><option value="vendor">Vendor</option><option value="rep">Rep</option><option value="customer">Customer</option><option value="other">Other</option></select></div><div class="cmf-ig"><label>Year</label><select id="cmFYr" onchange="renderCML()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div><div class="cmf-ig"><label>Quarter</label><select id="cmFQ" onchange="renderCML()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div><div class="cmf-ig"><label>Month</label><select id="cmFM" onchange="renderCML()"><option value="all">All</option></select></div><div class="cmf-ig"><label>Week</label><select id="cmFW" onchange="renderCML()"><option value="all">All</option></select></div></div><div class="chips credit-hidden-chips" id="cmSum" style="margin-bottom:10px;"></div>
+    <div id="cmLog" class="credit-log-list"></div>
+  </div>
+</div>
+<div id="pg-art" class="page">
+  <div class="art-command-page">
+    <div class="art-hero">
+      <div>
+        <div class="art-eyebrow">Quality control command center</div>
+        <h1>Art Errors</h1>
+        <p>Sync rep-owned art issues from the published Google Sheet CSV, monitor recurring error types, and remove any row that should not count against a rep.</p>
+      </div>
+    </div>
+
+    <div class="art-kpi-grid">
+      <div class="art-kpi"><div class="art-kpi-icon">⚠️</div><div class="art-kpi-label">Filtered errors</div><div class="art-kpi-value" id="aeKpiTotal">0</div><div class="art-kpi-sub">Current view</div></div>
+      <div class="art-kpi"><div class="art-kpi-icon">🎯</div><div class="art-kpi-label">Top issue</div><div class="art-kpi-value" id="aeKpiTopType">—</div><div class="art-kpi-sub" id="aeKpiTopTypeSub">No errors found</div></div>
+      <div class="art-kpi"><div class="art-kpi-icon">👤</div><div class="art-kpi-label">Most impacted rep</div><div class="art-kpi-value" id="aeKpiRepImpact">—</div><div class="art-kpi-sub" id="aeKpiRepImpactSub">No rep impact</div></div>
+      <div class="art-kpi"><div class="art-kpi-icon">📅</div><div class="art-kpi-label">Quarter</div><div class="art-kpi-value" id="aeKpiQuarter">0</div><div class="art-kpi-sub" id="aeKpiQuarterSub">Selected filters</div></div>
+    </div>
+
+    <div class="art-layout">
+      <div class="art-main-stack">
+        <div class="art-panel art-panel-hot">
+          <div class="art-panel-head">
+            <div>
+              <div class="art-section-kicker">Google CSV intake</div>
+              <div class="art-section-title">Sync art errors from web CSV <button onclick="event.stopPropagation();showHelp('art-errors')" title="What is this?" class="art-help-btn">?</button></div>
+              <p class="art-help">Paste the published Google Sheet CSV link. The tracker reads date, sales order number, sales rep, issue explanation, and issue type, then matches the rep to the tracker roster.</p>
+            </div>
+            <span class="art-pill">Source synced</span>
+          </div>
+          <div class="art-csv-card">
+            <div class="art-csv-row">
+              <div class="art-csv-field"><label>Published Google CSV URL</label><input type="url" id="aeCsvUrl" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"></div>
+              <button class="sbtn art-primary" onclick="aeSyncCsv()">Sync CSV</button>
+            </div>
+            <div id="aeCsvStatus" class="art-csv-status">Not synced yet. Only reps on the tracker roster are imported — anyone else on the sheet is skipped. Deleted rows stay ignored on future syncs.</div>
+            <div id="aeLastRefreshed" class="art-csv-status" style="opacity:.7;font-size:11px;margin-top:2px;"></div>
+            <div class="art-action-strip" style="margin-top:0;">
+              <button class="sbtn credit-danger" onclick="aeDeleteUnmatched()">Delete all unmatched</button>
+              <button class="sbtn credit-danger" onclick="aeClearIgnoredRows()">Restore deleted CSV rows</button>
+              <span id="aeMsg" class="art-status" style="display:none;">✓ Synced!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="art-panel">
+          <div class="art-panel-head">
+            <div>
+              <div class="art-section-kicker">Error log</div>
+              <div class="art-section-title">Art error history</div>
+            </div>
+            <span class="art-pill art-pill-purple">Hover to edit</span>
+          </div>
+          <div class="chips art-summary-chips" id="aeSum"></div>
+          <div class="art-log-filters" style="margin:10px 0 14px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button class="sbtn" onclick="aeQuickFilter('currentQuarter')">Current Quarter</button>
+              <button class="sbtn" onclick="aeQuickFilter('currentWeek')">Current Week</button>
+              <button class="sbtn" onclick="aeQuickFilter('all')">All Records</button>
+            </div>
+            <div class="art-filter-grid">
+              <div class="ig"><label>Rep</label><select id="aeFR" onchange="renderAEL()"><option value="all">All reps</option></select></div>
+              <div class="ig"><label>Type</label><select id="aeFT" onchange="renderAEL()"><option value="all">All types</option><option value="color_type">Color type</option><option value="incomplete_art">Incomplete art sheet</option><option value="location">Location</option><option value="missing_info">Missing information</option><option value="order_entry">Order entry</option><option value="size">Size</option></select></div>
+              <div class="ig"><label>Year</label><select id="aeFYr" onchange="aeFilterYrChange()"><option value="all">All</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+              <div class="ig"><label>Quarter</label><select id="aeFQ" onchange="aeFilterQChange()"><option value="all">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
+              <div class="ig"><label>Month</label><select id="aeFM" onchange="aeFilterMChange()"><option value="all">All</option></select></div>
+              <div class="ig"><label>Week</label><select id="aeFW" onchange="renderAEL()"><option value="all">All</option></select></div>
+            </div>
+          </div>
+          <div id="aeLog" class="art-log-list"></div>
+        </div>
+      </div>
+
+      <div class="art-side-stack">
+        <div class="art-panel art-mini-panel">
+          <div class="art-panel-head compact">
+            <div><div class="art-section-kicker">Quality snapshot</div><div class="art-section-title">What to watch</div></div>
+            <div class="art-icon-bubble">🧭</div>
+          </div>
+          <div id="aeQualityNote" class="art-quality-note">No filtered art errors yet. Use this panel to spot repeated issue types and rep coaching opportunities.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pg-perf" class="page">
+  <div class="perf-command-page">
+    <div class="perf-hero">
+      <div>
+        <div class="perf-eyebrow">Performance command center</div>
+        <h1>Performance</h1>
+        <p>Review rep momentum, goal progress, call coverage, quality indicators, and weekly trends using the existing performance logic.</p>
+      </div>
+      <div class="perf-selector-wrap">
+        <label>Rep</label>
+        <select id="pR" class="perf-select" onchange="renderPerf()"></select>
+      </div>
+    </div>
+
+    <div class="perf-layout">
+      <section class="perf-score-panel">
+        <div class="perf-score-avatar" id="perfAvatar"></div>
+        <div class="perf-rep-name" id="perfRepName">—</div>
+        <div class="perf-rep-sub" id="perfRepSub">Quarter performance snapshot</div>
+        <div class="perf-score-value" id="perfScore">—</div>
+        <div class="perf-stars" id="perfStars">☆☆☆☆☆</div>
+        <div class="perf-score-badge" id="perfRating">—</div>
+        <div class="perf-quarter-note" id="perfQuarterNote">—</div>
+      </section>
+
+      <section class="perf-main-panel">
+        <div class="perf-kpi-grid" id="pCards"></div>
+        <div class="perf-subgrid">
+          <div class="perf-panel perf-panel-span">
+            <div class="perf-panel-head">
+              <div>
+                <div class="perf-panel-kicker">Progress model</div>
+                <h3>Goal progress</h3>
+              </div>
+            </div>
+            <div id="pBars" class="perf-progress-stack"></div>
+          </div>
+          <div class="perf-panel">
+            <div class="perf-panel-head">
+              <div>
+                <div class="perf-panel-kicker">Manager readout</div>
+                <h3>Performance insights</h3>
+              </div>
+            </div>
+            <div id="perfInsights" class="perf-insights"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="perf-panel perf-chart-panel">
+      <div class="perf-panel-head">
+        <div>
+          <div class="perf-panel-kicker">Weekly trend</div>
+          <h3>Orders vs art errors</h3>
+        </div>
+      </div>
+      <div class="perf-chart-box"><canvas id="cPW"></canvas></div>
+    </div>
+    <div class="perf-panel perf-chart-panel">
+      <div class="perf-panel-head"><div><div class="perf-panel-kicker">Score detail</div><h3>Score breakdown</h3></div></div>
+      <div id="perfBreakdown"></div>
+    </div>
+    <div class="perf-panel perf-chart-panel">
+      <div class="perf-panel-head"><div><div class="perf-panel-kicker">Manager notes</div><h3>Why this score</h3></div></div>
+      <div id="perfWhy"></div>
+    </div>
+  </div>
+</div>
+<div id="pg-meeting" class="page">
+  <div class="meeting-command">
+    <div class="meeting-hero">
+      <div>
+        <div class="meeting-eyebrow">Sales meeting command center</div>
+        <h1>Weekly meeting report</h1>
+        <p>Generate a manager-ready weekly packet with team KPIs, rep rankings, pacing, call coverage, AI talking points, and forecast opportunities.</p>
+      </div>
+      <div class="meeting-hero-actions">
+        <select class="nav-sel" id="mtgDepth" title="Report depth" style="min-width:150px;"><option value="executive">Executive brief</option><option value="standard">Standard</option><option value="comprehensive" selected>Comprehensive</option></select><button class="meeting-btn primary" id="genMtgBtn" onclick="generateMeetingReport()">✦ Generate report</button>
+        <button class="meeting-btn" id="genRepVersionBtn" onclick="generateRepVersionReport()">⭐ Rep-friendly</button>
+        <button class="meeting-btn" id="genPrintVersionBtn" onclick="generatePrintVersionReport()">🖨 Print/PDF</button>
+      </div>
+    </div>
+
+    <div class="meeting-layout">
+      <div class="meeting-main">
+        <div class="meeting-panel meeting-panel-hot">
+          <div class="meeting-panel-head">
+            <div>
+              <div class="meeting-kicker">Step 01</div>
+              <div class="meeting-title">Choose report week</div>
+              <p class="meeting-help">Pick the completed week you want to recap. The report keeps the same data math and pulls the same weekly, QTD, credit memo, art error, and forecast inputs.</p>
+            </div>
+            <span class="meeting-pill">Current workflow</span>
+          </div>
+          <div class="meeting-picker-row">
+            <div class="ig meeting-week-field"><label>Report for week</label><select class="nav-sel" id="mtgWeekSel" onchange="updateMtgWeekLabel();renderWeeklyProjectsUI();"></select></div>
+            <div class="meeting-week-chip" id="mtgWeekRange"></div>
+          </div>
+          <div class="meeting-status-row">
+            <div class="status" id="mtgSt"></div>
+          </div>
+        </div>
+
+        <div class="meeting-panel">
+          <div class="meeting-panel-head compact">
+            <div>
+              <div class="meeting-kicker">Step 02</div>
+              <div class="meeting-title">Weekly projects & callouts</div>
+              <p class="meeting-help">Add any special projects, focus items, or manager notes before generating the packet.</p>
+            </div>
+            <span class="meeting-pill meeting-pill-purple">Optional</span>
+          </div>
+          <div id="projectsUiContainer"></div>
+        </div>
+
+        <div class="meeting-panel">
+          <div class="meeting-panel-head compact">
+            <div>
+              <div class="meeting-kicker">Output preview</div>
+              <div class="meeting-title">Generated report</div>
+            </div>
+          </div>
+          <div id="mtgPreview"></div>
+          <div id="mtgResultBox" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="meeting-side">
+        <div class="meeting-panel meeting-mini">
+          <div class="meeting-icon-bubble">📊</div>
+          <div class="meeting-title">What it includes</div>
+          <div class="meeting-checklist">
+            <div>Team KPIs and weekly revenue</div>
+            <div>QTD forecast and projected finish</div>
+            <div>Rep rankings and pace tables</div>
+            <div>AI recap, focus, and pitch of week</div>
+            <div>Upcoming focus events and downtime industries</div>
+          </div>
+        </div>
+        <div class="meeting-panel meeting-mini">
+          <div class="meeting-icon-bubble">🖨</div>
+          <div class="meeting-title">Report format upgrade</div>
+          <p class="meeting-help small">The Print/PDF v606 has been restyled into a cleaner executive packet: stronger cover header, cleaner KPI ribbon, better section spacing, more polished tables, and more readable forecast opportunity cards.</p>
+        </div>
+        <div class="meeting-panel meeting-mini">
+          <div class="meeting-icon-bubble">🔑</div>
+          <div class="meeting-title">AI note</div>
+          <p class="meeting-help small">If the AI key is invalid, the report will still generate with your core data. The AI cards will show the error instead of blocking the whole packet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="pg-slides" class="page slides-command-page">
+  <div id="slides-page"></div>
+</div>
+
+<div id="pg-review" class="page reviews-command">
+  <div class="reviews-hero">
+    <div>
+      <div class="reviews-eyebrow">Performance Review Command Center</div>
+      <h1>Reviews</h1>
+      <p>Generate manager-ready performance reviews using the existing rep scorecard logic, quarter metrics, HR points, coaching notes, and AI-written development guidance.</p>
+    </div>
+    <div class="reviews-hero-actions">
+      <button class="reviews-btn subtle" onclick="event.stopPropagation();showHelp('performance-review')">? What is this?</button>
+      <button class="reviews-btn primary" id="genRevBtn" onclick="generateReview()">✦ Generate AI review</button>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    <section class="reviews-panel reviews-builder">
+      <div class="reviews-panel-head">
+        <div>
+          <div class="reviews-kicker">Step 01</div>
+          <div class="reviews-title">Build review</div>
+          <p class="reviews-help">Choose the review window and rep. The output still uses your current scorecard math and report-generation logic.</p>
+        </div>
+        <span class="reviews-pill">AI assisted</span>
+      </div>
+      <div class="reviews-select-grid">
+        <div class="ig"><label>Year</label><select id="rvYr"><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select></div>
+        <div class="ig"><label>Quarter</label><select id="rvQ"><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></div>
+        <div class="ig reviews-rep-field"><label>Rep</label><select id="rvRep"></select></div>
+      </div>
+      <div class="reviews-status-row">
+        <div class="reviews-status-dot"></div>
+        <div class="status" id="rvSt">Ready to generate.</div>
+      </div>
+      <div class="reviews-note-card">
+        <strong>What gets used:</strong> revenue pace, calls, art errors, credit memos, hours, HR points, coaching notes, and the current quarter timing. No scoring logic is changed here.
+      </div>
+    </section>
+
+    <aside class="reviews-panel reviews-side">
+      <div class="reviews-panel-head compact">
+        <div>
+          <div class="reviews-kicker">Output</div>
+          <div class="reviews-title">Review packet</div>
+        </div>
+        <span class="reviews-icon">📄</span>
+      </div>
+      <div class="reviews-checklist">
+        <div>8 structured review sections</div>
+        <div>Score badges by category</div>
+        <div>Data analysis + growth plan</div>
+        <div>HR and coaching context</div>
+        <div>Printable report opens in a new tab</div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="reviews-output-shell">
+    <div class="reviews-panel-head">
+      <div>
+        <div class="reviews-kicker">Step 02</div>
+        <div class="reviews-title">Generated review preview</div>
+      </div>
+      <span class="reviews-pill purple">Manager ready</span>
+    </div>
+    <div id="rvPreview" class="reviews-preview-empty">Generate a review to preview the sections here.</div>
+    <div id="rvResultBox" style="display:none;"></div>
+  </div>
+</div>
+
+<div id="pg-reports" class="page reports-command-page reports-intel-center reports-v278">
+<div class="r3-shell" id="reports-hub-shell" style="margin:0 0 16px;">
+  <div class="r3-head"><span class="r3-av" style="background:linear-gradient(135deg,#FA873D,#FBBF24);">&#128196;</span>
+    <div class="r3-hmeta"><div class="r3-name">Reports Hub</div><div class="r3-sub">Generate, review, and reopen every report in one place</div></div>
+    <div class="r3-hactions">
+      <button class="dc2-act" onclick="buildQuarterEndReport()">&#128202; Quarter-end</button>
+      <button class="dc2-act" onclick="buildDeepQuarterReport()">&#128270; Deep quarter</button>
+      <button class="dc2-act" style="border-color:var(--tcp-accent);" onclick="execPacket()">&#129534; Exec packet</button>
+    </div></div>
+  <div style="padding:6px 18px 0;"><span id="hub-exec-st" class="dc-flat" style="font-size:11px;"></span></div>
+  <div class="r3-tabs">
+    <button class="r3-tab active" data-pane="hub-meeting" onclick="_r360Tab(this);_hubEnsureMtg()">Meeting report</button>
+    <button class="r3-tab" data-pane="hub-generators" onclick="_r360Tab(this)">Generators</button>
+    <button class="r3-tab" data-pane="hub-history" onclick="_r360Tab(this);renderHubHistory()">History</button>
+  </div>
+  <div class="r3-pane active" id="hub-meeting"></div>
+  <div class="r3-pane" id="hub-generators"></div>
+  <div class="r3-pane" id="hub-history"><div class="dc2-panel-h" style="padding-top:2px;"><span>Saved reports</span><select id="hub-hist-filter" class="r3-in" style="width:auto;margin:0;" onchange="renderHubHistory()"><option value="all">All types</option></select></div><div id="hub-history-list"></div></div>
+</div>
+  <section class="reports-hero reports-command-hero reports-v278-hero">
+    <div>
+      <div class="reports-eyebrow">Reporting Intelligence Center</div>
+      <h1>Reports</h1>
+      <p>Build the exact management document you need: AI brief, weekly meeting packet, rep performance packet, or team leadership report.</p>
+    </div>
+    <div class="reports-hero-status">
+      <span class="reports-live-dot"></span>
+      <span id="reportsBuilderStatus">Builder ready</span>
+    </div>
+  </section>
+
+  <section class="reports-v278-health-strip" aria-label="Report workspace overview">
+    <div class="reports-v278-health-card">
+      <span>✦</span><div><strong>AI Brief</strong><small>Quick manager summary</small></div>
+    </div>
+    <div class="reports-v278-health-card">
+      <span>📄</span><div><strong>PDF Packets</strong><small>Meeting, rep, and team outputs</small></div>
+    </div>
+    <div class="reports-v278-health-card">
+      <span>⚙</span><div><strong>Template Controls</strong><small>Select scope and sections</small></div>
+    </div>
+    <div class="reports-v278-health-card">
+      <span>✓</span><div><strong>Manager Ready</strong><small>Built from current tracker data</small></div>
+    </div>
+  </section>
+
+  <section class="reports-v278-layout">
+    <main class="reports-v278-main">
+      <div class="reports-panel reports-v278-builder-card">
+        <div class="reports-panel-head">
+          <div>
+            <div class="reports-kicker">Step 01</div>
+            <div class="reports-title">Choose the report type</div>
+            <p>Select what you are trying to create. The builder below changes based on your output.</p>
+          </div>
+          <span class="reports-pill green">Single workflow</span>
+        </div>
+
+        <div class="reports-v278-type-grid" role="radiogroup" aria-label="Report type">
+          <button type="button" class="reports-v278-type-card" data-report-type="meeting" onclick="reportsSetType('meeting')">
+            <span class="reports-v278-type-icon">📊</span>
+            <strong>Weekly Meeting Packet</strong>
+            <small>Full sales meeting packet using the current week and quarter.</small>
+          </button>
+          <button type="button" class="reports-v278-type-card active" data-report-type="rep" onclick="reportsSetType('rep')">
+            <span class="reports-v278-type-icon">👤</span>
+            <strong>Rep Performance Packet</strong>
+            <small>Single-rep PDF for coaching, reviews, and follow-up.</small>
+          </button>
+          <button type="button" class="reports-v278-type-card" data-report-type="team" onclick="reportsSetType('team')">
+            <span class="reports-v278-type-icon">👥</span>
+            <strong>Team Leadership Report</strong>
+            <small>Management-ready team report for leadership or planning.</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-config-card">
+        <div class="reports-panel-head compact">
+          <div>
+            <div class="reports-kicker">Step 02</div>
+            <div class="reports-title">Configure the output</div>
+          </div>
+          <span class="reports-pill purple" id="reportsTypePill">AI Manager Brief</span>
+        </div>
+
+        <div class="reports-v278-config-grid">
+          <div class="reports-v278-scope-panel">
+            <div class="reports-v278-subtitle">Scope</div>
+            <div class="reports-v278-form-grid">
+              <div class="reports-field reports-rep-scope">
+                <label>Rep</label>
+                <select id="aiR"></select>
+              </div>
+              <div class="reports-field reports-rep-output" style="display:none;">
+                <label>Rep for PDF</label>
+                <select id="prRep"></select>
+              </div>
+              <div class="reports-field">
+                <label>Quarter</label>
+                <select id="reportsBuilderQuarter">
+                  <option value="current">Current selected quarter</option>
+                  <option value="year">Full year view</option>
+                </select>
+              </div>
+              <div class="reports-field">
+                <label>Tone</label>
+                <select id="reportsBuilderTone">
+                  <option value="manager">Manager ready</option>
+                  <option value="direct">Direct / no fluff</option>
+                  <option value="coaching">Coaching focused</option>
+                  <option value="executive">Executive summary</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="reports-v278-generated-box">
+              <div class="reports-v278-generated-head">
+                <span>Output preview</span>
+                <small id="reportsOutputHint">Run the builder to generate the selected output.</small>
+              </div>
+              <div id="aiOut" class="reports-output-box reports-v278-ai-output">Choose a report type, confirm the scope, then click Generate.</div>
+              <div class="status reports-status" id="repSt"></div>
+              <div id="repResultBox" class="reports-result-box" style="display:none;"></div>
+              <div class="status reports-status" id="teamSt"></div>
+              <div id="teamResultBox" class="reports-result-box" style="display:none;"></div>
+            </div>
+          </div>
+
+          <aside class="reports-v278-section-panel">
+            <div class="reports-v278-subtitle">Included sections</div>
+            <div class="reports-v278-check-grid">
+              <label><input type="checkbox" checked data-report-section="revenue"> <span>Revenue summary</span></label>
+              <label><input type="checkbox" checked data-report-section="rankings"> <span>Rep rankings</span></label>
+              <label><input type="checkbox" checked data-report-section="pacing"> <span>Goal pacing</span></label>
+              <label><input type="checkbox" checked data-report-section="calls"> <span>Call coverage</span></label>
+              <label><input type="checkbox" checked data-report-section="quality"> <span>Credit memos / art errors</span></label>
+              <label><input type="checkbox" checked data-report-section="forecast"> <span>Forecast / selling focus</span></label>
+              <label><input type="checkbox" checked data-report-section="coaching"> <span>Coaching / HR context</span></label>
+              <label><input type="checkbox" checked data-report-section="ai"> <span>AI analysis</span></label>
+            </div>
+            <div class="reports-v278-note">These selections guide the report workflow. Current legacy PDF generators still use their standard complete templates.</div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-generate-card">
+        <div>
+          <div class="reports-kicker">Step 03</div>
+          <div class="reports-title">Generate the report</div>
+          <p id="reportsGenerateHelp">Create an AI manager brief for the selected rep.</p>
+        </div>
+        <button class="reports-btn primary reports-v278-generate-btn" id="reportsMainGenerateBtn" onclick="reportsRunSelected()">🚀 Generate AI Brief</button>
+      </div>
+    </main>
+
+    <aside class="reports-v278-side">
+      <div class="reports-panel reports-v278-side-card">
+        <div class="reports-panel-head compact">
+          <div><div class="reports-kicker">Manager watch</div><div class="reports-title">What this page is for</div></div>
+        </div>
+        <div class="reports-v278-watch-list">
+          <div><span>1</span><strong>Brief</strong><small>Use AI to understand the situation before talking.</small></div>
+          <div><span>2</span><strong>Build</strong><small>Select a rep/team output and generate the PDF.</small></div>
+          <div><span>3</span><strong>Use</strong><small>Open, print, save, or bring into a meeting.</small></div>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-side-card">
+        <div class="reports-panel-head compact">
+          <div><div class="reports-kicker">Templates</div><div class="reports-title">Best-use shortcuts</div></div>
+        </div>
+        <div class="reports-v278-template-list">
+          <button type="button" onclick="reportsSetType('meeting')"><strong>Weekly Sales Meeting</strong><span>Rankings, pacing, calls, forecast</span></button>
+          <button type="button" onclick="reportsSetType('rep')"><strong>Rep Coaching Packet</strong><span>Single rep, scorecard, notes, quality</span></button>
+          <button type="button" onclick="reportsSetType('team')"><strong>Leadership Team Report</strong><span>Full team performance snapshot</span></button>
+        </div>
+      </div>
+
+      <div class="reports-panel reports-v278-side-card">
+        <div class="reports-panel-head compact">
+          <div><div class="reports-kicker">Output guide</div><div class="reports-title">What generates where</div></div>
+        </div>
+        <div class="reports-v278-output-guide">
+          <div><b>AI Brief</b><span>Appears directly on this page.</span></div>
+          <div><b>Meeting Packet</b><span>Opens the Weekly Meeting PDF/print view.</span></div>
+          <div><b>Rep Packet</b><span>Opens the selected rep PDF/print view.</span></div>
+          <div><b>Team Report</b><span>Opens the full team report.</span></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+</div>
+
+<div id="pg-prodintel" class="page">
+<div id="pi-ai"></div>
+  <div class="prodintel-page">
+    <section class="prodintel-hero">
+      <div>
+        <div class="prodintel-eyebrow">Production intelligence layer</div>
+        <h1>Production Intelligence</h1>
+        <p>Live production dates, decoration timeline trends, quoting guidance, and deadline resources in one operational command center.</p>
+      </div>
+      <div class="prodintel-hero-actions">
+        <button class="sbtn" onclick="try{refreshProductionTimes().then(function(){renderProdIntelPage();});}catch(e){renderProdIntelPage();}">↻ Refresh feed</button>
+        <button class="sbtn" onclick="window.print()">🖨 Print / PDF</button>
+      </div>
+    </section>
+    <div id="prodintel-content"></div>
+  </div>
+</div>
+<div id="pg-cknow" class="page">
+  <div class="cknow-hub">
+    <section class="cknow-hero">
+      <div>
+        <div class="cknow-eyebrow">Company intelligence layer</div>
+        <h1>Company Knowledge Hub</h1>
+        <p>Production intelligence, AI guidance, company policies, sales resources, and operational knowledge in one command center. The AI command library below still feeds every report, review, meeting packet, and manager briefing.</p>
+      </div>
+      <div class="cknow-hero-actions">
+        <button class="dash-action-btn primary" onclick="refreshProductionTimes()">&#10227; Refresh production</button>
+        <button class="dash-action-btn" onclick="previewCompanyContext()">&#128270; Preview AI context</button>
+        <button class="dash-action-btn" onclick="exportCompanyKnowledge()">&#11015; Export knowledge</button>
+      </div>
+    </section>
+
+    <section class="cknow-metrics" id="prodMetricCards">
+      <div class="cknow-kpi"><div class="kpi-icon">&#127919;</div><div class="lbl">Decorations tracked</div><div class="val" id="prodMetricTypes">8</div><div class="sub">Live production categories</div></div>
+      <div class="cknow-kpi"><div class="kpi-icon">&#9201;</div><div class="lbl">Avg lead time</div><div class="val" id="prodMetricAvg">--</div><div class="sub">Calendar days from today</div></div>
+      <div class="cknow-kpi"><div class="kpi-icon">&#9888;</div><div class="lbl">Longest lead</div><div class="val" id="prodMetricLongest">--</div><div class="sub" id="prodMetricLongestSub">Highest-risk decoration</div></div>
+      <div class="cknow-kpi"><div class="kpi-icon">&#128260;</div><div class="lbl">Last update</div><div class="val" id="prodMetricUpdated">--</div><div class="sub">From sheet or saved snapshot</div></div>
+    </section>
+
+    <section class="cknow-grid-main">
+      <div class="cknow-main-stack">
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Live production status</div>
+              <h2>Production Status Center</h2>
+              <p>Pull current ship weeks from a published Google Sheet CSV, calculate lead time from today's date, and feed this into AI reports and forecast recommendations.</p>
+            </div>
+            <span class="entry-pill entry-pill-blue" id="prodSourceBadge">Saved snapshot</span>
+          </div>
+          <div class="prod-sheet-row">
+            <div class="ig prod-url-input">
+              <div class="side-help">CSV source is configured in <strong>Admin &#8594; Production Feed Manager</strong>. Refresh pulls the latest ship weeks from there.</div>
+            </div>
+            <button class="sbtn entry-primary" onclick="refreshProductionTimes()">Refresh</button>
+            <button class="sbtn" onclick="useSampleProductionTimes()">Use sample</button>
+          </div>
+          <div class="prod-table-wrap">
+            <table class="prod-table">
+              <thead><tr><th>Decoration</th><th>Approx. ship week</th><th>Lead time</th><th>Status</th><th>Updated</th></tr></thead>
+              <tbody id="productionRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Quick answers</div>
+              <h2>Ask Company Knowledge</h2>
+              <p>Use this for fast answers reps need before quoting, calling, or building a report.</p>
+            </div>
+          </div>
+          <div class="knowledge-search-box">
+            <input id="knowledgeAskInput" placeholder="Ask: current embroidery production, rush order options, credit memo policy..." onkeydown="if(event.key==='Enter')askCompanyKnowledge()" />
+            <button class="sbtn entry-primary" onclick="askCompanyKnowledge()">Ask</button>
+          </div>
+          <div class="quick-answer-chips">
+            <button onclick="quickKnowledge('production')">&#9889; Current production times</button>
+            <button onclick="quickKnowledge('rush')">&#128666; Rush order guidance</button>
+            <button onclick="quickKnowledge('credit')">&#128179; Credit memo policy</button>
+            <button onclick="quickKnowledge('art')">&#127912; Art requirements</button>
+            <button onclick="quickKnowledge('pricing')">&#128176; Pricing rules</button>
+          </div>
+          <div id="knowledgeAnswerBox" class="knowledge-answer-box">Ask a question or choose a quick answer. Production times and AI command notes will be summarized here.</div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Policy center</div>
+              <h2>Company Policies</h2>
+              <p>Manager-facing shortcuts for the policies and operational guardrails reps ask about most often.</p>
+            </div>
+          </div>
+          <div class="policy-grid">
+            <button onclick="quickKnowledge('credit')"><strong>&#128179; Credit Memo Policy</strong><span>Fault, customer impact, rep coaching, and quality tracking.</span></button>
+            <button onclick="quickKnowledge('art')"><strong>&#127912; Art Requirements</strong><span>Artwork quality, approvals, file specs, and production handoff.</span></button>
+            <button onclick="quickKnowledge('returns')"><strong>&#8634; Returns / Reorders</strong><span>How to think about customer fixes, credits, and replacement orders.</span></button>
+            <button onclick="quickKnowledge('customer-care')"><strong>&#9742; Customer Care</strong><span>Front-line service expectations and handoff standards.</span></button>
+            <button onclick="quickKnowledge('rush')"><strong>&#128666; Rush Orders</strong><span>How production lead times should shape what reps promise.</span></button>
+            <button onclick="quickKnowledge('remote')"><strong>&#127970; Work Standards</strong><span>Call expectations, activity standards, and manager follow-up.</span></button>
+          </div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">Resource center</div>
+              <h2>Sales Resource Center</h2>
+              <p>Fast entry points for sales scripts, decoration guidance, promotions, pricing notes, vendor/process reminders, and internal resources.</p>
+            </div>
+          </div>
+          <div class="resource-grid">
+            <div><strong>&#128218; Product Guides</strong><span>Core product categories, seasonal recommendations, and common customer fits.</span></div>
+            <div><strong>&#129525; Decoration Methods</strong><span>Embroidery, screen print, heat transfer, DTF, sublimation, and production fit.</span></div>
+            <div><strong>&#127881; Promotions</strong><span>Current campaigns, upcoming holidays, forecast events, and selling windows.</span></div>
+            <div><strong>&#128181; Pricing Resources</strong><span>Margin reminders, quote framing, and pricing guardrails.</span></div>
+            <div><strong>&#128172; Sales Scripts</strong><span>Call openers, follow-up language, urgency framing, and discovery questions.</span></div>
+            <div><strong>&#128736; Process Notes</strong><span>Order flow, approvals, handoffs, and internal escalation paths.</span></div>
+          </div>
+        </section>
+
+        <section class="cknow-panel">
+          <div class="cknow-panel-head">
+            <div>
+              <div class="cknow-section-kicker">AI command library</div>
+              <h2>What teaches the AI</h2>
+              <p>These existing prompt cards are preserved. They are the instruction layer used by AI reports, reviews, forecasting, and performance commentary.</p>
+            </div>
+            <span id="cknowStatus" class="entry-pill entry-pill-purple"></span>
+          </div>
+          <div class="ai-command-note">
+            <strong>Two ways to fill this in:</strong>
+            <span><b>Interview me</b> asks guided questions and structures your answers. <b>Edit directly</b> lets you type or paste your own notes. Everything below stays part of the AI command context.</span>
+          </div>
+          <div id="cknowCatGrid" class="ai-command-grid"></div>
+          <div class="freeform-command-card">
+            <div class="freeform-title">Anything else &middot; Free-form notes</div>
+            <textarea id="cknowFreeform" oninput="saveCKnowFreeform()" placeholder="Anything that doesn't fit a category — quirky business rules, things to never say, things to always mention, references to specific past wins or lessons, etc."></textarea>
+          </div>
+          <div class="knowledge-action-row">
+            <button class="sbtn" onclick="previewCompanyContext()">&#128270; Preview what AI sees</button>
+            <button class="sbtn" onclick="exportCompanyKnowledge()">&#11015; Export as JSON</button>
+            <label class="sbtn">&#11014; Import JSON<input type="file" accept=".json" onchange="importCompanyKnowledge(event)" style="display:none;"></label>
+            <button class="sbtn danger" onclick="clearCompanyKnowledge()">&times; Clear AI command notes</button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="cknow-side-stack">
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">Production intelligence</div>
+          <h2>Manager recommendations</h2>
+          <div id="productionRecommendations" class="recommendation-list"></div>
+        </section>
+
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">Deadline calculator</div>
+          <h2>Can we hit the date?</h2>
+          <p class="side-help">Add each deco method on the order with its art status, then garment arrival, in-hands date, and ship-to ZIP.</p>
+          <div id="dlDecoBlocks"></div>
+          <button onclick="addDeadlineDeco()" class="sbtn" style="margin-bottom:12px;">+ Add deco method</button>
+          <div class="cutoff-form">
+            <div class="ig"><label>Last garment arriving to TCP</label><input type="date" id="dlGarmentDate"></div>
+            <div class="ig"><label>In-hands date</label><input type="date" id="dlInHands"></div>
+            <div class="ig"><label>Ship-to ZIP</label><input type="text" id="dlZip" maxlength="5" inputmode="numeric" placeholder="e.g. 90210"></div>
+            <button class="sbtn entry-primary" onclick="calculateDeadline()">Calculate</button>
+          </div>
+          <div id="dlResult" class="cutoff-result">Add your deco methods and dates, then hit Calculate.</div>
+          <div style="display:none;" aria-hidden="true"><input type="date" id="cutoffEventDate"><select id="cutoffDecoration"></select><div id="cutoffResult"></div></div>
+        </section>
+
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">Recently updated</div>
+          <h2>Knowledge activity</h2>
+          <div id="knowledgeRecentUpdates" class="recent-list"></div>
+        </section>
+
+        <section class="cknow-panel side">
+          <div class="cknow-section-kicker">AI context health</div>
+          <h2>What AI can reference</h2>
+          <div class="context-health-list">
+            <div><span>&#128994;</span><strong>Company knowledge</strong><em id="ctxCompanyHealth">Loaded</em></div>
+            <div><span>&#128994;</span><strong>Production times</strong><em id="ctxProductionHealth">Snapshot ready</em></div>
+            <div><span>&#128994;</span><strong>Forecast events</strong><em>Available</em></div>
+            <div><span>&#128994;</span><strong>Performance data</strong><em>Available</em></div>
+            <div><span>&#128993;</span><strong>Report archive</strong><em>Local history</em></div>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </div>
+</div>
+
+<div id="pg-calc" class="page">
+  <div class="prodintel-page">
+    <section class="prodintel-hero">
+      <div>
+        <div class="prodintel-eyebrow">Sales operations tool</div>
+        <h1>Deadline Calculator</h1>
+        <p>Calculate whether an order can hit an in-hands date using garment arrival, decoration method, art status, production lead times, and estimated transit.</p>
+      </div>
+    </section>
+    <section class="prodintel-panel prodintel-full" id="calcDeadlineMount">
+      <div class="prodintel-kicker">Deadline calculator</div>
+      <div class="prodintel-title">Can we hit the date?</div>
+      <div class="prodintel-sub">This tool uses current production status, configured art days, and a transit estimate to help reps quote realistic timelines.</div>
+    </section>
+  </div>
+</div>
+
+<div id="pg-history" class="page">
+  <div class="card">
+    <div class="ct">&#x1F4CB; Report history</div>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;">Every report generated this session.</p>
+    <div class="filter-row">
+      <label>Type:</label>
+      <select id="histFilter" onchange="renderHistory()"><option value="all">All reports</option><option value="meeting">Meeting</option><option value="review">Reviews</option><option value="rep">Rep reports</option><option value="team">Team reports</option><option value="ai">AI analyses</option></select>
+      <label style="margin-left:8px;">Rep/Period:</label>
+      <select id="histRepFilter" onchange="renderHistory()"><option value="all">All</option></select>
+      <button class="sbtn" style="font-size:11px;padding:3px 9px;margin-left:auto;" onclick="clearHistory()">Clear history</button>
+    </div>
+    <div id="historyCount" style="font-size:11px;color:var(--color-text-secondary);margin-bottom:9px;"></div>
+    <div id="historyList"></div>
+  </div>
+</div>
+<div id="pg-daily" class="page">
+  <div class="daily-command-page">
+    <section class="daily-hero">
+      <div>
+        <div class="daily-eyebrow">Sales rhythm center</div>
+        <h1>Daily Sales & Calls</h1>
+        <p>Enter each rep’s cumulative weekly sales and calls, feed live performance throughout the tracker, and reconcile everything against the official weekly spreadsheet.</p>
+      </div>
+      <div class="daily-hero-actions">
+        <button class="daily-action-btn" onclick="downloadDailyExcel()">&#8595; Excel</button>
+        <button class="daily-action-btn" onclick="downloadDailyPDF()">&#128196; PDF</button>
+      </div>
+    </section>
+
+    <div class="daily-layout daily-entry-married-layout">
+      <section class="daily-panel daily-entry-panel daily-entry-married-panel">
+        <div class="daily-entry-married-head">
+          <div>
+            <div class="daily-section-kicker">Input</div>
+            <h2>Daily Sales & Calls Entry</h2>
+            <p class="daily-help">Choose the activity date here, then enter cumulative week-to-date sales and calls for each rep. Sales and calls update the tracker immediately.</p>
+          </div>
+          <span class="daily-status-pill">Live weekly bridge</span>
+        </div>
+        <div class="daily-entry-married-body">
+          <div class="daily-entry-primary-card">
+            <div class="daily-entry-card-label">Sales date</div>
+            <div class="daily-entry-grid">
+              <div class="ig daily-field">
+                <label>Date sales happened</label>
+                <input type="date" id="dailyDate" onchange="if(typeof _drRenderForm==='function')_drRenderForm();">
+              </div>
+              </div>
+            <div id="dailyMsg" class="daily-inline-msg"></div>
+          </div>
+          <div id="dr-form" class="daily-rep-entry-host"></div>
+        </div>
+        <div id="dr-view"></div>
+      </section>
+
+      <section class="daily-panel daily-controls-panel">
+        <div class="daily-panel-head compact">
+          <div>
+            <div class="daily-section-kicker">View</div>
+            <h2>Month controls</h2>
+          </div>
+        </div>
+        <div class="daily-control-stack">
+          <div class="ig daily-field">
+            <label>Month</label>
+            <select class="nav-sel" id="dailyViewMonth" onchange="renderDailyLog()"></select>
+          </div>
+          <button class="daily-action-btn wide" onclick="downloadDailyExcel()">&#8595; Download Excel</button>
+          <button class="daily-action-btn wide" onclick="downloadDailyPDF()">&#128196; Download PDF</button>
+          <button class="daily-action-btn danger wide" onclick="clearDailyLog()">Clear all entries</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="daily-panel daily-summary-panel">
+      <div class="daily-panel-head">
+        <div>
+          <div class="daily-section-kicker">Snapshot</div>
+          <h2>Sales & calls summary</h2>
+        </div>
+      </div>
+      <div id="dailySummaryRow" class="daily-summary-grid"></div>
+    </section>
+
+    <section class="daily-panel daily-log-panel">
+      <div class="daily-panel-head">
+        <div>
+          <div class="daily-section-kicker">Momentum</div>
+          <h2>Daily Sales & Calls Calendar</h2>
+        </div>
+      </div>
+      <p class="daily-help">Top SMB rep badges live on the day itself. Sundays show the weekly $0 reset, saved zero days stay visible, and missing cumulative weekdays are flagged before they can distort the next day.</p>
+      <div id="dailyCalendar"></div>
+    <div id="yoy-panel"></div>
+    </section>
+  </div>
+</div>
+<div id="pg-intel" class="page forecast-command-page">
+<div id="fc-driver"></div>
+  <div class="forecast-hero">
+    <div><div class="forecast-eyebrow">Sales Opportunity Command Center</div><h1>Forecast</h1><p>Plan outreach around holidays, appreciation weeks, seasonal shifts, industry events, and downtime windows — with what to sell, who to call, and how to pitch it.</p></div>
+    <div class="forecast-hero-actions"><button class="forecast-action primary" id="forecastVerifyBtn" onclick="verifyForecastWithAI()">&#10024; Verify &amp; enhance with AI</button><button class="forecast-action" id="forecastPrintBtn" onclick="printForecast()">&#128438; Print / PDF</button><button class="forecast-action muted" id="forecastResetBtn" onclick="resetForecastToBaseline()" style="display:none;" title="Discard AI additions, revert to baseline">&#8635; Reset</button></div>
+  </div>
+  <div id="forecastVerifyStatus" class="forecast-status" style="display:none;"></div><div class="status" id="intelStatus" style="display:none;"></div>
+  <div class="forecast-kpi-grid"><div class="forecast-kpi" style="--forecast-glow:rgba(250,135,61,.24);"><div class="forecast-kpi-icon">&#9889;</div><div class="forecast-kpi-label">Next 7 days</div><div class="forecast-kpi-value" id="forecastKpiNext">0</div><div class="forecast-kpi-sub">Immediate opportunities</div></div><div class="forecast-kpi" style="--forecast-glow:rgba(250,135,61,.24);"><div class="forecast-kpi-icon">&#128197;</div><div class="forecast-kpi-label">This month</div><div class="forecast-kpi-value" id="forecastKpiMonth">0</div><div class="forecast-kpi-sub">Standard lead-time window</div></div><div class="forecast-kpi" style="--forecast-glow:rgba(71,209,108,.20);"><div class="forecast-kpi-icon">&#128202;</div><div class="forecast-kpi-label">This quarter</div><div class="forecast-kpi-value" id="forecastKpiQuarter">0</div><div class="forecast-kpi-sub">Strategic selling window</div></div><div class="forecast-kpi" style="--forecast-glow:rgba(250,135,61,.24);"><div class="forecast-kpi-icon">&#128302;</div><div class="forecast-kpi-label">Next quarter</div><div class="forecast-kpi-value" id="forecastKpiNextQuarter">0</div><div class="forecast-kpi-sub">Long lead-time planning</div></div></div>
+  <div id="intelContent" class="forecast-layout">
+    <div class="forecast-main-stack"><section class="forecast-panel"><div class="forecast-panel-head"><div><div class="forecast-panel-kicker">Immediate</div><h2>&#9889; Next 7 days</h2></div><span class="forecast-range" id="nextWeekRange"></span></div><p class="forecast-help">What is here now or imminent. Lead time is critical — if it is within a week, only quick-turn items work.</p><div id="forecastNextWeek" class="forecast-card-list"></div></section><section class="forecast-panel"><div class="forecast-panel-head"><div><div class="forecast-panel-kicker">Near term</div><h2>&#128197; Rest of this month</h2></div><span class="forecast-range" id="thisMonthRange"></span></div><p class="forecast-help">Events landing in the next 2-4 weeks. Standard order and production lead time still matter.</p><div id="forecastThisMonth" class="forecast-card-list"></div></section></div>
+    <div class="forecast-side-stack"><section class="forecast-panel"><div class="forecast-panel-head"><div><div class="forecast-panel-kicker">Planning window</div><h2>&#128202; Rest of this quarter</h2></div><span class="forecast-range" id="thisQuarterRange"></span></div><p class="forecast-help">Strategic planning window — reps should be opening conversations on these now.</p><div id="forecastThisQuarter" class="forecast-card-list compact"></div></section><section class="forecast-panel"><div class="forecast-panel-head"><div><div class="forecast-panel-kicker">Ahead</div><h2>&#128302; Next quarter</h2></div><span class="forecast-range" id="nextQuarterRange"></span></div><p class="forecast-help">Long lead-time events. Big-ticket items and complex art need to start early.</p><div id="forecastNextQuarter" class="forecast-card-list compact"></div></section></div>
+    <section class="forecast-panel forecast-downtime-panel"><div class="forecast-panel-head"><div><div class="forecast-panel-kicker">Call strategy</div><h2>&#128222; Downtime call windows</h2></div><span class="forecast-pill">Who is slow right now</span></div><p class="forecast-help">Industries currently in their slow season — decision-makers are more likely to answer. Pitch them now for their next busy season.</p><div id="forecastDowntime" class="forecast-card-list downtime"></div></section>
+  </div>
+</div>
+
+<!-- ─────────────── GAMES (AI-DRIVEN TEAM BUILDER) ─────────────── -->
+<div id="pg-games" class="page">
+  <div class="card" style="border-color:#EF9F27;background:linear-gradient(135deg,rgba(239,159,39,0.08),rgba(239,159,39,0.02));">
+    <div class="ct" style="margin-bottom:4px;color:#EF9F27;">&#127918; Sales games &mdash; team builder</div>
+    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">AI splits your active reps into <strong>balanced teams</strong> based on QTD performance, adjusted weekly targets, and remaining quarter goals. Upload the rulebook PDF for full game simulation + winner forecast.</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <label style="font-size:11px;color:var(--color-text-secondary);">Number of teams:
+        <select id="gamesNumTeams" class="nav-sel" style="margin-left:6px;">
+          <option value="2">2 teams</option>
+          <option value="3">3 teams</option>
+          <option value="4" selected>4 teams</option>
+          <option value="5">5 teams</option>
+          <option value="6">6 teams</option>
+        </select>
+      </label>
+      <label style="font-size:11px;color:var(--color-text-secondary);">Through week:
+        <select id="gamesWeekSel" class="nav-sel" style="margin-left:6px;min-width:180px;"></select>
+      </label>
+      <label style="font-size:11px;color:var(--color-text-secondary);">Game starts:
+        <select id="gamesStartWeek" class="nav-sel" style="margin-left:6px;min-width:180px;"></select>
+      </label>
+      <label style="font-size:11px;color:var(--color-text-secondary);">Game ends:
+        <select id="gamesEndWeek" class="nav-sel" style="margin-left:6px;min-width:180px;"></select>
+      </label>
+      <button class="pbtn" id="gamesGenBtn" onclick="generateGameTeams()" style="background:#EF9F27;border-color:#EF9F27;color:#1C1C1C;">&#10024; Build teams with AI</button>
+      <button class="sbtn" id="gamesRefreshDataBtn" onclick="refreshGameData()" style="display:none;background:#1C1C1C;border-color:#5DCAA5;color:#5DCAA5;" title="Pull the latest weekly data into the game without rebuilding teams. Shows what's trending vs the last refresh.">&#128202; Refresh game data</button>
+      <button class="sbtn" id="gamesRefreshBtn" onclick="refreshGameExplanations()" style="display:none;background:#1C1C1C;border-color:#FA873D;color:#8EDCFA;" title="Rewrite team rationales + overall explanation using your current edited teams (keeps your renames, moves, externals)">&#8635; Refresh AI explanations</button>
+      <button class="sbtn" id="gamesPrintBtn" onclick="printGameTeams()" style="display:none;background:#1C1C1C;border-color:#EF9F27;color:#EF9F27;">&#128438; Download PDF</button>
+      <div class="status" id="gamesStatus" style="margin-left:auto;font-size:11px;color:var(--color-text-secondary);"></div>
+    </div>
+    <div id="gamesError" style="display:none;margin-top:10px;font-size:11px;"></div>
+  </div>
+
+  <!-- RULEBOOK UPLOAD -->
+  <div class="card" style="border-color:#FA873D;background:linear-gradient(135deg,rgba(250,135,61,0.06),rgba(250,135,61,0.02));">
+    <div class="ct" style="margin-bottom:4px;color:#8EDCFA;">&#128218; Game rulebook (for simulation)</div>
+    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Upload the rulebook PDF and AI will analyze the game mechanics, identify the sales-based and call-based scoring elements (like dabloons + AP), forecast who wins each, flag risks, and predict the overall winner.</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <input type="file" id="gamesRulebookFile" accept="application/pdf,.pdf" onchange="uploadGameRulebook(this.files[0])" style="font-size:11px;color:var(--color-text-secondary);">
+      <button class="sbtn" id="gamesClearRulebookBtn" onclick="clearGameRulebook()" style="display:none;background:#1C1C1C;border-color:#FA873D;color:#8EDCFA;">&#10006; Clear rulebook</button>
+      <button class="pbtn" id="gamesSimulateBtn" onclick="runGameSimulation()" style="display:none;background:#FA873D;border-color:#FA873D;color:#fff;">&#127922; Run game simulation</button>
+      <div id="gamesRulebookStatus" style="font-size:11px;color:var(--color-text-secondary);margin-left:auto;"></div>
+    </div>
+    <div id="gamesRulebookPreview" style="display:none;margin-top:10px;"></div>
+  </div>
+
+  <!-- GAME ROSTER (external players added before team build) -->
+  <div class="card" style="border-color:#8EDCFA;background:linear-gradient(135deg,rgba(168,184,255,0.05),rgba(168,184,255,0.02));">
+    <div class="ct" style="margin-bottom:4px;color:#8EDCFA;">&#128104;&#8205;&#127942; Game roster &mdash; who&#39;s playing</div>
+    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Active tracker reps join automatically. Add external players (like <strong>Corp</strong>, <strong>House</strong>) below with their weekly sales/call targets <strong>before</strong> building teams \u2014 the AI will distribute them across teams just like real reps.</p>
+    <div id="gamesRosterBody"></div>
+    <button onclick="addExternalToRoster()" style="margin-top:8px;background:transparent;border:1px dashed rgba(168,184,255,0.5);border-radius:6px;color:#8EDCFA;font-size:11px;padding:8px 14px;cursor:pointer;">+ Add external player</button>
+  </div>
+
+  <div id="gamesContent"></div>
+  <div id="gamesSimulation"></div>
+</div>
+
+<!-- ─────────────── GAME TRACKER (daily sales) ─────────────── -->
+<div id="pg-gtrack" class="page">
+  <div class="card" style="border-color:#5DCAA5;background:linear-gradient(135deg,rgba(93,202,165,0.06),rgba(93,202,165,0.02));">
+    <div class="ct" style="margin-bottom:4px;color:#5DCAA5;">&#128202; Game tracker &mdash; daily sales</div>
+    <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.875rem;">Standalone daily-entry tracker for the active sales game. Pulls in all active reps, generates a Mon\u2013Fri grid for each game week, computes weekly totals, and shows BOTH the static weekly goal AND a rolling adjusted goal that reflects how the game has been going. Save/load via JSON.</p>
+    <div id="gtrackSetupArea">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <label style="font-size:11px;color:var(--color-text-secondary);">Game starts:
+          <select id="gtrackStart" class="nav-sel" style="margin-left:6px;min-width:180px;"></select>
+        </label>
+        <label style="font-size:11px;color:var(--color-text-secondary);">Game ends:
+          <select id="gtrackEnd" class="nav-sel" style="margin-left:6px;min-width:180px;"></select>
+        </label>
+        <button class="pbtn" id="gtrackSetupBtn" onclick="setupGameTracker()" style="background:#5DCAA5;border-color:#5DCAA5;color:#1C1C1C;">&#10024; Generate tracker</button>
+      </div>
+    </div>
+    <div id="gtrackActiveArea" style="display:none;">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div style="font-size:12px;color:var(--color-text-primary);" id="gtrackStatus"></div>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="sbtn" onclick="popoutGameTracker()" style="background:#1C1C1C;border-color:#EF9F27;color:#EF9F27;" title="Open the game tracker in its own window so it can be shared or used standalone">&#129534; Pop out</button>
+          <input type="file" id="gtrackUploadInput" accept=".json,application/json" onchange="uploadGameTrackerJSON(this.files[0])" style="display:none;">
+          <button class="sbtn" onclick="document.getElementById('gtrackUploadInput').click()" style="background:#1C1C1C;border-color:#8EDCFA;color:#8EDCFA;">&#8686; Upload JSON</button>
+          <button class="sbtn" onclick="downloadGameTrackerJSON()" style="background:#1C1C1C;border-color:#5DCAA5;color:#5DCAA5;">&#8595; Download JSON</button>
+          <button class="sbtn" onclick="resetGameTracker()" style="background:#1C1C1C;border-color:#F09595;color:#F09595;">&#10006; Reset tracker</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="gtrackBody"></div>
+</div>
+
+<div id="pg-lb" class="page">
+  <div class="card"><div class="ct">Leaderboard</div><div id="lbBody"></div></div>
+</div>
+
+
+
+<div id="pg-inbound" class="page">
+  <div class="inb-hero">
+    <div class="inb-kicker">&#128229; Inbound Intelligence</div>
+    <h1>Inbound Leads &amp; Activity</h1>
+    <p>Live inbound counts &mdash; calls, web orders, quotes, walk-ins and more &mdash; pulled straight from your published Google Sheet. Slice by week, quarter, or full year.</p>
+    <div id="inbYearBar" class="inb-yearbar"></div>
+    <div class="inb-conn">
+      <input id="inbSheetUrl" type="url" placeholder="Paste published Google Sheet CSV link (File &rarr; Share &rarr; Publish to web &rarr; CSV)" oninput="saveInboundSheetUrl()">
+      <button class="inb-btn" onclick="refreshInbound()">&#8635; Refresh</button>
+    </div>
+    <div class="inb-status" id="inbStatus"></div>
+    <div class="inb-status" id="inbLastFetched" style="margin-top:2px;"></div>
+  </div>
+  <div class="inb-panel"><div id="inbBody"></div></div>
+</div>
+<div id="pg-customers" class="page"><div id="cust-page"></div></div>
+<div id="pg-orders" class="page"><div id="ord-page"></div></div>
+<div id="pg-gamestorm" class="page"><div id="gs-page"></div></div>
+<div id="pg-repportal" class="page"><div id="rp-admin"></div></div>
+<div id="pg-reviews" class="page"><div id="reviews-page"></div></div>
+<div id="pg-admin" class="page admin-system-page">
+<div id="ds-panel"></div>
+<div id="ai-conn"></div>
+  <section class="admin-sys-hero">
+    <div>
+      <div class="admin-sys-kicker">System Control Center</div>
+      <h1>Admin Command Center</h1>
+      <p>Manage branding, cloud sync, production feeds, dashboard layout, navigation, AI settings, alerts, and system health from one clean control room.</p>
+    </div>
+    <div class="admin-sys-actions">
+      <button class="sbtn entry-primary" onclick="persistSave(); adminFlash('Saved browser settings.');">💾 Save settings</button>
+      <button class="sbtn" onclick="saveToCloud && saveToCloud();">☁ Save cloud</button>
+    </div>
+  </section>
+
+  <section class="admin-status-grid">
+    <div class="admin-status-card"><div class="as-label">Cloud Sync</div><div class="as-value" id="adminCloudStatus">Checking</div><div class="as-sub" id="adminCloudSub">GitHub cloud storage</div></div>
+    <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
+    <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
+    <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v307</div><div class="as-sub">Admin tools + themes</div></div>
+  </section>
+
+  <section class="admin-sys-grid">
+    <div class="admin-sys-panel admin-span-7">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">Branding Center</div><h2>Company identity</h2><p>Upload the logo once and keep the tracker, reports, meeting packets, reviews, and future PDF exports on brand.</p></div><span class="admin-big-icon">🏢</span></div>
+      <div class="branding-layout">
+        <div class="logo-preview-box" id="companyLogoPreview"><div class="logo-placeholder">▲ SALES TRACKER<br><span>2026–2030</span></div></div>
+        <div class="branding-fields">
+          <label class="admin-label">Company name<input id="brandCompanyName" type="text" placeholder="Triple Crown Products"></label>
+          <div class="brand-color-row">
+            <label class="admin-label">Primary color<input id="brandPrimaryColor" type="color" value="#FA873D"></label>
+            <label class="admin-label">Secondary color<input id="brandSecondaryColor" type="color" value="#00AFEF"></label>
+          </div>
+          <div class="admin-button-row">
+            <button class="sbtn" onclick="document.getElementById('companyLogoInput').click()">🖼 Upload logo</button>
+            <input type="file" id="companyLogoInput" accept="image/*" style="display:none" onchange="handleCompanyLogoUpload(event)">
+            <button class="sbtn" onclick="saveBrandingSettings()">✓ Save branding</button>
+            <button class="sbtn entry-danger" onclick="clearBrandingSettings()">Remove logo</button>
+          </div>
+          <div class="brand-checks">
+            <label><input type="checkbox" id="brandReports" checked> Use in reports</label>
+            <label><input type="checkbox" id="brandMeetings" checked> Use in meeting reports</label>
+            <label><input type="checkbox" id="brandReviews" checked> Use in review PDFs</label>
+            <label><input type="checkbox" id="brandPrintouts" checked> Use in printouts</label>
+          </div>
+          <div class="admin-note">Logo is stored in the tracker settings and can be included anywhere report templates call the branding helper.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-sys-panel admin-span-5">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">AI Configuration</div><h2>Anthropic API key</h2><p>Used for reports, reviews, meeting intelligence, and company knowledge summaries.</p></div><span class="admin-big-icon">🔑</span></div>
+      <div class="entry-key-box admin-key-box">
+        <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." oninput="saveAPIKey()" autocomplete="off" spellcheck="false">
+        <button class="sbtn" onclick="document.getElementById('apiKeyInput').type=document.getElementById('apiKeyInput').type==='password'?'text':'password'">Show/hide</button>
+      </div>
+      <span id="apiKeyStatus" class="entry-status"></span>
+      <div class="admin-note">Stored locally in browser settings and only sent to api.anthropic.com.</div>
+    </div>
+
+    <div class="admin-sys-panel admin-span-6">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">Production Feed Manager</div><h2>Google Sheet production status</h2><p>Connect the published CSV feed so Company Knowledge, Forecast, and reports can reference current production timelines.</p></div><span class="admin-big-icon">🏭</span></div>
+      <label class="admin-label">Published Google Sheet CSV URL<input id="prodCsvUrlInput" type="url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?gid=0&single=true&output=csv"></label>
+      <div class="admin-button-row">
+        <button class="sbtn entry-primary" onclick="saveProductionFeedUrl()">✓ Save feed</button>
+        <button class="sbtn" onclick="testProductionFeed()">🧪 Test connection</button>
+        <button class="sbtn" onclick="refreshProductionFeed()">↻ Refresh now</button>
+      </div>
+      <div id="productionFeedStatus" class="admin-feed-status">No production feed connected.</div>
+      <div class="prod-preview-wrap"><table class="prod-preview-table"><thead><tr><th>Decoration</th><th>Ship week</th><th>Lead time</th><th>Status</th></tr></thead><tbody id="productionPreviewBody"><tr><td colspan="4">Paste a published CSV URL and test the feed.</td></tr></tbody></table></div>
+      <label class="admin-toggle"><input type="checkbox" id="prodInReports" checked onchange="saveProductionFeedUrl()"> Include production times in reports and AI context</label>
+    </div>
+
+    <div class="admin-sys-panel admin-span-6">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">Cloud Sync</div><h2>GitHub cloud data</h2><p>Shared cloud storage for the hosted GitHub version. Credentials stay on this device and are never replaced by tracker data.</p></div><span class="admin-big-icon">☁</span></div>
+      <div class="cloud-admin-grid">
+        <label class="admin-label">GitHub token<input type="password" id="gistTokenInput" placeholder="github_pat_... or ghp_..." oninput="saveGistToken()" autocomplete="off" spellcheck="false"></label>
+        <label class="admin-label">Gist ID<input type="text" id="gistIdInput" placeholder="a1b2c3d4e5f6..." oninput="saveGistId()" autocomplete="off" spellcheck="false"><button class="sbtn" style="margin-top:6px;" onclick="tcpRecoverPreRestore()" title="Restore what was on this device before the last cloud/file restore">↩️ Recover pre-restore data</button></label>
+      </div>
+      <div class="admin-button-row">
+        <button class="sbtn" id="gistTestBtn" onclick="testGistToken()">🧪 Test token</button>
+        <button class="sbtn entry-primary" id="gistSaveBtn" onclick="saveToCloud()">☁ Save to cloud</button>
+        <button class="sbtn" id="gistLoadBtn" onclick="loadFromCloud()">☁ Load from cloud</button>
+        <button class="sbtn" onclick="document.getElementById('gistTokenInput').type=document.getElementById('gistTokenInput').type==='password'?'text':'password'">Show/hide token</button>
+      </div>
+      <div id="gistStatus" class="admin-feed-status">Cloud status will appear here.</div>
+    </div>
+
+
+
+    <div class="admin-sys-panel admin-span-5">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">Navigation Manager</div><h2>Sidebar order + visibility</h2><p>Drag tabs into the right order, hide unused pages, and keep the app focused for daily use.</p></div><span class="admin-big-icon">🧭</span></div>
+      <div id="tabOrderBuilder"></div>
+      <div class="admin-button-row admin-spaced-buttons">
+        <button class="sbtn entry-primary" onclick="applyTabOrder()">✓ Save navigation</button>
+        <button class="sbtn" onclick="resetTabOrder()">Reset defaults</button>
+      </div>
+    </div>
+
+    <div class="admin-sys-panel admin-span-6">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">Notification Rules</div><h2>Manager alert thresholds</h2><p>Control when the Operations Alert Center flags risk.</p></div><span class="admin-big-icon">🔔</span></div>
+      <div class="admin-rule-grid">
+        <label class="admin-label">Revenue risk below %<input type="number" id="ruleRevenueRisk" value="80" min="0" max="150"></label>
+        <label class="admin-label">Call coverage risk below %<input type="number" id="ruleCallRisk" value="80" min="0" max="150"></label>
+        <label class="admin-label">Art error warning above %<input type="number" id="ruleArtRisk" value="5" min="0" max="100" step=".1"></label>
+        <label class="admin-label">Credit memo warning above %<input type="number" id="ruleCreditRisk" value="2" min="0" max="100" step=".1"></label>
+      </div>
+      <div class="admin-button-row"><button class="sbtn entry-primary" onclick="saveNotificationRules()">✓ Save alert rules</button><button class="sbtn" onclick="loadNotificationRules()">Reload</button></div>
+      <div id="notificationRuleStatus" class="admin-note">Rules are stored in tracker settings.</div>
+    </div>
+
+    <div class="admin-sys-panel admin-span-6">
+      <div class="admin-panel-head"><div><div class="admin-sys-kicker">System Health</div><h2>Diagnostics</h2><p>Quick health check for the key operating modules.</p></div><span class="admin-big-icon">🩺</span></div>
+      <div class="health-list" id="adminHealthList"></div>
+    </div>
+
+    <div class="admin-sys-panel admin-span-12">
+      <details class="advanced-admin-tools">
+        <summary>Advanced tools — local backup, scoring, thresholds, theme, quarter calendar</summary>
+        <div class="advanced-grid">
+          <div class="advanced-card">
+            <h3>Local browser backup</h3>
+            <div class="admin-button-row">
+              <button class="sbtn" onclick="persistSave()">💾 Save browser</button>
+              <button class="sbtn" onclick="exportData()">↓ Export JSON</button>
+              <button class="sbtn" onclick="document.getElementById('importFile').click()">↑ Import JSON</button>
+              <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+              <button class="sbtn entry-danger" onclick="confirmClearData()">Clear saved data</button>
+            </div>
+            <div id="saveStatus" class="admin-feed-status">Browser save status.</div>
+            <div id="storageWarning" class="entry-storage-warning" style="display:none;"></div>
+            <div id="storageInfo" class="entry-help small">Use this only as a manual safety backup now that cloud sync is in place.</div>
+            <div class="admin-button-row" style="margin-top:10px;">
+              <button class="sbtn" onclick="exportAllData()">&#11015; Full backup (everything)</button>
+              <label class="sbtn" style="cursor:pointer;">&#11014; Restore full backup<input type="file" accept=".json" style="display:none" onchange="importAllData(this)"></label>
+            </div>
+            <div id="backupStatus" class="admin-feed-status"></div>
+            <div class="entry-help small">Full backup includes scoring weights, thresholds, inbound cache, and photos &mdash; and never includes your API key or sync token.</div>
+          </div>
+          <div class="advanced-card">
+            <h3>Legacy auto-save file</h3>
+            <div class="admin-button-row">
+              <button class="sbtn" onclick="linkDataFile('pick')">📁 Pick file</button>
+              <button class="sbtn" onclick="linkDataFile('load')">↑ Load file</button>
+              <button class="sbtn entry-danger" id="unlinkFileBtn" onclick="unlinkDataFile()" style="display:none">Disconnect</button>
+            </div>
+            <div id="dataFileStatus" class="admin-feed-status">No file linked.</div>
+          </div>
+          <div class="advanced-card"><h3>Score weights</h3><div id="weightGrid"></div><div style="margin-top:10px">Total: <strong id="weightTotal">100%</strong></div><div id="weightWarn" style="display:none;color:#F09595;margin-top:6px">Weights should total 100%.</div><button class="sbtn" onclick="saveWeights()">Save weights</button><button class="sbtn" onclick="resetWeights()">Reset</button></div>
+          <div class="advanced-card"><h3>Score thresholds</h3><div id="threshGrid"></div><div id="threshStatus" class="admin-note"></div><button class="sbtn" onclick="applyThresholds()">Save thresholds</button><button class="sbtn" onclick="resetThresholds()">Reset</button></div>
+          <div class="advanced-card"><h3>Theme options</h3><p class="entry-help small">Choose a complete visual theme instead of manually picking colors. This changes the app accents, card feel, density, and report/dashboard tone.</p><div id="themeGrid"></div><div class="admin-button-row"><button class="sbtn entry-primary" onclick="applyTheme()">Apply selected theme</button><button class="sbtn" onclick="resetTheme()">Reset theme</button></div><div id="themeStatus" class="admin-advanced-status">Theme settings are stored in this browser.</div></div>
+          <div class="advanced-card"><h3>Deadline calculator &mdash; art days</h3>
+            <p style="font-size:11px;color:var(--color-text-secondary);margin:0 0 10px;">Art-department turnaround days per deco method, by art status. Production days are pulled live from the Production Status Center.</p>
+            <div id="deadlineArtGrid"></div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+              <button onclick="saveDeadlineArtConfig()" style="background:#FA873D;border:none;color:#fff;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;">Save art days</button>
+              <span id="deadlineArtSaved" style="font-size:12px;color:#5DCAA5;"></span>
+            </div>
+          </div>
+          <div class="advanced-card"><h3>Quarter calendar</h3>
+            <p style="font-size:11px;color:var(--color-text-secondary);margin:0 0 10px;">Set the start date for each quarter (overrides the default anchor). Leave a quarter blank to use its default.</p>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <label style="font-size:12px;color:var(--color-text-secondary);">Year</label>
+              <select id="qcalYr" onchange="renderQuarterCalendar()" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-primary);padding:5px 8px;border-radius:6px;font-size:12px;"></select>
+              <label style="font-size:12px;color:var(--color-text-secondary);margin-left:6px;">Weeks / quarter</label>
+              <input type="number" id="qcalWeeksPerQ" min="1" max="20" value="13" style="width:64px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-primary);padding:5px 8px;border-radius:6px;font-size:12px;">
+            </div>
+            <div id="qcalGrid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;"></div>
+            <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+              <button onclick="saveQuarterCalendarUI()" style="background:#FA873D;border:none;color:#fff;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;">Save quarter calendar</button>
+              <button onclick="copyQuarterCalendarFromPrev()" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-primary);padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;">Copy from prev year</button>
+              <button onclick="clearQuarterCalendar()" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:#F09595;padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;">Clear year</button>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+</div>
+<div id="pg-notifs" class="page notif-command">
+  <section class="notif-hero">
+    <div>
+      <div class="notif-kicker">Operations Alert Center</div>
+      <h1>Notifications</h1>
+      <p>Stay ahead of revenue risks, call coverage gaps, recognition moments, birthdays, anniversaries, and system events from one manager-ready command center.</p>
+    </div>
+    <div class="notif-hero-actions">
+      <button class="sbtn" onclick="dismissAllAlerts()">Dismiss active alerts</button>
+      <button class="sbtn" onclick="clearDismissed()">Restore dismissed</button>
+    </div>
+  </section>
+
+  <section class="notif-metrics">
+    <div class="notif-metric" style="--nm-color:#FA873D;--nm-glow:rgba(250,135,61,.24);"><div class="nm-label">Critical</div><div class="nm-value" id="notifCriticalCount">0</div><div class="nm-sub">Revenue or pacing risk</div></div>
+    <div class="notif-metric" style="--nm-color:#FA873D;--nm-glow:rgba(250,135,61,.22);"><div class="nm-label">Action required</div><div class="nm-value" id="notifActionCount">0</div><div class="nm-sub">Needs manager attention</div></div>
+    <div class="notif-metric" style="--nm-color:#47D16C;--nm-glow:rgba(71,209,108,.22);"><div class="nm-label">Recognition</div><div class="nm-value" id="notifRecognitionCount">0</div><div class="nm-sub">Wins and milestones</div></div>
+    <div class="notif-metric" style="--nm-color:#00AFEF;--nm-glow:rgba(0,175,239,.22);"><div class="nm-label">Personal dates</div><div class="nm-value" id="notifPeopleCount">0</div><div class="nm-sub">Birthdays / anniversaries</div></div>
+    <div class="notif-metric" style="--nm-color:#FA873D;--nm-glow:rgba(250,135,61,.24);"><div class="nm-label">Total active</div><div class="nm-value" id="notifTotalCount">0</div><div class="nm-sub">Visible alerts</div></div>
+  </section>
+
+  <section class="notif-toolbar">
+    <div class="ig"><label>Search alerts</label><input id="notifSearch" placeholder="Search rep, alert, topic, week..." oninput="renderNotifLog()"></div>
+    <div class="ig"><label>Type</label><select id="notifFilter" onchange="renderNotifLog()"><option value="all">All types</option><option value="risk">At risk</option><option value="record">Records / wins</option><option value="anniv">Anniversaries</option><option value="bday">Birthdays</option><option value="system">System</option><option value="cov_gap">Customers-called gaps</option><option value="art_spike">Art-error spikes</option><option value="cred_spike">Credit spikes</option><option value="missing">Missing scorecards</option></select></div>
+    <div class="ig"><label>Status</label><select id="notifStatusFilter" onchange="renderNotifLog()"><option value="active">Active only</option><option value="all">All statuses</option><option value="dismissed">Dismissed only</option></select></div>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;"><button class="sbtn" onclick="clearDismissed()">Restore all</button></div>
+  </section>
+
+  <section class="notif-layout">
+    <div class="notif-stack">
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">🔴 Executive alerts</div><div class="notif-panel-sub">Highest-priority risks and business-impact items.</div></div><span class="notif-count-pill" id="notifExecPill">0</span></div>
+        <div id="notifExecutiveList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">🟡 Team action feed</div><div class="notif-panel-sub">Coaching opportunities, activity gaps, and manager follow-up items.</div></div><span class="notif-count-pill" id="notifTeamPill">0</span></div>
+        <div id="notifTeamList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">🟢 Recognition & people moments</div><div class="notif-panel-sub">Wins, records, birthdays, and anniversaries worth acknowledging.</div></div><span class="notif-count-pill" id="notifPeoplePill">0</span></div>
+        <div id="notifPeopleList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">All notifications</div><div class="notif-panel-sub">Complete filtered log for the current tracker session.</div></div><span class="notif-count-pill" id="notifAllPill">0</span></div>
+        <div id="notifLog"></div>
+      </div>
+    </div>
+    <aside class="notif-stack">
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">Manager watch</div><div class="notif-panel-sub">Where your attention should go first.</div></div></div>
+        <div class="notif-side-list" id="notifWatchList"></div>
+      </div>
+      <div class="notif-panel">
+        <div class="notif-panel-head"><div><div class="notif-panel-title">Alert playbook</div><div class="notif-panel-sub">Suggested action based on alert category.</div></div></div>
+        <div class="notif-side-list">
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#FA873D"></span><div><div class="notif-side-title">Revenue risk</div><div class="notif-side-text">Open the rep profile, review pacing, then schedule coaching or quote follow-up.</div></div></div>
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#FA873D"></span><div><div class="notif-side-title">Activity gap</div><div class="notif-side-text">Check call coverage and weekly activity before the next team huddle.</div></div></div>
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#47D16C"></span><div><div class="notif-side-title">Recognition</div><div class="notif-side-text">Celebrate publicly when appropriate. Small wins drive team adoption.</div></div></div>
+          <div class="notif-side-row"><span class="notif-side-dot" style="--dot:#00AFEF"></span><div><div class="notif-side-title">People moments</div><div class="notif-side-text">Use birthdays and anniversaries to personalize leadership touchpoints.</div></div></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+</div>
+</div>
+<script src="./assets/js/legacy/001-legacy-core.js"></script>
+
+
+<div id="ratingTooltip" style="display:none;position:fixed;z-index:9999;pointer-events:none;
+  background:#1C1C1C;border:1px solid #FA873D;border-radius:10px;padding:11px 14px;
+  min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"></div>
+<div id="ratingModal" style="display:none;position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#1C1C1C;border:1px solid #FA873D;border-radius:14px;
+    min-width:380px;max-width:480px;width:90%;box-shadow:0 16px 48px rgba(0,0,0,.8);overflow:hidden;">
+    <div id="ratingModalContent"></div>
+  </div>
+</div>
+
+<div id="helpModal" style="display:none;position:fixed;inset:0;z-index:11000;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#1C1C1C;border:1px solid #FA873D;border-radius:14px;
+    max-width:520px;width:92%;max-height:82vh;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,.8);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+    <div style="padding:16px 20px 12px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-start;gap:12px;flex-shrink:0;">
+      <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#FA873D,#FA873D);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">?</div>
+      <div style="flex:1;">
+        <div id="helpModalTitle" style="font-size:15px;font-weight:700;color:white;margin-bottom:2px;"></div>
+        <div id="helpModalSubtitle" style="font-size:11px;color:#8B8A94;"></div>
+      </div>
+      <button onclick="document.getElementById('helpModal').style.display='none'"
+        style="background:none;border:none;color:#8B8A94;font-size:20px;cursor:pointer;padding:0;line-height:1;flex-shrink:0;">&times;</button>
+    </div>
+    <div id="helpModalBody" style="padding:16px 20px 20px;overflow-y:auto;font-size:12px;color:#C8C8D0;line-height:1.75;"></div>
+  </div>
+</div>
+
+
+
+
+
+<script id="tcp-year-overview-v313-js" src="./assets/js/legacy/002-tcp-year-overview-v313-js.js"></script>
+<script id="tcp-grouped-collapsible-nav-v292-script" src="./assets/js/legacy/003-tcp-grouped-collapsible-nav-v292-script.js"></script>
+<script id="tcp-dashboard-weekly-exec-v298-js" src="./assets/js/legacy/004-tcp-dashboard-weekly-exec-v298-js.js"></script>
+
+<script id="tcp-production-intel-v321-js" src="./assets/js/legacy/005-tcp-production-intel-v321-js.js"></script>
+
+
+<script id="tcp-v323-calculator-nav-safety" src="./assets/js/legacy/006-tcp-v323-calculator-nav-safety.js"></script>
+
+
+
+
+<script id="tcp-v325-calculator-render-safety" src="./assets/js/legacy/007-tcp-v325-calculator-render-safety.js"></script>
+
+
+
+
+<script id="tcp-v327-calculator-prodintel-separation" src="./assets/js/legacy/008-tcp-v327-calculator-prodintel-separation.js"></script>
+
+<div id="pg-coach" class="page">
+  <div class="coach-command">
+    <div class="coach-hero">
+      <div>
+        <div class="coach-kicker">Team Management Command Center</div>
+        <h1>Rep Coaching Center</h1>
+        <p>One focused coaching cockpit that pulls sales pace, calls, coverage, forecast, quality issues, HR notes, reviews, and manager notes into a single rep view.</p>
+      </div>
+      <div class="coach-hero-actions">
+        <button class="coach-btn" onclick="coachPrevRep()">← Previous</button>
+        <div class="coach-select-wrap"><label>Rep</label><select id="coachRep" onchange="renderRepCoachingCenter()"></select></div>
+        <button class="coach-btn" onclick="coachNextRep()">Next →</button>
+      </div>
+    </div>
+    <div class="coach-grid">
+      <div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Coaching Health Score</h2><div id="coachScoreMeta" class="coach-muted">Current quarter coaching view</div></div></div><div id="coachScoreBox"></div></div>
+      <div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Performance Snapshot</h2><div class="coach-muted">Revenue, calls, coverage, forecast, and quality.</div></div></div><div id="coachSnapshot" class="coach-kpi-grid"></div></div>
+    </div>
+    <div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">AI Coaching Summary</h2><div class="coach-muted">Auto-generated readout from the selected rep's available data.</div></div></div><div id="coachSummary" class="coach-summary"></div></div>
+    <div class="coach-main-row">
+      <div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">13 Week Performance Trends</h2><div class="coach-muted">Charts are based on the current quarter weekly data.</div></div></div><div class="coach-chart-grid"><div class="coach-chart-card"><div class="coach-chart-title">Revenue Trend</div><div class="coach-chart-box"><canvas id="coachRevChart"></canvas></div></div><div class="coach-chart-card"><div class="coach-chart-title">Call Trend</div><div class="coach-chart-box"><canvas id="coachCallChart"></canvas></div></div><div class="coach-chart-card"><div class="coach-chart-title">Coverage Trend</div><div class="coach-chart-box"><canvas id="coachCoverageChart"></canvas></div></div><div class="coach-chart-card"><div class="coach-chart-title">Forecast Trend</div><div class="coach-chart-box"><canvas id="coachForecastChart"></canvas></div></div></div></div>
+      <div style="display:flex;flex-direction:column;gap:16px;"><div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Quality Center</h2><div class="coach-muted">Credit memo and art error impact.</div></div></div><div id="coachQuality"></div></div><div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Coaching Recommendations</h2><div class="coach-muted">Strengths, opportunities, and recommended action.</div></div></div><div id="coachRecommendations"></div></div><div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Review Center</h2><div class="coach-muted">Review cadence and action focus.</div></div></div><div id="coachReviewCenter"></div></div></div>
+    </div>
+    <div class="coach-main-row">
+      <div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Coaching Timeline</h2><div class="coach-muted">Merged activity from HR notes, coaching notes, credit memos, and art errors.</div></div></div><div id="coachTimeline" class="coach-timeline"></div></div>
+      <div class="coach-panel"><div class="coach-panel-head"><div><h2 class="coach-panel-title">Manager Journal</h2><div class="coach-muted">Private coaching notes tied to this rep.</div></div></div><textarea id="coachJournalText" class="coach-note-input" placeholder="Add a coaching note, follow-up item, recognition, or discussion summary..."></textarea><div style="display:flex;align-items:center;gap:8px;margin-top:10px;"><button class="coach-btn primary" onclick="saveCoachJournalNote()">Save Coaching Note</button><span id="coachJournalStatus" class="coach-muted"></span></div></div>
+    </div>
+  </div>
+</div>
+
+
+
+<script id="tcp-rep-coaching-center-v331-js" src="./assets/js/legacy/009-tcp-rep-coaching-center-v331-js.js"></script>
+
+
+<script id="tcp-forecast-center-2-v336-js" src="./assets/js/legacy/010-tcp-forecast-center-2-v336-js.js"></script>
+
+
+<script id="tcp-sales-meeting-slides-v427-js" src="./assets/js/legacy/011-tcp-sales-meeting-slides-v427-js.js"></script>
+
+
+
+
+<script id="tcp-simplified-rep-my-day-v569-meta-js" src="./assets/js/legacy/012-tcp-simplified-rep-my-day-v569-meta-js.js"></script>
+
+
+
+
+
+
+
+<script id="tcp-customer-command-center-v583-behavior" src="./assets/js/legacy/013-tcp-customer-command-center-v583-behavior.js"></script>
+
+</body>
+</html>
+
+
+<script id="tcp-v328-pdf-card-layout-fix" src="./assets/js/legacy/014-tcp-v328-pdf-card-layout-fix.js"></script>
+
+
+<!-- v334 coaching nav position fix appended safely -->
+
+<script id="tcp-v334-seat-coach-page" src="./assets/js/legacy/015-tcp-v334-seat-coach-page.js"></script>
+
+<!-- v335 Rep Coaching Center trend layout refinement -->
+
+
+
+
+
+
+
+<script id="tcp-context-help-v423-js" src="./assets/js/legacy/016-tcp-context-help-v423-js.js"></script>
+
+
+
+<script id="tcp-sales-slides-ai-suggestions-v428-js" src="./assets/js/legacy/017-tcp-sales-slides-ai-suggestions-v428-js.js"></script>
+
+<script id="tcp-rep-intelligence-foundation-v474-js" src="./assets/js/legacy/018-tcp-rep-intelligence-foundation-v474-js.js"></script>
+
+<!-- v475 REP PORTAL REDESIGN OVERRIDE -->
+
+<script src="./assets/js/legacy/019-inline-script-019.js"></script>
+
+
+
+<script id="rp2-dashboard-v476-js" src="./assets/js/legacy/020-rp2-dashboard-v476-js.js"></script>
+
+
+
+
+<script id="rp2-forecast-v477-js" src="./assets/js/legacy/021-rp2-forecast-v477-js.js"></script>
+
+
+
+
+
+
+
+<script id="rp2-v480-forecast-field-guide-js" src="./assets/js/legacy/022-rp2-v480-forecast-field-guide-js.js"></script>
+
+
+
+
+<script id="rp2-year-v481-js" src="./assets/js/legacy/023-rp2-year-v481-js.js"></script>
+
+
+
+
+<script id="rp2-lb-v482-js" src="./assets/js/legacy/024-rp2-lb-v482-js.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script id="rp2-daily-v486-js" src="./assets/js/legacy/025-rp2-daily-v486-js.js"></script>
+
+
+
+
+
+
+
+<script id="rp2-customers-v488-js" src="./assets/js/legacy/026-rp2-customers-v488-js.js"></script>
+
+
+
+
+<script id="rp2-orders-v489-js" src="./assets/js/legacy/027-rp2-orders-v489-js.js"></script>
+
+
+
+
+<script id="rp2-reports-v490-js" src="./assets/js/legacy/028-rp2-reports-v490-js.js"></script>
+
+
+
+
+
+
+
+
+<script id="rp2-profile-v496-js" src="./assets/js/legacy/029-rp2-profile-v496-js.js"></script>
+
+
+
+
+<script id="rp2-credits-v497-js" src="./assets/js/legacy/030-rp2-credits-v497-js.js"></script>
+
+
+
+
+<script id="rp2-reviews-v498-js" src="./assets/js/legacy/031-rp2-reviews-v498-js.js"></script>
+
+
+
+
+<script id="rp2-reviews-v499-js" src="./assets/js/legacy/032-rp2-reviews-v499-js.js"></script>
+
+
+
+
+<script id="rp2-art-v501-js" src="./assets/js/legacy/033-rp2-art-v501-js.js"></script>
+
+
+
+
+<script id="rp2-production-v502-js" src="./assets/js/legacy/034-rp2-production-v502-js.js"></script>
+
+
+
+
+<script id="rp2-ai-v503-js" src="./assets/js/legacy/035-rp2-ai-v503-js.js"></script>
+
+
+
+
+<script id="rp2-action-v504-js" src="./assets/js/legacy/036-rp2-action-v504-js.js"></script>
+
+
+
+
+<script id="rp2-goals-v505-js" src="./assets/js/legacy/037-rp2-goals-v505-js.js"></script>
+
+
+
+
+<script id="rp2-achievements-v506-js" src="./assets/js/legacy/038-rp2-achievements-v506-js.js"></script>
+
+
+<script id="rp2-learning-v507-js" src="./assets/js/legacy/039-rp2-learning-v507-js.js"></script>
+
+
+
+<script id="rp2-notifications-v508-js" src="./assets/js/legacy/040-rp2-notifications-v508-js.js"></script>
+
+
+
+
+<script id="rp2-home-v509-js" src="./assets/js/legacy/041-rp2-home-v509-js.js"></script>
+
+
+
+
+<script id="rp2-company-profile-v510-js" src="./assets/js/legacy/042-rp2-company-profile-v510-js.js"></script>
+
+
+
+<script id="rp2-pipeline-v511-js" src="./assets/js/legacy/043-rp2-pipeline-v511-js.js"></script>
+
+
+
+
+<script id="rp2-contacts-v512-js" src="./assets/js/legacy/044-rp2-contacts-v512-js.js"></script>
+
+
+
+
+<script id="rp2-crmactivity-v513-js" src="./assets/js/legacy/045-rp2-crmactivity-v513-js.js"></script>
+
+
+
+
+<script id="rp2-dealdesk-v514-js" src="./assets/js/legacy/046-rp2-dealdesk-v514-js.js"></script>
+
+
+
+
+<script id="rp2-leads-v515-js" src="./assets/js/legacy/047-rp2-leads-v515-js.js"></script>
+
+
+<script id="rp2-outreach-v516-js" src="./assets/js/legacy/048-rp2-outreach-v516-js.js"></script>
+
+
+
+<script id="rp2-accountplans-v517-js" src="./assets/js/legacy/049-rp2-accountplans-v517-js.js"></script>
+
+
+
+
+<script id="rp2-cases-v518-js" src="./assets/js/legacy/050-rp2-cases-v518-js.js"></script>
+
+
+
+
+<script id="rp2-documents-v519-js" src="./assets/js/legacy/051-rp2-documents-v519-js.js"></script>
+
+
+
+
+<script id="rp2-products-v530-js" src="./assets/js/legacy/052-rp2-products-v530-js.js"></script>
+
+
+
+
+<script id="rp2-customer-workspace-v531-js" src="./assets/js/legacy/053-rp2-customer-workspace-v531-js.js"></script>
+
+
+
+
+
+
+
+<script id="tcp-customer-import-v523-js" src="./assets/js/legacy/054-tcp-customer-import-v523-js.js"></script>
+
+
+
+
+<script id="tcp-line-items-v524-js" src="./assets/js/legacy/055-tcp-line-items-v524-js.js"></script>
+
+
+
+<script id="tcp-import-reliability-v525-js" src="./assets/js/legacy/056-tcp-import-reliability-v525-js.js"></script>
+
+<script id="tcp-v526-js" src="./assets/js/legacy/057-tcp-v526-js.js"></script>
+
+
+
+<script id="rp2-unified-desktop-v527-js" src="./assets/js/legacy/058-rp2-unified-desktop-v527-js.js"></script>
+
+
+
+
+<script id="tcp-storage-cloud-v528-js" src="./assets/js/legacy/059-tcp-storage-cloud-v528-js.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="rp2-call-workspace-v532-js" src="./assets/js/legacy/060-rp2-call-workspace-v532-js.js"></script>
+
+
+
+
+<script id="rp2-manager-scale-v533-js" src="./assets/js/legacy/061-rp2-manager-scale-v533-js.js"></script>
+
+
+
+
+<script id="rp2-floating-call-console-v534-js" src="./assets/js/legacy/062-rp2-floating-call-console-v534-js.js"></script>
+
+
+
+
+<script id="rp2-customer-flow-v535-js" src="./assets/js/legacy/063-rp2-customer-flow-v535-js.js"></script>
+
+
+
+
+<script id="rp2-simplified-architecture-v536-js" src="./assets/js/legacy/064-rp2-simplified-architecture-v536-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-account-call-template-v537-js" src="./assets/js/legacy/065-tcp-account-call-template-v537-js.js"></script>
+
+
+<script id="tcp-outlook-composer-v537-js" src="./assets/js/legacy/066-tcp-outlook-composer-v537-js.js"></script>
+
+
+
+
+
+
+
+<script id="tcp-call-workspace-v540-js" src="./assets/js/legacy/067-tcp-call-workspace-v540-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-rep-executive-scale-v541-js" src="./assets/js/legacy/068-tcp-rep-executive-scale-v541-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-call-cycle-v547-js" src="./assets/js/legacy/069-tcp-call-cycle-v547-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-traffic-score-v548-js" src="./assets/js/legacy/070-tcp-traffic-score-v548-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-rep-profiles-two-step-v549-js" src="./assets/js/legacy/071-tcp-rep-profiles-two-step-v549-js.js"></script>
+
+
+
+<script id="tcp-persistent-data-v550-js" src="./assets/js/legacy/072-tcp-persistent-data-v550-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-shared-performance-v551-js" src="./assets/js/legacy/073-tcp-shared-performance-v551-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-daily-sales-calls-v552-js" src="./assets/js/legacy/074-tcp-daily-sales-calls-v552-js.js"></script>
+
+
+
+<script id="tcp-gist-credential-persistence-v554-js" src="./assets/js/legacy/075-tcp-gist-credential-persistence-v554-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-daily-calendar-flow-v555-js" src="./assets/js/legacy/076-tcp-daily-calendar-flow-v555-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-compact-daily-breakdown-v556-js" src="./assets/js/legacy/077-tcp-compact-daily-breakdown-v556-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-split-daily-rankings-v557-js" src="./assets/js/legacy/078-tcp-split-daily-rankings-v557-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-project-simplify-dashboard-v558-js" src="./assets/js/legacy/079-tcp-project-simplify-dashboard-v558-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-dashboard-scale-frame-v559-js" src="./assets/js/legacy/080-tcp-dashboard-scale-frame-v559-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-project-simplify-rep-v560-js" src="./assets/js/legacy/081-tcp-project-simplify-rep-v560-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-rep-header-cycle-simplify-v561-js" src="./assets/js/legacy/082-tcp-rep-header-cycle-simplify-v561-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-project-simplify-call-v562-js" src="./assets/js/legacy/083-tcp-project-simplify-call-v562-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-smart-order-import-v563-js" src="./assets/js/legacy/084-tcp-smart-order-import-v563-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-data-integrity-v564-js" src="./assets/js/legacy/085-tcp-data-integrity-v564-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-company-call-cycle-bridge-v565-js" src="./assets/js/legacy/086-tcp-company-call-cycle-bridge-v565-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-automatic-company-call-link-v566-js" src="./assets/js/legacy/087-tcp-automatic-company-call-link-v566-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-rep-executive-scale-queue-v567-js" src="./assets/js/legacy/088-tcp-rep-executive-scale-queue-v567-js.js"></script>
+
+
+
+
+
+
+<script id="tcp-simplified-rep-my-day-v568-js" src="./assets/js/legacy/089-tcp-simplified-rep-my-day-v568-js.js"></script>
+
+
+
+
+
+<script id="tcp-four-lane-rep-my-day-v570-js" src="./assets/js/legacy/090-tcp-four-lane-rep-my-day-v570-js.js"></script>
+
+
+
+
+<script id="tcp-rep-my-day-command-header-v571-js" src="./assets/js/legacy/091-tcp-rep-my-day-command-header-v571-js.js"></script>
+
+
+
+
+
+<script id="tcp-rep-my-day-command-bar-v572-js" src="./assets/js/legacy/092-tcp-rep-my-day-command-bar-v572-js.js"></script>
+
+
+
+
+
+<script id="tcp-rep-my-day-layout-hotfix-v574-js" src="./assets/js/legacy/093-tcp-rep-my-day-layout-hotfix-v574-js.js"></script>
+
+
+
+
+<script id="tcp-rep-my-day-full-height-v575-js" src="./assets/js/legacy/094-tcp-rep-my-day-full-height-v575-js.js"></script>
+
+
+
+
+<script id="tcp-customer-command-center-v576-js" src="./assets/js/legacy/095-tcp-customer-command-center-v576-js.js"></script>
+
+
+<script id="tcp-customer-command-center-v577-version" src="./assets/js/legacy/096-tcp-customer-command-center-v577-version.js"></script>
+
+
+
+
+<script id="tcp-customer-command-center-v579-version" src="./assets/js/legacy/097-tcp-customer-command-center-v579-version.js"></script>
+
+
+
+<script id="tcp-customer-command-center-v580-js" src="./assets/js/legacy/098-tcp-customer-command-center-v580-js.js"></script>
+
+
+
+
+<script id="tcp-customer-command-center-v581-version" src="./assets/js/legacy/099-tcp-customer-command-center-v581-version.js"></script>
+
+
+
+
+<script id="tcp-customer-command-center-v582-behavior" src="./assets/js/legacy/100-tcp-customer-command-center-v582-behavior.js"></script>
+
+
+<script id="tcp-product-history-diagnostics-v591" src="./assets/js/legacy/101-tcp-product-history-diagnostics-v591.js"></script>
+
+
+<!-- ======================================================================
+     v592 · CALL WORKFLOW + PAGE SCROLL + LIVE ASSIST-READY UI
+     ====================================================================== -->
+
+<script id="tcp-v592-call-workflow-live-assist-js" src="./assets/js/legacy/102-tcp-v592-call-workflow-live-assist-js.js"></script>
+
+
+
+
+
+<!-- ======================================================================
+     v611 · SHARE APPROVED FULL MY DAY + PHASED CALL WITHOUT DIALER
+     Based on v610. Full and Phased now render the same approved master My Day.
+     Phased Workspace keeps its reduced navigation and hides only the visible
+     dialer panel in Call Workspace. The underlying dialer remains
+     untouched and fully available in Full Workspace.
+     ====================================================================== -->
+
+</body>
+</html>
+
+
+
+
+
+
+<script src="./assets/js/legacy/103-inline-script-103.js"></script>
+
+<!-- ======================================================================
+     v588 · CALL WORKSPACE READABILITY + COLLAPSIBLE DAILY QUEUE
+     Built on the user-supplied v587 baseline. Appended last intentionally.
+     ====================================================================== -->
+
+
+<script id="tcp-v588-call-workspace-readability-queue-js" src="./assets/js/legacy/104-tcp-v588-call-workspace-readability-queue-js.js"></script>
+
+
+<!-- ======================================================================
+     v590 · CALL QUEUE TRAY REBUILD
+     Matches the supplied reference: large circular chevron at the right of
+     the command banner and a full-width horizontal customer tray below it.
+     ====================================================================== -->
+
+
+<script id="tcp-v590-call-queue-tray-js" src="./assets/js/legacy/105-tcp-v590-call-queue-tray-js.js"></script>
+
+
+
+<!-- ======================================================================
+     v593 · RESPONSIVE CALL WORKSPACE + SINGLE PAGE SCROLL
+     Final cascade repair. Removes fixed panel heights/internal vertical
+     scrollers and lets CSS reflow the command/workbench by available width.
+     ====================================================================== -->
+
+
+
+<script id="tcp-v594-product-controls-version" src="./assets/js/legacy/106-tcp-v594-product-controls-version.js"></script>
+
+<script id="tcp-v593-responsive-page-scroll-version" src="./assets/js/legacy/107-tcp-v593-responsive-page-scroll-version.js"></script>
+
+<script src="./assets/js/legacy/108-inline-script-108.js"></script>
+
+<!-- ========================================================================
+     SALES TRACKER v607 · TODAY'S BUSINESS COMMAND CENTER
+     Replaces the forced time-block planner with a promise-and-execution view:
+     do-now priorities, ownership lanes, upcoming commitments, and closed-loop
+     actions. The Daily page remains the natural future home for scheduling.
+     ======================================================================== -->
+
+
+<script id="tcp-todays-business-v607-js" src="./assets/js/legacy/109-tcp-todays-business-v607-js.js"></script>
+
+
+
+
+<script id="tcp-rep-portal-dual-view-v608-js" src="./assets/js/legacy/110-tcp-rep-portal-dual-view-v608-js.js"></script>
+
+
+<!-- ======================================================================
+     v613 · MY DAY LANE / SCORECARD BALANCE
+     The approved Full and Phased My Day remain identical. On wide screens,
+     the four execution lanes end higher and the reclaimed lower canvas is
+     assigned to the scorecard so it is easier to read without changing the
+     page structure or data.
+     ====================================================================== -->
+
+
+<!-- ======================================================================
+     SALES TRACKER v614 · DURABLE LOCAL + VERIFIED CLOUD AUTOSAVE
+     Serializes persistent writes, protects Daily Sales & Calls with a
+     synchronous recovery journal, verifies Gist completion, and exposes
+     honest local/cloud status instead of reporting success too early.
+     ====================================================================== -->
+
+
+<script id="tcp-v614-durable-cloud-autosave-js" src="./assets/js/legacy/111-tcp-v614-durable-cloud-autosave-js.js"></script>
+
+<!-- ========================================================================== 
+     SALES TRACKER v615 · FULL-STATE ANTI-WIPE DATA VAULT
+     Protects the complete tracker state across code updates, creates rotating
+     IndexedDB recovery points, preserves critical records with tombstones for
+     intentional deletes, verifies cloud backups, and prevents an empty or
+     partial state from replacing a richer verified state.
+     ========================================================================== -->
+
+
+<script id="tcp-v615-full-state-safety-js" src="./assets/js/legacy/112-tcp-v615-full-state-safety-js.js"></script>
