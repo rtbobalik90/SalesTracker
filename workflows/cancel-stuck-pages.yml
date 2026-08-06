@@ -1,0 +1,28 @@
+name: Cancel Stuck Pages Deployment
+
+"on":
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: "Pages deployment ID or commit SHA shown in the error"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel the stuck Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+        run: |
+          gh api --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2026-03-10" \
+            "/repos/${GITHUB_REPOSITORY}/pages/deployments/${DEPLOYMENT_ID}/cancel"
+          echo "Cancellation request sent for ${DEPLOYMENT_ID}."
