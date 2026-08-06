@@ -34,7 +34,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: ./site
+          path: .
           include-hidden-files: true
 
       - name: Deploy to GitHub Pages
