@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v614.2 — Report History Persistence Fix</title>
+<title>Sales Tracker v615 — Save & Sync Control Center</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -5295,7 +5295,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
     <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
     <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
-    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v614.2</div><div class="as-sub">Report history persistence fix</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v615</div><div class="as-sub">Save & Sync Control Center</div></div>
   </section>
 
   <section class="admin-sys-grid">
@@ -5400,14 +5400,14 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
             <h3>Local browser backup</h3>
             <div class="admin-button-row">
               <button class="sbtn" onclick="persistSave()">💾 Save browser</button>
-              <button class="sbtn" onclick="exportData()">↓ Export JSON</button>
-              <button class="sbtn" onclick="document.getElementById('importFile').click()">↑ Import JSON</button>
+              <button class="sbtn" onclick="exportData()">↓ Export core JSON</button>
+              <button class="sbtn" onclick="document.getElementById('importFile').click()">↑ Import core JSON</button>
               <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-              <button class="sbtn entry-danger" onclick="confirmClearData()">Clear saved data</button>
+              <button class="sbtn entry-danger" onclick="confirmClearData()">Clear current session</button>
             </div>
             <div id="saveStatus" class="admin-feed-status">Browser save status.</div>
             <div id="storageWarning" class="entry-storage-warning" style="display:none;"></div>
-            <div id="storageInfo" class="entry-help small">Use this only as a manual safety backup now that cloud sync is in place.</div>
+            <div id="storageInfo" class="entry-help small">Core JSON replaces the main tracker state only. Use Full backup / Restore full backup when you need device auxiliary data and photos too.</div>
             <div class="admin-button-row" style="margin-top:10px;">
               <button class="sbtn" onclick="exportAllData()">&#11015; Full backup (everything)</button>
               <label class="sbtn" style="cursor:pointer;">&#11014; Restore full backup<input type="file" accept=".json" style="display:none" onchange="importAllData(this)"></label>
@@ -69568,5 +69568,566 @@ window.TCP_CALL_WORKSPACE_V593={
  stampVersion();
  hydrateAfterBoot();
  window.addEventListener('load',function(){stampVersion();hydrateAfterBoot()});
+})();
+</script>
+
+
+<style id="tcp-v614-3-version-stamp-css">
+/* v614.3: visible deployed-build stamp in the desktop sidebar footer */
+#tabBar.tabs:after{
+  content:"CLOUD SYNC • ADMIN\A SALES TRACKER v614.3" !important;
+  white-space:pre !important;
+  line-height:1.55 !important;
+}
+</style>
+
+<script id="tcp-data-consistency-v614-3-js">
+/* ========================================================================== 
+   SALES TRACKER v614.3 · DATA CONSISTENCY REPAIR
+   Locked baseline: v614.2 (verified Report History persistence)
+
+   Consistency repairs:
+   1) Rep rename now migrates every known identity-bearing tracker structure,
+      daily sales/calls bridges, Rep Portal password state, and per-rep auxiliary
+      localStorage buckets instead of splitting one rep across old/new names.
+   2) Case-insensitive duplicate rep names are blocked.
+   3) Permanent rep removal is explicitly destructive, cascades linked tracker
+      and Rep Portal data, and tells the manager to Retire when history matters.
+   4) Core JSON import replaces the WHOLE S state instead of mixing a legacy
+      subset with whatever newer data happened to be in the current browser.
+   5) Monthly line-item "replace range" removes stale order summaries when a
+      previously imported order disappears from the replacement source file.
+   6) Legacy Excel art-error import skips exact duplicates and invalid issue
+      types instead of duplicating scorecard errors or defaulting unknown types
+      to Color Type.
+   7) Credit-memo edits warn before becoming an exact duplicate of another memo.
+   8) Review refresh preserves existing reviews when a fetch fails/returns HTML,
+      and guards against a zero-row response silently wiping saved review data.
+   9) Daily cumulative Sales/Calls saves warn when a value drops below the prior
+      saved day in the same week, preventing silent retrograde WTD totals.
+   10) Critical import/identity operations request an immediate verified v550
+       IndexedDB save in addition to the normal dirty/cloud cadence.
+   ========================================================================== */
+(function(){
+ 'use strict';
+ var VERSION='v614.3';
+ var lastAudit={version:VERSION,installedAt:new Date().toISOString(),lastRepair:'',lastRepairAt:'',lineItemSummariesRemoved:0,artDuplicatesSkipped:0};
+
+ function own(o,k){return !!o&&Object.prototype.hasOwnProperty.call(o,k)}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function clean(v){return String(v==null?'':v).trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/\s+/g,' ')}
+ function compact(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,'')}
+ function clone(v){
+  if(v==null||typeof v!=='object')return v;
+  try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}
+  catch(e){try{return JSON.parse(JSON.stringify(v))}catch(x){return v}}
+ }
+ function safeKey(k){return !!k&&k!=='__proto__'&&k!=='prototype'&&k!=='constructor'}
+ function mark(reason){
+  lastAudit.lastRepair=reason||'';lastAudit.lastRepairAt=new Date().toISOString();
+  try{if(typeof markDirty==='function')markDirty();else if(typeof persist==='function')persist()}catch(e){console.warn('[v614.3 dirty '+reason+']',e)}
+ }
+ function saveNow(reason){
+  mark(reason);
+  try{
+   if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.saveNow==='function'){
+    return Promise.resolve(TCP_PERSISTENT_DATA_V550.saveNow(reason||'v614.3')).catch(function(e){console.warn('[v614.3 saveNow '+reason+']',e);return false})
+   }
+  }catch(e){console.warn('[v614.3 saveNow '+reason+']',e)}
+  return Promise.resolve(false)
+ }
+ function rerenderCore(){
+  try{if(typeof popSel==='function')popSel()}catch(e){}
+  try{if(typeof renderDash==='function')renderDash()}catch(e){}
+  try{if(typeof renderRL==='function')renderRL()}catch(e){}
+  try{if(typeof renderGoals==='function')renderGoals()}catch(e){}
+  try{if(typeof renderSetSizes==='function')renderSetSizes()}catch(e){}
+  try{if(typeof renderProfileCards==='function')renderProfileCards()}catch(e){}
+  try{if(typeof renderProfiles==='function'&&document.getElementById('pg-profiles'))renderProfiles()}catch(e){}
+ }
+
+ /* -----------------------------------------------------------------------
+    REP IDENTITY INTEGRITY
+    ----------------------------------------------------------------------- */
+ var REF_FIELDS={rep:1,repName:1,ownerRep:1,assignedRep:1,salesRep:1};
+ function rewriteReferenceFields(value,oldName,newName,seen){
+  if(!value||typeof value!=='object')return;
+  seen=seen||[];if(seen.indexOf(value)>=0)return;seen.push(value);
+  if(Array.isArray(value)){value.forEach(function(x){rewriteReferenceFields(x,oldName,newName,seen)});return}
+  Object.keys(value).forEach(function(k){
+   if(!safeKey(k))return;
+   var v=value[k];
+   if(REF_FIELDS[k]&&typeof v==='string'&&v===oldName)value[k]=newName;
+   else if(v&&typeof v==='object')rewriteReferenceFields(v,oldName,newName,seen)
+  })
+ }
+ function moveNamedKey(map,oldName,newName){
+  if(!map||typeof map!=='object'||!own(map,oldName))return false;
+  if(oldName===newName)return false;
+  map[newName]=map[oldName];delete map[oldName];return true
+ }
+ function moveDateRepKeys(map,oldName,newName){
+  if(!map||typeof map!=='object')return;
+  Object.keys(map).forEach(function(k){var row=map[k];if(row&&typeof row==='object'&&own(row,oldName)){row[newName]=row[oldName];delete row[oldName]}})
+ }
+ function repSlug(s){return clean(s).toLowerCase().replace(/[^a-z0-9]+/g,'-')}
+ function localRepBucketConflicts(oldName,newName){
+  var conflicts=[];
+  try{
+   for(var i=0;i<localStorage.length;i++){
+    var key=localStorage.key(i),raw=localStorage.getItem(key);if(!raw||raw.charAt(0)!=='{')continue;
+    var data=null;try{data=JSON.parse(raw)}catch(e){continue}
+    if(data&&data.reps&&typeof data.reps==='object'&&own(data.reps,oldName)&&own(data.reps,newName)&&oldName!==newName)conflicts.push(key)
+   }
+  }catch(e){}
+  try{if(S.repPortal&&S.repPortal.accounts&&own(S.repPortal.accounts,oldName)&&own(S.repPortal.accounts,newName)&&oldName!==newName)conflicts.push('Rep Portal passwords')}catch(e){}
+  return conflicts
+ }
+ function migrateLocalRepBuckets(oldName,newName,remove){
+  var keys=[];try{for(var i=0;i<localStorage.length;i++)keys.push(localStorage.key(i))}catch(e){}
+  keys.forEach(function(key){
+   if(!key)return;
+   try{
+    if(key==='salesTracker_custList_'+oldName){
+     if(remove)localStorage.removeItem(key);else{var v=localStorage.getItem(key);if(v!=null)localStorage.setItem('salesTracker_custList_'+newName,v);localStorage.removeItem(key)}
+     return
+    }
+    if(key==='salesTracker_photo_'+oldName){
+     if(remove)localStorage.removeItem(key);else{var p=localStorage.getItem(key);if(p!=null)localStorage.setItem('salesTracker_photo_'+newName,p);localStorage.removeItem(key)}
+     return
+    }
+    var oldView='tcp.repPortal.viewMode.v608.'+repSlug(oldName),newView='tcp.repPortal.viewMode.v608.'+repSlug(newName);
+    if(key===oldView){if(remove)localStorage.removeItem(key);else{var vv=localStorage.getItem(key);if(vv!=null)localStorage.setItem(newView,vv);localStorage.removeItem(key)}return}
+    var raw=localStorage.getItem(key);if(!raw||raw.charAt(0)!=='{')return;
+    var data=null;try{data=JSON.parse(raw)}catch(e){return}
+    var changed=false;
+    if(data&&data.reps&&typeof data.reps==='object'&&own(data.reps,oldName)){
+     if(remove){delete data.reps[oldName];changed=true}
+     else if(!own(data.reps,newName)){data.reps[newName]=data.reps[oldName];delete data.reps[oldName];changed=true}
+    }
+    if(key==='tcp_rp_session'&&data&&data.rep===oldName){if(remove){localStorage.removeItem(key);return}else{data.rep=newName;changed=true}}
+    if(changed)localStorage.setItem(key,JSON.stringify(data))
+   }catch(e){console.warn('[v614.3 rep bucket '+key+']',e)}
+  })
+ }
+ function migrateRepState(oldName,newName){
+  if(S.goals)moveNamedKey(S.goals,oldName,newName);
+  if(S.data&&typeof S.data==='object')Object.keys(S.data).filter(function(k){return k.indexOf(oldName+'|')===0}).forEach(function(k){S.data[newName+'|'+k.slice(oldName.length+1)]=S.data[k];delete S.data[k]});
+  moveDateRepKeys(S.dailyRep,oldName,newName);moveDateRepKeys(S.dailyCalls,oldName,newName);moveDateRepKeys(S.dailyLiveBridge,oldName,newName);
+  if(S.repPortal&&S.repPortal.accounts)moveNamedKey(S.repPortal.accounts,oldName,newName);
+  if(S.reviews&&S.reviews.repFix)Object.keys(S.reviews.repFix).forEach(function(k){if(S.reviews.repFix[k]===oldName)S.reviews.repFix[k]=newName});
+  if(S.reviews&&S.reviews.unmatchFix)Object.keys(S.reviews.unmatchFix).forEach(function(k){if(S.reviews.unmatchFix[k]===oldName)S.reviews.unmatchFix[k]=newName});
+  rewriteReferenceFields(S,oldName,newName,[]);
+  migrateLocalRepBuckets(oldName,newName,false)
+ }
+ function linkedRepCount(name){
+  var count=0;
+  try{Object.keys(S.data||{}).forEach(function(k){if(k.indexOf(name+'|')===0)count++})}catch(e){}
+  try{Object.keys(S.goals||{}).forEach(function(k){if(k===name)count++})}catch(e){}
+  try{Object.keys(S||{}).forEach(function(k){var v=S[k];if(Array.isArray(v))v.forEach(function(row){if(row&&typeof row==='object'&&(row.rep===name||row.repName===name||row.ownerRep===name||row.assignedRep===name||row.salesRep===name))count++})})}catch(e){}
+  try{[S.dailyRep,S.dailyCalls].forEach(function(map){Object.keys(map||{}).forEach(function(d){if(map[d]&&own(map[d],name))count++})});Object.keys(S.dailyLiveBridge||{}).forEach(function(w){if(S.dailyLiveBridge[w]&&own(S.dailyLiveBridge[w],name))count++})}catch(e){}
+  return count
+ }
+ function purgeRepState(name){
+  if(S.goals)delete S.goals[name];
+  if(S.data&&typeof S.data==='object')Object.keys(S.data).filter(function(k){return k.indexOf(name+'|')===0}).forEach(function(k){delete S.data[k]});
+  [S.dailyRep,S.dailyCalls,S.dailyLiveBridge].forEach(function(map){if(!map||typeof map!=='object')return;Object.keys(map).forEach(function(k){if(map[k]&&typeof map[k]==='object')delete map[k][name]})});
+  Object.keys(S||{}).forEach(function(k){
+   if(k==='reps'||k==='dailySales'||k==='reviews'||k==='reportHistory')return;
+   var v=S[k];if(!Array.isArray(v))return;
+   S[k]=v.filter(function(row){return !(row&&typeof row==='object'&&(row.rep===name||row.repName===name||row.ownerRep===name||row.assignedRep===name||row.salesRep===name))})
+  });
+  if(Array.isArray(S.reportHistory))S.reportHistory=S.reportHistory.filter(function(r){return !(r&&r.rep===name)});
+  try{if(typeof reportHistory!=='undefined'&&Array.isArray(reportHistory))reportHistory=reportHistory.filter(function(r){return !(r&&r.rep===name)})}catch(e){}
+  if(S.repPortal&&S.repPortal.accounts)delete S.repPortal.accounts[name];
+  if(S.reviews&&S.reviews.repFix)Object.keys(S.reviews.repFix).forEach(function(k){if(S.reviews.repFix[k]===name)delete S.reviews.repFix[k]});
+  if(S.reviews&&S.reviews.unmatchFix)Object.keys(S.reviews.unmatchFix).forEach(function(k){if(S.reviews.unmatchFix[k]===name)delete S.reviews.unmatchFix[k]});
+  migrateLocalRepBuckets(name,'',true)
+ }
+
+ var previousAddRep=window.addRep;
+ if(typeof previousAddRep==='function')window.addRep=function(){
+  var inp=document.getElementById('nR'),name=clean(inp&&inp.value);if(!name)return previousAddRep.apply(this,arguments);
+  var dup=arr(S.reps).find(function(r){return r&&norm(r.name)===norm(name)});if(dup){alert('A rep named "'+dup.name+'" already exists. Rep names must be unique, including capitalization differences.');return}
+  return previousAddRep.apply(this,arguments)
+ };
+
+ var previousSaveRepName=window.saveRepName;
+ if(typeof previousSaveRepName==='function')window.saveRepName=function(i){
+  var rep=S.reps&&S.reps[i],inp=document.getElementById('ie_rname_'+i);if(!rep||!inp)return;
+  var oldName=clean(rep.name),newName=clean(inp.value);if(!newName)return;
+  if(oldName===newName)return previousSaveRepName.apply(this,arguments);
+  var rosterDup=arr(S.reps).find(function(r,idx){return idx!==i&&r&&norm(r.name)===norm(newName)});
+  if(rosterDup){alert('Rename blocked: "'+rosterDup.name+'" already exists. Rep names must be unique.');return}
+  var conflicts=localRepBucketConflicts(oldName,newName);
+  if(conflicts.length){alert('Rename blocked to protect data. Saved Rep Portal data already exists under "'+newName+'" in:\n\n• '+conflicts.slice(0,6).join('\n• ')+'\n\nResolve the duplicate/orphan identity first, then rename again.');return}
+  var result=previousSaveRepName.apply(this,arguments);
+  try{migrateRepState(oldName,newName);saveNow('rep-rename-v614.3')}catch(e){console.error('[v614.3 rep rename]',e);alert('The name changed, but one or more linked-data migrations failed. Do not make further edits; reload and check the rep before continuing.')}
+  rerenderCore();return result
+ };
+
+ window.askRm=function(i){
+  var row=document.getElementById('ra'+i),rep=S.reps&&S.reps[i];if(!row||!rep)return;
+  row.innerHTML='<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;"><span style="font-size:11px;color:#F09595;"><strong>Permanent delete?</strong> Retire preserves history.</span><button class="cbtn-y" onclick="doRm('+i+')">Delete permanently</button><button class="cbtn-n" onclick="renderRL()">Cancel</button></div>'
+ };
+ window.doRm=function(i){
+  var rep=S.reps&&S.reps[i];if(!rep)return;var name=rep.name,count=linkedRepCount(name);
+  if(!confirm('PERMANENTLY DELETE '+name+'?\n\nThis will remove the rep plus approximately '+count+' linked tracker records and Rep Portal data. This is intended for test/duplicate reps only.\n\nIf this is a real former employee, click Cancel and use RETIRE instead so historical reporting stays intact.')){try{renderRL()}catch(e){}return}
+  purgeRepState(name);S.reps.splice(i,1);if(typeof selectedRep!=='undefined'&&selectedRep===name)selectedRep=(S.reps[0]&&S.reps[0].name)||null;
+  saveNow('rep-permanent-delete-v614.3');rerenderCore()
+ };
+
+ /* -----------------------------------------------------------------------
+    CORE JSON IMPORT — TRUE S-STATE REPLACEMENT
+    ----------------------------------------------------------------------- */
+ function normalizeImportedState(saved){
+  var out=clone(saved)||{};
+  if(!out||typeof out!=='object'||!Array.isArray(out.reps))throw new Error('This is not a valid core tracker JSON file (missing reps array).');
+  out.reps=out.reps.filter(function(r){return r&&clean(r.name)}).map(function(r){r.profile=r.profile||{};if(r.retired===undefined)r.retired=false;return r});
+  if(!out.reps.length)throw new Error('Import blocked: the file contains no reps. This safeguard prevents an empty backup from replacing the active tracker.');
+  out.goals=out.goals&&typeof out.goals==='object'?out.goals:{};out.data=out.data&&typeof out.data==='object'?out.data:{};
+  ['cms','artErrors','hrViolations','coachingNotes','dailySales','customers','orders','orderLineItems','orderLineItemsUnmatched'].forEach(function(k){if(!Array.isArray(out[k]))out[k]=[]});
+  if(!out.reviews||typeof out.reviews!=='object')out.reviews={url:'',rows:[],lastFetched:null,decisions:{},unmatchFix:{},repFix:{}};
+  if(!out.dailyRep||typeof out.dailyRep!=='object')out.dailyRep={};if(!out.dailyCalls||typeof out.dailyCalls!=='object')out.dailyCalls={};if(!out.dailyLiveBridge||typeof out.dailyLiveBridge!=='object')out.dailyLiveBridge={};if(!out.dailyLiveReconciliation||typeof out.dailyLiveReconciliation!=='object')out.dailyLiveReconciliation={};
+  if(!Array.isArray(out.reportHistory))out.reportHistory=[];
+  return out
+ }
+ function replaceSState(saved){
+  saved=normalizeImportedState(saved);
+  var photos={};arr(saved.reps).forEach(function(r){if(r&&r.profile&&r.profile.photo)photos[r.name]=r.profile.photo});
+  Object.keys(S).forEach(function(k){if(safeKey(k)&&k.indexOf('__tcp')!==0)delete S[k]});
+  Object.keys(saved).forEach(function(k){if(safeKey(k))S[k]=clone(saved[k])});
+  try{
+   var photoKeys=[];for(var pi=0;pi<localStorage.length;pi++){var pk=localStorage.key(pi);if(pk&&pk.indexOf('salesTracker_photo_')===0)photoKeys.push(pk)}
+   photoKeys.forEach(function(pk){localStorage.removeItem(pk)});Object.keys(photos).forEach(function(name){localStorage.setItem('salesTracker_photo_'+name,photos[name])})
+  }catch(e){console.warn('[v614.3 import photos]',e)}
+  try{if(typeof loadPhotos==='function')loadPhotos()}catch(e){}
+  try{if(typeof reportHistory!=='undefined')reportHistory=clone(S.reportHistory||[])}catch(e){}
+  return clone(S)
+ }
+ window.importData=function(event){
+  var input=event&&event.target,file=input&&input.files&&input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=async function(e){
+   try{
+    var parsed=JSON.parse(e.target.result);
+    if(parsed&&parsed.version==='TCP_Tracker_Backup_v1'&&parsed.data){alert('This is a FULL backup file. Use “Restore full backup” so its auxiliary tracker data is restored correctly.');return}
+    var saved=normalizeImportedState(parsed);
+    var counts='Reps: '+saved.reps.length+'\nWeekly records: '+Object.keys(saved.data||{}).length+'\nCustomers: '+arr(saved.customers).length+'\nOrders: '+arr(saved.orders).length+'\nReports: '+arr(saved.reportHistory).length;
+    if(!confirm('IMPORT CORE TRACKER STATE?\n\n'+counts+'\n\nThis replaces the entire main tracker state (S). Device-only/auxiliary settings remain on this browser. For a complete device restore, use “Restore full backup.”\n\nThe current persistent state will remain available as the rollback copy.'))return;
+    var state=replaceSState(saved);
+    if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.restoreState==='function')await TCP_PERSISTENT_DATA_V550.restoreState(state,{},'manual-core-json-import-v614.3');
+    else if(typeof persist==='function')persist();
+    mark('manual-core-json-import-v614.3');rerenderCore();
+    try{if(typeof updateHistoryBadge==='function')updateHistoryBadge();if(typeof renderHistory==='function'&&document.getElementById('pg-history')&&document.getElementById('pg-history').classList.contains('active'))renderHistory()}catch(x){}
+    var status=document.getElementById('saveStatus');if(status){status.textContent='Core JSON imported and verified ✓';status.style.color='#5DCAA5'}
+   }catch(err){alert('Import failed: '+((err&&err.message)||err));console.error('[v614.3 core import]',err)}
+   finally{if(input)input.value=''}
+  };
+  reader.onerror=function(){alert('Import failed: the selected JSON file could not be read.');if(input)input.value=''};
+  reader.readAsText(file)
+ };
+
+ /* Customer spreadsheet importer already upserts/replaces correctly; make its
+    successful commit immediate in the verified persistent database as well. */
+ var baseCustomerImportCommit=window.custImportCommit;
+ if(typeof baseCustomerImportCommit==='function')window.custImportCommit=function(){
+  var result=baseCustomerImportCommit.apply(this,arguments);saveNow('customer-spreadsheet-import-v614.3');return result
+ };
+
+ /* -----------------------------------------------------------------------
+    MONTHLY LINE-ITEM REPLACE-RANGE CLEANUP
+    ----------------------------------------------------------------------- */
+ var baseLineApply=window._li524ApplyImport;
+ function customerForAccount(accountId,mapping){
+  var id=String(accountId==null?'':accountId),selected=mapping&&mapping[id];
+  var customers=arr(S.customers).filter(function(c){return c&&!c.doNotCall});
+  function byTarget(target){target=String(target==null?'':target);return customers.find(function(c){return String(c.customerNumber||c.custId||'')===target})||customers.find(function(c){return norm(c.name||c.customer||c.company)===norm(target)})||null}
+  return byTarget(id)||(selected?byTarget(selected):null)
+ }
+ function staleLineItemKeys(st,mapping,replace){
+  if(!replace||!st||!st.analysis||!st.analysis.startDate||!st.analysis.endDate)return[];
+  var touched={};arr(st.records).forEach(function(r){if(customerForAccount(r.accountId,mapping))touched[String(r.accountId)]=1});
+  var out={};arr(S.orderLineItems).forEach(function(x){if(x&&x.source==='line-item-report'&&touched[String(x.accountId)]&&x.orderDate>=st.analysis.startDate&&x.orderDate<=st.analysis.endDate&&x.lineItemOrderKey)out[x.lineItemOrderKey]=1});
+  return Object.keys(out)
+ }
+ function removeOrphanLineSummaries(keys){
+  var removed=0;if(!keys.length||!Array.isArray(S.orders))return 0;
+  var live={};arr(S.orderLineItems).forEach(function(x){if(x&&x.lineItemOrderKey)live[x.lineItemOrderKey]=1});
+  var dead={};keys.forEach(function(k){if(!live[k])dead[k]=1});
+  if(!Object.keys(dead).length)return 0;
+  var before=S.orders.length;S.orders=S.orders.filter(function(o){return !(o&&o.source==='line-item-report'&&dead[o.lineItemOrderKey])});removed=before-S.orders.length;
+  if(removed){lastAudit.lineItemSummariesRemoved+=removed;saveNow('line-item-stale-summary-cleanup-v614.3')}
+  return removed
+ }
+ if(typeof baseLineApply==='function'){
+  var previousLineCommit=window._liImportCommit;
+  window._liImportCommit=function(){
+   var st=window._li524State;if(!st)return;var mapping={};
+   Array.prototype.slice.call(document.querySelectorAll('.li524-map-select')).forEach(function(s){if(s.value)mapping[s.getAttribute('data-account')]=s.value});
+   var replace=!!((document.getElementById('li524-replace')||{}).checked),oldKeys=staleLineItemKeys(st,mapping,replace);
+   var res=baseLineApply(st.records,mapping,{replaceRange:replace,fileName:st.fileName}),removed=removeOrphanLineSummaries(oldKeys);res.removedSummaries=removed;
+   try{if(typeof window._liImportClose==='function')window._liImportClose();if(typeof renderOrdersPage==='function')renderOrdersPage()}catch(e){}
+   saveNow('line-item-import-v614.3');
+   setTimeout(function(){alert('Line-item import complete.\n\nLine items added: '+res.addedLines+'\nLine items updated: '+res.updatedLines+'\nOrder/invoice summaries rebuilt: '+res.orders+'\nStale summaries removed: '+removed+'\nCustomer accounts synced: '+res.accounts+'\nUnmapped lines held back: '+res.unmatchedLines+'\n\nAssigned reps will see the updated orders and customer purchase intelligence after Refresh Data.')},100);
+   return res
+  }
+ }
+
+ /* -----------------------------------------------------------------------
+    ART ERROR DUPLICATE INTEGRITY
+    ----------------------------------------------------------------------- */
+ function artSig(x){return [norm(x&&x.rep),compact(x&&x.so),clean(x&&x.weekKey),clean(x&&x.type),norm(x&&x.desc)].join('|')}
+ function artDuplicate(proposed,ignoreId){var sig=artSig(proposed);return arr(S.artErrors).find(function(a){return a&&a.id!==ignoreId&&artSig(a)===sig})||null}
+ var baseSaveAE=window.saveAE;
+ if(typeof baseSaveAE==='function')window.saveAE=function(){
+  var p={rep:(document.getElementById('aeRep')||{}).value,weekKey:(document.getElementById('aeWeek')||{}).value,so:clean((document.getElementById('aeSO')||{}).value),type:(document.getElementById('aeType')||{}).value,desc:clean((document.getElementById('aeDesc')||{}).value)};
+  if(p.so&&artDuplicate(p,null)&&!confirm('This exact art error is already logged for '+p.rep+' / SO '+p.so+'.\n\nAdd a duplicate anyway?'))return;
+  return baseSaveAE.apply(this,arguments)
+ };
+ var baseSaveAEEdit=window.saveAEEdit;
+ if(typeof baseSaveAEEdit==='function')window.saveAEEdit=function(id){
+  var old=arr(S.artErrors).find(function(a){return a&&a.id===id});if(!old)return;
+  var p={rep:(document.getElementById('aeie_rep_'+id)||{}).value||old.rep,so:clean((document.getElementById('aeie_so_'+id)||{}).value)||old.so,weekKey:(document.getElementById('aeie_wk_'+id)||{}).value||old.weekKey,type:(document.getElementById('aeie_type_'+id)||{}).value||old.type,desc:clean((document.getElementById('aeie_desc_'+id)||{}).value)};
+  if(artDuplicate(p,id)&&!confirm('These edits would make this art error an exact duplicate of another logged error.\n\nSave the duplicate anyway?'))return;
+  return baseSaveAEEdit.apply(this,arguments)
+ };
+ window.uploadAESheet=function(event){
+  if(typeof XLSX==='undefined'){alert('Excel library not loaded.');return}
+  var input=event&&event.target,file=input&&input.files&&input.files[0];if(!file)return;var msg=document.getElementById('aeBulkMsg');if(msg){msg.textContent='Reading…';msg.style.color='#EF9F27'};
+  var TYPES={color_type:'color_type',incomplete_art:'incomplete_art',location:'location',missing_info:'missing_info',order_entry:'order_entry',size:'size','color type':'color_type','incomplete art sheet':'incomplete_art','missing information':'missing_info','order entry':'order_entry'};
+  var reader=new FileReader();reader.onload=function(e){
+   try{
+    var wb=XLSX.read(e.target.result,{type:'binary'}),ws=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+    var hi=rows.findIndex(function(r){return r.some(function(c){return clean(c)==='Rep Name'})});if(hi<0)throw new Error('No “Rep Name” header row found.');
+    var headers=rows[hi].map(function(h){return clean(h).toLowerCase()}),dataRows=rows.slice(hi+1).filter(function(r){return r.some(function(c){return clean(c)})});
+    var iRep=headers.findIndex(function(h){return h.indexOf('rep')>=0}),iWeek=headers.findIndex(function(h){return h.indexOf('week')>=0}),iSO=headers.findIndex(function(h){return h.indexOf('so')>=0}),iType=headers.findIndex(function(h){return h.indexOf('issue')>=0||h.indexOf('type')>=0}),iDesc=headers.findIndex(function(h){return h.indexOf('desc')>=0});
+    if(iRep<0||iSO<0||iType<0)throw new Error('Required columns are missing (Rep Name, SO, Issue Type).');
+    var added=0,duplicates=0,invalid=0,warnings=[],seen={};arr(S.artErrors).forEach(function(a){seen[artSig(a)]=1});var today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    dataRows.forEach(function(row,ri){
+     var repName=clean(row[iRep]),soNum=clean(row[iSO]),rawType=clean(row[iType]).toLowerCase(),desc=iDesc>=0?clean(row[iDesc]):'',weekKey=iWeek>=0?clean(row[iWeek]):'';if(!repName&&!soNum)return;
+     var rep=arr(S.reps).find(function(r){return r&&norm(r.name)===norm(repName)});if(!rep){invalid++;warnings.push('Row '+(ri+2)+': unknown rep');return}
+     if(!soNum){invalid++;warnings.push('Row '+(ri+2)+': missing SO');return}
+     var issueType=TYPES[rawType];if(!issueType){invalid++;warnings.push('Row '+(ri+2)+': unknown issue type “'+rawType+'”');return}
+     var wk=weekKey||getCWK(),parts=wk.split('_'),rec={id:Date.now()+added+ri,rep:rep.name,weekKey:wk,yr:parts[0],q:parts[1],so:soNum,type:issueType,desc:desc,date:today};var sig=artSig(rec);
+     if(seen[sig]){duplicates++;return}seen[sig]=1;S.artErrors.push(rec);added++
+    });
+    if(added)saveNow('art-error-bulk-import-v614.3');lastAudit.artDuplicatesSkipped+=duplicates;
+    var summary='✓ Added '+added+' error'+(added===1?'':'s')+(duplicates?' · '+duplicates+' exact duplicate'+(duplicates===1?'':'s')+' skipped':'')+(invalid?' · '+invalid+' invalid row'+(invalid===1?'':'s')+' skipped':'');
+    if(warnings.length)summary+=' · ⚠ '+warnings.slice(0,2).join(', ');if(msg){msg.textContent=summary;msg.style.color=(invalid||warnings.length)?'#EF9F27':'#5DCAA5'}
+    try{if(document.getElementById('pg-art')&&document.getElementById('pg-art').classList.contains('active'))renderAEL()}catch(x){}
+   }catch(err){if(msg){msg.textContent='❌ Error: '+err.message;msg.style.color='#F09595'}console.error('[v614.3 art import]',err)}
+   finally{if(input)input.value=''}
+  };reader.readAsBinaryString(file)
+ };
+
+ /* -----------------------------------------------------------------------
+    CREDIT MEMO EDIT DUPLICATE CHECK
+    ----------------------------------------------------------------------- */
+ function cmSig(c){return [norm(c&&c.rep),clean(c&&c.weekKey),compact(c&&c.soNum),compact(c&&c.invNum),Math.round((Number(c&&c.amount)||0)*100),compact(c&&c.custId),norm(c&&c.custName),norm(c&&c.desc)].join('|')}
+ var baseSaveCMEdit=window.saveCMEdit;
+ if(typeof baseSaveCMEdit==='function')window.saveCMEdit=function(id){
+  var old=arr(S.cms).find(function(c){return c&&c.id===id});if(!old)return;
+  var p={rep:(document.getElementById('cmie_rep_'+id)||{}).value||old.rep,weekKey:(document.getElementById('cmie_wk_'+id)||{}).value||old.weekKey,amount:parseFloat((document.getElementById('cmie_amt_'+id)||{}).value)||old.amount,custId:clean((document.getElementById('cmie_cid_'+id)||{}).value),custName:clean((document.getElementById('cmie_cname_'+id)||{}).value),soNum:clean((document.getElementById('cmie_so_'+id)||{}).value),invNum:clean((document.getElementById('cmie_inv_'+id)||{}).value),desc:clean((document.getElementById('cmie_desc_'+id)||{}).value)};
+  var duplicate=arr(S.cms).find(function(c){return c&&c.id!==id&&cmSig(c)===cmSig(p)});if(duplicate&&!confirm('These edits would make this credit memo an exact duplicate of another memo.\n\nSave the duplicate anyway?'))return;
+  return baseSaveCMEdit.apply(this,arguments)
+ };
+
+ /* -----------------------------------------------------------------------
+    NON-DESTRUCTIVE REVIEW REFRESH
+    ----------------------------------------------------------------------- */
+ window.rvRefresh=async function(silent){
+  try{if(typeof _rvEnsure==='function')_rvEnsure()}catch(e){}
+  var url='';try{url=clean(typeof _rvUrl==='function'?_rvUrl():'')}catch(e){}var st=document.getElementById('rv-status');if(!url){if(st&&!silent)st.textContent='Paste your published CSV link first.';return}
+  var existing=arr(S.reviews&&S.reviews.rows).slice();S.reviews.url=url;if(st)st.textContent='Fetching…';
+  try{
+   var res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);
+   var text=await res.text(),trimmed=clean(text);if(!trimmed)throw new Error('The review source returned an empty response.');if(trimmed.charAt(0)==='<')throw new Error('The review source returned a web/login page instead of CSV.');
+   var rows=typeof _rvParseCSV==='function'?_rvParseCSV(text):[];
+   if(!rows.length&&existing.length){
+    var clearAnyway=false;if(!silent)clearAnyway=confirm('The review source returned 0 rows. Replacing it would clear '+existing.length+' saved review'+(existing.length===1?'':'s')+'.\n\nClear the saved reviews anyway?');
+    if(!clearAnyway){S.reviews.lastError='0 rows returned; existing reviews preserved';S.reviews.lastAttempt=new Date().toISOString();if(st)st.textContent='⚠ 0 rows returned — existing '+existing.length+' reviews preserved';return}
+   }
+   S.reviews.rows=rows;S.reviews.lastFetched=new Date().toISOString();S.reviews.lastAttempt=S.reviews.lastFetched;S.reviews.lastError='';saveNow('reviews-refresh-v614.3');if(st)st.textContent='✓ '+rows.length+' reviews loaded';if(typeof renderReviewsPage==='function')renderReviewsPage()
+  }catch(e){S.reviews.lastError=(e&&e.message)||String(e);S.reviews.lastAttempt=new Date().toISOString();if(st)st.textContent='✗ Fetch failed — existing '+existing.length+' reviews preserved. ('+S.reviews.lastError.slice(0,70)+')';console.warn('[v614.3 reviews refresh]',e)}
+ };
+
+ /* -----------------------------------------------------------------------
+    DAILY CUMULATIVE REGRESSION WARNINGS
+    ----------------------------------------------------------------------- */
+ function weekStartISO(dateISO){
+  try{if(typeof _drWeekStart==='function')return _drWeekStart(dateISO)}catch(e){}
+  var p=String(dateISO).split('-'),d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]));d.setUTCDate(d.getUTCDate()-d.getUTCDay());return d.toISOString().slice(0,10)
+ }
+ function previousRepValue(map,dateISO,rep){
+  var ws=weekStartISO(dateISO),dates=Object.keys(map||{}).filter(function(d){return d>=ws&&d<dateISO&&map[d]&&own(map[d],rep)}).sort();if(!dates.length)return null;var last=dates[dates.length-1],v=Number(map[last][rep]);return isFinite(v)?{date:last,value:v}:null
+ }
+ function regressionRows(kind,dateISO,values){
+  var map=kind==='calls'?(S.dailyCalls||{}):(S.dailyRep||{}),rows=[];Object.keys(values||{}).forEach(function(rep){if(rep==='__corp')return;var prev=previousRepValue(map,dateISO,rep),cur=Number(values[rep]);if(prev&&isFinite(cur)&&cur<prev.value)rows.push({rep:rep,previous:prev.value,current:cur,previousDate:prev.date})});return rows
+ }
+ function confirmRegressions(kind,dateISO,values){
+  var rows=regressionRows(kind,dateISO,values);if(!rows.length)return true;var money=kind==='sales';var details=rows.slice(0,8).map(function(r){return '• '+r.rep+': '+(money?'$':'')+Math.round(r.previous).toLocaleString()+' → '+(money?'$':'')+Math.round(r.current).toLocaleString()+' (prior '+r.previousDate+')'}).join('\n');
+  return confirm('CUMULATIVE TOTAL DECREASE DETECTED\n\n'+details+'\n\nThese are week-to-date cumulative values. A lower number can reduce the live weekly total and makes the day increase $0/0 calls.\n\nContinue only if you are intentionally correcting an earlier cumulative total.')
+ }
+ var baseDailySalesSave=window.drSaveRepDay;
+ if(typeof baseDailySalesSave==='function')window.drSaveRepDay=function(){
+  var date=clean((document.getElementById('dr-date')||{}).value),values={};document.querySelectorAll('.dr-in').forEach(function(i){var v=clean(i.value);if(v!=='')values[i.dataset.rep]=Number(v)||0});
+  if(date&&!confirmRegressions('sales',date,values))return;return baseDailySalesSave.apply(this,arguments)
+ };
+ var baseDailyCallsSave=window._v552SaveCalls;
+ if(typeof baseDailyCallsSave==='function')window._v552SaveCalls=function(){
+  var date=clean((document.getElementById('v552-call-date')||{}).value)||clean((document.getElementById('dailyDate')||{}).value),values={};document.querySelectorAll('.v552-call-input').forEach(function(i){var v=clean(i.value);if(v!=='')values[i.dataset.rep]=Math.max(0,Math.round(Number(v)||0))});
+  if(date&&!confirmRegressions('calls',date,values))return;return baseDailyCallsSave.apply(this,arguments)
+ };
+
+ /* -----------------------------------------------------------------------
+    ADMIN / VERSION / AUDIT SURFACE
+    ----------------------------------------------------------------------- */
+ function relabelAdmin(){
+  try{
+   document.querySelectorAll('button').forEach(function(b){var t=clean(b.textContent);if(t==='↓ Export JSON')b.textContent='↓ Export core JSON';if(t==='↑ Import JSON')b.textContent='↑ Import core JSON';if(t==='Clear saved data')b.textContent='Clear current session'});
+   var info=document.getElementById('storageInfo');if(info)info.textContent='Core JSON replaces the main tracker state only. Use Full backup / Restore full backup when you need device auxiliary data and photos too.'
+  }catch(e){}
+ }
+ function stampVersion(){
+  document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v614.3').replace(/Report History Persistence Fix/,'Data Consistency Repair');
+  try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&clean(l.textContent)==='App Version'){if(v)v.textContent='v614.3';if(s)s.textContent='Data consistency repair'}})}catch(e){}
+ }
+ function mountHealth(){
+  try{var host=document.getElementById('adminHealthList');if(!host)return;var old=document.getElementById('tcp-v6143-health-row');if(old)old.remove();var row=document.createElement('div');row.className='health-row';row.id='tcp-v6143-health-row';row.innerHTML='<span>Consistency Audit</span><span class="health-ok">v614.3 · identity/import/duplicate guards active</span>';host.appendChild(row)}catch(e){}
+ }
+ var baseInitAdmin=window.initAdmin;if(typeof baseInitAdmin==='function')window.initAdmin=function(){var r=baseInitAdmin.apply(this,arguments);setTimeout(function(){stampVersion();relabelAdmin();mountHealth()},100);return r};
+ var baseLoadAdminHealth=window.loadAdminHealth;if(typeof baseLoadAdminHealth==='function')window.loadAdminHealth=function(){var r=baseLoadAdminHealth.apply(this,arguments);setTimeout(function(){stampVersion();relabelAdmin();mountHealth()},0);return r};
+
+ window.TCP_DATA_CONSISTENCY_V614_3={
+  version:VERSION,
+  meta:lastAudit,
+  artSignature:artSig,
+  creditSignature:cmSig,
+  regressionRows:regressionRows,
+  linkedRepCount:linkedRepCount,
+  replaceStateFromObject:replaceSState,
+  removeOrphanLineSummaries:removeOrphanLineSummaries,
+  diagnostics:async function(){
+   var persistent=null;try{if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.loadActive==='function')persistent=await TCP_PERSISTENT_DATA_V550.loadActive()}catch(e){}
+   return{version:VERSION,windowStateSame:(typeof S!=='undefined'&&window.S===S),reps:arr(S&&S.reps).length,weekly:Object.keys(S&&S.data||{}).length,customers:arr(S&&S.customers).length,orders:arr(S&&S.orders).length,lineItems:arr(S&&S.orderLineItems).length,artErrors:arr(S&&S.artErrors).length,reports:arr(S&&S.reportHistory).length,persistentReports:persistent&&Array.isArray(persistent.reportHistory)?persistent.reportHistory.length:0,lastRepair:lastAudit.lastRepair,lastRepairAt:lastAudit.lastRepairAt,lineItemSummariesRemoved:lastAudit.lineItemSummariesRemoved,artDuplicatesSkipped:lastAudit.artDuplicatesSkipped}
+  }
+ };
+
+ stampVersion();relabelAdmin();mountHealth();
+ window.addEventListener('load',function(){stampVersion();relabelAdmin();setTimeout(mountHealth,600)});
+})();
+</script>
+
+<style id="tcp-v615-system-health-css">
+/* ========================================================================== 
+   SALES TRACKER v615 · SAVE & SYNC CONTROL CENTER
+   ========================================================================== */
+#tabBar.tabs:after{display:none!important;content:none!important}
+#tcp-v615-sidebar-footer{margin-top:auto;padding:13px 10px 5px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:6px;color:#778198;font-size:9px;letter-spacing:.08em;text-transform:uppercase;flex:none}
+#tcp-v615-sidebar-footer .v615-sf-version{font-size:10px;color:#B7C0D5;font-weight:900;letter-spacing:.10em}
+#tcp-v615-sidebar-footer .v615-sf-row{display:flex;align-items:center;gap:7px;min-width:0;text-transform:none;letter-spacing:.01em;font-size:9.5px;font-weight:750;color:#929CB3}
+#tcp-v615-sidebar-footer .v615-sf-row span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v615-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none;background:#6B7280;box-shadow:0 0 10px currentColor}.v615-dot.ok{background:#5DCAA5;color:#5DCAA5}.v615-dot.warn{background:#EF9F27;color:#EF9F27}.v615-dot.fail{background:#F09595;color:#F09595}.v615-dot.info{background:#8EDCFA;color:#8EDCFA}
+#tcp-v615-health-panel{grid-column:1/-1!important;overflow:visible}
+.v615-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}.v615-head h2{font-size:19px;margin:0;color:#fff}.v615-head p{margin:5px 0 0;color:#99A4BA;font-size:11.5px;line-height:1.55;max-width:760px}.v615-badge{padding:6px 10px;border-radius:999px;border:1px solid rgba(93,202,165,.28);background:rgba(93,202,165,.08);color:#9AE7C9;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.v615-status-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.v615-status-card{border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(0,0,0,.16);padding:13px;min-height:96px}.v615-status-label{font-size:8.5px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#7F8BA3}.v615-status-value{font-size:16px;font-weight:950;color:#fff;margin-top:7px;display:flex;align-items:center;gap:8px}.v615-status-sub{font-size:9.5px;color:#8792A9;margin-top:6px;line-height:1.45;word-break:break-word}
+.v615-actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;padding:12px;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:rgba(255,255,255,.025)}.v615-actions .sbtn{min-height:34px}.v615-actions .v615-primary{background:linear-gradient(135deg,rgba(250,135,61,.92),rgba(0,175,239,.70))!important;color:white!important;border-color:rgba(255,255,255,.15)!important}.v615-actions .v615-safe{background:rgba(93,202,165,.10)!important;border-color:rgba(93,202,165,.32)!important;color:#B9F3DD!important}
+.v615-data-title{font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#8EDCFA;margin:0 0 8px}.v615-count-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:14px}.v615-count{border:1px solid rgba(255,255,255,.075);border-radius:13px;padding:10px 11px;background:rgba(255,255,255,.025)}.v615-count strong{display:block;color:#fff;font-size:14px;font-weight:950}.v615-count span{display:block;color:#7F8AA1;font-size:8.5px;margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.v615-lower{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:12px}.v615-box{border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(0,0,0,.13);overflow:hidden}.v615-box-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-bottom:1px solid rgba(255,255,255,.07)}.v615-box-title{font-size:10px;font-weight:900;color:#DCE5F7;text-transform:uppercase;letter-spacing:.08em}.v615-box-sub{font-size:8.5px;color:#707D95}.v615-check-list,.v615-recovery-list{padding:5px 12px 10px}.v615-check-row,.v615-rec-row{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:9px;align-items:center;padding:8px 2px;border-bottom:1px solid rgba(255,255,255,.055)}.v615-check-row:last-child,.v615-rec-row:last-child{border-bottom:0}.v615-check-icon{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:8px;font-weight:950}.v615-check-icon.pass{background:rgba(93,202,165,.12);color:#9AE7C9}.v615-check-icon.warn{background:rgba(239,159,39,.12);color:#F5C57A}.v615-check-icon.fail{background:rgba(240,149,149,.12);color:#F3A4A4}.v615-check-main{min-width:0}.v615-check-name{font-size:9.5px;color:#E4EBF8;font-weight:800}.v615-check-detail{font-size:8.5px;color:#78869D;margin-top:2px;line-height:1.35}.v615-check-status{font-size:8px;font-weight:900;text-transform:uppercase}.v615-check-status.pass{color:#9AE7C9}.v615-check-status.warn{color:#F5C57A}.v615-check-status.fail{color:#F3A4A4}
+.v615-rec-main{min-width:0}.v615-rec-name{font-size:9.5px;color:#E5EBF7;font-weight:850}.v615-rec-meta{font-size:8.2px;color:#77849A;margin-top:3px}.v615-rec-actions{display:flex;gap:5px}.v615-mini{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#BBC5D8;border-radius:8px;padding:4px 7px;font-size:8px;font-weight:800;cursor:pointer}.v615-mini:hover{border-color:rgba(250,135,61,.45);color:#fff}.v615-mini.danger:hover{border-color:#F09595;color:#F3A4A4}.v615-empty{padding:16px;color:#748198;font-size:9px;line-height:1.5}.v615-lastcheck{font-size:8.5px;color:#718097;margin-top:7px}
+@media(max-width:1200px){.v615-status-grid{grid-template-columns:repeat(2,1fr)}.v615-count-grid{grid-template-columns:repeat(3,1fr)}.v615-lower{grid-template-columns:1fr}}
+@media(max-width:700px){#tcp-v615-sidebar-footer{display:none}.v615-status-grid,.v615-count-grid{grid-template-columns:1fr 1fr}.v615-actions .sbtn{flex:1 1 45%}}
+</style>
+
+<script id="tcp-save-sync-control-center-v615-js">
+/* ========================================================================== 
+   SALES TRACKER v615 · SAVE & SYNC CONTROL CENTER
+
+   Adds operational visibility and recovery controls without replacing the
+   v550 verified persistence engine or v613 serialized GitHub cloud engine.
+   ========================================================================== */
+(function(){
+ 'use strict';
+ var VERSION='v615';
+ var REC_DB='tcp_sales_tracker_recovery_v615';
+ var REC_STORE='points';
+ var REC_DB_VERSION=1;
+ var MAX_POINTS=5;
+ var lastCheck=null;
+ var checkRunning=false;
+ var refreshTimer=null;
+
+ function text(v){return String(v==null?'':v)}
+ function esc(v){return text(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+ function clone(v){if(v==null||typeof v!=='object')return v;try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}catch(e){return JSON.parse(JSON.stringify(v))}}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function objCount(v){return v&&typeof v==='object'&&!Array.isArray(v)?Object.keys(v).length:0}
+ function fmtNum(v){return Number(v||0).toLocaleString()}
+ function fmtBytes(bytes){bytes=Number(bytes||0);if(bytes<1024)return bytes+' B';if(bytes<1024*1024)return (bytes/1024).toFixed(bytes<10240?1:0)+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
+ function fmtWhen(value){if(!value)return'never';var d=new Date(value);if(!isFinite(d.getTime()))return'unknown';var diff=Math.max(0,Date.now()-d.getTime()),m=Math.floor(diff/60000);if(m<1)return'just now';if(m<60)return m+'m ago';var h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago'}
+ function localGet(k){try{return localStorage.getItem(k)||''}catch(e){return''}}
+ function localOk(){try{localStorage.setItem('__v615_test__','1');localStorage.removeItem('__v615_test__');return true}catch(e){return false}}
+ function currentState(){try{if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.currentState==='function')return TCP_PERSISTENT_DATA_V550.currentState()}catch(e){}try{return typeof S!=='undefined'?S:(window.S||{})}catch(e){return window.S||{}}}
+ function stateCounts(state){state=state||{};return{reps:arr(state.reps).length,weekly:objCount(state.data),customers:arr(state.customers).length,orders:arr(state.orders).length,lineItems:arr(state.orderLineItems).length,reports:arr(state.reportHistory).length,artErrors:arr(state.artErrors).length,credits:arr(state.cms).length,coaching:arr(state.coachingNotes).length,reviews:arr(state.reviews&&state.reviews.rows).length,hr:arr(state.hrViolations).length,dailySales:arr(state.dailySales).length}}
+ function stateSize(state){try{return JSON.stringify(state||{}).length}catch(e){return 0}}
+ function cloudModel(){try{if(window.TCP_CLOUD_RELIABILITY_V613&&typeof TCP_CLOUD_RELIABILITY_V613.status==='function')return TCP_CLOUD_RELIABILITY_V613.status()}catch(e){}var success=localGet('_tcp_last_cloud_save');return success?{key:'active',label:'Active',sub:'Last cloud save '+fmtWhen(success),problem:false,color:'#5DCAA5'}:{key:'unknown',label:'Unknown',sub:'Cloud status unavailable',problem:true,color:'#EF9F27'}}
+ function persistentModel(){var m=window._tcpPersistentMeta||{};var ready=!!m.ready,failed=!!m.lastError||m.mode==='save-failed'||m.mode==='memory';var dirty=window._dataDirty===true;if(failed)return{key:'fail',label:'Problem',sub:m.lastError||('Persistence mode: '+(m.mode||'unknown')),cls:'fail'};if(!ready)return{key:'info',label:'Loading',sub:'Verified database is initializing',cls:'info'};if(dirty)return{key:'warn',label:'Pending',sub:'Changes are waiting for verified save',cls:'warn'};return{key:'ok',label:'Protected',sub:m.lastSaved?'Last verified save '+fmtWhen(m.lastSaved):'Verified IndexedDB ready',cls:'ok'}}
+ function overallClass(local,cloud){if(local.cls==='fail'||cloud.key==='error'||cloud.key==='off')return'fail';if(local.cls==='warn'||cloud.problem)return'warn';if(local.cls==='info'||cloud.key==='saving'||cloud.key==='ready')return'info';return'ok'}
+
+ function openRecDb(){return new Promise(function(resolve,reject){if(typeof indexedDB==='undefined')return reject(new Error('IndexedDB unavailable'));var req=indexedDB.open(REC_DB,REC_DB_VERSION);req.onupgradeneeded=function(){var db=req.result;if(!db.objectStoreNames.contains(REC_STORE))db.createObjectStore(REC_STORE,{keyPath:'id'})};req.onsuccess=function(){resolve(req.result)};req.onerror=function(){reject(req.error||new Error('Recovery database unavailable'))}})}
+ function recPut(record){return openRecDb().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction(REC_STORE,'readwrite');tx.objectStore(REC_STORE).put(record);tx.oncomplete=function(){db.close();resolve(record)};tx.onerror=function(){var e=tx.error||new Error('Recovery point write failed');db.close();reject(e)};tx.onabort=function(){var e=tx.error||new Error('Recovery point write aborted');db.close();reject(e)}})})}
+ function recGet(id){return openRecDb().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction(REC_STORE,'readonly'),req=tx.objectStore(REC_STORE).get(id);req.onsuccess=function(){var v=req.result||null;db.close();resolve(v)};req.onerror=function(){var e=req.error||new Error('Recovery point read failed');db.close();reject(e)}})})}
+ function recAll(){return openRecDb().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction(REC_STORE,'readonly'),req=tx.objectStore(REC_STORE).getAll();req.onsuccess=function(){var rows=req.result||[];db.close();rows.sort(function(a,b){return text(b.createdAt).localeCompare(text(a.createdAt))});resolve(rows)};req.onerror=function(){var e=req.error||new Error('Recovery point list failed');db.close();reject(e)}})})}
+ function recDelete(id){return openRecDb().then(function(db){return new Promise(function(resolve,reject){var tx=db.transaction(REC_STORE,'readwrite');tx.objectStore(REC_STORE).delete(id);tx.oncomplete=function(){db.close();resolve(true)};tx.onerror=function(){var e=tx.error||new Error('Recovery point delete failed');db.close();reject(e)}})})}
+ async function pruneRecovery(){var rows=await recAll();for(var i=MAX_POINTS;i<rows.length;i++)await recDelete(rows[i].id)}
+ function collectAux(){var out={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(!k||k==='salesTracker_v2')continue;try{if(typeof window._isTrackerKey==='function'&&!window._isTrackerKey(k))continue}catch(e){continue}if(/(?:api[_-]?key|token|secret|password)/i.test(k))continue;out[k]=localStorage.getItem(k)}}catch(e){}return out}
+
+ function ensureSidebar(){var tabs=document.getElementById('tabBar')||document.querySelector('.tabs');if(!tabs)return null;var foot=document.getElementById('tcp-v615-sidebar-footer');if(!foot){foot=document.createElement('div');foot.id='tcp-v615-sidebar-footer';foot.innerHTML='<div class="v615-sf-version">Sales Tracker v615</div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideLocalDot"></span><span id="v615SideLocal">Local checking…</span></div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideCloudDot"></span><span id="v615SideCloud">Cloud checking…</span></div>';tabs.appendChild(foot)}return foot}
+ function dotClass(cls){return'v615-dot '+(cls==='ok'?'ok':cls==='fail'?'fail':cls==='warn'?'warn':'info')}
+ function renderSidebar(){ensureSidebar();var lm=persistentModel(),cm=cloudModel(),ld=document.getElementById('v615SideLocalDot'),cd=document.getElementById('v615SideCloudDot'),lt=document.getElementById('v615SideLocal'),ct=document.getElementById('v615SideCloud');if(ld)ld.className=dotClass(lm.cls);if(cd)cd.className=dotClass(cm.problem?(cm.key==='error'||cm.key==='off'?'fail':'warn'):(cm.key==='saving'?'info':'ok'));if(lt)lt.textContent='Local · '+lm.label+(lm.label==='Protected'?' '+fmtWhen((window._tcpPersistentMeta||{}).lastSaved):'');if(ct)ct.textContent='Cloud · '+cm.label+(localGet('_tcp_last_cloud_save')?' '+fmtWhen(localGet('_tcp_last_cloud_save')):'')}
+
+ function hideOldDiagnostics(){try{document.querySelectorAll('.admin-sys-panel').forEach(function(panel){if(panel.id==='tcp-v615-health-panel')return;var h=panel.querySelector('h2');if(h&&h.textContent.trim()==='Diagnostics')panel.style.display='none'});document.querySelectorAll('.advanced-card').forEach(function(card){var h=card.querySelector('h3');if(h&&h.textContent.trim()==='Legacy auto-save file')card.style.display='none'})}catch(e){}}
+ function mountPanel(){var grid=document.querySelector('#pg-admin .admin-sys-grid')||document.querySelector('.admin-sys-grid');if(!grid)return null;hideOldDiagnostics();var panel=document.getElementById('tcp-v615-health-panel');if(panel)return panel;panel=document.createElement('div');panel.id='tcp-v615-health-panel';panel.className='admin-sys-panel admin-span-12';panel.innerHTML='<div class="v615-head"><div><div class="admin-sys-kicker">Data & Sync Health</div><h2>Protection Control Center</h2><p>One source of truth for local persistence, GitHub cloud sync, recovery points, backup status, and live tracker counts.</p></div><span class="v615-badge">v615 protected</span></div>'+
+ '<div class="v615-status-grid"><div class="v615-status-card"><div class="v615-status-label">Local Database</div><div class="v615-status-value" id="v615LocalValue">Checking…</div><div class="v615-status-sub" id="v615LocalSub"></div></div><div class="v615-status-card"><div class="v615-status-label">GitHub Cloud</div><div class="v615-status-value" id="v615CloudValue">Checking…</div><div class="v615-status-sub" id="v615CloudSub"></div></div><div class="v615-status-card"><div class="v615-status-label">Recovery</div><div class="v615-status-value" id="v615RecoveryValue">Checking…</div><div class="v615-status-sub" id="v615RecoverySub"></div></div><div class="v615-status-card"><div class="v615-status-label">Current State</div><div class="v615-status-value" id="v615StateValue">Checking…</div><div class="v615-status-sub" id="v615StateSub"></div></div></div>'+
+ '<div class="v615-actions"><button class="sbtn v615-primary" id="v615CheckBtn" onclick="tcpV615RunSystemCheck()">🩺 Run System Check</button><button class="sbtn v615-safe" onclick="tcpV615SaveNow()">💾 Save Now</button><button class="sbtn" onclick="tcpV615CloudNow()">☁ Cloud Sync Now</button><button class="sbtn" onclick="tcpV615CreateRecovery()">🛟 Create Recovery Point</button><button class="sbtn" onclick="tcpV615FullBackup()">⬇ Download Full Backup</button></div>'+
+ '<div class="v615-data-title">Live data footprint</div><div class="v615-count-grid" id="v615Counts"></div>'+
+ '<div class="v615-lower"><div class="v615-box"><div class="v615-box-head"><div><div class="v615-box-title">System Check</div><div class="v615-box-sub" id="v615CheckSummary">Run a full verification when you want proof that each layer is healthy.</div></div><span class="v615-box-sub" id="v615CheckTime"></span></div><div class="v615-check-list" id="v615CheckList"><div class="v615-empty">No system check has been run in this session.</div></div></div><div class="v615-box"><div class="v615-box-head"><div><div class="v615-box-title">Recovery Points</div><div class="v615-box-sub">Up to '+MAX_POINTS+' known-good local snapshots</div></div></div><div class="v615-recovery-list" id="v615RecoveryList"><div class="v615-empty">Loading recovery points…</div></div></div></div>';
+ var old=null;Array.prototype.some.call(grid.children,function(child){var h=child.querySelector&&child.querySelector('h2');if(h&&h.textContent.trim()==='Diagnostics'){old=child;return true}return false});if(old)grid.insertBefore(panel,old);else grid.appendChild(panel);return panel}
+ function setText(id,val){var el=document.getElementById(id);if(el)el.textContent=val}
+ async function renderRecovery(){var host=document.getElementById('v615RecoveryList');if(!host)return;try{var rows=await recAll();setText('v615RecoveryValue',rows.length?rows.length+' ready':'None yet');setText('v615RecoverySub',rows.length?'Newest '+fmtWhen(rows[0].createdAt)+' · keeping up to '+MAX_POINTS:'Create a named restore point before major changes.');if(!rows.length){host.innerHTML='<div class="v615-empty">No recovery points yet. Create one before a major import, workflow change, or application upgrade.</div>';return}host.innerHTML=rows.map(function(r){var c=r.counts||{};return '<div class="v615-rec-row"><span class="v615-check-icon pass">✓</span><div class="v615-rec-main"><div class="v615-rec-name">'+esc(r.name||'Recovery Point')+'</div><div class="v615-rec-meta">'+esc(new Date(r.createdAt).toLocaleString())+' · '+fmtNum(c.reps)+' reps · '+fmtNum(c.customers)+' customers · '+fmtNum(c.orders)+' orders · '+fmtBytes(r.bytes||0)+'</div></div><div class="v615-rec-actions"><button class="v615-mini" onclick="tcpV615RestoreRecovery(\''+esc(r.id)+'\')">Restore</button><button class="v615-mini danger" onclick="tcpV615DeleteRecovery(\''+esc(r.id)+'\')">Delete</button></div></div>'}).join('')}catch(e){host.innerHTML='<div class="v615-empty" style="color:#F3A4A4;">Recovery storage unavailable: '+esc((e&&e.message)||e)+'</div>';setText('v615RecoveryValue','Unavailable');setText('v615RecoverySub',(e&&e.message)||String(e))}}
+ function renderCounts(){var s=currentState(),c=stateCounts(s);var items=[['Reps',c.reps],['Weekly records',c.weekly],['Customers',c.customers],['Orders',c.orders],['Line items',c.lineItems],['Reports',c.reports],['Art errors',c.artErrors],['Credit memos',c.credits],['Coaching notes',c.coaching],['Reviews',c.reviews],['HR records',c.hr],['Daily sales',c.dailySales]];var host=document.getElementById('v615Counts');if(host)host.innerHTML=items.map(function(x){return'<div class="v615-count"><strong>'+fmtNum(x[1])+'</strong><span>'+esc(x[0])+'</span></div>'}).join('');setText('v615StateValue',fmtBytes(stateSize(s)));setText('v615StateSub',fmtNum(c.reps)+' reps · '+fmtNum(c.customers)+' customers · '+fmtNum(c.orders)+' orders · '+fmtNum(c.reports)+' reports')}
+ function renderStatus(){mountPanel();renderSidebar();var lm=persistentModel(),cm=cloudModel();var lv=document.getElementById('v615LocalValue'),cv=document.getElementById('v615CloudValue');if(lv)lv.innerHTML='<span class="'+dotClass(lm.cls)+'"></span>'+esc(lm.label);if(cv)cv.innerHTML='<span class="'+dotClass(cm.problem?(cm.key==='error'||cm.key==='off'?'fail':'warn'):(cm.key==='saving'?'info':'ok'))+'"></span>'+esc(cm.label);setText('v615LocalSub',lm.sub);setText('v615CloudSub',(cm.sub||'')+(cm.detail?' · '+cm.detail:''));renderCounts();renderRecovery();stampVersion()}
+
+ function checkRow(level,name,detail){return{level:level,name:name,detail:detail||''}}
+ async function testCloudReachability(){var api=window.TCP_CLOUD_RELIABILITY_V613;if(!api||typeof api.credentials!=='function')return checkRow('warn','GitHub Gist reachability','Cloud reliability API unavailable');var creds=api.credentials();if(!creds.token)return checkRow('fail','GitHub credentials','No token configured');if(!creds.id)return checkRow('warn','GitHub Gist','No Gist ID configured yet');if(typeof navigator!=='undefined'&&navigator.onLine===false)return checkRow('warn','GitHub Gist reachability','Browser is offline');if(typeof window._gistFetch!=='function')return checkRow('warn','GitHub Gist reachability','GitHub request helper unavailable');try{var r=await window._gistFetch('https://api.github.com/gists/'+creds.id,creds.token);if(r.ok)return checkRow('pass','GitHub Gist reachability','Gist '+creds.id.slice(0,8)+'… is reachable');var msg='HTTP '+r.status;try{var body=await r.json();if(body&&body.message)msg+=' · '+body.message}catch(e){}return checkRow('fail','GitHub Gist reachability',msg)}catch(e){return checkRow('fail','GitHub Gist reachability',(e&&e.message)||String(e))}}
+ async function runCheck(){if(checkRunning)return;checkRunning=true;var btn=document.getElementById('v615CheckBtn');if(btn){btn.disabled=true;btn.textContent='Checking…'};var rows=[];try{
+  rows.push(localOk()?checkRow('pass','Browser storage','localStorage read/write passed'):checkRow('fail','Browser storage','localStorage is blocked'));
+  rows.push(typeof indexedDB!=='undefined'?checkRow('pass','IndexedDB','Browser database API available'):checkRow('fail','IndexedDB','IndexedDB is unavailable'));
+  var p=window.TCP_PERSISTENT_DATA_V550;if(p&&typeof p.ready==='function'){await p.ready();try{if(typeof p.saveNow==='function')await p.saveNow('system-check-v615')}catch(e){rows.push(checkRow('fail','Verified local save',(e&&e.message)||String(e)))}var d=typeof p.diagnostics==='function'?await p.diagnostics():null;if(d){rows.push(d.activeValid?checkRow('pass','Active persistent record','Verified active snapshot is valid'):checkRow('fail','Active persistent record','Active snapshot did not verify'));rows.push(d.previousValid?checkRow('pass','Rollback copy','Previous verified snapshot is available'):checkRow('warn','Rollback copy','No verified previous snapshot yet'));if(d.lastError)rows.push(checkRow('fail','Persistence errors',d.lastError));else rows.push(checkRow('pass','Persistence errors','No current persistence error'))}}else rows.push(checkRow('fail','Verified persistence','v550 persistence API unavailable'));
+  var s=currentState(),c=stateCounts(s),bytes=stateSize(s);rows.push(Array.isArray(s&&s.reps)&&c.reps>0?checkRow('pass','Tracker state','Valid roster with '+c.reps+' reps'):checkRow('fail','Tracker state','Roster is missing or empty'));rows.push(bytes>0?checkRow('pass','State serialization',fmtBytes(bytes)+' serialized successfully'):checkRow('fail','State serialization','State could not be serialized'));
+  var cm=cloudModel();rows.push(cm.problem?checkRow(cm.key==='error'||cm.key==='off'?'fail':'warn','Cloud autosave',cm.sub||cm.label):checkRow('pass','Cloud autosave',cm.sub||cm.label));rows.push(await testCloudReachability());var last=localGet('_tcp_last_cloud_save');if(last)rows.push(Date.now()-new Date(last).getTime()<=12*60*1000?checkRow('pass','Cloud write confirmation','Last successful write '+fmtWhen(last)):checkRow('warn','Cloud write confirmation','Last successful write '+fmtWhen(last)));else rows.push(checkRow('warn','Cloud write confirmation','No successful cloud save timestamp yet'));
+  var recs=[];try{recs=await recAll();rows.push(checkRow('pass','Recovery storage',recs.length+' recovery point'+(recs.length===1?'':'s')+' available'))}catch(e){rows.push(checkRow('fail','Recovery storage',(e&&e.message)||String(e)))};
+  lastCheck={at:new Date().toISOString(),rows:rows};renderCheck();renderStatus()
+ }catch(e){rows.push(checkRow('fail','System check',(e&&e.message)||String(e)));lastCheck={at:new Date().toISOString(),rows:rows};renderCheck()}finally{checkRunning=false;if(btn){btn.disabled=false;btn.textContent='🩺 Run System Check'}}}
+ function renderCheck(){var host=document.getElementById('v615CheckList');if(!host)return;if(!lastCheck){host.innerHTML='<div class="v615-empty">No system check has been run in this session.</div>';return}var pass=lastCheck.rows.filter(function(r){return r.level==='pass'}).length,warn=lastCheck.rows.filter(function(r){return r.level==='warn'}).length,fail=lastCheck.rows.filter(function(r){return r.level==='fail'}).length;setText('v615CheckSummary',pass+' passed · '+warn+' warning'+(warn===1?'':'s')+' · '+fail+' failure'+(fail===1?'':'s'));setText('v615CheckTime',new Date(lastCheck.at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}));host.innerHTML=lastCheck.rows.map(function(r){var icon=r.level==='pass'?'✓':r.level==='warn'?'!':'×';return'<div class="v615-check-row"><span class="v615-check-icon '+r.level+'">'+icon+'</span><div class="v615-check-main"><div class="v615-check-name">'+esc(r.name)+'</div><div class="v615-check-detail">'+esc(r.detail)+'</div></div><span class="v615-check-status '+r.level+'">'+r.level+'</span></div>'}).join('')}
+
+ window.tcpV615RunSystemCheck=runCheck;
+ window.tcpV615SaveNow=async function(){try{var p=window.TCP_PERSISTENT_DATA_V550;if(!p||typeof p.saveNow!=='function')throw new Error('Verified persistence is unavailable');await p.saveNow('manual-save-v615');renderStatus();alert('Verified local save completed.')}catch(e){alert('Local save failed: '+((e&&e.message)||e))}};
+ window.tcpV615CloudNow=async function(){try{if(window.TCP_CLOUD_RELIABILITY_V613&&typeof TCP_CLOUD_RELIABILITY_V613.save==='function')await TCP_CLOUD_RELIABILITY_V613.save(true);else if(typeof window.saveToCloud==='function')await window.saveToCloud();renderStatus()}catch(e){alert('Cloud save failed: '+((e&&e.message)||e))}};
+ window.tcpV615CreateRecovery=async function(){try{var p=window.TCP_PERSISTENT_DATA_V550;if(!p||typeof p.saveNow!=='function')throw new Error('Verified persistence is unavailable');await p.saveNow('recovery-point-prep-v615');var state=clone(currentState()),counts=stateCounts(state),bytes=stateSize(state),now=new Date(),defaultName='Recovery '+now.toLocaleDateString()+' '+now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}),name=prompt('Name this recovery point:',defaultName);if(name===null)return;name=text(name).trim()||defaultName;var rec={id:'rp_'+Date.now(),version:1,name:name,createdAt:new Date().toISOString(),counts:counts,bytes:bytes,state:state,auxiliary:collectAux()};await recPut(rec);await pruneRecovery();await renderRecovery();renderStatus();alert('Recovery point created: '+name)}catch(e){alert('Recovery point failed: '+((e&&e.message)||e))}};
+ window.tcpV615RestoreRecovery=async function(id){try{var rec=await recGet(id);if(!rec)throw new Error('Recovery point not found');var msg='RESTORE RECOVERY POINT\n\n'+rec.name+'\n'+new Date(rec.createdAt).toLocaleString()+'\n'+fmtNum((rec.counts||{}).reps)+' reps · '+fmtNum((rec.counts||{}).customers)+' customers · '+fmtNum((rec.counts||{}).orders)+' orders\n\nThis replaces the active tracker state. Automatic cloud sync may later publish the restored state. Continue?';if(!confirm(msg))return;var p=window.TCP_PERSISTENT_DATA_V550;if(!p||typeof p.restoreState!=='function')throw new Error('Verified restore API unavailable');await p.restoreState(clone(rec.state),clone(rec.auxiliary||{}),'recovery-restore-v615');alert('Recovery point restored. The page will reload so every module reads the restored state.');location.reload()}catch(e){alert('Recovery restore failed: '+((e&&e.message)||e))}};
+ window.tcpV615DeleteRecovery=async function(id){try{var rec=await recGet(id);if(!rec)return;if(!confirm('Delete recovery point "'+(rec.name||'Recovery Point')+'"?'))return;await recDelete(id);await renderRecovery();renderStatus()}catch(e){alert('Could not delete recovery point: '+((e&&e.message)||e))}};
+ window.tcpV615FullBackup=async function(){try{var p=window.TCP_PERSISTENT_DATA_V550;if(p&&typeof p.saveNow==='function')await p.saveNow('full-backup-prep-v615');if(typeof window.exportAllData!=='function')throw new Error('Full backup exporter unavailable');window.exportAllData();renderStatus()}catch(e){alert('Full backup failed: '+((e&&e.message)||e))}};
+
+ function stampVersion(){document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v615').replace(/Data Consistency Repair/,'Save & Sync Control Center');try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v615';if(s)s.textContent='Save & Sync Control Center'}})}catch(e){}var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v615'}
+ function initialize(){stampVersion();ensureSidebar();mountPanel();renderStatus();if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(function(){renderSidebar();if(document.getElementById('tcp-v615-health-panel')){renderCounts();var cm=cloudModel(),lm=persistentModel();setText('v615LocalSub',lm.sub);setText('v615CloudSub',(cm.sub||'')+(cm.detail?' · '+cm.detail:''))}},30000)}
+ var baseInitAdmin=window.initAdmin;if(typeof baseInitAdmin==='function')window.initAdmin=function(){var r=baseInitAdmin.apply(this,arguments);setTimeout(function(){mountPanel();renderStatus();stampVersion()},80);return r};
+ var baseLoadAdminHealth=window.loadAdminHealth;if(typeof baseLoadAdminHealth==='function')window.loadAdminHealth=function(){var r=baseLoadAdminHealth.apply(this,arguments);setTimeout(function(){mountPanel();renderStatus();stampVersion()},0);return r};
+ window.addEventListener('load',function(){setTimeout(initialize,300)});
+ document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')setTimeout(renderStatus,80)});
+ window.TCP_SAVE_SYNC_V615={version:VERSION,counts:function(){return stateCounts(currentState())},stateBytes:function(){return stateSize(currentState())},recoveryList:recAll,runCheck:runCheck,render:renderStatus,localModel:persistentModel,cloudModel:cloudModel};
+ initialize();
 })();
 </script>
