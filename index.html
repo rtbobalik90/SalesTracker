@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v614 — Data Reliability Audit</title>
+<title>Sales Tracker v614.1 — Data Reliability + Report Pipeline Repair</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -5006,7 +5006,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 <div id="pg-history" class="page">
   <div class="card">
     <div class="ct">&#x1F4CB; Report history</div>
-    <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;">Every report generated this session.</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;">Every saved report. History persists across reloads, verified local storage, and cloud backups.</p>
     <div class="filter-row">
       <label>Type:</label>
       <select id="histFilter" onchange="renderHistory()"><option value="all">All reports</option><option value="meeting">Meeting</option><option value="review">Reviews</option><option value="rep">Rep reports</option><option value="team">Team reports</option><option value="ai">AI analyses</option></select>
@@ -5295,7 +5295,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
     <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
     <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
-    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v614</div><div class="as-sub">Data reliability + cloud sync</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v614.1</div><div class="as-sub">Data reliability + report pipeline repair</div></div>
   </section>
 
   <section class="admin-sys-grid">
@@ -69180,3 +69180,209 @@ window.TCP_CALL_WORKSPACE_V593={
  };
 })();
 </script>
+
+
+<script id="tcp-v614-1-report-pipeline-repair-js">
+/* ========================================================================== 
+   SALES TRACKER v614.1 · REPORT PIPELINE REPAIR
+   Hotfixes discovered during live v614 validation:
+   - Report Hub Rep/Team generator buttons were calling legacy generators that
+     still expected removed repBtn/teamBtn DOM controls.
+   - Report History is now written immediately to S.reportHistory and the v550
+     verified IndexedDB database at generation time, then queued to cloud.
+   - Manager Report Hub History reads the persistent archive as source of truth.
+   - Legacy Cloudflare/Netlify AI proxy UI is disabled; direct Anthropic key is
+     the supported configuration for this deployment.
+   - Legacy linked-file autosave marker is cleared so the unrelated
+     "file autosave paused" chip cannot masquerade as a cloud-sync problem.
+   ========================================================================== */
+(function(){
+ 'use strict';
+ var VERSION='v614.1';
+ var archiveSavePromise=Promise.resolve(true);
+
+ function clone(v){
+  if(v==null||typeof v!=='object')return v;
+  try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}
+  catch(e){try{return JSON.parse(JSON.stringify(v))}catch(x){return v}}
+ }
+ function esc(v){
+  return String(v==null?'':v).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c})
+ }
+ function localArchive(){
+  try{return (typeof reportHistory!=='undefined'&&Array.isArray(reportHistory))?reportHistory:[]}catch(e){return []}
+ }
+ function stateArchive(){
+  try{return (window.S&&Array.isArray(S.reportHistory))?S.reportHistory:[]}catch(e){return []}
+ }
+ function mergedArchive(){
+  var all=stateArchive().concat(localArchive()),seen={},rows=[];
+  all.forEach(function(r){
+   if(!r||typeof r!=='object')return;
+   var key=String(r.id!=null?r.id:'')+'|'+String(r.name||'')+'|'+String(r.ts||'');
+   if(seen[key])return;seen[key]=1;rows.push(r)
+  });
+  rows.sort(function(a,b){return Number(b.id||0)-Number(a.id||0)});
+  return rows
+ }
+ function applyArchive(rows){
+  rows=clone(Array.isArray(rows)?rows:[]);
+  try{reportHistory=clone(rows)}catch(e){}
+  if(window.S)S.reportHistory=clone(rows);
+  return rows
+ }
+ function hydrateArchive(){
+  var rows=mergedArchive();
+  applyArchive(rows);
+  try{if(typeof updateHistoryBadge==='function')updateHistoryBadge()}catch(e){}
+  return rows
+ }
+ function refreshArchiveUI(){
+  try{if(typeof updateHistoryBadge==='function')updateHistoryBadge()}catch(e){}
+  try{if(typeof window.renderHubHistory==='function')window.renderHubHistory()}catch(e){}
+  try{
+   var pg=document.getElementById('pg-history');
+   if(pg&&pg.classList.contains('active')&&typeof renderHistory==='function')renderHistory()
+  }catch(e){}
+ }
+ function persistArchive(reason){
+  applyArchive(mergedArchive());
+  try{if(typeof markDirty==='function')markDirty();else if(typeof persist==='function')persist()}catch(e){console.warn('[v614.1 archive dirty]',e)}
+  if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.saveNow==='function'){
+   archiveSavePromise=archiveSavePromise.catch(function(){return true}).then(function(){
+    return TCP_PERSISTENT_DATA_V550.saveNow('report-history-'+String(reason||'save')+'-v614.1')
+   }).catch(function(e){console.warn('[v614.1 immediate report save]',e);return false});
+  }
+  refreshArchiveUI();
+  return localArchive()
+ }
+
+ window.saveReport=function(type,name,subject,html){
+  hydrateArchive();
+  var id=Date.now();
+  while(localArchive().some(function(r){return Number(r&&r.id)===id}))id++;
+  var row={
+   id:id,
+   type:String(type||'report'),
+   name:String(name||'Report'),
+   subject:String(subject||''),
+   ts:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}),
+   savedAt:new Date().toISOString(),
+   html:String(html||'')
+  };
+  var rows=localArchive().slice();rows.unshift(row);applyArchive(rows);
+  persistArchive('save');
+  return id
+ };
+ window.deleteHistoryItem=function(id){
+  applyArchive(mergedArchive().filter(function(r){return Number(r&&r.id)!==Number(id)}));
+  persistArchive('delete')
+ };
+ window.clearHistory=function(){
+  var rows=mergedArchive();if(!rows.length)return;
+  if(!confirm('Clear all '+rows.length+' saved reports?'))return;
+  applyArchive([]);persistArchive('clear')
+ };
+
+ window.renderHubHistory=function(){
+  var host=document.getElementById('hub-history-list');if(!host)return;
+  var hist=mergedArchive();applyArchive(hist);
+  var fsel=document.getElementById('hub-hist-filter'),previous=fsel?fsel.value:'all';
+  if(fsel){
+   var types={};hist.forEach(function(r){if(r&&r.type)types[r.type]=1});
+   fsel.innerHTML='<option value="all">All types ('+hist.length+')</option>'+Object.keys(types).sort().map(function(t){return '<option value="'+esc(t)+'">'+esc(t)+'</option>'}).join('');
+   if(previous==='all'||types[previous])fsel.value=previous;else fsel.value='all'
+  }
+  var f=fsel?fsel.value:'all',rows=hist.filter(function(r){return f==='all'||r.type===f});
+  if(!rows.length){host.innerHTML='<div class="dc-flat" style="padding:8px 0;">No saved reports'+(f!=='all'?' of this type':'')+' yet. Generate one above — it will appear here automatically.</div>';return}
+  host.innerHTML=rows.slice(0,60).map(function(r){
+   return '<div class="r3-note" style="cursor:pointer;" onclick="openReport('+Number(r.id)+')"><div class="r3-note-h"><span class="r3-pill">'+esc(r.type||'report')+'</span><span class="dc-flat">'+esc(r.ts||'')+'</span></div><div class="r3-note-t">'+esc(r.name||'')+(r.subject?' <span class="dc-flat">· '+esc(r.subject)+'</span>':'')+' <span class="dc-flat">› open</span></div></div>'
+  }).join('')+(rows.length>60?'<div class="dc-flat" style="font-size:10.5px;">+'+(rows.length-60)+' older</div>':'')
+ };
+
+ function ensureGeneratorCompatibility(){
+  ['repBtn','teamBtn'].forEach(function(id){
+   if(document.getElementById(id))return;
+   var b=document.createElement('button');b.id=id;b.type='button';b.hidden=true;b.setAttribute('aria-hidden','true');document.body.appendChild(b)
+  })
+ }
+ window.reportsRunSelected=async function(){
+  ensureGeneratorCompatibility();
+  var main=document.getElementById('reportsMainGenerateBtn');
+  var status=document.getElementById('reportsBuilderStatus');
+  var out=document.getElementById('aiOut');
+  if(main)main.disabled=true;if(status)status.textContent='Generating report…';
+  try{
+   if(_reportsSelectedType==='meeting'){
+    try{if(typeof _hubEnsureMtg==='function')_hubEnsureMtg()}catch(e){}
+    if(typeof generateMeetingReport!=='function')throw new Error('Weekly Meeting generator is unavailable.');
+    await generateMeetingReport()
+   }else if(_reportsSelectedType==='team'){
+    if(typeof genTeamPDF!=='function')throw new Error('Team report generator is unavailable.');
+    await genTeamPDF()
+   }else{
+    var repSel=document.getElementById('prRep');
+    if(repSel&&!repSel.value){var aiSel=document.getElementById('aiR');if(aiSel&&aiSel.value)repSel.value=aiSel.value}
+    if(!repSel||!repSel.value)throw new Error('Select a rep before generating the report.');
+    if(typeof genRepPDF!=='function')throw new Error('Rep report generator is unavailable.');
+    await genRepPDF()
+   }
+   hydrateArchive();refreshArchiveUI();
+   if(status)status.textContent='Report generated and saved to History ✓';
+  }catch(e){
+   console.error('[v614.1 Report Hub]',e);
+   if(status)status.textContent='Report generation failed';
+   if(out)out.innerHTML='<div class="aib" style="border-left:3px solid #F09595;">Report generation error: '+esc((e&&e.message)||e)+'</div>'
+  }finally{if(main)main.disabled=false}
+ };
+
+ function disableProxyMode(){
+  try{localStorage.removeItem('tcp_ai_proxy_url')}catch(e){}
+  var host=document.getElementById('ai-conn');
+  if(host){host.innerHTML='';host.style.display='none'}
+ }
+ var baseCallAI=window.callAI;
+ if(typeof baseCallAI==='function'){
+  window.callAI=async function(){
+   try{localStorage.removeItem('tcp_ai_proxy_url')}catch(e){}
+   try{return await baseCallAI.apply(this,arguments)}
+   catch(e){
+    var msg=String((e&&e.message)||e);
+    if(msg.indexOf('configure a proxy in Admin')>=0)throw new Error('No Anthropic API key is configured. Add the key in Admin → AI Configuration.');
+    throw e
+   }
+  }
+ }
+ window.renderAIConn=function(){disableProxyMode()};
+ window.aiConnSave=function(){disableProxyMode()};
+ window.aiConnClear=function(){disableProxyMode()};
+
+ function disableLegacyFilePauseWarning(){
+  try{localStorage.removeItem('_tcp_last_autosave')}catch(e){}
+  var chip=document.getElementById('tcp-sync-chip');
+  if(chip&&/file autosave paused/i.test(chip.textContent||''))chip.remove()
+ }
+
+ function initialize(){
+  ensureGeneratorCompatibility();disableProxyMode();disableLegacyFilePauseWarning();
+  var ready=null;
+  try{ready=window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.ready==='function'?TCP_PERSISTENT_DATA_V550.ready():null}catch(e){}
+  Promise.resolve(ready).catch(function(){return null}).then(function(){hydrateArchive();refreshArchiveUI()});
+  setTimeout(function(){try{if(typeof reportsSetType==='function')reportsSetType('rep')}catch(e){}disableProxyMode();disableLegacyFilePauseWarning();hydrateArchive();refreshArchiveUI()},700)
+ }
+ window.addEventListener('load',initialize);
+ setInterval(disableLegacyFilePauseWarning,30000);
+ initialize();
+
+ document.title=document.title.replace(/v614(?:\.1)?\b/,'v614.1').replace(/Data Reliability Audit/,'Data Reliability + Report Pipeline Repair');
+ try{
+  var versionCards=document.querySelectorAll('.admin-status-card');
+  Array.prototype.forEach.call(versionCards,function(card){
+   var label=card.querySelector('.as-label'),value=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');
+   if(label&&label.textContent.trim()==='App Version'){if(value)value.textContent='v614.1';if(sub)sub.textContent='Data reliability + report pipeline repair'}
+  })
+ }catch(e){}
+ window.TCP_REPORT_PIPELINE_V614_1={version:VERSION,archive:hydrateArchive,persist:persistArchive,ensureGenerators:ensureGeneratorCompatibility};
+})();
+</script>
+
