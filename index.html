@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v616.1 — Admin UI + Email Promotions</title>
+<title>Sales Tracker v617 — Manager Operating System</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3784,15 +3784,15 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <h2 style="margin:0 0 12px;color:#5DCAA5;font-size:22px;">Welcome back</h2>
     <p style="color:var(--color-text-secondary);font-size:13px;line-height:1.6;margin-bottom:22px;">
       Your tracker data appears empty. Chrome cleared its storage since your last session.<br><br>
-      If you previously set up the auto-save data file, click below and pick that file to restore everything. Your data is safe in the file &mdash; this is just Chrome forgetting where it is.
+      The local tracker database appears empty. If GitHub cloud sync is configured, restore the latest cloud copy. Otherwise import a Full Backup JSON from a known-good download.
     </p>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <button onclick="welcomeBackLoadFile()" style="background:#1C2A1A;border:1px solid #1D9E75;color:#5DCAA5;padding:14px 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">&#128279; Load my auto-save data file</button>
+      <button onclick="welcomeBackLoadFile()" style="background:#1C2A1A;border:1px solid #1D9E75;color:#5DCAA5;padding:14px 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">☁ Restore from GitHub cloud</button>
       <button onclick="welcomeBackImport()" style="background:#1C1C1C;border:1px solid #FA873D;color:#8EDCFA;padding:14px 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;">&#11014; Import a backup JSON</button>
       <button onclick="welcomeBackDismiss()" style="background:transparent;border:1px solid var(--color-border-tertiary);color:var(--color-text-secondary);padding:8px 20px;border-radius:8px;font-size:12px;cursor:pointer;margin-top:6px;">Start fresh / dismiss</button>
     </div>
     <p style="font-size:10px;color:var(--color-text-secondary);margin-top:18px;line-height:1.5;opacity:.8;">
-      &#128161; After loading, future changes will auto-save back to the same file. You only need to do this once per Chrome session.
+      &#128161; Normal protection is automatic: verified local database + GitHub cloud sync. Recovery Points and Full Backup remain available in Admin → Data & Sync.
     </p>
   </div>
 </div>
@@ -5293,7 +5293,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
     <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
     <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
-    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v616.1</div><div class="as-sub">Admin UI + Email Promotions</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v616.2</div><div class="as-sub">Architecture cleanup</div></div>
   </section>
 
   <section class="admin-sys-grid">
@@ -16041,7 +16041,7 @@ function _tcpSyncChip(){
     el.textContent='\u26a0 '+problems.join(' \u00b7 ')+' \u2014 tap to fix in Admin';
   }catch(e){}
 }
-window.addEventListener('load',function(){setTimeout(_tcpSyncChip,2500);setInterval(_tcpSyncChip,60000);});
+// v616.2: legacy sync-chip scheduler retired; sidebar health is authoritative.
 async function _gistAutoLoad(){
   var token=localStorage.getItem(GIST_TOKEN_STORE);
   var gistId=localStorage.getItem(GIST_ID_STORE);
@@ -16066,8 +16066,7 @@ window.addEventListener('load',function(){
   _updateCloudSaveBadge();
   setInterval(_updateCloudSaveBadge,30*1000);
   setTimeout(_gistAutoLoad,1500);
-  setTimeout(_gistAutoSave,60*1000);
-  setInterval(_gistAutoSave,5*60*1000);
+  // v616.2 owns automatic cloud scheduling after all compatibility modules load.
 });
 
 function exportAllData(){
@@ -16173,253 +16172,25 @@ function updateBackupStatus(){
   }
 }
 
-// ── LINKED DATA FILE (AUTO-SAVE TO FILE SYSTEM) ────────────────────────────────
-// Uses File System Access API + IndexedDB to keep an authoritative copy of data
-// in a file the user controls, so Chrome wiping localStorage doesn't lose data.
-
+// ── LEGACY LINKED DATA FILE — RETIRED IN v616.2 ────────────────────────────────
+// v615 Recovery Points + Full Backup + verified IndexedDB + GitHub cloud sync
+// replace the old File System Access auto-save path. Compatibility stubs remain
+// so an old bookmark/button cannot throw an undefined-function error.
 var _linkedFileHandle = null;
 var _autosaveTimer = null;
 var _originalSetItem = null;
-
-// Open the IndexedDB used to remember the file handle across sessions
-function _openHandleDB(){
-  return new Promise(function(resolve,reject){
-    var req = indexedDB.open('tcp_tracker_handles', 1);
-    req.onupgradeneeded = function(){ req.result.createObjectStore('handles'); };
-    req.onsuccess = function(){ resolve(req.result); };
-    req.onerror = function(){ reject(req.error); };
-  });
+function _installAutosaveHook(){ return false; }
+function _scheduleAutosave(){ return false; }
+function _buildBackupPayload(){ return (typeof _buildCloudPayload==='function')?_buildCloudPayload():{exportedAt:new Date().toISOString(),version:'TCP_Tracker_Backup_v1',data:{}}; }
+async function _autosaveToFile(){ return false; }
+async function linkDataFile(){
+  alert('The legacy linked-file auto-save system was retired in v616.2.\n\nUse Admin → Data & Sync for GitHub cloud sync, Recovery Points, or Download Full Backup.');
+  return false;
 }
-
-function _saveHandleToIDB(handle){
-  return _openHandleDB().then(function(db){
-    return new Promise(function(resolve,reject){
-      var tx = db.transaction('handles','readwrite');
-      tx.objectStore('handles').put(handle,'main');
-      tx.oncomplete = function(){ resolve(); };
-      tx.onerror = function(){ reject(tx.error); };
-    });
-  });
-}
-
-function _loadHandleFromIDB(){
-  return _openHandleDB().then(function(db){
-    return new Promise(function(resolve,reject){
-      var tx = db.transaction('handles','readonly');
-      var req = tx.objectStore('handles').get('main');
-      req.onsuccess = function(){ resolve(req.result); };
-      req.onerror = function(){ reject(req.error); };
-    });
-  });
-}
-
-function _clearHandleFromIDB(){
-  return _openHandleDB().then(function(db){
-    return new Promise(function(resolve,reject){
-      var tx = db.transaction('handles','readwrite');
-      tx.objectStore('handles').delete('main');
-      tx.oncomplete = function(){ resolve(); };
-      tx.onerror = function(){ reject(tx.error); };
-    });
-  });
-}
-
-// Patch localStorage.setItem so every data change schedules a file write
-function _installAutosaveHook(){
-  if(_originalSetItem) return; // already installed
-  _originalSetItem = localStorage.setItem.bind(localStorage);
-  localStorage.setItem = function(key,value){
-    _originalSetItem(key,value);
-    // Skip internal tracking keys to avoid feedback loops
-    if(!key || key.indexOf('_tcp_')===0) return;
-    if(_linkedFileHandle) _scheduleAutosave();
-  };
-}
-
-function _scheduleAutosave(){
-  if(_autosaveTimer) clearTimeout(_autosaveTimer);
-  updateDataFileStatus('saving');
-  _autosaveTimer = setTimeout(_autosaveToFile, 1500);
-}
-
-function _buildBackupPayload(){
-  var dump = {};
-  for(var i=0; i<localStorage.length; i++){
-    var k = localStorage.key(i);
-    if(_isTrackerKey(k)) dump[k] = localStorage.getItem(k);
-  }
-  return {
-    exportedAt: new Date().toISOString(),
-    version: 'TCP_Tracker_Backup_v1',
-    keyCount: Object.keys(dump).length,
-    data: dump
-  };
-}
-
-async function _autosaveToFile(){
-  if(!_linkedFileHandle) return;
-  try {
-    var payload = _buildBackupPayload();
-    var writable = await _linkedFileHandle.createWritable();
-    await writable.write(JSON.stringify(payload, null, 2));
-    await writable.close();
-    (_originalSetItem || localStorage.setItem.bind(localStorage))('_tcp_last_autosave', new Date().toISOString());
-    updateDataFileStatus('saved');
-  } catch(err) {
-    console.error('[Autosave] failed:', err);
-    updateDataFileStatus('error', err.message);
-  }
-}
-
-async function linkDataFile(mode){
-  if(!window.showSaveFilePicker || !window.showOpenFilePicker){
-    alert('Your browser does not support the File System Access API.\n\nUse Chrome 86+ or Edge 86+ for this feature. The Export / Import buttons below work as a manual backup in any browser.');
-    return;
-  }
-  try {
-    var handle;
-    if(mode === 'load'){
-      // Pick existing data file to load + link
-      var handles = await window.showOpenFilePicker({
-        types: [{ description:'TCP Tracker Data', accept:{ 'application/json':['.json'] } }],
-        excludeAcceptAllOption: false,
-        multiple: false
-      });
-      handle = handles[0];
-      var file = await handle.getFile();
-      var text = await file.text();
-      var parsed;
-      try { parsed = JSON.parse(text); } catch(e){ throw new Error('File is not valid JSON: '+e.message); }
-      if(!parsed || !parsed.data || parsed.version !== 'TCP_Tracker_Backup_v1'){
-        throw new Error('File is not a TCP Tracker backup (expected version TCP_Tracker_Backup_v1).');
-      }
-      var keyCount = Object.keys(parsed.data).length;
-      var exported = parsed.exportedAt ? new Date(parsed.exportedAt).toLocaleString() : 'unknown date';
-      var ok = confirm('Load this data file and start auto-saving to it?\n\nFile: '+handle.name+'\nContains: '+keyCount+' keys\nExported: '+exported+'\n\nThis will REPLACE all current tracker data with the file contents, then auto-save every future change back to the file.');
-      if(!ok) return;
-      // Verify write permission BEFORE clearing local data
-      var perm = await handle.requestPermission({ mode:'readwrite' });
-      if(perm !== 'granted') throw new Error('Write permission not granted on the file.');
-      // Restore only tracker-owned keys; preserve local secrets and unrelated app data.
-      _installAutosaveHook();
-      _restoreTrackerKeys(parsed.data);
-      await _saveHandleToIDB(handle);
-      _linkedFileHandle = handle;
-      updateDataFileStatus('linked');
-      alert('Data file linked successfully. Page will reload to apply the restored data.');
-      location.reload();
-      return;
-    } else {
-      // Pick file location to save current data to (creates new file or overwrites)
-      handle = await window.showSaveFilePicker({
-        suggestedName: 'tcp_tracker_data.json',
-        types: [{ description:'TCP Tracker Data', accept:{ 'application/json':['.json'] } }]
-      });
-      var perm = await handle.queryPermission({ mode:'readwrite' });
-      if(perm !== 'granted'){
-        perm = await handle.requestPermission({ mode:'readwrite' });
-        if(perm !== 'granted') throw new Error('Write permission not granted.');
-      }
-      _installAutosaveHook();
-      await _saveHandleToIDB(handle);
-      _linkedFileHandle = handle;
-      updateDataFileStatus('linked');
-      // Seed the file with current data
-      await _autosaveToFile();
-      alert('Linked. The tracker will now auto-save every change to:\n\n'+handle.name+'\n\nIf Chrome wipes its storage, open the tracker, go to Admin, and click "Load existing data file" to restore.');
-    }
-  } catch(err){
-    if(err && err.name === 'AbortError') return; // user canceled the dialog
-    alert('Could not link file:\n\n'+(err.message||err));
-    console.error(err);
-  }
-}
-
-async function unlinkDataFile(){
-  if(!confirm('Disconnect the auto-save file?\n\nFuture changes will only save to Chrome storage. The file itself is not deleted.')) return;
-  try { await _clearHandleFromIDB(); } catch(e){}
-  _linkedFileHandle = null;
-  if(_autosaveTimer){ clearTimeout(_autosaveTimer); _autosaveTimer = null; }
-  updateDataFileStatus('none');
-}
-
-async function reconnectDataFile(){
-  // Called by the "Reconnect" button when permission is needed
-  try {
-    var handle = await _loadHandleFromIDB();
-    if(!handle){ updateDataFileStatus('none'); return; }
-    var perm = await handle.requestPermission({ mode:'readwrite' });
-    if(perm !== 'granted'){
-      updateDataFileStatus('pending', handle.name);
-      return;
-    }
-    _installAutosaveHook();
-    _linkedFileHandle = handle;
-    // Read file and offer to replace local data with file contents (file is source of truth)
-    try {
-      var file = await handle.getFile();
-      var text = await file.text();
-      if(text && text.length > 10){
-        var parsed = JSON.parse(text);
-        if(parsed && parsed.data && parsed.version === 'TCP_Tracker_Backup_v1'){
-          var fileKeys = Object.keys(parsed.data).length;
-          var localKeys = localStorage.length;
-          // Only auto-restore if local is empty (Chrome wiped) or file is clearly authoritative
-          if(localKeys < 3 && fileKeys > 3){
-            _restoreTrackerKeys(parsed.data);
-            updateDataFileStatus('linked');
-            alert('Data restored from auto-save file. Page will reload.');
-            location.reload();
-            return;
-          }
-        }
-      }
-    } catch(e){ console.warn('Could not read file on reconnect:', e); }
-    updateDataFileStatus('linked');
-  } catch(err){
-    console.error('Reconnect failed:', err);
-    updateDataFileStatus('error', err.message);
-  }
-}
-
-async function tryReconnectDataFile(){
-  // Run on page load — silently re-establish link if permission still granted
-  if(!window.showSaveFilePicker) return false;
-  try {
-    var handle = await _loadHandleFromIDB();
-    if(!handle) return false;
-    var perm = await handle.queryPermission({ mode:'readwrite' });
-    if(perm === 'granted'){
-      _installAutosaveHook();
-      _linkedFileHandle = handle;
-      // If local data is empty, restore from file (Chrome must have wiped)
-      try {
-        var localCount = localStorage.length;
-        if(localCount < 3){
-          var file = await handle.getFile();
-          var text = await file.text();
-          if(text && text.length > 10){
-            var parsed = JSON.parse(text);
-            if(parsed && parsed.data && parsed.version === 'TCP_Tracker_Backup_v1'){
-              _restoreTrackerKeys(parsed.data);
-              location.reload();
-              return true;
-            }
-          }
-        }
-      } catch(e){ console.warn('Auto-restore check failed:', e); }
-      updateDataFileStatus('linked');
-      return true;
-    } else {
-      // Need user gesture to re-grant permission
-      updateDataFileStatus('pending', handle.name);
-      return false;
-    }
-  } catch(err){
-    console.warn('tryReconnect failed:', err);
-    return false;
-  }
-}
+async function unlinkDataFile(){ return true; }
+async function reconnectDataFile(){ return false; }
+async function tryReconnectDataFile(){ return false; }
+function updateDataFileStatus(){ return; }
 
 // ── WELCOME-BACK MODAL ─────────────────────────────────────────────────────────
 // Shown automatically when the tracker opens with empty data (Chrome wiped storage)
@@ -16446,7 +16217,8 @@ function maybeShowWelcomeBack(){
 function welcomeBackLoadFile(){
   var m = document.getElementById('welcomeBackModal');
   if(m) m.style.display = 'none';
-  if(typeof linkDataFile === 'function') linkDataFile('load');
+  if(typeof window.loadFromCloud==='function')return window.loadFromCloud();
+  alert('Cloud restore is unavailable. Open Admin → Data & Sync or import a Full Backup JSON.');
 }
 
 function welcomeBackImport(){
@@ -17322,15 +17094,9 @@ function updateProfileSummary(ri){
 
 function init(){
   setCurrentWeekFromToday();updateDisplay();buildWeekOptional();loadAPIKey();applySavedAdminSettings();
-  // Try to reconnect to the user's auto-save data file (silent if permission still granted)
-  try {
-    tryReconnectDataFile().then(function(reconnected){
-      // If we didn't auto-reconnect AND data is empty, show the welcome-back modal
-      if(!reconnected){
-        setTimeout(maybeShowWelcomeBack, 500);
-      }
-    });
-  } catch(e) { console.warn('reconnect error',e); setTimeout(maybeShowWelcomeBack, 500); }
+  // v616.2: verified IndexedDB + GitHub cloud are the primary recovery path.
+  // Give automatic cloud restore time to run before presenting manual recovery.
+  setTimeout(maybeShowWelcomeBack,2500);
   let loaded=loadFromStorage();
   try{_rpBoot();}catch(e){}
   /* Scrub phantom reps (empty/null names) that may have crept in via old data */
@@ -66105,7 +65871,7 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
  function val(id){var e=document.getElementById(id);return e?String(e.value||'').trim():''}
  function preview(){var t=document.getElementById('comms616PreviewTitle');if(!t)return;t.textContent=val('tcp540-promo-title')||'Monthly promotion';var b=document.getElementById('comms616PreviewBody');if(b)b.textContent=val('tcp540-promo-body')||'Add the customer-facing promotion description.';var o=document.getElementById('comms616PreviewOffer');if(o)o.textContent=val('tcp540-promo-offer')||'Add a focus or offer';var c=document.getElementById('comms616PreviewCta');if(c)c.textContent=val('tcp540-promo-cta')||'Add a suggested closing question.'}
  function save(){var value={phoneProvider:val('tcp540-phone-provider')||'Not connected',emailProvider:val('tcp540-email-provider')||'Local activity-only composer',promotionTitle:val('tcp540-promo-title'),promotionOffer:val('tcp540-promo-offer'),promotionBody:val('tcp540-promo-body'),promotionCta:val('tcp540-promo-cta')};try{localStorage.setItem(STORE,JSON.stringify(value))}catch(e){alert('Could not save communication settings: '+(e&&e.message||e));return false}try{if(typeof markDirty==='function')markDirty()}catch(e){}var s=document.getElementById('comms616SaveStatus');if(s){s.textContent='✓ Saved '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});s.style.color='#A7FFC0';setTimeout(function(){s.textContent='Changes auto-protect with the tracker after save.';s.style.color=''},2400)}preview();return true}
- function stamp(){document.title='Sales Tracker v616.1 — Admin UI + Email Promotions';var v=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(v)v.textContent='Sales Tracker v616.1';try{if(window.TCP_APP)TCP_APP.version=VERSION}catch(e){};document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),valEl=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(valEl)valEl.textContent='v616.1';if(sub)sub.textContent='Admin UI + Email Promotions'}})}
+ function stamp(){document.title='Sales Tracker v616.2 — Architecture Cleanup';var v=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(v)v.textContent='Sales Tracker v616.2';try{if(window.TCP_APP)TCP_APP.version=VERSION}catch(e){};document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),valEl=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(valEl)valEl.textContent='v616.1';if(sub)sub.textContent='Admin UI + Email Promotions'}})}
  function enhanceAdmin(){var hero=document.querySelector('#tcp-v616-admin-shell .v616-admin-hero');if(hero){var h=hero.querySelector('h1');if(h)h.textContent='Admin Control Center';var p=hero.querySelector('p');if(p)p.textContent='System health, business rules, integrations, and appearance — organized with the same command-center UI as the rest of Sales Tracker.'}stamp()}
  window.tcpV6161PreviewComms=preview;window.tcpV6161SaveComms=save;
  // Keep legacy callers working while sending all saves through the new page.
@@ -66116,7 +65882,132 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
  var obs=new MutationObserver(function(){setTimeout(function(){ensurePage();ensureNav();stamp()},30)});var tb=document.getElementById('tabBar'),pa=document.getElementById('pg-admin');if(tb)obs.observe(tb,{childList:true,subtree:true});if(pa)obs.observe(pa,{childList:true,subtree:true});
  setInterval(stamp,15000);
 })();
-</script>\n</body>
+</script>\n
+
+<!-- ==========================================================================\n     SALES TRACKER v617 · MANAGER OPERATING SYSTEM\n     Turns the manager dashboard and coaching center into an actionable daily\n     leadership workflow. Additive state only: S.managerOS.\n     ========================================================================== -->
+<style id="tcp-manager-operating-system-v617-css">
+#pg-dash .v617-today{margin:14px 0 16px;border:1px solid rgba(250,135,61,.20);border-radius:18px;background:linear-gradient(145deg,rgba(250,135,61,.08),rgba(0,175,239,.035) 44%,rgba(10,15,26,.80));box-shadow:0 16px 42px rgba(0,0,0,.18);overflow:hidden}
+#pg-dash .v617-today-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.065)}
+#pg-dash .v617-kicker,#pg-coach .v617-kicker{font-size:8px;font-weight:950;letter-spacing:1.15px;text-transform:uppercase;color:#8EDCFA}
+#pg-dash .v617-today-head h2,#pg-coach .v617-plan-head h2{margin:4px 0 0;color:#F6F8FB;font-size:17px;line-height:1.1;font-weight:950;letter-spacing:-.02em}
+#pg-dash .v617-today-sub{margin-top:5px;color:#7E8B9F;font-size:9px;line-height:1.45}
+#pg-dash .v617-today-badge{flex:none;padding:6px 9px;border:1px solid rgba(93,202,165,.23);border-radius:999px;background:rgba(93,202,165,.08);color:#A8E7CF;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.6px}
+#pg-dash .v617-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 18px 4px}
+#pg-dash .v617-stat{padding:10px 11px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.018)}
+#pg-dash .v617-stat span{display:block;color:#718095;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.65px}
+#pg-dash .v617-stat strong{display:block;margin-top:5px;color:#F5F7FA;font-size:20px;line-height:1;font-weight:950}
+#pg-dash .v617-stat small{display:block;margin-top:5px;color:#7E8B9F;font-size:7.5px;line-height:1.35}
+#pg-dash .v617-work-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,.8fr);gap:10px;padding:8px 18px 16px}
+#pg-dash .v617-box{border:1px solid rgba(255,255,255,.06);border-radius:13px;background:rgba(3,7,13,.24);overflow:hidden}
+#pg-dash .v617-box-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.055)}
+#pg-dash .v617-box-head strong{color:#DCE5EC;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.65px}
+#pg-dash .v617-box-head span{color:#69778A;font-size:7.5px}
+#pg-dash .v617-queue{padding:2px 10px}
+#pg-dash .v617-row{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.045)}
+#pg-dash .v617-row:last-child{border-bottom:0}
+#pg-dash .v617-sev{width:7px;height:7px;border-radius:50%}.v617-sev.red{background:#F09595;box-shadow:0 0 10px rgba(240,149,149,.35)}.v617-sev.amber{background:#EF9F27;box-shadow:0 0 10px rgba(239,159,39,.30)}.v617-sev.green{background:#5DCAA5;box-shadow:0 0 10px rgba(93,202,165,.25)}
+#pg-dash .v617-row-main{min-width:0}
+#pg-dash .v617-row-title{display:flex;align-items:center;gap:7px;min-width:0}.v617-row-title strong{color:#ECF1F5;font-size:9.5px}.v617-due{padding:2px 6px;border-radius:999px;background:rgba(239,159,39,.08);color:#E7B767;font-size:7px;font-weight:850;white-space:nowrap}.v617-due.overdue{background:rgba(240,149,149,.10);color:#F1A1A1}
+#pg-dash .v617-row-copy{margin-top:4px;color:#7D8A9C;font-size:7.8px;line-height:1.4;white-space:normal}
+#pg-dash .v617-row-action{margin-top:4px;color:#B3C0CF;font-size:7.5px;font-weight:800}
+#pg-dash .v617-row-buttons{display:flex;gap:5px}.v617-mini-btn{min-height:27px;padding:0 8px;border:1px solid rgba(255,255,255,.09);border-radius:8px;background:rgba(255,255,255,.025);color:#B8C4D0;font-size:7.5px;font-weight:850;cursor:pointer}.v617-mini-btn:hover{border-color:rgba(250,135,61,.45);color:#fff;background:rgba(250,135,61,.08)}.v617-mini-btn.primary{border-color:rgba(0,175,239,.24);color:#9CE5FF;background:rgba(0,175,239,.06)}
+#pg-dash .v617-recognition{padding:3px 10px 8px}.v617-win{display:grid;grid-template-columns:25px minmax(0,1fr);gap:8px;align-items:center;padding:8px 2px;border-bottom:1px solid rgba(255,255,255,.045)}.v617-win:last-child{border-bottom:0}.v617-win-icon{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(93,202,165,.15),rgba(0,175,239,.08));font-size:12px}.v617-win strong{display:block;color:#EAF0F4;font-size:8.8px}.v617-win span{display:block;margin-top:3px;color:#738196;font-size:7.4px;line-height:1.35}
+#pg-dash .v617-empty{padding:16px 10px;color:#718095;font-size:8px;text-align:center}
+
+#pg-coach .v617-plan{margin:0 0 16px;border:1px solid rgba(250,135,61,.20);border-radius:18px;background:linear-gradient(145deg,rgba(250,135,61,.07),rgba(0,175,239,.025),rgba(12,17,28,.72));overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.16)}
+#pg-coach .v617-plan-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:15px 17px;border-bottom:1px solid rgba(255,255,255,.06)}
+#pg-coach .v617-plan-head p{margin:6px 0 0;color:#7C899C;font-size:8px;line-height:1.45}
+#pg-coach .v617-plan-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:12px;padding:13px 17px 16px}
+#pg-coach .v617-action-form{display:grid;grid-template-columns:minmax(0,1fr) 145px 110px;gap:8px;align-items:end}
+#pg-coach .v617-field label{display:block;margin:0 0 5px;color:#78869A;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.7px}
+#pg-coach .v617-field input,#pg-coach .v617-field select{width:100%;height:35px;padding:0 10px;border:1px solid rgba(255,255,255,.095);border-radius:9px;background:rgba(1,5,11,.52);color:#ECF2F7;font:800 9px inherit;outline:none}
+#pg-coach .v617-field input:focus,#pg-coach .v617-field select:focus{border-color:rgba(0,175,239,.50);box-shadow:0 0 0 2px rgba(0,175,239,.08)}
+#pg-coach .v617-plan-actions{display:flex;gap:7px;align-items:center;margin-top:9px}.v617-plan-actions button,#pg-coach .v617-prep-btn{min-height:33px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:rgba(255,255,255,.025);color:#C5D0DB;font-size:8px;font-weight:900;cursor:pointer}.v617-plan-actions .primary,#pg-coach .v617-prep-btn{border-color:rgba(250,135,61,.32);background:linear-gradient(135deg,rgba(250,135,61,.16),rgba(0,175,239,.07));color:#FFE0CB}
+#pg-coach .v617-plan-status{color:#79CDB1;font-size:7.5px}
+#pg-coach .v617-prep-summary{height:100%;padding:11px 12px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(1,5,11,.25)}
+#pg-coach .v617-prep-summary strong{display:block;color:#DDE5EC;font-size:9px}.v617-prep-summary span{display:block;margin-top:5px;color:#7E8B9E;font-size:7.7px;line-height:1.45}.v617-prep-summary button{margin-top:10px;width:100%}
+
+#v617PrepModal{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.79);backdrop-filter:blur(8px)}
+#v617PrepModal.open{display:flex}
+.v617-prep-card{width:min(980px,96vw);max-height:90vh;overflow:auto;border:1px solid rgba(250,135,61,.28);border-radius:19px;background:linear-gradient(160deg,#141922,#0A0E15 68%);box-shadow:0 30px 90px rgba(0,0,0,.58)}
+.v617-prep-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:17px 19px;background:rgba(14,18,26,.96);border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(12px)}
+.v617-prep-head h2{margin:5px 0 0;color:#F5F7FA;font-size:19px}.v617-prep-head p{margin:5px 0 0;color:#7E8B9D;font-size:8.5px}.v617-prep-close{width:31px;height:31px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:rgba(255,255,255,.035);color:#BBC6D1;font-size:16px;cursor:pointer}
+.v617-prep-content{padding:15px 19px 19px}.v617-prep-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:11px}.v617-prep-kpi{padding:10px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.018)}.v617-prep-kpi span{display:block;color:#758397;font-size:7px;font-weight:900;text-transform:uppercase}.v617-prep-kpi strong{display:block;margin-top:5px;color:#EEF2F6;font-size:15px}.v617-prep-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.v617-prep-section{padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.015)}.v617-prep-section h3{margin:0 0 8px;color:#DDE5EB;font-size:9px;text-transform:uppercase;letter-spacing:.55px}.v617-prep-item{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);color:#8D99A9;font-size:8px;line-height:1.45}.v617-prep-item:last-child{border-bottom:0}.v617-prep-item strong{color:#C9D3DC}.v617-prep-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}.v617-prep-foot span{color:#728095;font-size:7.5px}.v617-prep-foot div{display:flex;gap:7px}.v617-prep-foot button{min-height:32px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:rgba(255,255,255,.025);color:#C3CED8;font-size:8px;font-weight:900;cursor:pointer}.v617-prep-foot button.primary{border-color:rgba(0,175,239,.28);color:#A4E7FF;background:rgba(0,175,239,.07)}
+@media(max-width:1100px){#pg-dash .v617-work-grid,#pg-coach .v617-plan-body{grid-template-columns:1fr}#pg-dash .v617-stat-grid{grid-template-columns:repeat(2,1fr)}#pg-coach .v617-action-form{grid-template-columns:1fr 1fr}.v617-prep-kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){#pg-dash .v617-stat-grid{grid-template-columns:1fr}#pg-dash .v617-row{grid-template-columns:8px 1fr}#pg-dash .v617-row-buttons{grid-column:2}.v617-prep-grid{grid-template-columns:1fr}.v617-prep-kpis{grid-template-columns:1fr 1fr}#pg-coach .v617-action-form{grid-template-columns:1fr}}
+</style>
+<script id="tcp-manager-operating-system-v617-js">
+(function(){
+ 'use strict';
+ var VERSION='v617';
+ var baseDash=window.renderDash;
+ var baseCoach=window.renderRepCoachingCenter;
+ var lastPrep=null;
+ function s(){try{return typeof S!=='undefined'?S:(window.S||{})}catch(e){return window.S||{}}}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function obj(v){return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}
+ function clean(v){return String(v==null?'':v).trim()}
+ function n(v){var x=Number(v);return isFinite(x)?x:0}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function attr(v){return esc(v).replace(/`/g,'&#96;')}
+ function money(v){return n(v).toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})}
+ function pct(v){return Math.round(n(v))+'%'}
+ function isoToday(){return new Date().toISOString().slice(0,10)}
+ function parseDate(v){var d=v?new Date(v+'T12:00:00'):null;return d&&!isNaN(d.getTime())?d:null}
+ function ensure(){var st=s();if(!st.managerOS||typeof st.managerOS!=='object')st.managerOS={};if(!st.managerOS.actions||typeof st.managerOS.actions!=='object')st.managerOS.actions={};if(!Array.isArray(st.managerOS.preps))st.managerOS.preps=[];st.managerOS.version=1;return st.managerOS}
+ function actionFor(rep){var m=ensure(),a=m.actions[rep];return a&&typeof a==='object'?a:{text:'',due:'',status:'open',updatedAt:''}}
+ function persist(reason,immediate){try{if(typeof markDirty==='function')markDirty();else if(typeof persist==='function')persist()}catch(e){}if(immediate&&window.TCP_APP&&TCP_APP.persistence&&typeof TCP_APP.persistence.saveNow==='function'){return Promise.resolve(TCP_APP.persistence.saveNow(reason||'manager-os-v617')).catch(function(e){console.warn('[v617 save]',e);return false})}return Promise.resolve(true)}
+ function ctx(){try{return window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558&&TCP_PROJECT_SIMPLIFY_DASHBOARD_V558.selectedContext?TCP_PROJECT_SIMPLIFY_DASHBOARD_V558.selectedContext():null}catch(e){return null}}
+ function rows(){try{var c=ctx();return c&&window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558&&TCP_PROJECT_SIMPLIFY_DASHBOARD_V558.repData?TCP_PROJECT_SIMPLIFY_DASHBOARD_V558.repData(c):arr(window._ps58Rows)}catch(e){return arr(window._ps58Rows)}}
+ function statusKey(row){return clean(row&&row.weighted&&row.weighted.status&&row.weighted.status.key||'red').toLowerCase()}
+ function dueInfo(a){var due=parseDate(a&&a.due),today=parseDate(isoToday());if(!due)return{label:'',overdue:false};var days=Math.round((due-today)/86400000);return{label:days<0?Math.abs(days)+'d overdue':days===0?'due today':days===1?'due tomorrow':'due '+a.due,overdue:days<0}}
+ function reasons(row){var out=[];if(n(row.salesPace)<85)out.push('revenue pace '+pct(row.salesPace));if(n(row.callPace)<80)out.push('call coverage '+pct(row.callPace));if(n(row.artCount)>=3)out.push(n(row.artCount)+' art errors');if(n(row.creditCost)>0)out.push(money(row.creditCost)+' credits');var a=actionFor(row.name),d=dueInfo(a);if(a.status!=='done'&&d.overdue)out.push('next action overdue');return out}
+ function priority(row){var score=0,key=statusKey(row);if(key==='red')score+=55;else if(key==='yellow')score+=26;if(n(row.salesPace)<70)score+=30;else if(n(row.salesPace)<85)score+=14;if(n(row.callPace)<60)score+=25;else if(n(row.callPace)<80)score+=12;if(n(row.artCount)>=3)score+=18;if(n(row.creditCost)>0)score+=14;var a=actionFor(row.name),d=dueInfo(a);if(a.status!=='done'&&d.overdue)score+=22;else if(a.status!=='done'&&a.text)score+=5;return score}
+ function queue(){return rows().map(function(r){return{row:r,score:priority(r),reasons:reasons(r),action:actionFor(r.name)}}).filter(function(x){return x.score>0||x.action&&x.action.text&&x.action.status!=='done'}).sort(function(a,b){return b.score-a.score})}
+ function recognition(){var rs=rows(),wins=[],used={};function add(rep,title,copy,icon){if(!rep||used[rep])return;used[rep]=1;wins.push({rep:rep,title:title,copy:copy,icon:icon})}
+  var weekTop=rs.slice().sort(function(a,b){return n(b.week&&b.week.revenue)-n(a.week&&a.week.revenue)})[0];if(weekTop&&n(weekTop.week&&weekTop.week.revenue)>0)add(weekTop.name,'Weekly sales leader',money(weekTop.week.revenue)+' in the selected week','🏆');
+  var paceTop=rs.filter(function(r){return n(r.salesPace)>=100}).sort(function(a,b){return n(b.salesPace)-n(a.salesPace)})[0];if(paceTop)add(paceTop.name,'Ahead of revenue pace',pct(paceTop.salesPace)+' of paced goal','↗');
+  var coverage=rs.filter(function(r){return n(r.callPace)>=100}).sort(function(a,b){return n(b.callPace)-n(a.callPace)})[0];if(coverage)add(coverage.name,'Outreach pace standout',pct(coverage.callPace)+' of call expectation','☎');
+  var cleanRep=rs.filter(function(r){return statusKey(r)==='green'&&n(r.artCount)===0&&n(r.creditCost)===0}).sort(function(a,b){return n(b.weighted&&b.weighted.total)-n(a.weighted&&a.weighted.total)})[0];if(cleanRep)add(cleanRep.name,'Clean quality + strong score','Green status with no selected-period quality flags','✓');
+  return wins.slice(0,4)
+ }
+ function exceptions(q){var rs=rows();return{urgent:q.filter(function(x){return x.score>=45}).length,coaching:q.filter(function(x){return x.score>0&&x.score<45}).length,overdue:q.filter(function(x){return x.action&&x.action.status!=='done'&&dueInfo(x.action).overdue}).length,wins:recognition().length,red:rs.filter(function(r){return statusKey(r)==='red'}).length}}
+ function rowHtml(x){var r=x.row,a=x.action,d=dueInfo(a),sev=x.score>=45?'red':x.score>0?'amber':'green';return'<div class="v617-row"><span class="v617-sev '+sev+'"></span><div class="v617-row-main"><div class="v617-row-title"><strong>'+esc(r.name)+'</strong>'+(d.label?'<span class="v617-due '+(d.overdue?'overdue':'')+'">'+esc(d.label)+'</span>':'')+'</div><div class="v617-row-copy">'+esc(x.reasons.length?x.reasons.join(' · '):'Open manager follow-up')+'</div>'+(a.text?'<div class="v617-row-action">Next: '+esc(a.text)+'</div>':'')+'</div><div class="v617-row-buttons"><button class="v617-mini-btn primary" data-rep="'+attr(r.name)+'" onclick="_v617OpenPrep(this.dataset.rep)">1-on-1</button><button class="v617-mini-btn" data-rep="'+attr(r.name)+'" onclick="_v617OpenCoach(this.dataset.rep)">Coach</button></div></div>'}
+ function winHtml(w){return'<div class="v617-win"><div class="v617-win-icon">'+w.icon+'</div><div><strong>'+esc(w.rep)+' · '+esc(w.title)+'</strong><span>'+esc(w.copy)+'</span></div></div>'}
+ function todayHtml(){var q=queue(),w=recognition(),e=exceptions(q),c=ctx(),live=!!(c&&c.isCurrent),label=live?'Manager Today':'Manager Snapshot';return'<section class="v617-today" id="v617ManagerToday"><div class="v617-today-head"><div><div class="v617-kicker">Manager Operating System</div><h2>'+label+'</h2><div class="v617-today-sub">Prioritized from rep pace, outreach, quality, current commitments, and positive momentum'+(c&&c.selected?' · '+esc(c.selected.label||('Week '+c.weekNumber)):'')+'</div></div><span class="v617-today-badge">'+(live?'Live leadership view':'Selected period')+'</span></div><div class="v617-stat-grid"><div class="v617-stat"><span>Urgent</span><strong>'+e.urgent+'</strong><small>High-priority manager intervention</small></div><div class="v617-stat"><span>Coaching</span><strong>'+e.coaching+'</strong><small>Yellow / emerging opportunities</small></div><div class="v617-stat"><span>Overdue Actions</span><strong>'+e.overdue+'</strong><small>Commitments needing closure</small></div><div class="v617-stat"><span>Recognition</span><strong>'+e.wins+'</strong><small>Positive callouts worth reinforcing</small></div></div><div class="v617-work-grid"><div class="v617-box"><div class="v617-box-head"><strong>Priority Coaching Queue</strong><span>Highest leverage first</span></div><div class="v617-queue">'+(q.length?q.slice(0,6).map(rowHtml).join(''):'<div class="v617-empty">No coaching exceptions or open commitments in this selected period.</div>')+'</div></div><div class="v617-box"><div class="v617-box-head"><strong>Recognition Board</strong><span>Reinforce what is working</span></div><div class="v617-recognition">'+(w.length?w.map(winHtml).join(''):'<div class="v617-empty">No recognition signals yet for this selected period.</div>')+'</div></div></div></section>'}
+ function mountDashboard(){var page=document.getElementById('pg-dash');if(!page)return;var old=document.getElementById('v617ManagerToday');if(old)old.remove();var brief=page.querySelector('.ps58-brief');if(brief)brief.insertAdjacentHTML('afterend',todayHtml());else{var shell=page.querySelector('.ps58-shell');if(shell)shell.insertAdjacentHTML('afterbegin',todayHtml())}}
+ function renderDash(){var result;try{result=typeof baseDash==='function'?baseDash.apply(this,arguments):undefined}catch(e){console.warn('[v617 base dashboard render]',e)}finally{setTimeout(mountDashboard,0);setTimeout(mountDashboard,90)}return result}
+ window.renderDash=renderDash;window.renderDashWidgets=renderDash;
+ function selectedCoachRep(force){var el=document.getElementById('coachRep');return clean(force||el&&el.value||'')}
+ function latestPrep(rep){return arr(ensure().preps).filter(function(p){return p&&p.rep===rep}).sort(function(a,b){return clean(b.createdAt).localeCompare(clean(a.createdAt))})[0]||null}
+ function managerPlanHtml(rep){var a=actionFor(rep),last=latestPrep(rep);return'<section class="v617-plan" id="v617CoachPlan"><div class="v617-plan-head"><div><div class="v617-kicker">Manager Operating System</div><h2>Next Action & 1-on-1 Plan</h2><p>Keep the coaching commitment visible until it is completed, then build a current one-on-one prep from the tracker.</p></div><button class="v617-prep-btn" data-rep="'+attr(rep)+'" onclick="_v617OpenPrep(this.dataset.rep)">Prepare 1-on-1</button></div><div class="v617-plan-body"><div><div class="v617-action-form"><div class="v617-field"><label>Next action / commitment</label><input id="v617ActionText" value="'+attr(a.text||'')+'" placeholder="Example: Call 15 untouched loyalty accounts by Friday"></div><div class="v617-field"><label>Due date</label><input id="v617ActionDue" type="date" value="'+attr(a.due||'')+'"></div><div class="v617-field"><label>Status</label><select id="v617ActionStatus"><option value="open"'+(a.status!=='done'?' selected':'')+'>Open</option><option value="done"'+(a.status==='done'?' selected':'')+'>Complete</option></select></div></div><div class="v617-plan-actions"><button class="primary" data-rep="'+attr(rep)+'" onclick="_v617SaveAction(this.dataset.rep)">Save Next Action</button>'+(a.text&&a.status!=='done'?'<button data-rep="'+attr(rep)+'" onclick="_v617CompleteAction(this.dataset.rep)">Mark Complete</button>':'')+'<span class="v617-plan-status" id="v617PlanStatus"></span></div></div><div class="v617-prep-summary"><strong>Latest one-on-one prep</strong><span>'+(last?'Prepared '+new Date(last.createdAt).toLocaleString()+' · '+esc(last.period||'current period'):'No prep snapshot saved yet for this rep.')+'</span><button class="v617-prep-btn" data-rep="'+attr(rep)+'" onclick="_v617OpenPrep(this.dataset.rep)">'+(last?'Refresh Prep':'Build First Prep')+'</button></div></div></section>'}
+ function mountCoach(rep){rep=selectedCoachRep(rep);var page=document.getElementById('pg-coach');if(!page||!rep)return;var old=document.getElementById('v617CoachPlan');if(old)old.remove();var target=document.getElementById('v551-coach-performance')||page.querySelector('.coach-hero');if(target)target.insertAdjacentHTML('afterend',managerPlanHtml(rep));else{var command=page.querySelector('.coach-command');if(command)command.insertAdjacentHTML('afterbegin',managerPlanHtml(rep))}}
+ if(typeof baseCoach==='function')window.renderRepCoachingCenter=function(forceRep){var result,rep=selectedCoachRep(forceRep);try{result=baseCoach.apply(this,arguments)}catch(e){console.warn('[v617 base coaching render]',e)}finally{setTimeout(function(){mountCoach(rep)},20);setTimeout(function(){mountCoach(rep)},160);setTimeout(function(){mountCoach(rep)},520)}return result};
+ function repRow(rep){return rows().find(function(r){return r&&r.name===rep})||null}
+ function recentNotes(rep){return arr(s().coachingNotes).filter(function(x){return x&&x.rep===rep}).sort(function(a,b){return clean(b.date||b.createdAt).localeCompare(clean(a.date||a.createdAt))}).slice(0,4)}
+ function recentHR(rep){return arr(s().hrViolations).filter(function(x){return x&&x.rep===rep}).sort(function(a,b){return clean(b.date).localeCompare(clean(a.date))}).slice(0,3)}
+ function metricRows(rep){try{var score=window.TCP_TRAFFIC_SCORE_V548&&TCP_TRAFFIC_SCORE_V548.repScore?TCP_TRAFFIC_SCORE_V548.repScore(rep,'quarter',getYr(),getQ()):null;return score&&TCP_TRAFFIC_SCORE_V548.metricRows?{score:score,rows:TCP_TRAFFIC_SCORE_V548.metricRows(score)}:{score:null,rows:[]}}catch(e){return{score:null,rows:[]}}}
+ function prepData(rep){var r=repRow(rep),mr=metricRows(rep),a=actionFor(rep),notes=recentNotes(rep),hrs=recentHR(rep),wins=[],risks=[],talk=[];mr.rows.forEach(function(m){var key=clean(m.status&&m.status.key).toLowerCase();if(key==='green')wins.push(m.name+': '+m.actual);else risks.push(m.name+': '+m.actual+' ('+clean(m.status&&m.status.label||key)+')')});if(r){if(n(r.week&&r.week.revenue)>0)wins.push('Selected-week revenue: '+money(r.week.revenue));if(n(r.artCount)===0&&n(r.creditCost)===0)wins.push('No selected-period art errors or rep-fault credits.');reasons(r).forEach(function(x){if(risks.indexOf(x)<0)risks.push(x)})}if(!wins.length)wins.push('Identify one behavior or customer win to reinforce during the conversation.');if(!risks.length)risks.push('No major tracker exception is currently flagged. Focus on sustaining pace and development.');risks.slice(0,3).forEach(function(x){talk.push('What is driving '+x.toLowerCase()+' and what is the next controllable step?')});if(a.text&&a.status!=='done')talk.push('Close the loop on the current commitment: '+a.text);else talk.push('Agree on one measurable next action before the meeting ends.');talk.push('Ask what support, resource, or obstacle removal would help most this week.');var c=ctx();return{id:'prep-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),rep:rep,createdAt:new Date().toISOString(),period:c&&c.quarter?(c.quarter+' '+c.year+(c.selected?' · '+(c.selected.label||''):'')):(typeof getQ==='function'?getQ()+' '+getYr():'Current period'),score:mr.score?mr.score.total:null,status:mr.score&&mr.score.status?mr.score.status.label:'',revenue:r?n(r.total&&r.total.revenue):0,revenueGoal:r?n(r.revenueGoal):0,salesPace:r?n(r.salesPace):0,callPace:r?n(r.callPace):0,orders:r?n(r.total&&r.total.orders):0,art:r?n(r.artCount):0,credits:r?n(r.creditCost):0,wins:wins.slice(0,5),risks:risks.slice(0,5),talkingPoints:talk.slice(0,6),notes:notes.map(function(x){return{date:x.date||'',type:x.type||'Coaching',text:x.note||x.desc||''}}),hr:hrs.map(function(x){return{date:x.date||'',type:x.cat||x.type||'HR',text:x.desc||x.note||''}}),action:{text:a.text||'',due:a.due||'',status:a.status||'open'}}}
+ function ensureModal(){var modal=document.getElementById('v617PrepModal');if(modal)return modal;modal=document.createElement('div');modal.id='v617PrepModal';modal.onclick=function(e){if(e.target===modal)window._v617ClosePrep()};document.body.appendChild(modal);return modal}
+ function prepItems(list,empty){return list&&list.length?list.map(function(x){return'<div class="v617-prep-item">'+esc(x)+'</div>'}).join(''):'<div class="v617-prep-item">'+esc(empty)+'</div>'}
+ function prepNoteItems(list,empty){return list&&list.length?list.map(function(x){return'<div class="v617-prep-item"><strong>'+esc(x.date||'')+(x.type?' · '+esc(x.type):'')+'</strong><br>'+esc(x.text||'')+'</div>'}).join(''):'<div class="v617-prep-item">'+esc(empty)+'</div>'}
+ function prepHtml(p){return'<div class="v617-prep-card"><div class="v617-prep-head"><div><div class="v617-kicker">Prepared 1-on-1</div><h2>'+esc(p.rep)+'</h2><p>'+esc(p.period)+' · generated from the tracker at '+new Date(p.createdAt).toLocaleString()+'</p></div><button class="v617-prep-close" onclick="_v617ClosePrep()">×</button></div><div class="v617-prep-content"><div class="v617-prep-kpis"><div class="v617-prep-kpi"><span>Weighted Score</span><strong>'+(p.score==null?'—':Number(p.score).toFixed(1))+'</strong></div><div class="v617-prep-kpi"><span>Revenue</span><strong>'+money(p.revenue)+'</strong></div><div class="v617-prep-kpi"><span>Revenue Pace</span><strong>'+pct(p.salesPace)+'</strong></div><div class="v617-prep-kpi"><span>Call Pace</span><strong>'+pct(p.callPace)+'</strong></div><div class="v617-prep-kpi"><span>Quality</span><strong>'+p.art+' art · '+money(p.credits)+'</strong></div></div><div class="v617-prep-grid"><section class="v617-prep-section"><h3>Wins to Reinforce</h3>'+prepItems(p.wins,'No explicit win detected.')+'</section><section class="v617-prep-section"><h3>Risks / Opportunities</h3>'+prepItems(p.risks,'No major risk detected.')+'</section><section class="v617-prep-section"><h3>Suggested Talking Points</h3>'+prepItems(p.talkingPoints,'Set one measurable development goal.')+'</section><section class="v617-prep-section"><h3>Current Commitment</h3><div class="v617-prep-item">'+(p.action.text?'<strong>'+esc(p.action.text)+'</strong><br>'+(p.action.due?'Due '+esc(p.action.due)+' · ':'')+esc(p.action.status):'No open next action is currently saved.')+'</div></section><section class="v617-prep-section"><h3>Recent Coaching Notes</h3>'+prepNoteItems(p.notes,'No recent coaching notes found.')+'</section><section class="v617-prep-section"><h3>Recent HR Context</h3>'+prepNoteItems(p.hr,'No recent HR events found.')+'</section></div><div class="v617-prep-foot"><span>This snapshot is manager-only tracker data and is saved with the verified tracker state.</span><div><button onclick="_v617CopyPrep()">Copy Prep</button><button class="primary" data-rep="'+attr(p.rep)+'" onclick="_v617OpenCoach(this.dataset.rep);_v617ClosePrep()">Open Coaching Center</button></div></div></div></div>'}
+ function prepText(p){var lines=[p.rep+' — 1-on-1 Prep',p.period,'Weighted score: '+(p.score==null?'—':Number(p.score).toFixed(1))+(p.status?' · '+p.status:''),'Revenue: '+money(p.revenue)+' | Revenue pace: '+pct(p.salesPace)+' | Call pace: '+pct(p.callPace),'Orders: '+p.orders+' | Art errors: '+p.art+' | Credits: '+money(p.credits),'','WINS'];p.wins.forEach(function(x){lines.push('• '+x)});lines.push('','RISKS / OPPORTUNITIES');p.risks.forEach(function(x){lines.push('• '+x)});lines.push('','TALKING POINTS');p.talkingPoints.forEach(function(x){lines.push('• '+x)});lines.push('','CURRENT NEXT ACTION',p.action.text?(p.action.text+(p.action.due?' — due '+p.action.due:'')):'No open next action.');if(p.notes.length){lines.push('','RECENT COACHING NOTES');p.notes.forEach(function(x){lines.push('• '+x.date+' '+x.type+': '+x.text)})}return lines.join('\n')}
+ window._v617OpenPrep=function(rep){rep=clean(rep);if(!rep)return;var p=prepData(rep);lastPrep=p;var m=ensure();m.preps.push(p);if(m.preps.length>100)m.preps=m.preps.slice(-100);persist('one-on-one-prep-v617',true);var modal=ensureModal();modal.innerHTML=prepHtml(p);modal.classList.add('open')};
+ window._v617ClosePrep=function(){var modal=document.getElementById('v617PrepModal');if(modal)modal.classList.remove('open')};
+ window._v617CopyPrep=function(){if(!lastPrep)return;var txt=prepText(lastPrep);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).catch(function(){prompt('Copy this prep:',txt)});else prompt('Copy this prep:',txt)};
+ window._v617OpenCoach=function(rep){rep=clean(rep);var btn=document.querySelector('[data-coach-nav="1"]');if(typeof window.openRepCoachingCenter==='function')window.openRepCoachingCenter(btn);setTimeout(function(){var sel=document.getElementById('coachRep');if(sel){sel.value=rep;if(typeof window.renderRepCoachingCenter==='function')window.renderRepCoachingCenter(rep)}},90);[320,760,1200,1900,3000].forEach(function(ms){setTimeout(function(){mountCoach(rep)},ms)})};
+ window._v617SaveAction=function(rep){rep=clean(rep);if(!rep)return;var text=clean((document.getElementById('v617ActionText')||{}).value),due=clean((document.getElementById('v617ActionDue')||{}).value),status=clean((document.getElementById('v617ActionStatus')||{}).value)||'open',m=ensure();if(!text){delete m.actions[rep]}else m.actions[rep]={text:text,due:due,status:status,updatedAt:new Date().toISOString()};persist('manager-next-action-v617',true).then(function(){var st=document.getElementById('v617PlanStatus');if(st){st.textContent='Saved ✓';setTimeout(function(){st.textContent=''},1700)};mountCoach(rep);if(document.getElementById('pg-dash')&&document.getElementById('pg-dash').classList.contains('active'))mountDashboard()})};
+ window._v617CompleteAction=function(rep){rep=clean(rep);var m=ensure(),a=m.actions[rep];if(!a)return;a.status='done';a.completedAt=new Date().toISOString();a.updatedAt=a.completedAt;persist('manager-action-complete-v617',true).then(function(){mountCoach(rep);if(document.getElementById('pg-dash')&&document.getElementById('pg-dash').classList.contains('active'))mountDashboard()})};
+ function stamp(){document.title='Sales Tracker v617 — Manager Operating System';var v=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(v)v.textContent='Sales Tracker v617';try{if(window.TCP_APP){TCP_APP.version=VERSION;TCP_APP.manager=Object.assign({},TCP_APP.manager||{},{model:ensure,queue:queue,recognition:recognition,prepare:prepData})}}catch(e){};try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),val=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');if(l&&clean(l.textContent)==='App Version'){if(val)val.textContent='v617';if(sub)sub.textContent='Manager Operating System'}})}catch(e){}}
+ function installCoachWatch(){var page=document.getElementById('pg-coach');if(!page||page.__v617Watch)return;page.__v617Watch=true;var scheduled=false;if(typeof MutationObserver!=='undefined')new MutationObserver(function(){if(scheduled||!page.classList.contains('active')||document.getElementById('v617CoachPlan'))return;scheduled=true;setTimeout(function(){scheduled=false;var rep=selectedCoachRep();if(rep&&!document.getElementById('v617CoachPlan'))mountCoach(rep)},90)}).observe(page,{childList:true,subtree:true});setInterval(function(){if(page.classList.contains('active')&&!document.getElementById('v617CoachPlan')){var rep=selectedCoachRep();if(rep)mountCoach(rep)}},600)}
+ window.TCP_MANAGER_OS_V617={version:VERSION,model:ensure,queue:queue,recognition:recognition,prepare:prepData,mountDashboard:mountDashboard,mountCoach:mountCoach};
+ function lockVersionStamp(){stamp();var foot=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(foot&&typeof MutationObserver!=='undefined'&&!foot.__v617Watch){foot.__v617Watch=true;new MutationObserver(function(){if(clean(foot.textContent)!=='Sales Tracker v617')stamp()}).observe(foot,{childList:true,characterData:true,subtree:true})}var title=document.querySelector('title');if(title&&typeof MutationObserver!=='undefined'&&!title.__v617Watch){title.__v617Watch=true;new MutationObserver(function(){if(document.title!=='Sales Tracker v617 — Manager Operating System')stamp()}).observe(title,{childList:true,characterData:true,subtree:true})}}
+ ensure();installCoachWatch();lockVersionStamp();setTimeout(lockVersionStamp,900);setTimeout(lockVersionStamp,2200);setTimeout(lockVersionStamp,5200);setInterval(stamp,10000);window.addEventListener('load',function(){setTimeout(function(){lockVersionStamp();if(document.getElementById('pg-dash')&&document.getElementById('pg-dash').classList.contains('active'))mountDashboard()},1400)});
+})();
+</script>
+
+</body>
 </html>
 
 <style id="cx586-brief-tabs">
@@ -69508,7 +69399,7 @@ window.TCP_CALL_WORKSPACE_V593={
   setTimeout(function(){try{if(typeof reportsSetType==='function')reportsSetType('rep')}catch(e){}disableProxyMode();disableLegacyFilePauseWarning();hydrateArchive();refreshArchiveUI()},700)
  }
  window.addEventListener('load',initialize);
- setInterval(disableLegacyFilePauseWarning,30000);
+ // v616.2: legacy file-pause warning source has been retired.
  initialize();
 
  document.title=document.title.replace(/v614(?:\.1)?\b/,'v614.1').replace(/Data Reliability Audit/,'Data Reliability + Report Pipeline Repair');
@@ -70221,7 +70112,7 @@ window.TCP_CALL_WORKSPACE_V593={
  async function pruneRecovery(){var rows=await recAll();for(var i=MAX_POINTS;i<rows.length;i++)await recDelete(rows[i].id)}
  function collectAux(){var out={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(!k||k==='salesTracker_v2')continue;try{if(typeof window._isTrackerKey==='function'&&!window._isTrackerKey(k))continue}catch(e){continue}if(/(?:api[_-]?key|token|secret|password)/i.test(k))continue;out[k]=localStorage.getItem(k)}}catch(e){}return out}
 
- function ensureSidebar(){var tabs=document.getElementById('tabBar')||document.querySelector('.tabs');if(!tabs)return null;var foot=document.getElementById('tcp-v615-sidebar-footer');if(!foot){foot=document.createElement('div');foot.id='tcp-v615-sidebar-footer';foot.innerHTML='<div class="v615-sf-version">Sales Tracker v616.1</div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideLocalDot"></span><span id="v615SideLocal">Local checking…</span></div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideCloudDot"></span><span id="v615SideCloud">Cloud checking…</span></div>';tabs.appendChild(foot)}return foot}
+ function ensureSidebar(){var tabs=document.getElementById('tabBar')||document.querySelector('.tabs');if(!tabs)return null;var foot=document.getElementById('tcp-v615-sidebar-footer');if(!foot){foot=document.createElement('div');foot.id='tcp-v615-sidebar-footer';foot.innerHTML='<div class="v615-sf-version">Sales Tracker v616.2</div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideLocalDot"></span><span id="v615SideLocal">Local checking…</span></div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideCloudDot"></span><span id="v615SideCloud">Cloud checking…</span></div>';tabs.appendChild(foot)}return foot}
  function dotClass(cls){return'v615-dot '+(cls==='ok'?'ok':cls==='fail'?'fail':cls==='warn'?'warn':'info')}
  function renderSidebar(){ensureSidebar();var lm=persistentModel(),cm=cloudModel(),ld=document.getElementById('v615SideLocalDot'),cd=document.getElementById('v615SideCloudDot'),lt=document.getElementById('v615SideLocal'),ct=document.getElementById('v615SideCloud');if(ld)ld.className=dotClass(lm.cls);if(cd)cd.className=dotClass(cm.problem?(cm.key==='error'||cm.key==='off'?'fail':'warn'):(cm.key==='saving'?'info':'ok'));if(lt)lt.textContent='Local · '+lm.label+(lm.label==='Protected'?' '+fmtWhen((window._tcpPersistentMeta||{}).lastSaved):'');if(ct)ct.textContent='Cloud · '+cm.label+(localGet('_tcp_last_cloud_save')?' '+fmtWhen(localGet('_tcp_last_cloud_save')):'')}
 
@@ -70258,7 +70149,7 @@ window.TCP_CALL_WORKSPACE_V593={
  window.tcpV615DeleteRecovery=async function(id){try{var rec=await recGet(id);if(!rec)return;if(!confirm('Delete recovery point "'+(rec.name||'Recovery Point')+'"?'))return;await recDelete(id);await renderRecovery();renderStatus()}catch(e){alert('Could not delete recovery point: '+((e&&e.message)||e))}};
  window.tcpV615FullBackup=async function(){try{var p=window.TCP_PERSISTENT_DATA_V550;if(p&&typeof p.saveNow==='function')await p.saveNow('full-backup-prep-v615');if(typeof window.exportAllData!=='function')throw new Error('Full backup exporter unavailable');window.exportAllData();renderStatus()}catch(e){alert('Full backup failed: '+((e&&e.message)||e))}};
 
- function stampVersion(){document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v616').replace(/Data Consistency Repair/,'Save & Sync Control Center');try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v615';if(s)s.textContent='Save & Sync Control Center'}})}catch(e){}var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616.1'}
+ function stampVersion(){document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v616').replace(/Data Consistency Repair/,'Save & Sync Control Center');try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v615';if(s)s.textContent='Save & Sync Control Center'}})}catch(e){}var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616.2'}
  function initialize(){stampVersion();ensureSidebar();mountPanel();renderStatus();if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(function(){renderSidebar();if(document.getElementById('tcp-v615-health-panel')){renderCounts();var cm=cloudModel(),lm=persistentModel();setText('v615LocalSub',lm.sub);setText('v615CloudSub',(cm.sub||'')+(cm.detail?' · '+cm.detail:''))}},30000)}
  var baseInitAdmin=window.initAdmin;if(typeof baseInitAdmin==='function')window.initAdmin=function(){var r=baseInitAdmin.apply(this,arguments);setTimeout(function(){mountPanel();renderStatus();stampVersion()},80);return r};
  var baseLoadAdminHealth=window.loadAdminHealth;if(typeof baseLoadAdminHealth==='function')window.loadAdminHealth=function(){var r=baseLoadAdminHealth.apply(this,arguments);setTimeout(function(){mountPanel();renderStatus();stampVersion()},0);return r};
@@ -70296,7 +70187,7 @@ window.TCP_CALL_WORKSPACE_V593={
 <script id="tcp-v616-architecture-admin-js">
 (function(){
  'use strict';
- var VERSION='v616.1',SCHEMA_VERSION=616,SECTION_STORE='salesTracker_adminSection_v616',SCHEMA_STORE='salesTracker_schemaVersion';
+ var VERSION='v616.2',SCHEMA_VERSION=616,SECTION_STORE='salesTracker_adminSection_v616',SCHEMA_STORE='salesTracker_schemaVersion';
  var sectionNames={overview:'Overview',data:'Data & Sync',people:'People & Access',sales:'Sales Settings',integrations:'Integrations',layout:'Branding & Layout',advanced:'Advanced'};
  var routeBusy=false,observer=null,refreshTimer=null;
  function txt(v){return String(v==null?'':v)}
@@ -70315,8 +70206,8 @@ window.TCP_CALL_WORKSPACE_V593={
  function productionModel(){try{var c=typeof getProductionFeedSettings==='function'?getProductionFeedSettings():null;if(c&&c.url)return{key:'ok',label:'Connected',sub:c.lastRefresh?'Refreshed '+new Date(c.lastRefresh).toLocaleString():'Feed configured'}}catch(e){}return{key:'warn',label:'Not connected',sub:'No production CSV feed configured'}}
  function portalModel(){var s=liveState()||{},enabled=!!(s.repPortal&&s.repPortal.enabled);return{key:enabled?'ok':'warn',label:enabled?'Enabled':'Not enabled',sub:enabled?'Rep Portal access is available':'Configure access when needed'}}
  function overall(){var l=level(localModel().key),c=level(cloudModel().key);if(l==='fail'||c==='fail')return{label:'Needs attention',cls:'fail'};if(l==='warn'||c==='warn')return{label:'Protected · check status',cls:'warn'};return{label:'Systems protected',cls:'ok'}}
- function footerVersion(){var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616.1'}
- function stampVersion(){document.title='Sales Tracker v616.1 — Admin UI + Email Promotions';footerVersion();try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v616.1';if(s)s.textContent='Admin UI + Email Promotions'}})}catch(e){}}
+ function footerVersion(){var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616.2'}
+ function stampVersion(){document.title='Sales Tracker v616.2 — Architecture Cleanup';footerVersion();try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v616.2';if(s)s.textContent='Architecture cleanup'}})}catch(e){}}
  function runMigrations(){var prior=0;try{prior=parseInt(localStorage.getItem(SCHEMA_STORE)||'0',10)||0}catch(e){}var changed=false,s=liveState();try{if(s&&typeof s==='object'&&!Array.isArray(s.reportHistory)){s.reportHistory=[];changed=true}if(typeof S!=='undefined'&&window.S!==S)window.S=S}catch(e){}try{localStorage.removeItem('salesTracker_adminLayout_v1');localStorage.removeItem('tcp_ai_proxy_url');localStorage.removeItem('_tcp_last_autosave');localStorage.setItem(SCHEMA_STORE,String(SCHEMA_VERSION))}catch(e){}if(changed&&window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.saveNow==='function')Promise.resolve(TCP_PERSISTENT_DATA_V550.saveNow('schema-migration-v616')).catch(function(e){console.warn('[v616 migration]',e)});return{from:prior,to:SCHEMA_VERSION,changed:changed}}
  function goPage(page){var buttons=document.querySelectorAll('#tabBar .tab');for(var i=0;i<buttons.length;i++){var oc=buttons[i].getAttribute('onclick')||'';if(oc.indexOf("gt('"+page+"'")>=0){buttons[i].click();return true}}return false}
  function paneHeader(title,copy,badge){return'<div class="v616-pane-head"><div><div class="v616-pane-title">'+esc(title)+'</div><div class="v616-pane-copy">'+esc(copy)+'</div></div><span class="v616-pane-badge">'+esc(badge||'Admin')+'</span></div>'}
@@ -70335,7 +70226,7 @@ window.TCP_CALL_WORKSPACE_V593={
  '<section class="v616-admin-pane" data-v616-pane="sales">'+paneHeader('Sales Settings','Controls that change calculations, thresholds, pacing assumptions, and manager alerts.','Performance Logic')+'<div class="v616-clean-panel" style="margin-bottom:11px"><div class="v616-clean-title">Goals & set sizes</div><div class="v616-clean-sub">Quarterly rep goals and customer set sizes remain in Data Entry because they are operating data, not system configuration.</div><button class="v616-action" onclick="tcpV616Go(\'entry\')">Open Goals & Set Sizes</button></div><div class="v616-card-grid" id="v616SalesTarget"></div></section>'+
  '<section class="v616-admin-pane" data-v616-pane="integrations">'+paneHeader('Integrations','External services and feeds used by reports, forecasts, production intelligence, and AI.','Connections')+'<div class="v616-card-grid" id="v616IntegrationsTarget"></div></section>'+
  '<section class="v616-admin-pane" data-v616-pane="layout">'+paneHeader('Branding & Layout','Visual identity and navigation controls. Admin itself now follows a fixed layout for consistency.','Appearance')+'<div class="v616-card-grid" id="v616LayoutTarget"></div></section>'+
- '<section class="v616-admin-pane" data-v616-pane="advanced">'+paneHeader('Advanced','Tools you should rarely need: core JSON transfer, destructive controls, and technical architecture information.','Use Carefully')+'<div class="v616-card-grid" id="v616AdvancedTarget"><div class="v616-architecture-card"><div class="v616-clean-title">v616.1 Application Architecture</div><div class="v616-clean-sub">New development uses one application facade. Proven compatibility engines remain underneath until they can be retired safely without risking existing data.</div><div class="v616-arch-grid"><div class="v616-arch-item"><b>Canonical state</b><span>TCP_APP.state → live tracker state</span></div><div class="v616-arch-item"><b>Verified persistence</b><span>TCP_APP.persistence → IndexedDB v550 engine</span></div><div class="v616-arch-item"><b>Cloud coordinator</b><span>TCP_APP.cloud → serialized v613 GitHub sync</span></div><div class="v616-arch-item"><b>Schema migration</b><span>Schema 616 · controlled forward migrations</span></div></div></div></div></section>'+
+ '<section class="v616-admin-pane" data-v616-pane="advanced">'+paneHeader('Advanced','Tools you should rarely need: core JSON transfer, destructive controls, and technical architecture information.','Use Carefully')+'<div class="v616-card-grid" id="v616AdvancedTarget"><div class="v616-architecture-card"><div class="v616-clean-title">v616.2 Application Architecture</div><div class="v616-clean-sub">New development uses one application facade. Verified persistence and credential compatibility engines remain as protected internals; obsolete file autosave, proxy, duplicate cloud scheduling, and legacy warning paths are retired.</div><div class="v616-arch-grid"><div class="v616-arch-item"><b>Canonical state</b><span>TCP_APP.state → live tracker state</span></div><div class="v616-arch-item"><b>Verified persistence</b><span>TCP_APP.persistence → IndexedDB v550 engine</span></div><div class="v616-arch-item"><b>Cloud coordinator</b><span>TCP_APP.cloud → serialized v613 GitHub sync</span></div><div class="v616-arch-item"><b>Schema migration</b><span>Schema 616 · controlled forward migrations</span></div></div></div></div></section>'+
  '</div>'}
  function ensureShell(){var pg=document.getElementById('pg-admin');if(!pg)return null;var shell=document.getElementById('tcp-v616-admin-shell');if(!shell){shell=document.createElement('div');shell.id='tcp-v616-admin-shell';shell.innerHTML=shellHtml();var hero=pg.querySelector('.admin-sys-hero');if(hero&&hero.nextSibling)pg.insertBefore(shell,hero.nextSibling);else pg.insertBefore(shell,pg.firstChild)}return shell}
  function labelOf(el){var n=el.querySelector&&((el.querySelector('.admin-sys-kicker'))||(el.querySelector('.cknow-section-kicker'))||(el.querySelector('h2'))||(el.querySelector('h3')));return n?txt(n.textContent).trim():''}
@@ -70357,3 +70248,99 @@ window.TCP_CALL_WORKSPACE_V593={
 })();
 </script>
 
+
+
+<style id="tcp-v616-2-architecture-cleanup-css">
+#tcp-v6162-legacy-note{border:1px solid rgba(93,202,165,.18);background:rgba(93,202,165,.045);border-radius:14px;padding:12px 13px;margin-top:11px}
+#tcp-v6162-legacy-note strong{display:block;color:#B7F1DB;font-size:9.5px;text-transform:uppercase;letter-spacing:.08em}
+#tcp-v6162-legacy-note span{display:block;color:#7F8DA5;font-size:8.5px;line-height:1.55;margin-top:5px}
+</style>
+<script id="tcp-v616-2-architecture-cleanup-js">
+(function(){
+ 'use strict';
+ var VERSION='v616.2',SCHEMA_VERSION=616;
+ var AUTO_INTERVAL=5*60*1000,INITIAL_DELAY=60*1000;
+ var autoTimer=null,initialTimer=null,lastAutoAttempt='';
+ function text(v){return String(v==null?'':v)}
+ function live(){try{return typeof S!=='undefined'?S:(window.S||{})}catch(e){return window.S||{}}}
+ function persistent(){return window.TCP_PERSISTENT_DATA_V550||null}
+ function cloud(){return window.TCP_CLOUD_RELIABILITY_V613||null}
+ function saveAuto(reason){
+  lastAutoAttempt=new Date().toISOString();
+  var c=cloud();
+  if(c&&typeof c.save==='function')return Promise.resolve(c.save(false)).catch(function(e){console.warn('[v616.2 cloud auto '+(reason||'timer')+']',e);return false});
+  return Promise.resolve(false)
+ }
+ function installCloudSchedule(){
+  if(window.__tcpV6162CloudSchedule)return;
+  window.__tcpV6162CloudSchedule=true;
+  initialTimer=setTimeout(function(){saveAuto('startup-safety')},INITIAL_DELAY);
+  autoTimer=setInterval(function(){saveAuto('periodic-safety')},AUTO_INTERVAL)
+ }
+ function counts(){
+  var s=live(),arr=function(v){return Array.isArray(v)?v:[]},obj=function(v){return v&&typeof v==='object'&&!Array.isArray(v)?Object.keys(v).length:0};
+  return{reps:arr(s.reps).length,weekly:obj(s.data),customers:arr(s.customers).length,orders:arr(s.orders).length,lineItems:arr(s.orderLineItems).length,reports:arr(s.reportHistory).length,artErrors:arr(s.artErrors).length,credits:arr(s.cms).length}
+ }
+ function stamp(){
+  document.title='Sales Tracker v616.2 — Architecture Cleanup';
+  var v=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(v)v.textContent='Sales Tracker v616.2';
+  try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label');if(l&&text(l.textContent).trim()==='App Version'){var value=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');if(value)value.textContent=VERSION;if(sub)sub.textContent='Architecture cleanup'}})}catch(e){}
+  var advanced=document.querySelector('[data-v616-pane="advanced"] .v616-architecture-card');
+  if(advanced&&!document.getElementById('tcp-v6162-legacy-note')){
+   var note=document.createElement('div');note.id='tcp-v6162-legacy-note';
+   note.innerHTML='<strong>Legacy retirement status</strong><span>Retired: linked-file autosave · old file-pause warning · duplicate pre-v613 cloud timer · Cloudflare/Netlify proxy UI · legacy Data Safety surface. Retained internally: v528 large-data compatibility, v550 verified persistence, v554 device credential vault, and v613 serialized GitHub sync.</span>';
+   advanced.appendChild(note)
+  }
+ }
+ function buildFacade(){
+  var app=window.TCP_APP||{};
+  app.version=VERSION;app.schemaVersion=SCHEMA_VERSION;
+  app.state=Object.assign({},app.state||{}, {get:live,snapshot:function(){var p=persistent();return p&&typeof p.currentState==='function'?p.currentState():live()},counts:counts});
+  app.persistence=Object.assign({},app.persistence||{}, {
+   ready:function(){var p=persistent();return p&&typeof p.ready==='function'?p.ready():Promise.resolve()},
+   queue:function(){return typeof window.persist==='function'?window.persist():false},
+   saveNow:function(reason){var p=persistent();return p&&typeof p.saveNow==='function'?p.saveNow(reason||'tcp-app-v6162'):Promise.reject(new Error('Verified persistence unavailable'))},
+   loadActive:function(){var p=persistent();return p&&typeof p.loadActive==='function'?p.loadActive():Promise.resolve(null)},
+   loadPrevious:function(){var p=persistent();return p&&typeof p.loadPrevious==='function'?p.loadPrevious():Promise.resolve(null)},
+   restore:function(state,aux,source){var p=persistent();return p&&typeof p.restoreState==='function'?p.restoreState(state,aux||{},source||'tcp-app-v6162-restore'):Promise.reject(new Error('Restore engine unavailable'))},
+   diagnostics:function(){var p=persistent();return p&&typeof p.diagnostics==='function'?p.diagnostics():Promise.resolve(null)}
+  });
+  app.cloud=Object.assign({},app.cloud||{}, {
+   saveNow:function(){var c=cloud();return c&&typeof c.save==='function'?c.save(true):Promise.reject(new Error('Cloud sync unavailable'))},
+   saveAuto:saveAuto,
+   status:function(){var c=cloud();return c&&typeof c.status==='function'?c.status():{key:'unknown',label:'Unknown',sub:'Cloud coordinator unavailable',problem:true}},
+   credentials:function(){var c=cloud();return c&&typeof c.credentials==='function'?c.credentials():{}},
+   inFlight:function(){var c=cloud();return !!(c&&typeof c.inFlight==='function'&&c.inFlight())},
+   load:function(){return typeof window.loadFromCloud==='function'?window.loadFromCloud():Promise.reject(new Error('Cloud restore unavailable'))},
+   test:function(){return typeof window.testGistToken==='function'?window.testGistToken():Promise.reject(new Error('Cloud test unavailable'))},
+   lastAutoAttempt:function(){return lastAutoAttempt}
+  });
+  app.backup=Object.assign({},app.backup||{}, {
+   full:function(){return typeof window.tcpV615FullBackup==='function'?window.tcpV615FullBackup():(typeof window.exportAllData==='function'?window.exportAllData():false)},
+   createRecovery:function(){return typeof window.tcpV615CreateRecovery==='function'?window.tcpV615CreateRecovery():false}
+  });
+  app.legacy={
+   retired:['linked-file-autosave','legacy-file-pause-chip','pre-v613-cloud-timer','ai-proxy-ui','legacy-data-safety-ui'],
+   retainedCompatibility:['v528-large-data','v550-persistent-data','v554-device-credentials','v613-cloud-coordinator'],
+   fileAutosave:false,proxyMode:false
+  };
+  window.TCP_APP=app;return app
+ }
+ function retireRuntimeSurfaces(){
+  try{localStorage.removeItem('_tcp_last_autosave');localStorage.removeItem('tcp_ai_proxy_url')}catch(e){}
+  var chip=document.getElementById('tcp-sync-chip');if(chip)chip.remove();
+  var conn=document.getElementById('ai-conn');if(conn){conn.innerHTML='';conn.style.display='none'}
+  try{window.renderAIConn=function(){};window.aiConnSave=function(){};window.aiConnClear=function(){};window.renderDataSafety=function(){}}catch(e){}
+ }
+ function diagnostics(){
+  var app=buildFacade(),c=app.cloud.status(),p=window._tcpPersistentMeta||{};
+  return Promise.resolve(app.persistence.diagnostics()).catch(function(){return null}).then(function(pd){return{
+   version:VERSION,schemaVersion:SCHEMA_VERSION,canonicalState:window.S===live(),counts:counts(),persistentReady:!!p.ready,persistentMode:p.mode||'',cloudState:c.key||'',cloudProblem:!!c.problem,cloudSerialized:!!cloud(),legacy:app.legacy,persistentDiagnostics:pd
+  }})
+ }
+ window.TCP_ARCHITECTURE_V616_2={version:VERSION,installCloudSchedule:installCloudSchedule,diagnostics:diagnostics,retired:function(){return buildFacade().legacy}};
+ buildFacade();retireRuntimeSurfaces();stamp();installCloudSchedule();
+ var oldInit=window.initAdmin;if(typeof oldInit==='function')window.initAdmin=function(){var r=oldInit.apply(this,arguments);setTimeout(function(){buildFacade();retireRuntimeSurfaces();stamp()},160);return r};
+ window.addEventListener('load',function(){setTimeout(function(){buildFacade();retireRuntimeSurfaces();stamp()},850)});
+})();
+</script>
