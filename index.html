@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v616 — Architecture + Admin Simplification</title>
+<title>Sales Tracker v616.1 — Admin UI + Email Promotions</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -5293,7 +5293,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
     <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
     <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
-    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v616</div><div class="as-sub">Architecture + Admin Simplification</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v616.1</div><div class="as-sub">Admin UI + Email Promotions</div></div>
   </section>
 
   <section class="admin-sys-grid">
@@ -65968,7 +65968,155 @@ window.TCP_CUSTOMER_COMMAND_CENTER_V581={version:'v581',base:'v580',focus:'two-c
   }
 }
 </style>
-</body>
+\n<style id="tcp-v616-1-admin-comms-ui">
+/* ==========================================================================\n   SALES TRACKER v616.1 · ADMIN VISUAL ALIGNMENT + OPERATIONS COMMUNICATIONS\n   ========================================================================== */
+#pg-admin > .page-purpose{display:none!important}
+#tcp-v616-admin-shell{max-width:none!important;margin:0!important;padding:0 0 34px!important}
+#tcp-v616-admin-shell .v616-admin-hero{
+  min-height:154px;padding:24px 26px 24px 92px!important;margin:0 0 14px!important;
+  border-radius:22px!important;border:1px solid rgba(255,255,255,.10)!important;
+  background:radial-gradient(circle at 7% 12%,rgba(250,135,61,.30),transparent 28%),radial-gradient(circle at 92% 12%,rgba(0,175,239,.16),transparent 30%),linear-gradient(145deg,rgba(23,27,42,.98),rgba(12,15,26,.98))!important;
+  box-shadow:0 20px 56px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+#tcp-v616-admin-shell .v616-admin-hero:before{
+  content:"⚙";position:absolute;left:26px;top:28px;width:48px;height:48px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#FA873D,#00AFEF);color:#fff;font-size:22px;font-weight:900;
+  box-shadow:0 12px 28px rgba(250,135,61,.22),inset 0 1px 0 rgba(255,255,255,.24)
+}
+#tcp-v616-admin-shell .v616-admin-kicker{font-size:10px!important;letter-spacing:.16em!important;color:#8EDCFA!important}
+#tcp-v616-admin-shell .v616-admin-hero h1{font-size:30px!important;margin-bottom:8px!important}
+#tcp-v616-admin-shell .v616-admin-hero p{font-size:12.5px!important;max-width:780px!important;color:#A7B0C4!important}
+#tcp-v616-admin-shell .v616-release-pill{font-size:9px!important;padding:8px 11px!important;background:rgba(93,202,165,.08)!important}
+
+/* Reports-Hub-style internal tabs */
+#tcp-v616-admin-shell .v616-admin-nav{
+  position:sticky!important;top:74px!important;z-index:70!important;display:flex!important;gap:22px!important;overflow-x:auto!important;
+  margin:0 0 18px!important;padding:0 10px!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.09)!important;
+  border-radius:0!important;background:rgba(8,10,17,.90)!important;box-shadow:none!important;backdrop-filter:blur(18px)!important
+}
+#tcp-v616-admin-shell .v616-admin-nav-btn{
+  position:relative!important;border:0!important;border-radius:0!important;background:transparent!important;color:#9BA5B9!important;
+  padding:13px 2px 12px!important;font-size:11px!important;font-weight:850!important;letter-spacing:.01em!important
+}
+#tcp-v616-admin-shell .v616-admin-nav-btn:hover{color:#fff!important;background:transparent!important}
+#tcp-v616-admin-shell .v616-admin-nav-btn.active{color:#fff!important;background:transparent!important;box-shadow:none!important}
+#tcp-v616-admin-shell .v616-admin-nav-btn.active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#FA873D;border-radius:3px 3px 0 0;box-shadow:0 0 12px rgba(250,135,61,.45)}
+
+#tcp-v616-admin-shell .v616-pane-head{align-items:center!important;margin:0 0 12px!important;padding:0 2px!important}
+#tcp-v616-admin-shell .v616-pane-title{font-size:20px!important;letter-spacing:-.025em!important}
+#tcp-v616-admin-shell .v616-pane-copy{font-size:11.5px!important;color:#909AAF!important;max-width:850px!important}
+#tcp-v616-admin-shell .v616-pane-badge{font-size:9px!important;padding:6px 9px!important}
+
+#tcp-v616-admin-shell .v616-overview-grid{gap:12px!important;margin-bottom:14px!important}
+#tcp-v616-admin-shell .v616-overview-card{
+  min-height:126px!important;padding:17px 18px!important;border-radius:19px!important;border:1px solid rgba(255,255,255,.09)!important;
+  background:linear-gradient(145deg,rgba(26,31,48,.94),rgba(16,19,31,.96))!important;box-shadow:0 14px 36px rgba(0,0,0,.22)!important;overflow:hidden
+}
+#tcp-v616-admin-shell .v616-overview-card:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#FA873D,#00AFEF)}
+#tcp-v616-admin-shell .v616-ov-label{font-size:9px!important;color:#8995AA!important}
+#tcp-v616-admin-shell .v616-ov-value{font-size:18px!important;margin-top:10px!important}
+#tcp-v616-admin-shell .v616-ov-sub{font-size:10px!important;color:#8993A8!important;margin-top:8px!important}
+#tcp-v616-admin-shell .v616-clean-panel,#tcp-v616-admin-shell .v616-people-card,#tcp-v616-admin-shell .v616-architecture-card{
+  border-radius:20px!important;border:1px solid rgba(255,255,255,.09)!important;background:linear-gradient(145deg,rgba(24,28,43,.94),rgba(14,17,29,.96))!important;
+  box-shadow:0 16px 38px rgba(0,0,0,.20)!important;padding:18px!important
+}
+#tcp-v616-admin-shell .v616-clean-title{font-size:12px!important;letter-spacing:.065em!important}
+#tcp-v616-admin-shell .v616-clean-sub{font-size:10.5px!important;color:#8C97AC!important}
+#tcp-v616-admin-shell .v616-action{font-size:10.5px!important;padding:9px 12px!important;border-radius:11px!important}
+#tcp-v616-admin-shell .v616-footprint-item{padding:11px!important;border-radius:13px!important;background:rgba(255,255,255,.032)!important}
+#tcp-v616-admin-shell .v616-footprint-item strong{font-size:15px!important}
+#tcp-v616-admin-shell .v616-footprint-item span{font-size:8.5px!important}
+#tcp-v616-admin-shell .v616-map-card{border-radius:17px!important;padding:14px!important;background:linear-gradient(145deg,rgba(24,28,43,.80),rgba(14,17,29,.88))!important}
+#tcp-v616-admin-shell .v616-map-icon{width:36px!important;height:36px!important;border-radius:12px!important;font-size:16px!important}
+#tcp-v616-admin-shell .v616-map-title{font-size:11px!important}
+#tcp-v616-admin-shell .v616-map-copy{font-size:9.5px!important;color:#8490A5!important}
+
+/* Existing Admin cards inherit the same program UI */
+#tcp-v616-admin-shell .v616-card-grid{gap:14px!important}
+#tcp-v616-admin-shell .v616-card-grid > .admin-sys-panel,
+#tcp-v616-admin-shell .v616-card-grid > .advanced-card,
+#tcp-v616-admin-shell .v616-card-grid > .cknow-panel{
+  border-radius:20px!important;background:linear-gradient(145deg,rgba(24,28,43,.95),rgba(14,17,29,.97))!important;
+  border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 16px 40px rgba(0,0,0,.22)!important;padding:18px!important
+}
+#tcp-v616-admin-shell .admin-panel-head{align-items:flex-start!important}
+#tcp-v616-admin-shell .admin-panel-head h2{font-size:17px!important;letter-spacing:-.02em!important}
+#tcp-v616-admin-shell .admin-panel-head p{font-size:11px!important;color:#929CB0!important;line-height:1.55!important}
+#tcp-v616-admin-shell .admin-sys-kicker{font-size:9px!important;letter-spacing:.14em!important;color:#8EDCFA!important}
+#tcp-v616-admin-shell .admin-label,#tcp-v616-admin-shell .ig label{font-size:9.5px!important;color:#9AA5BA!important;letter-spacing:.075em!important}
+#tcp-v616-admin-shell input:not([type=checkbox]):not([type=color]),#tcp-v616-admin-shell select,#tcp-v616-admin-shell textarea{
+  min-height:40px!important;padding:9px 11px!important;border-radius:11px!important;background:rgba(8,10,18,.72)!important;border:1px solid rgba(255,255,255,.12)!important;color:#F4F7FC!important
+}
+#tcp-v616-admin-shell textarea{min-height:78px!important}
+#tcp-v616-admin-shell input:focus,#tcp-v616-admin-shell select:focus,#tcp-v616-admin-shell textarea:focus{border-color:rgba(250,135,61,.75)!important;box-shadow:0 0 0 3px rgba(250,135,61,.11)!important;outline:0!important}
+#tcp-v616-admin-shell .admin-button-row .sbtn,#tcp-v616-admin-shell .sbtn{min-height:36px!important;padding:8px 12px!important;border-radius:10px!important}
+#tcp-v616-admin-shell .admin-note,#tcp-v616-admin-shell .admin-feed-status{font-size:10.5px!important;line-height:1.5!important;border-radius:12px!important}
+
+/* Dedicated Operations communication workspace */
+#pg-comms{padding-bottom:34px}
+#pg-comms .page-purpose{display:none!important}
+.comms616-hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 25px;margin:3px 0 16px;border:1px solid rgba(255,255,255,.10);border-radius:23px;background:radial-gradient(circle at 8% 12%,rgba(250,135,61,.30),transparent 29%),radial-gradient(circle at 93% 12%,rgba(0,175,239,.17),transparent 31%),linear-gradient(145deg,rgba(23,27,42,.98),rgba(12,15,26,.98));box-shadow:0 20px 55px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.06)}
+.comms616-hero-left{display:flex;align-items:center;gap:16px}.comms616-icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#FA873D,#00AFEF);font-size:22px;box-shadow:0 13px 30px rgba(250,135,61,.23),inset 0 1px 0 rgba(255,255,255,.24)}
+.comms616-kicker{font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;color:#8EDCFA;margin-bottom:5px}.comms616-hero h1{margin:0 0 6px;font-size:27px;line-height:1.05;color:#fff;font-weight:950;letter-spacing:-.035em}.comms616-hero p{margin:0;color:#A2ACC0;font-size:11.5px;line-height:1.55;max-width:760px}.comms616-mode{border:1px solid rgba(0,175,239,.25);background:rgba(0,175,239,.07);color:#A9E9FF;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.comms616-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr);gap:15px;align-items:start}
+#pg-comms #tcp540-integrations-admin{margin:0!important;border-radius:21px!important;border:1px solid rgba(255,255,255,.09)!important;background:linear-gradient(145deg,rgba(24,28,43,.96),rgba(14,17,29,.98))!important;box-shadow:0 17px 42px rgba(0,0,0,.22)!important;padding:19px!important;color:#F2F5FB!important}
+#pg-comms #tcp540-integrations-admin>h3,#pg-comms #tcp540-integrations-admin>p{display:none!important}
+.comms616-section{padding:15px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.024);margin-bottom:13px}.comms616-section:last-child{margin-bottom:0}.comms616-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}.comms616-section-kicker{font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.13em;color:#8EDCFA}.comms616-section-title{font-size:15px;font-weight:950;color:#fff;margin-top:3px}.comms616-section-copy{font-size:9.5px;color:#8692A8;line-height:1.5;margin-top:4px;max-width:700px}.comms616-chip{font-size:8px;font-weight:900;color:#FFD3B8;border:1px solid rgba(250,135,61,.28);background:rgba(250,135,61,.08);border-radius:999px;padding:5px 8px;white-space:nowrap}
+#pg-comms .tcp540-admin-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}#pg-comms .tcp540-admin-field{display:flex!important;flex-direction:column!important;gap:5px!important}#pg-comms .tcp540-admin-field label{font-size:9px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.075em!important;color:#9AA5BA!important}#pg-comms .tcp540-admin-field input,#pg-comms .tcp540-admin-field select,#pg-comms .tcp540-admin-field textarea{width:100%!important;min-height:42px!important;padding:10px 11px!important;border-radius:11px!important;background:rgba(7,9,16,.72)!important;border:1px solid rgba(255,255,255,.12)!important;color:#F5F7FC!important;font:inherit!important}#pg-comms .tcp540-admin-field textarea{min-height:112px!important;resize:vertical!important}#pg-comms .tcp540-admin-field input:focus,#pg-comms .tcp540-admin-field select:focus,#pg-comms .tcp540-admin-field textarea:focus{outline:0!important;border-color:rgba(250,135,61,.75)!important;box-shadow:0 0 0 3px rgba(250,135,61,.11)!important}
+#pg-comms .tcp540-admin-actions{display:flex!important;align-items:center!important;gap:10px!important;flex-wrap:wrap!important;margin-top:14px!important}#pg-comms .tcp540-admin-actions .sbtn{background:linear-gradient(135deg,#FA873D,#00AFEF)!important;color:#fff!important;border-color:rgba(255,255,255,.13)!important;padding:9px 14px!important;border-radius:11px!important;font-weight:850!important}#pg-comms .tcp540-admin-actions .status{font-size:10px!important;color:#8792A7!important}
+.comms616-preview{position:sticky;top:92px;border:1px solid rgba(255,255,255,.09);border-radius:21px;background:linear-gradient(145deg,rgba(24,28,43,.95),rgba(14,17,29,.97));box-shadow:0 17px 42px rgba(0,0,0,.22);padding:18px}.comms616-preview-kicker{font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.13em;color:#8EDCFA}.comms616-preview h2{font-size:16px;margin:4px 0 5px;color:#fff}.comms616-preview-sub{font-size:9.5px;color:#7F8BA1;line-height:1.5;margin-bottom:14px}.comms616-message{border:1px solid rgba(255,255,255,.075);border-radius:15px;background:rgba(5,7,13,.42);overflow:hidden}.comms616-message-head{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.07)}.comms616-message-label{font-size:7.5px;text-transform:uppercase;letter-spacing:.11em;color:#707E96;font-weight:900}.comms616-message-title{font-size:13px;font-weight:900;color:#F4F7FD;margin-top:4px}.comms616-message-body{padding:12px;font-size:10.5px;color:#AAB3C5;line-height:1.65}.comms616-preview-focus{margin-top:10px;padding:9px 10px;border-left:2px solid #FA873D;background:rgba(250,135,61,.055);border-radius:0 10px 10px 0;font-size:9.5px;color:#D8C0AE}.comms616-preview-cta{margin-top:10px;font-size:10px;color:#A9E9FF;font-weight:750}.comms616-note{margin-top:13px;padding:10px;border:1px solid rgba(93,202,165,.14);background:rgba(93,202,165,.045);border-radius:12px;font-size:9px;color:#9FCDBB;line-height:1.5}
+@media(max-width:1050px){.comms616-layout{grid-template-columns:1fr}.comms616-preview{position:relative;top:auto}}
+@media(max-width:720px){#tcp-v616-admin-shell .v616-admin-hero{padding:76px 18px 18px!important}#tcp-v616-admin-shell .v616-admin-hero:before{left:18px;top:18px}.comms616-hero{align-items:flex-start;flex-direction:column}.comms616-layout{grid-template-columns:1fr}#pg-comms .tcp540-admin-grid{grid-template-columns:1fr!important}.comms616-mode{align-self:flex-start}}
+</style>
+<script id="tcp-v616-1-admin-comms-js">
+(function(){
+ 'use strict';
+ var VERSION='v616.1',STORE='tcp_call_integrations_v540';
+ function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+ function defaults(){var rows=[
+  ['New-Year Uniform Reset','Refresh employee uniforms, onboarding kits, and core branded apparel before first-quarter hiring.','Program refresh and inventory review'],
+  ['Spring Event Readiness','Plan spring trade shows, crews, recruiting events, and customer appreciation apparel.','Event apparel and promotional planning'],
+  ['Spring Workwear Upgrade','Prepare crews for changing weather with layered workwear, caps, and safety apparel.','Layering and workwear review'],
+  ['Summer Program Planning','Lock in summer uniforms, event apparel, and outdoor promotional products before peak season.','Early summer program planning'],
+  ['Employee Appreciation','Build employee appreciation, company picnic, and warm-weather uniform programs.','Apparel and branded giveaway ideas'],
+  ['Heat & Hydration','Review breathable workwear, caps, safety options, and branded drinkware for summer teams.','Summer workwear and hydration'],
+  ['Midyear Reorder Review','Use first-half order history to identify uniform, headwear, and program replenishment needs.','Reorder and program review'],
+  ['Fall Crew Readiness','Prepare fall layers, outerwear, recruiting apparel, and updated employee gear.','Fall apparel planning'],
+  ['Holiday Planning Window','Start holiday gifts, customer appreciation, and year-end employee programs before production fills.','Holiday program planning'],
+  ['Cold-Weather Workwear','Review jackets, hoodies, beanies, safety layers, and winter uniform needs.','Cold-weather apparel'],
+  ['Year-End Recognition','Finalize employee recognition, customer gifts, awards, and holiday apparel.','Recognition and gift programs'],
+  ['Next-Year Program Setup','Plan next year’s uniform, onboarding, safety, and promotional calendar while current needs are fresh.','Annual program planning']
+ ];var r=rows[new Date().getMonth()]||rows[0];return{phoneProvider:'Not connected',emailProvider:'Local activity-only composer',promotionTitle:r[0],promotionBody:r[1],promotionOffer:r[2],promotionCta:'Would it help if I put together a focused recommendation or reorder review?'}}
+ function settings(){var d=defaults(),s={};try{s=JSON.parse(localStorage.getItem(STORE)||'{}')||{}}catch(e){};return{phoneProvider:s.phoneProvider||d.phoneProvider,emailProvider:s.emailProvider||d.emailProvider,promotionTitle:s.promotionTitle||d.promotionTitle,promotionBody:s.promotionBody||d.promotionBody,promotionOffer:s.promotionOffer||d.promotionOffer,promotionCta:s.promotionCta||d.promotionCta}}
+ function options(list,current){return list.map(function(x){return'<option '+(x===current?'selected':'')+'>'+esc(x)+'</option>'}).join('')}
+ function formHtml(){var s=settings();return'<section id="tcp540-integrations-admin" class="tcp540-admin">'+
+  '<div class="comms616-section"><div class="comms616-section-head"><div><div class="comms616-section-kicker">Communication setup</div><div class="comms616-section-title">Call & email workspace</div><div class="comms616-section-copy">Choose how the tracker should treat phone and email activity. Current email remains activity-only and is recorded to customer history.</div></div><span class="comms616-chip">Local workflow</span></div><div class="tcp540-admin-grid">'+
+   '<div class="tcp540-admin-field"><label>Phone provider</label><select id="tcp540-phone-provider">'+options(['Not connected','Microsoft Teams Phone','RingCentral','Dialpad','Aircall','Other'],s.phoneProvider)+'</select></div>'+
+   '<div class="tcp540-admin-field"><label>Email provider</label><select id="tcp540-email-provider">'+options(['Local activity-only composer','Microsoft 365','Other'],s.emailProvider)+'</select></div></div></div>'+
+  '<div class="comms616-section"><div class="comms616-section-head"><div><div class="comms616-section-kicker">Monthly email template</div><div class="comms616-section-title">Customer promotion focus</div><div class="comms616-section-copy">This is the reusable monthly message framework available to the customer call/email workflow.</div></div><span class="comms616-chip">Editable template</span></div><div class="tcp540-admin-grid">'+
+   '<div class="tcp540-admin-field"><label>Promotion title</label><input id="tcp540-promo-title" value="'+esc(s.promotionTitle)+'" oninput="tcpV6161PreviewComms()"></div>'+
+   '<div class="tcp540-admin-field"><label>Promotion focus / offer</label><input id="tcp540-promo-offer" value="'+esc(s.promotionOffer)+'" oninput="tcpV6161PreviewComms()"></div>'+
+   '<div class="tcp540-admin-field" style="grid-column:1/-1"><label>Promotion description</label><textarea id="tcp540-promo-body" oninput="tcpV6161PreviewComms()">'+esc(s.promotionBody)+'</textarea></div>'+
+   '<div class="tcp540-admin-field" style="grid-column:1/-1"><label>Suggested closing question</label><input id="tcp540-promo-cta" value="'+esc(s.promotionCta)+'" oninput="tcpV6161PreviewComms()"></div></div>'+
+   '<div class="tcp540-admin-actions"><button class="sbtn" onclick="tcpV6161SaveComms()">✓ Save Email & Promotion Settings</button><span class="status" id="comms616SaveStatus">Changes auto-protect with the tracker after save.</span></div></div></section>'}
+ function pageHtml(){return'<section class="comms616-hero"><div class="comms616-hero-left"><span class="comms616-icon">✉</span><div><div class="comms616-kicker">Sales Operations</div><h1>Email & Promotions</h1><p>Manage the customer communication setup and the reusable monthly promotion template outside of Admin.</p></div></div><span class="comms616-mode">Activity-only email</span></section><div class="comms616-layout"><div id="comms616FormHost"></div><aside class="comms616-preview"><div class="comms616-preview-kicker">Live template preview</div><h2>Customer-facing message</h2><div class="comms616-preview-sub">A quick read of what the monthly promotion framework communicates.</div><div class="comms616-message"><div class="comms616-message-head"><div class="comms616-message-label">Promotion</div><div class="comms616-message-title" id="comms616PreviewTitle"></div></div><div class="comms616-message-body"><div id="comms616PreviewBody"></div><div class="comms616-preview-focus"><strong>Focus:</strong> <span id="comms616PreviewOffer"></span></div><div class="comms616-preview-cta" id="comms616PreviewCta"></div></div></div><div class="comms616-note">The current composer records email activity inside the tracker; it does not transmit an external email unless a future live provider integration is added.</div></aside></div>'}
+ function ensurePage(){var page=document.getElementById('pg-comms');if(!page){page=document.createElement('div');page.id='pg-comms';page.className='page';page.innerHTML=pageHtml();var wrap=document.querySelector('.wrap');if(wrap)wrap.appendChild(page);else document.body.appendChild(page)}var host=document.getElementById('comms616FormHost');var old=document.getElementById('tcp540-integrations-admin');if(old&&old.parentElement!==host)old.remove();if(host&&!document.getElementById('tcp540-integrations-admin'))host.innerHTML=formHtml();preview();return page}
+ function ensureNav(){var items=document.querySelector('#tabBar .nav-group[data-group="opsg"] .nav-group-items');if(!items)return false;var btn=document.getElementById('navComms616');if(btn)return true;btn=document.createElement('button');btn.id='navComms616';btn.className='tab nav-item';btn.setAttribute('onclick',"gt('comms',this)");btn.dataset.navLabel='Email & Promotions';btn.dataset.navIcon='✉️';btn.innerHTML='<span class="nav-icon">✉️</span><span class="nav-label">Email & Promotions</span>';items.appendChild(btn);return true}
+ function val(id){var e=document.getElementById(id);return e?String(e.value||'').trim():''}
+ function preview(){var t=document.getElementById('comms616PreviewTitle');if(!t)return;t.textContent=val('tcp540-promo-title')||'Monthly promotion';var b=document.getElementById('comms616PreviewBody');if(b)b.textContent=val('tcp540-promo-body')||'Add the customer-facing promotion description.';var o=document.getElementById('comms616PreviewOffer');if(o)o.textContent=val('tcp540-promo-offer')||'Add a focus or offer';var c=document.getElementById('comms616PreviewCta');if(c)c.textContent=val('tcp540-promo-cta')||'Add a suggested closing question.'}
+ function save(){var value={phoneProvider:val('tcp540-phone-provider')||'Not connected',emailProvider:val('tcp540-email-provider')||'Local activity-only composer',promotionTitle:val('tcp540-promo-title'),promotionOffer:val('tcp540-promo-offer'),promotionBody:val('tcp540-promo-body'),promotionCta:val('tcp540-promo-cta')};try{localStorage.setItem(STORE,JSON.stringify(value))}catch(e){alert('Could not save communication settings: '+(e&&e.message||e));return false}try{if(typeof markDirty==='function')markDirty()}catch(e){}var s=document.getElementById('comms616SaveStatus');if(s){s.textContent='✓ Saved '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});s.style.color='#A7FFC0';setTimeout(function(){s.textContent='Changes auto-protect with the tracker after save.';s.style.color=''},2400)}preview();return true}
+ function stamp(){document.title='Sales Tracker v616.1 — Admin UI + Email Promotions';var v=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(v)v.textContent='Sales Tracker v616.1';try{if(window.TCP_APP)TCP_APP.version=VERSION}catch(e){};document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),valEl=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(valEl)valEl.textContent='v616.1';if(sub)sub.textContent='Admin UI + Email Promotions'}})}
+ function enhanceAdmin(){var hero=document.querySelector('#tcp-v616-admin-shell .v616-admin-hero');if(hero){var h=hero.querySelector('h1');if(h)h.textContent='Admin Control Center';var p=hero.querySelector('p');if(p)p.textContent='System health, business rules, integrations, and appearance — organized with the same command-center UI as the rest of Sales Tracker.'}stamp()}
+ window.tcpV6161PreviewComms=preview;window.tcpV6161SaveComms=save;
+ // Keep legacy callers working while sending all saves through the new page.
+ window._call540SaveAdmin=save;
+ function init(){ensurePage();ensureNav();enhanceAdmin()}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(init,80)});else setTimeout(init,20);
+ window.addEventListener('load',function(){setTimeout(init,450);setTimeout(init,1200)});
+ var obs=new MutationObserver(function(){setTimeout(function(){ensurePage();ensureNav();stamp()},30)});var tb=document.getElementById('tabBar'),pa=document.getElementById('pg-admin');if(tb)obs.observe(tb,{childList:true,subtree:true});if(pa)obs.observe(pa,{childList:true,subtree:true});
+ setInterval(stamp,15000);
+})();
+</script>\n</body>
 </html>
 
 <style id="cx586-brief-tabs">
@@ -70073,7 +70221,7 @@ window.TCP_CALL_WORKSPACE_V593={
  async function pruneRecovery(){var rows=await recAll();for(var i=MAX_POINTS;i<rows.length;i++)await recDelete(rows[i].id)}
  function collectAux(){var out={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(!k||k==='salesTracker_v2')continue;try{if(typeof window._isTrackerKey==='function'&&!window._isTrackerKey(k))continue}catch(e){continue}if(/(?:api[_-]?key|token|secret|password)/i.test(k))continue;out[k]=localStorage.getItem(k)}}catch(e){}return out}
 
- function ensureSidebar(){var tabs=document.getElementById('tabBar')||document.querySelector('.tabs');if(!tabs)return null;var foot=document.getElementById('tcp-v615-sidebar-footer');if(!foot){foot=document.createElement('div');foot.id='tcp-v615-sidebar-footer';foot.innerHTML='<div class="v615-sf-version">Sales Tracker v616</div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideLocalDot"></span><span id="v615SideLocal">Local checking…</span></div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideCloudDot"></span><span id="v615SideCloud">Cloud checking…</span></div>';tabs.appendChild(foot)}return foot}
+ function ensureSidebar(){var tabs=document.getElementById('tabBar')||document.querySelector('.tabs');if(!tabs)return null;var foot=document.getElementById('tcp-v615-sidebar-footer');if(!foot){foot=document.createElement('div');foot.id='tcp-v615-sidebar-footer';foot.innerHTML='<div class="v615-sf-version">Sales Tracker v616.1</div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideLocalDot"></span><span id="v615SideLocal">Local checking…</span></div><div class="v615-sf-row"><span class="v615-dot info" id="v615SideCloudDot"></span><span id="v615SideCloud">Cloud checking…</span></div>';tabs.appendChild(foot)}return foot}
  function dotClass(cls){return'v615-dot '+(cls==='ok'?'ok':cls==='fail'?'fail':cls==='warn'?'warn':'info')}
  function renderSidebar(){ensureSidebar();var lm=persistentModel(),cm=cloudModel(),ld=document.getElementById('v615SideLocalDot'),cd=document.getElementById('v615SideCloudDot'),lt=document.getElementById('v615SideLocal'),ct=document.getElementById('v615SideCloud');if(ld)ld.className=dotClass(lm.cls);if(cd)cd.className=dotClass(cm.problem?(cm.key==='error'||cm.key==='off'?'fail':'warn'):(cm.key==='saving'?'info':'ok'));if(lt)lt.textContent='Local · '+lm.label+(lm.label==='Protected'?' '+fmtWhen((window._tcpPersistentMeta||{}).lastSaved):'');if(ct)ct.textContent='Cloud · '+cm.label+(localGet('_tcp_last_cloud_save')?' '+fmtWhen(localGet('_tcp_last_cloud_save')):'')}
 
@@ -70110,7 +70258,7 @@ window.TCP_CALL_WORKSPACE_V593={
  window.tcpV615DeleteRecovery=async function(id){try{var rec=await recGet(id);if(!rec)return;if(!confirm('Delete recovery point "'+(rec.name||'Recovery Point')+'"?'))return;await recDelete(id);await renderRecovery();renderStatus()}catch(e){alert('Could not delete recovery point: '+((e&&e.message)||e))}};
  window.tcpV615FullBackup=async function(){try{var p=window.TCP_PERSISTENT_DATA_V550;if(p&&typeof p.saveNow==='function')await p.saveNow('full-backup-prep-v615');if(typeof window.exportAllData!=='function')throw new Error('Full backup exporter unavailable');window.exportAllData();renderStatus()}catch(e){alert('Full backup failed: '+((e&&e.message)||e))}};
 
- function stampVersion(){document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v616').replace(/Data Consistency Repair/,'Save & Sync Control Center');try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v615';if(s)s.textContent='Save & Sync Control Center'}})}catch(e){}var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616'}
+ function stampVersion(){document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v616').replace(/Data Consistency Repair/,'Save & Sync Control Center');try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v615';if(s)s.textContent='Save & Sync Control Center'}})}catch(e){}var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616.1'}
  function initialize(){stampVersion();ensureSidebar();mountPanel();renderStatus();if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(function(){renderSidebar();if(document.getElementById('tcp-v615-health-panel')){renderCounts();var cm=cloudModel(),lm=persistentModel();setText('v615LocalSub',lm.sub);setText('v615CloudSub',(cm.sub||'')+(cm.detail?' · '+cm.detail:''))}},30000)}
  var baseInitAdmin=window.initAdmin;if(typeof baseInitAdmin==='function')window.initAdmin=function(){var r=baseInitAdmin.apply(this,arguments);setTimeout(function(){mountPanel();renderStatus();stampVersion()},80);return r};
  var baseLoadAdminHealth=window.loadAdminHealth;if(typeof baseLoadAdminHealth==='function')window.loadAdminHealth=function(){var r=baseLoadAdminHealth.apply(this,arguments);setTimeout(function(){mountPanel();renderStatus();stampVersion()},0);return r};
@@ -70148,7 +70296,7 @@ window.TCP_CALL_WORKSPACE_V593={
 <script id="tcp-v616-architecture-admin-js">
 (function(){
  'use strict';
- var VERSION='v616',SCHEMA_VERSION=616,SECTION_STORE='salesTracker_adminSection_v616',SCHEMA_STORE='salesTracker_schemaVersion';
+ var VERSION='v616.1',SCHEMA_VERSION=616,SECTION_STORE='salesTracker_adminSection_v616',SCHEMA_STORE='salesTracker_schemaVersion';
  var sectionNames={overview:'Overview',data:'Data & Sync',people:'People & Access',sales:'Sales Settings',integrations:'Integrations',layout:'Branding & Layout',advanced:'Advanced'};
  var routeBusy=false,observer=null,refreshTimer=null;
  function txt(v){return String(v==null?'':v)}
@@ -70167,8 +70315,8 @@ window.TCP_CALL_WORKSPACE_V593={
  function productionModel(){try{var c=typeof getProductionFeedSettings==='function'?getProductionFeedSettings():null;if(c&&c.url)return{key:'ok',label:'Connected',sub:c.lastRefresh?'Refreshed '+new Date(c.lastRefresh).toLocaleString():'Feed configured'}}catch(e){}return{key:'warn',label:'Not connected',sub:'No production CSV feed configured'}}
  function portalModel(){var s=liveState()||{},enabled=!!(s.repPortal&&s.repPortal.enabled);return{key:enabled?'ok':'warn',label:enabled?'Enabled':'Not enabled',sub:enabled?'Rep Portal access is available':'Configure access when needed'}}
  function overall(){var l=level(localModel().key),c=level(cloudModel().key);if(l==='fail'||c==='fail')return{label:'Needs attention',cls:'fail'};if(l==='warn'||c==='warn')return{label:'Protected · check status',cls:'warn'};return{label:'Systems protected',cls:'ok'}}
- function footerVersion(){var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616'}
- function stampVersion(){document.title='Sales Tracker v616 — Architecture + Admin Simplification';footerVersion();try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v616';if(s)s.textContent='Architecture + Admin Simplification'}})}catch(e){}}
+ function footerVersion(){var ver=document.querySelector('#tcp-v615-sidebar-footer .v615-sf-version');if(ver)ver.textContent='Sales Tracker v616.1'}
+ function stampVersion(){document.title='Sales Tracker v616.1 — Admin UI + Email Promotions';footerVersion();try{document.querySelectorAll('.admin-status-card').forEach(function(card){var l=card.querySelector('.as-label'),v=card.querySelector('.as-value'),s=card.querySelector('.as-sub');if(l&&l.textContent.trim()==='App Version'){if(v)v.textContent='v616.1';if(s)s.textContent='Admin UI + Email Promotions'}})}catch(e){}}
  function runMigrations(){var prior=0;try{prior=parseInt(localStorage.getItem(SCHEMA_STORE)||'0',10)||0}catch(e){}var changed=false,s=liveState();try{if(s&&typeof s==='object'&&!Array.isArray(s.reportHistory)){s.reportHistory=[];changed=true}if(typeof S!=='undefined'&&window.S!==S)window.S=S}catch(e){}try{localStorage.removeItem('salesTracker_adminLayout_v1');localStorage.removeItem('tcp_ai_proxy_url');localStorage.removeItem('_tcp_last_autosave');localStorage.setItem(SCHEMA_STORE,String(SCHEMA_VERSION))}catch(e){}if(changed&&window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.saveNow==='function')Promise.resolve(TCP_PERSISTENT_DATA_V550.saveNow('schema-migration-v616')).catch(function(e){console.warn('[v616 migration]',e)});return{from:prior,to:SCHEMA_VERSION,changed:changed}}
  function goPage(page){var buttons=document.querySelectorAll('#tabBar .tab');for(var i=0;i<buttons.length;i++){var oc=buttons[i].getAttribute('onclick')||'';if(oc.indexOf("gt('"+page+"'")>=0){buttons[i].click();return true}}return false}
  function paneHeader(title,copy,badge){return'<div class="v616-pane-head"><div><div class="v616-pane-title">'+esc(title)+'</div><div class="v616-pane-copy">'+esc(copy)+'</div></div><span class="v616-pane-badge">'+esc(badge||'Admin')+'</span></div>'}
@@ -70187,7 +70335,7 @@ window.TCP_CALL_WORKSPACE_V593={
  '<section class="v616-admin-pane" data-v616-pane="sales">'+paneHeader('Sales Settings','Controls that change calculations, thresholds, pacing assumptions, and manager alerts.','Performance Logic')+'<div class="v616-clean-panel" style="margin-bottom:11px"><div class="v616-clean-title">Goals & set sizes</div><div class="v616-clean-sub">Quarterly rep goals and customer set sizes remain in Data Entry because they are operating data, not system configuration.</div><button class="v616-action" onclick="tcpV616Go(\'entry\')">Open Goals & Set Sizes</button></div><div class="v616-card-grid" id="v616SalesTarget"></div></section>'+
  '<section class="v616-admin-pane" data-v616-pane="integrations">'+paneHeader('Integrations','External services and feeds used by reports, forecasts, production intelligence, and AI.','Connections')+'<div class="v616-card-grid" id="v616IntegrationsTarget"></div></section>'+
  '<section class="v616-admin-pane" data-v616-pane="layout">'+paneHeader('Branding & Layout','Visual identity and navigation controls. Admin itself now follows a fixed layout for consistency.','Appearance')+'<div class="v616-card-grid" id="v616LayoutTarget"></div></section>'+
- '<section class="v616-admin-pane" data-v616-pane="advanced">'+paneHeader('Advanced','Tools you should rarely need: core JSON transfer, destructive controls, and technical architecture information.','Use Carefully')+'<div class="v616-card-grid" id="v616AdvancedTarget"><div class="v616-architecture-card"><div class="v616-clean-title">v616 Application Architecture</div><div class="v616-clean-sub">New development now uses one application facade. Proven compatibility engines remain underneath until they can be retired safely without risking existing data.</div><div class="v616-arch-grid"><div class="v616-arch-item"><b>Canonical state</b><span>TCP_APP.state → live tracker state</span></div><div class="v616-arch-item"><b>Verified persistence</b><span>TCP_APP.persistence → IndexedDB v550 engine</span></div><div class="v616-arch-item"><b>Cloud coordinator</b><span>TCP_APP.cloud → serialized v613 GitHub sync</span></div><div class="v616-arch-item"><b>Schema migration</b><span>Schema 616 · controlled forward migrations</span></div></div></div></div></section>'+
+ '<section class="v616-admin-pane" data-v616-pane="advanced">'+paneHeader('Advanced','Tools you should rarely need: core JSON transfer, destructive controls, and technical architecture information.','Use Carefully')+'<div class="v616-card-grid" id="v616AdvancedTarget"><div class="v616-architecture-card"><div class="v616-clean-title">v616.1 Application Architecture</div><div class="v616-clean-sub">New development uses one application facade. Proven compatibility engines remain underneath until they can be retired safely without risking existing data.</div><div class="v616-arch-grid"><div class="v616-arch-item"><b>Canonical state</b><span>TCP_APP.state → live tracker state</span></div><div class="v616-arch-item"><b>Verified persistence</b><span>TCP_APP.persistence → IndexedDB v550 engine</span></div><div class="v616-arch-item"><b>Cloud coordinator</b><span>TCP_APP.cloud → serialized v613 GitHub sync</span></div><div class="v616-arch-item"><b>Schema migration</b><span>Schema 616 · controlled forward migrations</span></div></div></div></div></section>'+
  '</div>'}
  function ensureShell(){var pg=document.getElementById('pg-admin');if(!pg)return null;var shell=document.getElementById('tcp-v616-admin-shell');if(!shell){shell=document.createElement('div');shell.id='tcp-v616-admin-shell';shell.innerHTML=shellHtml();var hero=pg.querySelector('.admin-sys-hero');if(hero&&hero.nextSibling)pg.insertBefore(shell,hero.nextSibling);else pg.insertBefore(shell,pg.firstChild)}return shell}
  function labelOf(el){var n=el.querySelector&&((el.querySelector('.admin-sys-kicker'))||(el.querySelector('.cknow-section-kicker'))||(el.querySelector('h2'))||(el.querySelector('h3')));return n?txt(n.textContent).trim():''}
