@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v613 — Cloud Reliability Repair</title>
+<title>Sales Tracker v614 — Data Reliability Audit</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -5295,7 +5295,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
     <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
     <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
-    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v613</div><div class="as-sub">Admin tools + themes</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v614</div><div class="as-sub">Data reliability + cloud sync</div></div>
   </section>
 
   <section class="admin-sys-grid">
@@ -68913,3 +68913,270 @@ window.TCP_CALL_WORKSPACE_V593={
 })();
 </script>
 
+
+
+<script id="tcp-data-reliability-v614-js">
+/* ========================================================================== 
+   SALES TRACKER v614 · DATA RELIABILITY AUDIT
+   Focus: close silent persistence gaps without changing the business model.
+
+   Repairs:
+   1) New reps enter the normal dirty/persist/cloud pipeline immediately.
+   2) Profile photo changes enter persistence/cloud through persistPhoto().
+   3) Rep customer-list upload/clear enters persistent IndexedDB + cloud sync.
+   4) Report History is promoted from memory-only to verified S state so it
+      survives reloads, browser restarts, IndexedDB recovery, and cloud backup.
+   5) Tracker-owned auxiliary localStorage writes are watched and debounced into
+      the primary persistence pipeline (excluding internal/status/core keys).
+   6) Empty/no-roster tracker states can never qualify as "real data" for cloud
+      overwrite protection.
+   7) The legacy session-only clear control is truthfully labeled so it cannot be
+      mistaken for a persistent destructive reset.
+   ========================================================================== */
+(function(){
+ 'use strict';
+ var VERSION='v614';
+ var auxCommitTimer=null;
+ var reportHydrated=false;
+ var auditMeta={
+  version:VERSION,
+  installedAt:new Date().toISOString(),
+  auxiliaryWritesObserved:0,
+  lastAuxiliaryKey:'',
+  lastAuxiliaryCommit:'',
+  reportHistoryHydrated:false,
+  fixes:['add-rep','profile-photo','customer-list','report-history','auxiliary-storage','empty-cloud-guard','clear-control-label']
+ };
+
+ function clone(value){
+  if(value==null||typeof value!=='object')return value;
+  try{return typeof structuredClone==='function'?structuredClone(value):JSON.parse(JSON.stringify(value))}
+  catch(e){try{return JSON.parse(JSON.stringify(value))}catch(x){return value}}
+ }
+ function commit(reason){
+  try{
+   if(typeof window.markDirty==='function')window.markDirty();
+   else if(typeof window.persist==='function')window.persist();
+  }catch(e){console.warn('[v614 commit '+reason+']',e)}
+ }
+ function isAuxiliaryTrackerKey(key){
+  key=String(key||'');
+  if(!key)return false;
+  if(key===window.STORE_KEY||key==='salesTracker_v2')return false;
+  if(key.indexOf('_tcp_')===0)return false;
+  try{if(typeof window._isTrackerKey==='function'&&!window._isTrackerKey(key))return false}catch(e){return false}
+  return true
+ }
+ function scheduleAuxiliaryCommit(key){
+  auditMeta.auxiliaryWritesObserved++;
+  auditMeta.lastAuxiliaryKey=String(key||'');
+  if(auxCommitTimer)clearTimeout(auxCommitTimer);
+  auxCommitTimer=setTimeout(function(){
+   auxCommitTimer=null;
+   auditMeta.lastAuxiliaryCommit=new Date().toISOString();
+   commit('auxiliary:'+auditMeta.lastAuxiliaryKey)
+  },900)
+ }
+
+ /* Capture tracker-owned localStorage-only modules in the same verified snapshot
+    system. The file-link autosave hook may later shadow localStorage.setItem;
+    it captures this wrapped prototype as its original setter, so both systems
+    continue to work together. */
+ try{
+  var storageProto=(typeof Storage!=='undefined'&&Storage.prototype)||null;
+  if(storageProto&&!storageProto.__tcpV614ReliabilityWrapped){
+   var baseSet=storageProto.setItem;
+   var baseRemove=storageProto.removeItem;
+   storageProto.setItem=function(key,value){
+    var result=baseSet.apply(this,arguments);
+    try{if(this===window.localStorage&&isAuxiliaryTrackerKey(key))scheduleAuxiliaryCommit(key)}catch(e){}
+    return result
+   };
+   storageProto.removeItem=function(key){
+    var result=baseRemove.apply(this,arguments);
+    try{if(this===window.localStorage&&isAuxiliaryTrackerKey(key))scheduleAuxiliaryCommit(key)}catch(e){}
+    return result
+   };
+   storageProto.__tcpV614ReliabilityWrapped=true
+  }
+ }catch(e){console.warn('[v614 storage observer]',e)}
+
+ /* Cloud overwrite guard: an empty roster is NEVER a valid authoritative cloud
+    state. Evaluate the live state (not a possibly stale compatibility mirror). */
+ window._trackerHasRealData=function(){
+  try{
+   var state=(typeof window._liveTrackerStateForCloud==='function')?window._liveTrackerStateForCloud():(window.S||{});
+   if(!state||!Array.isArray(state.reps))return false;
+   var names=state.reps.map(function(r){return r&&String(r.name||'').trim()}).filter(Boolean);
+   if(!names.length)return false;
+   var defaultNames=['Alex M','Jordan K','Sam T','Casey B','Riley J','Brett Gaspard'];
+   var isDefaultSeed=names.length===defaultNames.length&&defaultNames.every(function(name){return names.indexOf(name)>=0});
+   function objCount(value){return value&&typeof value==='object'?Object.keys(value).length:0}
+   function arrCount(value){return Array.isArray(value)?value.length:0}
+   var meaningful=
+    objCount(state.goals)+objCount(state.data)+
+    arrCount(state.cms)+arrCount(state.artErrors)+arrCount(state.hrViolations)+arrCount(state.coachingNotes)+
+    arrCount(state.dailySales)+arrCount(state.customers)+arrCount(state.orders)+arrCount(state.orderLineItems)+
+    arrCount(state.reportHistory)+arrCount(state.activities)+arrCount(state.crmActivities);
+   if(state.reviews&&Array.isArray(state.reviews.rows))meaningful+=state.reviews.rows.length;
+   return !isDefaultSeed||meaningful>0
+  }catch(e){console.warn('[v614 real-data guard]',e);return false}
+ };
+
+ /* New rep creation previously redrew successfully but did not dirty the state. */
+ var baseAddRep=window.addRep;
+ if(typeof baseAddRep==='function'){
+  window.addRep=function(){
+   var before=(window.S&&Array.isArray(S.reps))?S.reps.length:0;
+   var result=baseAddRep.apply(this,arguments);
+   var after=(window.S&&Array.isArray(S.reps))?S.reps.length:0;
+   if(after!==before)commit('add-rep');
+   return result
+  }
+ }
+
+ /* Photo bytes are intentionally stored outside the core state. Promote those
+    writes into the normal snapshot/cloud cadence instead of waiting for a later
+    unrelated edit or the five-minute cloud interval. */
+ var basePersistPhoto=window.persistPhoto;
+ if(typeof basePersistPhoto==='function'){
+  window.persistPhoto=function(){
+   var result=basePersistPhoto.apply(this,arguments);
+   commit('profile-photo');
+   return result
+  }
+ }
+
+ /* Rep customer-list upload/clear was locally mirrored but could leave the v550
+    active IndexedDB record stale; a cleared list could therefore reappear. */
+ var baseSaveCustomerList=window.saveCustomerList;
+ if(typeof baseSaveCustomerList==='function'){
+  window.saveCustomerList=function(){
+   var result=baseSaveCustomerList.apply(this,arguments);
+   commit('rep-customer-list-save');
+   return result
+  }
+ }
+ var baseClearCustomerList=window.clearCustomerList;
+ if(typeof baseClearCustomerList==='function'){
+  window.clearCustomerList=function(ri){
+   var before=-1;
+   try{before=(S.reps[ri]&&S.reps[ri].profile&&Array.isArray(S.reps[ri].profile.customerList))?S.reps[ri].profile.customerList.length:-1}catch(e){}
+   var result=baseClearCustomerList.apply(this,arguments);
+   var after=-1;
+   try{after=(S.reps[ri]&&S.reps[ri].profile&&Array.isArray(S.reps[ri].profile.customerList))?S.reps[ri].profile.customerList.length:-1}catch(e){}
+   if(before!==after&&after===0)commit('rep-customer-list-clear');
+   return result
+  }
+ }
+
+ /* Report History was memory-only. Keep the existing UI variable for backward
+    compatibility, but make S.reportHistory the persistent source of truth. */
+ function syncReportHistory(reason,dirty){
+  try{
+   if(typeof reportHistory==='undefined'||!window.S)return false;
+   S.reportHistory=clone(Array.isArray(reportHistory)?reportHistory:[]);
+   if(dirty!==false)commit('report-history:'+reason);
+   return true
+  }catch(e){console.warn('[v614 report history sync]',e);return false}
+ }
+ function hydrateReportHistory(){
+  if(reportHydrated)return;
+  try{
+   if(typeof reportHistory==='undefined'||!window.S)return;
+   var saved=Array.isArray(S.reportHistory)?S.reportHistory:null;
+   if(saved&&saved.length){reportHistory=clone(saved)}
+   else if(Array.isArray(reportHistory)&&reportHistory.length){S.reportHistory=clone(reportHistory)}
+   else{S.reportHistory=[]}
+   reportHydrated=true;
+   auditMeta.reportHistoryHydrated=true;
+   try{if(typeof window.updateHistoryBadge==='function')window.updateHistoryBadge()}catch(e){}
+   try{
+    var page=document.getElementById('pg-history');
+    if(page&&page.classList.contains('active')&&typeof window.renderHistory==='function')window.renderHistory()
+   }catch(e){}
+  }catch(e){console.warn('[v614 report history hydrate]',e)}
+ }
+ var baseSaveReport=window.saveReport;
+ if(typeof baseSaveReport==='function'){
+  window.saveReport=function(){var result=baseSaveReport.apply(this,arguments);syncReportHistory('save',true);return result}
+ }
+ var baseDeleteHistoryItem=window.deleteHistoryItem;
+ if(typeof baseDeleteHistoryItem==='function'){
+  window.deleteHistoryItem=function(){var result=baseDeleteHistoryItem.apply(this,arguments);syncReportHistory('delete',true);return result}
+ }
+ var baseClearHistory=window.clearHistory;
+ if(typeof baseClearHistory==='function'){
+  window.clearHistory=function(){
+   var before=(typeof reportHistory!=='undefined'&&Array.isArray(reportHistory))?reportHistory.length:0;
+   var result=baseClearHistory.apply(this,arguments);
+   var after=(typeof reportHistory!=='undefined'&&Array.isArray(reportHistory))?reportHistory.length:0;
+   if(after!==before)syncReportHistory('clear',true);
+   return result
+  }
+ }
+
+ function relabelLegacyClear(){
+  try{
+   var buttons=document.querySelectorAll('button[onclick="confirmClearData()"]');
+   Array.prototype.forEach.call(buttons,function(button){
+    button.textContent='Clear current session';
+    button.title='Session-only diagnostic clear. Saved data returns after reload; use backups/recovery tools for persistent resets.'
+   })
+  }catch(e){}
+ }
+
+ function mountHealth(){
+  try{
+   var host=document.getElementById('adminHealthList');if(!host)return;
+   var old=document.getElementById('tcp-v614-health-row');if(old)old.remove();
+   var row=document.createElement('div');row.className='health-row';row.id='tcp-v614-health-row';
+   var count=0;try{count=typeof reportHistory!=='undefined'&&Array.isArray(reportHistory)?reportHistory.length:0}catch(e){}
+   row.innerHTML='<span>Data Reliability</span><span class="health-ok">v614 protected · '+count+' reports persisted</span>';
+   host.appendChild(row)
+  }catch(e){}
+ }
+ var baseLoadAdminHealth=window.loadAdminHealth;
+ if(typeof baseLoadAdminHealth==='function'){
+  window.loadAdminHealth=function(){var result=baseLoadAdminHealth.apply(this,arguments);setTimeout(function(){relabelLegacyClear();mountHealth()},0);return result}
+ }
+ var baseInitAdmin=window.initAdmin;
+ if(typeof baseInitAdmin==='function'){
+  window.initAdmin=function(){var result=baseInitAdmin.apply(this,arguments);setTimeout(function(){relabelLegacyClear();mountHealth()},120);return result}
+ }
+
+ function readyHydrate(){
+  var p=null;
+  try{p=window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.ready==='function'?TCP_PERSISTENT_DATA_V550.ready():null}catch(e){}
+  Promise.resolve(p).catch(function(){return null}).then(function(){hydrateReportHistory();relabelLegacyClear();mountHealth()})
+ }
+ window.addEventListener('load',function(){setTimeout(readyHydrate,0);setTimeout(function(){relabelLegacyClear();mountHealth()},900)});
+ readyHydrate();
+
+ document.title=document.title.replace(/v613\b/,'v614').replace(/Cloud Reliability Repair/,'Data Reliability Audit');
+ window.TCP_DATA_RELIABILITY_V614={
+  version:VERSION,
+  meta:auditMeta,
+  commit:commit,
+  hydrateReportHistory:hydrateReportHistory,
+  syncReportHistory:function(){return syncReportHistory('manual',true)},
+  hasRealData:function(){return window._trackerHasRealData()},
+  audit:function(){
+   var historyCount=0;try{historyCount=typeof reportHistory!=='undefined'&&Array.isArray(reportHistory)?reportHistory.length:0}catch(e){}
+   return{
+    version:VERSION,
+    persistentReady:!!(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.isReady==='function'&&TCP_PERSISTENT_DATA_V550.isReady()),
+    dirty:window._dataDirty===true,
+    roster:Array.isArray(window.S&&S.reps)?S.reps.length:0,
+    reportHistory:historyCount,
+    reportHistoryInState:Array.isArray(window.S&&S.reportHistory)?S.reportHistory.length:0,
+    cloudEligible:window._trackerHasRealData(),
+    auxiliaryWritesObserved:auditMeta.auxiliaryWritesObserved,
+    lastAuxiliaryKey:auditMeta.lastAuxiliaryKey,
+    lastAuxiliaryCommit:auditMeta.lastAuxiliaryCommit,
+    fixes:auditMeta.fixes.slice()
+   }
+  }
+ };
+})();
+</script>
