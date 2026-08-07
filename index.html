@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sales Tracker v614.1 — Data Reliability + Report Pipeline Repair</title>
+<title>Sales Tracker v614.2 — Report History Persistence Fix</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -5295,7 +5295,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
     <div class="admin-status-card"><div class="as-label">AI Engine</div><div class="as-value" id="adminAIStatus">Checking</div><div class="as-sub">Anthropic reports</div></div>
     <div class="admin-status-card"><div class="as-label">Production Feed</div><div class="as-value" id="adminProdStatus">Not connected</div><div class="as-sub" id="adminProdSub">Google Sheet CSV</div></div>
     <div class="admin-status-card"><div class="as-label">Branding</div><div class="as-value" id="adminBrandStatus">Default</div><div class="as-sub">Logo + report identity</div></div>
-    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v614.1</div><div class="as-sub">Data reliability + report pipeline repair</div></div>
+    <div class="admin-status-card"><div class="as-label">App Version</div><div class="as-value">v614.2</div><div class="as-sub">Report history persistence fix</div></div>
   </section>
 
   <section class="admin-sys-grid">
@@ -69386,3 +69386,187 @@ window.TCP_CALL_WORKSPACE_V593={
 })();
 </script>
 
+
+
+<style id="tcp-v614-2-version-stamp-css">
+/* v614.2: visible deployed-build stamp in the desktop sidebar footer */
+#tabBar.tabs:after{
+  content:"CLOUD SYNC • ADMIN\A SALES TRACKER v614.2" !important;
+  white-space:pre-line !important;
+  line-height:1.55 !important;
+}
+</style>
+
+<script id="tcp-v614-2-report-history-persistence-js">
+/* ========================================================================== 
+   SALES TRACKER v614.2 · REPORT HISTORY PERSISTENCE FIX
+
+   Root cause found during live validation:
+   The tracker state is declared with `let S`, so it is a global lexical binding
+   but is NOT automatically exposed as window.S. The v614/v614.1 reliability
+   adapters referenced window.S and therefore could generate reports while
+   silently failing to attach Report History to the persistent tracker state.
+
+   v614.2:
+   - exposes the canonical S object on window without cloning/replacing it;
+   - makes reportHistory <-> S.reportHistory synchronization explicit;
+   - forces a verified v550 save after every report archive write;
+   - waits for the archive flush after Report Hub generation;
+   - hydrates Report History only after persistent boot finishes;
+   - adds diagnostics so the archive can be verified from Admin/dev tools;
+   - stamps the deployed version in the sidebar footer.
+   ========================================================================== */
+(function(){
+ 'use strict';
+ var VERSION='v614.2';
+ var archiveFlush=Promise.resolve(true);
+
+ /* IMPORTANT: S is the canonical object. Expose the SAME reference; never copy. */
+ try{if(typeof S!=='undefined')window.S=S}catch(e){console.warn('[v614.2 expose state]',e)}
+
+ function clone(v){
+  if(v==null||typeof v!=='object')return v;
+  try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}
+  catch(e){try{return JSON.parse(JSON.stringify(v))}catch(x){return v}}
+ }
+ function localRows(){try{return typeof reportHistory!=='undefined'&&Array.isArray(reportHistory)?reportHistory:[]}catch(e){return []}}
+ function stateRows(){try{return typeof S!=='undefined'&&Array.isArray(S.reportHistory)?S.reportHistory:[]}catch(e){return []}}
+ function setRows(rows){
+  rows=clone(Array.isArray(rows)?rows:[]);
+  try{reportHistory=clone(rows)}catch(e){}
+  try{if(typeof S!=='undefined')S.reportHistory=clone(rows)}catch(e){}
+  try{window.S=S}catch(e){}
+  return rows
+ }
+ function mergedRows(){
+  var all=stateRows().concat(localRows()),seen={},out=[];
+  all.forEach(function(r){
+   if(!r||typeof r!=='object')return;
+   var key=String(r.id==null?'':r.id)+'|'+String(r.name||'')+'|'+String(r.savedAt||r.ts||'');
+   if(seen[key])return;seen[key]=1;out.push(r)
+  });
+  out.sort(function(a,b){return Number(b&&b.id||0)-Number(a&&a.id||0)});
+  return out
+ }
+ function refresh(){
+  try{if(typeof updateHistoryBadge==='function')updateHistoryBadge()}catch(e){}
+  try{if(typeof renderHubHistory==='function')renderHubHistory()}catch(e){}
+  try{
+   var pg=document.getElementById('pg-history');
+   if(pg&&pg.classList.contains('active')&&typeof renderHistory==='function')renderHistory()
+  }catch(e){}
+ }
+ function syncNow(){var rows=mergedRows();setRows(rows);refresh();return rows}
+
+ async function persistNow(reason){
+  syncNow();
+  try{if(typeof markDirty==='function')markDirty();else if(typeof persist==='function')persist()}catch(e){console.warn('[v614.2 dirty]',e)}
+  if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.saveNow==='function'){
+   try{
+    await TCP_PERSISTENT_DATA_V550.saveNow('report-history-'+String(reason||'save')+'-v614.2');
+    window._tcp_last_report_history_save=new Date().toISOString();
+    return true
+   }catch(e){
+    window._tcp_last_report_history_error=String((e&&e.message)||e);
+    console.warn('[v614.2 report persistence]',e);
+    return false
+   }
+  }
+  return false
+ }
+ function queuePersist(reason){
+  archiveFlush=archiveFlush.catch(function(){return true}).then(function(){return persistNow(reason)});
+  window._tcpReportArchiveSavePromise=archiveFlush;
+  return archiveFlush
+ }
+
+ /* Re-wrap the current saveReport (which creates the actual report row). */
+ var baseSaveReport=window.saveReport;
+ if(typeof baseSaveReport==='function'){
+  window.saveReport=function(){
+   var id=baseSaveReport.apply(this,arguments);
+   syncNow();
+   queuePersist('save');
+   return id
+  }
+ }
+
+ var baseDelete=window.deleteHistoryItem;
+ if(typeof baseDelete==='function'){
+  window.deleteHistoryItem=function(){
+   var result=baseDelete.apply(this,arguments);
+   syncNow();queuePersist('delete');return result
+  }
+ }
+ var baseClear=window.clearHistory;
+ if(typeof baseClear==='function'){
+  window.clearHistory=function(){
+   var before=localRows().length,result=baseClear.apply(this,arguments),after=localRows().length;
+   if(after!==before){syncNow();queuePersist('clear')}
+   return result
+  }
+ }
+
+ /* Report Hub does not report success until the archive has reached v550. */
+ var baseHubRun=window.reportsRunSelected;
+ if(typeof baseHubRun==='function'){
+  window.reportsRunSelected=async function(){
+   var result=await baseHubRun.apply(this,arguments);
+   await queuePersist('report-hub-complete');
+   var st=document.getElementById('reportsBuilderStatus');
+   if(st)st.textContent='Report generated and saved to History ✓';
+   return result
+  }
+ }
+
+ async function hydrateAfterBoot(){
+  try{
+   if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.ready==='function')await TCP_PERSISTENT_DATA_V550.ready()
+  }catch(e){console.warn('[v614.2 persistent boot]',e)}
+  try{if(typeof S!=='undefined')window.S=S}catch(e){}
+  var saved=stateRows();
+  if(saved.length)setRows(saved);
+  else if(localRows().length)setRows(localRows());
+  else setRows([]);
+  refresh();
+  return localRows()
+ }
+
+ function stampVersion(){
+  document.title=document.title.replace(/Sales Tracker v[0-9.]+/,'Sales Tracker v614.2').replace(/Data Reliability \+ Report Pipeline Repair/,'Report History Persistence Fix');
+  try{
+   document.querySelectorAll('.admin-status-card').forEach(function(card){
+    var label=card.querySelector('.as-label'),value=card.querySelector('.as-value'),sub=card.querySelector('.as-sub');
+    if(label&&label.textContent.trim()==='App Version'){
+     if(value)value.textContent='v614.2';
+     if(sub)sub.textContent='Report history persistence fix'
+    }
+   })
+  }catch(e){}
+ }
+
+ window.TCP_REPORT_PIPELINE_V614_2={
+  version:VERSION,
+  hydrate:hydrateAfterBoot,
+  sync:syncNow,
+  persist:function(reason){return queuePersist(reason||'manual')},
+  diagnostics:async function(){
+   var active=null;
+   try{if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.loadActive==='function')active=await TCP_PERSISTENT_DATA_V550.loadActive()}catch(e){}
+   return{
+    version:VERSION,
+    windowStateSame:(typeof S!=='undefined'&&window.S===S),
+    localHistory:localRows().length,
+    stateHistory:stateRows().length,
+    persistentHistory:active&&Array.isArray(active.reportHistory)?active.reportHistory.length:0,
+    lastSave:window._tcp_last_report_history_save||'',
+    lastError:window._tcp_last_report_history_error||''
+   }
+  }
+ };
+
+ stampVersion();
+ hydrateAfterBoot();
+ window.addEventListener('load',function(){stampVersion();hydrateAfterBoot()});
+})();
+</script>
