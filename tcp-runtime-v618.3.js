@@ -1,8 +1,8 @@
 (function(){
   'use strict';
-  if(window.TCP_RUNTIME_V6183)return;
+  if(window.TCP_RUNTIME_V61831)return;
 
-  var release={version:'v618.3',title:'Sales Tracker v618.3 — Data & Persistence',sub:'Data & Persistence Certification',schemaVersion:616};
+  var release={version:'v618.3.1',title:'Sales Tracker v618.3.1 — Data & Persistence',sub:'Data & Persistence Certification',schemaVersion:616};
   window.TCP_RELEASE=release;
   window.__tcpBootCount=(window.__tcpBootCount||0)+1;
   try{document.documentElement.dataset.tcpRelease=release.version;}catch(e){}
@@ -52,9 +52,11 @@
   }
 
   var runtime={release:release,events:events,diagnostics:diagnostics,activeIntervals:activeIntervals,activeObservers:activeObservers,native:{setInterval:nativeSetInterval,clearInterval:nativeClearInterval,MutationObserver:NativeMutationObserver}};
-  window.TCP_RUNTIME_V6183=runtime;
+  window.TCP_RUNTIME_V61831=runtime;
   window.TCP_RUNTIME_V6182=window.TCP_RUNTIME_V6182||runtime;
   window.TCP_RUNTIME_V6181=window.TCP_RUNTIME_V6181||runtime;
-  if(window.__tcpBootCount>1)console.warn('[v618.3] Duplicate application bootstrap detected:',window.__tcpBootCount);
+  if(window.__tcpBootCount>1)console.warn('[v618.3.1] Duplicate application bootstrap detected:',window.__tcpBootCount);
   events.emit('runtime:boot',{release:release,bootCount:window.__tcpBootCount});
 })();
+
+;try{if(window.TCP_RUNTIME_V61831&&!window.TCP_RUNTIME_V6183)window.TCP_RUNTIME_V6183=window.TCP_RUNTIME_V61831}catch(e){}

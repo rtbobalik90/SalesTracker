@@ -1,10 +1,10 @@
 (function(){
  'use strict';
- if(window.__tcpV6183Finalized)return;
- window.__tcpV6183Finalized=true;
- var meta=window.TCP_RELEASE||{version:'v618.3',title:'Sales Tracker v618.3 — Data & Persistence',sub:'Data & Persistence Certification'};
- var router=window.TCP_ROUTER_V6183,runtime=window.TCP_RUNTIME_V6183;
- if(!router)throw new Error('v618.3 router core did not load.');
+ if(window.__tcpV61831Finalized)return;
+ window.__tcpV61831Finalized=true;
+ var meta=window.TCP_RELEASE||{version:'v618.3.1',title:'Sales Tracker v618.3.1 — Data & Persistence',sub:'Data & Persistence Certification'};
+ var router=window.TCP_ROUTER_V61831,runtime=window.TCP_RUNTIME_V61831;
+ if(!router)throw new Error('v618.3.1 router core did not load.');
 
  var legacyManager=typeof window.gt==='function'?window.gt:null;
  var legacyRep=typeof window._rp2Go==='function'?window._rp2Go:null;
@@ -26,19 +26,19 @@
   base.appVersion=(window.TCP_APP&&TCP_APP.version)||meta.version;
   base.managerVersion=(window.TCP_MANAGER_OS_V617&&TCP_MANAGER_OS_V617.version)||'';
   base.persistenceVersion=(window.TCP_PERSISTENT_DATA_V550&&TCP_PERSISTENT_DATA_V550.version)||'v550';
-  base.dataVersion=(window.TCP_DATA_V6183&&TCP_DATA_V6183.version)||'';
+  base.dataVersion=(window.TCP_DATA_V61831&&TCP_DATA_V61831.version)||'';
   base.cloudVersion=(window.TCP_CLOUD_RELIABILITY_V613&&TCP_CLOUD_RELIABILITY_V613.version)||'v613';
   base.documentEndings={body:document.querySelectorAll('body').length,html:document.querySelectorAll('html').length};
   base.router=router.diagnostics();
-  base.data=window.TCP_DATA_V6183&&TCP_DATA_V6183.diagnostics?TCP_DATA_V6183.diagnostics():null;
-  base.architecture='v618.3 canonical router + canonical data facade + legacy feature layer';
+  base.data=window.TCP_DATA_V61831&&TCP_DATA_V61831.diagnostics?TCP_DATA_V61831.diagnostics():null;
+  base.architecture='v618.3.1 canonical router + canonical data facade + legacy feature layer';
   return base
  }
- window.tcpV6183Diagnostics=diagnostics;
+ window.tcpV61831Diagnostics=diagnostics;
  window.tcpV6181Diagnostics=window.tcpV6181Diagnostics||diagnostics;
  stamp();
  if(runtime&&runtime.events){runtime.events.on('route',function(){stamp()});runtime.events.emit('architecture:ready',{version:meta.version,router:router.diagnostics()})}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',stamp,{once:true});
  window.addEventListener('load',function(){setTimeout(stamp,0)},{once:true});
- try{console.info('[v618.3] Canonical architecture active',diagnostics())}catch(e){}
+ try{console.info('[v618.3.1] Canonical architecture active',diagnostics())}catch(e){}
 })();

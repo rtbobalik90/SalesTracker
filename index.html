@@ -1,117 +1,33 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sales Tracker — READ-ONLY Data Recovery</title>
-<style>
-:root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#08101b;color:#edf4ff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#14233a 0,transparent 35%),#08101b;color:#edf4ff}.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}.hero{border:1px solid #32455f;background:#0d1726;border-radius:18px;padding:22px}.hero h1{margin:0 0 9px;font-size:25px}.warn{margin:13px 0 0;padding:12px 14px;border:1px solid #794b36;background:#2a1813;border-radius:12px;color:#ffd6c5;line-height:1.55}.ok{color:#8ce7bb}.muted{color:#91a0b4}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:16px}.card{border:1px solid #26384e;background:#0d1726;border-radius:15px;padding:15px}.card h3{margin:0 0 8px;font-size:14px}.big{font-size:24px;font-weight:800}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.btn{border:1px solid #3c5879;background:#13243a;color:#eef7ff;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer}.btn.primary{background:#0d6c94;border-color:#168ab9}.btn:disabled{opacity:.45;cursor:not-allowed}.section{margin-top:24px}.section h2{font-size:17px;margin:0 0 10px}.cand{border:1px solid #2a4058;background:#0c1623;border-radius:13px;padding:13px;margin:9px 0}.cand.good{border-color:#315e49}.cand.bad{border-color:#714247}.row{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}.label{font-weight:800}.meta{font-size:12px;color:#9fb0c4;margin-top:5px;line-height:1.55}.counts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.pill{border:1px solid #30445d;background:#101e30;border-radius:999px;padding:5px 8px;font-size:11px}.actions{display:flex;gap:7px;flex-wrap:wrap}.log{white-space:pre-wrap;background:#07101a;border:1px solid #233448;border-radius:12px;padding:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;max-height:260px;overflow:auto}.danger{color:#ffaaa0}.goodtxt{color:#8ce7bb}input{background:#081321;border:1px solid #34506e;color:#fff;border-radius:9px;padding:8px 10px;width:100%}.cloudgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:11px}.hidden{display:none}@media(max-width:700px){.cloudgrid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="hero">
-    <h1>Sales Tracker — READ-ONLY Data Recovery</h1>
-    <div class="muted">This page only reads existing Sales Tracker storage. It does not save, clear, migrate, restore, or overwrite browser data.</div>
-    <div class="warn"><strong>Important:</strong> host this file on the <strong>same GitHub Pages site/domain</strong> where the Sales Tracker normally runs, then open it there. Browser storage is isolated by origin, so a downloaded <code>file://</code> copy cannot see the site's data.</div>
-  </div>
-
-  <div class="toolbar">
-    <button class="btn primary" id="scanBtn">Scan this browser</button>
-    <button class="btn" id="diagBtn" disabled>Download recovery diagnostics</button>
-  </div>
-
-  <div class="grid" id="summary"></div>
-
-  <div class="section">
-    <h2>Recovery candidates</h2>
-    <div id="candidates"><div class="muted">Scanning…</div></div>
-  </div>
-
-  <div class="section">
-    <h2>Read-only cloud inspection</h2>
-    <div class="card">
-      <div class="muted small">This fetches the configured GitHub Gist and inspects its backup. It does not PATCH, POST, or save anything.</div>
-      <div class="cloudgrid" style="margin-top:10px">
-        <div><label class="small muted">Gist ID</label><input id="gistId" autocomplete="off"></div>
-        <div><label class="small muted">Token (optional for a public Gist; auto-filled from this browser if available)</label><input id="gistToken" type="password" autocomplete="off"></div>
-      </div>
-      <div class="toolbar" style="margin-bottom:0"><button class="btn" id="cloudBtn">Inspect cloud backup</button></div>
-      <div id="cloudResult"></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Technical log</h2>
-    <div class="log" id="log"></div>
-  </div>
-</div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sales Tracker Recovery Restore</title>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#0d1420;color:#eaf2ff;margin:0;padding:24px}.card{max-width:900px;margin:auto;background:#121d2b;border:1px solid #2b4058;border-radius:16px;padding:22px}.warn{background:#3a2310;border:1px solid #a76b2d;padding:12px;border-radius:10px;color:#ffe4b0}.ok{color:#72d39a}.bad{color:#ff9292}button,label.btn{display:inline-block;background:#1676a6;color:white;border:0;border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer;margin:5px 6px 5px 0}button.safe{background:#257b4a}button:disabled{opacity:.45;cursor:not-allowed}pre{background:#08111c;border:1px solid #26394e;border-radius:10px;padding:12px;white-space:pre-wrap;overflow:auto}.small{font-size:12px;color:#9fb1c5}input[type=file]{display:none}</style></head><body><div class="card">
+<h1>Sales Tracker — Recovery Restore</h1><div class="warn"><b>This page writes only after you explicitly choose a recovery JSON and click Restore.</b> It never contacts GitHub cloud. Before restoring, it downloads an emergency backup of the browser's current recovery stores.</div>
+<p>Select the recovery JSON you downloaded from the read-only scanner.</p>
+<label class="btn">Choose recovery JSON<input id="file" type="file" accept="application/json,.json"></label>
+<div id="summary" class="small">No file selected.</div><pre id="details">Waiting for recovery file…</pre>
+<button id="restore" class="safe" disabled>Restore verified data</button>
+<div id="status" class="small"></div></div>
 <script>
 (function(){
 'use strict';
-const STORE_KEY='salesTracker_v2';
-const DB_PERSIST='tcp_sales_tracker_persistent';
-const DB_LARGE='tcp_sales_tracker_large_v528';
-const DB_RECOVERY='tcp_sales_tracker_recovery_v615';
-const DB_DEVICE='tcp_sales_tracker_device_settings';
-const candidates=[]; const logLines=[]; let scanReport=null;
-const $=id=>document.getElementById(id);
-function log(s){logLines.push(new Date().toLocaleTimeString()+'  '+s);$('log').textContent=logLines.join('\n')}
-function clone(v){return v==null?v:JSON.parse(JSON.stringify(v))}
-function count(v){return Array.isArray(v)?v.length:(v&&typeof v==='object'?Object.keys(v).length:0)}
-function counts(s){s=s||{};return {reps:count(s.reps),weekly:count(s.data),customers:count(s.customers),orders:count(s.orders),lineItems:count(s.orderLineItems),credits:count(s.cms),artErrors:count(s.artErrors),hr:count(s.hrViolations),coaching:count(s.coachingNotes),reports:count(s.reportHistory),daily:count(s.dailyRep)}}
-function score(c){let n=c.counts;return n.reps*1000+n.weekly*50+n.customers+n.orders+n.lineItems+n.hr*10+n.coaching*10+n.reports*5}
-function real(c){let n=c.counts;return n.reps>0&&(n.weekly>0||n.customers>0||n.orders>0||n.hr>0||n.coaching>0||n.lineItems>0)}
-function addCandidate(source,label,state,meta){if(!state||typeof state!=='object')return; let c={id:'c'+(candidates.length+1),source,label,state:clone(state),meta:meta||{},counts:counts(state)};c.score=score(c);c.real=real(c);candidates.push(c);}
-function pill(k,v){return '<span class="pill">'+k+': <strong>'+Number(v||0).toLocaleString()+'</strong></span>'}
-function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function renderCandidates(){
-  candidates.sort((a,b)=>b.score-a.score);
-  if(!candidates.length){$('candidates').innerHTML='<div class="cand bad"><div class="label danger">No readable recovery candidate found on this origin yet.</div><div class="meta">That can mean you are on a different site/origin than the one that holds the data. The cloud inspection below may still find a backup.</div></div>';return}
-  $('candidates').innerHTML=candidates.map((c,i)=>'<div class="cand '+(c.real?'good':'bad')+'"><div class="row"><div><div class="label">'+(i===0&&c.real?'★ ':'')+esc(c.label)+'</div><div class="meta">Source: '+esc(c.source)+(c.meta.savedAt?' · saved '+esc(c.meta.savedAt):'')+(c.meta.createdAt?' · created '+esc(c.meta.createdAt):'')+(c.meta.note?' · '+esc(c.meta.note):'')+'</div></div><div class="actions"><button class="btn" onclick="window.__tcpRecoveryExport(\''+c.id+'\')">Download this candidate</button></div></div><div class="counts">'+Object.entries(c.counts).map(([k,v])=>pill(k,v)).join('')+'</div></div>').join('');
-}
-function download(name,obj){let blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-window.__tcpRecoveryExport=function(id){let c=candidates.find(x=>x.id===id);if(!c)return;download('sales_tracker_RECOVERY_'+c.source.replace(/[^a-z0-9_-]+/gi,'_')+'_'+new Date().toISOString().slice(0,10)+'.json',c.state)};
-async function dbNames(){if(!indexedDB||typeof indexedDB.databases!=='function'){log('IndexedDB database enumeration is unavailable; refusing to open unknown DBs because this recovery page will not create storage.');return null}let rows=await indexedDB.databases();return new Set(rows.map(r=>r.name).filter(Boolean))}
-async function openExisting(name,names){if(!names||!names.has(name))return null;return new Promise((res,rej)=>{let q=indexedDB.open(name);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error||new Error('open failed'));q.onupgradeneeded=()=>{try{q.transaction.abort()}catch(e){};rej(new Error('Unexpected upgrade request; aborted'))}})}
-async function getStoreValue(name,store,key,names){let db=await openExisting(name,names);if(!db)return null;try{return await new Promise((res,rej)=>{if(!db.objectStoreNames.contains(store)){res(null);return}let tx=db.transaction(store,'readonly'),q=tx.objectStore(store).get(key);q.onsuccess=()=>res(q.result==null?null:q.result);q.onerror=()=>rej(q.error)})}finally{db.close()}}
-async function getAllStore(name,store,names){let db=await openExisting(name,names);if(!db)return [];try{return await new Promise((res,rej)=>{if(!db.objectStoreNames.contains(store)){res([]);return}let tx=db.transaction(store,'readonly'),q=tx.objectStore(store).getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error)})}finally{db.close()}}
-async function getAllKeys(name,store,names){let db=await openExisting(name,names);if(!db)return [];try{return await new Promise((res,rej)=>{if(!db.objectStoreNames.contains(store)){res([]);return}let tx=db.transaction(store,'readonly'),q=tx.objectStore(store).getAllKeys();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error)})}finally{db.close()}}
-function merge(a,b){return Object.assign({},a||{},b||{})}
-async function scan(){
- candidates.length=0; logLines.length=0; $('log').textContent=''; $('candidates').innerHTML='<div class="muted">Scanning existing storage…</div>';
- log('Recovery scan started on origin '+location.origin);
- let names=null;try{names=await dbNames();log('IndexedDB databases present: '+(names?[...names].join(', '):'enumeration unavailable'))}catch(e){log('IndexedDB enumeration error: '+e.message)}
- let localCore=null;try{let raw=localStorage.getItem(STORE_KEY); if(raw){localCore=JSON.parse(raw);addCandidate('local-core','localStorage core snapshot',localCore,{note:'salesTracker_v2'})};log('localStorage salesTracker_v2: '+(raw?raw.length+' bytes':'not found'))}catch(e){log('localStorage core read failed: '+e.message)}
- try{let raw=localStorage.getItem('_tcp_prepull_snapshot'),ts=localStorage.getItem('_tcp_prepull_ts');if(raw){let st=JSON.parse(raw);addCandidate('prepull-snapshot','Pre-cloud-restore safety snapshot',st,{createdAt:ts||'',note:'_tcp_prepull_snapshot'})}log('pre-pull safety snapshot: '+(raw?'found':'not found'))}catch(e){log('pre-pull snapshot read failed: '+e.message)}
- // v550 active / previous / staging
- for(const key of ['active','previous','staging']){try{let rec=await getStoreValue(DB_PERSIST,'records',key,names);if(rec&&rec.state)addCandidate('v550-'+key,'v550 '+key+' verified snapshot',rec.state,{savedAt:rec.savedAt||'',note:'hash '+(rec.hash||'')});log('v550 '+key+': '+(rec&&rec.state?'found':'not found'))}catch(e){log('v550 '+key+' read failed: '+e.message)}}
- // v528 manager and reconstruct core + heavy
- try{let heavy=await getStoreValue(DB_LARGE,'snapshots','manager',names);if(heavy){addCandidate('v528-heavy','v528 large-data manager snapshot',heavy,{note:'heavy fields only'});if(localCore)addCandidate('local-plus-v528','Reconstructed local core + v528 manager data',merge(localCore,heavy),{note:'reconstructed read-only candidate'})}log('v528 manager: '+(heavy?'found':'not found'))}catch(e){log('v528 manager read failed: '+e.message)}
- // local autosnapshot + corresponding heavy autosnapshot if present
- try{let raw=localStorage.getItem('tcp_autosnap'),metaRaw=localStorage.getItem('tcp_autosnap_meta');if(raw){let core=JSON.parse(raw),meta=metaRaw?JSON.parse(metaRaw):{};addCandidate('autosnap-core','Legacy daily autosnapshot core',core,{createdAt:meta.taken||'',note:meta.date||''});let largeKey=meta.largeKey||('autosnap:'+(meta.date||''));if(largeKey&&meta.date){let heavy=await getStoreValue(DB_LARGE,'snapshots',largeKey,names);if(heavy)addCandidate('autosnap-full','Reconstructed daily autosnapshot',merge(core,heavy),{createdAt:meta.taken||'',note:largeKey})}}log('legacy tcp_autosnap: '+(raw?'found':'not found'))}catch(e){log('autosnapshot read failed: '+e.message)}
- // enumerate v528 autosnap keys for extra candidates
- try{let keys=await getAllKeys(DB_LARGE,'snapshots',names);for(const k of keys.filter(k=>String(k).startsWith('autosnap:'))){let heavy=await getStoreValue(DB_LARGE,'snapshots',k,names);if(heavy)addCandidate('v528-'+k,'v528 '+k+' large-data snapshot',heavy,{note:'heavy fields only'})}log('v528 snapshot keys: '+keys.join(', '))}catch(e){log('v528 key enumeration failed: '+e.message)}
- // v615 recovery points
- try{let recs=await getAllStore(DB_RECOVERY,'points',names);for(const r of recs){if(r&&r.state)addCandidate('recovery-'+(r.id||'point'),'Named recovery point: '+(r.name||r.id||'Recovery'),r.state,{createdAt:r.createdAt||'',note:'v615 recovery database'})}log('v615 recovery points: '+recs.length)}catch(e){log('v615 recovery read failed: '+e.message)}
- // credential vault READ ONLY
- let vault=null;try{vault=await getStoreValue(DB_DEVICE,'settings','github-gist-credentials',names);log('device credential vault: '+(vault?'found':'not found'))}catch(e){log('credential vault read failed: '+e.message)}
- try{$('gistId').value=localStorage.getItem('salesTracker_gistId')||(vault&&vault.id)||'';$('gistToken').value=localStorage.getItem('salesTracker_gistToken')||(vault&&vault.token)||''}catch(e){}
- renderCandidates();
- let best=candidates.slice().sort((a,b)=>b.score-a.score)[0];
- let summary=[{t:'Origin',v:location.origin,s:'Must match the Sales Tracker site'},{t:'Recovery candidates',v:candidates.length,s:best&&best.real?'Best candidate contains real tracker data':'No full-data candidate confirmed yet'},{t:'Best candidate',v:best?best.label:'None',s:best?Object.entries(best.counts).map(([k,v])=>k+' '+v).join(' · '):''},{t:'Existing databases',v:names?names.size:'?',s:names?[...names].join(' · '):'Enumeration unavailable'}];
- $('summary').innerHTML=summary.map(x=>'<div class="card"><h3>'+esc(x.t)+'</h3><div class="big '+(x.t==='Recovery candidates'&&best&&best.real?'goodtxt':'')+'">'+esc(x.v)+'</div><div class="meta">'+esc(x.s)+'</div></div>').join('');
- scanReport={at:new Date().toISOString(),origin:location.origin,databases:names?[...names]:null,candidates:candidates.map(c=>({source:c.source,label:c.label,meta:c.meta,counts:c.counts,score:c.score,real:c.real}))}; $('diagBtn').disabled=false;
- log('Scan complete. No storage writes were performed.');
-}
-async function readGistFile(file){if(!file)return'';let content=file.content||'';if(file.truncated&&file.raw_url){let r=await fetch(file.raw_url);if(!r.ok)throw new Error('raw gist fetch '+r.status);content=await r.text()}return content}
-async function readCloudContent(gist){const MARK='__TCP_CHUNKED_V1__\n',PREFIX='tcp_tracker_data_part_';let files=gist&&gist.files;if(!files)throw new Error('No files in Gist');let main=files['tcp_tracker_data.json']||files[Object.keys(files)[0]];let content=await readGistFile(main);if(!content.startsWith(MARK))return content;let m=JSON.parse(content.slice(MARK.length)),out='';for(let i=1;i<=m.count;i++){let name=(m.prefix||PREFIX)+String(i).padStart(3,'0')+'.txt';if(!files[name])throw new Error('Missing chunk '+name);out+=await readGistFile(files[name])}return out}
-async function decompress(content){const P='__TCP_GZIP_B64__\n';if(!content.startsWith(P))return content;if(typeof DecompressionStream==='undefined')throw new Error('This browser cannot decompress the cloud backup');let b=atob(content.slice(P.length)),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text()}
-async function inspectCloud(){let id=$('gistId').value.trim(),token=$('gistToken').value.replace(/\s+/g,'');if(!id){$('cloudResult').innerHTML='<div class="meta danger">No Gist ID found. Enter the existing Gist ID.</div>';return}let b=$('cloudBtn');b.disabled=true;b.textContent='Reading…';try{let h={'Accept':'application/vnd.github+json'};if(token)h.Authorization='Bearer '+token;let r=await fetch('https://api.github.com/gists/'+encodeURIComponent(id),{method:'GET',headers:h});if(!r.ok)throw new Error('GitHub API '+r.status);let gist=await r.json(),content=await readCloudContent(gist);content=await decompress(content);let parsed=JSON.parse(content),raw=parsed&&parsed.data&&parsed.data[STORE_KEY],state=typeof raw==='string'?JSON.parse(raw):raw;if(!state||!Array.isArray(state.reps))throw new Error('Cloud payload does not contain a valid tracker state');addCandidate('cloud-readonly','GitHub cloud backup (read-only inspection)',state,{savedAt:parsed.exportedAt||'',note:'Gist '+id});renderCandidates();let c=counts(state);$('cloudResult').innerHTML='<div class="cand '+(real({counts:c})?'good':'bad')+'"><div class="label">Cloud backup found</div><div class="meta">Exported '+esc(parsed.exportedAt||'unknown')+' · No cloud data was modified.</div><div class="counts">'+Object.entries(c).map(([k,v])=>pill(k,v)).join('')+'</div></div>';log('Cloud backup inspected read-only: '+JSON.stringify(c))}catch(e){$('cloudResult').innerHTML='<div class="meta danger">Cloud inspection failed: '+esc(e.message||String(e))+'</div>';log('Cloud inspection failed: '+(e.message||e))}finally{b.disabled=false;b.textContent='Inspect cloud backup'}}
-$('scanBtn').onclick=scan;$('cloudBtn').onclick=inspectCloud;$('diagBtn').onclick=()=>download('sales_tracker_recovery_diagnostics_'+new Date().toISOString().slice(0,10)+'.json',scanReport||{});
-scan();
+var selected=null;
+var DB='tcp_sales_tracker_persistent',STORE='records',SCHEMA='tcp-persistent-state-v1';
+var LARGE_DB='tcp_sales_tracker_large_v528',LARGE_STORE='snapshots',CORE_KEY='salesTracker_v2';
+var HEAVY=['customers','orders','orderLineItems','orderLineItemsUnmatched','reviews','artErrors','cms','dailySales','coachingNotes','hrViolations'];
+function c(v){return Array.isArray(v)?v.length:(v&&typeof v==='object'?Object.keys(v).length:0)}
+function counts(s){return{reps:c(s.reps),weekly:c(s.data),customers:c(s.customers),orders:c(s.orders),lineItems:c(s.orderLineItems),artErrors:c(s.artErrors),credits:c(s.cms),reports:c(s.reportHistory)}}
+function valid(s){return !!s&&typeof s==='object'&&Array.isArray(s.reps)&&s.reps.length>0&&s.data&&typeof s.data==='object'}
+function fnv1a(text){var h=2166136261;for(var i=0;i<text.length;i++){h^=text.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return('00000000'+(h>>>0).toString(16)).slice(-8)}
+function envelope(s,source){var raw=JSON.stringify(s);return{schema:SCHEMA,savedAt:new Date().toISOString(),source:source,hash:fnv1a(raw),bytes:raw.length,counts:{reps:c(s.reps),weekly:c(s.data),customers:c(s.customers),orders:c(s.orders),lineItems:c(s.orderLineItems),reviews:c(s.reviews&&s.reviews.rows),artErrors:c(s.artErrors),coaching:c(s.coachingNotes)},state:s}}
+function openDb(name,store){return new Promise(function(res,rej){var r=indexedDB.open(name,1);r.onupgradeneeded=function(){if(!r.result.objectStoreNames.contains(store))r.result.createObjectStore(store)};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})}
+async function get(name,store,key){var db=await openDb(name,store);return new Promise(function(res,rej){var tx=db.transaction(store,'readonly'),r=tx.objectStore(store).get(key);r.onsuccess=function(){var v=r.result;db.close();res(v==null?null:v)};r.onerror=function(){var e=r.error;db.close();rej(e)}})}
+async function put(name,store,key,val){var db=await openDb(name,store);return new Promise(function(res,rej){var tx=db.transaction(store,'readwrite');tx.objectStore(store).put(val,key);tx.oncomplete=function(){db.close();res(true)};tx.onerror=function(){var e=tx.error;db.close();rej(e)}})}
+async function del(name,store,key){var db=await openDb(name,store);return new Promise(function(res,rej){var tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(key);tx.oncomplete=function(){db.close();res(true)};tx.onerror=function(){var e=tx.error;db.close();rej(e)}})}
+function split(s){var core=JSON.parse(JSON.stringify(s)),heavy={},cc={};HEAVY.forEach(function(k){if(Object.prototype.hasOwnProperty.call(core,k)){heavy[k]=core[k];cc[k]=c(core[k]);delete core[k]}});core.__tcpLargeState={version:1,key:'manager',fields:HEAVY.slice(),counts:cc,updatedAt:new Date().toISOString()};return{core:core,heavy:heavy}}
+function dl(obj,name){var b=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000)}
+async function backupCurrent(){var active=null,prev=null,staging=null,large=null,core=null;try{active=await get(DB,STORE,'active')}catch(e){}try{prev=await get(DB,STORE,'previous')}catch(e){}try{staging=await get(DB,STORE,'staging')}catch(e){}try{large=await get(LARGE_DB,LARGE_STORE,'manager')}catch(e){}try{core=localStorage.getItem(CORE_KEY)}catch(e){}var out={createdAt:new Date().toISOString(),purpose:'pre-restore emergency backup',v550:{active:active,previous:prev,staging:staging},v528Manager:large,localStorageCore:core};dl(out,'sales_tracker_PRE_RESTORE_emergency_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json');return{active:active,previous:prev}}
+async function restore(){if(!selected||!valid(selected))throw new Error('No valid recovery state selected.');document.getElementById('restore').disabled=true;var status=document.getElementById('status');status.textContent='Creating emergency pre-restore backup…';var old=await backupCurrent();status.textContent='Writing verified recovered state…';var env=envelope(selected,'manual-recovery-restore-v618.3.1');if(old&&old.active)await put(DB,STORE,'previous',old.active);await put(DB,STORE,'active',env);await del(DB,STORE,'staging').catch(function(){});var parts=split(selected);await put(LARGE_DB,LARGE_STORE,'manager',parts.heavy);try{localStorage.setItem(CORE_KEY,JSON.stringify(parts.core));localStorage.setItem('_tcp_last_local_edit',new Date().toISOString());localStorage.setItem('tcp_recovery_restored_at',new Date().toISOString())}catch(e){}var verify=await get(DB,STORE,'active');if(!verify||verify.hash!==env.hash||verify.bytes!==env.bytes)throw new Error('Verification failed after write.');status.innerHTML='<span class="ok"><b>RESTORE COMPLETE.</b> The recovered snapshot is now the verified active database. Close this page, deploy/open the recovery-safe v618.3.1 app, then reload once.</span>'}
+document.getElementById('file').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var x=JSON.parse(r.result);if(x&&x.version==='TCP_Tracker_Backup_v1'&&x.data)throw new Error('This is a full-backup envelope, not the raw recovery snapshot.');if(!valid(x))throw new Error('Invalid recovery file: expected a populated reps array and data object.');var k=counts(x);selected=x;document.getElementById('summary').innerHTML='<span class="ok">Valid recovery snapshot loaded.</span>';document.getElementById('details').textContent=JSON.stringify(k,null,2);document.getElementById('restore').disabled=false}catch(err){selected=null;document.getElementById('summary').innerHTML='<span class="bad">'+err.message+'</span>';document.getElementById('restore').disabled=true}};r.readAsText(f)});
+document.getElementById('restore').addEventListener('click',function(){if(!confirm('RESTORE THE SELECTED RECOVERY SNAPSHOT?\n\nAn emergency backup of current browser stores will download first. Cloud sync is not used.'))return;restore().catch(function(e){document.getElementById('status').innerHTML='<span class="bad"><b>Restore failed:</b> '+String(e&&e.message||e)+'</span>';document.getElementById('restore').disabled=false})});
 })();
-</script>
-</body>
-</html>
+</script></body></html>

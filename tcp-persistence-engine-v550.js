@@ -66,6 +66,35 @@
    coaching:count(state&&state.coachingNotes)
   }
  }
+
+ function footprint(state){
+  var c=stateCounts(state);
+  return (c.weekly||0)+(c.customers||0)+(c.orders||0)+(c.lineItems||0)+(c.artErrors||0)+(c.coaching||0)+(c.reviews||0)
+ }
+ function catastrophicDrop(nextState,savedState){
+  if(!validState(nextState)||!validState(savedState))return false;
+  var next=stateCounts(nextState),saved=stateCounts(savedState),nf=footprint(nextState),sf=footprint(savedState);
+  if(saved.reps>=4&&next.reps<Math.max(1,Math.floor(saved.reps*.5)))return true;
+  if(sf>=25&&nf<Math.max(5,Math.floor(sf*.35)))return true;
+  if(saved.weekly>=20&&next.weekly===0)return true;
+  if(saved.customers>=20&&next.customers===0)return true;
+  if(saved.orders>=20&&next.orders===0)return true;
+  return false
+ }
+ function recoverySource(source){return /restore|rollback|import|migration|recovery/i.test(String(source||''))}
+ async function guardWrite(state,source){
+  if(recoverySource(source))return true;
+  var active=null,previous=null;
+  try{active=await dbGet(ACTIVE_KEY)}catch(e){}
+  try{previous=await dbGet(PREVIOUS_KEY)}catch(e){}
+  var candidates=[];
+  if(verifyEnvelope(active))candidates.push(active.state);
+  if(verifyEnvelope(previous))candidates.push(previous.state);
+  for(var i=0;i<candidates.length;i++){
+   if(catastrophicDrop(state,candidates[i]))throw new Error('DATA PROTECTION HOLD: save blocked because the live tracker is dramatically smaller than a verified recovery snapshot. Restore/recover the richer snapshot before saving.');
+  }
+  return true
+ }
  function fnv1a(text){
   var hash=2166136261;
   for(var i=0;i<text.length;i++){
@@ -209,6 +238,7 @@
   return Promise.resolve(false)
  }
  async function stageAndCommit(state,source,auxiliary){
+  await guardWrite(state,source);
   var staged=envelope(state,source);
   await dbPut(STAGING_KEY,staged);
   var readBack=await dbGet(STAGING_KEY);
@@ -270,10 +300,15 @@
   return null
  }
  async function loadBestRecord(){
-  var active=await dbGet(ACTIVE_KEY);
-  if(verifyEnvelope(active))return{record:active,key:ACTIVE_KEY};
-  var previous=await dbGet(PREVIOUS_KEY);
-  if(verifyEnvelope(previous))return{record:previous,key:PREVIOUS_KEY};
+  var active=await dbGet(ACTIVE_KEY),previous=await dbGet(PREVIOUS_KEY);
+  var activeOk=verifyEnvelope(active),previousOk=verifyEnvelope(previous);
+  if(activeOk&&previousOk&&catastrophicDrop(active.state,previous.state)){
+   console.warn('[v550 recovery guard] Active snapshot is dramatically smaller than previous; loading previous snapshot instead.');
+   window._tcpPersistentMeta.mode='recovery-protected';
+   return{record:previous,key:PREVIOUS_KEY,protected:true}
+  }
+  if(activeOk)return{record:active,key:ACTIVE_KEY};
+  if(previousOk)return{record:previous,key:PREVIOUS_KEY};
   return null
  }
  async function startBoot(){

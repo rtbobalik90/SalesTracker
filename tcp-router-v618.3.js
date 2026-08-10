@@ -1,7 +1,7 @@
 (function(){
  'use strict';
- if(window.TCP_ROUTER_V6183)return;
- var runtime=window.TCP_RUNTIME_V6183,events=runtime&&runtime.events;
+ if(window.TCP_ROUTER_V61831)return;
+ var runtime=window.TCP_RUNTIME_V61831,events=runtime&&runtime.events;
  function channel(name){
   var before=[],after=[],routes=Object.create(null),legacy=null,routeSeq=0,activeDepth=0;
   function sort(a){a.sort(function(x,y){return (x.priority-y.priority)||(x.seq-y.seq)})}
@@ -37,6 +37,8 @@
    diagnostics:function(){return{name:name,adopted:!!legacy,beforeHooks:before.map(function(x){return{id:x.id,priority:x.priority}}),afterHooks:after.map(function(x){return{id:x.id,priority:x.priority}}),routes:Object.keys(routes),routeCount:routeSeq,activeDepth:activeDepth}}
   }
  }
- window.TCP_ROUTER_V6183={version:'v618.3',manager:channel('manager'),rep:channel('rep'),diagnostics:function(){return{version:'v618.3',manager:this.manager.diagnostics(),rep:this.rep.diagnostics()}}};
- window.TCP_ROUTER_V6182=window.TCP_ROUTER_V6182||window.TCP_ROUTER_V6183;
+ window.TCP_ROUTER_V61831={version:'v618.3.1',manager:channel('manager'),rep:channel('rep'),diagnostics:function(){return{version:'v618.3.1',manager:this.manager.diagnostics(),rep:this.rep.diagnostics()}}};
+ window.TCP_ROUTER_V6182=window.TCP_ROUTER_V6182||window.TCP_ROUTER_V61831;
 })();
+
+;try{if(window.TCP_ROUTER_V61831&&!window.TCP_ROUTER_V6183)window.TCP_ROUTER_V6183=window.TCP_ROUTER_V61831}catch(e){}

@@ -2,7 +2,7 @@
  'use strict';
  if(window.TCP_DATA_V6183)return;
 
- var VERSION='v618.3';
+ var VERSION='v618.3.1';
  var runtime=window.TCP_RUNTIME_V6183||window.TCP_RUNTIME_V6182||null;
  var events=runtime&&runtime.events;
  var AUTO_CLOUD_MS=5*60*1000;
@@ -157,8 +157,8 @@
   var box=document.getElementById('tcp-v6183-data-cert');
   if(!box){box=document.createElement('section');box.id='tcp-v6183-data-cert';box.style.cssText='margin-top:14px;border:1px solid rgba(0,175,239,.22);border-radius:14px;background:rgba(0,175,239,.04);padding:14px;';host.appendChild(box)}
   var d=diagnostics(),c=d.contract||{},pd=(report&&report.checks)||[];
-  var rows=pd.length?pd.map(function(x){var col=x.level==='pass'?'#5DCAA5':x.level==='fail'?'#F09595':'#EF9F27';return '<div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:11px"><strong style="color:'+col+'">'+esc(x.level.toUpperCase())+'</strong><span><b>'+esc(x.name)+'</b> · '+esc(x.detail)+'</span></div>'}).join(''):'<div style="font-size:11px;color:#8B8A94;margin-top:8px">Run certification to verify the active snapshot, rollback copy, state contract, and cloud coordinator.</div>';
-  box.innerHTML='<div style="display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8EDCFA">v618.3 Data Certification</div><div style="font-size:16px;font-weight:800;margin-top:3px">Verified persistence control center</div><div style="font-size:11px;color:#8B8A94;margin-top:5px">v550 IndexedDB engine · v613 serialized cloud engine · '+Number((d.counts||{}).weekly||0).toLocaleString()+' weekly records · '+Number((d.counts||{}).reps||0).toLocaleString()+' reps</div></div><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="sbtn" onclick="tcpV6183RunCertification(false)">Run certification</button><button class="sbtn entry-primary" onclick="tcpV6183RunCertification(true)">Save + certify</button></div></div><div style="margin-top:10px;font-size:10px;color:'+(c.failures?'#F09595':c.warnings?'#EF9F27':'#5DCAA5')+'">State contract: '+Number(c.failures||0)+' failures · '+Number(c.warnings||0)+' warnings · Cloud: '+esc((d.cloud&&d.cloud.label)||'Unknown')+'</div>'+rows
+  var rows=pd.length?pd.map(function(x){var col=x.level==='pass'?'#5DCAA5':x.level==='fail'?'#F09595':'#EF9F27';return '<div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:11px"><strong style="color:'+col+'">'+esc(x.level.toUpperCase())+'</strong><span><b>'+esc(x.name)+'</b> · '+esc(x.detail)+'</span></div>'}).join(''):'<div style="font-size:11px;color:#8B8A94;margin-top:8px">Automatic cloud saving is paused in this recovery-safe build. Run certification to verify the active snapshot, rollback copy, state contract, and cloud coordinator.</div>';
+  box.innerHTML='<div style="display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8EDCFA">v618.3.1 Data Certification</div><div style="font-size:16px;font-weight:800;margin-top:3px">Verified persistence control center</div><div style="font-size:11px;color:#8B8A94;margin-top:5px">v550 IndexedDB engine · v613 serialized cloud engine · '+Number((d.counts||{}).weekly||0).toLocaleString()+' weekly records · '+Number((d.counts||{}).reps||0).toLocaleString()+' reps</div></div><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="sbtn" onclick="tcpV6183RunCertification(false)">Run certification</button><button class="sbtn entry-primary" onclick="tcpV6183RunCertification(true)">Save + certify</button></div></div><div style="margin-top:10px;font-size:10px;color:'+(c.failures?'#F09595':c.warnings?'#EF9F27':'#5DCAA5')+'">State contract: '+Number(c.failures||0)+' failures · '+Number(c.warnings||0)+' warnings · Cloud: '+esc((d.cloud&&d.cloud.label)||'Unknown')+'</div>'+rows
  }
  window.tcpV6183RunCertification=function(write){
   var box=document.getElementById('tcp-v6183-data-cert');if(box)box.style.opacity='.7';
@@ -183,5 +183,5 @@
  installFacade();
  try{var r=window.TCP_ROUTER_V6183||window.TCP_ROUTER_V6182;if(r&&r.manager)r.manager.after('v6183-data-cert-admin',function(ctx){if(ctx.page==='admin')setTimeout(mountAdmin,80)},95)}catch(e){}
  window.addEventListener('load',function(){setTimeout(mountAdmin,950)},{once:true});
- ready().then(function(){installFacade();startCloudSchedule();mountAdmin();if(events)events.emit('data:ready',{version:VERSION,diagnostics:diagnostics()})}).catch(function(e){console.error('[v618.3 data ready]',e);if(events)events.emit('data:error',{version:VERSION,error:e&&e.message||String(e)})});
+ ready().then(function(){installFacade();stopCloudSchedule();mountAdmin();if(events)events.emit('data:ready',{version:VERSION,diagnostics:diagnostics()})}).catch(function(e){console.error('[v618.3 data ready]',e);if(events)events.emit('data:error',{version:VERSION,error:e&&e.message||String(e)})});
 })();
