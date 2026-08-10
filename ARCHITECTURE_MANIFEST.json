@@ -1,0 +1,31 @@
+{
+  "release": "v618.3",
+  "name": "Data & Persistence Certification",
+  "entry": "index.html",
+  "owned_files": [
+    "assets/js/tcp-runtime-v618.3.js",
+    "assets/js/tcp-router-v618.3.js",
+    "assets/js/services/tcp-data-v618.3.js",
+    "assets/js/tcp-architecture-v618.3.js"
+  ],
+  "extracted_legacy_engines": [
+    "assets/js/services/tcp-persistence-engine-v550.js",
+    "assets/js/services/tcp-cloud-engine-v613.js"
+  ],
+  "retained_embedded_compatibility": [
+    "v528 large-data compatibility",
+    "v554 device credential vault",
+    "v614 data reliability repairs",
+    "v615 save/sync admin diagnostics",
+    "legacy feature modules retained for parity"
+  ],
+  "architecture_rules": [
+    "v550 remains the verified local persistence engine",
+    "v613 remains the serialized GitHub cloud engine",
+    "v618.3 is the canonical data facade used by TCP_APP",
+    "cloud save performs verified local save first",
+    "automatic cloud scheduling is owned by v618.3",
+    "legacy calls versus customers-called alias is reported but not auto-migrated",
+    "no business data is intentionally discarded during this phase"
+  ]
+}
