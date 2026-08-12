@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v624 — Coaching Forecast + Recovery Outlook</title>
+<title>Sales Tracker v625 — Call Coverage + Coaching Forecast</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -61018,6 +61018,203 @@ body.nav-rail .tabs:after{content:"v624"!important;white-space:normal!important;
   try{document.documentElement.setAttribute('data-tcp-build','v624');}catch(e){}
 })();
 </script>
+
+<style id="tcp-dashboard-call-coverage-v625-css">
+/* ===== v625 Call & Account Coverage Center ===== */
+#pg-dash .ps625-call-center{margin:0 0 20px!important;padding:22px 24px!important;border-color:rgba(0,175,239,.22)!important;background:radial-gradient(circle at 88% 0%,rgba(0,175,239,.12),transparent 32%),linear-gradient(180deg,rgba(255,255,255,.048),rgba(255,255,255,.022)),#0D1720!important;}
+#pg-dash .ps625-call-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px;}
+#pg-dash .ps625-call-head h2{margin:4px 0 7px;color:#fff;font-size:22px;line-height:1.12;font-weight:950;letter-spacing:-.035em;}
+#pg-dash .ps625-call-head p{margin:0;max-width:900px;color:#9DAABC;font-size:12px;line-height:1.6;}
+#pg-dash .ps625-cycle-badge{flex:none;min-width:210px;padding:12px 14px;border:1px solid rgba(0,175,239,.22);border-radius:15px;background:rgba(0,175,239,.075);text-align:right;}
+#pg-dash .ps625-cycle-badge span{display:block;color:#73DDF8;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.10em;}
+#pg-dash .ps625-cycle-badge strong{display:block;margin-top:5px;color:#fff;font-size:19px;font-weight:950;letter-spacing:-.025em;}
+#pg-dash .ps625-cycle-badge small{display:block;margin-top:4px;color:#93A3B7;font-size:10px;line-height:1.35;}
+#pg-dash .ps625-call-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+#pg-dash .ps625-call-kpi{padding:13px 14px;border:1px solid rgba(148,163,184,.11);border-radius:14px;background:rgba(255,255,255,.026);min-width:0;}
+#pg-dash .ps625-call-kpi span{display:block;color:#8796AA;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.075em;}
+#pg-dash .ps625-call-kpi strong{display:block;margin-top:6px;color:#fff;font-size:21px;font-weight:950;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#pg-dash .ps625-call-kpi small{display:block;margin-top:5px;color:#8391A3;font-size:9.5px;line-height:1.35;}
+#pg-dash .ps625-call-pace{padding:14px;border:1px solid rgba(148,163,184,.10);border-radius:15px;background:rgba(0,0,0,.13);margin-bottom:16px;}
+#pg-dash .ps625-call-pace-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px;color:#AAB6C6;font-size:10px;font-weight:850;}
+#pg-dash .ps625-call-pace-head strong{color:#fff;font-size:11px;}
+#pg-dash .ps625-call-track{position:relative;height:11px;border-radius:999px;background:#283543;overflow:visible;}
+#pg-dash .ps625-call-track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00AFEF,#63D5F8);box-shadow:0 0 18px rgba(0,175,239,.22);}
+#pg-dash .ps625-call-track em{position:absolute;top:-4px;bottom:-4px;width:3px;transform:translateX(-50%);border-radius:99px;background:#fff;box-shadow:0 0 0 3px rgba(0,0,0,.30),0 0 11px rgba(255,255,255,.35);}
+#pg-dash .ps625-call-track em:after{content:"Expected now";position:absolute;bottom:16px;left:50%;transform:translateX(-50%);padding:2px 5px;border:1px solid rgba(255,255,255,.10);border-radius:6px;background:#0A1118;color:#C9D3E0;font:800 8px/1.2 Arial;white-space:nowrap;}
+#pg-dash .ps625-call-scale{display:flex;justify-content:space-between;gap:8px;margin-top:8px;color:#718095;font-size:9px;}
+#pg-dash .ps625-call-scale b{color:#DDE6EE;font-weight:900;}
+#pg-dash .ps625-call-table-wrap{overflow-x:auto;border:1px solid rgba(148,163,184,.10);border-radius:15px;background:rgba(0,0,0,.10);}
+#pg-dash .ps625-call-table{width:100%;border-collapse:collapse;min-width:1020px;font-size:11px;}
+#pg-dash .ps625-call-table th{padding:10px 11px;background:rgba(255,255,255,.035);color:#8190A5;text-align:left;text-transform:uppercase;letter-spacing:.065em;font-size:9px;font-weight:950;white-space:nowrap;}
+#pg-dash .ps625-call-table td{padding:11px;border-top:1px solid rgba(148,163,184,.085);color:#DDE5ED;vertical-align:middle;}
+#pg-dash .ps625-call-table tr{cursor:pointer;transition:background .14s ease;}
+#pg-dash .ps625-call-table tbody tr:hover{background:rgba(0,175,239,.055);}
+#pg-dash .ps625-call-table .rep{font-weight:900;color:#fff;}
+#pg-dash .ps625-call-table .big{font-weight:950;color:#fff;font-size:12px;}
+#pg-dash .ps625-call-table .muted{display:block;margin-top:2px;color:#718095;font-size:9px;}
+#pg-dash .ps625-call-status{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid;border-radius:999px;font-size:8.5px;font-weight:950;text-transform:uppercase;letter-spacing:.035em;white-space:nowrap;}
+#pg-dash .ps625-call-status.on,#pg-dash .ps625-call-status.complete{color:#8CE4C1;border-color:rgba(93,202,165,.30);background:rgba(93,202,165,.08);}
+#pg-dash .ps625-call-status.ahead{color:#9FE6FF;border-color:rgba(0,175,239,.30);background:rgba(0,175,239,.08);}
+#pg-dash .ps625-call-status.behind{color:#F6B1B1;border-color:rgba(240,149,149,.30);background:rgba(240,149,149,.08);}
+#pg-dash .ps625-call-status.none{color:#C9A95F;border-color:rgba(239,159,39,.30);background:rgba(239,159,39,.08);}
+#pg-dash .ps625-call-note{margin-top:12px;padding:10px 12px;border-left:2px solid #00AFEF;background:rgba(0,175,239,.045);color:#8F9DAE;font-size:10px;line-height:1.55;}
+#pg-dash .ps625-call-note strong{color:#DCE6EF;}
+@media(max-width:1180px){#pg-dash .ps625-call-kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){#pg-dash .ps625-call-head{flex-direction:column}#pg-dash .ps625-cycle-badge{width:100%;text-align:left}#pg-dash .ps625-call-kpis{grid-template-columns:1fr 1fr}}
+</style>
+
+<style id="tcp-build-footer-v625-css">
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v625"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v625"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+</style>
+
+<script id="tcp-dashboard-call-coverage-v625-js">
+(function(){
+ 'use strict';
+ var BUILD='v625';
+ var priorRender=window.renderDash;
+ var priorAudit=window._ps620Audit;
+
+ function n(v){v=Number(v);return isFinite(v)?v:0}
+ function esc(v){var s=String(v==null?'':v);return typeof esc_html==='function'?esc_html(s):s.replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function num(v){return Math.round(n(v)).toLocaleString()}
+ function pct(v){return Math.round(n(v))+'%'}
+ function clamp(v,a,b){return Math.max(a,Math.min(b,n(v)))}
+ function rows(){return Array.isArray(window._ps58Rows)?window._ps58Rows:[]}
+ function context(){return window._ps58Context||null}
+ function cycleSplit(cycle){
+  var prev=0,parts=[];
+  (cycle&&cycle.milestones||[]).forEach(function(m){var t=n(m.target);parts.push(Math.max(0,t-prev));prev=t});
+  return parts.length?parts.join(' / '):'—'
+ }
+ function trackerCalls(rs){return rs.reduce(function(sum,row){return sum+n(row&&row.total&&row.total.calls)},0)}
+ function fallbackSnapshot(c,rs){
+  var size=rs.reduce(function(sum,row){return sum+n(row&&row.total&&row.total.setSize)},0);
+  var done=rs.reduce(function(sum,row){return sum+n(row&&row.total&&row.total.acctsCalled)},0);
+  var date=c&&c.asOf?c.asOf:new Date(),cycle=null,milestone=null;
+  try{if(window.TCP_CALL_CYCLE_V547){cycle=TCP_CALL_CYCLE_V547.cycleFor(date);milestone=TCP_CALL_CYCLE_V547.milestoneFor(cycle,date)}}catch(e){}
+  var split=cycleSplit(cycle),targetPct=milestone?n(milestone.target):n(c&&c.progress)*100;
+  return{live:false,cycle:cycle,milestone:milestone,split:split,size:size,completed:done,attempted:done,emailed:0,expected:Math.round(size*targetPct/100),expectedPct:targetPct,completedPct:size?done/size*100:0,totalCalls:trackerCalls(rs),todayCompleted:0,dailyTarget:0,todayRemaining:0,reps:rs.map(function(row){return{name:row.name,size:n(row.total.setSize),calls:n(row.total.calls),attempted:n(row.total.acctsCalled),completed:n(row.total.acctsCalled),pct:n(row.total.setSize)?n(row.total.acctsCalled)/n(row.total.setSize)*100:0,expected:n(row.total.setSize)*targetPct/100,expectedPct:targetPct,delta:n(row.total.acctsCalled)-n(row.total.setSize)*targetPct/100,status:'Historical tracker',tone:'none',todayCompleted:0,dailyTarget:0}})}
+ }
+ function liveSnapshot(c,rs){
+  if(!window.TCP_CALL_CYCLE_V547||!c||!c.isCurrent)return fallbackSnapshot(c,rs);
+  var reps=[],first=null;
+  rs.filter(function(row){return row&&!row.isRetired}).forEach(function(row){
+   try{
+    var p=TCP_CALL_CYCLE_V547.paceFor(row.name,new Date());
+    if(!p)return;if(!first)first=p;
+    reps.push({name:row.name,size:n(p.size),calls:n(row.total&&row.total.calls),attempted:n(p.attempted),emailed:n(p.emailed),completed:n(p.completed),pct:n(p.size)?n(p.completed)/n(p.size)*100:0,expected:n(p.expected),expectedPct:n(p.size)?n(p.expected)/n(p.size)*100:0,delta:n(p.completed)-n(p.expected),status:p.status||'On pace',tone:p.tone||'on',todayCompleted:n(p.todayCompleted),dailyTarget:n(p.dailyTarget),todayRemaining:n(p.todayRemaining)});
+   }catch(e){reps.push({name:row.name,size:n(row.total&&row.total.setSize),calls:n(row.total&&row.total.calls),attempted:n(row.total&&row.total.acctsCalled),completed:n(row.total&&row.total.acctsCalled),pct:n(row.total&&row.total.setSize)?n(row.total.acctsCalled)/n(row.total.setSize)*100:0,expected:0,expectedPct:0,delta:0,status:'Cycle unavailable',tone:'none',todayCompleted:0,dailyTarget:0,todayRemaining:0})}
+  });
+  if(!reps.length)return fallbackSnapshot(c,rs);
+  var sum=function(key){return reps.reduce(function(s,r){return s+n(r[key])},0)};
+  var size=sum('size'),completed=sum('completed'),expected=sum('expected');
+  return{live:true,cycle:first&&first.cycle||null,milestone:first&&first.milestone||null,split:cycleSplit(first&&first.cycle),size:size,completed:completed,attempted:sum('attempted'),emailed:sum('emailed'),expected:expected,expectedPct:size?expected/size*100:0,completedPct:size?completed/size*100:0,totalCalls:trackerCalls(rs),todayCompleted:sum('todayCompleted'),dailyTarget:sum('dailyTarget'),todayRemaining:sum('todayRemaining'),reps:reps}
+ }
+ function snapshot(){var c=context(),rs=rows();return c?liveSnapshot(c,rs):null}
+ function phaseText(s){
+  if(!s||!s.milestone)return'Call-cycle phase unavailable';
+  var prev=n(s.milestone.previousTarget),inc=Math.max(0,n(s.milestone.target)-prev);
+  var month=String(s.milestone.label||'Current phase').split('·')[0].trim();
+  return month+' is the '+inc+'% phase ('+prev+'% → '+n(s.milestone.target)+'% cumulative)';
+ }
+ function centerHtml(s,c){
+  if(!s)return'';
+  var cycleLabel=s.cycle&&s.cycle.label||'Account Update Cycle';
+  var gap=s.completed-s.expected,gapText=(gap>=0?'Ahead by ':'Behind by ')+num(Math.abs(gap));
+  var split=s.split==='50 / 50'?'50 / 50 split':s.split+' split';
+  var expectedPct=Math.round(s.expectedPct),completedPct=Math.round(s.completedPct);
+  var currentPhase=phaseText(s);
+  var table=s.reps.slice().sort(function(a,b){return a.delta-b.delta}).map(function(r){
+   var expPct=r.size?r.expected/r.size*100:r.expectedPct;
+   return'<tr onclick="_ps58OpenRep(\''+esc(r.name).replace(/'/g,"\\'")+'\')">'+
+    '<td class="rep">'+esc(r.name)+'</td>'+ 
+    '<td><span class="big">'+num(r.size)+'</span><span class="muted">assigned accounts</span></td>'+ 
+    '<td><span class="big">'+num(r.calls)+'</span><span class="muted">tracker calls through Wk '+num(c.weekNumber)+'</span></td>'+ 
+    '<td><span class="big">'+num(r.attempted)+'</span><span class="muted">cycle accounts attempted</span></td>'+ 
+    '<td><span class="big">'+num(r.completed)+' / '+num(r.size)+'</span><span class="muted">call + follow-up email</span></td>'+ 
+    '<td><span class="big">'+pct(r.pct)+'</span></td>'+ 
+    '<td><span class="big">'+num(r.expected)+'</span><span class="muted">'+pct(expPct)+' of set by today</span></td>'+ 
+    '<td><span class="ps625-call-status '+esc(r.tone)+'">'+esc(r.status)+'</span><span class="muted">'+(r.delta>=0?'+':'')+num(r.delta)+' vs expected</span></td>'+ 
+    '<td><span class="big">'+num(r.todayCompleted)+' / '+num(r.dailyTarget)+'</span><span class="muted">completed / adaptive target</span></td>'+ 
+   '</tr>'
+  }).join('');
+  return'<section id="ps625-call-center" class="ps58-card ps625-call-center">'+
+   '<div class="ps625-call-head"><div><div class="ps58-section-label">Call & Account Coverage Center <button type="button" class="ps620-audit-btn" data-ps620-audit="callcenter" title="How call pacing works">i</button></div><h2>'+esc(cycleLabel)+' · '+esc(split)+'</h2><p>'+esc(currentPhase)+'. The live expected position moves across business days, so the cycle structure stays 50/50 while today’s cumulative expectation advances through the active half.</p></div>'+ 
+   '<div class="ps625-cycle-badge"><span>Expected by this snapshot</span><strong>'+pct(expectedPct)+'</strong><small>'+num(s.expected)+' of '+num(s.size)+' accounts · '+esc(gapText)+'</small></div></div>'+ 
+   '<div class="ps625-call-kpis">'+
+    '<div class="ps625-call-kpi"><span>Team Set Size</span><strong>'+num(s.size)+'</strong><small>Frozen assigned customer set for this cycle</small></div>'+ 
+    '<div class="ps625-call-kpi"><span>Cycle Completed</span><strong>'+num(s.completed)+' / '+num(s.size)+'</strong><small>'+pct(completedPct)+' complete · call + follow-up email</small></div>'+ 
+    '<div class="ps625-call-kpi"><span>Call Attempts</span><strong>'+num(s.attempted)+'</strong><small>Cycle accounts with call evidence</small></div>'+ 
+    '<div class="ps625-call-kpi"><span>Total Calls Logged</span><strong>'+num(s.totalCalls)+'</strong><small>Tracker call volume through Wk '+num(c.weekNumber)+'</small></div>'+ 
+    '<div class="ps625-call-kpi"><span>Today</span><strong>'+num(s.todayCompleted)+' / '+num(s.dailyTarget)+'</strong><small>'+num(s.todayRemaining)+' adaptive account updates remaining</small></div>'+ 
+   '</div>'+ 
+   '<div class="ps625-call-pace"><div class="ps625-call-pace-head"><span>Full cycle completion</span><strong>'+pct(completedPct)+' actual · '+pct(expectedPct)+' expected by now</strong></div><div class="ps625-call-track"><i style="width:'+clamp(completedPct,0,100)+'%"></i><em style="left:'+clamp(expectedPct,0,100)+'%"></em></div><div class="ps625-call-scale"><span><b>0%</b> Cycle start</span><span><b>'+esc(split)+'</b> Period design</span><span><b>100%</b> Cycle complete</span></div></div>'+ 
+   '<div class="ps625-call-table-wrap"><table class="ps625-call-table"><thead><tr><th>Rep</th><th>Set Size</th><th>Total Calls</th><th>Call Attempts</th><th>Completed Updates</th><th>Complete %</th><th>Expected Now</th><th>Pace</th><th>Today</th></tr></thead><tbody>'+table+'</tbody></table></div>'+ 
+   '<div class="ps625-call-note"><strong>How to read this:</strong> the July–August cycle is coded as 50% of the assigned set in July and the remaining 50% in August. On a live August day, “Expected Now” is not just 50%; it is the July 50% plus the portion of August’s second 50% that should be completed by today based on remaining business days. “Total Calls” is raw tracker call volume; “Completed Updates” is the stricter coaching measure that requires both the call attempt and follow-up email on a cycle account.</div>'+ 
+  '</section>'
+ }
+ function patchBrief(s){
+  if(!s||!s.live)return;
+  var page=document.getElementById('pg-dash'),copy=page&&page.querySelector('.ps58-brief-copy');if(!copy)return;
+  var gap=s.completed-s.expected,html=copy.innerHTML;
+  html=html.replace(/;?\s*[\d,]+ account updates remain behind pace/g,gap<0?'; '+num(Math.abs(gap))+' cycle accounts are behind today’s expected pace':'');
+  if(gap>=0)html=html.replace(/<b>Manager focus:<\/b> increase customer outreach and clear the account-update backlog/g,'<b>Manager focus:</b> protect call-cycle pace and focus coaching on the next largest constraint');
+  else html=html.replace(/<b>Manager focus:<\/b> increase customer outreach and clear the account-update backlog/g,'<b>Manager focus:</b> close the '+num(Math.abs(gap))+'-account call-cycle gap and protect today’s adaptive target');
+  copy.innerHTML=html
+ }
+ function patchExecutive(s,c){
+  if(!s||!s.live)return;
+  var page=document.getElementById('pg-dash'),button=page&&page.querySelector('[data-ps620-audit="accounts"]'),card=button&&button.closest('.ps58-kpi');if(!card)return;
+  var gap=s.completed-s.expected,state=card.querySelector('.ps58-kpi-state'),value=card.querySelector('.ps58-kpi-value'),sub=card.querySelector('.ps58-kpi-sub'),foot=card.querySelector('.ps58-kpi-foot'),label=card.querySelector('.ps58-kpi-label');
+  if(label)label.innerHTML='<span class="ps58-kpi-icon">☎</span>Call Cycle Coverage <button type="button" class="ps620-audit-btn" data-ps620-audit="accounts" title="How call-cycle coverage is calculated">i</button>';
+  if(state){state.textContent=(gap>=0?'Ahead by ':'Behind by ')+num(Math.abs(gap))+' accounts';state.classList.toggle('good',gap>=0)}
+  if(value)value.textContent=num(s.completed)+' / '+num(s.size);
+  if(sub)sub.textContent=pct(s.completedPct)+' complete · '+num(s.totalCalls)+' total calls logged · '+s.split+' cycle';
+  card.style.setProperty('--ps58-width',clamp(s.completedPct,0,100)+'%');
+  if(foot)foot.innerHTML='<span>Expected now</span><strong>'+pct(s.expectedPct)+' · '+num(s.expected)+'</strong>'
+ }
+ function patchProgress(s){
+  if(!s||!s.live)return;
+  var page=document.getElementById('pg-dash'),panel=page&&page.querySelector('.ps58-progress-card'),blocks=panel&&panel.querySelectorAll('.ps58-progress-block');if(!blocks||!blocks.length)return;
+  var block=blocks[blocks.length-1],gap=s.completed-s.expected;
+  block.innerHTML='<div class="ps58-progress-head"><span>Call Cycle Coverage</span><b>'+(gap>=0?'Ahead by ':'Behind by ')+num(Math.abs(gap))+'</b></div>'+ 
+   '<div class="ps58-progress-value">'+num(s.completed)+' / '+num(s.size)+'</div>'+ 
+   '<div class="ps58-marker-track"><i style="width:'+clamp(s.completedPct,0,100)+'%"></i><em style="left:'+clamp(s.expectedPct,0,100)+'%"></em></div>'+ 
+   '<div class="ps58-marker-labels"><span><strong>0%</strong>Cycle start</span><span><strong>'+pct(s.expectedPct)+'</strong>Expected now</span><span><strong>100%</strong>Full set</span></div>'+ 
+   '<div class="ps620-context-note">'+esc(s.cycle&&s.cycle.short||'Current cycle')+' uses a '+esc(s.split)+' split. '+esc(phaseText(s))+'. Live pace is business-day adjusted and a completed account requires both the call attempt and follow-up email.</div>'
+ }
+ function installCenter(){
+  var c=context(),s=snapshot(),page=document.getElementById('pg-dash');if(!c||!s||!page||c.isFuture)return;
+  var old=document.getElementById('ps625-call-center');if(old)old.remove();
+  var grid=page.querySelector('.ps58-kpi-grid');if(grid)grid.insertAdjacentHTML('afterend',centerHtml(s,c));
+  patchExecutive(s,c);patchProgress(s);patchBrief(s);
+  window._ps625CallSnapshot=s
+ }
+ function explainCalls(key){
+  if(key!=='accounts'&&key!=='callcenter')return false;
+  var s=window._ps625CallSnapshot||snapshot(),c=context();if(!s||!c)return false;
+  var modal=document.getElementById('ps620AuditModal'),title=document.getElementById('ps620AuditTitle'),body=document.getElementById('ps620AuditBody');if(!modal||!title||!body)return false;
+  var prev=s.milestone?n(s.milestone.previousTarget):0,target=s.milestone?n(s.milestone.target):0,inc=Math.max(0,target-prev),gap=s.completed-s.expected;
+  title.textContent=key==='callcenter'?'Call & Account Coverage Center':'Call Cycle Coverage';
+  body.innerHTML='<p><strong>This area uses the actual Call Cycle engine for a live dashboard.</strong> It does not pace account updating with the revenue quarter percentage.</p>'+ 
+   '<div class="ps620-audit-grid"><span>Active cycle<b>'+esc(s.cycle&&s.cycle.label||'Unavailable')+'</b></span><span>Cycle split<b>'+esc(s.split)+'</b></span><span>Current phase<b>'+inc+'% ('+prev+'% → '+target+'%)</b></span><span>Set size<b>'+num(s.size)+'</b></span><span>Completed<b>'+num(s.completed)+' ('+pct(s.completedPct)+')</b></span><span>Expected now<b>'+num(s.expected)+' ('+pct(s.expectedPct)+')</b></span><span>Pace gap<b>'+(gap>=0?'+':'-')+num(Math.abs(gap))+' accounts</b></span><span>Call attempts<b>'+num(s.attempted)+'</b></span><span>Total tracker calls<b>'+num(s.totalCalls)+'</b></span><span>Today target<b>'+num(s.todayCompleted)+' / '+num(s.dailyTarget)+'</b></span></div>'+ 
+   '<p><strong>Why “50 / 50” and “Expected Now” are different:</strong> July–August assigns 50% of the set to July and the other 50% to August. Once August begins, the cumulative expectation starts at 50% and moves toward 100% across August business days. So on August 12, a rep should have the July half completed plus the appropriate share of August’s second half.</p>'+ 
+   '<p><strong>Completed Update:</strong> the cycle engine requires both a call attempt and the follow-up email. <strong>Total Calls:</strong> the tracker’s raw call-volume metric is shown separately because a rep can make multiple calls while working one assigned account.</p>'+ 
+   '<p class="ps620-audit-warning">This distinction is intentional for coaching: call volume measures activity; cycle completion measures whether the assigned customer set is actually being worked to the required standard.</p>';
+  modal.classList.add('open');return true
+ }
+ window._ps620Audit=function(key){if(explainCalls(key))return;return typeof priorAudit==='function'?priorAudit.apply(this,arguments):undefined};
+ function render(){var result=typeof priorRender==='function'?priorRender.apply(this,arguments):undefined;try{installCenter()}catch(e){console.warn('[v625 dashboard calls]',e)}return result}
+ if(typeof priorRender==='function'){window.renderDash=render;window.renderDashWidgets=render}
+ window.TCP_DASHBOARD_CALL_COVERAGE_V625={version:BUILD,snapshot:snapshot,render:installCenter};
+ window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V625=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V624||window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
+ window.TCP_BUILD_VERSION=BUILD;
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v625 — Call Coverage + Coaching Forecast'}catch(e){}
+ setTimeout(function(){var p=document.getElementById('pg-dash');if(p&&p.classList.contains('active'))installCenter()},120);
+})();
+</script>
+
 </body>
 </html>
 
