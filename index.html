@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Sales Tracker v620: coaching-safe dashboard pacing, provenance, freshness, forecast, and metric integrity -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
 <title>Sales Tracker v619 — Module Consolidation Sweep</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -20754,7 +20755,7 @@ body.coach-seated #pg-coach .coach-panel-head,
 (function(){
   if(window.TCP_CONTEXT_HELP_V423)return;
   window.TCP_CONTEXT_HELP_V423=true;
-  var REG = {"dash": {"title": "Dashboard", "summary": "Executive weekly command center for the selected tracker week. It rolls up sales, pace, forecast, production, coaching signals, quality issues, manager notes, and weekly momentum into one leadership view.", "sections": [{"title": "Executive hero / week context", "keys": ["weekly executive", "dashboard", "sales tracker", "hero"], "shows": "Selected year, quarter, month, and tracker week context plus top-level command actions.", "pulls": "Top-bar tracker selectors, fiscal week helpers, S.data weekly sales records, S.goals, and current date context."}, {"title": "Current State of the Business", "keys": ["current state", "quarter health", "business health"], "shows": "Quarter health signals, pace indicators, and key sales/account activity summaries for the selected quarter/week.", "pulls": "S.data weekly revenue/calls/coverage, S.goals, active reps, and current quarter/week helpers."}, {"title": "Team Pace Center", "keys": ["team pace", "team management"], "shows": "Rep/team progress against goals and weekly pace.", "pulls": "S.data by rep/week, S.goals by rep/quarter, active rep roster, and current quarter elapsed-week calculations."}, {"title": "Forecast Center", "keys": ["forecast center", "forecast"], "shows": "Projected finish, gap, confidence, and forecast direction.", "pulls": "Current-quarter sales history from S.data, rep/team goals from S.goals, and forecast calculation functions."}, {"title": "Strategic Watchlist", "keys": ["strategic watchlist", "management intelligence"], "shows": "Management-level risks, opportunities, and weekly business signals.", "pulls": "Derived signals from sales pace, coverage, forecast, quality logs, HR notes, and production status."}, {"title": "Production Pulse", "keys": ["production pulse", "production"], "shows": "Open production or operational items that may affect sales execution.", "pulls": "Production intelligence/project data, weekly project notes, and configured production status feeds."}, {"title": "Manager Notes", "keys": ["manager notes", "historical memory"], "shows": "Week-specific leadership notes and historical memory for the current context.", "pulls": "Saved manager/coaching notes in localStorage-backed tracker state."}, {"title": "Positive Momentum", "keys": ["positive momentum", "wins board"], "shows": "Wins, high performers, and positive callouts for the selected week.", "pulls": "Weekly sales data, performance notes, review activity, and derived momentum signals."}]}, "year": {"title": "Year Overview", "summary": "Annual command view that groups all tracker activity across the selected year.", "sections": [{"title": "Year score grid", "keys": ["score grid", "executive year view"], "shows": "Annual KPI cards for revenue, quality, coverage, calls, and overall performance.", "pulls": "All S.data records in the selected year plus goals, credit memos, art errors, and report history."}, {"title": "Year at a glance", "keys": ["year at a glance", "quarter map"], "shows": "Quarter-by-quarter annual snapshot.", "pulls": "Weekly S.data grouped into fiscal quarters."}, {"title": "Monthly revenue trend", "keys": ["monthly revenue trend", "trend"], "shows": "Sales trend by month for the selected year.", "pulls": "S.data weekly revenue grouped by calendar/fiscal month."}, {"title": "Year-to-date team leaders", "keys": ["year-to-date team leaders", "team performance"], "shows": "Top reps and team leaders for the selected year.", "pulls": "Rep-level revenue and activity totals from S.data."}, {"title": "Annual health signals", "keys": ["annual health signals", "health"], "shows": "Business risks and strengths across the year.", "pulls": "Derived annual pace, quality, production, and activity signals."}, {"title": "Year notes", "keys": ["year notes", "records"], "shows": "Saved year-level management notes.", "pulls": "Year note field stored in localStorage-backed state."}]}, "entry": {"title": "Data Entry", "summary": "Administrative input center for weekly sales, calls, goals, set sizes, roster, backups, and tracker storage.", "sections": [{"title": "Weekly sales entry", "keys": ["weekly sales", "data entry", "sales entry"], "shows": "Weekly revenue, calls, account coverage, SMB/CORP values, and rep activity inputs.", "pulls": "Writes to S.data for the selected year/quarter/week; reads active reps, set sizes, and goals."}, {"title": "Goals table", "keys": ["goals", "goal"], "shows": "Quarter goals by rep and team.", "pulls": "Reads/writes S.goals and team goal configuration."}, {"title": "Rep roster / set sizes", "keys": ["rep", "roster", "set size"], "shows": "Current reps, active status, and account set-size inputs.", "pulls": "Reads/writes S.reps profile and set-size fields."}, {"title": "Data tools", "keys": ["backup", "import", "export", "storage", "admin"], "shows": "Backup, import/export, storage health, and API/configuration controls.", "pulls": "localStorage tracker state, exported JSON, optional API/proxy settings."}]}, "profiles": {"title": "Rep Profiles", "summary": "Rep profile and individual history center. It combines profile fields, goals, quarterly pace, notes, HR events, and sales history.", "sections": [{"title": "Rep selector cards", "keys": ["rep cards", "rep profiles"], "shows": "Selectable active reps and profile role labels.", "pulls": "S.reps roster, profile photos, role/team flags, and active status."}, {"title": "Profile hero", "keys": ["profile hero", "profile"], "shows": "Selected rep photo, name, role, tenure, and quick profile actions.", "pulls": "S.reps profile fields and localStorage photo cache."}, {"title": "Quarter progress", "keys": ["quarter progress", "pace"], "shows": "Selected rep progress toward revenue/call/coverage goals.", "pulls": "S.data for selected rep/quarter and S.goals."}, {"title": "Profile details", "keys": ["details", "info"], "shows": "Editable rep information such as hire date, birthday, favorites, and custom fields.", "pulls": "S.reps profile object."}, {"title": "Notes and timeline", "keys": ["timeline", "feed", "notes"], "shows": "Recent coaching notes, HR notes, sales/quality events, and history.", "pulls": "S.coachingNotes, S.hrViolations, S.cms, S.artErrors, and S.data."}]}, "hr": {"title": "HR & Notes", "summary": "Documentation hub for HR events, coaching notes, warnings, observations, and team documentation history.", "sections": [{"title": "HR entry", "keys": ["hr entry", "document"], "shows": "Form to log HR events by rep, date, type, level, and notes.", "pulls": "Writes to S.hrViolations; reads active rep roster."}, {"title": "Manager / coaching note entry", "keys": ["coaching", "manager note", "note entry"], "shows": "Form to save observations, coaching notes, positives, concerns, and PIP notes.", "pulls": "Writes to S.coachingNotes; reads active rep roster and note-type selections."}, {"title": "HR log", "keys": ["hr log", "violations"], "shows": "Filtered history of documented HR events.", "pulls": "S.hrViolations filtered by rep/date/type."}, {"title": "Notes log", "keys": ["notes log", "coaching log"], "shows": "Filtered history of manager and coaching notes.", "pulls": "S.coachingNotes filtered by rep/date/type."}, {"title": "Summary by rep", "keys": ["summary by rep", "summary"], "shows": "Rollup of HR and coaching activity by rep.", "pulls": "S.hrViolations and S.coachingNotes grouped by rep."}]}, "credits": {"title": "Credit Memos", "summary": "Quality and credit memo command center for importing, reviewing, classifying, and analyzing credit memo impact.", "sections": [{"title": "Upload / scan credit memos", "keys": ["upload", "scan", "credit memo"], "shows": "Credit memo import/drop zone and extracted memo preview.", "pulls": "Uploaded files/parsed rows and current credit memo form values."}, {"title": "Credit memo KPIs", "keys": ["kpi", "total", "fault"], "shows": "Counts, dollars, rep-fault/customer-fault splits, and selected-week impact.", "pulls": "S.cms filtered by selected year/quarter/week and fault classification."}, {"title": "Credit memo form", "keys": ["form", "entry", "fault"], "shows": "Editable details for amount, customer, reason, rep, and fault owner.", "pulls": "Reads/writes S.cms; reads active reps and current tracker week."}, {"title": "Filters and readout", "keys": ["filter", "readout"], "shows": "Credit memo filters and summary readout.", "pulls": "S.cms with selected filters."}, {"title": "Credit memo log", "keys": ["log", "history"], "shows": "Saved memo rows with edit/delete controls.", "pulls": "S.cms localStorage-backed memo history."}]}, "art": {"title": "Art Errors", "summary": "Art/production quality tracker for logging artwork problems, ownership, customer impact, and trends.", "sections": [{"title": "Art error entry", "keys": ["entry", "log art", "art error"], "shows": "Form to log date, rep, order/customer, error type, fault, and notes.", "pulls": "Writes to S.artErrors; reads active rep roster and tracker week."}, {"title": "Art KPI cards", "keys": ["kpi", "quality"], "shows": "Counts, fault breakdown, and current-period art error impact.", "pulls": "S.artErrors filtered by selected year/quarter/week."}, {"title": "Filters", "keys": ["filter"], "shows": "Rep/type/period filters for quality review.", "pulls": "S.artErrors plus active reps and selected tracker context."}, {"title": "Art error log", "keys": ["log", "history"], "shows": "Saved art error incidents with edit/delete controls.", "pulls": "S.artErrors localStorage-backed history."}]}, "perf": {"title": "Performance", "summary": "Rep performance scorecard combining revenue, calls, coverage, forecast, and quality into a management score.", "sections": [{"title": "Rep score panel", "keys": ["score", "rating"], "shows": "Overall performance score, star rating, and rep status.", "pulls": "S.data, S.goals, S.cms, S.artErrors, and HR/coaching notes for selected rep/quarter."}, {"title": "KPI cards", "keys": ["kpi", "snapshot"], "shows": "Revenue pace, calls pace, coverage, forecast, and quality metrics.", "pulls": "Current-quarter rep totals from S.data and goals from S.goals."}, {"title": "Progress bars", "keys": ["progress", "pace"], "shows": "Goal progress and pace against expected quarter progress.", "pulls": "Quarter elapsed weeks plus rep-level S.data/S.goals."}, {"title": "Insights", "keys": ["insight", "recommendation"], "shows": "Strengths, risks, and management notes for the selected rep.", "pulls": "Derived scoring rules using performance and quality data."}, {"title": "Trend chart", "keys": ["chart", "trend"], "shows": "Performance trend over recent weeks.", "pulls": "Weekly rep rows from S.data."}]}, "meeting": {"title": "Meeting Report", "summary": "Weekly meeting report builder that assembles team status, projects, risks, and report output for the selected week.", "sections": [{"title": "Week picker", "keys": ["week picker", "selected week"], "shows": "Selected meeting week and report generation controls.", "pulls": "Top-bar week helpers, S.data, and weekly project storage."}, {"title": "Projects / preview", "keys": ["project", "preview"], "shows": "Report preview, project notes, wins, blockers, and meeting content.", "pulls": "Weekly projects store, S.data weekly metrics, notes, and production/project fields."}, {"title": "Output / result", "keys": ["result", "report"], "shows": "Generated meeting report file/result links.", "pulls": "Report builder functions and local report history."}]}, "review": {"title": "Employee Reviews", "summary": "Employee performance review generator that compiles selected rep/period data into a review packet.", "sections": [{"title": "Review builder", "keys": ["review builder", "generate"], "shows": "Rep/year/quarter selector and review generation controls.", "pulls": "S.data, S.goals, S.coachingNotes, S.hrViolations, S.cms, and S.artErrors for selected rep/period."}, {"title": "Review checklist", "keys": ["checklist"], "shows": "What the review packet includes and what data is checked.", "pulls": "Static review configuration plus selected rep context."}, {"title": "Review preview", "keys": ["preview", "output"], "shows": "Generated performance review sections before export.", "pulls": "Calculated scorecard, notes, quality history, and sales history."}]}, "reports": {"title": "Reports", "summary": "Report-generation command center for quarterly, weekly, AI, manager, rep, and team reports.", "sections": [{"title": "Report hero", "keys": ["report command", "hero"], "shows": "Report workspace overview and primary actions.", "pulls": "Current tracker week/quarter and report history status."}, {"title": "Health strip", "keys": ["health", "overview"], "shows": "Report readiness, data coverage, and current report counts.", "pulls": "S.data, reportHistory, notes, and current tracker filters."}, {"title": "Report builders", "keys": ["builder", "layout", "report"], "shows": "Available report types and generation controls.", "pulls": "S.data, S.goals, S.reps, S.cms, S.artErrors, S.coachingNotes, S.hrViolations, and production/project data."}]}, "prodintel": {"title": "Production Intelligence", "summary": "Production operations workspace for jobs, deadlines, order status, and production-facing intelligence.", "sections": [{"title": "Production intelligence hero", "keys": ["production intelligence", "hero"], "shows": "Production workspace context and quick actions.", "pulls": "Production intelligence storage and current tracker context."}, {"title": "Production panels", "keys": ["production", "status", "project"], "shows": "Production status, workload, timeline, and risk information.", "pulls": "Production/project data stores and configured production fields."}]}, "cknow": {"title": "Company Knowledge", "summary": "Internal knowledge base for procedures, company context, product information, and manager reference material.", "sections": [{"title": "Knowledge hero", "keys": ["company knowledge", "knowledge base"], "shows": "Knowledge center purpose and update controls.", "pulls": "S.companyKnowledge categories, freeform notes, and last-updated metadata."}, {"title": "Metrics", "keys": ["metrics"], "shows": "Knowledge coverage and recent update counts.", "pulls": "S.companyKnowledge category totals and timestamps."}, {"title": "Knowledge panels", "keys": ["policy", "procedure", "products", "category", "panel"], "shows": "Editable company knowledge sections by category.", "pulls": "S.companyKnowledge.categories and S.companyKnowledge.freeform."}]}, "inbound": {"title": "Inbound Leads", "summary": "Lead intake and follow-up tracker for inbound opportunities.", "sections": [{"title": "Lead entry", "keys": ["lead", "inbound", "entry"], "shows": "Lead form, source, rep assignment, and follow-up controls.", "pulls": "Inbound lead localStorage store and active rep roster."}, {"title": "Lead log", "keys": ["log", "pipeline"], "shows": "Saved inbound lead pipeline and statuses.", "pulls": "Inbound lead localStorage store filtered by status/rep/source."}]}, "customers": {"title": "Customers", "summary": "Customer intelligence workspace tied to reps, customer lists, and account coverage.", "sections": [{"title": "Customer lists", "keys": ["customer", "account", "list"], "shows": "Rep customer lists, account intelligence, and coverage notes.", "pulls": "S.reps profile customer lists and customer localStorage stores."}, {"title": "Customer analysis", "keys": ["analysis", "intelligence"], "shows": "Account counts, notes, and customer-level insights.", "pulls": "Saved customer lists plus coverage/call data from S.data when available."}]}, "reviews": {"title": "Customer Reviews", "summary": "Google and Trustpilot customer review payout tracker. It imports the published review CSV, dedupes review rows, matches reps, and calculates weekly $10 review payouts using the tracker week.", "sections": [{"title": "Review feed", "keys": ["review feed", "customer reviews"], "shows": "CSV URL input, sync status, and refresh control.", "pulls": "Published Google Sheet CSV URL stored in S.reviews.url; imported rows stored in S.reviews.rows."}, {"title": "Viewing filters", "keys": ["viewing", "week", "filter"], "shows": "Selected year/quarter/week, previous-week navigation, and match-tracker-week controls.", "pulls": "Main tracker week helpers, S.reviews rows, and tracker week range functions."}, {"title": "Review KPI cards", "keys": ["reviews this week", "payout this week", "google", "trustpilot"], "shows": "Current-week review count, payout total, and Google/Trustpilot split.", "pulls": "S.reviews.rows filtered to the selected tracker week; payout rows require Google/Trustpilot and matched rep."}, {"title": "Review charts", "keys": ["reviews / week", "source split", "top reps"], "shows": "Eight-week review trend, source split, and top reps for the week.", "pulls": "S.reviews.rows with dedupe/decision status and selected tracker week range."}, {"title": "Weekly payout", "keys": ["weekly payout", "payroll"], "shows": "Payroll-ready payout table and copy button.", "pulls": "Matched Google/Trustpilot reviews in the selected week multiplied by REVIEW_PAY."}, {"title": "Reviews grouped by rep", "keys": ["reviews this week", "grouped by rep"], "shows": "Review details grouped by matched or unmatched rep.", "pulls": "S.reviews.rows enriched with platform, stars, customer name, duplicate decisions, and rep matching."}]}, "history": {"title": "Report History", "summary": "Saved report archive for generated reports and reviewable outputs.", "sections": [{"title": "History filters", "keys": ["filter", "history"], "shows": "Report type and subject filters.", "pulls": "reportHistory localStorage-backed array."}, {"title": "Report list", "keys": ["report list", "history list"], "shows": "Saved reports with view/delete controls.", "pulls": "reportHistory filtered by type and subject."}]}, "lb": {"title": "Leaderboard", "summary": "Sales performance leaderboard across reps and selected metrics.", "sections": [{"title": "Leaderboard controls", "keys": ["controls", "leaderboard"], "shows": "Metric/timeframe toggles.", "pulls": "Selected tracker week/quarter, S.data, goals, and active rep roster."}, {"title": "Podium and rankings", "keys": ["podium", "rank", "leaderboard"], "shows": "Top performers and ranked list.", "pulls": "Calculated metric totals from S.data, S.goals, review data, or quality logs depending on selected leaderboard mode."}]}, "daily": {"title": "Daily Sales & Calls", "summary": "Daily sales calendar and per-rep daily SMB tracker. It marries the team running total entry with per-rep cumulative entries and opens day-level rep rankings from the calendar.", "sections": [{"title": "Daily sales entry", "keys": ["daily sales entry", "input", "running total", "per-rep daily entry"], "shows": "One selected date driving team running total, CORP day sales, and per-rep SMB cumulative totals.", "pulls": "Reads/writes S.dailySales for running totals and S.dailyRep for per-rep cumulative SMB entries; reads active reps."}, {"title": "Calendar controls", "keys": ["month controls", "controls"], "shows": "Month selector, refresh/clear controls, and daily calendar navigation.", "pulls": "S.dailySales, S.dailyRep, and selected date/month."}, {"title": "Daily summary", "keys": ["summary", "kpi"], "shows": "Monthly/daily summary cards for totals, days, SMB/CORP, and averages.", "pulls": "S.dailySales entries for the selected month plus S.dailyRep where applicable."}, {"title": "Daily calendar", "keys": ["calendar", "daily sales log"], "shows": "Calendar cells with day totals and top SMB rep badge. Clicking a day opens per-rep rankings.", "pulls": "S.dailySales for team totals and S.dailyRep for per-rep day deltas/rankings."}]}, "calc": {"title": "Deadline Calculator", "summary": "Production deadline calculator for determining whether an order can hit an in-hands date.", "sections": [{"title": "Deadline calculator", "keys": ["deadline calculator", "can we hit"], "shows": "Timeline calculator using garment arrival, art status, decoration methods, production lead times, and transit.", "pulls": "User-entered calculator fields, production lead-time settings, and optional production status data."}]}, "intel": {"title": "Forecast", "summary": "Seasonal and event-based sales forecast/intelligence page for upcoming opportunities and call windows.", "sections": [{"title": "Forecast hero", "keys": ["forecast", "seasonal"], "shows": "Forecast workspace context and refresh controls.", "pulls": "Forecast event data, tracker date context, and cached AI/event intelligence if configured."}, {"title": "Next 7 days", "keys": ["next 7 days", "immediate"], "shows": "Events or opportunities requiring quick-turn action.", "pulls": "Forecast event list filtered to the next seven days."}, {"title": "Rest of this month", "keys": ["rest of this month", "near term"], "shows": "Events in the next two to four weeks.", "pulls": "Forecast event list filtered to the remaining current month."}, {"title": "Rest of this quarter", "keys": ["rest of this quarter", "planning window"], "shows": "Quarter planning opportunities.", "pulls": "Forecast event list filtered to current-quarter remaining window."}, {"title": "Next quarter", "keys": ["next quarter", "ahead"], "shows": "Long-lead opportunities.", "pulls": "Forecast event list filtered to next quarter."}, {"title": "Downtime call windows", "keys": ["downtime", "call strategy"], "shows": "Industries likely in slower seasons for proactive calls.", "pulls": "Configured industry seasonality/intelligence rules."}]}, "games": {"title": "Games", "summary": "Sales games engine for creating team games, importing rulebooks, building rosters, and simulating outcomes.", "sections": [{"title": "Game command center", "keys": ["game command", "sales game"], "shows": "Game setup controls and generation actions.", "pulls": "Active reps, selected tracker period, game rulebook storage, and optional external roster entries."}, {"title": "Rulebook upload", "keys": ["rulebook"], "shows": "Uploaded game rules and preview.", "pulls": "Game rulebook localStorage store and uploaded file text."}, {"title": "Roster", "keys": ["roster"], "shows": "Eligible reps/external participants for games.", "pulls": "S.reps active roster plus preconfigured game externals."}, {"title": "Game content / simulation", "keys": ["simulation", "content"], "shows": "Generated game details, scoring, and simulation output.", "pulls": "Game result/simulation localStorage stores and selected tracker data."}]}, "gtrack": {"title": "Game Tracker", "summary": "Game scoring and results tracker.", "sections": [{"title": "Game tracker setup", "keys": ["game tracker", "setup"], "shows": "Game configuration and scoring controls.", "pulls": "Game tracker localStorage store and active roster."}, {"title": "Game results", "keys": ["results", "score"], "shows": "Current standings and game performance.", "pulls": "Saved game tracker data and selected sales metrics."}]}, "notifs": {"title": "Notifications", "summary": "Notification center for sales, quality, HR, forecast, and operational alerts.", "sections": [{"title": "Notification metrics", "keys": ["metrics", "notifications"], "shows": "Counts and priority summary of current alerts.", "pulls": "Derived alerts from S.data, goals, credit memos, art errors, HR/coaching notes, and production/forecast data."}, {"title": "Notification toolbar", "keys": ["toolbar", "filter"], "shows": "Filters and actions for the notification log.", "pulls": "Notification state plus active tracker context."}, {"title": "Notification log", "keys": ["log", "alerts"], "shows": "Detailed alert list with status.", "pulls": "Generated notification array and local dismissed/read state."}]}, "admin": {"title": "Admin", "summary": "System administration and storage tools for backups, data health, API keys, and tracker maintenance.", "sections": [{"title": "Admin hero", "keys": ["admin", "system"], "shows": "System admin overview and key actions.", "pulls": "Tracker state, storage status, and configuration values."}, {"title": "Status grid", "keys": ["status", "storage"], "shows": "Storage/data health indicators.", "pulls": "localStorage usage, S object totals, caches, and file-handle status where supported."}, {"title": "Admin tools", "keys": ["tools", "backup", "api"], "shows": "Backup/import/export/API/storage cleanup tools.", "pulls": "localStorage, exported JSON, optional API/proxy settings, cache stores, and tracker state."}]}, "coach": {"title": "Rep Coaching Center", "summary": "Coaching workspace that turns rep performance, quality, and documentation into action recommendations.", "sections": [{"title": "Coaching score", "keys": ["score", "coach"], "shows": "Rep health score, priority, and coaching context.", "pulls": "S.data, S.goals, S.cms, S.artErrors, S.hrViolations, and S.coachingNotes."}, {"title": "Snapshot KPIs", "keys": ["snapshot", "kpi"], "shows": "Revenue, calls, coverage, forecast, and quality snapshot.", "pulls": "Selected rep current-quarter metrics and goals."}, {"title": "Recommendations", "keys": ["recommendation", "action"], "shows": "Strengths, risks, and suggested coaching actions.", "pulls": "Derived rules from pace, quality, HR, and notes."}, {"title": "Timeline", "keys": ["timeline"], "shows": "Recent rep events, notes, HR, credit memos, and art errors.", "pulls": "S.coachingNotes, S.hrViolations, S.cms, and S.artErrors."}]}, "forecast2": {"title": "Forecast Command Center", "summary": "Advanced forecast cockpit for projection, gap, need-per-week, and confidence.", "sections": [{"title": "Projection panels", "keys": ["projection", "gap", "confidence"], "shows": "Projected finish, gap to goal, weekly need, and confidence.", "pulls": "S.data current-quarter revenue, S.goals, elapsed weeks, and forecast formulas."}, {"title": "Watch cards", "keys": ["watch", "risk"], "shows": "Risks and opportunities based on forecast movement.", "pulls": "Derived forecast signals from sales history and goals."}]}};
+  var REG = {"dash":{"title":"Dashboard","summary":"Coaching-safe weekly command center for the selected tracker snapshot. It separates selected-period metrics from live operational status, adjusts current-week pace by elapsed selling days, withholds goal-based coaching when goals are incomplete, and exposes metric provenance.","sections":[{"title":"Week Context & Data Status","keys":["week context","data status","freshness","snapshot"],"shows":"Selected year, quarter, month, tracker week, as-of context, and source freshness/completeness indicators.","pulls":"Top-bar tracker selectors and fiscal week helpers; S.dailyRep and S.dailyCalls for current-day entry completeness; finalized S.data weekly closeout fields; S.artErrorSource sync metadata; S.companyKnowledge.production refresh metadata; and read-only S.goals completeness."},{"title":"Executive Snapshot","keys":["executive snapshot","management snapshot","current state"],"shows":"Quarter health narrative, top selected-week signal, and the highest-priority manager focus.","pulls":"Derived signals from selected-period S.data, read-only S.goals, account-update pace, S.artErrors, and current live-week selling-day progress. Missing goals suppress goal-based conclusions."},{"title":"Progress vs Goal","keys":["progress vs goal","revenue pace","account updates","quality health"],"shows":"Revenue pace, cumulative account-update pace, forecast projection, and quality/cost health with audit buttons.","pulls":"S.data weekly revenue/calls/account updates/orders/hours; read-only S.goals revenue goals and quarter set size; S.artErrors via repArt(); rep-fault S.cms via repCr(); Call Cycle pace for the live current week where available."},{"title":"Action Center / Strategic Watchlist","keys":["action center","strategic watchlist","alerts","coaching queue"],"shows":"Management exceptions requiring coaching or operational follow-up.","pulls":"Derived goal completeness, effective revenue pace, current call-cycle pace, S.artErrors, rep-fault S.cms, forecast direction/gap, S.hrViolations, production refresh/lead-time status, and current Daily Sales entry completeness."},{"title":"Forecast Center","keys":["forecast center","forecast","projection","confidence"],"shows":"Base projected quarter finish, gap to goal, remaining equivalent-week need, recent direction, confidence, and planning range.","pulls":"Selected-quarter S.data revenue history plus read-only S.goals. Current live week uses elapsed Monday-Friday selling-day fraction. Base forecast blends effective QTD run rate with up to three completed weeks and uses recent volatility for the planning range. Team forecast is withheld when included rep goals are missing."},{"title":"Rep Performance","keys":["rep performance","coaching","at risk","top performers"],"shows":"Rep-level weighted coaching score, outbound pace, revenue pace, quality/cost flags, historical labels, and attention/recognition views.","pulls":"S.data by rep/week; read-only S.goals; Call Cycle current-week outbound pace; S.artErrors via repArt(); rep-fault S.cms via repCr(); historical roster evidence. Missing-goal reps are shown but are not scored/coached from goal pace."},{"title":"Production Lead-Time Pulse","keys":["production pulse","lead time","production"],"shows":"Saved production timing feed ranked toward longest/most extended lead-time signals, including feed staleness.","pulls":"Read-only S.companyKnowledge.production.rows and lastFetched metadata. Viewing Dashboard does not initialize production sample rows or mutate the production feed."},{"title":"Positive Momentum","keys":["positive momentum","wins board","recognition"],"shows":"Selected-week leaders, on-pace standout, and comparable week-over-week revenue lift.","pulls":"Selected-week S.data revenue/calls/orders and weighted rep score. During a live current week, week-over-week lift annualizes the partial selected week by elapsed selling-day fraction before comparing with the prior completed week."},{"title":"Manager Notes & Selected-Period People Notes","keys":["manager notes","people notes","coaching notes","hr notes"],"shows":"Week-specific manager memory plus coaching/HR notes through the selected snapshot date.","pulls":"tcp_weekly_manager_notes_* localStorage keys plus S.coachingNotes and S.hrViolations filtered through the selected as-of date/context."},{"title":"Metric Audit / Provenance","keys":["audit this number","metric audit","provenance","source"],"shows":"On-demand explanation of KPI source, numerator/denominator, effective period progress, and data-quality caveats.","pulls":"The same active v620 dashboard model used to render Revenue Pace, Account Updates, Forecast, Quality Health, and Production Pulse."}]},"year":{"title":"Year Overview","summary":"Annual command view that groups all tracker activity across the selected year.","sections":[{"title":"Year score grid","keys":["score grid","executive year view"],"shows":"Annual KPI cards for revenue, quality, coverage, calls, and overall performance.","pulls":"All S.data records in the selected year plus goals, credit memos, art errors, and report history."},{"title":"Year at a glance","keys":["year at a glance","quarter map"],"shows":"Quarter-by-quarter annual snapshot.","pulls":"Weekly S.data grouped into fiscal quarters."},{"title":"Monthly revenue trend","keys":["monthly revenue trend","trend"],"shows":"Sales trend by month for the selected year.","pulls":"S.data weekly revenue grouped by calendar/fiscal month."},{"title":"Year-to-date team leaders","keys":["year-to-date team leaders","team performance"],"shows":"Top reps and team leaders for the selected year.","pulls":"Rep-level revenue and activity totals from S.data."},{"title":"Annual health signals","keys":["annual health signals","health"],"shows":"Business risks and strengths across the year.","pulls":"Derived annual pace, quality, production, and activity signals."},{"title":"Year notes","keys":["year notes","records"],"shows":"Saved year-level management notes.","pulls":"Year note field stored in localStorage-backed state."}]},"entry":{"title":"Data Entry","summary":"Administrative input center for weekly sales, calls, goals, set sizes, roster, backups, and tracker storage.","sections":[{"title":"Weekly sales entry","keys":["weekly sales","data entry","sales entry"],"shows":"Weekly revenue, calls, account coverage, SMB/CORP values, and rep activity inputs.","pulls":"Writes to S.data for the selected year/quarter/week; reads active reps, set sizes, and goals."},{"title":"Goals table","keys":["goals","goal"],"shows":"Quarter goals by rep and team.","pulls":"Reads/writes S.goals and team goal configuration."},{"title":"Rep roster / set sizes","keys":["rep","roster","set size"],"shows":"Current reps, active status, and account set-size inputs.","pulls":"Reads/writes S.reps profile and set-size fields."},{"title":"Data tools","keys":["backup","import","export","storage","admin"],"shows":"Backup, import/export, storage health, and API/configuration controls.","pulls":"localStorage tracker state, exported JSON, optional API/proxy settings."}]},"profiles":{"title":"Rep Profiles","summary":"Rep profile and individual history center. It combines profile fields, goals, quarterly pace, notes, HR events, and sales history.","sections":[{"title":"Rep selector cards","keys":["rep cards","rep profiles"],"shows":"Selectable active reps and profile role labels.","pulls":"S.reps roster, profile photos, role/team flags, and active status."},{"title":"Profile hero","keys":["profile hero","profile"],"shows":"Selected rep photo, name, role, tenure, and quick profile actions.","pulls":"S.reps profile fields and localStorage photo cache."},{"title":"Quarter progress","keys":["quarter progress","pace"],"shows":"Selected rep progress toward revenue/call/coverage goals.","pulls":"S.data for selected rep/quarter and S.goals."},{"title":"Profile details","keys":["details","info"],"shows":"Editable rep information such as hire date, birthday, favorites, and custom fields.","pulls":"S.reps profile object."},{"title":"Notes and timeline","keys":["timeline","feed","notes"],"shows":"Recent coaching notes, HR notes, sales/quality events, and history.","pulls":"S.coachingNotes, S.hrViolations, S.cms, S.artErrors, and S.data."}]},"hr":{"title":"HR & Notes","summary":"Documentation hub for HR events, coaching notes, warnings, observations, and team documentation history.","sections":[{"title":"HR entry","keys":["hr entry","document"],"shows":"Form to log HR events by rep, date, type, level, and notes.","pulls":"Writes to S.hrViolations; reads active rep roster."},{"title":"Manager / coaching note entry","keys":["coaching","manager note","note entry"],"shows":"Form to save observations, coaching notes, positives, concerns, and PIP notes.","pulls":"Writes to S.coachingNotes; reads active rep roster and note-type selections."},{"title":"HR log","keys":["hr log","violations"],"shows":"Filtered history of documented HR events.","pulls":"S.hrViolations filtered by rep/date/type."},{"title":"Notes log","keys":["notes log","coaching log"],"shows":"Filtered history of manager and coaching notes.","pulls":"S.coachingNotes filtered by rep/date/type."},{"title":"Summary by rep","keys":["summary by rep","summary"],"shows":"Rollup of HR and coaching activity by rep.","pulls":"S.hrViolations and S.coachingNotes grouped by rep."}]},"credits":{"title":"Credit Memos","summary":"Quality and credit memo command center for importing, reviewing, classifying, and analyzing credit memo impact.","sections":[{"title":"Upload / scan credit memos","keys":["upload","scan","credit memo"],"shows":"Credit memo import/drop zone and extracted memo preview.","pulls":"Uploaded files/parsed rows and current credit memo form values."},{"title":"Credit memo KPIs","keys":["kpi","total","fault"],"shows":"Counts, dollars, rep-fault/customer-fault splits, and selected-week impact.","pulls":"S.cms filtered by selected year/quarter/week and fault classification."},{"title":"Credit memo form","keys":["form","entry","fault"],"shows":"Editable details for amount, customer, reason, rep, and fault owner.","pulls":"Reads/writes S.cms; reads active reps and current tracker week."},{"title":"Filters and readout","keys":["filter","readout"],"shows":"Credit memo filters and summary readout.","pulls":"S.cms with selected filters."},{"title":"Credit memo log","keys":["log","history"],"shows":"Saved memo rows with edit/delete controls.","pulls":"S.cms localStorage-backed memo history."}]},"art":{"title":"Art Errors","summary":"Art/production quality tracker for logging artwork problems, ownership, customer impact, and trends.","sections":[{"title":"Art error entry","keys":["entry","log art","art error"],"shows":"Form to log date, rep, order/customer, error type, fault, and notes.","pulls":"Writes to S.artErrors; reads active rep roster and tracker week."},{"title":"Art KPI cards","keys":["kpi","quality"],"shows":"Counts, fault breakdown, and current-period art error impact.","pulls":"S.artErrors filtered by selected year/quarter/week."},{"title":"Filters","keys":["filter"],"shows":"Rep/type/period filters for quality review.","pulls":"S.artErrors plus active reps and selected tracker context."},{"title":"Art error log","keys":["log","history"],"shows":"Saved art error incidents with edit/delete controls.","pulls":"S.artErrors localStorage-backed history."}]},"perf":{"title":"Performance","summary":"Rep performance scorecard combining revenue, calls, coverage, forecast, and quality into a management score.","sections":[{"title":"Rep score panel","keys":["score","rating"],"shows":"Overall performance score, star rating, and rep status.","pulls":"S.data, S.goals, S.cms, S.artErrors, and HR/coaching notes for selected rep/quarter."},{"title":"KPI cards","keys":["kpi","snapshot"],"shows":"Revenue pace, calls pace, coverage, forecast, and quality metrics.","pulls":"Current-quarter rep totals from S.data and goals from S.goals."},{"title":"Progress bars","keys":["progress","pace"],"shows":"Goal progress and pace against expected quarter progress.","pulls":"Quarter elapsed weeks plus rep-level S.data/S.goals."},{"title":"Insights","keys":["insight","recommendation"],"shows":"Strengths, risks, and management notes for the selected rep.","pulls":"Derived scoring rules using performance and quality data."},{"title":"Trend chart","keys":["chart","trend"],"shows":"Performance trend over recent weeks.","pulls":"Weekly rep rows from S.data."}]},"meeting":{"title":"Meeting Report","summary":"Weekly meeting report builder that assembles team status, projects, risks, and report output for the selected week.","sections":[{"title":"Week picker","keys":["week picker","selected week"],"shows":"Selected meeting week and report generation controls.","pulls":"Top-bar week helpers, S.data, and weekly project storage."},{"title":"Projects / preview","keys":["project","preview"],"shows":"Report preview, project notes, wins, blockers, and meeting content.","pulls":"Weekly projects store, S.data weekly metrics, notes, and production/project fields."},{"title":"Output / result","keys":["result","report"],"shows":"Generated meeting report file/result links.","pulls":"Report builder functions and local report history."}]},"review":{"title":"Employee Reviews","summary":"Employee performance review generator that compiles selected rep/period data into a review packet.","sections":[{"title":"Review builder","keys":["review builder","generate"],"shows":"Rep/year/quarter selector and review generation controls.","pulls":"S.data, S.goals, S.coachingNotes, S.hrViolations, S.cms, and S.artErrors for selected rep/period."},{"title":"Review checklist","keys":["checklist"],"shows":"What the review packet includes and what data is checked.","pulls":"Static review configuration plus selected rep context."},{"title":"Review preview","keys":["preview","output"],"shows":"Generated performance review sections before export.","pulls":"Calculated scorecard, notes, quality history, and sales history."}]},"reports":{"title":"Reports","summary":"Report-generation command center for quarterly, weekly, AI, manager, rep, and team reports.","sections":[{"title":"Report hero","keys":["report command","hero"],"shows":"Report workspace overview and primary actions.","pulls":"Current tracker week/quarter and report history status."},{"title":"Health strip","keys":["health","overview"],"shows":"Report readiness, data coverage, and current report counts.","pulls":"S.data, reportHistory, notes, and current tracker filters."},{"title":"Report builders","keys":["builder","layout","report"],"shows":"Available report types and generation controls.","pulls":"S.data, S.goals, S.reps, S.cms, S.artErrors, S.coachingNotes, S.hrViolations, and production/project data."}]},"prodintel":{"title":"Production Intelligence","summary":"Production operations workspace for jobs, deadlines, order status, and production-facing intelligence.","sections":[{"title":"Production intelligence hero","keys":["production intelligence","hero"],"shows":"Production workspace context and quick actions.","pulls":"Production intelligence storage and current tracker context."},{"title":"Production panels","keys":["production","status","project"],"shows":"Production status, workload, timeline, and risk information.","pulls":"Production/project data stores and configured production fields."}]},"cknow":{"title":"Company Knowledge","summary":"Internal knowledge base for procedures, company context, product information, and manager reference material.","sections":[{"title":"Knowledge hero","keys":["company knowledge","knowledge base"],"shows":"Knowledge center purpose and update controls.","pulls":"S.companyKnowledge categories, freeform notes, and last-updated metadata."},{"title":"Metrics","keys":["metrics"],"shows":"Knowledge coverage and recent update counts.","pulls":"S.companyKnowledge category totals and timestamps."},{"title":"Knowledge panels","keys":["policy","procedure","products","category","panel"],"shows":"Editable company knowledge sections by category.","pulls":"S.companyKnowledge.categories and S.companyKnowledge.freeform."}]},"inbound":{"title":"Inbound Leads","summary":"Lead intake and follow-up tracker for inbound opportunities.","sections":[{"title":"Lead entry","keys":["lead","inbound","entry"],"shows":"Lead form, source, rep assignment, and follow-up controls.","pulls":"Inbound lead localStorage store and active rep roster."},{"title":"Lead log","keys":["log","pipeline"],"shows":"Saved inbound lead pipeline and statuses.","pulls":"Inbound lead localStorage store filtered by status/rep/source."}]},"customers":{"title":"Customers","summary":"Customer intelligence workspace tied to reps, customer lists, and account coverage.","sections":[{"title":"Customer lists","keys":["customer","account","list"],"shows":"Rep customer lists, account intelligence, and coverage notes.","pulls":"S.reps profile customer lists and customer localStorage stores."},{"title":"Customer analysis","keys":["analysis","intelligence"],"shows":"Account counts, notes, and customer-level insights.","pulls":"Saved customer lists plus coverage/call data from S.data when available."}]},"reviews":{"title":"Customer Reviews","summary":"Google and Trustpilot customer review payout tracker. It imports the published review CSV, dedupes review rows, matches reps, and calculates weekly $10 review payouts using the tracker week.","sections":[{"title":"Review feed","keys":["review feed","customer reviews"],"shows":"CSV URL input, sync status, and refresh control.","pulls":"Published Google Sheet CSV URL stored in S.reviews.url; imported rows stored in S.reviews.rows."},{"title":"Viewing filters","keys":["viewing","week","filter"],"shows":"Selected year/quarter/week, previous-week navigation, and match-tracker-week controls.","pulls":"Main tracker week helpers, S.reviews rows, and tracker week range functions."},{"title":"Review KPI cards","keys":["reviews this week","payout this week","google","trustpilot"],"shows":"Current-week review count, payout total, and Google/Trustpilot split.","pulls":"S.reviews.rows filtered to the selected tracker week; payout rows require Google/Trustpilot and matched rep."},{"title":"Review charts","keys":["reviews / week","source split","top reps"],"shows":"Eight-week review trend, source split, and top reps for the week.","pulls":"S.reviews.rows with dedupe/decision status and selected tracker week range."},{"title":"Weekly payout","keys":["weekly payout","payroll"],"shows":"Payroll-ready payout table and copy button.","pulls":"Matched Google/Trustpilot reviews in the selected week multiplied by REVIEW_PAY."},{"title":"Reviews grouped by rep","keys":["reviews this week","grouped by rep"],"shows":"Review details grouped by matched or unmatched rep.","pulls":"S.reviews.rows enriched with platform, stars, customer name, duplicate decisions, and rep matching."}]},"history":{"title":"Report History","summary":"Saved report archive for generated reports and reviewable outputs.","sections":[{"title":"History filters","keys":["filter","history"],"shows":"Report type and subject filters.","pulls":"reportHistory localStorage-backed array."},{"title":"Report list","keys":["report list","history list"],"shows":"Saved reports with view/delete controls.","pulls":"reportHistory filtered by type and subject."}]},"lb":{"title":"Leaderboard","summary":"Sales performance leaderboard across reps and selected metrics.","sections":[{"title":"Leaderboard controls","keys":["controls","leaderboard"],"shows":"Metric/timeframe toggles.","pulls":"Selected tracker week/quarter, S.data, goals, and active rep roster."},{"title":"Podium and rankings","keys":["podium","rank","leaderboard"],"shows":"Top performers and ranked list.","pulls":"Calculated metric totals from S.data, S.goals, review data, or quality logs depending on selected leaderboard mode."}]},"daily":{"title":"Daily Sales & Calls","summary":"Daily sales calendar and per-rep daily SMB tracker. It marries the team running total entry with per-rep cumulative entries and opens day-level rep rankings from the calendar.","sections":[{"title":"Daily sales entry","keys":["daily sales entry","input","running total","per-rep daily entry"],"shows":"One selected date driving team running total, CORP day sales, and per-rep SMB cumulative totals.","pulls":"Reads/writes S.dailySales for running totals and S.dailyRep for per-rep cumulative SMB entries; reads active reps."},{"title":"Calendar controls","keys":["month controls","controls"],"shows":"Month selector, refresh/clear controls, and daily calendar navigation.","pulls":"S.dailySales, S.dailyRep, and selected date/month."},{"title":"Daily summary","keys":["summary","kpi"],"shows":"Monthly/daily summary cards for totals, days, SMB/CORP, and averages.","pulls":"S.dailySales entries for the selected month plus S.dailyRep where applicable."},{"title":"Daily calendar","keys":["calendar","daily sales log"],"shows":"Calendar cells with day totals and top SMB rep badge. Clicking a day opens per-rep rankings.","pulls":"S.dailySales for team totals and S.dailyRep for per-rep day deltas/rankings."}]},"calc":{"title":"Deadline Calculator","summary":"Production deadline calculator for determining whether an order can hit an in-hands date.","sections":[{"title":"Deadline calculator","keys":["deadline calculator","can we hit"],"shows":"Timeline calculator using garment arrival, art status, decoration methods, production lead times, and transit.","pulls":"User-entered calculator fields, production lead-time settings, and optional production status data."}]},"intel":{"title":"Forecast","summary":"Seasonal and event-based sales forecast/intelligence page for upcoming opportunities and call windows.","sections":[{"title":"Forecast hero","keys":["forecast","seasonal"],"shows":"Forecast workspace context and refresh controls.","pulls":"Forecast event data, tracker date context, and cached AI/event intelligence if configured."},{"title":"Next 7 days","keys":["next 7 days","immediate"],"shows":"Events or opportunities requiring quick-turn action.","pulls":"Forecast event list filtered to the next seven days."},{"title":"Rest of this month","keys":["rest of this month","near term"],"shows":"Events in the next two to four weeks.","pulls":"Forecast event list filtered to the remaining current month."},{"title":"Rest of this quarter","keys":["rest of this quarter","planning window"],"shows":"Quarter planning opportunities.","pulls":"Forecast event list filtered to current-quarter remaining window."},{"title":"Next quarter","keys":["next quarter","ahead"],"shows":"Long-lead opportunities.","pulls":"Forecast event list filtered to next quarter."},{"title":"Downtime call windows","keys":["downtime","call strategy"],"shows":"Industries likely in slower seasons for proactive calls.","pulls":"Configured industry seasonality/intelligence rules."}]},"games":{"title":"Games","summary":"Sales games engine for creating team games, importing rulebooks, building rosters, and simulating outcomes.","sections":[{"title":"Game command center","keys":["game command","sales game"],"shows":"Game setup controls and generation actions.","pulls":"Active reps, selected tracker period, game rulebook storage, and optional external roster entries."},{"title":"Rulebook upload","keys":["rulebook"],"shows":"Uploaded game rules and preview.","pulls":"Game rulebook localStorage store and uploaded file text."},{"title":"Roster","keys":["roster"],"shows":"Eligible reps/external participants for games.","pulls":"S.reps active roster plus preconfigured game externals."},{"title":"Game content / simulation","keys":["simulation","content"],"shows":"Generated game details, scoring, and simulation output.","pulls":"Game result/simulation localStorage stores and selected tracker data."}]},"gtrack":{"title":"Game Tracker","summary":"Game scoring and results tracker.","sections":[{"title":"Game tracker setup","keys":["game tracker","setup"],"shows":"Game configuration and scoring controls.","pulls":"Game tracker localStorage store and active roster."},{"title":"Game results","keys":["results","score"],"shows":"Current standings and game performance.","pulls":"Saved game tracker data and selected sales metrics."}]},"notifs":{"title":"Notifications","summary":"Notification center for sales, quality, HR, forecast, and operational alerts.","sections":[{"title":"Notification metrics","keys":["metrics","notifications"],"shows":"Counts and priority summary of current alerts.","pulls":"Derived alerts from S.data, goals, credit memos, art errors, HR/coaching notes, and production/forecast data."},{"title":"Notification toolbar","keys":["toolbar","filter"],"shows":"Filters and actions for the notification log.","pulls":"Notification state plus active tracker context."},{"title":"Notification log","keys":["log","alerts"],"shows":"Detailed alert list with status.","pulls":"Generated notification array and local dismissed/read state."}]},"admin":{"title":"Admin","summary":"System administration and storage tools for backups, data health, API keys, and tracker maintenance.","sections":[{"title":"Admin hero","keys":["admin","system"],"shows":"System admin overview and key actions.","pulls":"Tracker state, storage status, and configuration values."},{"title":"Status grid","keys":["status","storage"],"shows":"Storage/data health indicators.","pulls":"localStorage usage, S object totals, caches, and file-handle status where supported."},{"title":"Admin tools","keys":["tools","backup","api"],"shows":"Backup/import/export/API/storage cleanup tools.","pulls":"localStorage, exported JSON, optional API/proxy settings, cache stores, and tracker state."}]},"coach":{"title":"Rep Coaching Center","summary":"Coaching workspace that turns rep performance, quality, and documentation into action recommendations.","sections":[{"title":"Coaching score","keys":["score","coach"],"shows":"Rep health score, priority, and coaching context.","pulls":"S.data, S.goals, S.cms, S.artErrors, S.hrViolations, and S.coachingNotes."},{"title":"Snapshot KPIs","keys":["snapshot","kpi"],"shows":"Revenue, calls, coverage, forecast, and quality snapshot.","pulls":"Selected rep current-quarter metrics and goals."},{"title":"Recommendations","keys":["recommendation","action"],"shows":"Strengths, risks, and suggested coaching actions.","pulls":"Derived rules from pace, quality, HR, and notes."},{"title":"Timeline","keys":["timeline"],"shows":"Recent rep events, notes, HR, credit memos, and art errors.","pulls":"S.coachingNotes, S.hrViolations, S.cms, and S.artErrors."}]},"forecast2":{"title":"Forecast Command Center","summary":"Advanced forecast cockpit for projection, gap, need-per-week, and confidence.","sections":[{"title":"Projection panels","keys":["projection","gap","confidence"],"shows":"Projected finish, gap to goal, weekly need, and confidence.","pulls":"S.data current-quarter revenue, S.goals, elapsed weeks, and forecast formulas."},{"title":"Watch cards","keys":["watch","risk"],"shows":"Risks and opportunities based on forecast movement.","pulls":"Derived forecast signals from sales history and goals."}]}};
   var PANEL_SELECTOR = ['section','.wk-panel','.wk-health-panel','.yo-panel','.entry-panel','.admin-tool-card','.admin-sys-hero','.admin-sys-grid','.profile-hero-card','.profile-panel','.profile-feed-card','.hr-entry-panel','.hr-log-panel','.hr-summary-panel','.credit-panel','.art-panel','.perf-score-panel','.perf-panel','.reviews-panel','.reviews-output-shell','.reports-hero','.reports-v278-health-strip','.reports-v278-layout','.prodintel-panel','.prodintel-hero','.cknow-panel','.daily-panel','.forecast-panel','.meeting-panel','.notif-hero','.notif-toolbar','.notif-layout','.coach-panel','.forecast2-panel','#pg-games > .card','#pg-history > .card','#pg-lb > .card','#pg-gtrack > .card','#pg-inbound > .card'].join(',');
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function norm(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
@@ -52560,11 +52561,31 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
 </style>
 
 
-<script id="tcp-project-simplify-dashboard-v558-js">
+
+<style id="tcp-coaching-dashboard-integrity-v620-css">
+/* ===== v620 Coaching-safe Dashboard integrity layer ===== */
+#pg-dash .ps620-freshness{display:flex;align-items:stretch;gap:7px;flex-wrap:wrap;margin:0 0 12px;padding:9px 10px;border:1px solid rgba(148,163,184,.13);border-radius:10px;background:#0B131B;}
+#pg-dash .ps620-freshness-title{display:flex;align-items:center;padding:0 8px 0 2px;color:#DCE5EC;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;}
+#pg-dash .ps620-fresh-item{display:grid;grid-template-columns:6px auto;grid-template-rows:auto auto;column-gap:6px;min-width:145px;padding:6px 8px;border:1px solid rgba(148,163,184,.10);border-radius:8px;background:rgba(255,255,255,.018);}
+#pg-dash .ps620-fresh-item i{grid-row:1/3;align-self:center;width:6px;height:6px;border-radius:50%;background:#718095;box-shadow:0 0 8px currentColor;}
+#pg-dash .ps620-fresh-item.green i{background:#5DCAA5}.ps620-fresh-item.amber i{background:#EF9F27}.ps620-fresh-item.red i{background:#F09595}
+#pg-dash .ps620-fresh-item strong{color:#E8EEF4;font-size:7px}.ps620-fresh-item span{color:#78879A;font-size:6.5px;line-height:1.3}
+#pg-dash .ps620-audit-btn{display:inline-grid;place-items:center;width:15px;height:15px;margin-left:5px;padding:0;border:1px solid rgba(0,175,239,.30);border-radius:50%;background:rgba(0,175,239,.08);color:#6FDDF7;font:950 8px/1 Arial;cursor:pointer;vertical-align:middle;}
+#pg-dash .ps620-audit-btn:hover{background:rgba(0,175,239,.18);color:#fff}
+#pg-dash .ps620-context-note{margin-top:9px;padding:7px 8px;border-left:2px solid #00AFEF;background:rgba(0,175,239,.05);color:#8290A2;font-size:7px;line-height:1.45;}
+#pg-dash .ps620-inline-warn{margin:8px 0;padding:8px;border:1px solid rgba(239,159,39,.20);border-radius:8px;background:rgba(239,159,39,.07);color:#E6B968;font-size:7px;line-height:1.45;}
+#pg-dash .ps620-asof{color:#7F8DA0;font-size:7px;font-weight:800}.ps620-history-tag{display:inline-block;margin-left:5px;padding:2px 5px;border:1px solid rgba(148,163,184,.16);border-radius:999px;color:#8C99AA;font-size:6px;font-weight:800;vertical-align:1px}.ps620-table-sub{display:block;margin-top:2px;color:#718095;font-size:6px;max-width:160px;white-space:normal;}
+#pg-dash .ps620-future{padding:36px 28px;text-align:center}.ps620-future h2{margin:8px 0;color:#fff;font-size:20px}.ps620-future p{max-width:700px;margin:0 auto;color:#8E9CAD;font-size:9px;line-height:1.6}
+#pg-dash .ps620-audit-modal{display:none;position:fixed;inset:0;z-index:100000;background:rgba(2,6,12,.76);backdrop-filter:blur(7px);padding:7vh 18px;overflow:auto}.ps620-audit-modal.open{display:block}
+#pg-dash .ps620-audit-card{max-width:720px;margin:0 auto;border:1px solid rgba(0,175,239,.22);border-radius:16px;background:linear-gradient(145deg,#121C27,#081019);box-shadow:0 28px 80px rgba(0,0,0,.55);overflow:hidden}.ps620-audit-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:16px 18px;border-bottom:1px solid rgba(148,163,184,.13)}.ps620-audit-head h3{margin:5px 0 0;color:#fff;font-size:18px}.ps620-audit-head button{width:30px;height:30px;border:1px solid rgba(148,163,184,.15);border-radius:8px;background:#111B25;color:#DCE5EC;font-size:18px;cursor:pointer}.ps620-audit-body{padding:18px;color:#9BA8B9;font-size:9px;line-height:1.65}.ps620-audit-body p{margin:0 0 12px}.ps620-audit-body strong{color:#E8EEF4}.ps620-audit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.ps620-audit-grid span{padding:10px;border:1px solid rgba(148,163,184,.11);border-radius:9px;background:rgba(255,255,255,.02);color:#758497;font-size:7px;text-transform:uppercase}.ps620-audit-grid b{display:block;margin-top:4px;color:#fff;font-size:11px;text-transform:none}.ps620-audit-warning{padding:9px 10px;border-left:2px solid #EF9F27;background:rgba(239,159,39,.07);color:#D7B36B}
+@media(max-width:760px){#pg-dash .ps620-fresh-item{min-width:calc(50% - 6px)}#pg-dash .ps620-audit-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<script id="tcp-project-simplify-dashboard-v620-js">
 (function(){
  'use strict';
 
- var VERSION='v558';
+ var VERSION='v620';
  var actionTab='urgent';
  var repTab='risk';
  var chart=null;
@@ -52594,6 +52615,35 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
    return safeArray(S&&S.reps).filter(function(rep){return rep&&!rep.retired})
   }
  }
+ function readGoal(rep,year,quarter){
+  var goals=S&&S.goals&&S.goals[rep],record=goals&&goals[String(year)]&&goals[String(year)][quarter];
+  if(!record||typeof record!=='object')return{record:null,missing:true,goal:{rev:0,hrs:0,calls:0,setSize:0}};
+  var goal=Object.assign({rev:0,hrs:42.5,calls:60,setSize:0},record);
+  return{record:record,missing:n(goal.rev)<=0,goal:goal}
+ }
+ function recordHasActivity(record){
+  return !!record&&(n(record.revenue)>0||n(record.calls)>0||n(record.acctsCalled)>0||n(record.orders)>0||n(record.hours)>0||n(record.setSize)>0)
+ }
+ function repsForContext(context){
+  var reps=safeArray(S&&S.reps).filter(function(rep){return rep&&clean(rep.name)});
+  var selectedEnd=context.selected?new Date(context.selected.end):null;if(selectedEnd)selectedEnd.setHours(23,59,59,999);
+  return reps.filter(function(rep){
+   var hasData=context.weeks.some(function(week){return recordHasActivity(S&&S.data&&S.data[rep.name+'|'+week.key])});
+   var goalInfo=readGoal(rep.name,context.year,context.quarter),hasGoal=!goalInfo.missing;
+   var hire=rep.profile&&rep.profile.hireDate?new Date(rep.profile.hireDate+'T12:00:00'):null;
+   var hiredByPeriod=!hire||isNaN(hire.getTime())||!selectedEnd||hire<=selectedEnd;
+   if(rep.retired)return hasData||hasGoal;
+   return hiredByPeriod||hasData||hasGoal
+  })
+ }
+ function sellingFraction(week,date){
+  if(!week)return 1;
+  var start=new Date(week.start),end=new Date(week.end),today=new Date(date||new Date());
+  start.setHours(12,0,0,0);end.setHours(12,0,0,0);today.setHours(12,0,0,0);
+  var total=0,elapsed=0,d=new Date(start);
+  while(d<=end){var dow=d.getDay();if(dow>=1&&dow<=5){total++;if(d<=today)elapsed++}d.setDate(d.getDate()+1)}
+  return total?clamp(elapsed/total,0,1):1
+ }
  function selectedContext(){
   var year=getYr(),quarter=getQ(),month=getM(),weekNumber=getWN();
   var weeks=gwq(year,quarter);
@@ -52611,69 +52661,81 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   }
   var isCurrent=index===currentIndex;
   var isFuture=index>currentIndex;
-  var elapsed=Math.max(1,index+1);
-  var progress=weeks.length?elapsed/weeks.length:0;
+  var currentFraction=isCurrent?sellingFraction(selected,today):1;
+  var effectiveWeeks=isCurrent?Math.max(0,index)+currentFraction:(isFuture?Math.max(0,currentIndex+1):index+1);
+  var progress=weeks.length?effectiveWeeks/weeks.length:0;
+  var throughCount=isFuture?Math.max(0,currentIndex+1):index+1;
+  var throughWeeks=weeks.slice(0,throughCount);
+  var qStart=weeks[0]?new Date(weeks[0].start):null;
+  var selectedEnd=selected?new Date(selected.end):null;
+  if(selectedEnd)selectedEnd.setHours(23,59,59,999);
+  var asOf=isCurrent?new Date(today):(selectedEnd||new Date(today));
+  if(isFuture)asOf=new Date(today);
   return{
    year:year,quarter:quarter,month:month,weekNumber:weekNumber,weeks:weeks,index:index,
    selected:selected,currentIndex:currentIndex,isCurrent:isCurrent,isFuture:isFuture,
-   elapsed:elapsed,progress:progress,throughWeeks:weeks.slice(0,elapsed)
+   elapsed:isCurrent?index+1:(isFuture?currentIndex+1:index+1),effectiveWeeks:effectiveWeeks,currentFraction:currentFraction,
+   progress:progress,throughWeeks:throughWeeks,quarterStart:qStart,selectedEnd:selectedEnd,asOf:asOf,
+   remainingEquivalentWeeks:Math.max(0,weeks.length-effectiveWeeks),todayISO:today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0')
   }
  }
  function repData(context){
-  return active().map(function(rep){
+  return repsForContext(context).map(function(rep){
    var total=totW(rep.name,context.throughWeeks);
    var selected=gd(rep.name+'|'+(context.selected&&context.selected.key||''));
-   var goal=repGoalObj(rep.name,context.year,context.quarter)||{};
+   var goalInfo=readGoal(rep.name,context.year,context.quarter),goal=goalInfo.goal;
    var revenueGoal=n(goal.rev);
    var pacedRevenueGoal=revenueGoal*context.progress;
    var accountTarget=n(total.setSize)*context.progress;
    var coverage=n(total.setSize)>0?n(total.acctsCalled)/n(total.setSize)*100:0;
-   var callPace=accountTarget>0?n(total.acctsCalled)/accountTarget*100:0;
+   var callActual=n(total.acctsCalled),callTarget=accountTarget,callSource='Account-update pace through selected period';
+   if(context.isCurrent&&!rep.retired&&window.TCP_CALL_CYCLE_V547){try{var cp=TCP_CALL_CYCLE_V547.paceFor(rep.name,new Date());if(cp&&n(cp.expected)>0){callActual=n(cp.completed);callTarget=n(cp.expected);callSource='Annual Call Cycle through today'}}catch(e){}}
+   var callPace=callTarget>0?callActual/callTarget*100:0;
    var salesPace=pacedRevenueGoal>0?n(total.revenue)/pacedRevenueGoal*100:0;
    var artCount=typeof repArt==='function'?n(repArt(rep.name,context.throughWeeks)):0;
    var creditCost=typeof repCr==='function'?n(repCr(rep.name,context.throughWeeks)):0;
    var artRate=n(total.orders)>0?artCount/n(total.orders)*100:0;
-   var hourGoal=n(goal.hrs||42.5)*context.elapsed;
-   var hourPace=hourGoal>0?n(total.hours)/hourGoal*100:0;
+   var hourGoal=n(goal.hrs||42.5)*context.effectiveWeeks;
+   var hourActual=n(total.hours);
+   if(context.isCurrent&&selected&&selected._dailyLive&&n(selected.hours)<=0){var prior=totW(rep.name,context.throughWeeks.slice(0,-1));hourActual=n(prior.hours);hourGoal=n(goal.hrs||42.5)*Math.max(0,context.index)}
+   var hourPace=hourGoal>0?hourActual/hourGoal*100:0;
    var qualityScore=n(total.orders)>0?Math.max(0,100-artRate):100;
    var creditRate=n(total.revenue)>0?creditCost/n(total.revenue)*100:0;
-   var weighted={total:0,status:{key:'red',label:'Red',color:'#F09595'}};
-   try{
-    if(window.TCP_DATA_INTEGRITY_V564&&typeof TCP_DATA_INTEGRITY_V564.scoreAsOf==='function'){
-     weighted=TCP_DATA_INTEGRITY_V564.scoreAsOf(rep.name,context.year,context.quarter,context.selected&&context.selected.key)
-    }else{
-     weighted=TCP_TRAFFIC_SCORE_V548.scoreFromMetrics({
-      sales:salesPace,
-      outbound:callPace,
-      hours:hourPace,
-      art:qualityScore,
-      creditRate:creditRate
-     })
-    }
-   }catch(e){}
+   var weighted={total:0,status:{key:'yellow',label:'Goal Missing',color:'#EF9F27'}};
+   if(!goalInfo.missing){
+    try{
+     if(window.TCP_DATA_INTEGRITY_V564&&typeof TCP_DATA_INTEGRITY_V564.scoreAsOf==='function'){
+      weighted=TCP_DATA_INTEGRITY_V564.scoreAsOf(rep.name,context.year,context.quarter,context.selected&&context.selected.key)
+     }else{
+      weighted=TCP_TRAFFIC_SCORE_V548.scoreFromMetrics({sales:salesPace,outbound:callPace,hours:hourPace,art:qualityScore,creditRate:creditRate})
+     }
+    }catch(e){}
+   }
    var flags=[];
-   if(salesPace<80)flags.push('R');
+   if(goalInfo.missing)flags.push('G');
+   if(!goalInfo.missing&&salesPace<80)flags.push('R');
    if(callPace<80)flags.push('C');
    if(artCount>=3)flags.push('A');
    if(creditCost>0)flags.push('$');
+   if(rep.retired)flags.push('H');
    return{
-    name:rep.name,total:total,week:selected,goal:goal,
+    name:rep.name,rep:rep,isRetired:!!rep.retired,total:total,week:selected,goal:goal,goalMissing:goalInfo.missing,
     revenueGoal:revenueGoal,pacedRevenueGoal:pacedRevenueGoal,
-    accountTarget:accountTarget,coverage:coverage,callPace:callPace,salesPace:salesPace,
+    accountTarget:accountTarget,coverage:coverage,callActual:callActual,callTarget:callTarget,callSource:callSource,callPace:callPace,salesPace:salesPace,
     artCount:artCount,artRate:artRate,creditCost:creditCost,creditRate:creditRate,
-    hourPace:hourPace,weighted:weighted,flags:flags
+    hourActual:hourActual,hourTarget:hourGoal,hourPace:hourPace,weighted:weighted,flags:flags,
+    coachable:!rep.retired&&!goalInfo.missing
    }
   })
  }
  function totals(context,rows){
   var total={
    revenue:0,goal:0,pacedGoal:0,orders:0,calls:0,accounts:0,setSize:0,hours:0,
-   art:0,credits:0,weekRevenue:0,weekOrders:0,weekCalls:0
+   art:0,credits:0,weekRevenue:0,weekOrders:0,weekCalls:0,goalMissing:0,configuredGoalReps:0
   };
   rows.forEach(function(row){
    total.revenue+=n(row.total.revenue);
-   total.goal+=n(row.revenueGoal);
-   total.pacedGoal+=n(row.pacedRevenueGoal);
+   if(row.goalMissing)total.goalMissing++;else{total.goal+=n(row.revenueGoal);total.pacedGoal+=n(row.pacedRevenueGoal);total.configuredGoalReps++}
    total.orders+=n(row.total.orders);
    total.calls+=n(row.total.calls);
    total.accounts+=n(row.total.acctsCalled);
@@ -52693,8 +52755,9 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   total.forecast=context.progress>0?total.revenue/context.progress:0;
   total.forecastPct=total.goal>0?total.forecast/total.goal*100:0;
   total.forecastGap=total.goal-total.forecast;
-  total.needPerWeek=Math.max(0,total.goal-total.revenue)/Math.max(1,context.weeks.length-context.elapsed);
+  total.needPerWeek=Math.max(0,total.goal-total.revenue)/Math.max(.01,context.remainingEquivalentWeeks);
   total.artRate=total.orders>0?total.art/total.orders*100:0;
+  total.goalComplete=total.goalMissing===0;
   return total
  }
  function statusColor(key){
@@ -52726,27 +52789,86 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
    '<span class="ps58-live '+mode.key+'"> '+mode.label+'</span>'+
   '</div>'
  }
+ function dateLabel(value){
+  if(!value)return'—';var d=value instanceof Date?value:new Date(value);if(isNaN(d.getTime()))return clean(value);
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})
+ }
+ function selectedNotes(context){
+  var start=context.quarterStart?new Date(context.quarterStart):null,end=context.asOf?new Date(context.asOf):null;if(start)start.setHours(0,0,0,0);if(end)end.setHours(23,59,59,999);
+  function inRange(item){
+   if(!item)return false;
+   if(item.date){var d=new Date(item.date+'T12:00:00');if(!isNaN(d.getTime()))return(!start||d>=start)&&(!end||d<=end)}
+   if(item.yr!=null&&Number(item.yr)!==Number(context.year))return false;
+   if(item.q&&item.q!==context.quarter)return false;
+   if(item.week&&context.selected&&item.week===context.selected.key)return true;
+   return Number(item.yr)===Number(context.year)&&(!item.q||item.q===context.quarter)
+  }
+  return{coaching:safeArray(S.coachingNotes).filter(inRange),hr:safeArray(S.hrViolations).filter(inRange)}
+ }
+ function productionSnapshot(){
+  var prod=S&&S.companyKnowledge&&S.companyKnowledge.production;
+  var rows=prod&&Array.isArray(prod.rows)?prod.rows.slice():[];
+  var last=prod&&prod.lastFetched?new Date(prod.lastFetched):null;
+  var ageDays=last&&!isNaN(last.getTime())?Math.floor((Date.now()-last.getTime())/86400000):null;
+  var configured=!!(prod&&(clean(prod.sheetUrl)||rows.length));
+  return{rows:rows,lastFetched:last,ageDays:ageDays,configured:configured,stale:ageDays==null||ageDays>7}
+ }
+ function dataFreshness(context,rows,total){
+  var liveRows=rows.filter(function(row){return !row.isRetired});
+  var today=context.todayISO,salesToday=S&&S.dailyRep&&S.dailyRep[today]||{},callsToday=S&&S.dailyCalls&&S.dailyCalls[today]||{};
+  var salesCount=liveRows.filter(function(row){return Object.prototype.hasOwnProperty.call(salesToday,row.name)}).length;
+  var callsCount=liveRows.filter(function(row){return Object.prototype.hasOwnProperty.call(callsToday,row.name)}).length;
+  var latestClosed=null;
+  for(var i=Math.min(context.index-1,context.weeks.length-1);i>=0;i--){
+   var wk=context.weeks[i],entered=liveRows.filter(function(row){var d=gd(row.name+'|'+wk.key);return d&&!d._dailyLive&&(n(d.orders)>0||n(d.hours)>0||d.enteredAt||d._weeklyOrderSummary)}).length;
+   if(entered){latestClosed={week:wk,count:entered};break}
+  }
+  var artSync=S&&S.artErrorSource&&S.artErrorSource.lastSync?new Date(S.artErrorSource.lastSync):null;
+  var prod=productionSnapshot();
+  var entries=[];
+  if(context.isCurrent){
+   entries.push({label:'Sales',tone:salesCount>=liveRows.length&&liveRows.length?'green':salesCount?'amber':'red',text:salesCount+'/'+liveRows.length+' reps entered today'});
+   entries.push({label:'Calls',tone:callsCount>=liveRows.length&&liveRows.length?'green':callsCount?'amber':'red',text:callsCount+'/'+liveRows.length+' reps entered today'});
+   entries.push({label:'Orders / Hours',tone:latestClosed?'amber':'red',text:latestClosed?'weekly closeout through Wk '+latestClosed.week.num:'no finalized closeout found'});
+  }else{
+   entries.push({label:'Snapshot',tone:'green',text:'historical through Wk '+context.weekNumber});
+   entries.push({label:'Orders / Hours',tone:'green',text:'weekly closeout fields'});
+  }
+  entries.push({label:'Art Errors',tone:artSync?'green':'amber',text:artSync?'synced '+dateLabel(artSync):'tracker log / sync time unavailable'});
+  entries.push({label:'Production',tone:prod.stale?'amber':'green',text:prod.lastFetched?'refreshed '+dateLabel(prod.lastFetched)+(prod.stale?' · stale':''):'feed refresh not recorded'});
+  if(total.goalMissing)entries.push({label:'Goals',tone:'red',text:total.goalMissing+' rep'+(total.goalMissing===1?'':'s')+' missing configured revenue goal'});
+  else entries.push({label:'Goals',tone:'green',text:'all included reps configured'});
+  return{entries:entries,salesCount:salesCount,callsCount:callsCount,activeCount:liveRows.length,latestClosed:latestClosed,production:prod,artSync:artSync}
+ }
+ function freshnessStrip(model){
+  return'<div class="ps620-freshness"><div class="ps620-freshness-title">Data status</div>'+model.entries.map(function(item){return'<div class="ps620-fresh-item '+item.tone+'"><i></i><strong>'+esc(item.label)+'</strong><span>'+esc(item.text)+'</span></div>'}).join('')+'</div>'
+ }
+ function auditButton(key){return'<button class="ps620-audit-btn" title="Audit this number" onclick="event.stopPropagation();_ps620Audit(\''+esc(key)+'\')">i</button>'}
+ function auditModal(){return'<div id="ps620AuditModal" class="ps620-audit-modal" onclick="if(event.target===this)_ps620CloseAudit()"><div class="ps620-audit-card"><div class="ps620-audit-head"><div><div class="ps58-section-label">Metric Audit</div><h3 id="ps620AuditTitle">How this number is built</h3></div><button onclick="_ps620CloseAudit()">×</button></div><div id="ps620AuditBody" class="ps620-audit-body"></div></div></div>'}
  function brief(context,total,rows){
   var revenueGap=total.revenue-total.pacedGoal;
   var callGap=total.accounts-total.callTarget;
   var top=rows.slice().sort(function(a,b){return b.week.revenue-a.week.revenue})[0];
   var risks=[];
-  if(revenueGap<0)risks.push('revenue is '+fullMoney(Math.abs(revenueGap))+' behind paced plan');
-  if(callGap<0)risks.push(num(Math.abs(callGap))+' customer calls remain behind pace');
+  if(total.goalMissing)risks.push(total.goalMissing+' rep goal'+(total.goalMissing===1?' is':'s are')+' missing');
+  if(!total.goalMissing&&total.goal>0&&revenueGap<0)risks.push('revenue is '+fullMoney(Math.abs(revenueGap))+' behind paced plan');
+  if(callGap<0)risks.push(num(Math.abs(callGap))+' account updates remain behind pace');
   if(total.artRate>1)risks.push('quality risk is elevated at '+total.artRate.toFixed(1)+'% art errors');
   if(!risks.length)risks.push('the team is currently on pace across the primary indicators');
-  var focus=revenueGap<0?'increase sales activity and review the lowest-paced reps':
-   callGap<0?'increase customer outreach and clear the call backlog':
+  var focus=total.goalMissing?'configure missing goals before using coaching scores':
+   revenueGap<0?'increase sales activity and review the lowest-paced reps':
+   callGap<0?'increase customer outreach and clear the account-update backlog':
    total.artRate>1?'reduce art-error causes before they create additional cost':
    'protect the current pace and repeat the strongest behaviors';
-  return'<div class="ps58-brief-icon">✦</div><div class="ps58-brief-copy"><strong>AI Snapshot</strong> · '+esc(risks.join('; '))+'. '+
+  var liveNote=context.isCurrent?' Pace is adjusted to '+Math.round(context.currentFraction*100)+'% of the current selling week.':'';
+  return'<div class="ps58-brief-icon">✦</div><div class="ps58-brief-copy"><strong>Management Snapshot</strong> · '+esc(risks.join('; '))+'. '+
    (top?'<b>Top signal:</b> '+esc(top.name)+' leads the selected week at '+fullMoney(top.week.revenue)+'. ':'')+
-   '<b>Manager focus:</b> '+esc(focus)+'.</div>'
+   '<b>Manager focus:</b> '+esc(focus)+'.'+esc(liveNote)+'</div>'
  }
  function kpiCard(config){
   var stateClass=config.good?'good':'';
   return'<article class="ps58-kpi" style="--ps58-accent:'+config.accent+';--ps58-shadow:'+config.shadow+';--ps58-glow:'+config.glow+';--ps58-width:'+clamp(config.width,0,100)+'%">'+
-   '<div class="ps58-kpi-top"><div class="ps58-kpi-label"><span class="ps58-kpi-icon">'+config.icon+'</span>'+esc(config.label)+'</div>'+
+   '<div class="ps58-kpi-top"><div class="ps58-kpi-label"><span class="ps58-kpi-icon">'+config.icon+'</span>'+esc(config.label)+(config.auditKey?auditButton(config.auditKey):'')+'</div>'+
    '<span class="ps58-kpi-state '+stateClass+'">'+esc(config.state)+'</span></div>'+
    '<div class="ps58-kpi-value">'+config.value+'</div>'+
    '<div class="ps58-kpi-sub">'+config.sub+'</div>'+
@@ -52759,29 +52881,26 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   var callGap=total.accounts-total.callTarget;
   var forecastGap=total.forecast-total.goal;
   var qualityGood=total.artRate<=1;
+  var goalState=total.goalMissing?'Goal setup incomplete':((revenueGap>=0?'Ahead by ':'Behind by ')+fullMoney(Math.abs(revenueGap)));
   return'<div class="ps58-kpi-grid">'+
-   kpiCard({
-    label:'Revenue Pace',icon:'$',accent:'#FA873D',shadow:'rgba(250,135,61,.25)',glow:'rgba(250,135,61,.18)',
-    state:(revenueGap>=0?'Ahead by ':'Behind by ')+fullMoney(Math.abs(revenueGap)),good:revenueGap>=0,
-    value:fullMoney(total.revenue),sub:pct(total.revenuePct)+' of '+fullMoney(total.goal)+' goal',
-    width:total.revenuePct,leftLabel:'Goal',rightLabel:fullMoney(total.goal)
+   kpiCard({auditKey:'revenue',label:'Revenue Pace',icon:'$',accent:'#FA873D',shadow:'rgba(250,135,61,.25)',glow:'rgba(250,135,61,.18)',
+    state:goalState,good:!total.goalMissing&&revenueGap>=0,
+    value:fullMoney(total.revenue),sub:total.goalMissing?(total.configuredGoalReps+' configured · '+total.goalMissing+' missing — team pace withheld'):(total.goal>0?pct(total.revenuePct)+' of '+fullMoney(total.goal)+' configured goal':'No configured team goal'),
+    width:total.goalMissing?0:total.revenuePct,leftLabel:total.goalMissing?'Goal setup':'Configured goal',rightLabel:total.goalMissing?'Incomplete':fullMoney(total.goal)
    })+
-   kpiCard({
-    label:'Customers Called',icon:'☎',accent:'#00AFEF',shadow:'rgba(0,175,239,.25)',glow:'rgba(0,175,239,.18)',
-    state:(callGap>=0?'Ahead by ':'Behind by ')+num(Math.abs(callGap))+' accts',good:callGap>=0,
-    value:num(total.accounts)+' / '+num(total.setSize),sub:pct(total.coverage)+' of customers reached',
-    width:total.coverage,leftLabel:'Customer set',rightLabel:num(total.setSize)
+   kpiCard({auditKey:'accounts',label:'Account Updates',icon:'☎',accent:'#00AFEF',shadow:'rgba(0,175,239,.25)',glow:'rgba(0,175,239,.18)',
+    state:(callGap>=0?'Ahead by ':'Behind by ')+num(Math.abs(callGap))+' updates',good:callGap>=0,
+    value:num(total.accounts)+' / '+num(total.setSize),sub:pct(total.coverage)+' cumulative update count vs quarterly set size',
+    width:total.coverage,leftLabel:'Quarter set',rightLabel:num(total.setSize)
    })+
-   kpiCard({
-    label:'Forecast Projection',icon:'◎',accent:'#8B5CF6',shadow:'rgba(139,92,246,.25)',glow:'rgba(139,92,246,.18)',
-    state:(forecastGap>=0?'Projected '+fullMoney(forecastGap)+' ahead':'Projected '+fullMoney(Math.abs(forecastGap))+' short'),good:forecastGap>=0,
-    value:fullMoney(total.forecast),sub:pct(total.forecastPct)+' of '+fullMoney(total.goal)+' goal',
-    width:total.forecastPct,leftLabel:'Projection',rightLabel:fullMoney(total.goal)
+   kpiCard({auditKey:'forecast',label:'Forecast Projection',icon:'◎',accent:'#8B5CF6',shadow:'rgba(139,92,246,.25)',glow:'rgba(139,92,246,.18)',
+    state:total.goalMissing?'Goal setup incomplete':((forecastGap>=0?'Projected '+fullMoney(forecastGap)+' ahead':'Projected '+fullMoney(Math.abs(forecastGap))+' short')),good:!total.goalMissing&&forecastGap>=0,
+    value:total.goalMissing?'—':fullMoney(total.forecast),sub:total.goalMissing?'Configure all rep goals before using team forecast':pct(total.forecastPct)+' of '+fullMoney(total.goal)+' goal',
+    width:total.goalMissing?0:total.forecastPct,leftLabel:'Projection',rightLabel:total.goalMissing?'Goal missing':fullMoney(total.goal)
    })+
-   kpiCard({
-    label:'Quality Health',icon:'△',accent:'#B87333',shadow:'rgba(184,115,51,.25)',glow:'rgba(184,115,51,.18)',
+   kpiCard({auditKey:'quality',label:'Quality Health',icon:'△',accent:'#B87333',shadow:'rgba(184,115,51,.25)',glow:'rgba(184,115,51,.18)',
     state:qualityGood?'Quality within target':total.artRate.toFixed(1)+'% art rate',good:qualityGood,
-    value:num(total.art)+' / '+num(total.orders),sub:'Art errors ('+total.artRate.toFixed(1)+'%) · '+fullMoney(total.credits)+' credits',
+    value:num(total.art)+' / '+num(total.orders),sub:'Art errors ('+total.artRate.toFixed(1)+'%) · '+fullMoney(total.credits)+' rep-fault credits',
     width:Math.max(4,100-Math.min(100,total.artRate*20)),leftLabel:'Goal',rightLabel:'≤1% art rate'
    })+
   '</div>'
@@ -52797,9 +52916,9 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   return'<section class="ps58-card ps58-chart-card">'+
    '<div class="ps58-section-head"><div><div class="ps58-section-label">Performance Snapshot</div><h2>Weekly Revenue Trend · '+esc(context.quarter)+' '+context.year+'</h2></div></div>'+
    '<div class="ps58-chart-wrap"><canvas id="ps58RevenueChart"></canvas></div>'+
-   '<div class="ps58-chart-progress"><div class="ps58-chart-progress-head"><span>'+esc(context.quarter)+' Progress</span><strong>'+pct(context.progress*100)+'</strong></div>'+
+   '<div class="ps58-chart-progress"><div class="ps58-chart-progress-head"><span>'+esc(context.quarter)+' Effective Progress</span><strong>'+pct(context.progress*100)+'</strong></div>'+
    '<div class="ps58-chart-progress-bar"><i style="width:'+clamp(context.progress*100,0,100)+'%"></i></div>'+
-   '<div class="ps58-chart-progress-copy"><strong>'+fullMoney(total.revenue)+'</strong> of '+fullMoney(total.goal)+' · '+(context.isFuture?'Future week selected':'Projection updates through the selected week')+'</div></div>'+
+   '<div class="ps58-chart-progress-copy"><strong>'+fullMoney(total.revenue)+'</strong> of '+fullMoney(total.goal)+' configured goal · '+(context.isCurrent?'Live pace uses '+Math.round(context.currentFraction*100)+'% of the current selling week':context.isFuture?'Future week selected':'Historical week treated as complete')+'</div></div>'+
   '</section>'
  }
  function progressBlock(label,value,goal,shouldBe,percent,gapLabel){
@@ -52814,53 +52933,85 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   var revGap=total.revenue-total.pacedGoal;
   var callGap=total.accounts-total.callTarget;
   return'<section class="ps58-card ps58-progress-card">'+
-   '<div class="ps58-section-head"><div><div class="ps58-section-label">Progress vs Goal</div><h2>Where the team should be</h2></div></div>'+
-   progressBlock('Revenue',fullMoney(total.revenue),total.goal,total.pacedGoal,total.revenuePct,(revGap>=0?'Ahead by ':'Behind by ')+fullMoney(Math.abs(revGap)))+
+   '<div class="ps58-section-head"><div><div class="ps58-section-label">Progress vs Goal</div><h2>Where the team should be as of this snapshot</h2></div></div>'+
+   (total.goal>0?progressBlock('Revenue',fullMoney(total.revenue),total.goal,total.pacedGoal,total.revenuePct,(revGap>=0?'Ahead by ':'Behind by ')+fullMoney(Math.abs(revGap))):'<div class="ps58-empty">Revenue pace is withheld until all included reps have configured goals.</div>')+
    '<div class="ps58-progress-block">'+
-    '<div class="ps58-progress-head"><span>Customers Called</span><b>'+(callGap>=0?'Ahead by ':'Behind by ')+num(Math.abs(callGap))+'</b></div>'+
+    '<div class="ps58-progress-head"><span>Account Updates</span><b>'+(callGap>=0?'Ahead by ':'Behind by ')+num(Math.abs(callGap))+'</b></div>'+
     '<div class="ps58-progress-value">'+num(total.accounts)+'</div>'+
     '<div class="ps58-marker-track"><i style="width:'+clamp(total.coverage,0,100)+'%"></i><em style="left:'+clamp(total.setSize>0?total.callTarget/total.setSize*100:0,0,100)+'%"></em></div>'+
-    '<div class="ps58-marker-labels"><span><strong>0</strong>Start</span><span><strong>'+num(total.callTarget)+'</strong>Should Be</span><span><strong>'+num(total.setSize)+'</strong>Customer Set</span></div>'+
+    '<div class="ps58-marker-labels"><span><strong>0</strong>Start</span><span><strong>'+num(total.callTarget)+'</strong>Paced updates</span><span><strong>'+num(total.setSize)+'</strong>Quarter set</span></div>'+
+    '<div class="ps620-context-note">Cumulative account-update counts are not guaranteed unique customer penetration. Rep coaching call pace uses the Call Cycle engine when available.</div>'+
    '</div>'+
   '</section>'
  }
+ function forecastModel(context,rows,total){
+  var completedEnd=context.isCurrent?context.index-1:context.index;
+  var fullWeeks=[];
+  for(var i=0;i<=completedEnd&&i<context.weeks.length;i++){
+   var wk=context.weeks[i],rev=0;rows.forEach(function(row){rev+=n(gd(row.name+'|'+wk.key).revenue)});fullWeeks.push({week:wk,revenue:rev})
+  }
+  var recent=fullWeeks.slice(-3),avg=recent.length?recent.reduce(function(sum,x){return sum+x.revenue},0)/recent.length:0;
+  var mean=avg,variance=recent.length>1?recent.reduce(function(sum,x){return sum+Math.pow(x.revenue-mean,2)},0)/recent.length:0,vol=mean>0?Math.sqrt(variance)/mean:1;
+  var runRate=context.progress>0?total.revenue/context.progress:0;
+  var trendProjection=recent.length>=2?total.revenue+avg*context.remainingEquivalentWeeks:runRate;
+  var base=recent.length>=2?(runRate+trendProjection)/2:runRate;
+  var spread=Math.min(.15,Math.max(.04,vol*.45));
+  var downside=base*(1-spread),upside=base*(1+spread);
+  var direction='Flat',directionTone='info';
+  if(recent.length>=2){var first=recent[0].revenue,last=recent[recent.length-1].revenue;if(last>first*1.05){direction='Improving';directionTone='green'}else if(last<first*.95){direction='Declining';directionTone='red'}}
+  var confidence=recent.length<2?'Low':vol<=.15?'High':vol<=.35?'Medium':'Low';
+  if(context.isCurrent&&context.currentFraction<.4&&confidence==='High')confidence='Medium';
+  if(total.goalMissing)confidence='Withheld';
+  var priorForecast=null;
+  if(context.index>0){var priorWeeks=context.weeks.slice(0,context.index),priorRevenue=0;rows.forEach(function(row){priorRevenue+=n(totW(row.name,priorWeeks).revenue)});var priorProgress=context.weeks.length?context.index/context.weeks.length:0;priorForecast=priorProgress>0?priorRevenue/priorProgress:null}
+  return{runRate:runRate,trendProjection:trendProjection,base:base,downside:downside,upside:upside,recent:recent,weeklyAverage:avg,volatility:vol,direction:direction,directionTone:directionTone,confidence:confidence,priorForecast:priorForecast,change:priorForecast!=null?base-priorForecast:null}
+ }
+ function productionRisks(model){
+  var rows=model.rows.map(function(row){var ship=row.shipWeek||row.shipDate||'',days=null;try{days=typeof leadDaysFromToday==='function'?leadDaysFromToday(ship):null}catch(e){}return{row:row,days:days}});
+  return rows.sort(function(a,b){var av=a.days==null?-999:a.days,bv=b.days==null?-999:b.days;return bv-av}).slice(0,4)
+ }
  function makeActions(context,rows,total){
-  var zeroCalls=rows.filter(function(row){return n(row.week.calls)===0});
-  var artRisk=rows.filter(function(row){return row.artCount>=3});
-  var revenueRisk=rows.filter(function(row){return row.salesPace<80});
-  var callRisk=rows.filter(function(row){return row.callPace<80});
+  var coachRows=rows.filter(function(row){return row.coachable});
+  var zeroCalls=coachRows.filter(function(row){return n(row.week.calls)===0});
+  var artRisk=coachRows.filter(function(row){return row.artCount>=3});
+  var creditRisk=coachRows.filter(function(row){return row.creditRate>1||row.creditCost>=500});
+  var revenueRisk=coachRows.filter(function(row){return row.salesPace<80});
+  var callRisk=coachRows.filter(function(row){return row.callPace<80});
+  var notes=selectedNotes(context),hrHigh=notes.hr.filter(function(x){return n(x.pts)>=2||['written','final','pip'].indexOf(clean(x.cat||x.category||x.type).toLowerCase())>=0});
+  var fc=forecastModel(context,rows,total),prod=productionSnapshot(),prodRisk=productionRisks(prod).filter(function(x){return x.days!=null&&x.days>16});
   var urgent=[];
-  if(zeroCalls.length)urgent.push({severity:'high',icon:'☎',title:zeroCalls[0].name+' — zero calls',copy:'No calls are logged for the selected week. '+Math.max(0,zeroCalls.length-1)+' additional rep(s) also need review.',page:'profiles',rep:zeroCalls[0].name});
-  if(artRisk.length)urgent.push({severity:'high',icon:'⚠',title:'Art errors above target',copy:artRisk.length+' rep(s) have three or more quarter-to-date art errors.',page:'art'});
-  if(total.forecastGap>0)urgent.push({severity:'high',icon:'↘',title:'Forecast below goal',copy:'The current projection is '+fullMoney(total.forecastGap)+' short of the quarter goal.',page:'intel'});
+  if(total.goalMissing)urgent.push({severity:'high',icon:'G',title:'Goal setup incomplete',copy:total.goalMissing+' included rep(s) do not have a configured revenue goal. Coaching pace and team forecast should not be used until fixed.',page:'entry'});
+  if(context.isCurrent&&zeroCalls.length)urgent.push({severity:'high',icon:'☎',title:zeroCalls[0].name+' — zero calls',copy:'No calls are logged for the live selected week. '+Math.max(0,zeroCalls.length-1)+' additional rep(s) also need review.',page:'profiles',rep:zeroCalls[0].name});
+  if(artRisk.length)urgent.push({severity:'high',icon:'⚠',title:'Art errors above target',copy:artRisk.length+' coachable rep(s) have three or more quarter-to-date art errors.',page:'art'});
+  if(creditRisk.length)urgent.push({severity:'medium',icon:'$',title:'Credit memo coaching signal',copy:creditRisk.length+' rep(s) have elevated rep-fault credit cost or rate.',page:'credits'});
+  if(!total.goalMissing&&total.goal>0&&fc.base<total.goal)urgent.push({severity:'high',icon:'↘',title:'Forecast below goal',copy:'Base projection is '+fullMoney(total.goal-fc.base)+' short of the configured quarter goal.',page:'intel'});
+  if(hrHigh.length)urgent.push({severity:'high',icon:'!',title:'People follow-up required',copy:hrHigh.length+' selected-period HR item(s) carry written/final/PIP-level severity.',page:'hr'});
+  if(prod.stale)urgent.push({severity:'medium',icon:'↻',title:'Production feed needs refresh',copy:prod.lastFetched?'Production data is '+prod.ageDays+' days old.':'No production refresh timestamp is available.',page:'prodintel'});
+  else if(prodRisk.length)urgent.push({severity:'medium',icon:'⌛',title:'Extended production timing',copy:prodRisk.length+' decoration method(s) are currently beyond 16 days.',page:'prodintel'});
   var dailyMissing=false;
-  try{
-   var today=new Date().toISOString().slice(0,10);
-   dailyMissing=!S.dailyRep||!S.dailyRep[today]
-  }catch(e){}
+  try{var today=context.todayISO;dailyMissing=context.isCurrent&&(!S.dailyRep||!S.dailyRep[today])}catch(e){}
   if(dailyMissing)urgent.push({severity:'medium',icon:'▣',title:'Daily sales not logged',copy:'No per-rep daily sales entry is saved for today.',page:'daily'});
   if(!urgent.length)urgent.push({severity:'info',icon:'✓',title:'No urgent alerts',copy:'The selected snapshot has no critical dashboard alerts.',page:'dash'});
 
-  var coaching=rows.slice().sort(function(a,b){return a.weighted.total-b.weighted.total}).slice(0,6).map(function(row){
-   return{
-    severity:row.weighted.status.key==='red'?'high':'medium',
-    icon:'◉',
-    title:row.name+' — '+row.weighted.status.label,
-    copy:'Weighted '+row.weighted.total.toFixed(1)+' · revenue pace '+Math.round(row.salesPace)+'% · call pace '+Math.round(row.callPace)+'%.',
-    page:'profiles',rep:row.name
-   }
+  var coaching=coachRows.slice().sort(function(a,b){return a.weighted.total-b.weighted.total}).slice(0,6).map(function(row){
+   return{severity:row.weighted.status.key==='red'?'high':'medium',icon:'◉',title:row.name+' — '+row.weighted.status.label,
+    copy:'Weighted '+row.weighted.total.toFixed(1)+' · revenue pace '+Math.round(row.salesPace)+'% · '+row.callSource+' '+Math.round(row.callPace)+'%.',page:'profiles',rep:row.name}
   });
+  if(!coaching.length)coaching=[{severity:'info',icon:'✓',title:'No coachable score risks',copy:'No active rep with a configured goal is currently in the coaching-risk queue.',page:'profiles'}];
   var watchlist=[
-   {severity:total.revenue<total.pacedGoal?'high':'info',icon:'$',title:'Revenue pace',copy:(total.revenue<total.pacedGoal?fullMoney(total.pacedGoal-total.revenue)+' behind paced target.':'Team revenue is at or above paced target.'),page:'year'},
-   {severity:total.accounts<total.callTarget?'medium':'info',icon:'☎',title:'Customer coverage',copy:(total.accounts<total.callTarget?num(total.callTarget-total.accounts)+' customer contacts behind paced target.':'Customer coverage is at or above paced target.'),page:'daily'},
-   {severity:total.artRate>1?'high':'info',icon:'△',title:'Quality signal',copy:num(total.art)+' art errors across '+num(total.orders)+' orders ('+total.artRate.toFixed(1)+'%).',page:'art'}
+   {severity:total.goalMissing?'high':total.revenue<total.pacedGoal?'high':'info',icon:'$',title:'Revenue pace',copy:total.goalMissing?'Goal setup incomplete.':(total.revenue<total.pacedGoal?fullMoney(total.pacedGoal-total.revenue)+' behind effective paced target.':'Team revenue is at or above effective paced target.'),page:'year'},
+   {severity:total.accounts<total.callTarget?'medium':'info',icon:'☎',title:'Account-update pace',copy:(total.accounts<total.callTarget?num(total.callTarget-total.accounts)+' cumulative updates behind paced target.':'Account-update count is at or above paced target.'),page:'daily'},
+   {severity:total.artRate>1?'high':'info',icon:'△',title:'Quality signal',copy:num(total.art)+' art errors across '+num(total.orders)+' orders ('+total.artRate.toFixed(1)+'%).',page:'art'},
+   {severity:creditRisk.length?'medium':'info',icon:'$',title:'Credit cost',copy:creditRisk.length?creditRisk.length+' rep(s) exceed credit coaching threshold.':'No elevated rep-fault credit signal.',page:'credits'},
+   {severity:fc.direction==='Declining'?'medium':'info',icon:fc.direction==='Declining'?'↘':'↗',title:'Forecast direction',copy:fc.direction+' · '+fc.confidence+' confidence'+(fc.change!=null?' · '+(fc.change>=0?'+':'')+fullMoney(fc.change)+' vs prior snapshot':'')+'.',page:'intel'},
+   {severity:prod.stale?'medium':prodRisk.length?'medium':'info',icon:'⌛',title:'Production timing',copy:prod.stale?'Production feed is stale or unverified.':prodRisk.length+' extended/high-risk production method(s).',page:'prodintel'}
   ];
   var priorities=[
-   {severity:revenueRisk.length?'medium':'info',icon:'1',title:'Revenue Focus',copy:revenueRisk.length+' rep(s) below 80% of paced revenue target.',page:'profiles'},
-   {severity:callRisk.length?'medium':'info',icon:'2',title:'Customer-Called Focus',copy:callRisk.length+' rep(s) below 80% of paced customer-call target.',page:'daily'},
-   {severity:artRisk.length?'medium':'info',icon:'3',title:'Quality Focus',copy:artRisk.length+' rep(s) at three or more quarter art errors.',page:'art'}
+   {severity:revenueRisk.length?'medium':'info',icon:'1',title:'Revenue Focus',copy:revenueRisk.length+' coachable rep(s) below 80% of effective paced revenue target.',page:'profiles'},
+   {severity:callRisk.length?'medium':'info',icon:'2',title:'Call Cycle Focus',copy:callRisk.length+' coachable rep(s) below 80% of expected outbound pace.',page:'daily'},
+   {severity:(artRisk.length||creditRisk.length)?'medium':'info',icon:'3',title:'Quality / Cost Focus',copy:artRisk.length+' art-risk rep(s) · '+creditRisk.length+' credit-risk rep(s).',page:'art'}
   ];
-  return{urgent:urgent,coaching:coaching,watchlist:watchlist,priorities:priorities}
+  return{urgent:urgent,coaching:coaching,watchlist:watchlist,priorities:priorities,forecast:fc}
  }
  function actionRow(item){
   var severity=item.severity==='high'?'High':item.severity==='medium'?'Medium':'Info';
@@ -52882,48 +53033,53 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   '</section>'
  }
  function forecastCard(rows,total){
-  var projected=rows.map(function(row){
-   var forecast=row.total.revenue>0?row.total.revenue/Math.max(.01,window._ps58Context.progress):0;
+  var context=window._ps58Context,fc=forecastModel(context,rows,total);
+  var projected=rows.filter(function(row){return !row.goalMissing}).map(function(row){
+   var forecast=row.total.revenue>0?row.total.revenue/Math.max(.01,context.progress):0;
    return{name:row.name,pct:row.revenueGoal>0?forecast/row.revenueGoal*100:0}
   }).sort(function(a,b){return b.pct-a.pct});
   var high=projected[0],low=projected[projected.length-1];
+  if(total.goalMissing)return'<section class="ps58-card ps58-side-card"><div class="ps58-section-label" style="color:#C5A3FF">Forecast Center '+auditButton('forecast')+'</div><div class="ps58-empty" style="padding:24px 4px">Forecast withheld: '+total.goalMissing+' included rep goal'+(total.goalMissing===1?' is':'s are')+' missing. Configure goals before using this for coaching.</div><button class="ps58-link" onclick="_ps58Nav(\'entry\')">Configure goals ›</button></section>';
   return'<section class="ps58-card ps58-side-card">'+
-   '<div class="ps58-section-label" style="color:#C5A3FF">Forecast Center</div>'+
-   '<div class="ps58-side-row"><span>Projection</span><strong>'+fullMoney(total.forecast)+'<small>'+pct(total.forecastPct)+' of goal</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Goal</span><strong>'+fullMoney(total.goal)+'<small>Quarter target</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Gap</span><strong class="'+(total.forecastGap>0?'ps58-warning':'ps58-positive')+'">'+fullMoney(Math.abs(total.forecastGap))+'<small>'+(total.forecastGap>0?'Projected shortfall':'Projected surplus')+'</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Need / Week</span><strong>'+fullMoney(total.needPerWeek)+'<small>'+Math.max(0,window._ps58Context.weeks.length-window._ps58Context.elapsed)+' weeks remaining</small></strong></div>'+
+   '<div class="ps58-section-label" style="color:#C5A3FF">Forecast Center '+auditButton('forecast')+'</div>'+
+   '<div class="ps58-side-row"><span>Base Projection</span><strong>'+fullMoney(fc.base)+'<small>'+pct(total.goal>0?fc.base/total.goal*100:0)+' of goal · '+fc.confidence+' confidence</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Range</span><strong>'+fullMoney(fc.downside)+' – '+fullMoney(fc.upside)+'<small>volatility-adjusted planning range</small></strong></div>'+
+   '<div class="ps58-side-row"><span>3-Week Trend</span><strong class="'+(fc.directionTone==='green'?'ps58-positive':fc.directionTone==='red'?'ps58-warning':'')+'">'+fc.direction+'<small>'+(fc.recent.length?fullMoney(fc.weeklyAverage)+' avg / completed week':'Not enough completed weeks')+'</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Need / Equivalent Week</span><strong>'+fullMoney(total.needPerWeek)+'<small>'+context.remainingEquivalentWeeks.toFixed(1)+' selling-week equivalents remain</small></strong></div>'+
    '<div class="ps58-side-row"><span>Highest Forecast Rep</span><strong class="ps58-positive">'+esc(high&&high.name||'—')+'<small>'+Math.round(high&&high.pct||0)+'% projected</small></strong></div>'+
    '<div class="ps58-side-row"><span>Lowest Forecast Rep</span><strong class="ps58-warning">'+esc(low&&low.name||'—')+'<small>'+Math.round(low&&low.pct||0)+'% projected</small></strong></div>'+
    '<button class="ps58-link" onclick="_ps58Nav(\'intel\')">View forecast details ›</button>'+
   '</section>'
  }
  function productionCard(){
-  var rows=[];
-  try{rows=typeof getProductionRows==='function'?getProductionRows():[]}catch(e){}
-  rows=safeArray(rows);
-  var visible=rows.slice(0,3);
+  var snap=productionSnapshot(),visible=productionRisks(snap).slice(0,3);
   return'<section class="ps58-card ps58-side-card">'+
-   '<div class="ps58-section-label" style="color:#C5A3FF">Production Pulse</div>'+
-   (visible.length?visible.map(function(row){
-    var label=row.decoration||row.department||row.type||'Production';
+   '<div class="ps58-section-label" style="color:#C5A3FF">Production Lead-Time Pulse '+auditButton('production')+'</div>'+
+   (snap.stale?'<div class="ps620-inline-warn">'+(snap.lastFetched?'Feed is '+snap.ageDays+' days old. Refresh before using production timing in coaching or customer commitments.':'No verified production refresh timestamp. Refresh the production feed.')+'</div>':'')+
+   (visible.length?visible.map(function(item){
+    var row=item.row,label=row.decoration||row.department||row.type||'Production';
     var ship=row.shipWeek||row.shipDate||row.status||'Review feed';
-    return'<div class="ps58-side-row"><span>● '+esc(label)+'</span><strong>'+esc(ship)+'<small>'+esc(row.updated||row.note||'Live production feed')+'</small></strong></div>'
-   }).join(''):'<div class="ps58-empty" style="padding:20px 4px">Production feed is not connected.</div>')+
+    var status=item.days==null?'Review':item.days>16?'High risk':item.days>10?'Extended':'Normal';
+    return'<div class="ps58-side-row"><span>● '+esc(label)+'</span><strong>'+esc(ship)+'<small>'+status+(item.days!=null?' · '+item.days+' days out':'')+'</small></strong></div>'
+   }).join(''):'<div class="ps58-empty" style="padding:20px 4px">Production feed is not connected or has no saved rows.</div>')+
    '<button class="ps58-link" onclick="_ps58Nav(\'prodintel\')">View production hub ›</button>'+
   '</section>'
  }
  function winsCard(rows){
-  var topRevenue=rows.slice().sort(function(a,b){return b.week.revenue-a.week.revenue})[0];
-  var topCalls=rows.slice().sort(function(a,b){return b.week.calls-a.week.calls})[0];
-  var topOrders=rows.slice().sort(function(a,b){return b.week.orders-a.week.orders})[0];
-  var standout=rows.filter(function(row){return row.weighted.status.key==='green'}).sort(function(a,b){return b.weighted.total-a.weighted.total})[0];
+  var activeRows=rows.filter(function(row){return !row.isRetired});
+  var topRevenue=activeRows.slice().sort(function(a,b){return b.week.revenue-a.week.revenue})[0];
+  var topCalls=activeRows.slice().sort(function(a,b){return b.week.calls-a.week.calls})[0];
+  var topOrders=activeRows.slice().sort(function(a,b){return b.week.orders-a.week.orders})[0];
+  var standout=activeRows.filter(function(row){return row.coachable&&row.weighted.status.key==='green'}).sort(function(a,b){return b.weighted.total-a.weighted.total})[0];
+  var improved=null,ctx=window._ps58Context||null;
+  if(ctx&&ctx.index>0){var prev=ctx.weeks[ctx.index-1];activeRows.forEach(function(row){var prior=n(gd(row.name+'|'+prev.key).revenue),current=n(row.week.revenue),comparable=ctx.isCurrent&&ctx.currentFraction>0?current/ctx.currentFraction:current,gain=comparable-prior;if(!improved||gain>improved.gain)improved={name:row.name,gain:gain,paced:!!ctx.isCurrent}})}
   return'<section class="ps58-card ps58-side-card">'+
    '<div class="ps58-section-label" style="color:#5DCAA5">Positive Momentum</div>'+
    '<div class="ps58-side-row"><span>Largest Revenue</span><strong>'+esc(topRevenue&&topRevenue.name||'—')+'<small>'+fullMoney(topRevenue&&topRevenue.week.revenue||0)+'</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Most Customers Called</span><strong>'+esc(topCalls&&topCalls.name||'—')+'<small>'+num(topCalls&&topCalls.week.calls||0)+' calls</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Most Calls</span><strong>'+esc(topCalls&&topCalls.name||'—')+'<small>'+num(topCalls&&topCalls.week.calls||0)+' calls</small></strong></div>'+
    '<div class="ps58-side-row"><span>Most Orders</span><strong>'+esc(topOrders&&topOrders.name||'—')+'<small>'+num(topOrders&&topOrders.week.orders||0)+' orders</small></strong></div>'+
-   '<div class="ps58-side-row"><span>On-Pace Standout</span><strong class="ps58-positive">'+esc(standout&&standout.name||'—')+'<small>'+(standout?'Weighted '+standout.weighted.total.toFixed(1):'No standout yet')+'</small></strong></div>'+
+   '<div class="ps58-side-row"><span>On-Pace Standout</span><strong class="ps58-positive">'+esc(standout&&standout.name||'—')+'<small>'+(standout?'Weighted '+standout.weighted.total.toFixed(1):'No configured-goal standout yet')+'</small></strong></div>'+
+   '<div class="ps58-side-row"><span>'+(improved&&improved.paced?'Paced Week-over-Week Lift':'Week-over-Week Lift')+'</span><strong class="ps58-positive">'+esc(improved&&improved.gain>0?improved.name:'—')+'<small>'+(improved&&improved.gain>0?'+'+fullMoney(improved.gain)+(improved.paced?' paced':''):'No positive lift yet')+'</small></strong></div>'+
    '<button class="ps58-link" onclick="_ps58SetRepTab(\'top\')">View wins board ›</button>'+
   '</section>'
  }
@@ -52938,42 +53094,36 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   '</section>'
  }
  function priorityPanel(rows,total){
-  var revRisk=rows.filter(function(row){return row.salesPace<80}).length;
-  var callRisk=rows.filter(function(row){return row.callPace<80}).length;
-  var artRisk=rows.filter(function(row){return row.artCount>=3}).length;
+  var coachRows=rows.filter(function(row){return row.coachable});
+  var revRisk=coachRows.filter(function(row){return row.salesPace<80}).length;
+  var callRisk=coachRows.filter(function(row){return row.callPace<80}).length;
+  var qualityRisk=coachRows.filter(function(row){return row.artCount>=3||row.creditRate>1||row.creditCost>=500}).length;
   var list=[
-   ['Revenue Focus',revRisk+' reps below revenue pace'],
-   ['Customer-Called Focus',callRisk+' reps below customer-call pace'],
-   ['Quality Focus',artRisk+' reps with 3+ art errors']
+   ['Revenue Focus',revRisk+' coachable reps below effective revenue pace'],
+   ['Call Cycle Focus',callRisk+' coachable reps below expected outbound pace'],
+   ['Quality / Cost Focus',qualityRisk+' reps with elevated art or credit signal']
   ];
-  return list.map(function(item,index){
-   return'<div class="ps58-priority"><b>'+(index+1)+'</b><div><strong>'+esc(item[0])+'</strong><span>'+esc(item[1])+'</span></div></div>'
-  }).join('')
+  if(total.goalMissing)list.unshift(['Data Integrity',total.goalMissing+' rep goal(s) must be configured before scoring']);
+  return list.slice(0,3).map(function(item,index){return'<div class="ps58-priority"><b>'+(index+1)+'</b><div><strong>'+esc(item[0])+'</strong><span>'+esc(item[1])+'</span></div></div>'}).join('')
  }
- function recentNotes(){
-  var notes=[];
-  safeArray(S.coachingNotes).slice(-4).reverse().forEach(function(note){
-   notes.push({title:(note.rep||'Rep')+' · '+(note.type||'Coaching'),copy:note.note||note.desc||'Coaching note'})
-  });
-  safeArray(S.hrViolations).slice(-3).reverse().forEach(function(note){
-   notes.push({title:(note.rep||'Rep')+' · HR',copy:note.desc||note.note||note.category||'HR follow-up'})
-  });
-  if(!notes.length)return'<div class="ps58-review-empty">No recent coaching or HR notes logged.</div>';
-  return notes.slice(0,4).map(function(note){
-   return'<div class="ps58-recent-note"><strong>'+esc(note.title)+'</strong><span>'+esc(clean(note.copy).slice(0,135))+'</span></div>'
-  }).join('')
+ function recentNotes(context){
+  var notes=[],period=selectedNotes(context);
+  period.coaching.slice().sort(function(a,b){return clean(b.date).localeCompare(clean(a.date))}).slice(0,4).forEach(function(note){notes.push({date:note.date||'',title:(note.rep||'Rep')+' · '+(note.type||'Coaching'),copy:note.note||note.desc||'Coaching note'})});
+  period.hr.slice().sort(function(a,b){return clean(b.date).localeCompare(clean(a.date))}).slice(0,3).forEach(function(note){notes.push({date:note.date||'',title:(note.rep||'Rep')+' · HR',copy:note.desc||note.note||note.category||note.cat||'HR follow-up'})});
+  notes.sort(function(a,b){return clean(b.date).localeCompare(clean(a.date))});
+  if(!notes.length)return'<div class="ps58-review-empty">No coaching or HR notes exist through the selected snapshot.</div>';
+  return notes.slice(0,4).map(function(note){return'<div class="ps58-recent-note"><strong>'+esc(note.title)+'</strong><span>'+esc((note.date?note.date+' · ':'')+clean(note.copy).slice(0,135))+'</span></div>'}).join('')
  }
  function notesSection(context,rows,total){
   var key='tcp_weekly_manager_notes_'+context.year+'_'+context.quarter+'_'+(context.selected&&context.selected.key||'');
-  var note='';
-  try{note=localStorage.getItem(key)||''}catch(e){}
+  var note='';try{note=localStorage.getItem(key)||''}catch(e){}
   return'<section class="ps58-card ps58-notes-card">'+
-   '<div class="ps58-panel-head"><div><div class="ps58-section-label">Manager Notes & Reviews</div><h2 style="margin:4px 0 0;font-size:16px">Close the loop</h2></div></div>'+
+   '<div class="ps58-panel-head"><div><div class="ps58-section-label">Manager Notes & Reviews</div><h2 style="margin:4px 0 0;font-size:16px">Close the coaching loop</h2></div><span class="ps620-asof">Notes through '+esc(dateLabel(context.asOf))+'</span></div>'+
    '<div class="ps58-notes-grid">'+
-    '<div class="ps58-note-panel"><div class="ps58-note-title">This Week’s Priorities</div>'+priorityPanel(rows,total)+'<button class="ps58-link" onclick="_ps58SetActionTab(\'priorities\')">View all priorities ›</button></div>'+
-    '<div class="ps58-note-panel"><div class="ps58-note-title">Manager Notes</div><textarea id="wkManagerNotes" data-note-key="'+esc(key)+'" placeholder="Trade show pushes, staffing context, production delays, coaching focus, major wins...">'+esc(note)+'</textarea>'+
+    '<div class="ps58-note-panel"><div class="ps58-note-title">This Snapshot’s Priorities</div>'+priorityPanel(rows,total)+'<button class="ps58-link" onclick="_ps58SetActionTab(\'priorities\')">View all priorities ›</button></div>'+
+    '<div class="ps58-note-panel"><div class="ps58-note-title">Manager Notes · Wk '+context.weekNumber+'</div><textarea id="wkManagerNotes" data-note-key="'+esc(key)+'" placeholder="Trade show pushes, staffing context, production delays, coaching focus, major wins...">'+esc(note)+'</textarea>'+
      '<div class="ps58-note-actions"><button onclick="_ps58SaveNotes()">Save notes</button><span id="wkNotesStatus" class="ps58-muted"></span></div></div>'+
-    '<div class="ps58-note-panel"><div class="ps58-note-title">Reviews & Notes</div>'+recentNotes()+'<button class="ps58-link" onclick="_ps58Nav(\'coach\')">Open coaching center ›</button></div>'+
+    '<div class="ps58-note-panel"><div class="ps58-note-title">Selected-Period People Notes</div>'+recentNotes(context)+'<button class="ps58-link" onclick="_ps58Nav(\'coach\')">Open coaching center ›</button></div>'+
    '</div>'+
   '</section>'
  }
@@ -52982,21 +53132,19 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
    '<div class="ps58-footer-actions"><button onclick="buildQuarterEndReport()">▥ Quarter-end report</button><button onclick="buildDeepQuarterReport()">◉ Deep quarter report</button><button onclick="printDashboard()">▣ Print dashboard</button></div></div>'
  }
  function shell(context,rows,total){
-  window._ps58Context=context;
-  window._ps58Rows=rows;
-  window._ps58Totals=total;
+  window._ps58Context=context;window._ps58Rows=rows;window._ps58Totals=total;
+  var fresh=dataFreshness(context,rows,total);window._ps620Freshness=fresh;
   window._ps58Actions=makeActions(context,rows,total);
   var selectedLabel=context.selected?context.selected.label:'Week '+context.weekNumber;
-  return'<div class="ps58-shell">'+
-   '<header class="ps58-header"><div><h1 class="ps58-title">Sales Tracker</h1><div class="ps58-context"><span>'+esc(context.quarter)+' '+context.year+'</span><i></i><span>'+esc(context.month)+'</span><i></i><span>'+esc(selectedLabel)+'</span></div></div>'+periodControls(context)+'</header>'+
-   '<div class="ps58-brief">'+brief(context,total,rows)+'</div>'+
-   '<div class="ps58-section-head"><div><div class="ps58-section-label">Executive Snapshot</div></div></div>'+
-   kpis(context,total)+
+  var header='<div class="ps58-shell"><header class="ps58-header"><div><h1 class="ps58-title">Sales Tracker</h1><div class="ps58-context"><span>'+esc(context.quarter)+' '+context.year+'</span><i></i><span>'+esc(context.month)+'</span><i></i><span>'+esc(selectedLabel)+'</span></div></div>'+periodControls(context)+'</header>';
+  if(context.isFuture)return header+freshnessStrip(fresh)+'<section class="ps58-card ps620-future"><div class="ps58-section-label">Future Week</div><h2>Coaching metrics are intentionally withheld</h2><p>This week has not occurred yet. Select the current or a historical tracker week to review actual performance, pace, forecast, and coaching signals.</p></section>'+footer(context)+auditModal()+'</div>';
+  return header+
+   '<div class="ps58-brief">'+brief(context,total,rows)+'</div>'+freshnessStrip(fresh)+
+   '<div class="ps58-section-head"><div><div class="ps58-section-label">Executive Snapshot</div></div></div>'+kpis(context,total)+
    '<div class="ps58-main-grid">'+chartPanel(context,rows,total)+progressPanel(context,total)+'</div>'+
    '<div class="ps58-main-grid">'+actionCenter()+forecastCard(rows,total)+'</div>'+
    '<div class="ps58-main-grid">'+repPerformance()+'<div>'+productionCard()+winsCard(rows)+'</div></div>'+
-   notesSection(context,rows,total)+footer(context)+
-  '</div>'
+   notesSection(context,rows,total)+footer(context)+auditModal()+'</div>'
  }
  function renderActionTab(){
   var host=document.getElementById('ps58ActionList');if(!host)return;
@@ -53014,33 +53162,24 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  function renderRepTable(){
   var host=document.getElementById('ps58RepTable');if(!host)return;
   var rows=(window._ps58Rows||[]).slice();
-  if(repTab==='risk')rows=rows.filter(function(row){return row.weighted.status.key!=='green'}).sort(function(a,b){return a.weighted.total-b.weighted.total});
-  else if(repTab==='top')rows=rows.filter(function(row){return row.weighted.status.key==='green'}).sort(function(a,b){return b.weighted.total-a.weighted.total});
-  else rows.sort(function(a,b){return b.weighted.total-a.weighted.total});
-  if(!rows.length){
-   host.innerHTML='<div class="ps58-empty">'+(repTab==='risk'?'No reps are currently Yellow or Red.':'No reps match this view.')+'</div>';
-   return
-  }
-  host.innerHTML='<table class="ps58-rep-table"><thead><tr><th>Rep</th><th>QTD Revenue</th><th>Call Coverage</th><th>Orders</th><th>Pace vs Goal</th><th>Flags</th></tr></thead><tbody>'+
-   rows.map(function(row){
-    var key=row.weighted.status.key;
-    var color=statusColor(key);
+  if(repTab==='risk')rows=rows.filter(function(row){return row.coachable&&row.weighted.status.key!=='green'}).sort(function(a,b){return a.weighted.total-b.weighted.total});
+  else if(repTab==='top')rows=rows.filter(function(row){return row.coachable&&row.weighted.status.key==='green'}).sort(function(a,b){return b.weighted.total-a.weighted.total});
+  else rows.sort(function(a,b){if(a.goalMissing!==b.goalMissing)return a.goalMissing?1:-1;return b.weighted.total-a.weighted.total});
+  if(!rows.length){host.innerHTML='<div class="ps58-empty">'+(repTab==='risk'?'No active reps with configured goals are currently Yellow or Red.':'No reps match this view.')+'</div>';return}
+  host.innerHTML='<table class="ps58-rep-table"><thead><tr><th>Rep</th><th>QTD Revenue</th><th>Outbound Pace</th><th>Orders</th><th>Revenue Pace</th><th>Flags</th></tr></thead><tbody>'+rows.map(function(row){
+    var key=row.goalMissing?'yellow':row.weighted.status.key,color=row.goalMissing?'#EF9F27':statusColor(key);
+    var paceText=row.goalMissing?'Goal missing':Math.round(row.salesPace)+'%';
     return'<tr data-rep="'+esc(row.name)+'" onclick="_ps58OpenRep(this.dataset.rep)">'+
-     '<td><div class="ps58-rep-name-cell"><i class="ps58-rep-light" style="background:'+color+';box-shadow:0 0 10px '+color+'"></i><strong>'+esc(row.name)+'</strong></div></td>'+
-     '<td>'+fullMoney(row.total.revenue)+'</td>'+
-     '<td>'+num(row.total.acctsCalled)+' / '+num(row.total.setSize)+' ('+Math.round(row.coverage)+'%)</td>'+
-     '<td>'+num(row.total.orders)+'</td>'+
-     '<td>'+Math.round(row.salesPace)+'% <span class="ps58-mini-track"><i style="width:'+clamp(row.salesPace,0,100)+'%"></i></span></td>'+
-     '<td><div class="ps58-flags">'+(row.flags.length?row.flags.map(function(flag){return'<span class="ps58-flag">'+esc(flag)+'</span>'}).join(''):'<span class="ps58-positive">Clear</span>')+'</div></td>'+
+     '<td><div class="ps58-rep-name-cell"><i class="ps58-rep-light" style="background:'+color+';box-shadow:0 0 10px '+color+'"></i><strong>'+esc(row.name)+(row.isRetired?' <span class="ps620-history-tag">Historical</span>':'')+'</strong></div></td>'+ 
+     '<td>'+fullMoney(row.total.revenue)+'</td>'+ 
+     '<td>'+Math.round(row.callPace)+'%<small class="ps620-table-sub">'+esc(row.callSource)+'</small></td>'+ 
+     '<td>'+num(row.total.orders)+'</td>'+ 
+     '<td>'+paceText+(row.goalMissing?'':' <span class="ps58-mini-track"><i style="width:'+clamp(row.salesPace,0,100)+'%"></i></span>')+'</td>'+ 
+     '<td><div class="ps58-flags">'+(row.flags.length?row.flags.map(function(flag){var title=flag==='G'?'Goal missing':flag==='R'?'Revenue pace risk':flag==='C'?'Outbound pace risk':flag==='A'?'Art error risk':flag==='$'?'Rep-fault credit memo':'Historical/retired rep';return'<span class="ps58-flag" title="'+esc(title)+'">'+esc(flag)+'</span>'}).join(''):'<span class="ps58-positive">Clear</span>')+'</div></td>'+ 
     '</tr>'
    }).join('')+'</tbody></table>';
   document.querySelectorAll('#pg-dash .ps58-rep-card .ps58-tab').forEach(function(button){
-   var label=clean(button.textContent).toLowerCase();
-   button.classList.toggle('on',
-    (repTab==='risk'&&label.indexOf('at risk')===0)||
-    (repTab==='top'&&label.indexOf('top')===0)||
-    (repTab==='all'&&label.indexOf('all')===0)
-   )
+   var label=clean(button.textContent).toLowerCase();button.classList.toggle('on',(repTab==='risk'&&label.indexOf('at risk')===0)||(repTab==='top'&&label.indexOf('top')===0)||(repTab==='all'&&label.indexOf('all')===0))
   })
  }
  function renderChart(context,rows,total){
@@ -53091,14 +53230,9 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  }
  function render(){
   var page=document.getElementById('pg-dash');if(!page)return;
-  var context=selectedContext();
-  var rows=repData(context);
-  var total=totals(context,rows);
-  page.classList.add('ps58-dashboard');
-  page.innerHTML=shell(context,rows,total);
-  renderActionTab();
-  renderRepTable();
-  renderChart(context,rows,total);
+  var context=selectedContext(),rows=repData(context),total=totals(context,rows);
+  page.classList.add('ps58-dashboard');page.innerHTML=shell(context,rows,total);
+  if(!context.isFuture){renderActionTab();renderRepTable();renderChart(context,rows,total)}
   document.body.classList.toggle('ps58-dashboard-active',page.classList.contains('active'))
  }
  window.renderDash=render;
@@ -53154,6 +53288,18 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  var page=document.getElementById('pg-dash');
  if(page)observer.observe(page,{attributes:true,attributeFilter:['class']});
 
+
+ window._ps620Audit=function(key){
+  var modal=document.getElementById('ps620AuditModal'),title=document.getElementById('ps620AuditTitle'),body=document.getElementById('ps620AuditBody');if(!modal||!body)return;
+  var c=window._ps58Context||{},t=window._ps58Totals||{},rows=window._ps58Rows||[],f=window._ps620Freshness||{},fc=forecastModel(c,rows,t),html='',ttl='Metric audit';
+  if(key==='revenue'){ttl='Revenue Pace';html='<p><strong>Source:</strong> S.data weekly revenue for included reps through '+esc(c.selected&&c.selected.label||'selected week')+'.</p><div class="ps620-audit-grid"><span>QTD revenue<b>'+fullMoney(t.revenue)+'</b></span><span>Configured goal<b>'+fullMoney(t.goal)+'</b></span><span>Effective quarter progress<b>'+pct(c.progress*100)+'</b></span><span>Paced target<b>'+fullMoney(t.pacedGoal)+'</b></span></div><p>'+ (c.isCurrent?'The current week counts only '+Math.round(c.currentFraction*100)+'% because live pacing uses elapsed Monday–Friday selling days.':'Historical selected weeks count as complete weeks.')+'</p>'+(t.goalMissing?'<p class="ps620-audit-warning">'+t.goalMissing+' rep goal(s) are missing, so team goal-based metrics are incomplete.</p>':'')}
+  else if(key==='accounts'){ttl='Account Updates';html='<p><strong>Source:</strong> cumulative S.data.acctsCalled through the selected period and quarterly set sizes carried in weekly data.</p><div class="ps620-audit-grid"><span>Updates<b>'+num(t.accounts)+'</b></span><span>Quarter set<b>'+num(t.setSize)+'</b></span><span>Paced target<b>'+num(t.callTarget)+'</b></span><span>Raw ratio<b>'+pct(t.coverage)+'</b></span></div><p class="ps620-audit-warning">This is a cumulative update count. It is not guaranteed to equal unique customers reached if the same account is counted in multiple weeks. Rep coaching outbound pace uses the Call Cycle engine when available.</p>'}
+  else if(key==='forecast'){ttl='Forecast Projection';html='<p><strong>Base projection:</strong> blends the effective run-rate projection with the average of the last up to three completed weeks when enough history exists.</p><div class="ps620-audit-grid"><span>Run-rate<b>'+fullMoney(fc.runRate)+'</b></span><span>Trend projection<b>'+fullMoney(fc.trendProjection)+'</b></span><span>Base<b>'+fullMoney(fc.base)+'</b></span><span>Confidence<b>'+esc(fc.confidence)+'</b></span><span>Downside<b>'+fullMoney(fc.downside)+'</b></span><span>Upside<b>'+fullMoney(fc.upside)+'</b></span></div><p>Confidence is based on completed-week history and recent revenue volatility. Current partial-week revenue is included in QTD actuals but the denominator uses only elapsed selling-week fraction.</p>'}
+  else if(key==='quality'){ttl='Quality Health';html='<p><strong>Art source:</strong> S.artErrors filtered by rep and tracker week. <strong>Credit source:</strong> S.cms where fault = rep. <strong>Order denominator:</strong> weekly S.data orders.</p><div class="ps620-audit-grid"><span>Art errors<b>'+num(t.art)+'</b></span><span>Orders<b>'+num(t.orders)+'</b></span><span>Art rate<b>'+t.artRate.toFixed(2)+'%</b></span><span>Rep-fault credits<b>'+fullMoney(t.credits)+'</b></span></div><p>For the weighted rep score, a live current week with no weekly order closeout excludes that week from the art-error denominator until orders are finalized, preventing a temporary false penalty.</p>'}
+  else if(key==='production'){ttl='Production Lead-Time Pulse';var p=f.production||productionSnapshot();html='<p><strong>Source:</strong> saved Company Knowledge production feed only. Opening the Dashboard no longer creates or loads sample production data.</p><div class="ps620-audit-grid"><span>Rows<b>'+num(p.rows&&p.rows.length||0)+'</b></span><span>Last refresh<b>'+esc(p.lastFetched?new Date(p.lastFetched).toLocaleString():'Not recorded')+'</b></span><span>Freshness<b>'+esc(p.stale?'Needs refresh':'Current')+'</b></span></div><p>The card ranks saved production methods by longest current lead time rather than simply showing the first three feed rows.</p>'}
+  title.textContent=ttl;body.innerHTML=html;modal.classList.add('open')
+ };
+ window._ps620CloseAudit=function(){var modal=document.getElementById('ps620AuditModal');if(modal)modal.classList.remove('open')};
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558={
   version:VERSION,
   render:render,
@@ -53165,6 +53311,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   setRepTab:function(tab){repTab=tab;renderRepTable()}
  };
 
+ window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V620=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  setTimeout(function(){
   var dashboard=document.getElementById('pg-dash');
   if(dashboard&&dashboard.classList.contains('active'))render()
@@ -56118,10 +56265,10 @@ body.ps58-dashboard-active .wrap:after{
 </style>
 
 
-<script id="tcp-data-integrity-v564-js">
+<script id="tcp-data-integrity-v620-js">
 (function(){
  'use strict';
- var VERSION='v564';
+ var VERSION='v620';
  var baseStorage=window._tcpStorageV528||null;
  var baseApply=baseStorage&&baseStorage.applyState;
  var baseRepScore=window.TCP_TRAFFIC_SCORE_V548&&TCP_TRAFFIC_SCORE_V548.repScore;
@@ -56129,6 +56276,16 @@ body.ps58-dashboard-active .wrap:after{
  function n(v){var x=Number(v);return isFinite(x)?x:0}
  function arr(v){return Array.isArray(v)?v:[]}
  function clean(v){return String(v==null?'':v).trim()}
+ function readGoalSafe(rep,year,q){
+  var raw=S&&S.goals&&S.goals[rep]&&S.goals[rep][String(year)]&&S.goals[rep][String(year)][q];
+  var goal=raw&&typeof raw==='object'?raw:{};
+  return{raw:raw||null,missing:!raw||n(goal.rev)<=0,goal:{rev:n(goal.rev),hrs:n(goal.hrs)||42.5,calls:n(goal.calls),setSize:n(goal.setSize)}}
+ }
+ function goalMissingStatus(){return{key:'yellow',label:'Goal Missing',l:'Goal Missing',action:'Configure goal before coaching',className:'ryg-yellow',c:'ryg-yellow',color:'#EF9F27'}}
+ function unscored(base,raw,missingQuarters){
+  var st=goalMissingStatus(),metrics={sales:0,outbound:0,hours:0,art:0,credit:0},contributions={sales:0,outbound:0,hours:0,art:0,credit:0},metricStatus={sales:st,outbound:st,hours:st,art:st,credit:st};
+  return Object.assign({total:0,status:st,metrics:metrics,contributions:contributions,metricStatus:metricStatus,goalMissing:true,unscored:true,goalMissingQuarters:missingQuarters||[]},base||{},{raw:raw||{}})
+ }
  function clone(v){if(v==null||typeof v!=='object')return v;try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v))}catch(e){try{return JSON.parse(JSON.stringify(v))}catch(x){return null}}}
  function safeKey(k){return !!k&&k!=='__proto__'&&k!=='prototype'&&k!=='constructor'&&k.indexOf('__tcp')!==0}
  function ensure(){
@@ -56179,20 +56336,81 @@ body.ps58-dashboard-active .wrap:after{
  }
  function periodContext(year,q,weekKey){
   var s=selectedWeek(year,q,weekKey),index=s.index<0?Math.max(0,s.weeks.length-1):s.index,through=s.weeks.slice(0,index+1);
-  return{year:Number(year),q:q,weeks:s.weeks,selected:s.selected,index:index,through:through,elapsed:through.length,progress:s.weeks.length?through.length/s.weeks.length:0}
+  var now=new Date();now.setHours(12,0,0,0);
+  var effectiveWeeks=through.length,currentFraction=1,isCurrent=false,isFuture=false;
+  if(s.selected){
+   var start=new Date(s.selected.start),end=new Date(s.selected.end);start.setHours(0,0,0,0);end.setHours(23,59,59,999);
+   isCurrent=now>=start&&now<=end;isFuture=now<start;
+   if(isCurrent){
+    var totalSelling=0,elapsedSelling=0,d=new Date(start);d.setHours(12,0,0,0);
+    var today=new Date(now);today.setHours(12,0,0,0);
+    while(d<=end){var dow=d.getDay();if(dow>=1&&dow<=5){totalSelling++;if(d<=today)elapsedSelling++}d.setDate(d.getDate()+1)}
+    currentFraction=totalSelling?Math.max(0,Math.min(1,elapsedSelling/totalSelling)):1;
+    effectiveWeeks=Math.max(0,index)+currentFraction
+   }else if(isFuture){
+    effectiveWeeks=Math.max(0,index)
+   }
+  }
+  var effectiveProgress=s.weeks.length?effectiveWeeks/s.weeks.length:0;
+  return{year:Number(year),q:q,weeks:s.weeks,selected:s.selected,index:index,through:through,elapsed:through.length,progress:effectiveProgress,effectiveProgress:effectiveProgress,effectiveWeeks:effectiveWeeks,currentFraction:currentFraction,isCurrent:isCurrent,isFuture:isFuture}
  }
  function scoreAsOf(rep,year,q,weekKey){
-  var ctx=periodContext(year,q,weekKey),tot=typeof totW==='function'?totW(rep,ctx.through):{revenue:0,hours:0,acctsCalled:0,setSize:0,orders:0,art:0,credits:0},goal=typeof repGoalObj==='function'?repGoalObj(rep,year,q):{};
-  var salesTarget=n(goal.rev)*ctx.progress,hoursTarget=n(goal.hrs||42.5)*ctx.elapsed,setTarget=n(tot.setSize)*ctx.progress;
-  var outboundActual=n(tot.acctsCalled),outboundTarget=setTarget,outboundSource='Selected-period account-updating coverage';
-  var now=new Date(),isCurrent=ctx.selected&&new Date(ctx.selected.start)<=now&&new Date(ctx.selected.end)>=now;
+  var ctx=periodContext(year,q,weekKey),tot=typeof totW==='function'?totW(rep,ctx.through):{revenue:0,hours:0,acctsCalled:0,setSize:0,orders:0},goalInfo=readGoalSafe(rep,year,q),goal=goalInfo.goal;
+  var salesTarget=n(goal.rev)*ctx.effectiveProgress,setTarget=n(tot.setSize)*ctx.effectiveProgress;
+  var hourActual=n(tot.hours),hoursTarget=n(goal.hrs||42.5)*ctx.effectiveWeeks;
+  var currentData=ctx.selected&&typeof gd==='function'?gd(rep+'|'+ctx.selected.key):{};
+  var qualityWeeks=ctx.through;
+  /* Current-week orders/hours are weekly-closeout fields. If the live bridge is active
+     and those fields have not been entered yet, do not penalize the rep for data that
+     is not expected until closeout. */
+  if(ctx.isCurrent&&currentData&&currentData._dailyLive){
+   if(n(currentData.hours)<=0){
+    var priorWeeks=ctx.through.slice(0,-1),priorTot=typeof totW==='function'?totW(rep,priorWeeks):{};
+    hourActual=n(priorTot.hours);hoursTarget=n(goal.hrs||42.5)*Math.max(0,ctx.index)
+   }
+   if(n(currentData.orders)<=0)qualityWeeks=ctx.through.slice(0,-1)
+  }
+  var outboundActual=n(tot.acctsCalled),outboundTarget=setTarget,outboundSource='Selected-period account-updating pace';
+  var now=new Date(),isCurrent=ctx.isCurrent;
   if(isCurrent&&window.TCP_CALL_CYCLE_V547){try{var pace=TCP_CALL_CYCLE_V547.paceFor(rep,now);if(pace&&n(pace.expected)>0){outboundActual=n(pace.completed);outboundTarget=n(pace.expected);outboundSource='Annual Call Cycle completed through today'}}catch(e){}}
-  var artErrors=n(tot.art),orders=n(tot.orders),artRate=orders?artErrors/orders*100:0,artAccuracy=orders?Math.max(0,100-artRate):100,credits=n(tot.credits),creditRate=n(tot.revenue)?credits/n(tot.revenue)*100:0;
-  var metrics={sales:salesTarget?n(tot.revenue)/salesTarget*100:0,outbound:outboundTarget?outboundActual/outboundTarget*100:0,hours:hoursTarget?n(tot.hours)/hoursTarget*100:0,art:artAccuracy,creditRate:creditRate};
+  var qualityTot=qualityWeeks===ctx.through?tot:(typeof totW==='function'?totW(rep,qualityWeeks):tot);
+  var artErrors=typeof repArt==='function'?n(repArt(rep,qualityWeeks)):n(qualityTot.art),orders=n(qualityTot.orders),artRate=orders?artErrors/orders*100:0,artAccuracy=orders?Math.max(0,100-artRate):100;
+  var credits=typeof repCr==='function'?n(repCr(rep,ctx.through)):n(tot.credits),creditRate=n(tot.revenue)?credits/n(tot.revenue)*100:0;
+  var metrics={sales:salesTarget?n(tot.revenue)/salesTarget*100:0,outbound:outboundTarget?outboundActual/outboundTarget*100:0,hours:hoursTarget?hourActual/hoursTarget*100:0,art:artAccuracy,creditRate:creditRate};
+  var raw={salesActual:n(tot.revenue),salesTarget:salesTarget,outboundActual:outboundActual,outboundTarget:outboundTarget,outboundSource:outboundSource,hoursActual:hourActual,hoursTarget:hoursTarget,artErrors:artErrors,orders:orders,artRate:artRate,credits:credits,creditRate:creditRate,qualityThroughWeeks:qualityWeeks.length};
+  var base={rep:rep,yr:Number(year),q:q,period:'quarter',weeks:ctx.through,enteredWeeks:ctx.elapsed,effectiveWeeks:ctx.effectiveWeeks,totalWeeks:ctx.weeks.length,tot:tot,goal:goal,selectedWeek:ctx.selected};
+  if(goalInfo.missing)return unscored(base,raw,[q]);
   var scored=window.TCP_TRAFFIC_SCORE_V548?TCP_TRAFFIC_SCORE_V548.scoreFromMetrics(metrics):{total:0,status:{key:'red',label:'Red'},metrics:metrics,contributions:{},metricStatus:{}};
-  return Object.assign(scored,{rep:rep,yr:Number(year),q:q,period:'quarter',weeks:ctx.through,enteredWeeks:ctx.elapsed,totalWeeks:ctx.weeks.length,tot:tot,goal:goal,selectedWeek:ctx.selected,raw:{salesActual:n(tot.revenue),salesTarget:salesTarget,outboundActual:outboundActual,outboundTarget:outboundTarget,outboundSource:outboundSource,hoursActual:n(tot.hours),hoursTarget:hoursTarget,artErrors:artErrors,orders:orders,artRate:artRate,credits:credits,creditRate:creditRate}})
+  return Object.assign(scored,base,{goalMissing:false,unscored:false,raw:raw})
  }
- if(window.TCP_TRAFFIC_SCORE_V548){TCP_TRAFFIC_SCORE_V548.scoreAsOf=scoreAsOf;TCP_TRAFFIC_SCORE_V548.repScore=function(rep,period,yr,q){return period==='year'&&typeof baseRepScore==='function'?baseRepScore(rep,period,yr,q):scoreAsOf(rep,yr,q)}}
+ function yearScoreSafe(rep,year){
+  var qs=['Q1','Q2','Q3','Q4'],now=new Date(),yearNum=Number(year),allWeeks=[],salesActual=0,salesTarget=0,hoursActual=0,hoursTarget=0,outboundActual=0,outboundTarget=0,orders=0,artErrors=0,credits=0,missing=[];
+  var repObj=arr(S&&S.reps).find(function(r){return r&&clean(r.name)===clean(rep)}),hire=repObj&&repObj.profile&&repObj.profile.hireDate?new Date(repObj.profile.hireDate+'T12:00:00'):null;if(hire&&isNaN(hire.getTime()))hire=null;
+  qs.forEach(function(q){
+   var weeks=[];try{weeks=gwq(yearNum,q)||[]}catch(e){};if(!weeks.length)return;
+   var first=new Date(weeks[0].start),last=new Date(weeks[weeks.length-1].end);first.setHours(0,0,0,0);last.setHours(23,59,59,999);
+   if(hire&&last<hire)return;
+   if(yearNum>now.getFullYear()||(yearNum===now.getFullYear()&&first>now))return;
+   var sc=scoreAsOf(rep,yearNum,q);allWeeks=allWeeks.concat(sc.weeks||[]);
+   if(sc.goalMissing)missing.push(q);
+   var r=sc.raw||{};salesActual+=n(r.salesActual);salesTarget+=n(r.salesTarget);hoursActual+=n(r.hoursActual);hoursTarget+=n(r.hoursTarget);orders+=n(r.orders);artErrors+=n(r.artErrors);credits+=n(r.credits);
+   outboundActual+=n(r.outboundActual);outboundTarget+=n(r.outboundTarget)
+  });
+  var outboundSource='Year-to-date account-updating call coverage';
+  if(yearNum===now.getFullYear()&&window.TCP_CALL_CYCLE_V547){try{var pace=TCP_CALL_CYCLE_V547.paceFor(rep,now);if(pace&&n(pace.expected)>0){outboundActual=n(pace.completed);outboundTarget=n(pace.expected);outboundSource='Annual Call Cycle completed through today'}}catch(e){}}
+  var artRate=orders?artErrors/orders*100:0,artAccuracy=orders?Math.max(0,100-artRate):100,creditRate=salesActual?credits/salesActual*100:0;
+  var metrics={sales:salesTarget?salesActual/salesTarget*100:0,outbound:outboundTarget?outboundActual/outboundTarget*100:0,hours:hoursTarget?hoursActual/hoursTarget*100:0,art:artAccuracy,creditRate:creditRate};
+  var raw={salesActual:salesActual,salesTarget:salesTarget,outboundActual:outboundActual,outboundTarget:outboundTarget,outboundSource:outboundSource,hoursActual:hoursActual,hoursTarget:hoursTarget,artErrors:artErrors,orders:orders,artRate:artRate,credits:credits,creditRate:creditRate};
+  var base={rep:rep,yr:yearNum,q:'Year',period:'year',weeks:allWeeks,tot:{revenue:salesActual,hours:hoursActual,acctsCalled:outboundActual,orders:orders,art:artErrors,credits:credits}};
+  if(missing.length)return unscored(base,raw,missing);
+  var scored=window.TCP_TRAFFIC_SCORE_V548?TCP_TRAFFIC_SCORE_V548.scoreFromMetrics(metrics):{total:0,status:{key:'red',label:'Red'},metrics:metrics,contributions:{},metricStatus:{}};
+  return Object.assign(scored,base,{goalMissing:false,unscored:false,raw:raw})
+ }
+ if(window.TCP_TRAFFIC_SCORE_V548){
+  TCP_TRAFFIC_SCORE_V548.scoreAsOf=scoreAsOf;TCP_TRAFFIC_SCORE_V548.quarterScore=function(rep,yr,q){return scoreAsOf(rep,yr,q)};TCP_TRAFFIC_SCORE_V548.yearScore=yearScoreSafe;
+  TCP_TRAFFIC_SCORE_V548.repScore=function(rep,period,yr,q){return period==='year'?yearScoreSafe(rep,yr):scoreAsOf(rep,yr,q)};
+  TCP_TRAFFIC_SCORE_V548.rank=function(period,yr,q){var p=period||'quarter',y=yr||getYr(),qq=q||getQ(),reps=typeof activeReps==='function'?activeReps():(S.reps||[]);return reps.map(function(r){return Object.assign(TCP_TRAFFIC_SCORE_V548.repScore(r.name,p,y,qq),{name:r.name})}).sort(function(a,b){return(b.total-a.total)||((b.metrics&&b.metrics.sales||0)-(a.metrics&&a.metrics.sales||0))})}
+ }
  window._rp2Wks=function(){return periodContext(getYr(),getQ()).through};
  window._rp2Tot=function(rep){try{return totW(rep,window._rp2Wks())||{revenue:0,orders:0,calls:0}}catch(e){return{revenue:0,orders:0,calls:0}}};
  window._rp2Ranks=function(){var wks=window._rp2Wks(),reps=typeof activeReps==='function'?activeReps():(S.reps||[]);return reps.map(function(r){var t=totW(r.name,wks);return{name:r.name,rev:n(t.revenue)}}).sort(function(a,b){return b.rev-a.rev||a.name.localeCompare(b.name)})};
@@ -56219,17 +56437,17 @@ body.ps58-dashboard-active .wrap:after{
   ensure();var dates=Object.keys(S.dailyCalls||{}).concat(Object.keys(S.dailyRep||{})).filter(function(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)}).sort();
   if(dates.length&&window.TCP_DAILY_SALES_CALLS_V552){try{TCP_DAILY_SALES_CALLS_V552.syncLiveWeek(dates[dates.length-1])}catch(e){}}
   try{window._cw4DirectoryCache=null;window._cw4ProfileCache={}}catch(e){}
-  if(window.TCP_PERSISTENT_DATA_V550)await TCP_PERSISTENT_DATA_V550.saveNow('data-integrity-repair-v564');
+  if(window.TCP_PERSISTENT_DATA_V550)await TCP_PERSISTENT_DATA_V550.saveNow('data-integrity-repair-v620');
   mountAdmin(audit());try{if(typeof renderDash==='function')renderDash()}catch(e){};try{if(window._rp2&&_rp2.rep&&typeof _rp2Go==='function')_rp2Go(_rp2.page||'home')}catch(e){};return true
  }
  function row(c){return'<div class="di564-row"><span class="di564-icon '+c.level+'">'+(c.level==='pass'?'✓':c.level==='warn'?'!':'×')+'</span><div><div class="di564-title">'+esc_html(c.title)+'</div><div class="di564-detail">'+esc_html(c.detail)+'</div></div><span class="di564-status '+c.level+'">'+c.level+'</span></div>'}
  function mountAdmin(report){
   var page=document.getElementById('pg-admin');if(!page)return;var host=document.getElementById('tcp-integrity-v564');if(!host){host=document.createElement('section');host.id='tcp-integrity-v564';page.appendChild(host)}
-  report=report||audit();host.innerHTML='<div class="di564-head"><div><div class="di564-kick">Data Integrity Center · Build v564</div><h3>Manager ↔ Rep source-of-truth sweep</h3><div class="di564-copy">Checks storage coverage, live bridges, weekly order links, selected-period totals, and weighted-score parity.</div></div><div class="di564-actions"><button onclick="_di564Run()">Run sweep</button><button onclick="_di564Repair()">Repair safe links</button><button class="primary" onclick="_di564Save()">Save verified snapshot</button></div></div><div class="di564-summary"><div class="di564-kpi"><span>Passed</span><strong>'+report.passes+'</strong></div><div class="di564-kpi"><span>Warnings</span><strong>'+report.warnings+'</strong></div><div class="di564-kpi"><span>Failures</span><strong>'+report.failures+'</strong></div><div class="di564-kpi"><span>State fields protected</span><strong>'+report.stateFields+'</strong></div></div><div class="di564-list">'+report.checks.map(row).join('')+'</div>'
+  report=report||audit();host.innerHTML='<div class="di564-head"><div><div class="di564-kick">Data Integrity Center · Build v620</div><h3>Manager ↔ Rep source-of-truth sweep</h3><div class="di564-copy">Checks storage coverage, live bridges, weekly order links, selected-period totals, and weighted-score parity.</div></div><div class="di564-actions"><button onclick="_di564Run()">Run sweep</button><button onclick="_di564Repair()">Repair safe links</button><button class="primary" onclick="_di564Save()">Save verified snapshot</button></div></div><div class="di564-summary"><div class="di564-kpi"><span>Passed</span><strong>'+report.passes+'</strong></div><div class="di564-kpi"><span>Warnings</span><strong>'+report.warnings+'</strong></div><div class="di564-kpi"><span>Failures</span><strong>'+report.failures+'</strong></div><div class="di564-kpi"><span>State fields protected</span><strong>'+report.stateFields+'</strong></div></div><div class="di564-list">'+report.checks.map(row).join('')+'</div>'
  }
  window._di564Run=function(){mountAdmin(audit())};
  window._di564Repair=function(){repair().catch(function(e){alert('Repair failed: '+e.message)})};
- window._di564Save=function(){if(window.TCP_PERSISTENT_DATA_V550)TCP_PERSISTENT_DATA_V550.saveNow('verified-snapshot-v564').then(function(){mountAdmin(audit())});else if(typeof persist==='function'){persist();mountAdmin(audit())}};
+ window._di564Save=function(){if(window.TCP_PERSISTENT_DATA_V550)TCP_PERSISTENT_DATA_V550.saveNow('verified-snapshot-v620').then(function(){mountAdmin(audit())});else if(typeof persist==='function'){persist();mountAdmin(audit())}};
  var baseInit=window.initAdmin;if(typeof baseInit==='function')window.initAdmin=function(){var r=baseInit.apply(this,arguments);setTimeout(function(){mountAdmin(audit())},0);return r};
  var baseGt=window.gt;if(typeof baseGt==='function')window.gt=function(){var r=baseGt.apply(this,arguments);setTimeout(function(){var p=document.getElementById('pg-admin');if(p&&p.classList.contains('active'))mountAdmin(audit())},30);return r};
  window.TCP_DATA_INTEGRITY_V564={version:VERSION,captureState:captureState,applyState:applyState,splitState:splitState,periodContext:periodContext,scoreAsOf:scoreAsOf,audit:audit,repair:repair,mountAdmin:mountAdmin};
