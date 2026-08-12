@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v622 — Dashboard Explainability + Coaching Integrity</title>
+<title>Sales Tracker v623 — Working Info Panels + Build Footer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -52603,7 +52603,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
 (function(){
  'use strict';
 
- var VERSION='v622';
+ var VERSION='v623';
  var actionTab='urgent';
  var repTab='risk';
  var chart=null;
@@ -52861,7 +52861,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  function freshnessStrip(model){
   return'<div class="ps620-freshness"><div class="ps620-freshness-title">Data status</div>'+model.entries.map(function(item){return'<div class="ps620-fresh-item '+item.tone+'"><i></i><strong>'+esc(item.label)+'</strong><span>'+esc(item.text)+'</span></div>'}).join('')+'</div>'
  }
- function auditButton(key){return'<button type="button" class="ps620-audit-btn" data-ps620-audit="'+esc(key)+'" title="How this is calculated" aria-label="Explain '+esc(key)+' data and calculation">i</button>'}
+ function auditButton(key){return'<button type="button" class="ps620-audit-btn" data-ps620-audit="'+esc(key)+'" onclick="if(window._ps620Audit){window._ps620Audit(\''+esc(key)+'\');} return false;" title="How this is calculated" aria-label="Explain '+esc(key)+' data and calculation">i</button>'}
  function auditModal(){return'<div id="ps620AuditModal" class="ps620-audit-modal" onclick="if(event.target===this)_ps620CloseAudit()"><div class="ps620-audit-card"><div class="ps620-audit-head"><div><div class="ps58-section-label">HOW THIS AREA WORKS</div><h3 id="ps620AuditTitle">How this is calculated</h3><div class="ps622-audit-sub">Source data · selected period · calculation logic · coaching caveats</div></div><button onclick="_ps620CloseAudit()" aria-label="Close explanation">×</button></div><div id="ps620AuditBody" class="ps620-audit-body"></div></div></div>'}
  function brief(context,total,rows){
   var revenueGap=total.revenue-total.pacedGoal;
@@ -53347,6 +53347,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V620=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V621=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V622=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
+ window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V623=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  setTimeout(function(){
   var dashboard=document.getElementById('pg-dash');
   if(dashboard&&dashboard.classList.contains('active'))render()
@@ -60950,6 +60951,29 @@ window._cxp588Body=function(content,name){
   }
 }
 </style>
+
+<style id="tcp-dashboard-info-modal-fix-v623-css">
+/* v623: explanation modal visibility + permanent build identity */
+#pg-dash .ps620-audit-modal.open{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+#pg-dash .ps620-audit-btn{pointer-events:auto!important;cursor:pointer!important;}
+.tabs:after{
+  content:"Cloud Sync • Admin  ·  BUILD v623"!important;
+  white-space:nowrap!important;
+}
+body.nav-rail .tabs:after{content:"v623"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+</style>
+<script id="tcp-build-identity-v623-js">
+(function(){
+  'use strict';
+  window.TCP_BUILD_VERSION='v623';
+  try{document.documentElement.setAttribute('data-tcp-build','v623');}catch(e){}
+})();
+</script>
 </body>
 </html>
 
