@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v623 — Working Info Panels + Build Footer</title>
+<title>Sales Tracker v624 — Coaching Forecast + Recovery Outlook</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -52603,7 +52603,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
 (function(){
  'use strict';
 
- var VERSION='v623';
+ var VERSION='v624';
  var actionTab='urgent';
  var repTab='risk';
  var chart=null;
@@ -52879,9 +52879,11 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
    total.artRate>1?'reduce art-error causes before they create additional cost':
    'protect the current pace and repeat the strongest behaviors';
   var liveNote=context.isCurrent?' Pace is adjusted to '+Math.round(context.currentFraction*100)+'% of the current selling week.':'';
+  var fc=forecastModel(context,rows,total);
+  var outlook=!total.goalMissing&&total.goal>0?' <b>Quarter outlook:</b> '+esc(fc.outlookLabel)+' · base '+fullMoney(fc.base)+' · recovery pace '+fullMoney(fc.recoveryWeekly)+'/equivalent week.':'';
   return'<div class="ps58-brief-icon">✦</div><div class="ps58-brief-copy"><strong>Management Snapshot</strong> '+auditButton('snapshot')+' · '+esc(risks.join('; '))+'. '+
    (top?'<b>Top signal:</b> '+esc(top.name)+' leads the selected week at '+fullMoney(top.week.revenue)+'. ':'')+
-   '<b>Manager focus:</b> '+esc(focus)+'.'+esc(liveNote)+'</div>'
+   '<b>Manager focus:</b> '+esc(focus)+'.'+outlook+esc(liveNote)+'</div>'
  }
  function kpiCard(config){
   var stateClass=config.good?'good':'';
@@ -52897,9 +52899,12 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  function kpis(context,total){
   var revenueGap=total.revenue-total.pacedGoal;
   var callGap=total.accounts-total.callTarget;
-  var forecastGap=total.forecast-total.goal;
+  var fc=forecastModel(context,window._ps58Rows||[],total);
   var qualityGood=total.artRate<=1;
   var goalState=total.goalMissing?'Goal setup incomplete':((revenueGap>=0?'Ahead by ':'Behind by ')+fullMoney(Math.abs(revenueGap)));
+  var outlookState=total.goalMissing?'Goal setup incomplete':fc.outlookLabel;
+  var outlookSub=total.goalMissing?'Configure all rep goals before using team outlook':
+   'Base forecast · run rate '+fullMoney(fc.runRate)+(fc.recent.length>=2?' · recent trend '+fullMoney(fc.trendProjection):' · recent trend building');
   return'<div class="ps58-kpi-grid">'+
    kpiCard({auditKey:'revenue',label:'Revenue Pace',icon:'$',accent:'#FA873D',shadow:'rgba(250,135,61,.25)',glow:'rgba(250,135,61,.18)',
     state:goalState,good:!total.goalMissing&&revenueGap>=0,
@@ -52911,10 +52916,10 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
     value:num(total.accounts)+' / '+num(total.setSize),sub:pct(total.coverage)+' cumulative update count vs quarterly set size',
     width:total.coverage,leftLabel:'Quarter set',rightLabel:num(total.setSize)
    })+
-   kpiCard({auditKey:'forecast',label:'Forecast Projection',icon:'◎',accent:'#8B5CF6',shadow:'rgba(139,92,246,.25)',glow:'rgba(139,92,246,.18)',
-    state:total.goalMissing?'Goal setup incomplete':((forecastGap>=0?'Projected '+fullMoney(forecastGap)+' ahead':'Projected '+fullMoney(Math.abs(forecastGap))+' short')),good:!total.goalMissing&&forecastGap>=0,
-    value:total.goalMissing?'—':fullMoney(total.forecast),sub:total.goalMissing?'Configure all rep goals before using team forecast':pct(total.forecastPct)+' of '+fullMoney(total.goal)+' goal',
-    width:total.goalMissing?0:total.forecastPct,leftLabel:'Projection',rightLabel:total.goalMissing?'Goal missing':fullMoney(total.goal)
+   kpiCard({auditKey:'forecast',label:'Quarter Outlook',icon:'◎',accent:'#8B5CF6',shadow:'rgba(139,92,246,.25)',glow:'rgba(139,92,246,.18)',
+    state:outlookState,good:!total.goalMissing&&fc.base>=total.goal,
+    value:total.goalMissing?'—':fullMoney(fc.base),sub:outlookSub,
+    width:total.goalMissing?0:fc.basePct,leftLabel:'Recovery pace',rightLabel:total.goalMissing?'Goal missing':fullMoney(fc.recoveryWeekly)+'/wk'
    })+
    kpiCard({auditKey:'quality',label:'Quality Health',icon:'△',accent:'#B87333',shadow:'rgba(184,115,51,.25)',glow:'rgba(184,115,51,.18)',
     state:qualityGood?'Quality within target':total.artRate.toFixed(1)+'% art rate',good:qualityGood,
@@ -52951,7 +52956,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   var revGap=total.revenue-total.pacedGoal;
   var callGap=total.accounts-total.callTarget;
   return'<section class="ps58-card ps58-progress-card">'+
-   '<div class="ps58-section-head"><div><div class="ps58-section-label">Progress vs Goal '+auditButton('progress')+'</div><h2>Where the team should be as of this snapshot</h2></div></div>'+
+   '<div class="ps58-section-head"><div><div class="ps58-section-label">Progress vs Goal '+auditButton('progress')+'</div><h2>Where the team should be as of this snapshot</h2><div class="ps624-panel-note">Straight-line pace checkpoint — not a quarter-end forecast.</div></div></div>'+
    (total.goal>0?progressBlock('Revenue',fullMoney(total.revenue),total.goal,total.pacedGoal,total.revenuePct,(revGap>=0?'Ahead by ':'Behind by ')+fullMoney(Math.abs(revGap))):'<div class="ps58-empty">Revenue pace is withheld until all included reps have configured goals.</div>')+
    '<div class="ps58-progress-block">'+
     '<div class="ps58-progress-head"><span>Account Updates</span><b>'+(callGap>=0?'Ahead by ':'Behind by ')+num(Math.abs(callGap))+'</b></div>'+
@@ -52968,11 +52973,18 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   for(var i=0;i<=completedEnd&&i<context.weeks.length;i++){
    var wk=context.weeks[i],rev=0;rows.forEach(function(row){rev+=n(gd(row.name+'|'+wk.key).revenue)});fullWeeks.push({week:wk,revenue:rev})
   }
+  var totalWeeks=Math.max(1,context.weeks.length);
   var recent=fullWeeks.slice(-3),avg=recent.length?recent.reduce(function(sum,x){return sum+x.revenue},0)/recent.length:0;
   var mean=avg,variance=recent.length>1?recent.reduce(function(sum,x){return sum+Math.pow(x.revenue-mean,2)},0)/recent.length:0,vol=mean>0?Math.sqrt(variance)/mean:1;
-  var runRate=context.progress>0?total.revenue/context.progress:0;
+  var currentWeekly=context.effectiveWeeks>0?total.revenue/context.effectiveWeeks:0;
+  var goalWeekly=total.goal>0?total.goal/totalWeeks:0;
+  var runRate=currentWeekly*totalWeeks;
   var trendProjection=recent.length>=2?total.revenue+avg*context.remainingEquivalentWeeks:runRate;
   var base=recent.length>=2?(runRate+trendProjection)/2:runRate;
+  var remaining=Math.max(.01,context.remainingEquivalentWeeks);
+  var recoveryWeekly=total.goal>total.revenue?(total.goal-total.revenue)/remaining:0;
+  var recoveryLift=currentWeekly>0?recoveryWeekly/currentWeekly:0;
+  var basePct=total.goal>0?base/total.goal*100:0;
   var spread=Math.min(.15,Math.max(.04,vol*.45));
   var downside=base*(1-spread),upside=base*(1+spread);
   var direction='Flat',directionTone='info';
@@ -52980,9 +52992,24 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   var confidence=recent.length<2?'Low':vol<=.15?'High':vol<=.35?'Medium':'Low';
   if(context.isCurrent&&context.currentFraction<.4&&confidence==='High')confidence='Medium';
   if(total.goalMissing)confidence='Withheld';
+  var outlookLabel='Building outlook',outlookTone='info';
+  if(!total.goalMissing&&total.goal>0){
+   if(basePct>=100){outlookLabel='On track';outlookTone='green'}
+   else if(basePct>=90){outlookLabel='Within reach';outlookTone='green'}
+   else if(basePct>=75){outlookLabel='Recovery needed';outlookTone='yellow'}
+   else{outlookLabel='Major pace change needed';outlookTone='red'}
+  }
   var priorForecast=null;
-  if(context.index>0){var priorWeeks=context.weeks.slice(0,context.index),priorRevenue=0;rows.forEach(function(row){priorRevenue+=n(totW(row.name,priorWeeks).revenue)});var priorProgress=context.weeks.length?context.index/context.weeks.length:0;priorForecast=priorProgress>0?priorRevenue/priorProgress:null}
-  return{runRate:runRate,trendProjection:trendProjection,base:base,downside:downside,upside:upside,recent:recent,weeklyAverage:avg,volatility:vol,direction:direction,directionTone:directionTone,confidence:confidence,priorForecast:priorForecast,change:priorForecast!=null?base-priorForecast:null}
+  if(context.index>0){
+   var priorSeries=context.isCurrent?fullWeeks:fullWeeks.slice(0,-1);
+   var priorEffective=context.isCurrent?context.index:Math.max(1,context.index);
+   var priorRevenue=priorSeries.reduce(function(sum,x){return sum+x.revenue},0);
+   var priorRecent=priorSeries.slice(-3),priorAvg=priorRecent.length?priorRecent.reduce(function(sum,x){return sum+x.revenue},0)/priorRecent.length:0;
+   var priorRun=priorEffective>0?priorRevenue/priorEffective*totalWeeks:0;
+   var priorTrend=priorRecent.length>=2?priorRevenue+priorAvg*Math.max(0,totalWeeks-priorEffective):priorRun;
+   priorForecast=priorRecent.length>=2?(priorRun+priorTrend)/2:priorRun
+  }
+  return{runRate:runRate,trendProjection:trendProjection,base:base,basePct:basePct,downside:downside,upside:upside,recent:recent,weeklyAverage:avg,currentWeekly:currentWeekly,goalWeekly:goalWeekly,recoveryWeekly:recoveryWeekly,recoveryLift:recoveryLift,volatility:vol,direction:direction,directionTone:directionTone,confidence:confidence,outlookLabel:outlookLabel,outlookTone:outlookTone,priorForecast:priorForecast,change:priorForecast!=null?base-priorForecast:null}
  }
  function productionRisks(model){
   var rows=model.rows.map(function(row){var ship=row.shipWeek||row.shipDate||'',days=null;try{days=typeof leadDaysFromToday==='function'?leadDaysFromToday(ship):null}catch(e){}return{row:row,days:days}});
@@ -53002,7 +53029,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   if(context.isCurrent&&zeroCalls.length)urgent.push({severity:'high',icon:'☎',title:zeroCalls[0].name+' — zero calls',copy:'No calls are logged for the live selected week. '+Math.max(0,zeroCalls.length-1)+' additional rep(s) also need review.',page:'profiles',rep:zeroCalls[0].name});
   if(artRisk.length)urgent.push({severity:'high',icon:'⚠',title:'Art errors above target',copy:artRisk.length+' coachable rep(s) have three or more quarter-to-date art errors.',page:'art'});
   if(creditRisk.length)urgent.push({severity:'medium',icon:'$',title:'Credit memo coaching signal',copy:creditRisk.length+' rep(s) have elevated rep-fault credit cost or rate.',page:'credits'});
-  if(!total.goalMissing&&total.goal>0&&fc.base<total.goal)urgent.push({severity:'high',icon:'↘',title:'Forecast below goal',copy:'Base projection is '+fullMoney(total.goal-fc.base)+' short of the configured quarter goal.',page:'intel'});
+  if(!total.goalMissing&&total.goal>0&&fc.base<total.goal)urgent.push({severity:fc.basePct<75?'high':'medium',icon:'↘',title:fc.outlookLabel,copy:'Base forecast '+fullMoney(fc.base)+' · current run rate '+fullMoney(fc.runRate)+' · recovery pace '+fullMoney(fc.recoveryWeekly)+' per equivalent week.',page:'intel'});
   if(hrHigh.length)urgent.push({severity:'high',icon:'!',title:'People follow-up required',copy:hrHigh.length+' selected-period HR item(s) carry written/final/PIP-level severity.',page:'hr'});
   if(prod.stale)urgent.push({severity:'medium',icon:'↻',title:'Production feed needs refresh',copy:prod.lastFetched?'Production data is '+prod.ageDays+' days old.':'No production refresh timestamp is available.',page:'prodintel'});
   else if(prodRisk.length)urgent.push({severity:'medium',icon:'⌛',title:'Extended production timing',copy:prodRisk.length+' decoration method(s) are currently beyond 16 days.',page:'prodintel'});
@@ -53052,20 +53079,20 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  }
  function forecastCard(rows,total){
   var context=window._ps58Context,fc=forecastModel(context,rows,total);
-  var projected=rows.filter(function(row){return !row.goalMissing}).map(function(row){
-   var forecast=row.total.revenue>0?row.total.revenue/Math.max(.01,context.progress):0;
-   return{name:row.name,pct:row.revenueGoal>0?forecast/row.revenueGoal*100:0}
-  }).sort(function(a,b){return b.pct-a.pct});
-  var high=projected[0],low=projected[projected.length-1];
   if(total.goalMissing)return'<section class="ps58-card ps58-side-card"><div class="ps58-section-label" style="color:#C5A3FF">Forecast Center '+auditButton('forecast')+'</div><div class="ps58-empty" style="padding:24px 4px">Forecast withheld: '+total.goalMissing+' included rep goal'+(total.goalMissing===1?' is':'s are')+' missing. Configure goals before using this for coaching.</div><button class="ps58-link" onclick="_ps58Nav(\'entry\')">Configure goals ›</button></section>';
-  return'<section class="ps58-card ps58-side-card">'+
+  var trendText=fc.recent.length>=2?fullMoney(fc.trendProjection):'Building history';
+  var liftText=fc.recoveryLift>0?fc.recoveryLift.toFixed(2)+'× current average':'No additional lift required';
+  return'<section class="ps58-card ps58-side-card ps624-forecast-card">'+
    '<div class="ps58-section-label" style="color:#C5A3FF">Forecast Center '+auditButton('forecast')+'</div>'+
-   '<div class="ps58-side-row"><span>Base Projection</span><strong>'+fullMoney(fc.base)+'<small>'+pct(total.goal>0?fc.base/total.goal*100:0)+' of goal · '+fc.confidence+' confidence</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Range</span><strong>'+fullMoney(fc.downside)+' – '+fullMoney(fc.upside)+'<small>volatility-adjusted planning range</small></strong></div>'+
-   '<div class="ps58-side-row"><span>3-Week Trend</span><strong class="'+(fc.directionTone==='green'?'ps58-positive':fc.directionTone==='red'?'ps58-warning':'')+'">'+fc.direction+'<small>'+(fc.recent.length?fullMoney(fc.weeklyAverage)+' avg / completed week':'Not enough completed weeks')+'</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Need / Equivalent Week</span><strong>'+fullMoney(total.needPerWeek)+'<small>'+context.remainingEquivalentWeeks.toFixed(1)+' selling-week equivalents remain</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Highest Forecast Rep</span><strong class="ps58-positive">'+esc(high&&high.name||'—')+'<small>'+Math.round(high&&high.pct||0)+'% projected</small></strong></div>'+
-   '<div class="ps58-side-row"><span>Lowest Forecast Rep</span><strong class="ps58-warning">'+esc(low&&low.name||'—')+'<small>'+Math.round(low&&low.pct||0)+'% projected</small></strong></div>'+
+   '<div class="ps624-forecast-note"><strong>Pace is the checkpoint. Forecast is the trajectory.</strong><span>This panel separates where the team is today from where the current behavior would take the quarter.</span></div>'+
+   '<div class="ps58-side-row"><span>QTD Actual</span><strong>'+fullMoney(total.revenue)+'<small>'+pct(total.revenuePct)+' of goal · '+pct(context.progress*100)+' of quarter effectively elapsed</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Current Run-Rate Finish</span><strong>'+fullMoney(fc.runRate)+'<small>If the QTD average of '+fullMoney(fc.currentWeekly)+' / equivalent week continues</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Recent Trend Finish</span><strong class="'+(fc.directionTone==='green'?'ps58-positive':fc.directionTone==='red'?'ps58-warning':'')+'">'+trendText+'<small>'+(fc.recent.length>=2?fc.direction+' · last '+fc.recent.length+' completed weeks avg '+fullMoney(fc.weeklyAverage):'Need at least 2 completed weeks for trend')+'</small></strong></div>'+
+   '<div class="ps58-side-row ps624-base-row"><span>Base Forecast</span><strong>'+fullMoney(fc.base)+'<small>'+pct(fc.basePct)+' of goal · '+fc.confidence+' confidence · blended outlook</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Goal Pace from Day 1</span><strong>'+fullMoney(fc.goalWeekly)+'<small>Average required across all '+context.weeks.length+' quarter weeks</small></strong></div>'+
+   '<div class="ps58-side-row ps624-recovery-row"><span>Recovery Pace from Here</span><strong>'+fullMoney(fc.recoveryWeekly)+'<small>Per remaining equivalent week · '+liftText+'</small></strong></div>'+
+   '<div class="ps58-side-row"><span>Planning Range</span><strong>'+fullMoney(fc.downside)+' – '+fullMoney(fc.upside)+'<small>volatility-adjusted around the base forecast</small></strong></div>'+
+   '<div class="ps624-outlook '+fc.outlookTone+'"><span>Quarter outlook</span><strong>'+esc(fc.outlookLabel)+'</strong><small>This is a trajectory signal, not a final grade.</small></div>'+
    '<button class="ps58-link" onclick="_ps58Nav(\'intel\')">View forecast details ›</button>'+
   '</section>'
  }
@@ -53313,14 +53340,14 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
   if(key==='snapshot'){ttl='Management Snapshot';var rg=t.revenue-t.pacedGoal,cg=t.accounts-t.callTarget,leader=rows.slice().sort(function(a,b){return n(b.week&&b.week.revenue)-n(a.week&&a.week.revenue)})[0];html='<p><strong>Purpose:</strong> a manager-facing exception summary for the selected tracker snapshot. It is derived from the same numbers shown below; it does not have a separate data store.</p><div class="ps620-audit-grid"><span>Selected period<b>'+esc(c.selected&&c.selected.label||'—')+'</b></span><span>Effective progress<b>'+pct(c.progress*100)+'</b></span><span>Revenue pace gap<b>'+(t.goalMissing?'Withheld':((rg>=0?'+':'-')+fullMoney(Math.abs(rg))))+'</b></span><span>Update pace gap<b>'+(cg>=0?'+':'-')+num(Math.abs(cg))+'</b></span><span>Art-error rate<b>'+t.artRate.toFixed(1)+'%</b></span><span>Week leader<b>'+esc(leader&&leader.name||'—')+'</b></span></div><p><strong>Manager focus rule:</strong> missing goal setup is prioritized first, then revenue pace, then account-update pace, then quality. The top signal is the highest selected-week revenue rep.</p>'+(c.isCurrent?'<p class="ps620-audit-warning">Live snapshot: pace uses only '+Math.round(c.currentFraction*100)+'% of the current Monday–Friday selling week.</p>':'')}
   else if(key==='executive'){ttl='Executive Snapshot';html='<p><strong>What this area does:</strong> condenses four different management lenses into one row. Each card has its own information button for the exact calculation.</p><div class="ps620-audit-grid"><span>Revenue Pace<b>S.data + S.goals</b></span><span>Account Updates<b>S.data.acctsCalled + set size</b></span><span>Forecast<b>Revenue history + goals</b></span><span>Quality Health<b>S.artErrors + S.cms + orders</b></span></div><p>The selected Year / Quarter / Month / Week controls govern all four cards. Goal-based conclusions are withheld when included reps are missing configured revenue goals.</p>'}
   else if(key==='trend'){ttl='Weekly Revenue Trend';var series=weeklySeries(c,rows,t),entered=series.filter(function(x){return n(x.revenue)>0}).length;html='<p><strong>Source:</strong> S.data revenue summed by included rep for each week in '+esc(c.quarter)+' '+c.year+'.</p><div class="ps620-audit-grid"><span>Quarter weeks<b>'+num(c.weeks&&c.weeks.length||0)+'</b></span><span>Weeks with revenue<b>'+num(entered)+'</b></span><span>Configured goal<b>'+fullMoney(t.goal)+'</b></span><span>Weekly goal line<b>'+fullMoney(c.weeks&&c.weeks.length?t.goal/c.weeks.length:0)+'</b></span><span>QTD actual<b>'+fullMoney(t.revenue)+'</b></span><span>Effective progress<b>'+pct(c.progress*100)+'</b></span></div><p>The orange bars are actual weekly revenue. The goal reference is the configured team quarter goal divided evenly across quarter weeks. A live current-week bar stays as actual revenue entered so far; it is <strong>not</strong> inflated to a full-week estimate.</p>'}
-  else if(key==='progress'){ttl='Progress vs Goal';var rGap=t.revenue-t.pacedGoal,aGap=t.accounts-t.callTarget;html='<p><strong>Purpose:</strong> compares actual progress with where the team should be at the selected snapshot.</p><div class="ps620-audit-grid"><span>Revenue actual<b>'+fullMoney(t.revenue)+'</b></span><span>Revenue should be<b>'+(t.goalMissing?'Withheld':fullMoney(t.pacedGoal))+'</b></span><span>Revenue gap<b>'+(t.goalMissing?'Withheld':((rGap>=0?'+':'-')+fullMoney(Math.abs(rGap))))+'</b></span><span>Updates actual<b>'+num(t.accounts)+'</b></span><span>Updates should be<b>'+num(t.callTarget)+'</b></span><span>Update gap<b>'+(aGap>=0?'+':'-')+num(Math.abs(aGap))+'</b></span></div><p><strong>Revenue should-be:</strong> configured quarter goal × effective quarter progress. <strong>Update should-be:</strong> quarter set size × effective quarter progress.</p><p class="ps620-audit-warning">Account Updates are cumulative tracker counts and are not guaranteed to represent unique customers if the same account is counted in more than one week.</p>'}
+  else if(key==='progress'){ttl='Progress vs Goal';var rGap=t.revenue-t.pacedGoal,aGap=t.accounts-t.callTarget;html='<p><strong>Important:</strong> this is a straight-line pace checkpoint, not the quarter-end forecast. It answers “where should we be today?” rather than “where are we likely to finish?”</p><div class="ps620-audit-grid"><span>Revenue actual<b>'+fullMoney(t.revenue)+'</b></span><span>Revenue should be<b>'+(t.goalMissing?'Withheld':fullMoney(t.pacedGoal))+'</b></span><span>Revenue gap<b>'+(t.goalMissing?'Withheld':((rGap>=0?'+':'-')+fullMoney(Math.abs(rGap))))+'</b></span><span>Updates actual<b>'+num(t.accounts)+'</b></span><span>Updates should be<b>'+num(t.callTarget)+'</b></span><span>Update gap<b>'+(aGap>=0?'+':'-')+num(Math.abs(aGap))+'</b></span></div><p><strong>Revenue should-be:</strong> configured quarter goal × effective quarter progress. <strong>Update should-be:</strong> quarter set size × effective quarter progress.</p><p class="ps620-audit-warning">Being behind this checkpoint does not lock in the quarter result. Use Quarter Outlook to see current trajectory and the recovery pace required from here.</p>'}
   else if(key==='actions'){ttl='Action Center / Strategic Watchlist';var aa=window._ps58Actions||{},u=safeArray(aa.urgent).length,co=safeArray(aa.coaching).length,w=safeArray(aa.watchlist).length,p=safeArray(aa.priorities).length;html='<p><strong>Purpose:</strong> converts tracker data into a management exception queue. It does not create new performance data; it interprets the same selected-period sources used elsewhere on the Dashboard.</p><div class="ps620-audit-grid"><span>Urgent alerts<b>'+num(u)+'</b></span><span>Coaching queue<b>'+num(co)+'</b></span><span>Watchlist signals<b>'+num(w)+'</b></span><span>Priority themes<b>'+num(p)+'</b></span></div><p><strong>Main rules:</strong> missing revenue goals are high priority; revenue or outbound pace below 80% can create coaching risk; 3+ art errors or elevated rep-fault credit cost/rate create quality/cost signals; forecast decline, HR severity, production timing, and current entry completeness can also surface exceptions.</p><p>Clicking an action row navigates to the tracker area where the manager can investigate or coach the issue.</p>'}
   else if(key==='reps'){ttl='Rep Performance';var coachable=rows.filter(function(r){return r.coachable}),risk=coachable.filter(function(r){return r.weighted&&r.weighted.status&&r.weighted.status.key!=='green'}),green=coachable.filter(function(r){return r.weighted&&r.weighted.status&&r.weighted.status.key==='green'});html='<p><strong>Source:</strong> the shared as-of scoring engine used by Dashboard, Performance, Scorecards, Profiles, Coaching, and rep-facing views.</p><div class="ps620-audit-grid"><span>Included reps<b>'+num(rows.length)+'</b></span><span>Coachable reps<b>'+num(coachable.length)+'</b></span><span>Needs attention<b>'+num(risk.length)+'</b></span><span>Green / recognition<b>'+num(green.length)+'</b></span><span>Missing goals<b>'+num(t.goalMissing)+'</b></span></div><p>The weighted model uses the currently configured scoring weights and thresholds for Sales Goal, Outbound Calls, Work Hours, Art Errors, and Credit Memos. Current-week pace is evaluated as-of today; missing-goal reps remain visible but are not assigned a goal-based coaching score.</p><p><strong>Quality sources:</strong> Art Errors come from S.artErrors and rep-fault credits come from S.cms rather than the weekly aggregate object.</p>'}
   else if(key==='wins'){ttl='Positive Momentum';html='<p><strong>Purpose:</strong> balances the coaching dashboard with recognition from the selected week.</p><div class="ps620-audit-grid"><span>Largest revenue<b>Selected-week S.data.revenue</b></span><span>Most calls<b>Selected-week S.data.calls</b></span><span>Most orders<b>Selected-week S.data.orders</b></span><span>Standout<b>Highest Green weighted score</b></span><span>Week-over-week lift<b>Comparable revenue change</b></span></div><p>For a live partial week, week-over-week revenue lift normalizes the current week by elapsed selling-day fraction before comparing it with the prior completed week. That prevents Wednesday actuals from being compared directly with a full prior week.</p>'}
   else if(key==='notes'){ttl='Manager Notes & Reviews';var np=selectedNotes(c);html='<p><strong>Manager note source:</strong> a week-specific localStorage key tied to the selected year, quarter, and tracker week. It is included in the tracker auxiliary-state protection layer.</p><div class="ps620-audit-grid"><span>Selected week<b>Wk '+num(c.weekNumber)+'</b></span><span>Coaching notes through snapshot<b>'+num(np.coaching.length)+'</b></span><span>HR notes through snapshot<b>'+num(np.hr.length)+'</b></span><span>As-of date<b>'+esc(dateLabel(c.asOf))+'</b></span></div><p>The priorities column is derived from current selected-period performance risks. The people-notes column filters S.coachingNotes and S.hrViolations through the selected snapshot date so historical weeks do not automatically show future notes.</p>'}
   else if(key==='revenue'){ttl='Revenue Pace';html='<p><strong>Source:</strong> S.data weekly revenue for included reps through '+esc(c.selected&&c.selected.label||'selected week')+'.</p><div class="ps620-audit-grid"><span>QTD revenue<b>'+fullMoney(t.revenue)+'</b></span><span>Configured goal<b>'+fullMoney(t.goal)+'</b></span><span>Effective quarter progress<b>'+pct(c.progress*100)+'</b></span><span>Paced target<b>'+fullMoney(t.pacedGoal)+'</b></span></div><p>'+ (c.isCurrent?'The current week counts only '+Math.round(c.currentFraction*100)+'% because live pacing uses elapsed Monday–Friday selling days.':'Historical selected weeks count as complete weeks.')+'</p>'+(t.goalMissing?'<p class="ps620-audit-warning">'+t.goalMissing+' rep goal(s) are missing, so team goal-based metrics are incomplete.</p>':'')}
   else if(key==='accounts'){ttl='Account Updates';html='<p><strong>Source:</strong> cumulative S.data.acctsCalled through the selected period and quarterly set sizes carried in weekly data.</p><div class="ps620-audit-grid"><span>Updates<b>'+num(t.accounts)+'</b></span><span>Quarter set<b>'+num(t.setSize)+'</b></span><span>Paced target<b>'+num(t.callTarget)+'</b></span><span>Raw ratio<b>'+pct(t.coverage)+'</b></span></div><p class="ps620-audit-warning">This is a cumulative update count. It is not guaranteed to equal unique customers reached if the same account is counted in multiple weeks. Rep coaching outbound pace uses the Call Cycle engine when available.</p>'}
-  else if(key==='forecast'){ttl='Forecast Projection';html='<p><strong>Base projection:</strong> blends the effective run-rate projection with the average of the last up to three completed weeks when enough history exists.</p><div class="ps620-audit-grid"><span>Run-rate<b>'+fullMoney(fc.runRate)+'</b></span><span>Trend projection<b>'+fullMoney(fc.trendProjection)+'</b></span><span>Base<b>'+fullMoney(fc.base)+'</b></span><span>Confidence<b>'+esc(fc.confidence)+'</b></span><span>Downside<b>'+fullMoney(fc.downside)+'</b></span><span>Upside<b>'+fullMoney(fc.upside)+'</b></span></div><p>Confidence is based on completed-week history and recent revenue volatility. Current partial-week revenue is included in QTD actuals but the denominator uses only elapsed selling-week fraction.</p>'}
+  else if(key==='forecast'){ttl='Quarter Outlook & Recovery';html='<p><strong>Pace and forecast answer different questions.</strong> Pace asks where the team should be today on a straight-line goal. Forecast asks where the current behavior is likely to finish the quarter.</p><div class="ps620-audit-grid"><span>QTD actual<b>'+fullMoney(t.revenue)+'</b></span><span>Effective weeks<b>'+c.effectiveWeeks.toFixed(1)+' / '+c.weeks.length+'</b></span><span>Current weekly avg<b>'+fullMoney(fc.currentWeekly)+'</b></span><span>Goal weekly pace<b>'+fullMoney(fc.goalWeekly)+'</b></span><span>Run-rate finish<b>'+fullMoney(fc.runRate)+'</b></span><span>Recent-trend finish<b>'+(fc.recent.length>=2?fullMoney(fc.trendProjection):'Building history')+'</b></span><span>Base forecast<b>'+fullMoney(fc.base)+'</b></span><span>Recovery pace<b>'+fullMoney(fc.recoveryWeekly)+'/wk</b></span><span>Lift required<b>'+(fc.recoveryLift>0?fc.recoveryLift.toFixed(2)+'× current avg':'None')+'</b></span><span>Confidence<b>'+esc(fc.confidence)+'</b></span><span>Downside<b>'+fullMoney(fc.downside)+'</b></span><span>Upside<b>'+fullMoney(fc.upside)+'</b></span></div><p><strong>Base forecast:</strong> blends the QTD run-rate finish with the recent completed-week trend when at least two completed weeks are available. <strong>Recovery pace:</strong> remaining goal dollars divided by remaining equivalent selling weeks.</p><p class="ps620-audit-warning">A behind-pace checkpoint is not a final grade. The coaching question is how much the weekly result needs to change from here, whether that change is realistic, and which behaviors can create it.</p>'}
   else if(key==='quality'){ttl='Quality Health';html='<p><strong>Art source:</strong> S.artErrors filtered by rep and tracker week. <strong>Credit source:</strong> S.cms where fault = rep. <strong>Order denominator:</strong> weekly S.data orders.</p><div class="ps620-audit-grid"><span>Art errors<b>'+num(t.art)+'</b></span><span>Orders<b>'+num(t.orders)+'</b></span><span>Art rate<b>'+t.artRate.toFixed(2)+'%</b></span><span>Rep-fault credits<b>'+fullMoney(t.credits)+'</b></span></div><p>For the weighted rep score, a live current week with no weekly order closeout excludes that week from the art-error denominator until orders are finalized, preventing a temporary false penalty.</p>'}
   else if(key==='production'){ttl='Production Lead-Time Pulse';var p=f.production||productionSnapshot();html='<p><strong>Source:</strong> saved Company Knowledge production feed only. Opening the Dashboard no longer creates or loads sample production data.</p><div class="ps620-audit-grid"><span>Rows<b>'+num(p.rows&&p.rows.length||0)+'</b></span><span>Last refresh<b>'+esc(p.lastFetched?new Date(p.lastFetched).toLocaleString():'Not recorded')+'</b></span><span>Freshness<b>'+esc(p.stale?'Needs refresh':'Current')+'</b></span></div><p>The card ranks saved production methods by longest current lead time rather than simply showing the first three feed rows.</p>'}
   title.textContent=ttl;body.innerHTML=html;modal.classList.add('open')
@@ -53348,6 +53375,7 @@ body.ps58-dashboard-active #pg-dash>.page-purpose{display:none!important;}
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V621=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V622=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V623=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
+ window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V624=window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558;
  setTimeout(function(){
   var dashboard=document.getElementById('pg-dash');
   if(dashboard&&dashboard.classList.contains('active'))render()
@@ -60952,8 +60980,24 @@ window._cxp588Body=function(content,name){
 }
 </style>
 
-<style id="tcp-dashboard-info-modal-fix-v623-css">
-/* v623: explanation modal visibility + permanent build identity */
+
+<style id="tcp-dashboard-forecast-picture-v624-css">
+/* v624: separate pace checkpoint, forecast trajectory, and recovery requirement */
+#pg-dash .ps624-panel-note{margin-top:5px;color:#8291A5;font-size:10px;line-height:1.4;font-weight:650;}
+#pg-dash .ps624-forecast-card .ps58-side-row{padding-top:11px;padding-bottom:11px;}
+#pg-dash .ps624-forecast-note{display:flex;flex-direction:column;gap:4px;margin:9px 0 10px;padding:10px 11px;border:1px solid rgba(139,92,246,.20);border-radius:10px;background:rgba(139,92,246,.06);}
+#pg-dash .ps624-forecast-note strong{color:#F4EEFF;font-size:11px;}
+#pg-dash .ps624-forecast-note span{color:#93A1B5;font-size:9px;line-height:1.45;}
+#pg-dash .ps624-base-row{background:rgba(139,92,246,.055);border-radius:9px;padding-left:9px!important;padding-right:9px!important;}
+#pg-dash .ps624-recovery-row{background:rgba(250,135,61,.055);border-radius:9px;padding-left:9px!important;padding-right:9px!important;}
+#pg-dash .ps624-outlook{display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:center;margin:10px 0 4px;padding:10px 11px;border:1px solid rgba(148,163,184,.12);border-radius:10px;background:rgba(255,255,255,.025);}
+#pg-dash .ps624-outlook span{color:#8998AB;font-size:9px;text-transform:uppercase;letter-spacing:.06em;font-weight:900;}
+#pg-dash .ps624-outlook strong{font-size:12px;color:#DCE5EC;text-align:right;}
+#pg-dash .ps624-outlook small{grid-column:1/-1;color:#7E8C9F;font-size:8px;line-height:1.4;}
+#pg-dash .ps624-outlook.green strong{color:#5DCAA5}.ps624-outlook.yellow strong{color:#EF9F27}.ps624-outlook.red strong{color:#F09595}
+</style>
+<style id="tcp-dashboard-info-modal-fix-v624-css">
+/* v624: explanation modal visibility + permanent build identity */
 #pg-dash .ps620-audit-modal.open{
   display:block!important;
   visibility:visible!important;
@@ -60962,16 +61006,16 @@ window._cxp588Body=function(content,name){
 }
 #pg-dash .ps620-audit-btn{pointer-events:auto!important;cursor:pointer!important;}
 .tabs:after{
-  content:"Cloud Sync • Admin  ·  BUILD v623"!important;
+  content:"Cloud Sync • Admin  ·  BUILD v624"!important;
   white-space:nowrap!important;
 }
-body.nav-rail .tabs:after{content:"v623"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+body.nav-rail .tabs:after{content:"v624"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
 </style>
-<script id="tcp-build-identity-v623-js">
+<script id="tcp-build-identity-v624-js">
 (function(){
   'use strict';
-  window.TCP_BUILD_VERSION='v623';
-  try{document.documentElement.setAttribute('data-tcp-build','v623');}catch(e){}
+  window.TCP_BUILD_VERSION='v624';
+  try{document.documentElement.setAttribute('data-tcp-build','v624');}catch(e){}
 })();
 </script>
 </body>
