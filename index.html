@@ -64246,3 +64246,200 @@ body.nav-rail .tabs:after{content:"v626"!important;white-space:normal!important;
   else setTimeout(function(){try{applyHistoricalBadge();}catch(e){}},0);
 })();
 </script>
+
+
+<style id="tcp-build-footer-v627-css">
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v627"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v627"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+#pg-dash .ps58-live.history-uploaded{
+  color:#8EDCFA!important;
+  border-color:rgba(0,175,239,.28)!important;
+  background:rgba(0,175,239,.075)!important;
+}
+#pg-dash .ps58-live.history-uploaded:before{background:#00AFEF!important;box-shadow:0 0 13px #00AFEF!important;}
+#pg-dash .ps58-live.history-missing{
+  color:#FFB2B2!important;
+  border-color:rgba(240,120,120,.32)!important;
+  background:rgba(240,120,120,.09)!important;
+}
+#pg-dash .ps58-live.history-missing:before{background:#F09595!important;box-shadow:0 0 13px #F09595!important;}
+</style>
+<script id="tcp-data-entry-upload-ledger-v627-js">
+(function(){
+  var BUILD='v627';
+  var LEDGER_KEY='weeklyEntryUploads';
+  var TEMPLATE_SOURCE='data-entry-weekly-template';
+
+  function safeArray(value){return Array.isArray(value)?value:[];}
+  function clean(value){return String(value==null?'':value).trim();}
+  function nowISO(){return new Date().toISOString();}
+  function getLedger(){
+    if(!window.S)return{};
+    if(!S[LEDGER_KEY]||typeof S[LEDGER_KEY]!=='object'||Array.isArray(S[LEDGER_KEY]))S[LEDGER_KEY]={};
+    return S[LEDGER_KEY];
+  }
+  function activeNames(){
+    try{
+      if(typeof activeReps==='function')return safeArray(activeReps()).map(function(rep){return typeof rep==='string'?rep:clean(rep&&rep.name);}).filter(Boolean);
+    }catch(e){}
+    return safeArray(window.S&&S.reps).filter(function(rep){return rep&&rep.name&&!rep.retired;}).map(function(rep){return clean(rep.name);});
+  }
+  function readRecord(rep,weekKey){
+    try{return typeof gd==='function'?gd(rep+'|'+weekKey):((S.data||{})[rep+'|'+weekKey]||{});}catch(e){return{};}
+  }
+  function validTemplateHeaders(headers){
+    var required=['Rep Name','Week Key','Hours Worked','Orders Taken','Sales Revenue ($)','Set Size (Accounts)','Customers Called','Top Single Sale ($)','Top Sale Customer'];
+    return required.every(function(name){return headers.indexOf(name)>=0;});
+  }
+  function parseTemplateFile(file){
+    return new Promise(function(resolve){
+      if(!file||typeof XLSX==='undefined'){resolve(null);return;}
+      var reader=new FileReader();
+      reader.onload=function(e){
+        try{
+          var wb=XLSX.read(e.target.result,{type:'array'}),ws=wb.Sheets[wb.SheetNames[0]];
+          var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+          var hi=rows.findIndex(function(row){return safeArray(row).some(function(cell){return clean(cell)==='Rep Name';});});
+          if(hi<0){resolve(null);return;}
+          var headers=safeArray(rows[hi]).map(clean);
+          if(!validTemplateHeaders(headers)){resolve(null);return;}
+          var repIdx=headers.indexOf('Rep Name'),weekIdx=headers.indexOf('Week Key');
+          var repNames=activeNames(),repLookup={};repNames.forEach(function(name){repLookup[name.toLowerCase()]=name;});
+          var byWeek={};
+          rows.slice(hi+1).forEach(function(row){
+            var repRaw=clean(row[repIdx]),weekKey=clean(row[weekIdx]);
+            if(!repRaw||!weekKey)return;
+            var matched=repLookup[repRaw.toLowerCase()];
+            if(!matched)return;
+            byWeek[weekKey]=byWeek[weekKey]||[];
+            if(byWeek[weekKey].indexOf(matched)<0)byWeek[weekKey].push(matched);
+          });
+          var weeks=Object.keys(byWeek);
+          resolve(weeks.length?{fileName:file.name||'',weeks:weeks,byWeek:byWeek}:null);
+        }catch(err){resolve(null);}
+      };
+      reader.onerror=function(){resolve(null);};
+      try{reader.readAsArrayBuffer(file);}catch(err){resolve(null);}
+    });
+  }
+  function stampSuccessfulUpload(meta){
+    if(!meta||!window.S)return;
+    var ledger=getLedger(),stamp=nowISO();
+    meta.weeks.forEach(function(weekKey){
+      var reps=safeArray(meta.byWeek[weekKey]);
+      if(!reps.length)return;
+      ledger[weekKey]={
+        source:TEMPLATE_SOURCE,
+        verified:true,
+        fileName:meta.fileName||'',
+        weekKey:weekKey,
+        importedAt:stamp,
+        reps:reps.slice(),
+        repCount:reps.length,
+        build:BUILD
+      };
+      reps.forEach(function(rep){
+        var key=rep+'|'+weekKey,row=(S.data&&S.data[key]);
+        if(!row||typeof row!=='object')return;
+        row._entrySheetUpload={source:TEMPLATE_SOURCE,fileName:meta.fileName||'',weekKey:weekKey,importedAt:stamp,build:BUILD};
+      });
+    });
+    try{if(typeof markDirty==='function')markDirty();}catch(e){}
+    try{if(window.TCP_PERSISTENT_DATA_V550&&typeof TCP_PERSISTENT_DATA_V550.saveNow==='function')TCP_PERSISTENT_DATA_V550.saveNow('data-entry-weekly-template-v627');}catch(e){}
+  }
+
+  /* Wrap only the Data Entry "Upload Team Sheet" importer. */
+  var priorUpload=window.uploadEntrySheet;
+  if(typeof priorUpload==='function'){
+    window.uploadEntrySheet=function(event){
+      var file=event&&event.target&&event.target.files&&event.target.files[0];
+      var metaPromise=parseTemplateFile(file);
+      var result=priorUpload.apply(this,arguments);
+      metaPromise.then(function(meta){
+        if(!meta)return;
+        var tries=0;
+        var timer=setInterval(function(){
+          tries++;
+          var msg=document.getElementById('bulkMsg'),text=clean(msg&&msg.textContent);
+          if(/^✓\s*Updated\s+\d+/i.test(text)){
+            clearInterval(timer);
+            stampSuccessfulUpload(meta);
+            try{if(document.getElementById('pg-dash')&&document.getElementById('pg-dash').classList.contains('active')&&typeof renderDash==='function')renderDash();}catch(e){}
+          }else if(/^❌/i.test(text)||tries>80){clearInterval(timer);}
+        },100);
+      });
+      return result;
+    };
+  }
+
+  function parseDate(value){
+    if(!value)return null;
+    try{var d=value instanceof Date?new Date(value.getTime()):new Date(String(value).length===10?String(value)+'T12:00:00':value);if(isNaN(d.getTime()))return null;d.setHours(12,0,0,0);return d;}catch(e){return null;}
+  }
+  function selectedWeekContext(){
+    try{
+      var year=Number(getYr()),quarter=getQ(),weekNumber=Number(getWN()),weeks=safeArray(gwq(year,quarter)),selected=null;
+      weeks.some(function(week){if(Number(week&&week.num)===weekNumber){selected=week;return true;}return false;});
+      var today=new Date();today.setHours(12,0,0,0);
+      var start=parseDate(selected&&selected.start),end=parseDate(selected&&selected.end);
+      return{year:year,quarter:quarter,weekNumber:weekNumber,selected:selected,isFuture:!!(start&&today<start),isCurrent:!!(start&&end&&today>=start&&today<=end)};
+    }catch(e){return null;}
+  }
+  function explicitStatus(weekKey){
+    var ledger=window.S&&S[LEDGER_KEY],item=ledger&&ledger[weekKey];
+    if(item&&item.verified&&item.source===TEMPLATE_SOURCE)return{ready:true,kind:'explicit',fileName:item.fileName||'',importedAt:item.importedAt||'',count:Number(item.repCount)||safeArray(item.reps).length};
+    var reps=activeNames(),stamped=0,fileName='',importedAt='';
+    reps.forEach(function(rep){var row=readRecord(rep,weekKey),mark=row&&row._entrySheetUpload;if(mark&&mark.source===TEMPLATE_SOURCE){stamped++;fileName=fileName||mark.fileName||'';importedAt=importedAt||mark.importedAt||'';}});
+    return stamped?{ready:true,kind:'record-marker',fileName:fileName,importedAt:importedAt,count:stamped}:null;
+  }
+  function legacyBulkSignature(weekKey){
+    var reps=activeNames(),records=[];
+    reps.forEach(function(rep){
+      var row=readRecord(rep,weekKey),ts=Number(row&&row.enteredAt);
+      if(!row||row._dailyLive||!isFinite(ts)||ts<=0)return;
+      /* Data Entry template creates all rep records in one bulk pass. */
+      records.push({rep:rep,ts:ts,row:row});
+    });
+    if(records.length<Math.max(3,Math.ceil(reps.length*.5)))return null;
+    records.sort(function(a,b){return a.ts-b.ts;});
+    var best=[];
+    for(var i=0;i<records.length;i++){
+      var cluster=[];
+      for(var j=i;j<records.length;j++){
+        if(records[j].ts-records[i].ts<=10000)cluster.push(records[j]);else break;
+      }
+      if(cluster.length>best.length)best=cluster;
+    }
+    var threshold=Math.max(3,Math.ceil(reps.length*.5));
+    if(best.length<threshold)return null;
+    return{ready:true,kind:'legacy-bulk-signature',count:best.length,total:reps.length,enteredAt:best[0].ts};
+  }
+  function dataEntryUploadStatus(weekKey){return explicitStatus(weekKey)||legacyBulkSignature(weekKey)||{ready:false,kind:'none',count:0,total:activeNames().length};}
+
+  function applyBadge(){
+    var badge=document.querySelector('#pg-dash .ps58-periods .ps58-live');if(!badge)return;
+    var ctx=selectedWeekContext();if(!ctx||!ctx.selected)return;
+    badge.classList.remove('live','history','future','history-uploaded','history-missing');
+    if(ctx.isCurrent){badge.classList.add('live');badge.textContent=' LIVE PREVIEW';badge.title='Current selected week — live data and partial-week pacing are active.';return;}
+    if(ctx.isFuture){badge.classList.add('future');badge.textContent=' FUTURE WEEK';badge.title='Future week — no official Data Entry weekly spreadsheet is expected yet.';return;}
+    var status=dataEntryUploadStatus(ctx.selected.key);
+    if(status.ready){
+      badge.classList.add('history-uploaded');badge.textContent=' HISTORICAL SNAPSHOT · SPREADSHEET UPLOADED';
+      if(status.kind==='legacy-bulk-signature')badge.title='Legacy Data Entry bulk-upload signature detected for '+(ctx.selected.label||ctx.selected.key)+' ('+status.count+' rep records saved together). Future uploads are explicitly logged by filename and time.';
+      else badge.title='Verified Data Entry weekly spreadsheet'+(status.fileName?' · '+status.fileName:'')+(status.importedAt?' · uploaded '+new Date(status.importedAt).toLocaleString():'')+'.';
+    }else{
+      badge.classList.add('history-missing');badge.textContent=' HISTORICAL SNAPSHOT · SPREADSHEET MISSING';
+      badge.title='No verified Data Entry weekly spreadsheet upload was found for '+(ctx.selected.label||ctx.selected.key)+'. This checks only the weekly template downloaded/uploaded on Data Entry.';
+    }
+  }
+
+  var priorRender=window.renderDash;
+  function render(){var result=typeof priorRender==='function'?priorRender.apply(this,arguments):undefined;try{applyBadge();}catch(e){console.warn('[v627 badge]',e);}return result;}
+  if(typeof priorRender==='function'){window.renderDash=render;window.renderDashWidgets=render;}
+  window._tcpDataEntryUploadStatus=dataEntryUploadStatus;
+  window._tcpApplyHistoricalUploadBadge=applyBadge;
+  window.TCP_BUILD_VERSION=BUILD;
+  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v627 — Verified Data Entry Uploads';}catch(e){}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(applyBadge,50);},{once:true});else setTimeout(applyBadge,50);
+})();
+</script>
