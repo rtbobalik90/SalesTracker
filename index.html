@@ -64129,3 +64129,120 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(renderSafetyPanel,200)},{once:true});else setTimeout(renderSafetyPanel,200)
 })();
 </script>
+
+
+<style id="tcp-build-footer-v626-css">
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v626"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v626"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+#pg-dash .ps58-live.history-uploaded{
+  color:#8EDCFA!important;
+  border-color:rgba(0,175,239,.22)!important;
+  background:rgba(0,175,239,.065)!important;
+}
+#pg-dash .ps58-live.history-uploaded:before{background:#00AFEF!important;box-shadow:0 0 13px #00AFEF!important;}
+#pg-dash .ps58-live.history-missing{
+  color:#FFB2B2!important;
+  border-color:rgba(240,120,120,.28)!important;
+  background:rgba(240,120,120,.08)!important;
+}
+#pg-dash .ps58-live.history-missing:before{background:#F09595!important;box-shadow:0 0 13px #F09595!important;}
+</style>
+<script id="tcp-historical-upload-badge-v626-js">
+(function(){
+  var BUILD='v626';
+  function parseDate(value){
+    if(!value)return null;
+    try{
+      var raw=(value instanceof Date)?new Date(value.getTime()):new Date(String(value).length===10?String(value)+'T12:00:00':value);
+      if(isNaN(raw.getTime()))return null;
+      raw.setHours(12,0,0,0);
+      return raw;
+    }catch(e){return null;}
+  }
+  function selectedWeekContext(){
+    try{
+      var year=Number(typeof getYr==='function'?getYr():'');
+      var quarter=typeof getQ==='function'?getQ():'';
+      var weekNumber=Number(typeof getWN==='function'?getWN():'');
+      var weeks=typeof gwq==='function'?gwq(year,quarter):[];
+      var selected=null;
+      if(Array.isArray(weeks)){
+        for(var i=0;i<weeks.length;i++){
+          if(Number(weeks[i]&&weeks[i].num)===weekNumber){selected=weeks[i];break;}
+        }
+        if(!selected&&weeks.length)selected=weeks[0];
+      }
+      var today=new Date();today.setHours(12,0,0,0);
+      var start=parseDate(selected&&selected.start),end=parseDate(selected&&selected.end);
+      var isFuture=!!(start&&today<start);
+      var isCurrent=!!(start&&end&&today>=start&&today<=end);
+      var isHistorical=!isFuture&&!isCurrent;
+      return {year:year,quarter:quarter,weekNumber:weekNumber,selected:selected,isFuture:isFuture,isCurrent:isCurrent,isHistorical:isHistorical};
+    }catch(e){return null;}
+  }
+  function repNames(){
+    try{
+      if(typeof activeReps==='function'){
+        var reps=activeReps();
+        if(Array.isArray(reps))return reps.map(function(rep){return typeof rep==='string'?rep:(rep&&rep.name)||'';}).filter(Boolean);
+      }
+    }catch(e){}
+    return [];
+  }
+  function historicalUploadStatus(context){
+    if(!context||!context.selected||!context.selected.key||!context.isHistorical)return null;
+    var reps=repNames();
+    var data=(window.S&&S.data)||{};
+    var uploaded=0;
+    reps.forEach(function(name){
+      var row=data[name+'|'+context.selected.key];
+      if(row&&row._weeklyOrderSummary)uploaded++;
+    });
+    return {uploaded:uploaded,total:reps.length,ready:uploaded>0,key:context.selected.key,label:context.selected.label||context.selected.key};
+  }
+  function applyHistoricalBadge(){
+    var badge=document.querySelector('#pg-dash .ps58-periods .ps58-live');
+    if(!badge)return;
+    var context=selectedWeekContext();
+    if(!context)return;
+    badge.classList.remove('live','history','future','history-uploaded','history-missing');
+    if(context.isCurrent){
+      badge.classList.add('live');
+      badge.textContent=' LIVE PREVIEW';
+      badge.title='Current selected week — live data and partial-week pacing are active.';
+      return;
+    }
+    if(context.isFuture){
+      badge.classList.add('future');
+      badge.textContent=' FUTURE WEEK';
+      badge.title='Future week — no closed-week spreadsheet is expected yet.';
+      return;
+    }
+    var status=historicalUploadStatus(context);
+    if(status&&status.ready){
+      badge.classList.add('history-uploaded');
+      badge.textContent=' HISTORICAL SNAPSHOT · SPREADSHEET UPLOADED';
+      badge.title=status.uploaded+'/'+status.total+' active reps have weekly spreadsheet data saved for '+status.label+'.';
+    }else{
+      badge.classList.add('history-missing');
+      badge.textContent=' HISTORICAL SNAPSHOT · SPREADSHEET MISSING';
+      badge.title='No weekly spreadsheet upload was found for '+((status&&status.label)||'the selected week')+'.';
+    }
+  }
+  var priorRender=window.renderDash;
+  function render(){
+    var result=typeof priorRender==='function'?priorRender.apply(this,arguments):undefined;
+    try{applyHistoricalBadge()}catch(e){console.warn('[v626 historical upload badge]',e);}
+    return result;
+  }
+  if(typeof priorRender==='function'){
+    window.renderDash=render;
+    window.renderDashWidgets=render;
+  }
+  window._tcpHistoricalUploadStatus=historicalUploadStatus;
+  window.TCP_BUILD_VERSION=BUILD;
+  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v626 — Historical Upload Badge';}catch(e){}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{applyHistoricalBadge();}catch(e){}},0);},{once:true});
+  else setTimeout(function(){try{applyHistoricalBadge();}catch(e){}},0);
+})();
+</script>
