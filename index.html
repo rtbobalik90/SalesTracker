@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v637 — Clean Boot</title>
+<title>Sales Tracker v638 — Rep Portal Links &amp; DEV Handoff</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -7764,16 +7764,26 @@ function _rpRenderAdmin(){
   var host=document.getElementById('rp-admin'); if(!host)return; var G=_rpEnsure();
   var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
   var secRow=RP_SECTIONS.map(function(s){ var on=G.sections.indexOf(s[0])>=0; return '<button class="rp-chip'+(on?' on':'')+'" onclick="_rpToggleSection(\''+s[0]+'\')">'+(on?'\u2713 ':'')+_rpEsc(s[1])+'</button>'; }).join('');
-  var repRows=reps.map(function(r){ var has=G.accounts[r.name]&&G.accounts[r.name].hash; return '<tr><td style="text-align:left;font-weight:600;">'+_rpEsc(r.name)+'</td>'
-    +'<td>'+(has?'<span style="color:#7BE3A9;">\u25cf set</span>':'<span style="color:var(--tcp-muted,#8b95a7);">\u2014 none</span>')+'</td>'
-    +'<td><input type="password" id="rp-pw-'+_rpSlug(r.name)+'" placeholder="new password" class="rp-in" autocomplete="new-password"></td>'
-    +'<td style="text-align:right;"><button class="rp-btn" onclick="_rpSaveRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Save</button>'+(has?' <button class="rp-btn" onclick="_rpClearRepPw(\''+_rpEsc(r.name).replace(/'/g,"\\'")+'\')">Clear</button> <button class="rp-btn" data-rep="'+_rpEsc(r.name)+'" onclick="_rpCopyRepLinkFor(this.dataset.rep)">&#128279; Link</button>':'')+'</td></tr>'; }).join('');
-  host.innerHTML='<div class="rp-card"><div class="rp-kick">Rep portal</div><div class="rp-h2">Rep logins &amp; visibility</div>'
-    +'<p class="rp-help">Soft login (same page, no backend): each rep sees only their own view. Not a hard security wall \u2014 a technical rep could still reach raw data via browser tools.</p>'
-    +'<div class="rp-row"><label class="rp-switch"><input type="checkbox" '+(G.enabled?'checked':'')+' onchange="_rpToggleEnabled()"> Portal enabled (show login on load)</label><button class="rp-btn" onclick="_rpCopyRepLink()" style="margin-left:10px;">\uD83D\uDD17 Copy rep link</button>'+(G.managerHash?'':'<span style="color:#F0A9A9;font-size:11px;margin-left:10px;">Set a manager password first \u2193</span>')+'</div>'
+  var repRows=reps.map(function(r){
+    var has=G.accounts[r.name]&&G.accounts[r.name].hash;
+    var safe=_rpEsc(r.name).replace(/'/g,"\\'");
+    return '<tr><td style="text-align:left;font-weight:600;">'+_rpEsc(r.name)+'</td>'
+      +'<td>'+(has?'<span style="color:#7BE3A9;">\u25cf set</span>':'<span style="color:var(--tcp-muted,#8b95a7);">\u2014 none</span>')+'</td>'
+      +'<td><input type="password" id="rp-pw-'+_rpSlug(r.name)+'" placeholder="new password" class="rp-in" autocomplete="new-password"></td>'
+      +'<td style="text-align:right;white-space:nowrap;"><button class="rp-btn" onclick="_rpSaveRepPw(\''+safe+'\')">Save</button>'
+      +(has?' <button class="rp-btn" onclick="_rpClearRepPw(\''+safe+'\')">Clear</button> <button class="rp-btn rp-link-full" data-rep="'+_rpEsc(r.name)+'" onclick="_rpCopyRepLinkForView(this.dataset.rep,\'full\')">\ud83d\udd17 Full</button> <button class="rp-btn rp-link-phased" data-rep="'+_rpEsc(r.name)+'" onclick="_rpCopyRepLinkForView(this.dataset.rep,\'phased\')">\ud83e\uddea Phased</button>':'')
+      +'</td></tr>';
+  }).join('');
+  host.innerHTML='<div class="rp-card"><div class="rp-admin-head"><div><div class="rp-kick">Rep portal</div><div class="rp-h2">Rep logins &amp; visibility</div></div><button class="rp-btn rp-dev-code" onclick="_rpCopyPhasedDevCode()">&lt;/&gt; Copy Phased Code</button></div>'
+    +'<p class="rp-help">Soft login (same page, no backend): each rep sees only their own view. Full and Phased now use separate, mode-locked links so rollout testing does not depend on the browser\u2019s last selected portal view.</p>'
+    +'<div class="rp-row"><label class="rp-switch"><input type="checkbox" '+(G.enabled?'checked':'')+' onchange="_rpToggleEnabled()"> Portal enabled (show login on load)</label>'+(G.managerHash?'':'<span style="color:#F0A9A9;font-size:11px;margin-left:10px;">Set a manager password first \u2193</span>')+'</div>'
+    +'<div class="rp638-link-grid">'
+      +'<div class="rp638-link-card full"><div class="rp638-link-kick">MASTER WORKSPACE</div><strong>Full Portal</strong><p>Opens the complete rep portal and locks this link to Full view.</p><button class="rp-btn rp-link-full" onclick="_rpCopyPortalLink(\'full\')">\ud83d\udd17 Copy Full Link</button></div>'
+      +'<div class="rp638-link-card phased"><div class="rp638-link-kick">ROLLOUT WORKSPACE</div><strong>Phased Portal</strong><p>Opens the focused rollout portal and locks this link to Phased view.</p><div class="rp638-card-actions"><button class="rp-btn rp-link-phased" onclick="_rpCopyPortalLink(\'phased\')">\ud83e\uddea Copy Phased Link</button><button class="rp-btn rp-dev-code" onclick="_rpCopyPhasedDevCode()">&lt;/&gt; Copy Code</button></div></div>'
+    +'</div>'
     +'<div class="rp-sub">Manager password</div><div class="rp-row"><input type="password" id="rp-mgr-pw" placeholder="'+(G.managerHash?'change manager password':'set manager password')+'" class="rp-in" autocomplete="new-password"><button class="rp-btn pri" onclick="_rpSaveManagerPw()">Save</button>'+(G.managerHash?'<span style="color:#7BE3A9;font-size:11px;margin-left:8px;">\u25cf set</span>':'')+'</div>'
     +'<div class="rp-sub">What reps can see (applies to all reps)</div><div class="rp-chips">'+secRow+'</div>'
-    +'<div class="rp-sub">Rep passwords</div><table class="rp-tbl"><thead><tr><th style="text-align:left;">Rep</th><th>Password</th><th>Set</th><th></th></tr></thead><tbody>'+repRows+'</tbody></table>'
+    +'<div class="rp-sub">Rep passwords &amp; personal links</div><table class="rp-tbl"><thead><tr><th style="text-align:left;">Rep</th><th>Password</th><th>Set</th><th style="text-align:right;">Access</th></tr></thead><tbody>'+repRows+'</tbody></table>'
     +'</div>';
 }
 
@@ -7853,12 +7863,83 @@ function _rpApply(){
     +'<div id="rp-login-msg" class="rp-login-msg">'+_rpEsc(mismatchMsg)+'</div></div></div>';
 }
 function _rpUrlGist(){ try{ var m=(location.search||'').match(/[?&]portal=([^&]+)/); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
-function _rpRepLink(){ var gid=''; try{ gid=localStorage.getItem('salesTracker_gistId')||''; }catch(e){} if(!gid){ alert('Set up cloud sync first (save your data to a Gist in Admin), then come back and copy the rep link.'); return ''; } return location.origin+location.pathname+'?portal='+encodeURIComponent(gid); }
-function _rpCopyRepLink(){ var link=_rpRepLink(); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert('Rep link copied \u2014 share it with your reps:\n\n'+link); } else { prompt('Copy this rep link and share it with your reps:', link); } }catch(e){ prompt('Copy this rep link and share it with your reps:', link); } }
 function _rpUrlRep(){ try{ var m=(location.search||'').match(/[?&]rep=([^&]+)/); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
-function _rpRepLinkFor(rep){ var base=_rpRepLink(); if(!base)return ''; return base+'&rep='+encodeURIComponent(rep); }
+function _rpUrlPortalView(){
+  try{
+    var m=(location.search||'').match(/[?&](?:view|portalView)=([^&]+)/i),v=m?decodeURIComponent(m[1]).toLowerCase():'';
+    return v==='phased'?'phased':(v==='full'?'full':'');
+  }catch(e){return '';}
+}
+function _rpPortalLink(view){
+  var gid=''; try{gid=localStorage.getItem('salesTracker_gistId')||'';}catch(e){}
+  if(!gid){alert('Set up cloud sync first (save your data to a Gist in Admin), then come back and copy the portal link.');return '';}
+  view=view==='phased'?'phased':'full';
+  return location.origin+location.pathname+'?portal='+encodeURIComponent(gid)+'&view='+encodeURIComponent(view);
+}
+/* Legacy calls intentionally default to Full. */
+function _rpRepLink(){return _rpPortalLink('full');}
+function _rpRepLinkForView(rep,view){var base=_rpPortalLink(view);if(!base)return '';return base+'&rep='+encodeURIComponent(rep);}
+function _rpRepLinkFor(rep){return _rpRepLinkForView(rep,'full');}
+function _rpCopyText(text,success,fallbackLabel){
+  if(!text)return;
+  function fallback(){
+    try{
+      var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(ta);ta.select();var ok=document.execCommand&&document.execCommand('copy');document.body.removeChild(ta);if(ok){alert(success);return;}
+    }catch(e){}
+    prompt(fallbackLabel||'Copy:',text);
+  }
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){alert(success);}).catch(fallback);}
+    else fallback();
+  }catch(e){fallback();}
+}
+function _rpCopyPortalLink(view){
+  view=view==='phased'?'phased':'full';var link=_rpPortalLink(view);if(!link)return;
+  _rpCopyText(link,(view==='phased'?'Phased':'Full')+' portal link copied.','Copy the '+view+' portal link:');
+}
+function _rpCopyRepLink(){return _rpCopyPortalLink('full');}
+function _rpCopyRepLinkForView(rep,view){
+  view=view==='phased'?'phased':'full';var link=_rpRepLinkForView(rep,view);if(!link)return;
+  _rpCopyText(link,rep+' — '+(view==='phased'?'Phased':'Full')+' portal link copied.','Copy '+rep+'\u2019s '+view+' portal link:');
+}
+function _rpCopyRepLinkFor(rep){return _rpCopyRepLinkForView(rep,'full');}
+function _rpPhasedDevBundle(){
+  var ids=['tcp-rep-portal-dual-view-v608-css','tcp-v611-shared-approved-my-day-phased-no-dialer-css','tcp-rep-portal-dual-view-v608-js'];
+  var parts=[
+    '/* ============================================================',
+    '   TRIPLE CROWN PRODUCTS — REP PORTAL PHASED WORKSPACE',
+    '   DEV HANDOFF — copied from Sales Tracker BUILD v638',
+    '',
+    '   PURPOSE',
+    '   - Phased is a presentation/navigation layer over the same Rep Portal data.',
+    '   - It does NOT contain customer data, passwords, or the cloud snapshot.',
+    '   - Full remains the master workspace.',
+    '',
+    '   LINK CONTRACT',
+    '   - Full:   ?portal=<cloud-id>&view=full&rep=<rep-name>',
+    '   - Phased: ?portal=<cloud-id>&view=phased&rep=<rep-name>',
+    '',
+    '   DEPENDENCY',
+    '   - Requires the existing Sales Tracker Rep Portal base (_rp2Html, _rp2Page, _rp2Go and RP2_NAV).',
+    '   ============================================================ */'
+  ].join('\n');
+  ids.forEach(function(id){var el=document.getElementById(id);if(el)parts.push('<!-- SOURCE: '+id+' -->\n'+el.outerHTML);});
+  parts.push([
+    '<script id="tcp-phased-link-mode-adapter">',
+    '(function(){',
+    '  function readView(){var m=(location.search||"").match(/[?&]view=([^&]+)/i),v=m?decodeURIComponent(m[1]).toLowerCase():"";return v==="phased"?"phased":(v==="full"?"full":"");}',
+    '  var base=window._rp2Html;',
+    '  if(typeof base==="function")window._rp2Html=function(rep){var v=readView();if(v)try{localStorage.setItem("tcp.repPortal.viewMode.v608."+String(rep||"default").toLowerCase().replace(/[^a-z0-9]+/g,"-"),v)}catch(e){}return base.apply(this,arguments)};',
+    '})();',
+    '<\/script>'
+  ].join('\n'));
+  return parts.join('\n\n');
+}
+function _rpCopyPhasedDevCode(){
+  var code=_rpPhasedDevBundle();
+  _rpCopyText(code,'Phased Rep Portal DEV code copied — no customer data or passwords are included.','Copy the Phased Rep Portal DEV code:');
+}
 async function _rpProfileSavePw(rep){ if(!rep){alert('Open a rep first.');return;} var el=document.getElementById('rp-prof-pw'); var v=el?el.value.trim():''; if(!v){alert('Enter a password for '+rep+'.');return;} var G=_rpEnsure(); G.accounts[rep]=G.accounts[rep]||{}; G.accounts[rep].hash=await _rpHash(v); if(el)el.value=''; _rpDirty(); alert(rep+'\u2019s portal password saved.'); }
-function _rpCopyRepLinkFor(rep){ var link=_rpRepLinkFor(rep); if(!link)return; try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link); alert(rep+'\u2019s portal link copied \u2014 send it to them:\n\n'+link); } else { prompt('Copy '+rep+'\u2019s portal link:', link); } }catch(e){ prompt('Copy '+rep+'\u2019s portal link:', link); } }
 async function _rpPullGist(gistId){
   try{
     /* SAFETY GUARD: if this device has local edits newer than its last successful cloud push,
@@ -16225,7 +16306,7 @@ function renderProfileDetail(ri){
         +'<div class="profile-kpi"><div class="profile-kpi-label">Customers Called</div><div class="profile-kpi-value">'+covPct+'%</div><div class="profile-kpi-sub">'+((qt.acctsCalled||0).toLocaleString())+' accounts called</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">Best week</div><div class="profile-kpi-value">'+(bw.rev>0?_tcpMoney(bw.rev):'—')+'</div><div class="profile-kpi-sub">'+_tcpEscape(bw.weekLabel||'No data yet')+'</div></div>'
         +'<div class="profile-kpi"><div class="profile-kpi-label">HR points</div><div class="profile-kpi-value">'+hrP.toFixed(1)+'</div><div class="profile-kpi-sub">Current '+q+' total</div></div>'
-      +'</div><div class="profile-pdf-callout" style="margin-bottom:12px;"><div><div class="profile-pdf-callout-title">Rep portal access</div><div class="profile-pdf-callout-text">Set this rep&#8217;s login password, then copy their personal portal link to send them.</div></div><input type="password" id="rp-prof-pw" placeholder="set / reset password" style="background:#12161e;border:1px solid #2a3342;border-radius:8px;color:#fff;font-size:13px;padding:8px 11px;margin-right:8px;"><button class="sbtn" onclick="_rpProfileSavePw(selectedRep)" style="background:#1A2230;border-color:#FA873D;color:#FFD8BD;font-weight:800;white-space:nowrap;margin-right:8px;">Save password</button><button class="sbtn" onclick="_rpCopyRepLinkFor(selectedRep)" style="white-space:nowrap;">&#128279; Copy link</button></div><div class="profile-pdf-callout"><div><div class="profile-pdf-callout-title">Sales summary handoff</div><div class="profile-pdf-callout-text">Generate the existing printable rep summary with sales, calls, goals, coverage, and weekly/daily pacing.</div></div><button class="sbtn" onclick="buildRepQuarterReport(selectedRep)" style="background:#1A2230;border-color:#4F46E5;color:#A5B4FC;font-weight:800;white-space:nowrap;margin-right:8px;">Quarter report</button><button class="sbtn" onclick="downloadRepSummaryPDF(selectedRep)" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:800;white-space:nowrap;">Download summary PDF</button></div></div>'
+      +'</div><div class="profile-pdf-callout" style="margin-bottom:12px;"><div><div class="profile-pdf-callout-title">Rep portal access</div><div class="profile-pdf-callout-text">Set this rep&#8217;s login password, then copy their personal portal link to send them.</div></div><input type="password" id="rp-prof-pw" placeholder="set / reset password" style="background:#12161e;border:1px solid #2a3342;border-radius:8px;color:#fff;font-size:13px;padding:8px 11px;margin-right:8px;"><button class="sbtn" onclick="_rpProfileSavePw(selectedRep)" style="background:#1A2230;border-color:#FA873D;color:#FFD8BD;font-weight:800;white-space:nowrap;margin-right:8px;">Save password</button><button class="sbtn" onclick="_rpCopyRepLinkForView(selectedRep,\'full\')" style="white-space:nowrap;margin-right:8px;">&#128279; Full link</button><button class="sbtn" onclick="_rpCopyRepLinkForView(selectedRep,\'phased\')" style="white-space:nowrap;border-color:#00AFEF;color:#9CE8FF;">&#129514; Phased link</button></div><div class="profile-pdf-callout"><div><div class="profile-pdf-callout-title">Sales summary handoff</div><div class="profile-pdf-callout-text">Generate the existing printable rep summary with sales, calls, goals, coverage, and weekly/daily pacing.</div></div><button class="sbtn" onclick="buildRepQuarterReport(selectedRep)" style="background:#1A2230;border-color:#4F46E5;color:#A5B4FC;font-weight:800;white-space:nowrap;margin-right:8px;">Quarter report</button><button class="sbtn" onclick="downloadRepSummaryPDF(selectedRep)" style="background:#1C2A1A;border-color:#1D9E75;color:#5DCAA5;font-weight:800;white-space:nowrap;">Download summary PDF</button></div></div>'
     +'</div>'
     +'<div class="profile-layout" style="margin-top:16px;">'
       +'<div class="profile-main">'
@@ -60847,6 +60928,69 @@ body.nav-rail .tabs:after{content:"v624"!important;white-space:normal!important;
 })();
 </script>
 
+
+<style id="tcp-v638-rep-portal-links-css">
+/* ===== v638 Rep Portal Separate Full/Phased Links + DEV Handoff ===== */
+#rp-admin .rp-admin-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+#rp-admin .rp638-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 18px}
+#rp-admin .rp638-link-card{position:relative;overflow:hidden;border:1px solid var(--tcp-line,#2B2B2B);border-radius:14px;padding:15px 16px;background:rgba(255,255,255,.025)}
+#rp-admin .rp638-link-card.full{border-color:rgba(250,135,61,.38);background:linear-gradient(135deg,rgba(250,135,61,.10),rgba(255,255,255,.025) 58%)}
+#rp-admin .rp638-link-card.phased{border-color:rgba(0,175,239,.42);background:linear-gradient(135deg,rgba(0,175,239,.11),rgba(255,255,255,.025) 58%)}
+#rp-admin .rp638-link-kick{font-size:9px;font-weight:900;letter-spacing:1.25px;color:#9aa7bb;margin-bottom:5px}
+#rp-admin .rp638-link-card strong{display:block;color:#fff;font-size:15px;margin-bottom:4px}
+#rp-admin .rp638-link-card p{margin:0 0 12px;color:var(--tcp-muted,#8b95a7);font-size:11px;line-height:1.45}
+#rp-admin .rp638-card-actions{display:flex;gap:8px;flex-wrap:wrap}
+#rp-admin .rp-link-full{border-color:rgba(250,135,61,.62)!important;color:#FFD7BD!important}
+#rp-admin .rp-link-phased{border-color:rgba(0,175,239,.62)!important;color:#9CE8FF!important}
+#rp-admin .rp-dev-code{border-color:rgba(0,175,239,.55)!important;background:rgba(0,175,239,.08)!important;color:#9CE8FF!important;font-weight:800!important}
+#rp-overlay .rp2-app.rp2-link-locked .rp2-view-mode-buttons{display:none!important}
+#rp-overlay .rp2-app.rp2-link-locked .rp2-view-mode-label span:first-child{font-size:0}
+#rp-overlay .rp2-app.rp2-link-locked .rp2-view-mode-label span:first-child:after{content:"LINK VIEW";font-size:10px}
+#rp-overlay .rp2-app.rp2-link-locked .rp2-view-mode-copy:after{content:" · This view is fixed by the link used to open the portal.";color:#7f8da4}
+@media(max-width:800px){#rp-admin .rp638-link-grid{grid-template-columns:1fr}}
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v638"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v638"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+</style>
+<script id="tcp-v638-rep-portal-links-js">
+(function(){
+  /* URL mode is authoritative for separate rollout links; legacy links still use the saved Full/Phased switch. */
+  var baseHtml=window._rp2Html;
+  if(typeof baseHtml==='function'){
+    window._rp2Html=function(rep){
+      var forced=typeof window._rpUrlPortalView==='function'?window._rpUrlPortalView():'';
+      if(forced){
+        try{localStorage.setItem('tcp.repPortal.viewMode.v608.'+String(rep||'default').toLowerCase().replace(/[^a-z0-9]+/g,'-'),forced);}catch(e){}
+      }
+      var html=baseHtml.apply(this,arguments);
+      if(forced)html=String(html||'').replace(/class="rp2-app\s+/, 'class="rp2-app rp2-link-locked ');
+      return html;
+    };
+  }
+  var baseSet=window._rp2SetPortalMode;
+  if(typeof baseSet==='function'){
+    window._rp2SetPortalMode=function(next){
+      var forced=typeof window._rpUrlPortalView==='function'?window._rpUrlPortalView():'';
+      if(forced)return forced;
+      return baseSet.apply(this,arguments);
+    };
+  }
+  try{
+    var forcedNow=typeof window._rpUrlPortalView==='function'?window._rpUrlPortalView():'';
+    if(forcedNow)setTimeout(function(){
+      try{if(window._rp2&&_rp2.rep&&document.querySelector('#rp-overlay .rp2-app'))window._rp2Go(_rp2.page||'home');}catch(e){}
+    },0);
+  }catch(e){}
+  window.TCP_REP_PORTAL_LINKS_V638={
+    version:'v638',
+    getUrlView:window._rpUrlPortalView,
+    portalLink:window._rpPortalLink,
+    repLink:window._rpRepLinkForView,
+    copyPhasedDevCode:window._rpCopyPhasedDevCode
+  };
+  window.TCP_BUILD_VERSION='v638';
+  try{document.documentElement.setAttribute('data-tcp-build','v638');document.title='Sales Tracker v638 — Rep Portal Links & DEV Handoff';}catch(e){}
+})();
+</script>
 </body>
 </html>
 
