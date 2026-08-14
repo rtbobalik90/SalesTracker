@@ -64853,3 +64853,254 @@ body.nav-rail .tabs:after{content:"v630"!important;white-space:normal!important;
   }catch(e){}
 })();
 </script>
+
+<style id="tcp-earned-rep1-v631-css">
+/* ===== v631 Earned Rep1 Qualification Calculator ===== */
+#pg-rep1calc{max-width:1540px;margin:0 auto;padding-bottom:42px;}
+.rep1-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:28px 30px;margin:2px 0 18px;border:1px solid rgba(255,255,255,.10);border-radius:26px;background:radial-gradient(circle at 12% 8%,rgba(250,135,61,.27),transparent 35%),radial-gradient(circle at 88% 15%,rgba(0,175,239,.14),transparent 30%),linear-gradient(135deg,rgba(22,27,42,.97),rgba(9,14,24,.98));box-shadow:0 22px 60px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.07);}
+.rep1-kicker{font-size:10px;font-weight:950;letter-spacing:.15em;text-transform:uppercase;color:var(--tcp-brand-cyan,#00AFEF);margin-bottom:7px;}
+.rep1-hero h1{margin:0;color:#fff;font-family:var(--tcp-brand-serif,"Droid Serif",Georgia,serif);font-size:31px;line-height:1;font-weight:800;letter-spacing:-.035em;}
+.rep1-hero p{max-width:840px;margin:10px 0 0;color:#B7C2D8;font-size:13px;line-height:1.65;}
+.rep1-rule-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:999px;border:1px solid rgba(250,135,61,.30);background:rgba(250,135,61,.10);color:#FFD6BD;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.rep1-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(330px,.78fr);gap:18px;align-items:start;}
+.rep1-stack{display:flex;flex-direction:column;gap:18px;min-width:0;}
+.rep1-panel{position:relative;overflow:hidden;padding:20px;border:1px solid rgba(255,255,255,.095);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.050),rgba(255,255,255,.022)),rgba(16,21,34,.90);box-shadow:0 18px 46px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.055);}
+.rep1-panel.hot{border-color:rgba(250,135,61,.27);background:linear-gradient(135deg,rgba(250,135,61,.10),rgba(0,175,239,.035) 48%,rgba(16,21,34,.94));}
+.rep1-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.rep1-panel-title{font-size:17px;font-weight:950;color:#fff;letter-spacing:-.02em;}
+.rep1-panel-sub{font-size:11.5px;color:#9FABBF;line-height:1.55;margin-top:5px;}
+.rep1-form-grid{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:11px;margin-bottom:14px;}
+.rep1-field label{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.085em;color:#90A1BF;font-weight:900;margin:0 0 6px;}
+.rep1-field input,.rep1-field select{width:100%;min-height:40px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:#0C121C;color:#F8FAFF;padding:9px 11px;font-family:var(--tcp-brand-sans,"Open Sans",Arial,sans-serif);font-size:12px;font-weight:700;}
+.rep1-field input:focus,.rep1-field select:focus{outline:none;border-color:rgba(250,135,61,.88);box-shadow:0 0 0 3px rgba(250,135,61,.14);}
+.rep1-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.rep1-btn{border:1px solid rgba(255,255,255,.13);border-radius:12px;background:rgba(255,255,255,.055);color:#F6F8FF;padding:9px 13px;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s ease;}
+.rep1-btn:hover{transform:translateY(-1px);border-color:rgba(250,135,61,.45);background:rgba(250,135,61,.13);}
+.rep1-btn.primary{background:var(--tcp-brand-orange,#FA873D);border-color:var(--tcp-brand-orange,#FA873D);color:#111;}
+.rep1-btn.cyan{background:rgba(0,175,239,.10);border-color:rgba(0,175,239,.34);color:#9DE7FF;}
+.rep1-sales-table{width:100%;border-collapse:collapse;border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;display:table;}
+.rep1-sales-table th{padding:9px 10px;background:rgba(255,255,255,.05);font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:#91A0BA;text-align:left;}
+.rep1-sales-table td{padding:8px 10px;border-top:1px solid rgba(255,255,255,.065);vertical-align:middle;}
+.rep1-sales-table input{width:100%;min-height:34px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:#0B111A;color:#fff;padding:7px 9px;font-size:11px;}
+.rep1-sales-table .rep1-year{max-width:100px;}
+.rep1-sales-table .rep1-money{max-width:180px;}
+.rep1-sales-table .rep1-row-note{font-size:10px;color:#8190AA;}
+.rep1-eval-note{margin-top:12px;padding:10px 12px;border:1px solid rgba(0,175,239,.16);border-radius:13px;background:rgba(0,175,239,.045);color:#A9BED1;font-size:10.5px;line-height:1.55;}
+.rep1-decision{padding:20px;border-radius:20px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);}
+.rep1-decision.yes{border-color:rgba(71,209,108,.30);background:rgba(71,209,108,.07);}
+.rep1-decision.no{border-color:rgba(240,120,120,.30);background:rgba(240,120,120,.065);}
+.rep1-decision.review{border-color:rgba(239,159,39,.30);background:rgba(239,159,39,.065);}
+.rep1-decision-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.10em;color:#8FA1BD;font-weight:950;}
+.rep1-decision-value{font-size:27px;line-height:1.05;font-weight:950;color:#fff;margin:7px 0 6px;letter-spacing:-.035em;}
+.rep1-decision-copy{font-size:11.5px;color:#B8C4D8;line-height:1.55;}
+.rep1-rule-list{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
+.rep1-rule{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.03);}
+.rep1-rule-icon{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-size:13px;font-weight:950;background:rgba(255,255,255,.055);}
+.rep1-rule.pass .rep1-rule-icon{color:#8BE0BF;background:rgba(71,209,108,.10);}
+.rep1-rule.fail .rep1-rule-icon{color:#FFB1B1;background:rgba(240,120,120,.10);}
+.rep1-rule.warn .rep1-rule-icon{color:#FFD27A;background:rgba(239,159,39,.10);}
+.rep1-rule strong{display:block;color:#F5F7FF;font-size:11.5px;margin-bottom:3px;}
+.rep1-rule span{display:block;color:#95A3BA;font-size:10.5px;line-height:1.45;}
+.rep1-metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px;}
+.rep1-metric{padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(0,0,0,.15);}
+.rep1-metric span{display:block;color:#8392AB;font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;margin-bottom:4px;}
+.rep1-metric strong{display:block;color:#fff;font-size:15px;font-weight:950;}
+.rep1-response{margin-top:14px;padding:14px;border:1px solid rgba(240,120,120,.18);border-radius:16px;background:rgba(0,0,0,.18);}
+.rep1-response-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;}
+.rep1-response-head strong{font-size:12px;color:#fff;}
+.rep1-response pre{white-space:pre-wrap;word-break:break-word;margin:0;color:#C7D1E0;font-family:var(--tcp-brand-sans,"Open Sans",Arial,sans-serif);font-size:10.8px;line-height:1.55;}
+.rep1-copy-status{font-size:10px;color:#8BE0BF;min-height:14px;margin-top:7px;}
+.rep1-legacy{padding:14px;border-radius:17px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.028);}
+.rep1-legacy strong{color:#fff;font-size:12px;}
+.rep1-legacy p{margin:6px 0 0;color:#97A5BC;font-size:10.5px;line-height:1.5;}
+.rep1-policy-list{display:grid;gap:9px;margin-top:12px;}
+.rep1-policy-item{padding:11px;border-left:3px solid var(--tcp-brand-orange,#FA873D);border-radius:0 12px 12px 0;background:rgba(250,135,61,.055);}
+.rep1-policy-item strong{display:block;color:#F5F7FF;font-size:11px;margin-bottom:3px;}
+.rep1-policy-item span{display:block;color:#9EABC0;font-size:10.5px;line-height:1.45;}
+@media(max-width:1100px){.rep1-grid{grid-template-columns:1fr}.rep1-form-grid{grid-template-columns:1fr 1fr}.rep1-form-grid .rep1-field:first-child{grid-column:1/-1;}}
+@media(max-width:680px){.rep1-hero{padding:21px;flex-direction:column;align-items:flex-start}.rep1-form-grid,.rep1-metrics{grid-template-columns:1fr}.rep1-sales-table{display:block;overflow-x:auto}.rep1-sales-table tbody,.rep1-sales-table thead{min-width:620px}.rep1-actions .rep1-btn{flex:1}.rep1-response-head{align-items:flex-start;flex-direction:column}}
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v631"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v631"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+</style>
+<script id="tcp-earned-rep1-v631-js">
+(function(){
+ var BUILD='v631', MIN_SALES=1500, CONVERSION=3.641;
+ function n(v){if(v==null||v==='')return 0;var x=Number(String(v).replace(/[$,\s]/g,''));return isFinite(x)?x:0;}
+ function clean(v){return String(v==null?'':v).trim();}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+ function money(v){return '$'+n(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]/g,'');}
+ function todayYear(){return new Date().getFullYear();}
+ function parseDate(v){if(!v)return null;var d=new Date(String(v).length===10?String(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d;}
+ function customerName(c){return clean(c&&(c.name||c.customer||c.company));}
+ function customerRep(c){return clean(c&&(c.rep||c.salesRep||c.owner));}
+ function customerRows(){
+  var map={};
+  try{(Array.isArray(S&&S.customers)?S.customers:[]).forEach(function(c){var name=customerName(c);if(!name)return;var k=norm(name);if(!map[k])map[k]={name:name,rep:customerRep(c),records:[]};map[k].records.push(c);if(!map[k].rep)map[k].rep=customerRep(c);});}catch(e){}
+  return Object.keys(map).map(function(k){return map[k];}).sort(function(a,b){return a.name.localeCompare(b.name);});
+ }
+ function importedSalesForYear(records,year){
+  var cy=todayYear(),best=0;
+  (records||[]).forEach(function(c){
+   var value=0;
+   if(year===cy)value=Math.max(n(c.importedSalesCurrentYear),n(c.importedSalesCurrentYearNew));
+   else if(year===cy-1)value=Math.max(n(c.importedSalesLastYear),n(c.importedSalesLastYearNew));
+   else if(year===cy-2)value=n(c.importedSales2YearsAgo);
+   else if(year===cy-3)value=n(c.importedSales3YearsAgo);
+   best=Math.max(best,value);
+  });
+  return best;
+ }
+ function orderSalesByYear(name){
+  var out={},key=norm(name);
+  try{(Array.isArray(S&&S.orders)?S.orders:[]).forEach(function(o){if(norm(o&&(o.customer||o.company||o.accountName))!==key)return;var d=parseDate(o&&(o.orderDate||o.date||o.enteredAt));if(!d)return;var y=d.getFullYear();out[y]=(out[y]||0)+n(o.total!=null?o.total:(o.revenue!=null?o.revenue:o.amount));});}catch(e){}
+  return out;
+ }
+ function trackerSalesHistory(customer){
+  var out={},cy=todayYear(),order=orderSalesByYear(customer.name);
+  Object.keys(order).forEach(function(y){out[Number(y)]=Math.max(out[Number(y)]||0,n(order[y]));});
+  for(var y=cy-5;y<=cy;y++){var imp=importedSalesForYear(customer.records,y);if(imp>0)out[y]=Math.max(out[y]||0,imp);}
+  return out;
+ }
+ function ensurePage(){
+  var page=document.getElementById('pg-rep1calc');
+  if(!page){page=document.createElement('div');page.id='pg-rep1calc';page.className='page';(document.querySelector('.wrap')||document.body).appendChild(page);}
+  if(!page.dataset.ready){page.innerHTML=pageHtml();page.dataset.ready='1';populateCustomers();resetYears();}
+  return page;
+ }
+ function pageHtml(){return '<div class="rep1-hero"><div><div class="rep1-kicker">Sales Operations · Commission Qualification</div><h1>Earned Rep1 Qualification Calculator</h1><p>Determine whether an assigned REP2 account has earned REP1 status. The calculator applies the 3.641 conversion formula plus sustainability, stability, and minimum-sales rules, and explains every pass/fail decision.</p></div><span class="rep1-rule-pill">REP1 + REP2 = Earned Account</span></div>'+
+  '<div class="rep1-grid"><div class="rep1-stack"><section class="rep1-panel hot"><div class="rep1-panel-head"><div><div class="rep1-kicker">Account & sales history</div><div class="rep1-panel-title">Load from Tracker or enter annual sales</div><div class="rep1-panel-sub">Tracker lookup uses customer spreadsheet/order history when available. You can edit any value before calculating.</div></div></div><div class="rep1-form-grid"><div class="rep1-field"><label>Account</label><input id="rep1Account" list="rep1CustomerList" placeholder="Type account name"><datalist id="rep1CustomerList"></datalist></div><div class="rep1-field"><label>REP2 Owner</label><input id="rep1Owner" placeholder="Rep name"></div><div class="rep1-field"><label>First Qualifying Year</label><select id="rep1Fqy"><option value="auto">Auto-detect</option></select></div></div><div class="rep1-actions" style="margin-bottom:13px"><button class="rep1-btn cyan" onclick="_rep1LoadCustomer()">Load from Tracker</button><button class="rep1-btn" onclick="_rep1ResetYears()">Reset Years</button><button class="rep1-btn" onclick="_rep1AddYear()">+ Add Year</button></div><table class="rep1-sales-table"><thead><tr><th>Calendar Year</th><th>Annual Sales</th><th>Status</th><th></th></tr></thead><tbody id="rep1SalesBody"></tbody></table><div class="rep1-eval-note" id="rep1DataNote">Enter annual sales from oldest to newest. Auto-detect selects the earliest loaded year with at least $1,500 as the First Qualifying Year. If older history exists, add it so the first qualifying year is accurate.</div><div class="rep1-actions" style="margin-top:14px"><button class="rep1-btn primary" onclick="_rep1Calculate()">Calculate Earned Rep1</button></div></section><section class="rep1-panel" id="rep1ResultPanel"><div class="rep1-panel-head"><div><div class="rep1-kicker">Qualification result</div><div class="rep1-panel-title">Run the calculator</div><div class="rep1-panel-sub">The result will show the exact evaluation window, threshold, declines, and failed rules.</div></div></div><div id="rep1Result"><div class="rep1-decision review"><div class="rep1-decision-label">Waiting for sales history</div><div class="rep1-decision-value">Not calculated</div><div class="rep1-decision-copy">Load an account or enter annual sales, then calculate.</div></div></div></section></div>'+
+  '<aside class="rep1-stack"><section class="rep1-panel"><div class="rep1-kicker">Qualification standard</div><div class="rep1-panel-title">How Earned REP1 is evaluated</div><div class="rep1-policy-list"><div class="rep1-policy-item"><strong>First Qualifying Year</strong><span>First calendar year with at least $1,500 in annual sales.</span></div><div class="rep1-policy-item"><strong>Conversion Formula</strong><span>The three-year evaluation total must exceed First Qualifying Year sales × 3.641. The First Qualifying Year is not included in the three-year total.</span></div><div class="rep1-policy-item"><strong>Account Sustainability</strong><span>Each year in the three-year evaluation window must exceed First Qualifying Year sales.</span></div><div class="rep1-policy-item"><strong>Sales Stability</strong><span>No more than one year-over-year decline may occur across the three evaluation years.</span></div><div class="rep1-policy-item"><strong>Minimum Sales</strong><span>The latest evaluation year must maintain at least $1,500 in annual sales.</span></div></div></section><section class="rep1-panel"><div class="rep1-kicker">Important</div><div class="rep1-panel-title">Current-year results are provisional</div><div class="rep1-panel-sub">If the latest evaluation year is the current calendar year, the calculator uses current YTD sales. Eligibility can change as additional sales post before year-end.</div></section></aside></div>';
+ }
+ function populateCustomers(){var dl=document.getElementById('rep1CustomerList');if(!dl)return;dl.innerHTML=customerRows().map(function(c){return '<option value="'+esc(c.name)+'">'+esc(c.rep||'')+'</option>';}).join('');}
+ function currentRows(){return [].slice.call(document.querySelectorAll('#rep1SalesBody tr')).map(function(tr){return{year:Math.round(n((tr.querySelector('.rep1-year')||{}).value)),sales:n((tr.querySelector('.rep1-money')||{}).value),tr:tr};}).filter(function(r){return r.year>1900;}).sort(function(a,b){return a.year-b.year;});}
+ function rowHtml(year,sales,source){var cy=todayYear();return '<tr><td><input class="rep1-year" type="number" min="1900" max="2200" value="'+year+'" oninput="_rep1RefreshFqy()"></td><td><input class="rep1-money" type="text" inputmode="decimal" value="'+(sales?Number(sales).toFixed(2):'0.00')+'" oninput="_rep1RefreshFqy()"></td><td class="rep1-row-note">'+(year===cy?'Current year · YTD':esc(source||'Annual sales'))+'</td><td><button class="rep1-btn" style="padding:6px 8px" onclick="this.closest(\'tr\').remove();_rep1RefreshFqy()">×</button></td></tr>';}
+ function setRows(rows){var body=document.getElementById('rep1SalesBody');if(!body)return;body.innerHTML=rows.sort(function(a,b){return a.year-b.year;}).map(function(r){return rowHtml(r.year,r.sales,r.source);}).join('');refreshFqy();}
+ function resetYears(){var cy=todayYear(),rows=[];for(var y=cy-5;y<=cy;y++)rows.push({year:y,sales:0,source:'Manual'});setRows(rows);var a=document.getElementById('rep1Account'),o=document.getElementById('rep1Owner');if(a)a.value='';if(o)o.value='';}
+ function addYear(){var rows=currentRows(),year=rows.length?rows[0].year-1:todayYear()-6;var body=document.getElementById('rep1SalesBody');if(body)body.insertAdjacentHTML('afterbegin',rowHtml(year,0,'Manual'));refreshFqy();}
+ function refreshFqy(){var sel=document.getElementById('rep1Fqy');if(!sel)return;var keep=sel.value,rows=currentRows();sel.innerHTML='<option value="auto">Auto-detect</option>'+rows.map(function(r){return '<option value="'+r.year+'">'+r.year+' · '+money(r.sales)+'</option>';}).join('');if(keep&&([].slice.call(sel.options).some(function(o){return o.value===keep;})))sel.value=keep;}
+ function findCustomer(name){var key=norm(name);return customerRows().filter(function(c){return norm(c.name)===key;})[0]||null;}
+ function loadCustomer(){var inp=document.getElementById('rep1Account'),name=clean(inp&&inp.value),cust=findCustomer(name);if(!cust){alert('That account was not found in the tracker customer data. You can still enter the annual sales manually.');return;}var hist=trackerSalesHistory(cust),years=Object.keys(hist).map(Number),cy=todayYear();for(var y=cy-5;y<=cy;y++)if(years.indexOf(y)<0)years.push(y);years.sort(function(a,b){return a-b;});setRows(years.map(function(y){return{year:y,sales:n(hist[y]),source:n(hist[y])?'Tracker data':'No recorded sales'};}));if(inp)inp.value=cust.name;var owner=document.getElementById('rep1Owner');if(owner)owner.value=cust.rep||'';var note=document.getElementById('rep1DataNote');if(note)note.textContent='Loaded available customer spreadsheet/order history for '+cust.name+'. Verify the First Qualifying Year and annual sales before using the result for commission ownership.';}
+ function evaluation(rows,fqyChoice){
+  var map={};rows.forEach(function(r){map[r.year]=n(r.sales);});
+  var years=rows.map(function(r){return r.year;}).sort(function(a,b){return a-b;});
+  var fqy=null;
+  if(fqyChoice&&fqyChoice!=='auto'){var y=Number(fqyChoice);fqy={year:y,sales:n(map[y])};}
+  else{for(var i=0;i<years.length;i++){if(n(map[years[i]])>=MIN_SALES){fqy={year:years[i],sales:n(map[years[i]])};break;}}}
+  if(!fqy||fqy.sales<MIN_SALES)return{status:'review',reason:'No First Qualifying Year with at least '+money(MIN_SALES)+' was found in the loaded history.'};
+  var latest=years.filter(function(y){return y>fqy.year;}).pop();
+  if(!latest||latest-fqy.year<3)return{status:'review',fqy:fqy,reason:'At least three calendar years after the First Qualifying Year are required for conversion evaluation.'};
+  var evalYears=[latest-2,latest-1,latest];
+  if(evalYears[0]<=fqy.year)return{status:'review',fqy:fqy,reason:'Three calendar years after the First Qualifying Year are required.'};
+  var vals=evalYears.map(function(y){return n(map[y]);});
+  var threshold=fqy.sales*CONVERSION,total=vals.reduce(function(s,v){return s+v;},0);
+  var formula=total>threshold;
+  var sustainability=vals.every(function(v){return v>fqy.sales;});
+  var declines=0,declinePairs=[];
+  for(var j=1;j<vals.length;j++){if(vals[j]<vals[j-1]){declines++;declinePairs.push(evalYears[j-1]+' → '+evalYears[j]);}}
+  var stability=declines<=1;
+  var minimum=vals[vals.length-1]>=MIN_SALES;
+  var legacy=formula&&minimum;
+  var revised=formula&&sustainability&&stability&&minimum;
+  var missing=evalYears.filter(function(y){return !Object.prototype.hasOwnProperty.call(map,y);});
+  return{status:'done',fqy:fqy,evalYears:evalYears,vals:vals,threshold:threshold,total:total,formula:formula,sustainability:sustainability,declines:declines,declinePairs:declinePairs,stability:stability,minimum:minimum,legacy:legacy,revised:revised,missing:missing,latest:latest,currentYtd:latest===todayYear()};
+ }
+ function rule(icon,title,pass,copy,warn){return '<div class="rep1-rule '+(warn?'warn':pass?'pass':'fail')+'"><div class="rep1-rule-icon">'+(warn?'!':pass?'✓':'×')+'</div><div><strong>'+esc(title)+'</strong><span>'+copy+'</span></div></div>';}
+ function buildFailureReasons(r){var reasons=[];if(!r.formula)reasons.push('The three-year conversion total is '+money(r.total)+', which does not exceed the required '+money(r.threshold)+' ('+money(r.fqy.sales)+' × 3.641).');if(!r.sustainability){var bad=[];r.evalYears.forEach(function(y,i){if(r.vals[i]<=r.fqy.sales)bad.push(y+' sales of '+money(r.vals[i])+' do not exceed the First Qualifying Year sales of '+money(r.fqy.sales));});reasons.push('Account Sustainability failed: '+bad.join('; ')+'.');}if(!r.stability)reasons.push('Sales Stability failed: '+r.declines+' year-over-year declines occurred ('+r.declinePairs.join(', ')+'); no more than one is allowed.');if(!r.minimum)reasons.push('Minimum Sales failed: '+r.latest+' sales are '+money(r.vals[2])+', below the '+money(MIN_SALES)+' minimum.');return reasons;}
+ function responseText(r){var account=clean((document.getElementById('rep1Account')||{}).value)||'This account',owner=clean((document.getElementById('rep1Owner')||{}).value);var reasons=buildFailureReasons(r),lines=[];lines.push('Earned Rep1 Qualification Review — '+account);lines.push('');lines.push(account+' does not currently qualify for Earned Rep1 status.');lines.push('');lines.push('First Qualifying Year: '+r.fqy.year+' — '+money(r.fqy.sales));lines.push('Evaluation Period: '+r.evalYears[0]+'–'+r.evalYears[2]+(r.currentYtd?' ('+r.latest+' is current YTD)':''));lines.push('Required Conversion Total: greater than '+money(r.threshold));lines.push('Actual Evaluation Total: '+money(r.total));lines.push('');lines.push('Reason(s) not qualified:');reasons.forEach(function(x){lines.push('• '+x);});lines.push('');if(owner)lines.push('REP2 Owner: '+owner);lines.push('Based on the current sales history, Earned Rep1 is not approved at this time. The account can be reviewed again as annual sales change.');return lines.join('\n');}
+ function resultHtml(r){
+  if(r.status!=='done')return '<div class="rep1-decision review"><div class="rep1-decision-label">Review needed</div><div class="rep1-decision-value">Cannot determine yet</div><div class="rep1-decision-copy">'+esc(r.reason||'More information is required.')+'</div></div>'+(r.fqy?'<div class="rep1-metrics"><div class="rep1-metric"><span>First Qualifying Year</span><strong>'+r.fqy.year+'</strong></div><div class="rep1-metric"><span>First Qualifying Sales</span><strong>'+money(r.fqy.sales)+'</strong></div></div>':'');
+  var verdict=r.revised?'yes':'no',headline=r.revised?'QUALIFIES FOR EARNED REP1':'DOES NOT CURRENTLY QUALIFY';
+  var legacyCopy=r.legacy?'The account passes the legacy conversion formula + $1,500 minimum.':'The account does not pass the legacy formula/minimum standard.';
+  var response=!r.revised?'<div class="rep1-response"><div class="rep1-response-head"><strong>Standardized No Response</strong><button class="rep1-btn cyan" onclick="_rep1CopyResponse()">Copy Response</button></div><pre id="rep1ResponseText">'+esc(responseText(r))+'</pre><div id="rep1CopyStatus" class="rep1-copy-status"></div></div>':'';
+  var ytd=r.currentYtd?'<div class="rep1-eval-note"><strong>Current-year note:</strong> '+r.latest+' is being evaluated using YTD sales. This result can change before year-end.</div>':'';
+  return '<div class="rep1-decision '+verdict+'"><div class="rep1-decision-label">Revised Earned REP1 Result</div><div class="rep1-decision-value">'+headline+'</div><div class="rep1-decision-copy">First Qualifying Year '+r.fqy.year+' at '+money(r.fqy.sales)+' · evaluation window '+r.evalYears[0]+'–'+r.evalYears[2]+'.</div></div><div class="rep1-metrics"><div class="rep1-metric"><span>3-Year Actual</span><strong>'+money(r.total)+'</strong></div><div class="rep1-metric"><span>Required > 3.641×</span><strong>'+money(r.threshold)+'</strong></div><div class="rep1-metric"><span>YoY Declines</span><strong>'+r.declines+' / 1 allowed</strong></div><div class="rep1-metric"><span>Latest-Year Sales</span><strong>'+money(r.vals[2])+'</strong></div></div><div class="rep1-rule-list">'+
+   rule('','Conversion Formula',r.formula,'Three-year sales '+money(r.total)+' '+(r.formula?'exceed':'do not exceed')+' the required '+money(r.threshold)+'.')+
+   rule('','Account Sustainability',r.sustainability,r.sustainability?'Every evaluation year exceeds the '+money(r.fqy.sales)+' First Qualifying Year baseline.':'At least one evaluation year does not exceed the '+money(r.fqy.sales)+' baseline.')+
+   rule('','Sales Stability',r.stability,r.declines+' decline'+(r.declines===1?'':'s')+' across the evaluation years'+(r.declinePairs.length?' ('+esc(r.declinePairs.join(', '))+')':'')+'. Maximum allowed: 1.')+
+   rule('','Minimum Sales',r.minimum,r.latest+' sales are '+money(r.vals[2])+'; minimum required is '+money(MIN_SALES)+'.')+
+   '</div>'+ytd+'<div class="rep1-legacy" style="margin-top:14px"><strong>Legacy formula result: '+(r.legacy?'PASS':'FAIL')+'</strong><p>'+esc(legacyCopy)+' This comparison is shown so one-hit-wonder accounts are easy to identify when the revised sustainability/stability rules change the decision.</p></div>'+response;
+ }
+ function calculate(){refreshFqy();var rows=currentRows(),fqy=(document.getElementById('rep1Fqy')||{}).value||'auto',r=evaluation(rows,fqy);window._rep1LastResult=r;var host=document.getElementById('rep1Result');if(host)host.innerHTML=resultHtml(r);}
+ function copyResponse(){var pre=document.getElementById('rep1ResponseText'),text=pre?pre.textContent:'';if(!text)return;function ok(){var st=document.getElementById('rep1CopyStatus');if(st){st.textContent='Copied to clipboard.';setTimeout(function(){st.textContent='';},1800);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok).catch(function(){fallback();});}else fallback();function fallback(){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){alert('Copy failed. Select the response text and copy it manually.');}ta.remove();}}
+ function open(btn){var page=ensurePage();document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('#tabBar .tab').forEach(function(b){b.classList.remove('active');});page.classList.add('active');if(btn)btn.classList.add('active');populateCustomers();}
+ function installNav(){ensurePage();if(document.querySelector('[data-rep1calc-nav="1"]'))return;var items=document.querySelector('#tabBar .nav-group[data-group="opsg"] .nav-group-items');if(!items){var groups=[].slice.call(document.querySelectorAll('#tabBar .nav-group'));var g=groups.filter(function(x){var l=x.querySelector('.nav-group-label');return l&&clean(l.textContent)==='Operations';})[0];items=g&&g.querySelector('.nav-group-items');}if(!items)return;var btn=document.createElement('button');btn.type='button';btn.className='tab nav-item';btn.dataset.rep1calcNav='1';btn.dataset.navLabel='Earned Rep1 Calculator';btn.dataset.navIcon='👑';btn.innerHTML='<span class="nav-icon">👑</span><span class="nav-label">Earned Rep1 Calculator</span>';btn.onclick=function(){open(btn);};var calc=[].slice.call(items.querySelectorAll('button')).filter(function(b){return /calculator/i.test(b.textContent||'');})[0];if(calc&&calc.nextSibling)items.insertBefore(btn,calc.nextSibling);else items.appendChild(btn);}
+ window._rep1Open=open;window._rep1LoadCustomer=loadCustomer;window._rep1ResetYears=resetYears;window._rep1AddYear=addYear;window._rep1RefreshFqy=refreshFqy;window._rep1Calculate=calculate;window._rep1CopyResponse=copyResponse;
+ window.TCP_BUILD_VERSION=BUILD;try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v631 — Earned Rep1 Calculator';}catch(e){}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(installNav,150);},{once:true});else setTimeout(installNav,150);
+ var obs=new MutationObserver(function(){if(!document.querySelector('[data-rep1calc-nav="1"]'))installNav();});if(document.body)obs.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
+
+<style id="tcp-earned-rep1-v632-fix-css">
+#pg-rep1calc .rep1-year.rep1-duplicate,
+#pg-rep1calc tr.rep1-duplicate-row .rep1-year{
+  border-color:rgba(240,120,120,.92)!important;
+  box-shadow:0 0 0 3px rgba(240,120,120,.13)!important;
+  background:rgba(240,120,120,.06)!important;
+}
+#pg-rep1calc tr.rep1-duplicate-row{background:rgba(240,120,120,.035);}
+#pg-rep1calc .rep1-inline-error{
+  margin-top:11px;padding:11px 13px;border:1px solid rgba(240,120,120,.25);border-radius:12px;
+  background:rgba(240,120,120,.065);color:#FFB9B9;font-size:10.8px;line-height:1.5;font-weight:750;
+}
+#pg-rep1calc #rep1ResultPanel.rep1-result-flash{animation:rep1ResultFlash .75s ease both;}
+@keyframes rep1ResultFlash{0%{box-shadow:0 0 0 0 rgba(0,175,239,.0)}35%{box-shadow:0 0 0 4px rgba(0,175,239,.18)}100%{box-shadow:none}}
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v632"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v632"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+</style>
+<script id="tcp-earned-rep1-v632-fix-js">
+(function(){
+ var BUILD='v632';
+ var priorCalculate=window._rep1Calculate;
+ var priorRefresh=window._rep1RefreshFqy;
+ var priorAddYear=window._rep1AddYear;
+ function n(v){if(v==null||v==='')return 0;var x=Number(String(v).replace(/[$,\s]/g,''));return isFinite(x)?x:0;}
+ function money(v){return '$'+n(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+ function rows(){return [].slice.call(document.querySelectorAll('#rep1SalesBody tr')).map(function(tr){
+   var yearEl=tr.querySelector('.rep1-year'),moneyEl=tr.querySelector('.rep1-money');
+   return{tr:tr,yearEl:yearEl,moneyEl:moneyEl,year:Math.round(n(yearEl&&yearEl.value)),sales:n(moneyEl&&moneyEl.value)};
+ }).filter(function(r){return r.year>1900;});}
+ function duplicateMap(){var map={};rows().forEach(function(r){(map[r.year]||(map[r.year]=[])).push(r);});return map;}
+ function duplicates(){var map=duplicateMap();return Object.keys(map).filter(function(y){return map[y].length>1;}).map(Number).sort(function(a,b){return a-b;});}
+ function clearMarks(){rows().forEach(function(r){r.tr.classList.remove('rep1-duplicate-row');if(r.yearEl)r.yearEl.classList.remove('rep1-duplicate');});var e=document.getElementById('rep1DuplicateError');if(e)e.remove();}
+ function markDuplicates(dups){
+   clearMarks();var map=duplicateMap();
+   dups.forEach(function(y){(map[y]||[]).forEach(function(r){r.tr.classList.add('rep1-duplicate-row');if(r.yearEl)r.yearEl.classList.add('rep1-duplicate');});});
+   var note=document.getElementById('rep1DataNote');
+   if(note){var box=document.createElement('div');box.id='rep1DuplicateError';box.className='rep1-inline-error';box.innerHTML='<strong>Duplicate calendar year'+(dups.length===1?'':'s')+': '+dups.join(', ')+'</strong><br>Earned REP1 requires one authoritative annual-sales total for each calendar year. Delete or change the duplicate row before calculating; the tracker will not add or overwrite duplicate annual values automatically.';note.insertAdjacentElement('afterend',box);}
+ }
+ function showDuplicateResult(dups){
+   var host=document.getElementById('rep1Result');if(!host)return;
+   host.innerHTML='<div class="rep1-decision no"><div class="rep1-decision-label">Sales history needs correction</div><div class="rep1-decision-value">Duplicate year'+(dups.length===1?'':'s')+' found</div><div class="rep1-decision-copy">'+dups.join(', ')+' '+(dups.length===1?'appears':'appear')+' more than once. Keep one annual sales total per calendar year, then run the calculator again. No commission qualification decision has been made.</div></div>';
+ }
+ function focusResult(){
+   var panel=document.getElementById('rep1ResultPanel');if(!panel)return;
+   panel.classList.remove('rep1-result-flash');void panel.offsetWidth;panel.classList.add('rep1-result-flash');
+   try{panel.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){panel.scrollIntoView(true);}
+ }
+ function refresh(){
+   if(typeof priorRefresh==='function')priorRefresh();
+   var d=duplicates();clearMarks();if(d.length)markDuplicates(d);
+ }
+ window._rep1RefreshFqy=refresh;
+ window._rep1Calculate=function(){
+   var d=duplicates();
+   if(d.length){markDuplicates(d);showDuplicateResult(d);focusResult();return false;}
+   clearMarks();
+   if(typeof priorCalculate==='function')priorCalculate();
+   focusResult();
+   return true;
+ };
+ window._rep1AddYear=function(){
+   if(typeof priorAddYear==='function')priorAddYear();
+   refresh();
+ };
+ document.addEventListener('input',function(e){if(e.target&&e.target.closest&&e.target.closest('#pg-rep1calc')&&(e.target.classList.contains('rep1-year')||e.target.classList.contains('rep1-money'))){setTimeout(refresh,0);}},true);
+ document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('#pg-rep1calc .rep1-sales-table button'):null;if(b)setTimeout(refresh,0);},true);
+ window._rep1DuplicateYears=duplicates;
+ window.TCP_BUILD_VERSION=BUILD;
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v632 — Earned Rep1 Calculator Fix';}catch(e){}
+})();
+</script>
