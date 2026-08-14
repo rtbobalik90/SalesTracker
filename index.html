@@ -65092,3 +65092,271 @@ body.nav-rail .tabs:after{content:"v637"!important;white-space:normal!important;
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+
+<!-- ======================================================================
+     v639 · PHASED REP DAILY COCKPIT
+     Approved visual concept implementation. Phased-only shell + My Day.
+     Full Workspace and all underlying data/workflow modules remain intact.
+     ====================================================================== -->
+<style id="tcp-v639-phased-rep-daily-cockpit-css">
+:root{--p639-orange:#FA873D;--p639-cyan:#00AFEF;--p639-green:#47D16C;--p639-purple:#9B6BFF;--p639-gold:#EF9F27;--p639-bg:#050B12;--p639-panel:#0C1925;--p639-panel2:#0A1621;--p639-line:rgba(139,166,194,.16);--p639-text:#F5F8FC;--p639-muted:#8EA0B6}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639{display:grid!important;grid-template-columns:220px minmax(0,1fr)!important;min-width:0!important;width:100%!important;height:100dvh!important;background:linear-gradient(135deg,#03070C,#07111A 48%,#06101A)!important;color:var(--p639-text)!important;font-family:'Open Sans','Segoe UI',Arial,sans-serif!important;overflow:hidden!important}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 *{box-sizing:border-box}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-side{position:relative!important;inset:auto!important;width:auto!important;min-width:0!important;height:100dvh!important;max-height:none!important;display:flex!important;flex-direction:column!important;padding:15px 11px 12px!important;border-right:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(180deg,#05070A,#05080C 64%,#07111A)!important;overflow:hidden!important;box-shadow:12px 0 38px rgba(0,0,0,.20)!important}
+#rp-overlay .p639-brand{display:flex;flex-direction:column;align-items:center;text-align:center;padding:2px 10px 18px;border-bottom:1px solid rgba(255,255,255,.10)}
+#rp-overlay .p639-brand img{width:92px;height:72px;object-fit:contain;display:block;margin:0 auto 2px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.22))}
+#rp-overlay .p639-brand strong{font-family:'Droid Serif',Georgia,serif;font-size:14px;line-height:1.05;letter-spacing:.015em;color:#fff;text-transform:uppercase}
+#rp-overlay .p639-brand span{margin-top:6px;font-size:8px;font-weight:950;letter-spacing:.19em;color:#AFA7FF;text-transform:uppercase}
+#rp-overlay .p639-brand em{display:inline-flex;align-items:center;justify-content:center;margin-top:9px;padding:4px 9px;border:1px solid rgba(0,175,239,.28);border-radius:999px;background:rgba(0,175,239,.10);color:#46D7FF;font-size:7px;font-style:normal;font-weight:950;letter-spacing:.09em;text-transform:uppercase}
+#rp-overlay .p639-nav{flex:1;min-height:0;padding-top:15px;overflow:auto;scrollbar-width:thin;scrollbar-color:rgba(250,135,61,.35) transparent}
+#rp-overlay .p639-nav-group{margin:0 0 16px}
+#rp-overlay .p639-nav-label{padding:0 10px 6px;color:#6F87A7;font-size:7px;font-weight:950;letter-spacing:.18em;text-transform:uppercase}
+#rp-overlay .p639-nav button{width:100%;min-height:39px;display:flex;align-items:center;gap:11px;margin:3px 0;padding:0 11px;border:1px solid transparent;border-radius:9px;background:transparent;color:#CED6E0;text-align:left;font-size:10px;font-weight:800;cursor:pointer;transition:.15s ease}
+#rp-overlay .p639-nav button i{width:20px;display:grid;place-items:center;color:#8EA5BE;font-style:normal;font-size:14px}
+#rp-overlay .p639-nav button:hover{background:rgba(255,255,255,.035);color:#fff}
+#rp-overlay .p639-nav button.on{border-color:rgba(250,135,61,.48);background:linear-gradient(90deg,rgba(250,135,61,.19),rgba(250,135,61,.055) 68%,rgba(0,175,239,.07));color:#fff;box-shadow:inset 3px 0 0 var(--p639-orange),0 8px 22px rgba(0,0,0,.18)}
+#rp-overlay .p639-nav button.on i{color:var(--p639-orange)}
+#rp-overlay .p639-user{flex:none;border-top:1px solid rgba(255,255,255,.09);padding-top:10px}
+#rp-overlay .p639-user-card{display:grid;grid-template-columns:32px minmax(0,1fr) 20px;gap:8px;align-items:center;padding:8px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:rgba(255,255,255,.025)}
+#rp-overlay .p639-user-mark{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,rgba(250,135,61,.88),rgba(0,175,239,.88));color:#fff;font-size:9px;font-weight:950;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#rp-overlay .p639-user-card strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;font-size:8px}
+#rp-overlay .p639-user-card span{display:block;margin-top:2px;color:#6F8095;font-size:6.5px}
+#rp-overlay .p639-user-card button{border:0;background:transparent;color:#8EA0B6;cursor:pointer;font-size:11px}
+#rp-overlay .p639-logout{width:100%;min-height:37px;margin-top:8px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:rgba(255,255,255,.02);color:#8997A9;font-size:8px;font-weight:800;cursor:pointer}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-main{position:relative!important;min-width:0!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;padding:0!important;background:transparent!important;overflow:auto!important;scrollbar-width:thin;scrollbar-color:rgba(0,175,239,.30) transparent}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 #rp2-page{min-width:0!important;padding:0!important;margin:0!important;overflow:visible!important}
+#rp-overlay .p639-page-top{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:13px 22px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(3,9,15,.86);backdrop-filter:blur(18px);position:sticky;top:0;z-index:30}
+#rp-overlay .p639-page-top strong{display:block;color:#fff;font-family:'Droid Serif',Georgia,serif;font-size:19px}
+#rp-overlay .p639-page-top span{display:block;margin-top:3px;color:#7F91A6;font-size:8px}
+#rp-overlay .p639-page-top-actions{display:flex;align-items:center;gap:8px}
+#rp-overlay .p639-page-top-actions button{min-height:32px;padding:0 11px;border:1px solid rgba(0,175,239,.18);border-radius:8px;background:rgba(0,175,239,.05);color:#8CE5FC;font-size:8px;font-weight:900;cursor:pointer}
+#rp-overlay .p639-subpage{padding:16px 20px 34px}
+
+/* My Day — approved daily cockpit */
+#rp-overlay .p639-home{padding:14px 16px 12px;min-height:100dvh;background:radial-gradient(circle at 45% -16%,rgba(0,175,239,.08),transparent 32%),transparent}
+#rp-overlay .p639-hello{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:2px 14px 10px}
+#rp-overlay .p639-hello h1{margin:0;color:#F7F9FD;font-family:'Droid Serif',Georgia,serif;font-size:28px;line-height:1.08;letter-spacing:-.025em}
+#rp-overlay .p639-hello p{margin:4px 0 0;color:#A9B5C4;font-size:10.5px}
+#rp-overlay .p639-date{display:flex;align-items:center;gap:7px;padding-top:4px;color:#BCC5D1;font-size:9px;white-space:nowrap}
+#rp-overlay .p639-date i{color:#8EA2B8;font-style:normal;font-size:12px}
+#rp-overlay .p639-daily-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) minmax(210px,.95fr);align-items:stretch;margin:0 0 12px;border:1px solid var(--p639-line);border-radius:14px;background:linear-gradient(145deg,rgba(13,29,43,.96),rgba(8,18,28,.98));box-shadow:0 14px 38px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden}
+#rp-overlay .p639-daily-stat{display:grid;grid-template-columns:48px minmax(0,1fr);gap:11px;align-items:center;min-height:92px;padding:15px 17px;border-right:1px solid rgba(255,255,255,.09)}
+#rp-overlay .p639-stat-icon{width:43px;height:43px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:50%;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent);font-size:19px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+#rp-overlay .p639-daily-stat strong{display:block;color:#fff;font-size:20px;line-height:1;font-weight:950}
+#rp-overlay .p639-daily-stat span{display:block;margin-top:4px;color:#D5DCE5;font-size:8.5px;font-weight:750}
+#rp-overlay .p639-daily-stat small{display:block;margin-top:5px;color:var(--accent);font-size:7.5px;font-weight:900}
+#rp-overlay .p639-start{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;padding:13px 18px}
+#rp-overlay .p639-start button{min-height:44px;border:1px solid #FF9B5C;border-radius:9px;background:linear-gradient(180deg,#FF903F,#F57525);color:#fff;font-size:10.5px;font-weight:950;letter-spacing:.02em;cursor:pointer;box-shadow:0 10px 24px rgba(250,135,61,.18),inset 0 1px 0 rgba(255,255,255,.22)}
+#rp-overlay .p639-start small{text-align:center;color:#8594A8;font-size:7.5px}
+#rp-overlay .p639-work{display:grid;grid-template-columns:minmax(560px,1.55fr) minmax(365px,.95fr);gap:12px;align-items:stretch}
+#rp-overlay .p639-panel{border:1px solid var(--p639-line);border-radius:13px;background:linear-gradient(155deg,rgba(12,27,40,.98),rgba(8,19,29,.99));box-shadow:0 12px 34px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035);overflow:hidden}
+#rp-overlay .p639-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:10px 13px;border-bottom:1px solid rgba(255,255,255,.08)}
+#rp-overlay .p639-panel-head strong{color:#40D3FF;font-size:8.5px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}
+#rp-overlay .p639-panel-head button{border:0;background:transparent;color:var(--p639-orange);font-size:8px;font-weight:900;cursor:pointer}
+#rp-overlay .p639-info{display:inline-grid!important;place-items:center;width:16px;height:16px;margin-left:5px;border:1px solid rgba(108,170,214,.35)!important;border-radius:50%;color:#8EDCFA!important;font-size:8px!important}
+#rp-overlay .p639-action-list{padding:0 12px}
+#rp-overlay .p639-action{display:grid;grid-template-columns:34px 56px minmax(0,1fr) auto;gap:11px;align-items:center;min-height:88px;padding:10px 2px;border-bottom:1px solid rgba(255,255,255,.10)}
+#rp-overlay .p639-action:last-child{border-bottom:0}
+#rp-overlay .p639-rank{color:var(--p639-orange);font-size:29px;font-weight:950;text-align:center}
+#rp-overlay .p639-action-icon{width:51px;height:51px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--action) 35%,transparent);border-radius:50%;background:color-mix(in srgb,var(--action) 10%,transparent);color:var(--action);font-size:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+#rp-overlay .p639-action-copy{min-width:0}
+#rp-overlay .p639-action-copy h3{margin:0;color:#fff;font-size:11.5px;line-height:1.2;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .p639-action-copy b{display:block;margin-top:5px;color:var(--action);font-size:7.8px;letter-spacing:.04em;text-transform:uppercase}
+#rp-overlay .p639-action-copy p{margin:4px 0 0;color:#B6C1CE;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .p639-action-copy small{display:block;margin-top:4px;color:#8495A9;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .p639-action-buttons{display:flex;align-items:center;gap:7px}
+#rp-overlay .p639-action-buttons button{min-height:35px;padding:0 13px;border:1px solid rgba(111,145,174,.35);border-radius:8px;background:#0B1824;color:#C9D4E1;font-size:7.5px;font-weight:900;cursor:pointer;white-space:nowrap}
+#rp-overlay .p639-action-buttons button.primary{border-color:#FF9B5C;background:linear-gradient(180deg,#FF9040,#F47424);color:#fff;box-shadow:0 7px 18px rgba(250,135,61,.16)}
+#rp-overlay .p639-more{text-align:center;padding:8px;color:#70849A;font-size:7.5px}
+#rp-overlay .p639-right{display:grid;grid-template-rows:auto auto;gap:10px;min-width:0}
+#rp-overlay .p639-glance{padding:4px 11px 8px}
+#rp-overlay .p639-glance-row{display:grid;grid-template-columns:32px minmax(0,1fr) 58px minmax(86px,.7fr) 36px;gap:8px;align-items:center;min-height:46px;border-bottom:1px solid rgba(255,255,255,.08)}
+#rp-overlay .p639-glance-row:last-of-type{border-bottom:0}
+#rp-overlay .p639-mini-icon{width:29px;height:29px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:50%;background:color-mix(in srgb,var(--accent) 9%,transparent);color:var(--accent);font-size:13px}
+#rp-overlay .p639-glance-label strong{display:block;color:#fff;font-size:8px}
+#rp-overlay .p639-glance-label span{display:block;margin-top:2px;color:#7F90A5;font-size:6.7px}
+#rp-overlay .p639-glance-value{color:#fff;font-size:11px;font-weight:950;text-align:right}
+#rp-overlay .p639-track{height:5px;border-radius:999px;background:#25313D;overflow:hidden}
+#rp-overlay .p639-track i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:var(--accent);box-shadow:0 0 10px color-mix(in srgb,var(--accent) 45%,transparent)}
+#rp-overlay .p639-glance-pct{color:#B6C0CD;font-size:8px;font-weight:900;text-align:right}
+#rp-overlay .p639-day-status{display:grid;grid-template-columns:28px minmax(0,1fr);gap:9px;align-items:center;margin-top:6px;padding:9px 10px;border:1px solid color-mix(in srgb,var(--tone) 35%,transparent);border-radius:9px;background:color-mix(in srgb,var(--tone) 7%,transparent)}
+#rp-overlay .p639-day-status i{width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--tone) 12%,transparent);color:var(--tone);font-style:normal;font-size:13px}
+#rp-overlay .p639-day-status strong{display:block;color:var(--tone);font-size:8px}
+#rp-overlay .p639-day-status span{display:block;margin-top:2px;color:#91A0B3;font-size:6.8px}
+#rp-overlay .p639-book{padding:11px 14px 13px}
+#rp-overlay .p639-book-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+#rp-overlay .p639-book-top strong{color:#E3E8EF;font-size:13px;font-weight:900}
+#rp-overlay .p639-book-top b{color:var(--p639-green);font-size:19px}
+#rp-overlay .p639-book-track{height:12px;margin-top:8px;border-radius:3px;background:repeating-linear-gradient(90deg,#27333D 0 9px,transparent 9px 12px),#1A252F;overflow:hidden}
+#rp-overlay .p639-book-track i{display:block;height:100%;width:var(--pct);background:repeating-linear-gradient(90deg,#45D694 0 9px,transparent 9px 12px),#26BA7D}
+#rp-overlay .p639-book-foot{display:flex;justify-content:space-between;gap:10px;margin-top:7px;color:#7D8DA1;font-size:7.5px}
+#rp-overlay .p639-book-foot b{color:#3ED5FF}
+#rp-overlay .p639-book-coach{display:grid;grid-template-columns:27px minmax(0,1fr);gap:9px;align-items:center;margin-top:9px;padding:8px 9px;border:1px solid rgba(71,209,108,.20);border-radius:9px;background:rgba(71,209,108,.045)}
+#rp-overlay .p639-book-coach i{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.04);color:#D8E5EF;font-style:normal}
+#rp-overlay .p639-book-coach strong{display:block;color:#63E5A8;font-size:8px}
+#rp-overlay .p639-book-coach span{display:block;margin-top:2px;color:#8999AB;font-size:6.8px}
+#rp-overlay .p639-momentum{margin-top:10px;padding:10px 11px 9px}
+#rp-overlay .p639-momentum-title{display:flex;align-items:center;gap:5px;margin:0 0 8px;color:#45D7FF;font-size:8px;font-weight:950;letter-spacing:.11em;text-transform:uppercase}
+#rp-overlay .p639-momentum-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) minmax(120px,.85fr);gap:8px}
+#rp-overlay .p639-metric{min-width:0;min-height:92px;padding:12px 11px;border:1px solid rgba(255,255,255,.09);border-radius:9px;background:rgba(255,255,255,.018)}
+#rp-overlay .p639-metric-head{display:flex;align-items:center;gap:9px}
+#rp-overlay .p639-metric-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent);font-size:14px}
+#rp-overlay .p639-metric span{display:block;color:#7E90A5;font-size:6.5px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .p639-metric strong{display:block;margin-top:5px;color:#fff;font-size:15px;line-height:1;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .p639-metric small{display:block;margin-top:4px;color:#8394A7;font-size:6.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .p639-mini-progress{height:4px;margin-top:10px;border-radius:999px;background:#28343F;overflow:visible;position:relative}
+#rp-overlay .p639-mini-progress i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:var(--accent)}
+#rp-overlay .p639-performance-link{display:flex;align-items:center;justify-content:center;min-height:92px;padding:11px;border:1px solid rgba(0,175,239,.16);border-radius:9px;background:rgba(0,175,239,.035);color:#A7E9FA;font-size:7.5px;font-weight:950;text-align:center;line-height:1.55;cursor:pointer}
+#rp-overlay .p639-home-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 2px 0;color:#8292A5;font-size:7.5px}
+#rp-overlay .p639-home-footer strong{color:#5DCAA5}
+#rp-overlay .p639-home-footer .signal{color:var(--p639-orange);font-size:12px;margin-right:5px}
+#rp-overlay .p639-home-footer-right{white-space:nowrap}
+
+@media(max-width:1380px){#rp-overlay .p639-daily-strip{grid-template-columns:repeat(2,1fr) 1fr}#rp-overlay .p639-start{grid-column:3;grid-row:1/3}#rp-overlay .p639-daily-stat:nth-child(2){border-right:1px solid rgba(255,255,255,.09)}#rp-overlay .p639-work{grid-template-columns:minmax(520px,1.35fr) minmax(330px,.9fr)}#rp-overlay .p639-momentum-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1100px){#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639{grid-template-columns:190px minmax(0,1fr)!important}#rp-overlay .p639-work{grid-template-columns:1fr}#rp-overlay .p639-right{grid-template-columns:1fr 1fr;grid-template-rows:auto}#rp-overlay .p639-action{grid-template-columns:28px 48px minmax(0,1fr)}#rp-overlay .p639-action-buttons{grid-column:3;justify-self:start}}
+@media(max-width:780px){#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639{display:block!important;height:auto!important;overflow:auto!important}#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-side{position:relative!important;height:auto!important;max-height:none!important}#rp-overlay .p639-brand img{width:72px;height:55px}#rp-overlay .p639-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible}#rp-overlay .p639-nav-group{margin:0 5px 10px}#rp-overlay .p639-user{display:none}#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-main{height:auto!important;max-height:none!important;overflow:visible!important}#rp-overlay .p639-hello{flex-direction:column}#rp-overlay .p639-daily-strip{grid-template-columns:1fr 1fr}#rp-overlay .p639-start{grid-column:1/-1;grid-row:auto}#rp-overlay .p639-right{grid-template-columns:1fr}#rp-overlay .p639-momentum-grid{grid-template-columns:1fr 1fr}#rp-overlay .p639-action{grid-template-columns:28px 44px minmax(0,1fr)}#rp-overlay .p639-action-buttons{grid-column:1/-1;justify-self:end}}
+html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v639"!important}
+body.nav-rail .tabs:after{content:"v639"!important}
+</style>
+
+<script id="tcp-v639-phased-rep-daily-cockpit-js">
+(function(){
+ 'use strict';
+ var BUILD='v639';
+ if(typeof window._rp2Html!=='function'||typeof window._rp2Page!=='function')return;
+ var priorHtml=window._rp2Html,priorPage=window._rp2Page;
+ function arr(v){return Array.isArray(v)?v:[]}
+ function n(v){var x=Number(v);return isFinite(x)?x:0}
+ function clean(v){return String(v==null?'':v).trim()}
+ function esc(v){return typeof window._rp2Esc==='function'?window._rp2Esc(clean(v)):clean(v).replace(/[&<>\"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c})}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function money(v){return typeof window._rp2$==='function'?window._rp2$(n(v)):'$'+Math.round(n(v)).toLocaleString()}
+ function num(v){return Math.round(n(v)).toLocaleString()}
+ function pct(v){return Math.max(0,Math.min(100,Math.round(n(v))))}
+ function first(v){return clean(v).split(/\s+/)[0]||clean(v)||'Rep'}
+ function initials(v){return clean(v).split(/\s+/).map(function(x){return x.charAt(0)}).slice(0,2).join('').toUpperCase()}
+ function forcedView(){try{return typeof window._rpUrlPortalView==='function'?clean(window._rpUrlPortalView()).toLowerCase():''}catch(e){return''}}
+ function storageKey(rep){return'tcp.repPortal.viewMode.v608.'+clean(rep||'default').toLowerCase().replace(/[^a-z0-9]+/g,'-')}
+ function mode(rep){var forced=forcedView();if(forced==='phased'||forced==='full'){try{localStorage.setItem(storageKey(rep||(_rp2&&_rp2.rep)),forced)}catch(e){}return forced}try{if(window.TCP_REP_PORTAL_DUAL_VIEW_V608&&typeof TCP_REP_PORTAL_DUAL_VIEW_V608.getMode==='function')return TCP_REP_PORTAL_DUAL_VIEW_V608.getMode(rep)}catch(e){}try{return localStorage.getItem(storageKey(rep||(_rp2&&_rp2.rep)))==='phased'?'phased':'full'}catch(e){return'full'}}
+ function isPhased(rep){return mode(rep)==='phased'}
+ function portalData(){try{return window.TCP_PROJECT_SIMPLIFY_REP_V560&&typeof TCP_PROJECT_SIMPLIFY_REP_V560.portalData==='function'?TCP_PROJECT_SIMPLIFY_REP_V560.portalData():{}}catch(e){console.warn('[v639 portal data]',e);return{}}}
+ function cycleData(rep){try{return window.TCP_PROJECT_SIMPLIFY_REP_V560&&typeof TCP_PROJECT_SIMPLIFY_REP_V560.callCycle==='function'?TCP_PROJECT_SIMPLIFY_REP_V560.callCycle(rep):{diagnostics:null,queue:[]}}catch(e){return{diagnostics:null,queue:[]}}}
+ function performance(rep){try{return window.TCP_PROJECT_SIMPLIFY_REP_V560&&typeof TCP_PROJECT_SIMPLIFY_REP_V560.performance==='function'?TCP_PROJECT_SIMPLIFY_REP_V560.performance(rep):{score:null,rows:[]}}catch(e){return{score:null,rows:[]}}}
+ function dateObj(v){if(!v)return null;try{var d=v instanceof Date?new Date(v.getTime()):new Date(String(v).length===10?String(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d}catch(e){return null}}
+ function daysAgo(v){var d=dateObj(v);if(!d)return null;var now=new Date();d.setHours(12,0,0,0);now.setHours(12,0,0,0);return Math.max(0,Math.round((now-d)/86400000))}
+ function dateLabel(){try{return new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}catch(e){return''}}
+ function syncLabel(){try{var stamp=window._tcpStorageMeta&&(_tcpStorageMeta.lastHydrated||_tcpStorageMeta.lastSaved);if(!stamp)return'Cloud data loaded';var d=new Date(stamp);if(isNaN(d.getTime()))return'Cloud data loaded';var mins=Math.max(0,Math.round((Date.now()-d.getTime())/60000));return mins<1?'Last sync just now':mins===1?'Last sync 1 min ago':'Last sync '+mins+' min ago'}catch(e){return'Cloud data loaded'}}
+ function customer(g,name){var customers=g&&g.customers||{},key=norm(name),hit=customers[key];if(hit)return hit;var keys=Object.keys(customers);for(var i=0;i<keys.length;i++){var row=customers[keys[i]];if(norm(row&&row.name)===key)return row}return null}
+ function field(o,names){for(var i=0;i<names.length;i++){if(o&&o[names[i]]!=null&&clean(o[names[i]])!=='')return o[names[i]]}return''}
+ function lastOrderCopy(g,name){var c=customer(g,name);if(!c)return'';var order=c.lastOrder||null,amount=n(field(order,['total','amount','revenue','sales','orderTotal','extendedSalesRevenue'])),ago=daysAgo(c.lastOrderDate||field(order,['orderDate','date','createdAt']));var bits=[];if(amount>0)bits.push('Last order: '+money(amount));if(ago!=null)bits.push(ago===0?'today':ago+' days ago');return bits.join(' · ')}
+ function contactCopy(g,name,fallback){var c=customer(g,name),contact=clean(fallback||(c&&c.primary&&field(c.primary,['name','contactName'])));return contact?'Contact: '+contact:''}
+ function qAmount(rows){return arr(rows).reduce(function(s,x){return s+n(x&&x.amount)},0)}
+ function workData(){
+  var rep=window._rp2&&_rp2.rep||'',g=portalData(),cycle=cycleData(rep),perf=performance(rep),d=cycle.diagnostics||{};
+  var calls=arr(cycle.queue).length?arr(cycle.queue):arr(g.calls),lanes=g.business&&g.business.lanes||{},business=arr(lanes.overdue).concat(arr(lanes.today));
+  var q72=arr(g.quoteGroups&&g.quoteGroups['72']),q7=arr(g.quoteGroups&&g.quoteGroups['7']),quotes=q72.concat(q7),opps=arr(g.opps),week=g.perf&&g.perf.week||{},qtd=g.perf&&g.perf.qtd||{},goal=n(g.perf&&g.perf.goal),set=n(d.set||d.size),completed=n(d.completed),dailyTarget=n(d.dailyTarget),todayCompleted=n(d.todayCompleted),todayRemaining=n(d.todayRemaining);
+  return{rep:rep,g:g,cycle:cycle,perf:perf,d:d,calls:calls,business:business,q72:q72,q7:q7,quotes:quotes,opps:opps,week:week,qtd:qtd,goal:goal,set:set,completed:completed,dailyTarget:dailyTarget,todayCompleted:todayCompleted,todayRemaining:todayRemaining};
+ }
+ function actionButton(label,onclick,primary){return'<button'+(primary?' class="primary"':'')+' onclick="'+onclick+'">'+esc(label)+'</button>'}
+ function nextActions(w){
+  var out=[],seen={};
+  function add(x){var key=norm(x&&x.company);if(!x||!key||seen[key])return;seen[key]=1;out.push(x)}
+  var call=w.calls[0];if(call)add({kind:'call',company:clean(call.customer||call.company),contact:clean(call.contact),label:clean(call.reason||'Account update due today'),detail:clean(call.copy||call.source||''),color:'#00AFEF',icon:'▦',buttons:actionButton('Prep',"_ps60OpenCall('"+encodeURIComponent(clean(call.customer||call.company))+"')",false)+actionButton('☎ Call Now',"_ps60OpenCall('"+encodeURIComponent(clean(call.customer||call.company))+"')",true)});
+  var quote=w.q72[0]||w.q7[0];if(quote)add({kind:'quote',company:clean(quote.company),contact:clean(quote.contact),label:(w.q72.indexOf(quote)>=0?'72-hour quote follow-up':'1-week quote follow-up'),detail:(clean(quote.number||quote.title||'Quote')+(n(quote.amount)?' · '+money(quote.amount):'')),color:'#9B6BFF',icon:'▤',buttons:actionButton('Review Quote',"_rp2Go('dealdesk')",false)+actionButton('☎ Call',"_ps60OpenCall('"+encodeURIComponent(clean(quote.company))+"')",true)});
+  var second=w.calls[1];if(second)add({kind:'call',company:clean(second.customer||second.company),contact:clean(second.contact),label:clean(second.reason||'Account update due today'),detail:clean(second.copy||second.source||''),color:'#47D16C',icon:'▦',buttons:actionButton('Open Company',"_ps60OpenBusiness('customers','"+encodeURIComponent(clean(second.customer||second.company))+"')",false)+actionButton('☎ Call Now',"_ps60OpenCall('"+encodeURIComponent(clean(second.customer||second.company))+"')",true)});
+  var task=w.business[0];if(out.length<3&&task)add({kind:'task',company:clean(task.customer||task.company||task.title),contact:'',label:clean(task.title||'Follow-up due'),detail:clean(task.copy||task.source||''),color:'#EF9F27',icon:'✓',buttons:actionButton('Open',"_ps60OpenBusiness('"+esc(clean(task.page||'action'))+"','"+encodeURIComponent(clean(task.customer||task.company||''))+"')",false)+actionButton('Review',"_rp2Go('action')",true)});
+  var opp=w.opps[0];if(out.length<3&&opp)add({kind:'opp',company:clean(opp.company),contact:clean(opp.contact),label:clean(opp.next||opp.title||'Customer opportunity'),detail:(clean(opp.stage)+(n(opp.amount)?' · '+money(opp.amount):'')),color:'#FA873D',icon:'☆',buttons:actionButton('Open Company',"_ps60OpenBusiness('customers','"+encodeURIComponent(clean(opp.company))+"')",false)+actionButton('Review',"_rp2Go('action')",true)});
+  return out.slice(0,3)
+ }
+ function actionRow(item,index,w){var extra=lastOrderCopy(w.g,item.company),contact=contactCopy(w.g,item.company,item.contact),sub=[contact,extra].filter(Boolean).join(' · ');return'<div class="p639-action" style="--action:'+item.color+'"><div class="p639-rank">'+(index+1)+'</div><div class="p639-action-icon">'+item.icon+'</div><div class="p639-action-copy"><h3>'+esc(item.company||'Customer action')+'</h3><b>'+esc(item.label)+'</b><p>'+esc(item.detail||'Complete the next customer action.')+'</p>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</div><div class="p639-action-buttons">'+item.buttons+'</div></div>'}
+ function dailyStat(icon,value,label,sub,color){return'<div class="p639-daily-stat" style="--accent:'+color+'"><div class="p639-stat-icon">'+icon+'</div><div><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span><small>'+esc(sub)+'</small></div></div>'}
+ function glance(icon,label,sub,value,progress,color){return'<div class="p639-glance-row" style="--accent:'+color+'"><div class="p639-mini-icon">'+icon+'</div><div class="p639-glance-label"><strong>'+esc(label)+'</strong><span>'+esc(sub)+'</span></div><div class="p639-glance-value">'+esc(value)+'</div><div class="p639-track"><i style="--pct:'+pct(progress)+'%"></i></div><div class="p639-glance-pct">'+pct(progress)+'%</div></div>'}
+ function metric(icon,label,value,sub,progress,color){return'<div class="p639-metric" style="--accent:'+color+'"><div class="p639-metric-head"><div class="p639-metric-icon">'+icon+'</div><div><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong><small>'+esc(sub)+'</small></div></div><div class="p639-mini-progress"><i style="--pct:'+pct(progress)+'%"></i></div></div>'}
+ function home(){
+  var w=workData(),rep=w.rep,greeting=(new Date().getHours()<12?'Good morning':new Date().getHours()<17?'Good afternoon':'Good evening'),actions=nextActions(w),follow=w.business.length,quoteCount=w.quotes.length,quoteTotal=qAmount(w.quotes),oppCount=w.opps.length;
+  var callGoal=w.dailyTarget||w.calls.length||0,callDone=w.todayCompleted,callPct=callGoal?callDone/callGoal*100:0,followDone=0,followPct=follow?0:100,quotePct=quoteCount?0:100;
+  var coverage=w.set?w.completed/w.set*100:0,remaining=Math.max(0,w.set-w.completed),qPct=w.goal?n(w.qtd.revenue)/w.goal*100:0,weekPct=w.goal?n(w.week.revenue)/(w.goal/13)*100:0;
+  var rank=w.g.perf&&w.g.perf.rank,totalReps=n(w.g.perf&&w.g.perf.totalReps),pipeline=n(w.g.perf&&w.g.perf.pipeline),score=w.perf&&w.perf.score||{},tone=(w.dailyTarget&&w.todayCompleted<w.dailyTarget)?'#EF9F27':'#47D16C',statusTitle=w.dailyTarget&&w.todayCompleted<w.dailyTarget?(num(w.todayRemaining)+' calls remain for today'):'You’re on pace today!',statusCopy=w.dailyTarget&&w.todayCompleted<w.dailyTarget?'Work the ranked queue to close today’s target.':'Keep up the momentum.';
+  var cycleTarget=n(w.d.targetPct),bookCoach=cycleTarget&&coverage<cycleTarget?'Keep working today’s target to move the book toward '+cycleTarget+'%.':'Keep moving through the book without repeating completed accounts.';
+  return'<div class="p639-home">'
+   +'<div class="p639-hello"><div><h1>'+esc(greeting+', '+first(rep))+'.</h1><p>Here’s what moves your book forward today.</p></div><div class="p639-date"><i>▣</i>'+esc(dateLabel())+'</div></div>'
+   +'<section class="p639-daily-strip">'
+    +dailyStat('☎',num(w.calls.length),'Calls queued',num(callGoal)+' scheduled today','#00AFEF')
+    +dailyStat('✓',num(follow),'Follow-ups due',(arr(w.g.business&&w.g.business.lanes&&w.g.business.lanes.overdue).length?num(arr(w.g.business.lanes.overdue).length)+' overdue':'You’re clear on overdue work'),'#47D16C')
+    +dailyStat('▤',num(quoteCount),'Quotes need attention',(quoteTotal?money(quoteTotal)+' total':'No quote value due'),'#9B6BFF')
+    +dailyStat('☆',num(oppCount),'Customer opportunit'+(oppCount===1?'y':'ies'),oppCount?'High-value work visible':'No priority opportunity','#FA873D')
+    +'<div class="p639-start"><button onclick="_rp2Go(\'call\')">START MY DAY →</button><small>Jump into your top actions</small></div>'
+   +'</section>'
+   +'<div class="p639-work">'
+    +'<section class="p639-panel"><div class="p639-panel-head"><strong>NEXT BEST ACTIONS <span class="p639-info">i</span></strong><button onclick="_rp2Go(\'action\')">View all actions →</button></div><div class="p639-action-list">'+(actions.length?actions.map(function(x,i){return actionRow(x,i,w)}).join(''):'<div class="p639-more">No urgent actions are waiting. Open Today’s Business to plan ahead.</div>')+'</div>'+(actions.length?'<div class="p639-more">⌄ &nbsp; More actions available in your workspaces</div>':'')+'</section>'
+    +'<div class="p639-right">'
+     +'<section class="p639-panel"><div class="p639-panel-head"><strong>TODAY AT A GLANCE</strong></div><div class="p639-glance">'
+      +glance('☎','Calls','Stay on pace',num(callDone)+' / '+num(callGoal),callPct,'#00AFEF')
+      +glance('✓','Follow-Ups',follow?'Need your attention':'You’re on track',num(followDone)+' / '+num(follow),followPct,'#47D16C')
+      +glance('▤','Quotes',quoteCount?'Need your attention':'You’re clear',num(quoteCount?0:0)+' / '+num(quoteCount),quotePct,'#9B6BFF')
+      +'<div class="p639-glance-row" style="--accent:#FA873D"><div class="p639-mini-icon">☆</div><div class="p639-glance-label"><strong>Opportunities</strong><span>High value accounts</span></div><div class="p639-glance-value">'+num(oppCount)+'</div><div></div><div></div></div>'
+      +'<div class="p639-day-status" style="--tone:'+tone+'"><i>✓</i><div><strong>'+esc(statusTitle)+'</strong><span>'+esc(statusCopy)+'</span></div></div>'
+     +'</div></section>'
+     +'<section class="p639-panel"><div class="p639-panel-head"><strong>YOUR ACCOUNT BOOK <span class="p639-info">i</span></strong></div><div class="p639-book"><div class="p639-book-top"><strong>'+num(w.completed)+' of '+num(w.set)+' accounts worked</strong><b>'+pct(coverage)+'%</b></div><div class="p639-book-track"><i style="--pct:'+pct(coverage)+'%"></i></div><div class="p639-book-foot"><span>'+num(remaining)+' remaining</span><b>'+num(w.dailyTarget)+' targeted today</b></div><div class="p639-book-coach"><i>◎</i><div><strong>'+(coverage>=cycleTarget&&cycleTarget?'On pace to hit your target':'Keep moving your book forward')+'</strong><span>'+esc(bookCoach)+'</span></div></div></div></section>'
+    +'</div>'
+   +'</div>'
+   +'<section class="p639-panel p639-momentum"><div class="p639-momentum-title">MY MOMENTUM <span class="p639-info">i</span></div><div class="p639-momentum-grid">'
+    +metric('$','Quarter Sales',money(w.qtd.revenue),(w.goal?pct(qPct)+'% to goal':'Goal not set'),qPct,'#47D16C')
+    +metric('♟','Book Coverage',num(w.completed)+' / '+num(w.set),pct(coverage)+'% worked',coverage,'#00AFEF')
+    +metric('▽','Pipeline',money(pipeline),num(oppCount)+' opportunities',w.goal?pipeline/w.goal*100:0,'#9B6BFF')
+    +metric('🏆','Quarter Rank',rank?('#'+rank):'—',(totalReps?'of '+num(totalReps)+' reps':'Rank unavailable'),rank&&totalReps?(totalReps-rank+1)/totalReps*100:0,'#EF9F27')
+    +metric('◎','Week Sales',money(w.week.revenue),weekPct>=100?'On target':pct(weekPct)+'% of weekly pace',weekPct,'#FA873D')
+    +'<button class="p639-performance-link" onclick="_rp2Go(\'profile\')">VIEW MY<br>PERFORMANCE →<br><span style="font-weight:600;color:#7F90A4;margin-top:5px">Detailed performance &amp; recognition</span></button>'
+   +'</div></section>'
+   +'<footer class="p639-home-footer"><div><span class="signal">★</span>'+(w.todayRemaining?('Today’s focus: <strong>'+num(w.todayRemaining)+' account updates remain.</strong>'):('<strong>Your prioritized queues are ready.</strong>'))+'</div><div class="p639-home-footer-right">Data as of '+esc(new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}))+' &nbsp; • &nbsp; '+esc(syncLabel())+' &nbsp; ↻</div></footer>'
+  +'</div>'
+ }
+ var NAV=[
+  {label:'Today',items:[['home','My Day','⌂'],['call','Call Workspace','☎'],['action','Follow-Ups','☑']]},
+  {label:'Customers',items:[['customers','Companies','▥'],['dealdesk','Quotes','▤'],['orders','Orders','◆']]},
+  {label:'Me',items:[['profile','My Performance','⌁']]}
+ ];
+ function navHtml(){return NAV.map(function(group){return'<div class="p639-nav-group"><div class="p639-nav-label">'+esc(group.label)+'</div>'+group.items.map(function(item){return'<button'+((_rp2&&_rp2.page===item[0])?' class="on"':'')+' onclick="_rp2Go(\''+item[0]+'\')"><i>'+item[2]+'</i>'+esc(item[1])+'</button>'}).join('')+'</div>'}).join('')}
+ function pageTitle(){var p=window._rp2&&_rp2.page||'home',found='Workspace';NAV.some(function(g){return g.items.some(function(x){if(x[0]===p){found=x[1];return true}return false})});return found}
+ function logo(){try{return typeof TCP_LOGO_B64!=='undefined'&&TCP_LOGO_B64?'<img src="data:image/png;base64,'+TCP_LOGO_B64+'" alt="Triple Crown Products">':''}catch(e){return''}}
+ function phasedShell(rep){
+  _rp2.rep=rep;
+  var body=window._rp2Page(),homePage=_rp2.page==='home';
+  var top=homePage?'':'<div class="p639-page-top"><div><strong>'+esc(pageTitle())+'</strong><span>Phased Rep Portal · '+esc((typeof getQ==='function'?getQ():'')+' '+(typeof getYr==='function'?getYr():''))+'</span></div><div class="p639-page-top-actions"><button onclick="_rp2Go(\'home\')">← My Day</button><button onclick="_rp2RefreshCloud(this,false)">↻ Refresh</button></div></div>';
+  return'<div class="rp2-app rp2-mode-phased rp2-v639'+(forcedView()?' rp2-link-locked':'')+'" data-rp-portal-mode="phased"><aside class="rp2-side"><div class="p639-brand">'+logo()+'<strong>Sales Tracker</strong><span>Rep Portal</span><em>Phased</em></div><nav class="p639-nav">'+navHtml()+'</nav><div class="p639-user"><div class="p639-user-card"><div class="p639-user-mark">'+esc(initials(rep))+'</div><div><strong>'+esc(rep)+'</strong><span>Rep account</span></div><button onclick="_rp2Go(\'profile\')">›</button></div><button class="p639-logout" onclick="_rpLogout()">↪ &nbsp; Log Out</button></div></aside><main class="rp2-main">'+top+'<div id="rp2-page"'+(homePage?'':' class="p639-subpage"')+'>'+body+'</div></main></div>'
+ }
+ window._rp2Page=function(){if(isPhased()&&window._rp2&&_rp2.page==='home')return home();return priorPage.apply(this,arguments)};
+ window._rp2Html=function(rep){if(isPhased(rep))return phasedShell(rep);return priorHtml.apply(this,arguments)};
+ window.TCP_PHASED_REP_DAILY_COCKPIT_V639={version:BUILD,render:home,mode:mode,workData:workData,nextActions:nextActions};
+ window.TCP_BUILD_VERSION=BUILD;
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v639 — Phased Rep Daily Cockpit'}catch(e){}
+ /* Re-render an already-open phased portal after late patch installation. */
+ setTimeout(function(){try{if(window._rp2&&_rp2.rep&&isPhased(_rp2.rep)&&document.querySelector('#rp-overlay .rp2-app'))window._rp2Go(_rp2.page||'home')}catch(e){console.warn('[v639 refresh]',e)}},0);
+})();
+</script>
+<script id="tcp-v639-phased-dev-handoff-js">
+(function(){
+ 'use strict';
+ function source(id){var el=document.getElementById(id);return el?String(el.textContent||'').trim():''}
+ window._rpPhasedDevBundle=function(){
+  var css=source('tcp-v639-phased-rep-daily-cockpit-css'),js=source('tcp-v639-phased-rep-daily-cockpit-js');
+  return[
+   '/* TRIPLE CROWN PRODUCTS · PHASED REP PORTAL · DAILY COCKPIT · BUILD v639',
+   '   Approved phased concept implementation.',
+   '   Dependency: existing Sales Tracker Rep Portal base, data builders, page modules, and navigation functions.',
+   '   Full Workspace is not replaced. Apply this only when portal mode = phased.',
+   '   This handoff contains presentation/workflow code only — no customer records, passwords, or cloud snapshot data.',
+   '*/',
+   '<style id="tcp-v639-phased-rep-daily-cockpit-css">',css,'</style>',
+   '<script id="tcp-v639-phased-rep-daily-cockpit-js">',js,'<\\/script>'
+  ].join('\n');
+ };
+ window._rpCopyPhasedDevCode=function(){
+  var code=window._rpPhasedDevBundle();
+  if(typeof window._rpCopyText==='function')return window._rpCopyText(code,'Phased Rep Portal v639 DEV code copied — no customer data or passwords are included.','Copy the Phased Rep Portal v639 DEV code:');
+  if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(code).then(function(){alert('Phased Rep Portal v639 DEV code copied.')});
+  prompt('Copy the Phased Rep Portal v639 DEV code:',code);
+ };
+ window.TCP_PHASED_DEV_HANDOFF_V639={version:'v639',bundle:window._rpPhasedDevBundle,copy:window._rpCopyPhasedDevCode};
+})();
+</script>
