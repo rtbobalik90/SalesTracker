@@ -64988,10 +64988,8 @@ body.nav-rail .tabs:after{content:"v631"!important;white-space:normal!important;
   if(fqyChoice&&fqyChoice!=='auto'){var y=Number(fqyChoice);fqy={year:y,sales:n(map[y])};}
   else{for(var i=0;i<years.length;i++){if(n(map[years[i]])>=MIN_SALES){fqy={year:years[i],sales:n(map[years[i]])};break;}}}
   if(!fqy||fqy.sales<MIN_SALES)return{status:'review',reason:'No First Qualifying Year with at least '+money(MIN_SALES)+' was found in the loaded history.'};
-  var latest=years.filter(function(y){return y>fqy.year;}).pop();
-  if(!latest||latest-fqy.year<3)return{status:'review',fqy:fqy,reason:'At least three calendar years after the First Qualifying Year are required for conversion evaluation.'};
-  var evalYears=[latest-2,latest-1,latest];
-  if(evalYears[0]<=fqy.year)return{status:'review',fqy:fqy,reason:'Three calendar years after the First Qualifying Year are required.'};
+  var evalYears=[fqy.year+1,fqy.year+2,fqy.year+3],latest=evalYears[2];
+  if(todayYear()<latest)return{status:'review',fqy:fqy,evalYears:evalYears,reason:'The Earned REP1 evaluation window is '+evalYears[0]+'–'+evalYears[2]+'. The third calendar year has not started yet, so the account is not yet eligible for a conversion decision.'};
   var vals=evalYears.map(function(y){return n(map[y]);});
   var threshold=fqy.sales*CONVERSION,total=vals.reduce(function(s,v){return s+v;},0);
   var formula=total>threshold;
@@ -65102,5 +65100,174 @@ body.nav-rail .tabs:after{content:"v632"!important;white-space:normal!important;
  window._rep1DuplicateYears=duplicates;
  window.TCP_BUILD_VERSION=BUILD;
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v632 — Earned Rep1 Calculator Fix';}catch(e){}
+})();
+</script>
+
+
+<style id="tcp-earned-rep1-monitor-v633-css">
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v633"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v633"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+#pg-rep1calc .rep1-monitor{margin:0 0 18px;border:1px solid rgba(0,175,239,.20);border-radius:22px;background:linear-gradient(135deg,rgba(0,175,239,.075),rgba(250,135,61,.045)),#101722;padding:18px;box-shadow:0 16px 42px rgba(0,0,0,.20)}
+#pg-rep1calc .rep1-monitor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px}
+#pg-rep1calc .rep1-monitor-title{font-family:var(--tcp-brand-serif,"Droid Serif",Georgia,serif);font-size:19px;font-weight:900;color:#fff}
+#pg-rep1calc .rep1-monitor-sub{margin-top:5px;color:#9EADC3;font-size:11px;line-height:1.55;max-width:820px}
+#pg-rep1calc .rep1-monitor-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:13px}
+#pg-rep1calc .rep1-monitor-stat{padding:11px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(0,0,0,.16)}
+#pg-rep1calc .rep1-monitor-stat span{display:block;color:#8291A9;font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;margin-bottom:4px}
+#pg-rep1calc .rep1-monitor-stat strong{display:block;color:#fff;font-size:17px;font-weight:950}
+#pg-rep1calc .rep1-queue{display:grid;gap:9px}
+#pg-rep1calc .rep1-queue-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 13px;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:rgba(255,255,255,.03)}
+#pg-rep1calc .rep1-queue-card.pending{border-color:rgba(250,135,61,.26);background:rgba(250,135,61,.055)}
+#pg-rep1calc .rep1-queue-card.approved{border-color:rgba(71,209,108,.20);background:rgba(71,209,108,.045)}
+#pg-rep1calc .rep1-queue-name{font-size:12px;font-weight:900;color:#fff}.rep1-queue-meta{font-size:10px;color:#93A3BA;margin-top:4px;line-height:1.45}
+#pg-rep1calc .rep1-queue-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+#pg-rep1calc .rep1-monitor-empty{padding:13px;border:1px dashed rgba(255,255,255,.10);border-radius:14px;color:#8999B0;font-size:11px;text-align:center}
+#pg-rep1calc .rep1-monitor-note{margin-top:10px;font-size:10px;color:#7F90AA;line-height:1.5}
+@media(max-width:900px){#pg-rep1calc .rep1-monitor-stats{grid-template-columns:1fr 1fr}#pg-rep1calc .rep1-queue-card{grid-template-columns:1fr}#pg-rep1calc .rep1-queue-actions{justify-content:flex-start}}
+@media(max-width:560px){#pg-rep1calc .rep1-monitor-stats{grid-template-columns:1fr}}
+</style>
+<script id="tcp-earned-rep1-monitor-v633-js">
+(function(){
+ var BUILD='v633',STORE='tcp_rep1_monitor_v633',MIN=1500,MULT=3.641,scanTimer=null;
+ function n(v){if(v==null||v==='')return 0;var x=Number(String(v).replace(/[$,\s]/g,''));return isFinite(x)?x:0}
+ function clean(v){return String(v==null?'':v).trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]/g,'')}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function money(v){return '$'+n(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+ function parseDate(v){if(!v)return null;var d=new Date(String(v).length===10?String(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d}
+ function load(){try{var x=JSON.parse(localStorage.getItem(STORE)||'null');if(x&&x.version===1)return x}catch(e){}return{version:1,lastScan:null,candidates:{},history:[]}}
+ function save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){console.warn('[REP1 monitor save]',e)}}
+ function accountId(c){return clean(c&&(c.customerNumber||c.custId||c.accountId||c.accountID||c.AccountID))}
+ function accountName(c){return clean(c&&(c.name||c.customer||c.company))}
+ function repName(c){return clean(c&&(c.rep2Owner||c.rep||c.salesRep||c.owner))}
+ function keyFor(c){var id=accountId(c);return id?'id:'+norm(id):'name:'+norm(accountName(c))+'|rep:'+norm(repName(c))}
+ function groups(){var map={};try{(Array.isArray(S&&S.customers)?S.customers:[]).forEach(function(c){var name=accountName(c);if(!name)return;var k=keyFor(c),g=map[k]||(map[k]={key:k,name:name,rep:repName(c),ids:[],records:[]});g.records.push(c);var id=accountId(c);if(id&&g.ids.indexOf(norm(id))<0)g.ids.push(norm(id));if(!g.rep)g.rep=repName(c)})}catch(e){}return Object.keys(map).map(function(k){return map[k]})}
+ function imported(records,year){var cy=new Date().getFullYear(),best=0;(records||[]).forEach(function(c){var v=0;if(year===cy)v=Math.max(n(c.importedSalesCurrentYear),n(c.importedSalesCurrentYearNew));else if(year===cy-1)v=Math.max(n(c.importedSalesLastYear),n(c.importedSalesLastYearNew));else if(year===cy-2)v=n(c.importedSales2YearsAgo);else if(year===cy-3)v=n(c.importedSales3YearsAgo);best=Math.max(best,v)});return best}
+ function orderHistory(g){var out={},name=norm(g.name),ids=g.ids||[];try{(Array.isArray(S&&S.orders)?S.orders:[]).forEach(function(o){var oid=norm(o&&(o.accountId||o.accountID||o.customerNumber||o.custId||o.AccountID)),oname=norm(o&&(o.customer||o.company||o.accountName));if((ids.length&&oid&&ids.indexOf(oid)>=0)||(!ids.length&&oname===name)||(ids.length&&!oid&&oname===name)){var d=parseDate(o&&(o.orderDate||o.date||o.enteredAt));if(!d)return;var y=d.getFullYear();out[y]=(out[y]||0)+n(o.total!=null?o.total:(o.revenue!=null?o.revenue:o.amount))}})}catch(e){}return out}
+ function history(g){var out={},orders=orderHistory(g),cy=new Date().getFullYear();Object.keys(orders).forEach(function(y){out[Number(y)]=Math.max(out[Number(y)]||0,n(orders[y]))});for(var y=cy-8;y<=cy;y++){var imp=imported(g.records,y);if(imp>0)out[y]=Math.max(out[y]||0,imp)}return out}
+ function evaluate(g){var h=history(g),years=Object.keys(h).map(Number).sort(function(a,b){return a-b}),fqy=null;for(var i=0;i<years.length;i++){if(n(h[years[i]])>=MIN){fqy={year:years[i],sales:n(h[years[i]])};break}}if(!fqy)return{status:'not-ready',reason:'No First Qualifying Year',history:h};var evalYears=[fqy.year+1,fqy.year+2,fqy.year+3],cy=new Date().getFullYear();if(evalYears[2]>cy)return{status:'not-mature',fqy:fqy,evalYears:evalYears,history:h};var vals=evalYears.map(function(y){return n(h[y])}),threshold=fqy.sales*MULT,total=vals.reduce(function(s,v){return s+v},0),formula=total>threshold,sustainability=vals.every(function(v){return v>fqy.sales}),declines=0,pairs=[];for(var j=1;j<vals.length;j++){if(vals[j]<vals[j-1]){declines++;pairs.push(evalYears[j-1]+' → '+evalYears[j])}}var stability=declines<=1,minimum=vals[2]>=MIN,revised=formula&&sustainability&&stability&&minimum;return{status:'done',fqy:fqy,evalYears:evalYears,vals:vals,threshold:threshold,total:total,formula:formula,sustainability:sustainability,declines:declines,declinePairs:pairs,stability:stability,minimum:minimum,revised:revised,currentYtd:evalYears[2]===cy,history:h}}
+ function fp(g,r){return [g.key,g.rep,r.fqy&&r.fqy.year,r.fqy&&Math.round(r.fqy.sales*100),r.evalYears&&r.evalYears.join('-'),r.vals&&r.vals.map(function(v){return Math.round(v*100)}).join('-'),r.revised?'Y':'N'].join('|')}
+ function alreadyEarned(g){return g.records.some(function(c){return !!c.earnedRep1||clean(c.rep1Owner)!==''||clean(c.rep1Status).toLowerCase()==='earned'})}
+ function failureSummary(r){var a=[];if(!r.formula)a.push('conversion formula');if(!r.sustainability)a.push('sustainability');if(!r.stability)a.push('stability');if(!r.minimum)a.push('$1,500 minimum');return a.join(', ')}
+ function scan(silent){var st=load(),gs=groups(),seen={},pending=0,qualified=0;gs.forEach(function(g){var r=evaluate(g),k=g.key;seen[k]=1;if(r.status!=='done'||!r.revised){if(st.candidates[k]&&st.candidates[k].status==='pending')st.candidates[k].status='inactive';return}qualified++;var fingerprint=fp(g,r),old=st.candidates[k];if(alreadyEarned(g)){st.candidates[k]=Object.assign({},old||{},{key:k,name:g.name,rep:g.rep,status:'approved',fingerprint:fingerprint,result:r,approvedAt:(old&&old.approvedAt)||new Date().toISOString()});return}if(!old||old.fingerprint!==fingerprint||old.status==='inactive'){st.candidates[k]={key:k,name:g.name,rep:g.rep,status:'pending',fingerprint:fingerprint,result:r,firstDetected:new Date().toISOString(),lastDetected:new Date().toISOString()}}else{old.name=g.name;old.rep=g.rep;old.result=r;old.lastDetected=new Date().toISOString()}if(st.candidates[k].status==='pending')pending++});Object.keys(st.candidates).forEach(function(k){var c=st.candidates[k];if(!seen[k]&&c.status==='pending')c.status='inactive'});st.lastScan=new Date().toISOString();save(st);syncNotifications(st);renderMonitor();if(!silent)alert('Earned REP1 scan complete. '+pending+' account'+(pending===1?'':'s')+' awaiting approval.');return{pending:pending,qualified:qualified,accounts:gs.length}}
+ function notifHtml(c){var r=c.result;return '<strong>'+esc(c.name)+'</strong> qualifies for Earned REP1. REP2 owner: <strong>'+esc(c.rep||'Unassigned')+'</strong>. FQY '+r.fqy.year+' '+money(r.fqy.sales)+' · '+r.evalYears[0]+'–'+r.evalYears[2]+' sales '+money(r.total)+' vs required &gt; '+money(r.threshold)+'. <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px"><button class="notif-mini-btn" onclick="_rep1ReviewCandidate(\''+encodeURIComponent(c.key)+'\')">Review</button><button class="notif-mini-btn" style="border-color:rgba(71,209,108,.45);color:#8BE0BF" onclick="_rep1ApproveCandidate(\''+encodeURIComponent(c.key)+'\')">Approve REP1</button></div>'}
+ function syncNotifications(st){try{if(!Array.isArray(window.notifLog))return;for(var i=notifLog.length-1;i>=0;i--){if(notifLog[i]&&String(notifLog[i].id||'').indexOf('rep1qual_')===0)notifLog.splice(i,1)}Object.keys(st.candidates).forEach(function(k){var c=st.candidates[k];if(c.status!=='pending')return;notifLog.unshift({id:'rep1qual_'+encodeURIComponent(k)+'_'+String(c.fingerprint.length),type:'rep1_candidate',icon:'👑',html:notifHtml(c),cls:'alert-action',week:'Earned REP1',ts:new Date(c.lastDetected||Date.now()).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})})});if(typeof updateNotifBadge==='function')updateNotifBadge()}catch(e){console.warn('[REP1 notification sync]',e)}}
+ function candidate(key){var st=load();return{store:st,item:st.candidates[key]}}
+ function matchingCustomers(key){return (Array.isArray(S&&S.customers)?S.customers:[]).filter(function(c){return keyFor(c)===key})}
+ function approve(encoded){var key=decodeURIComponent(encoded),x=candidate(key),c=x.item;if(!c||c.status!=='pending'){alert('This qualification is no longer awaiting approval. Run Scan Now to refresh.');return false}var r=c.result;if(!confirm('Approve Earned REP1 for '+c.name+'?\n\nREP2 owner: '+c.rep+'\nFirst Qualifying Year: '+r.fqy.year+' — '+money(r.fqy.sales)+'\nEvaluation: '+r.evalYears.join('–')+'\n3-year sales: '+money(r.total)+'\nRequired: > '+money(r.threshold)+'\n\nThis will update the Sales Tracker account record so '+c.rep+' holds both REP1 and REP2.'))return false;var rows=matchingCustomers(key),now=new Date().toISOString();rows.forEach(function(row){var owner=clean(row.rep2Owner||row.rep||c.rep);row.rep2Owner=owner;row.rep1Owner=owner;row.earnedRep1=true;row.rep1Status='earned';row.repDesignations=['REP1','REP2'];row.earnedRep1ApprovedAt=now;row.earnedRep1Qualification={version:BUILD,approvedAt:now,firstQualifyingYear:r.fqy.year,firstQualifyingSales:r.fqy.sales,evaluationYears:r.evalYears.slice(),evaluationSales:r.vals.slice(),conversionThreshold:r.threshold,evaluationTotal:r.total,declines:r.declines,currentYtd:!!r.currentYtd}});c.status='approved';c.approvedAt=now;c.approvedBy='Manager approval';x.store.history.unshift({key:key,name:c.name,rep:c.rep,action:'approved',at:now,fingerprint:c.fingerprint});x.store.history=x.store.history.slice(0,200);save(x.store);try{if(typeof markDirty==='function')markDirty()}catch(e){}syncNotifications(x.store);renderMonitor();try{if(typeof renderCustomersPage==='function'&&document.getElementById('cust-page'))renderCustomersPage()}catch(e){}alert(c.name+' is now marked Earned REP1 in Sales Tracker. '+c.rep+' is recorded as both REP1 and REP2 owner.');return true}
+ function hold(encoded){var key=decodeURIComponent(encoded),x=candidate(key),c=x.item;if(!c)return;c.status='hold';c.heldAt=new Date().toISOString();save(x.store);syncNotifications(x.store);renderMonitor()}
+ function review(encoded){var key=decodeURIComponent(encoded),x=candidate(key),c=x.item;if(!c)return;try{var btn=document.querySelector('[data-rep1calc-nav="1"]');if(typeof _rep1Open==='function')_rep1Open(btn);setTimeout(function(){var a=document.getElementById('rep1Account');if(a)a.value=c.name;var o=document.getElementById('rep1Owner');if(o)o.value=c.rep;if(typeof _rep1LoadCustomer==='function')_rep1LoadCustomer();setTimeout(function(){var f=document.getElementById('rep1Fqy');if(f){f.value=String(c.result.fqy.year)}if(typeof _rep1Calculate==='function')_rep1Calculate()},80)},50)}catch(e){console.warn('[REP1 candidate review]',e)}}
+ function renderMonitor(){var page=document.getElementById('pg-rep1calc');if(!page)return;var hero=page.querySelector('.rep1-hero'),panel=document.getElementById('rep1MonitorPanel');if(!panel){panel=document.createElement('section');panel.id='rep1MonitorPanel';panel.className='rep1-monitor';if(hero&&hero.nextSibling)page.insertBefore(panel,hero.nextSibling);else page.insertBefore(panel,page.firstChild)}var st=load(),all=Object.keys(st.candidates).map(function(k){return st.candidates[k]}),pending=all.filter(function(c){return c.status==='pending'}),holdRows=all.filter(function(c){return c.status==='hold'}),approved=all.filter(function(c){return c.status==='approved'}),cards=pending.concat(holdRows).slice(0,20).map(function(c){var r=c.result,status=c.status==='pending'?'Awaiting approval':'On hold';return '<div class="rep1-queue-card '+(c.status==='pending'?'pending':'')+'"><div><div class="rep1-queue-name">👑 '+esc(c.name)+' · '+esc(status)+'</div><div class="rep1-queue-meta">REP2: '+esc(c.rep||'Unassigned')+' · FQY '+r.fqy.year+' '+money(r.fqy.sales)+' · '+r.evalYears.join('–')+' = '+money(r.total)+' · required &gt; '+money(r.threshold)+(r.currentYtd?' · current year YTD':'')+'</div></div><div class="rep1-queue-actions"><button class="rep1-btn cyan" onclick="_rep1ReviewCandidate(\''+encodeURIComponent(c.key)+'\')">Review</button>'+(c.status==='pending'?'<button class="rep1-btn primary" onclick="_rep1ApproveCandidate(\''+encodeURIComponent(c.key)+'\')">Approve REP1</button><button class="rep1-btn" onclick="_rep1HoldCandidate(\''+encodeURIComponent(c.key)+'\')">Hold</button>':'')+'</div></div>'}).join('');panel.innerHTML='<div class="rep1-monitor-head"><div><div class="rep1-kicker">Automatic Qualification Monitor</div><div class="rep1-monitor-title">Earned REP1 Approval Queue</div><div class="rep1-monitor-sub">The tracker checks customer and order history automatically. Qualification never changes commission ownership by itself — a manager must approve the promotion.</div></div><button class="rep1-btn cyan" onclick="_rep1MonitorScan(false)">Scan Now</button></div><div class="rep1-monitor-stats"><div class="rep1-monitor-stat"><span>Awaiting approval</span><strong>'+pending.length+'</strong></div><div class="rep1-monitor-stat"><span>On hold</span><strong>'+holdRows.length+'</strong></div><div class="rep1-monitor-stat"><span>Approved</span><strong>'+approved.length+'</strong></div><div class="rep1-monitor-stat"><span>Last scan</span><strong style="font-size:11px">'+esc(st.lastScan?new Date(st.lastScan).toLocaleString():'Not yet')+'</strong></div></div><div class="rep1-queue">'+(cards||'<div class="rep1-monitor-empty">No Earned REP1 accounts are waiting for review right now.</div>')+'</div><div class="rep1-monitor-note">Official evaluation uses the three calendar years immediately following the First Qualifying Year. If the third year is the current year, YTD sales are shown as provisional data; approval remains a manager decision. Approval updates the Sales Tracker customer record only.</div>'}
+ function schedule(){clearTimeout(scanTimer);scanTimer=setTimeout(function(){try{scan(true)}catch(e){console.warn('[REP1 monitor scan]',e)}},700)}
+ var oldLabel=window.notifTypeLabel;if(typeof oldLabel==='function')window.notifTypeLabel=function(t){if(t==='rep1_candidate')return'Earned REP1 approval';return oldLabel(t)};
+ var priorOpen=window._rep1Open;if(typeof priorOpen==='function')window._rep1Open=function(btn){var r=priorOpen(btn);setTimeout(function(){renderMonitor();scan(true)},40);return r};
+ var priorMark=window.markDirty;if(typeof priorMark==='function')window.markDirty=function(){var r=priorMark.apply(this,arguments);schedule();return r};
+ var priorNotif=window.renderNotifLog;if(typeof priorNotif==='function')window.renderNotifLog=function(){scan(true);return priorNotif.apply(this,arguments)};
+ window._rep1MonitorScan=scan;window._rep1ApproveCandidate=approve;window._rep1HoldCandidate=hold;window._rep1ReviewCandidate=review;window._rep1MonitorStatus=function(){return load()};
+ window.TCP_BUILD_VERSION=BUILD;try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v633 — Earned REP1 Monitor & Approval'}catch(e){}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){renderMonitor();scan(true)},350)},{once:true});else setTimeout(function(){renderMonitor();scan(true)},350);
+ setInterval(function(){try{scan(true)}catch(e){}},5*60*1000);
+})();
+</script>
+
+
+<style id="tcp-build-footer-v634-css">
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v634"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v634"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+.tcp-rep1-earned-badge{display:inline-flex;align-items:center;gap:4px;margin-left:7px;padding:3px 7px;border:1px solid rgba(250,135,61,.34);border-radius:999px;background:rgba(250,135,61,.10);color:#FFB37D;font-family:var(--tcp-brand-sans,"Open Sans",Arial,sans-serif);font-size:8px;font-weight:950;letter-spacing:.055em;text-transform:uppercase;vertical-align:middle;white-space:nowrap;}
+#rp-overlay .ps90-customer-card .tcp-rep1-earned-badge{position:absolute;right:8px;bottom:7px;margin:0;padding:2px 5px;font-size:6.8px;letter-spacing:.03em;max-width:68px;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .ps90-customer-card.tcp-earned-rep1{border-color:rgba(250,135,61,.30);}
+</style>
+<script id="tcp-customer-ownership-v634-js">
+(function(){
+ 'use strict';
+ var BUILD='v634',MONITOR_STORE='tcp_rep1_monitor_v633';
+ function clean(v){return String(v==null?'':v).trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]/g,'')}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function accountId(c){return clean(c&&(c.customerNumber||c.custId||c.accountId||c.accountID||c.AccountID))}
+ function accountName(c){return clean(c&&(c.name||c.customer||c.company||c.companyName))}
+ function rep2(c){return clean(c&&(c.rep2Owner||c.rep||c.salesRep||c.owner))}
+ function keyFor(c){var id=accountId(c);return id?'id:'+norm(id):'name:'+norm(accountName(c))+'|rep:'+norm(rep2(c))}
+ function monitor(){try{return JSON.parse(localStorage.getItem(MONITOR_STORE)||'null')||{candidates:{},history:[]}}catch(e){return{candidates:{},history:[]}}}
+ function recordsFor(input,rep){
+  var rows=arr(window.S&&S.customers),id='',name='',owner=clean(rep);
+  if(input&&typeof input==='object'){id=accountId(input);name=accountName(input);owner=owner||rep2(input)}else name=clean(input);
+  return rows.filter(function(c){
+   if(id&&accountId(c))return norm(accountId(c))===norm(id);
+   if(norm(accountName(c))!==norm(name))return false;
+   return !owner||!rep2(c)||norm(rep2(c))===norm(owner);
+  });
+ }
+ function status(input,rep){
+  var rows=recordsFor(input,rep),primary=rows[0]||null,earned=rows.some(function(c){return !!c.earnedRep1||clean(c.rep1Status).toLowerCase()==='earned'||clean(c.rep1Owner)!==''});
+  var p1='',p2='',approvedAt='',qualification=null,history=[];
+  rows.forEach(function(c){
+   if(!p1)p1=clean(c.rep1Owner);
+   if(!p2)p2=rep2(c);
+   if(!approvedAt)approvedAt=clean(c.earnedRep1ApprovedAt||c.rep1ApprovedAt);
+   if(!qualification&&c.earnedRep1Qualification)qualification=c.earnedRep1Qualification;
+   arr(c.ownershipHistory).forEach(function(h){history.push(h)});
+  });
+  history.sort(function(a,b){return String(b&&b.at||'').localeCompare(String(a&&a.at||''))});
+  return{record:primary,records:rows,earnedRep1:earned,rep1Owner:p1,rep2Owner:p2,designations:earned?['REP1','REP2']:['REP2'],approvedAt:approvedAt,qualification:qualification,history:history,label:earned?'Earned REP1':'REP2 Assigned'};
+ }
+ function candidateForKey(key){var st=monitor();return st&&st.candidates&&st.candidates[key]||null}
+ function matchingByKey(key){return arr(window.S&&S.customers).filter(function(c){return keyFor(c)===key})}
+ function auditEvent(candidate,row,at){
+  var q=row.earnedRep1Qualification||candidate&&candidate.result||{},years=q.evaluationYears||[],sales=q.evaluationSales||q.vals||[];
+  return{id:'earned-rep1-'+String(at),type:'earned-rep1-approved',at:at,source:'Earned REP1 approval workflow',approvedBy:'Manager approval',rep1Owner:clean(row.rep1Owner),rep2Owner:rep2(row),firstQualifyingYear:q.firstQualifyingYear!=null?q.firstQualifyingYear:(q.fqy&&q.fqy.year),firstQualifyingSales:q.firstQualifyingSales!=null?q.firstQualifyingSales:(q.fqy&&q.fqy.sales),evaluationYears:arr(years).slice(),evaluationSales:arr(sales).slice(),conversionThreshold:q.conversionThreshold!=null?q.conversionThreshold:q.threshold,evaluationTotal:q.evaluationTotal!=null?q.evaluationTotal:q.total};
+ }
+ function ensureHistory(rows,candidate){
+  var changed=false;
+  rows.forEach(function(row){
+   if(!row||!row.earnedRep1)return;
+   row.rep2Owner=rep2(row)||clean(candidate&&candidate.rep);
+   row.rep1Owner=clean(row.rep1Owner)||row.rep2Owner;
+   row.rep1Status='earned';row.repDesignations=['REP1','REP2'];row.ownershipStatus='earned-rep1';
+   row.ownershipHistory=arr(row.ownershipHistory);
+   var at=clean(row.earnedRep1ApprovedAt)||clean(candidate&&candidate.approvedAt)||new Date().toISOString();
+   var exists=row.ownershipHistory.some(function(h){return h&&h.type==='earned-rep1-approved'&&clean(h.rep1Owner)===clean(row.rep1Owner)});
+   if(!exists){row.ownershipHistory.unshift(auditEvent(candidate,row,at));changed=true;}
+   if(!row.earnedRep1ApprovedBy){row.earnedRep1ApprovedBy='Manager approval';changed=true;}
+  });
+  if(changed){try{if(typeof markDirty==='function')markDirty()}catch(e){}}
+  return changed;
+ }
+ function backfill(){
+  var st=monitor(),byKey=st&&st.candidates||{},groups={};
+  arr(window.S&&S.customers).forEach(function(c){if(!c||!c.earnedRep1)return;var k=keyFor(c);(groups[k]||(groups[k]=[])).push(c)});
+  Object.keys(groups).forEach(function(k){ensureHistory(groups[k],byKey[k]||null)});
+ }
+ function badge(text){var s=document.createElement('span');s.className='tcp-rep1-earned-badge';s.textContent='👑 '+(text||'Earned REP1');return s}
+ function decorate(){
+  try{
+   document.querySelectorAll('#rp-overlay .ps90-customer-card[data-company]').forEach(function(card){
+    var name=card.getAttribute('data-company')||'',st=status(name,window._rp2&&_rp2.rep||'');var old=card.querySelector('.tcp-rep1-earned-badge');
+    if(st.earnedRep1){card.classList.add('tcp-earned-rep1');if(!old)card.appendChild(badge('REP1 + REP2'));}
+    else{card.classList.remove('tcp-earned-rep1');if(old)old.remove();}
+   });
+   document.querySelectorAll('.cux8-section-company').forEach(function(el){
+    var raw=clean(el.childNodes&&el.childNodes[0]&&el.childNodes[0].nodeValue)||clean(el.textContent),name=raw.split('·')[0].trim(),st=status(name);var old=el.querySelector('.tcp-rep1-earned-badge');
+    if(st.earnedRep1&&!old)el.appendChild(badge('Earned REP1'));
+    if(!st.earnedRep1&&old)old.remove();
+   });
+   var note=document.querySelector('#rep1MonitorPanel .rep1-monitor-note');
+   if(note)note.textContent='Official evaluation uses the three calendar years immediately following the First Qualifying Year. Approval writes REP1 + REP2 ownership, qualification evidence, and a permanent ownership-history event to the central Sales Tracker customer record. Rep Portal, Customer Command Center, coaching, notifications, and reporting should read that same customer ownership record.';
+  }catch(e){}
+ }
+ var priorApprove=window._rep1ApproveCandidate;
+ if(typeof priorApprove==='function')window._rep1ApproveCandidate=function(encoded){
+  var key='';try{key=decodeURIComponent(encoded)}catch(e){key=String(encoded||'')}
+  var before=candidateForKey(key),result=priorApprove.apply(this,arguments);
+  if(result){ensureHistory(matchingByKey(key),before);decorate();}
+  return result;
+ };
+ window.TCP_CUSTOMER_OWNERSHIP_V634={version:BUILD,keyFor:keyFor,records:recordsFor,get:status,isEarned:function(input,rep){return status(input,rep).earnedRep1},backfill:backfill,refresh:decorate};
+ window.TCP_BUILD_VERSION=BUILD;
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v634 — Unified Customer Ownership';}catch(e){}
+ var observer=new MutationObserver(function(){decorate()});
+ if(document.body)observer.observe(document.body,{childList:true,subtree:true});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){backfill();decorate()},350)},{once:true});else setTimeout(function(){backfill();decorate()},350);
 })();
 </script>
