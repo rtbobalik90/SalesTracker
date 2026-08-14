@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tcp-booting">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style id="tcp-v637-clean-boot-critical">
+/* v637: prevent the legacy dashboard/theme from painting while this large standalone file is still parsing/hydrating. */
+html.tcp-booting body > *:not(#tcpBootCurtain){visibility:hidden!important;}
+#tcpBootCurtain{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:#080B0E;color:#fff;font-family:"Open Sans","Segoe UI",Arial,sans-serif;opacity:1;visibility:visible;transition:opacity .16s ease,visibility .16s ease;}
+#tcpBootCurtain .tcp-boot-card{width:min(360px,calc(100vw - 42px));padding:28px 26px 25px;border:1px solid rgba(250,135,61,.24);border-radius:22px;background:radial-gradient(circle at 88% 8%,rgba(0,175,239,.12),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 26px 70px rgba(0,0,0,.42);text-align:center;}
+#tcpBootCurtain .tcp-boot-mark{font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:800;line-height:1;color:#FA873D;letter-spacing:-.04em;margin-bottom:8px;}
+#tcpBootCurtain .tcp-boot-title{font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:800;letter-spacing:-.025em;margin-bottom:5px;}
+#tcpBootCurtain .tcp-boot-sub{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8FA1B5;}
+#tcpBootCurtain .tcp-boot-line{height:3px;margin:20px 0 10px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.08);}
+#tcpBootCurtain .tcp-boot-line i{display:block;width:38%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#FA873D,#00AFEF);animation:tcpBootMove 1.05s ease-in-out infinite alternate;}
+#tcpBootCurtain .tcp-boot-status{font-size:10px;color:#8190A0;}
+@keyframes tcpBootMove{from{transform:translateX(-10%)}to{transform:translateX(175%)}}
+html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-events:none;}
+@media (prefers-reduced-motion:reduce){#tcpBootCurtain,#tcpBootCurtain .tcp-boot-line i{transition:none;animation:none}}
+</style>
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v636 — Responsive Monitor Fix</title>
+<title>Sales Tracker v637 — Clean Boot</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -3511,6 +3526,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 </style>
 </head>
 <body>
+<div id="tcpBootCurtain" role="status" aria-live="polite" aria-label="Loading Sales Tracker"><div class="tcp-boot-card"><div class="tcp-boot-mark">TCP</div><div class="tcp-boot-title">Sales Tracker</div><div class="tcp-boot-sub">Sales Operations Command Center</div><div class="tcp-boot-line"><i></i></div><div id="tcpBootStatus" class="tcp-boot-status">Loading your saved tracker data…</div></div></div>
 
 <!-- ==========================================================================
      SALES TRACKER v568 · SIMPLIFIED REP MY DAY
@@ -18975,7 +18991,7 @@ window.addEventListener('load',function(){
     }catch(e){console.error('Dashboard render failed',e);var d=document.getElementById('wkExecHero'); if(d)d.innerHTML='<div class="wk-empty">Dashboard could not render: '+safe(e.message)+'</div>';}
   };
   window.renderDashWidgets=window.renderDash;
-  setTimeout(function(){var pg=document.getElementById('pg-dash'); if(pg&&pg.classList.contains('active')) window.renderDash();},0);
+  /* v637: legacy v298 startup render suppressed. Final dashboard renders after persistent state + latest modules are ready. */
 })();
 
 /* v307 apply saved theme on load */
@@ -39168,7 +39184,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  function rerenderAfterHydration(){
   try{
    if(typeof popSel==='function')popSel();
-   if(typeof renderDash==='function')renderDash();
+   if(window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558&&typeof renderDash==='function')renderDash();
    if(document.getElementById('cust-page')&&typeof renderCustomersPage==='function')renderCustomersPage();
    if(document.getElementById('ord-page')&&typeof renderOrdersPage==='function')renderOrdersPage();
    var sess=typeof _rpSession==='function'?_rpSession():null;
@@ -48892,7 +48908,7 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
  }
  function rerender(){
   try{if(typeof popSel==='function')popSel()}catch(e){}
-  try{if(typeof renderDash==='function')renderDash()}catch(e){}
+  try{if(window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558&&typeof renderDash==='function')renderDash()}catch(e){}
   try{if(typeof renderRL==='function')renderRL()}catch(e){}
   try{if(typeof renderProfiles==='function'&&document.getElementById('pg-profiles'))renderProfiles()}catch(e){}
   try{if(typeof renderLB==='function'&&document.getElementById('pg-lb'))renderLB()}catch(e){}
@@ -64773,8 +64789,8 @@ body.nav-rail #tabBar.tabs:before{
 
 
 <style id="tcp-build-footer-v634-css">
-.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v636"!important;white-space:normal!important;}
-body.nav-rail .tabs:after{content:"v636"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
+.tabs:after{content:"Cloud Sync • Admin  ·  BUILD v637"!important;white-space:normal!important;}
+body.nav-rail .tabs:after{content:"v637"!important;white-space:normal!important;text-align:center!important;font-size:8px!important;padding:8px 0!important;}
 .tcp-rep1-earned-badge{display:inline-flex;align-items:center;gap:4px;margin-left:7px;padding:3px 7px;border:1px solid rgba(250,135,61,.34);border-radius:999px;background:rgba(250,135,61,.10);color:#FFB37D;font-family:var(--tcp-brand-sans,"Open Sans",Arial,sans-serif);font-size:8px;font-weight:950;letter-spacing:.055em;text-transform:uppercase;vertical-align:middle;white-space:nowrap;}
 #rp-overlay .ps90-customer-card .tcp-rep1-earned-badge{position:absolute;right:8px;bottom:7px;margin:0;padding:2px 5px;font-size:6.8px;letter-spacing:.03em;max-width:68px;overflow:hidden;text-overflow:ellipsis;}
 #rp-overlay .ps90-customer-card.tcp-earned-rep1{border-color:rgba(250,135,61,.30);}
@@ -64876,7 +64892,59 @@ body.nav-rail .tabs:after{content:"v636"!important;white-space:normal!important;
 
 <script id="tcp-build-identity-v635-js">
 (function(){
-  window.TCP_BUILD_VERSION='v636';
-  try{document.documentElement.setAttribute('data-tcp-build','v636');document.title='Sales Tracker v636 — Responsive Monitor Fix';}catch(e){}
+  window.TCP_BUILD_VERSION='v637';
+  try{document.documentElement.setAttribute('data-tcp-build','v637');document.title='Sales Tracker v637 — Clean Boot';}catch(e){}
+})();
+</script>
+
+
+<script id="tcp-v637-clean-boot-js">
+/* ===== v637 Clean Boot / No Legacy Dashboard Flash ===== */
+(function(){
+ 'use strict';
+ var released=false;
+ function status(msg){var el=document.getElementById('tcpBootStatus');if(el)el.textContent=msg}
+ function currentDashboardReady(){return !!(window.TCP_PROJECT_SIMPLIFY_DASHBOARD_V558&&typeof window.renderDash==='function')}
+ function renderFinal(){
+  try{
+   var pg=document.getElementById('pg-dash');
+   if(pg&&pg.classList.contains('active')&&typeof window.renderDash==='function')window.renderDash();
+  }catch(e){console.warn('[v637 final dashboard render]',e)}
+ }
+ function release(){
+  if(released)return;released=true;
+  renderFinal();
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+   document.documentElement.classList.remove('tcp-booting');
+   document.documentElement.setAttribute('data-tcp-ui-ready','1');
+   var curtain=document.getElementById('tcpBootCurtain');
+   if(curtain)setTimeout(function(){if(curtain&&curtain.parentNode)curtain.parentNode.removeChild(curtain)},220);
+  })})
+ }
+ function readyAfterPersistent(){
+  status('Finishing current dashboard…');
+  if(currentDashboardReady())return release();
+  var tries=0,t=setInterval(function(){
+   tries++;
+   if(currentDashboardReady()||tries>=40){clearInterval(t);release()}
+  },50)
+ }
+ function boot(){
+  status('Loading your saved tracker data…');
+  var p=window._tcpPersistentReadyPromise;
+  if(p&&typeof p.then==='function'){
+   Promise.resolve(p).catch(function(e){console.warn('[v637 persistent boot]',e)}).then(readyAfterPersistent);
+  }else if(window.TCP_PERSISTENT_STORAGE_V550&&typeof window.TCP_PERSISTENT_STORAGE_V550.ready==='function'){
+   Promise.resolve(window.TCP_PERSISTENT_STORAGE_V550.ready()).catch(function(e){console.warn('[v637 persistent ready]',e)}).then(readyAfterPersistent);
+  }else{
+   readyAfterPersistent();
+  }
+  /* Never strand the UI behind the curtain if a browser extension/storage edge case stalls boot. */
+  setTimeout(function(){if(!released){console.warn('[v637] boot safety release');release()}},5000);
+ }
+ window.TCP_CLEAN_BOOT_V637={version:'v637',release:release,status:function(){return{released:released,dashboardReady:currentDashboardReady(),persistentReady:!!(window._tcpPersistentMeta&&window._tcpPersistentMeta.ready)}}};
+ window.TCP_BUILD_VERSION='v637';
+ try{document.documentElement.setAttribute('data-tcp-build','v637');document.title='Sales Tracker v637 — Clean Boot'}catch(e){}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
