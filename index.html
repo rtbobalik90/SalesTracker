@@ -5632,7 +5632,7 @@ async function buildRepQuarterReport(repName){
     var hrPts=(typeof getHRPoints==='function')?getHRPoints(repName,yr,q):0;
     var sc={}; try{sc=calcSc(repName,t,goal,totalWeeks,hrPts,totalWeeks)||{};}catch(e){sc={};}
     var rev=Number(t.revenue||0), revGoal=Number(goal.rev||0), attain=pct(rev,revGoal);
-    var calls=Number(t.calls||0), setSize=Number(t.setSize||0), accts=Number(t.acctsCalled||0), cover=setSize>0?pct(accts,setSize):0;
+    var calls=Number(t.calls||0), callGoalWeekly=Number(goal.calls||0), callGoal=callGoalWeekly*totalWeeks, callPace=callGoal>0?pct(calls,callGoal):0;
     var orders=Number(t.orders||0), art=Number(t.art||0), artRate=orders>0?(art/orders*100):0;
     var hours=Number(t.hours||0), hrGoal=Number(goal.hrs||0)*totalWeeks, hrPctV=hrGoal>0?pct(hours,hrGoal):0;
     var cmCost=0,cmCases=0,cmList=[];
@@ -5655,14 +5655,14 @@ async function buildRepQuarterReport(repName){
     function grade(s){s=Number(s)||0;return s>=5?'Excellent':s>=4?'Strong':s>=3?'Solid':s>=2?'Needs work':'Critical';}
     function gcls(s){s=Number(s)||0;return s>=4?'good':s>=3?'warn':'bad';}
     function dots5(s){s=Math.max(0,Math.min(5,Math.round(Number(s)||0)));var o='';for(var i=1;i<=5;i++){o+='<i class="qd '+(i<=s?'on':'')+'"></i>';}return '<div class="qdots">'+o+'</div>';}
-    var cats=[{k:'Revenue vs goal',s:sc.ss,m:Math.round(sc.sp||attain)+'% of goal'},{k:'Customer coverage',s:sc.cs,m:cover+'% of set called'},{k:'Art quality',s:sc.as2,m:artRate.toFixed(1)+'% error rate'},{k:'Credit discipline',s:sc.crs,m:(rev>0?(cmCost/rev*100).toFixed(2):'0.00')+'% of revenue'},{k:'Hours discipline',s:sc.hs,m:hrPctV+'% of expected'}];
+    var cats=[{k:'Revenue vs goal',s:sc.ss,m:Math.round(sc.sp||attain)+'% of goal'},{k:'Calls Made',s:sc.cs,m:callPace+'% of call goal'},{k:'Art quality',s:sc.as2,m:artRate.toFixed(1)+'% error rate'},{k:'Credit discipline',s:sc.crs,m:(rev>0?(cmCost/rev*100).toFixed(2):'0.00')+'% of revenue'},{k:'Hours discipline',s:sc.hs,m:hrPctV+'% of expected'}];
     var scoreRows=cats.map(function(c){return '<div class="qsc-row"><div class="qsc-k">'+c.k+'</div>'+dots5(c.s)+'<div class="qsc-g '+gcls(c.s)+'">'+grade(c.s)+'</div><div class="qsc-m">'+c.m+'</div></div>';}).join('');
     function wkLabelFor(k){var ww=weeks.filter(function(w2){return w2.key===k;})[0];return ww?(ww.label||('Wk '+ww.num)):k;}
     var aeDetail = aeList.length ? ('<ul class="qlist">'+aeList.slice(0,8).map(function(a){return '<li>SO '+esc(a.so||a.soNum||'\u2014')+' <span class="muted">('+esc(wkLabelFor(a.weekKey))+')</span></li>';}).join('')+(aeList.length>8?'<li class="muted">+'+(aeList.length-8)+' more</li>':'')+'</ul>') : '<div class="muted sm">No art errors logged this quarter \u2014 clean record.</div>';
     var cmDetail = cmList.length ? ('<ul class="qlist">'+cmList.slice(0,8).map(function(c){return '<li>'+money(c.amount)+' <span class="muted">'+esc(c.custName||c.custId||'')+(c.soNum?(' \u00b7 SO '+esc(c.soNum)):'')+'</span></li>';}).join('')+(cmList.length>8?'<li class="muted">+'+(cmList.length-8)+' more</li>':'')+'</ul>') : '<div class="muted sm">No rep-fault credit memos this quarter.</div>';
     var ai={};
     try{
-      var prompt='You are a sales manager writing a quarter-end coaching note that '+repName+' will read on their own. Be direct, specific, supportive, and use the real numbers. Refer to timing as early, mid, or late quarter \u2014 never invent week numbers.\n\nRep: '+repName+' | Q'+qn+' '+yr+' ('+totalWeeks+' weeks) | Team rank '+rank+' of '+teamN+'.\nRevenue '+money(rev)+' vs '+money(revGoal)+' goal ('+attain+'%); team average '+money(teamAvgRev)+'.\nCoverage '+cover+'% ('+accts+' of '+setSize+' customers), '+num(calls)+' calls. Orders '+orders+'. Art errors '+art+' ('+artRate.toFixed(1)+'% rate). Hours '+Math.round(hours)+' of '+Math.round(hrGoal)+' expected ('+hrPctV+'%). Rep-fault credit memos '+money(cmCost)+' across '+cmCases+' cases.\nScorecard 1-5: revenue '+(sc.ss||0)+', coverage '+(sc.cs||0)+', art quality '+(sc.as2||0)+', credit '+(sc.crs||0)+', hours '+(sc.hs||0)+', overall '+(sc.fin||0)+'.\nRevenue trend across the quarter: '+(trendDir(revSeries)||'steady')+'. Art-error trend: '+(trendDir(artSeries)||'steady')+'.\n\nReturn ONLY a JSON object (no code fences, no extra text) with exactly these keys: "summary", "went_well", "watch", "focus". Each value is 2 to 4 sentences of plain prose written directly to '+repName+', no markdown, no bullet characters. summary = the overall verdict on the quarter. went_well = the genuine strengths with numbers. watch = the real risks or weak spots with numbers, honest but supportive. focus = 2 to 3 concrete measurable targets for next quarter with specific numbers.';
+      var prompt='You are a sales manager writing a quarter-end coaching note that '+repName+' will read on their own. Be direct, specific, supportive, and use the real numbers. Refer to timing as early, mid, or late quarter \u2014 never invent week numbers.\n\nRep: '+repName+' | Q'+qn+' '+yr+' ('+totalWeeks+' weeks) | Team rank '+rank+' of '+teamN+'.\nRevenue '+money(rev)+' vs '+money(revGoal)+' goal ('+attain+'%); team average '+money(teamAvgRev)+'.\nCalls Made '+num(calls)+' vs '+num(callGoal)+' quarter target ('+callPace+'%). Orders '+orders+'. Art errors '+art+' ('+artRate.toFixed(1)+'% rate). Hours '+Math.round(hours)+' of '+Math.round(hrGoal)+' expected ('+hrPctV+'%). Rep-fault credit memos '+money(cmCost)+' across '+cmCases+' cases.\nScorecard 1-5: revenue '+(sc.ss||0)+', calls '+(sc.cs||0)+', art quality '+(sc.as2||0)+', credit '+(sc.crs||0)+', hours '+(sc.hs||0)+', overall '+(sc.fin||0)+'.\nRevenue trend across the quarter: '+(trendDir(revSeries)||'steady')+'. Art-error trend: '+(trendDir(artSeries)||'steady')+'.\n\nReturn ONLY a JSON object (no code fences, no extra text) with exactly these keys: "summary", "went_well", "watch", "focus". Each value is 2 to 4 sentences of plain prose written directly to '+repName+', no markdown, no bullet characters. summary = the overall verdict on the quarter. went_well = the genuine strengths with numbers. watch = the real risks or weak spots with numbers, honest but supportive. focus = 2 to 3 concrete measurable targets for next quarter with specific numbers.';
       var raw=String(await callAI(prompt,{maxTokens:1100,skipCompanyContext:true})||'');
       raw=raw.replace(/```json/gi,'').replace(/```/g,'').trim();
       var a0=raw.indexOf('{'),b0=raw.lastIndexOf('}');
@@ -5711,7 +5711,7 @@ async function buildRepQuarterReport(repName){
       '<div class="qr-h2">Scorecard breakdown</div>'+scoreRows+
       '<div class="qr-h2">The numbers</div><div class="qr-stats">'+
         '<div class="qr-stat"><div class="l">Revenue</div><div class="v">'+money(rev)+'</div><div class="s '+attCls+'">'+attain+'% of goal</div></div>'+
-        '<div class="qr-stat"><div class="l">Customer Coverage</div><div class="v">'+cover+'%</div><div class="s">'+num(accts)+' / '+num(setSize)+' called &middot; '+num(calls)+' calls</div></div>'+
+        '<div class="qr-stat"><div class="l">Calls Made</div><div class="v">'+num(calls)+'</div><div class="s">'+callPace+'% of '+num(callGoal)+' quarter target</div></div>'+
         '<div class="qr-stat"><div class="l">Orders</div><div class="v">'+num(orders)+'</div><div class="s">entered this quarter</div></div>'+
         '<div class="qr-stat"><div class="l">Art Errors</div><div class="v">'+num(art)+'</div><div class="s">'+artRate.toFixed(1)+'% of orders</div></div>'+
         '<div class="qr-stat"><div class="l">Hours</div><div class="v">'+num(hours)+'</div><div class="s">of ~'+num(hrGoal)+' expected ('+hrPctV+'%)</div></div>'+
@@ -5750,13 +5750,13 @@ async function buildDeepQuarterReport(){
       var rev=Number(t.revenue||0),revGoal=Number(g.rev||0),orders=Number(t.orders||0),art=Number(t.art||0);
       var cmCost=0,cmCases=0;(S.cms||[]).forEach(function(c){if(c&&c.rep===r.name&&c.fault==='rep'&&inQ(c.weekKey)){cmCost+=Number(c.amount||0);cmCases++;}});
       var sc={};try{sc=calcSc(r.name,t,g,totalWeeks,(typeof getHRPoints==='function'?getHRPoints(r.name,yr,q):0),totalWeeks);}catch(e){}
-      var setSize=Number(t.setSize||0),accts=Number(t.acctsCalled||0);
-      return {name:r.name,rev:rev,revGoal:revGoal,attain:pct(rev,revGoal),calls:Number(t.calls||0),setSize:setSize,accts:accts,cover:setSize>0?pct(accts,setSize):0,orders:orders,art:art,artRate:orders>0?(art/orders*100):0,cmCost:cmCost,cmCases:cmCases,hours:Number(t.hours||0),score:Number((sc&&sc.fin)||0)};
+      var calls=Number(t.calls||0),callGoal=Number(g.calls||0)*totalWeeks;
+      return {name:r.name,rev:rev,revGoal:revGoal,attain:pct(rev,revGoal),calls:calls,callGoal:callGoal,callPace:callGoal>0?pct(calls,callGoal):0,orders:orders,art:art,artRate:orders>0?(art/orders*100):0,cmCost:cmCost,cmCases:cmCases,hours:Number(t.hours||0),score:Number((sc&&sc.fin)||0)};
     });
     rows.sort(function(a,b){return (b.score-a.score)||(b.rev-a.rev);});
     rows.forEach(function(r,i){r.rank=i+1;});
-    var team=rows.reduce(function(a,r){a.rev+=r.rev;a.revGoal+=r.revGoal;a.calls+=r.calls;a.setSize+=r.setSize;a.accts+=r.accts;a.orders+=r.orders;a.art+=r.art;a.cmCost+=r.cmCost;a.cmCases+=r.cmCases;a.hours+=r.hours;return a;},{rev:0,revGoal:0,calls:0,setSize:0,accts:0,orders:0,art:0,cmCost:0,cmCases:0,hours:0});
-    var teamAttain=pct(team.rev,team.revGoal),teamCover=team.setSize>0?pct(team.accts,team.setSize):0,teamArtRate=team.orders>0?(team.art/team.orders*100):0;
+    var team=rows.reduce(function(a,r){a.rev+=r.rev;a.revGoal+=r.revGoal;a.calls+=r.calls;a.callGoal+=r.callGoal;a.orders+=r.orders;a.art+=r.art;a.cmCost+=r.cmCost;a.cmCases+=r.cmCases;a.hours+=r.hours;return a;},{rev:0,revGoal:0,calls:0,callGoal:0,orders:0,art:0,cmCost:0,cmCases:0,hours:0});
+    var teamAttain=pct(team.rev,team.revGoal),teamCallPace=team.callGoal>0?pct(team.calls,team.callGoal):0,teamArtRate=team.orders>0?(team.art/team.orders*100):0;
     var teamRevWk=weeks.map(function(wk){return reps.reduce(function(s,r){var d=(typeof gd==='function')?gd(r.name+'|'+wk.key):{};return s+Number((d&&d.revenue)||0);},0);});
     var teamArtWk=weeks.map(function(wk){return (S.artErrors||[]).filter(function(a){return a&&a.weekKey===wk.key;}).length;});
     function barChart(vals,color){var max=Math.max.apply(null,vals.concat([1]));return '<div class="bc">'+vals.map(function(v,i){var h=max>0?Math.max(2,Math.round((v/max)*50)):2;var wn=(weeks[i]&&weeks[i].num)?('w'+weeks[i].num):(i+1);return '<div class="bc-col"><div class="bc-bar" style="height:'+h+'px;background:'+color+';opacity:'+(v>0?1:.18)+';"></div><div class="bc-x">'+wn+'</div></div>';}).join('')+'</div>';}
@@ -5769,7 +5769,7 @@ async function buildDeepQuarterReport(){
     // ---- AI 1: data analysis ----
     var an=null;
     try{
-      var p1='You are a sales director analyzing a quarter for Triple Crown Products, a custom apparel decoration company (screen printing, embroidery, DTF). Use the real numbers, be specific and direct.\n\nQuarter Q'+qn+' '+yr+' ('+totalWeeks+' weeks). Team: '+rows.length+' reps.\nTeam revenue '+money(team.rev)+' vs '+money(team.revGoal)+' goal ('+teamAttain+'%). '+aboveGoal+' of '+rows.length+' reps hit goal. Coverage '+teamCover+'%. Orders '+num(team.orders)+'. Art errors '+num(team.art)+' ('+teamArtRate.toFixed(1)+'% rate), '+cleanArt+' reps had zero. Rep-fault credit memos '+money(team.cmCost)+' / '+team.cmCases+' cases. Team hours '+num(team.hours)+'.\nWeekly team revenue: ['+teamRevWk.map(function(v){return Math.round(v);}).join(', ')+'].\nWeekly team art errors: ['+teamArtWk.join(', ')+'].\nLeaderboard:\n'+lbStr+'\n\nReturn ONLY a JSON object (no code fences) with keys: "executive_summary" (3-4 sentences, the big-picture verdict on the quarter), "what_drove_it" (3-4 sentences on the top performers and what worked), "struggles" (3-4 sentences on underperformance and risks, with names and numbers), "patterns" (2-3 sentences on trends across the weeks), "rep_callouts" (array of 3-5 objects with keys "name" and "note", each note one sentence flagging a standout, a most-improved-style story, or someone needing attention), "recommendations" (array of 3-5 short specific action strings for next quarter).';
+      var p1='You are a sales director analyzing a quarter for Triple Crown Products, a custom apparel decoration company (screen printing, embroidery, DTF). Use the real numbers, be specific and direct.\n\nQuarter Q'+qn+' '+yr+' ('+totalWeeks+' weeks). Team: '+rows.length+' reps.\nTeam revenue '+money(team.rev)+' vs '+money(team.revGoal)+' goal ('+teamAttain+'%). '+aboveGoal+' of '+rows.length+' reps hit goal. Calls Made '+num(team.calls)+' ('+teamCallPace+'% of configured quarter call target). Orders '+num(team.orders)+'. Art errors '+num(team.art)+' ('+teamArtRate.toFixed(1)+'% rate), '+cleanArt+' reps had zero. Rep-fault credit memos '+money(team.cmCost)+' / '+team.cmCases+' cases. Team hours '+num(team.hours)+'.\nWeekly team revenue: ['+teamRevWk.map(function(v){return Math.round(v);}).join(', ')+'].\nWeekly team art errors: ['+teamArtWk.join(', ')+'].\nLeaderboard:\n'+lbStr+'\n\nReturn ONLY a JSON object (no code fences) with keys: "executive_summary" (3-4 sentences, the big-picture verdict on the quarter), "what_drove_it" (3-4 sentences on the top performers and what worked), "struggles" (3-4 sentences on underperformance and risks, with names and numbers), "patterns" (2-3 sentences on trends across the weeks), "rep_callouts" (array of 3-5 objects with keys "name" and "note", each note one sentence flagging a standout, a most-improved-style story, or someone needing attention), "recommendations" (array of 3-5 short specific action strings for next quarter).';
       an=pj(await callAI(p1,{maxTokens:2600,skipCompanyContext:true}));
     }catch(e){an=null;}
     // ---- AI 2: web-search industry context ----
@@ -5819,7 +5819,7 @@ async function buildDeepQuarterReport(){
       '<div class="kpis">'+
         '<div class="kpi"><div class="l">Team Revenue</div><div class="v">'+money(team.rev)+'</div><div class="s '+(teamAttain>=100?'good':teamAttain>=80?'warn':'bad')+'">'+teamAttain+'% of '+money(team.revGoal)+'</div></div>'+
         '<div class="kpi"><div class="l">Reps at Goal</div><div class="v">'+aboveGoal+' / '+rows.length+'</div><div class="s">hit revenue target</div></div>'+
-        '<div class="kpi"><div class="l">Coverage</div><div class="v">'+teamCover+'%</div><div class="s">'+num(team.accts)+' / '+num(team.setSize)+'</div></div>'+
+        '<div class="kpi"><div class="l">Calls Made</div><div class="v">'+num(team.calls)+'</div><div class="s">'+teamCallPace+'% of '+num(team.callGoal)+' target</div></div>'+
         '<div class="kpi"><div class="l">Orders</div><div class="v">'+num(team.orders)+'</div><div class="s">'+teamArtRate.toFixed(1)+'% art error rate</div></div>'+
         '<div class="kpi"><div class="l">Credit Memos</div><div class="v">'+money(team.cmCost)+'</div><div class="s">'+team.cmCases+' rep-fault cases</div></div>'+
       '</div>'+
@@ -5851,27 +5851,27 @@ function buildQuarterEndReport(){
       var t=(typeof totW==='function')?(totW(r.name,weeks)||{}):{};
       var goal=(typeof getGoal==='function')?(getGoal(r.name,yr,q)||{}):{};
       var revGoal=Number(goal.rev||0), rev=Number(t.revenue||0);
-      var orders=Number(t.orders||0), calls=Number(t.calls||0);
-      var setSize=Number(t.setSize||0), accts=Number(t.acctsCalled||0), art=Number(t.art||0);
+      var orders=Number(t.orders||0), calls=Number(t.calls||0), callGoal=Number(goal.calls||0)*totalWeeks;
+      var art=Number(t.art||0);
       var cmCost=0,cmCases=0;
       (S.cms||[]).forEach(function(c){if(c&&c.rep===r.name&&c.fault==='rep'&&weekKeys[c.weekKey]){cmCost+=Number(c.amount||0);cmCases++;}});
       var score=0;
       try{var sc=calcSc(r.name,t,goal,totalWeeks,(typeof getHRPoints==='function'?getHRPoints(r.name,yr,q):0),totalWeeks);score=Number((sc&&sc.fin)||0);}catch(e){score=0;}
-      return {name:r.name,rev:rev,revGoal:revGoal,attain:pct(rev,revGoal),calls:calls,setSize:setSize,accts:accts,coverage:setSize>0?pct(accts,setSize):0,orders:orders,art:art,artRate:orders>0?(art/orders*100):0,cmCost:cmCost,cmCases:cmCases,score:score};
+      return {name:r.name,rev:rev,revGoal:revGoal,attain:pct(rev,revGoal),calls:calls,callGoal:callGoal,callPace:callGoal>0?pct(calls,callGoal):0,orders:orders,art:art,artRate:orders>0?(art/orders*100):0,cmCost:cmCost,cmCases:cmCases,score:score};
     });
     rows.sort(function(a,b){return (b.score-a.score)||(b.rev-a.rev);});
     rows.forEach(function(r,i){r.rank=i+1;});
-    var team=rows.reduce(function(a,r){a.rev+=r.rev;a.revGoal+=r.revGoal;a.calls+=r.calls;a.setSize+=r.setSize;a.accts+=r.accts;a.orders+=r.orders;a.art+=r.art;a.cmCost+=r.cmCost;a.cmCases+=r.cmCases;return a;},{rev:0,revGoal:0,calls:0,setSize:0,accts:0,orders:0,art:0,cmCost:0,cmCases:0});
+    var team=rows.reduce(function(a,r){a.rev+=r.rev;a.revGoal+=r.revGoal;a.calls+=r.calls;a.callGoal+=r.callGoal;a.orders+=r.orders;a.art+=r.art;a.cmCost+=r.cmCost;a.cmCases+=r.cmCases;return a;},{rev:0,revGoal:0,calls:0,callGoal:0,orders:0,art:0,cmCost:0,cmCases:0});
     var genDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-    var teamAttain=pct(team.rev,team.revGoal), teamCoverage=team.setSize>0?pct(team.accts,team.setSize):0, teamArtRate=team.orders>0?(team.art/team.orders*100):0;
+    var teamAttain=pct(team.rev,team.revGoal), teamCallPace=team.callGoal>0?pct(team.calls,team.callGoal):0, teamArtRate=team.orders>0?(team.art/team.orders*100):0;
     function cls(p){return p>=100?'good':p>=80?'warn':'bad';}
     function bar(p){var w=Math.max(0,Math.min(100,p));var col=p>=100?'#16a34a':p>=80?'#d97706':'#dc2626';return '<div class="qe-bar"><i style="width:'+w+'%;background:'+col+';"></i></div>';}
-    var lb=rows.map(function(r){return '<tr><td class="rk">'+r.rank+'</td><td class="nm">'+esc(r.name)+'</td><td>'+money(r.rev)+'</td><td>'+money(r.revGoal)+'</td><td class="'+cls(r.attain)+'">'+r.attain+'%</td><td>'+num(r.calls)+'</td><td>'+r.coverage+'%</td><td>'+num(r.orders)+'</td><td>'+r.artRate.toFixed(1)+'%</td><td>'+money(r.cmCost)+'</td><td class="sc">'+r.score.toFixed(1)+'</td></tr>';}).join('');
+    var lb=rows.map(function(r){return '<tr><td class="rk">'+r.rank+'</td><td class="nm">'+esc(r.name)+'</td><td>'+money(r.rev)+'</td><td>'+money(r.revGoal)+'</td><td class="'+cls(r.attain)+'">'+r.attain+'%</td><td>'+num(r.calls)+'</td><td>'+r.callPace+'%</td><td>'+num(r.orders)+'</td><td>'+r.artRate.toFixed(1)+'%</td><td>'+money(r.cmCost)+'</td><td class="sc">'+r.score.toFixed(1)+'</td></tr>';}).join('');
     var sheets=rows.map(function(r){return '<section class="qe-rep">'+
       '<div class="qe-rep-head"><div><div class="qe-rep-rank">Rank #'+r.rank+' of '+rows.length+'</div><h2>'+esc(r.name)+'</h2><div class="qe-rep-period">Q'+qn+' '+yr+' &middot; Quarter-End Recap</div></div><div class="qe-rep-score"><div class="qe-rep-score-num">'+r.score.toFixed(1)+'</div><div class="qe-rep-score-lbl">Score</div></div></div>'+
       '<div class="qe-grid">'+
         '<div class="qe-block"><div class="qe-block-t">Revenue vs Goal</div><div class="qe-big">'+money(r.rev)+'</div><div class="qe-sub">of '+money(r.revGoal)+' goal</div>'+bar(r.attain)+'<div class="qe-attain '+cls(r.attain)+'">'+r.attain+'% attainment</div></div>'+
-        '<div class="qe-block"><div class="qe-block-t">Customer Coverage</div><div class="qe-big">'+r.coverage+'%</div><div class="qe-sub">'+num(r.accts)+' of '+num(r.setSize)+' customers called</div>'+bar(r.coverage)+'<div class="qe-sub">'+num(r.calls)+' total calls logged</div></div>'+
+        '<div class="qe-block"><div class="qe-block-t">Calls Made</div><div class="qe-big">'+num(r.calls)+'</div><div class="qe-sub">'+r.callPace+'% of '+num(r.callGoal)+' quarter call target</div>'+bar(r.callPace)+'<div class="qe-sub">Configured from weekly Calls Made goal</div></div>'+
         '<div class="qe-block"><div class="qe-block-t">Orders &amp; Art Quality</div><div class="qe-big">'+num(r.orders)+'</div><div class="qe-sub">orders this quarter</div><div class="qe-kv"><span>Art errors</span><b>'+num(r.art)+'</b></div><div class="qe-kv"><span>Art error rate</span><b>'+r.artRate.toFixed(1)+'%</b></div></div>'+
         '<div class="qe-block"><div class="qe-block-t">Credit Memos (rep-fault)</div><div class="qe-big">'+money(r.cmCost)+'</div><div class="qe-sub">'+r.cmCases+' case'+(r.cmCases===1?'':'s')+'</div><div class="qe-kv"><span>Revenue impact</span><b>'+(r.rev>0?(r.cmCost/r.rev*100).toFixed(2):'0.00')+'%</b></div></div>'+
       '</div></section>';}).join('');
@@ -5897,13 +5897,13 @@ function buildQuarterEndReport(){
       '<div class="qe-summary">'+
         '<div class="qe-card"><div class="l">Team Revenue</div><div class="v">'+money(team.rev)+'</div><div class="s">of '+money(team.revGoal)+' goal</div></div>'+
         '<div class="qe-card"><div class="l">Attainment</div><div class="v '+cls(teamAttain)+'">'+teamAttain+'%</div><div class="s">'+money(Math.max(0,team.revGoal-team.rev))+' to goal</div></div>'+
-        '<div class="qe-card"><div class="l">Customer Coverage</div><div class="v">'+teamCoverage+'%</div><div class="s">'+num(team.accts)+' / '+num(team.setSize)+' called</div></div>'+
+        '<div class="qe-card"><div class="l">Calls Made</div><div class="v">'+num(team.calls)+'</div><div class="s">'+teamCallPace+'% of '+num(team.callGoal)+' target</div></div>'+
         '<div class="qe-card"><div class="l">Orders</div><div class="v">'+num(team.orders)+'</div><div class="s">'+teamArtRate.toFixed(1)+'% art error rate</div></div>'+
         '<div class="qe-card"><div class="l">Credit Memos</div><div class="v">'+money(team.cmCost)+'</div><div class="s">'+team.cmCases+' rep-fault cases</div></div>'+
       '</div>'+
       '<h2 style="font-size:14px;margin:0 0 8px;">Team Leaderboard</h2>'+
-      '<table class="qe-table"><thead><tr><th>#</th><th>Rep</th><th>Revenue</th><th>Goal</th><th>Attain</th><th>Calls</th><th>Cover</th><th>Orders</th><th>Art%</th><th>Credits</th><th>Score</th></tr></thead><tbody>'+lb+'</tbody></table>'+
-      '<div class="qe-foot">Attainment = revenue / quarterly goal. Coverage = customers called / customers in set. Art% = art errors / orders. Credits = rep-fault credit-memo cost. Score = overall scorecard rating.</div>'+
+      '<table class="qe-table"><thead><tr><th>#</th><th>Rep</th><th>Revenue</th><th>Goal</th><th>Attain</th><th>Calls Made</th><th>Call Pace</th><th>Orders</th><th>Art%</th><th>Credits</th><th>Score</th></tr></thead><tbody>'+lb+'</tbody></table>'+
+      '<div class="qe-foot">Attainment = revenue / quarterly goal. Call Pace = Calls Made / configured quarter call target. Art% = art errors / orders. Credits = rep-fault credit-memo cost. Score = overall scorecard rating.</div>'+
       sheets+'</body></html>';
     var w=window.open('','_blank');
     if(w){w.document.write(html);w.document.close();w.focus();}
@@ -6975,30 +6975,30 @@ function renderPerf(){
     {l:'Orders',v:Math.round(tot.orders).toLocaleString(),s:(tot.art||0)+' art errors logged',g:'rgba(71,209,108,.22)'},
     {l:'Top sale',v:(tot.topSale>0?'$'+Math.round(tot.topSale).toLocaleString():'—'),s:(tot.topSaleCustomer||'No top customer yet'),g:'rgba(250,135,61,.24)'},
     {l:'Sales vs goal',v:Number(sc.ss||0).toFixed(1),s:'$'+Math.round(tot.revenue).toLocaleString()+' of paced $'+Math.round(sc.revGoalPaced||0).toLocaleString(),g:'rgba(250,135,61,.28)'},
-    {l:'Customers Called',v:Number(sc.cs||0).toFixed(1),s:Math.round(tot.acctsCalled)+' / '+Math.round(sc.setPaced||0)+' paced accounts',g:'rgba(0,175,239,.24)'},
+    {l:'Calls Made',v:Number(sc.cs||0).toFixed(1),s:Math.round(tot.calls||0)+' / '+Math.round(sc.callsGoalPaced||sc.setPaced||0)+' paced calls',g:'rgba(0,175,239,.24)'},
     {l:'Credit memos',v:Number(sc.crs||0).toFixed(1),s:'$'+Math.round(tot.credits||0).toLocaleString()+' rep-fault · '+crp.toFixed(1)+'%',g:'rgba(250,135,61,.22)'},
     {l:'Art error rate',v:Number(sc.as2||0).toFixed(1),s:(tot.art||0)+' / '+(tot.orders||0)+' orders · '+ap.toFixed(1)+'%',g:'rgba(250,135,61,.24)'}
   ];
   document.getElementById('pCards').innerHTML=kpis.map(function(k){return '<div class="perf-kpi-card" style="--perf-glow:'+k.g+'"><div class="perf-kpi-label">'+k.l+'</div><div class="perf-kpi-value">'+k.v+'</div><div class="perf-kpi-sub">'+k.s+'</div></div>';}).join('');
-  const bars=[{l:'Sales vs paced goal',p:Math.round(sc.sp),c:'#FA873D',mx:130},{l:'Customers Called',p:Math.round(sc.cp),c:'#00AFEF',mx:130},{l:'Hours vs goal',p:Math.round(sc.hp),c:'#00AFEF',mx:130},{l:'Art error rate',p:ap,c:'#FA873D',mx:12,inv:true},{l:'Credit memo rate',p:crp,c:'#FA873D',mx:8,inv:true}];
+  const bars=[{l:'Sales vs paced goal',p:Math.round(sc.sp),c:'#FA873D',mx:130},{l:'Calls Made',p:Math.round(sc.cp),c:'#00AFEF',mx:130},{l:'Hours vs goal',p:Math.round(sc.hp),c:'#00AFEF',mx:130},{l:'Art error rate',p:ap,c:'#FA873D',mx:12,inv:true},{l:'Credit memo rate',p:crp,c:'#FA873D',mx:8,inv:true}];
   document.getElementById('pBars').innerHTML=bars.map(function(b){let dp=Math.min(Math.round((b.p/Math.max(b.mx,1))*100),100),col=b.inv?(b.p>4?'#FA873D':b.p>2?'#FA873D':'#47D16C'):(b.p<70?'#FA873D':b.p<85?'#FA873D':b.c);return '<div class="perf-progress-row"><div class="perf-progress-top"><span class="perf-progress-label">'+b.l+'</span><span class="perf-progress-val">'+Number(b.p||0).toFixed(1)+'%</span></div><div class="perf-progress-bar"><div class="perf-progress-fill" style="width:'+dp+'%;--bar-color:'+col+'"></div></div></div>';}).join('');
   let focus=[];
   focus.push({i:'💰',t:'Revenue pace',x:(sc.sp>=100?'Ahead of paced revenue target.':'Below paced revenue target — review open quotes and weekly close plan.')});
-  focus.push({i:'📞',t:'Customers Called',x:(sc.cp>=100?'Account coverage is at or above pace.':'Coverage is behind pace — prioritize customer-set completion.')});
+  focus.push({i:'📞',t:'Calls Made',x:(sc.cp>=100?'Call activity is at or above pace.':'Call activity is behind pace — prioritize outbound volume.')});
   focus.push({i:'🎨',t:'Quality',x:(ap<=2?'Art error rate is controlled.':ap<=4?'Art error rate needs watching.':'Art error rate is high — review order-entry/art handoff habits.')});
   focus.push({i:'🧾',t:'Credit memos',x:(crp<=1?'Credit memo rate is low.':crp<=3?'Credit memo rate is moderate.':'Credit memo rate is elevated — inspect recent rep-fault memos.')});
   focus.push({i:'🧭',t:'HR cap',x:(sc.capped?'Final score is capped by HR points.':'No HR cap affecting the final score.')});
   document.getElementById('perfInsights').innerHTML=focus.map(function(f){return '<div class="perf-insight"><div class="perf-insight-icon">'+f.i+'</div><div><div class="perf-insight-title">'+f.t+'</div><div class="perf-insight-text">'+f.x+'</div></div></div>';}).join('');
   var _srows=[
     {name:'Sales vs goal',weight:'50%',detail:'$'+Math.round(tot.revenue).toLocaleString()+' of $'+Math.round(ro.rev).toLocaleString(),pct:sc.sp,score:sc.ss},
-    {name:'Customers Called',weight:'30%',detail:tot.acctsCalled+' / '+Math.round(tot.setSize)+' accounts',pct:sc.cp,score:sc.cs},
+    {name:'Calls Made',weight:'30%',detail:Math.round(tot.calls||0)+' / '+Math.round(sc.callsGoalPaced||sc.setPaced||0)+' paced calls',pct:sc.cp,score:sc.cs},
     {name:'Credit memos',weight:'10%',detail:'$'+Math.round(tot.credits).toLocaleString()+' rep-fault',pct:sc.crp,score:sc.crs},
     {name:'Art error rate',weight:'5%',detail:tot.art+' / '+tot.orders+' orders',pct:sc.ap,score:sc.as2},
     {name:'Hours',weight:'5%',detail:tot.hours.toFixed(1)+' hrs of '+(ro.hrs*qw.length),pct:sc.hp,score:sc.hs}
   ];
   var _bw=document.getElementById('perfBreakdown');if(_bw)_bw.innerHTML='<table class="score-table-modern"><thead><tr><th>Category</th><th>Result</th><th>Percent</th><th>Score</th></tr></thead><tbody>'+_srows.map(function(r){return '<tr><td>'+r.name+' <span style="color:#8F9AB8;font-size:10px;">('+r.weight+')</span></td><td>'+r.detail+'</td><td>'+r.pct.toFixed(1)+'%</td><td>'+r.score.toFixed(1)+'</td></tr>';}).join('')+'</tbody></table>';
   var _wt=(sc.ss*.50)+(sc.cs*.30)+(sc.crs*.10)+(sc.as2*.05)+(sc.hs*.05),_rnd=Math.round(_wt);
-  var _ww=document.getElementById('perfWhy');if(_ww)_ww.innerHTML='<div class="score-insight"><div class="score-insight-title">Weighted score</div><div class="score-insight-text">Sales, customers called, credit memos, art errors, and hours combine to '+_wt.toFixed(2)+' before rounding.</div></div><div class="score-insight"><div class="score-insight-title">Final rating</div><div class="score-insight-text">Rounded score is '+_rnd+'/5. '+(sc.capped?'HR points cap the final score at '+sc.cap+'/5, so the final visible score is '+sc.fin+'/5.':'No HR cap changed the final score.')+'</div></div><div class="score-insight"><div class="score-insight-title">Scoring rules</div><div class="score-insight-text">Credit memo scoring uses rep-fault only. Customer-fault memos do not affect rep score. HR cap thresholds stay unchanged.</div></div>';
+  var _ww=document.getElementById('perfWhy');if(_ww)_ww.innerHTML='<div class="score-insight"><div class="score-insight-title">Weighted score</div><div class="score-insight-text">Sales, Calls Made, credit memos, art errors, and hours combine to '+_wt.toFixed(2)+' before rounding.</div></div><div class="score-insight"><div class="score-insight-title">Final rating</div><div class="score-insight-text">Rounded score is '+_rnd+'/5. '+(sc.capped?'HR points cap the final score at '+sc.cap+'/5, so the final visible score is '+sc.fin+'/5.':'No HR cap changed the final score.')+'</div></div><div class="score-insight"><div class="score-insight-title">Scoring rules</div><div class="score-insight-text">Credit memo scoring uses rep-fault only. Customer-fault memos do not affect rep score. HR cap thresholds stay unchanged.</div></div>';
   dc('cPW');
   ch['cPW']=new Chart(document.getElementById('cPW'),{type:'bar',data:{labels:qw.map(w=>w.label.split(':')[0]),datasets:[{label:'Orders',data:qw.map(w=>{var d=gd(rep+'|'+w.key);var hasAny=(d.revenue||d.calls||d.orders||d.hours||0)>0;return hasAny?(d.orders||0):null;}),backgroundColor:'rgba(250,135,61,.82)',borderColor:'#A78BFA',borderWidth:1,borderRadius:6},{label:'Art errors',data:qw.map(w=>{var d=gd(rep+'|'+w.key);var hasAny=(d.revenue||d.calls||d.orders||d.hours||0)>0;return hasAny?repArt(rep,[w]):null;}),backgroundColor:'rgba(250,135,61,.78)',borderColor:'#FF8BAE',borderWidth:1,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{color:'#A8AFC3',font:{size:11,weight:'700'},boxWidth:10,usePointStyle:true}}},scales:{x:{grid:{display:false},ticks:{color:'#9AA4BD',font:{size:10,weight:'700'},maxRotation:0,autoSkip:false}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#9AA4BD',font:{size:10,weight:'700'}}}}}});
 }
@@ -8595,6 +8595,21 @@ function _rp2Css(){ if(document.getElementById('rp2-css'))return; var s=document
  document.head.appendChild(s);
 }
 
+/* v645 report call evidence: never use acctsCalled as Calls Made. */
+function _tcp645Date(v){var d=v instanceof Date?new Date(v.getTime()):new Date(String(v||'').length===10?String(v)+'T12:00:00':v);if(isNaN(d.getTime()))return null;d.setHours(12,0,0,0);return d;}
+function _tcp645Iso(v){var d=_tcp645Date(v);return d?d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'):'';}
+function _tcp645BizFraction(w,d){var a=_tcp645Date(w&&w.start),b=_tcp645Date(w&&w.end),x=_tcp645Date(d);if(!a||!b||!x)return 0;var total=0,done=0;for(var cur=new Date(a);cur<=b;cur.setDate(cur.getDate()+1)){var day=cur.getDay();if(day!==0&&day!==6){total++;if(cur<=x)done++;}}return total?done/total:0;}
+function _tcp645TrustedCalls(yr,q,throughKey){
+ var weeks=(typeof gwq==='function'?gwq(yr,q):[])||[],idx=weeks.findIndex(function(w){return w.key===throughKey});if(idx<0)idx=weeks.length-1;var use=weeks.slice(0,idx+1),names=(typeof activeReps==='function'?activeReps():[]).map(function(r){return r.name}),perRep={},byWeek={},sources=[],problems=[];names.forEach(function(n){perRep[n]=0});
+ for(var wi=0;wi<use.length;wi++){var w=use[wi],vals={},source='',ok=false,dailyDate='';
+  try{if(window.TCP_DASHBOARD_TRUTH_V641&&typeof TCP_DASHBOARD_TRUTH_V641.latestCompleteDaily==='function'){dailyDate=TCP_DASHBOARD_TRUTH_V641.latestCompleteDaily(S&&S.dailyCalls||{},w,names,_tcp645Date(w.end));if(dailyDate&&_tcp645BizFraction(w,dailyDate)>=.999){var dr=S.dailyCalls&&S.dailyCalls[dailyDate]||{};names.forEach(function(rep){vals[rep]=Number(dr[rep])||0});source='Daily Calls';ok=true}}}catch(e){}
+  if(!ok){try{var u=window.TCP_DASHBOARD_TRUTH_V641&&typeof TCP_DASHBOARD_TRUTH_V641.uploadInfo==='function'?TCP_DASHBOARD_TRUTH_V641.uploadInfo(w,names):null;var cf=u&&u.schema&&u.schema.completeFields||{};if(u&&u.complete&&u.callsTrusted&&(cf.callsMade===true||(u.schema&&u.schema.callsStandalone===true))){names.forEach(function(rep){var r=(S.data&&S.data[rep+'|'+w.key])||{};vals[rep]=Number(r.calls)||0});source='Verified Weekly Sheet';ok=true}}catch(e){}}
+  if(!ok){var stored=true;names.forEach(function(rep){var rr=S&&S.data&&S.data[rep+'|'+w.key];if(!rr||!Object.prototype.hasOwnProperty.call(rr,'calls')||!isFinite(Number(rr.calls)))stored=false;else vals[rep]=Number(rr.calls)||0});if(stored){source='Tracker Calls Made';ok=true}}
+  if(!ok){problems.push((w.label||w.key)+': Calls Made is missing for one or more reps.');break}
+  byWeek[w.key]=vals;sources.push({weekKey:w.key,label:w.label||w.key,source:source,date:dailyDate||''});names.forEach(function(rep){perRep[rep]+=Number(vals[rep])||0});
+ }
+ return{valid:problems.length===0&&sources.length===use.length,perRep:perRep,byWeek:byWeek,sources:sources,problems:problems,dataThrough:sources.length?sources[sources.length-1].label:'No verified calls',weeksUsed:sources.length,weeksRequested:use.length};
+}
 function buildMtgEngine(prev,yr,q){
   var qtdWeeks=gwq(yr,q);
   var prevIdx=qtdWeeks.findIndex(function(w){return w.key===prev.key;});if(prevIdx<0)prevIdx=0;
@@ -8610,6 +8625,7 @@ function buildMtgEngine(prev,yr,q){
     if(order[oi]===q){ytdWeeks=ytdWeeks.concat(qWeeks);break;}
     ytdWeeks=ytdWeeks.concat(gwq(yr,order[oi]));
   }
+  var callEvidence=_tcp645TrustedCalls(yr,q,prev.key);
   var reps=activeReps().map(function(r){
     var ri=S.reps.findIndex(function(x){return x.name===r.name;});
     var d=gd(r.name+'|'+prev.key);
@@ -8620,12 +8636,13 @@ function buildMtgEngine(prev,yr,q){
     var series=qWeeks.map(function(w){return Number(gd(r.name+'|'+w.key).revenue||0);});
     var qTop=0,qTopCust='',qTopWk='';
     qWeeks.forEach(function(w){var dd=gd(r.name+'|'+w.key);if(Number(dd.topSale||0)>qTop){qTop=Number(dd.topSale||0);qTopCust=dd.topSaleCustomer||'';qTopWk=w.label||('Wk '+w.num);}});
-    var wkOrders=Number(d.orders||0),wkRev=Number(d.revenue||0);
+    var wkOrders=Number(d.orders||0),wkRev=Number(d.revenue||0),callGoal=Number(ro.calls||0),trustedWk=callEvidence.valid?Number((callEvidence.byWeek[prev.key]||{})[r.name]||0):null,trustedQtd=callEvidence.valid?Number(callEvidence.perRep[r.name]||0):null,callExpected=callGoal*weeksCompleted,callQuarterTarget=callGoal*qtdWeeks.length;
     return {name:r.name,idx:ri,
-      wkRev:wkRev,wkOrders:wkOrders,wkCalls:Number(d.calls||0),art:art,credits:credits,
+      wkRev:wkRev,wkOrders:wkOrders,wkCalls:trustedWk,art:art,credits:credits,
       topSale:Number(d.topSale||0),topSaleCustomer:d.topSaleCustomer||'',
       pwRev:pd?Number(pd.revenue||0):null,pwOrders:pd?Number(pd.orders||0):null,
-      qtdRev:Number(qt.revenue||0),qtdOrders:Number(qt.orders||0),qtdCalls:Number(qt.calls||0),qtdArt:Number(qt.art||0),
+      qtdRev:Number(qt.revenue||0),qtdOrders:Number(qt.orders||0),qtdCalls:trustedQtd,qtdArt:Number(qt.art||0),
+      callGoalWeekly:callGoal,callExpected:callExpected,callQuarterTarget:callQuarterTarget,callPace:(trustedQtd!=null&&callExpected>0?trustedQtd/callExpected*100:null),callNeedWeekly:(trustedQtd!=null&&weeksRemaining>0?Math.max(0,(callQuarterTarget-trustedQtd)/weeksRemaining):0),
       setSize:Number(qt.setSize||0),accts:Number(qt.acctsCalled||0),
       ytdRev:Number(yt.revenue||0),ytdOrders:Number(yt.orders||0),
       goalRev:Number(ro.rev||0),series:series,
@@ -8638,9 +8655,10 @@ function buildMtgEngine(prev,yr,q){
   var team={wkRev:sum('wkRev'),wkOrders:sum('wkOrders'),wkCalls:sum('wkCalls'),art:sum('art'),credits:sum('credits'),
     pwRev:pwKnown?reps.reduce(function(s,r){return s+(Number(r.pwRev)||0);},0):null,
     pwOrders:pwKnown?reps.reduce(function(s,r){return s+(Number(r.pwOrders)||0);},0):null,
-    qtdRev:sum('qtdRev'),qtdOrders:sum('qtdOrders'),qtdCalls:sum('qtdCalls'),qtdArt:sum('qtdArt'),
+    qtdRev:sum('qtdRev'),qtdOrders:sum('qtdOrders'),qtdCalls:callEvidence.valid?sum('qtdCalls'):null,qtdArt:sum('qtdArt'),
     ytdRev:sum('ytdRev'),ytdOrders:sum('ytdOrders'),
     goalRev:sum('goalRev'),setSize:sum('setSize'),accts:sum('accts')};
+  team.callsVerified=callEvidence.valid;team.callExpected=reps.reduce(function(s,r){return s+(Number(r.callExpected)||0)},0);team.callPace=team.callsVerified&&team.callExpected>0?Number(team.qtdCalls||0)/team.callExpected*100:null;team.callDataThrough=callEvidence.dataThrough;
   team.aov=team.wkOrders>0?team.wkRev/team.wkOrders:0;
   team.qtdAov=team.qtdOrders>0?team.qtdRev/team.qtdOrders:0;
   var teamSeries=qWeeks.map(function(w){return reps.reduce(function(s,r){return s+Number(gd(r.name+'|'+w.key).revenue||0);},0);});
@@ -8659,7 +8677,7 @@ function buildMtgEngine(prev,yr,q){
   return {prev:prev,yr:yr,q:q,qtdWeeks:qtdWeeks,qWeeks:qWeeks,prevIdx:prevIdx,weeksCompleted:weeksCompleted,weeksRemaining:weeksRemaining,
     prevWkObj:prevWkObj,ytdWeeks:ytdWeeks,reps:reps,byWk:byWk,team:team,teamSeries:teamSeries,wkLabels:wkLabels,
     earlyQuarter:earlyQuarter,qtdPct:qtdPct,avgWeekly:avgWeekly,projected:projected,projectedPct:projectedPct,forwardNeed:forwardNeed,
-    topSales:topSales,qTopSales:qTopSales,qtdArtPct:qtdArtPct,qtdCreditsTotal:qtdCreditsTotal,qtdCreditPct:qtdCreditPct,
+    topSales:topSales,qTopSales:qTopSales,qtdArtPct:qtdArtPct,qtdCreditsTotal:qtdCreditsTotal,qtdCreditPct:qtdCreditPct,callEvidence:callEvidence,
     weekNum:(prev.num!=null?Number(prev.num):0)};
 }
 async function fetchMtgAI(E){
@@ -8669,7 +8687,7 @@ async function fetchMtgAI(E){
     return (i+1)+'. '+r.name+' | wk '+_m2$(r.wkRev)+' ('+r.wkOrders+' ord, '+r.wkCalls+' calls'+(r.art?', '+r.art+' art err':'')+(r.credits?', '+_m2$(r.credits)+' credits':'')+')'
       +' | prev wk '+(r.pwRev!=null?_m2$(r.pwRev):'n/a')+' | QTD '+_m2$(r.qtdRev)+' ('+r.qtdOrders+' ord) | YTD '+_m2$(r.ytdRev)
       +(r.topSale>0?' | top sale '+_m2$(r.topSale)+(r.topSaleCustomer?' to '+r.topSaleCustomer:''):'')
-      +' | coverage '+(r.setSize>0?Math.round(r.accts/r.setSize*100):0)+'% ('+r.accts+'/'+r.setSize+')';
+      +' | calls '+(E.callEvidence&&E.callEvidence.valid?_m2n(r.qtdCalls)+' / '+_m2n(r.callExpected)+' expected ('+Math.round(r.callPace||0)+'% pace)':'unverified');
   }).join('\n');
   var paceLine=E.earlyQuarter
     ? 'EARLY QUARTER: only week '+E.weeksCompleted+' of '+E.qtdWeeks.length+' is complete. Treat pace as directional only. Do NOT frame the team or reps as failing versus quarter goals; focus on actuals, week-over-week movement, activity and momentum.'
@@ -8677,7 +8695,7 @@ async function fetchMtgAI(E){
   var wow=(t.pwRev!=null&&t.pwRev>0)?('Team week revenue '+_m2$(t.wkRev)+' vs prior week '+_m2$(t.pwRev)+' ('+((t.wkRev-t.pwRev)/t.pwRev*100).toFixed(0)+'%).'):('Team week revenue '+_m2$(t.wkRev)+' (no prior-week data).');
   var prompt='You are an elite sales analyst preparing the weekly management meeting report for Triple Crown Products (custom branded apparel: screen printing, embroidery, DTF; ~'+E.reps.length+' reps).\n'
     +'\nREPORTED WEEK: '+E.prev.label+' '+E.yr+' ('+E.q+', week '+E.weeksCompleted+' of '+E.qtdWeeks.length+').\n'
-    +wow+'\nWeek orders: '+_m2n(t.wkOrders)+' (prior wk '+(t.pwOrders!=null?_m2n(t.pwOrders):'n/a')+'). Week AOV: '+_m2$(t.aov)+'. Calls: '+_m2n(t.wkCalls)+'.\n'
+    +wow+'\nWeek orders: '+_m2n(t.wkOrders)+' (prior wk '+(t.pwOrders!=null?_m2n(t.pwOrders):'n/a')+'). Week AOV: '+_m2$(t.aov)+'. Calls Made: '+(t.callsVerified?_m2n(t.wkCalls):'unverified')+'.\n'
     +'CUMULATIVE: QTD '+_m2$(t.qtdRev)+' / '+_m2n(t.qtdOrders)+' orders (AOV '+_m2$(t.qtdAov)+'). YTD '+_m2$(t.ytdRev)+' / '+_m2n(t.ytdOrders)+' orders.\n'
     +'Quality QTD: art error rate '+E.qtdArtPct.toFixed(1)+'%, rep-fault credits '+_m2$(E.qtdCreditsTotal)+' ('+E.qtdCreditPct.toFixed(2)+'% of QTD rev).\n'
     +paceLine+'\nWeekly team revenue series: ['+E.teamSeries.map(function(v){return Math.round(v);}).join(', ')+']\n'
@@ -8803,7 +8821,7 @@ function buildMgrMeetingBody(E,ai,depth,X){
     +'<div class="k"><div class="kl">Week revenue</div><div class="kv">'+_m2$(t.wkRev)+'</div><div class="ks">'+(t.pwRev!=null?'vs '+_m2$(t.pwRev)+' prior wk &nbsp;':'')+_m2delta(t.wkRev,t.pwRev)+'</div></div>'
     +'<div class="k"><div class="kl">Week orders</div><div class="kv">'+_m2n(t.wkOrders)+'</div><div class="ks">'+(t.pwOrders!=null?'vs '+_m2n(t.pwOrders)+' prior wk &nbsp;':'')+_m2delta(t.wkOrders,t.pwOrders)+'</div></div>'
     +'<div class="k"><div class="kl">Avg order value (wk)</div><div class="kv">'+_m2$(t.aov)+'</div><div class="ks">QTD AOV '+_m2$(t.qtdAov)+'</div></div>'
-    +'<div class="k"><div class="kl">Calls (wk)</div><div class="kv">'+_m2n(t.wkCalls)+'</div><div class="ks">'+_m2n(t.qtdCalls)+' QTD</div></div>'
+    +'<div class="k"><div class="kl">Calls Made (wk)</div><div class="kv">'+(t.callsVerified?_m2n(t.wkCalls):'&mdash;')+'</div><div class="ks">'+(t.callsVerified?(_m2n(t.qtdCalls)+' QTD &middot; '+Math.round(t.callPace||0)+'% pace'):'Calls unverified')+'</div></div>'
     +'<div class="k"><div class="kl">QTD revenue</div><div class="kv">'+_m2$(t.qtdRev)+'</div><div class="ks">'+_m2n(t.qtdOrders)+' orders &middot; wk '+E.weeksCompleted+'/'+E.qtdWeeks.length+'</div></div>'
     +'<div class="k"><div class="kl">YTD revenue</div><div class="kv">'+_m2$(t.ytdRev)+'</div><div class="ks">'+_m2n(t.ytdOrders)+' orders &middot; '+E.yr+'</div></div>'
     +'<div class="k"><div class="kl">Art errors</div><div class="kv">'+_m2n(t.art)+'</div><div class="ks">'+E.qtdArtPct.toFixed(1)+'% QTD rate</div></div>'
@@ -8869,15 +8887,17 @@ function buildMgrMeetingBody(E,ai,depth,X){
     });
     out+='<div class="sec flow"><div class="sec-h"><span>&#127919; Pacing vs goal &mdash; '+E.q+' '+E.yr+'</span></div><table class="t"><thead><tr><th>Rep</th><th>QTD rev</th><th>Qtr goal</th><th>Goal %</th><th>Need/wk</th><th>Progress</th></tr></thead><tbody>'+pr+'</tbody></table></div>';
   }
-  // 8. Customers called (Standard+)
+  // 8. Calls Made (Standard+)
   if(lvl>=2){
-    var cc='';E.reps.slice().sort(function(a,b){var ca=a.setSize>0?a.accts/a.setSize:0,cb=b.setSize>0?b.accts/b.setSize:0;return ca-cb;}).forEach(function(r){
-      var covP=r.setSize>0?Math.round(r.accts/r.setSize*100):0;
-      var need=r.setSize>0&&E.weeksRemaining>0?Math.ceil(Math.max(0,r.setSize-r.accts)/E.weeksRemaining):0;
-      var col=covP>=66?'#059669':covP>=33?'#D97706':'#DC2626';
-      cc+='<tr><td>'+_m2esc(r.name)+'</td><td>'+_m2n(r.setSize)+'</td><td>'+_m2n(r.accts)+'</td><td style="font-weight:800;color:'+col+';">'+covP+'%</td><td style="color:'+(need>0?'#D97706':'#059669')+';">'+(r.setSize>0?(need>0?need+'/wk':'Done!'):'&mdash;')+'</td><td><span class="bar"><span class="bar-fill" style="width:'+Math.min(100,covP)+'%;background:'+col+';"></span></span></td></tr>';
-    });
-    out+='<div class="sec flow"><div class="sec-h"><span>&#128222; Customers called &mdash; '+E.q+' '+E.yr+'</span><span class="tag">quarter coverage</span></div><table class="t"><thead><tr><th>Rep</th><th>Set size</th><th>Reached</th><th>% Reached</th><th>Need/wk</th><th>Progress</th></tr></thead><tbody>'+cc+'</tbody></table></div>';
+    if(E.callEvidence&&E.callEvidence.valid){
+      var cc='';E.reps.slice().sort(function(a,b){return (a.callPace==null?999:a.callPace)-(b.callPace==null?999:b.callPace);}).forEach(function(r){
+        var p=r.callPace==null?0:Math.round(r.callPace),col=p>=100?'#059669':p>=85?'#D97706':'#DC2626',need=E.weeksRemaining>0?Math.ceil(r.callNeedWeekly||0):0;
+        cc+='<tr><td>'+_m2esc(r.name)+'</td><td>'+_m2n(r.qtdCalls)+'</td><td>'+_m2n(r.callExpected)+'</td><td style="font-weight:800;color:'+col+';">'+p+'%</td><td style="color:'+(need>0?'#D97706':'#059669')+';">'+(need>0?need+'/wk':'On / above pace')+'</td><td><span class="bar"><span class="bar-fill" style="width:'+Math.min(100,p)+'%;background:'+col+';"></span></span></td></tr>';
+      });
+      out+='<div class="sec flow"><div class="sec-h"><span>&#128222; Calls Made &mdash; '+E.q+' '+E.yr+'</span><span class="tag">activity vs configured call goal</span></div><table class="t"><thead><tr><th>Rep</th><th>Calls Made</th><th>Expected</th><th>Call Pace</th><th>Need/wk</th><th>Progress</th></tr></thead><tbody>'+cc+'</tbody></table><div style="font-size:8.5px;color:#667085;margin-top:6px;">Source: '+_m2esc((E.callEvidence.sources||[]).map(function(x){return x.source}).filter(function(x,i,a){return a.indexOf(x)===i}).join(' + '))+' &middot; through '+_m2esc(E.callEvidence.dataThrough)+'</div></div>';
+    }else{
+      out+='<div class="sec flow"><div class="sec-h"><span>&#128222; Calls Made &mdash; '+E.q+' '+E.yr+'</span><span class="tag">unverified</span></div><div class="note"><strong>Calls withheld:</strong> '+_m2esc((E.callEvidence&&E.callEvidence.problems||['No verified Calls Made history.']).join(' '))+'</div></div>';
+    }
   }
   // 9. Inbound (Standard+)
   if(lvl>=2&&X.inboundHtml)out+=X.inboundHtml;
@@ -8902,7 +8922,7 @@ function buildMgrMeetingBody(E,ai,depth,X){
         +'</div>'
         +'<div class="rb-grid" style="grid-template-columns:repeat(5,minmax(0,1fr));">'
         +'<div class="rb-cell"><div class="l">AOV (wk)</div><div class="v">'+(r.wkOrders>0?_m2$(r.aov):'&mdash;')+'</div></div>'
-        +'<div class="rb-cell"><div class="l">Coverage</div><div class="v">'+(r.setSize>0?Math.round(r.accts/r.setSize*100)+'%':'&mdash;')+'</div><div class="s">'+_m2n(r.accts)+'/'+_m2n(r.setSize)+'</div></div>'
+        +'<div class="rb-cell"><div class="l">Call pace</div><div class="v">'+(E.callEvidence&&E.callEvidence.valid&&r.callPace!=null?Math.round(r.callPace)+'%':'&mdash;')+'</div><div class="s">'+(E.callEvidence&&E.callEvidence.valid?_m2n(r.qtdCalls)+' / '+_m2n(r.callExpected)+' expected':'Calls unverified')+'</div></div>'
         +'<div class="rb-cell"><div class="l">Art (wk)</div><div class="v" style="color:'+(r.art>0?'#D97706':'#059669')+';">'+r.art+'</div><div class="s">'+_m2n(r.qtdArt)+' QTD</div></div>'
         +'<div class="rb-cell"><div class="l">Credits (wk)</div><div class="v" style="color:'+(r.credits>0?'#DC2626':'#059669')+';">'+_m2$(r.credits)+'</div></div>'
         +'<div class="rb-cell"><div class="l">Qtr best sale</div><div class="v">'+(r.qTop>0?_m2$(r.qTop):'&mdash;')+'</div><div class="s">'+_m2esc(r.qTopCust||'')+'</div></div>'
@@ -8947,7 +8967,7 @@ function buildRepFriendlyBody(E,ai,X){
     +'<div class="hb-grid">'
     +'<div class="hb-cell"><div class="hb-l">Team revenue</div><div class="hb-v">'+_m2$(t.wkRev)+'</div></div>'
     +'<div class="hb-cell"><div class="hb-l">Orders written</div><div class="hb-v">'+_m2n(t.wkOrders)+'</div></div>'
-    +'<div class="hb-cell"><div class="hb-l">Customer calls</div><div class="hb-v">'+_m2n(t.wkCalls)+'</div></div>'
+    +'<div class="hb-cell"><div class="hb-l">Calls Made</div><div class="hb-v">'+(t.callsVerified?_m2n(t.wkCalls):'—')+'</div></div>'
     +'<div class="hb-cell"><div class="hb-l">'+E.q+' so far</div><div class="hb-v">'+_m2$(t.qtdRev)+'</div></div>'
     +'</div></div>';
   var medals=['&#129351;','&#129352;','&#129353;'],pc=['g1','g2','g3'];
@@ -9129,7 +9149,7 @@ async function generateMeetingReport(){
 
 
 
-async function generateReview(){let rep=document.getElementById('rvRep').value,q=document.getElementById('rvQ').value,yr=parseInt(document.getElementById('rvYr').value);if(!rep)return;let ri=S.reps.findIndex(r=>r.name===rep),ro=repGoalObj(rep,yr,q),weeks=gwq(yr,q),we=weeksElapsed(yr,q),tot=totW(rep,weeks),hrP=getHRPoints(rep,yr,q),sc=calcSc(rep,tot,ro,weeks.length,hrP,we),rt=rfrom(sc.fin);let sss=RVSECTIONS.map(s=>({section:s,score:secScore(s,sc)}));let hrV=S.hrViolations.filter(v=>v.rep===rep&&v.yr==yr&&v.q===q),notes=S.coachingNotes.filter(n=>n.rep===rep&&n.yr==yr&&n.q===q);let btn=document.getElementById('genRevBtn'),st=document.getElementById('rvSt'),prev=document.getElementById('rvPreview');btn.disabled=true;document.getElementById('rvResultBox').style.display='none';prev.innerHTML='<div class="rv-section pulse"><div class="rv-section-body">Generating 8-section review...</div></div>';st.textContent='Generating...';const prompt='Sales manager '+q+' '+yr+' quarterly review for '+rep+'. Rating: '+rt.l+' ('+sc.fin+'/5)'+(sc.capped?' — HR cap, raw '+sc.raw+'/5':'')+'. '+(we>0&&we<weeks.length?'MID-QUARTER (Wk '+we+'/'+weeks.length+'): scoring is PACED — % values are against paced targets (what should be achieved by this point), not full-quarter goals. ':we>=weeks.length?'QUARTER COMPLETE: scoring against full-quarter targets. ':'NO DATA YET. ')+'Revenue: $'+Math.round(tot.revenue).toLocaleString()+' vs $'+Math.round(ro.rev).toLocaleString()+' qtr goal'+(we>0&&we<weeks.length?' (paced $'+Math.round(sc.revGoalPaced||ro.rev).toLocaleString()+')':'')+' ('+sc.sp.toFixed(1)+'%'+(we>0&&we<weeks.length?' of paced':'')+'). Customers Called: '+sc.cp.toFixed(1)+'%, Art: '+sc.ap.toFixed(1)+'%, Credits(rep): '+sc.crp.toFixed(1)+'%, Hours: '+sc.hp.toFixed(1)+'%, HR pts: '+hrP.toFixed(1)+'. Violations: '+(hrV.length>0?hrV.map(v=>HR_CATS[v.cat]?.label+' ('+v.pts+'pts)').join(', '):'none')+'. '+(notes.length>0?'Notes: '+notes.map(n=>n.date+' ['+CN_TYPES[n.type]+']: '+n.note).join(' | '):'')+'. Write EXACTLY 8 sections ||| separated: 1.Job Knowledge('+rfrom(sss[0].score).l+') 2.Work Quality('+rfrom(sss[1].score).l+') 3.Attendance/Punctuality('+rfrom(sss[2].score).l+') 4.Initiative('+rfrom(sss[3].score).l+') 5.Communication('+rfrom(sss[4].score).l+') 6.Dependability('+rfrom(sss[5].score).l+') 7.Data Analysis (5-7 sentences) 8.Next Quarter Growth Plan (5-7 sentences). No headers inside sections.';let paragraphs=[];try{let text=await callAI(prompt);paragraphs=text.split('|||').map(p=>p.trim()).filter(p=>p.length>0);while(paragraphs.length<8)paragraphs.push('Content unavailable.');}catch(e){paragraphs=Array(8).fill('AI error: '+e.message);console.error('Review AI error:',e);}const labels=[...RVSECTIONS,'Data Analysis','Next Quarter Growth Plan'];prev.innerHTML=labels.map((s,i)=>{let ss=sss[i],r2=ss?rfrom(ss.score):null;let isA=i===6,isG=i===7;return'<div class="rv-section" style="border-left:3px solid '+(isG?'#1D9E75':isA?'#FA873D':'var(--color-border-tertiary)')+';'+(isG?'background:var(--color-background-primary);':'')+'"><div class="rv-section-hdr"><span class="rv-section-title" style="'+(isG?'color:#1D9E75;':isA?'color:#FA873D;':'')+'">'+(isA?'📊 '+s:isG?'🎯 '+s:s)+'</span>'+(r2?'<span class="rb '+r2.c+'">'+r2.l+'</span>':'')+'</div><div class="rv-section-body" style="margin-top:7px;'+(isA||isG?'color:var(--color-text-primary);':'')+'">'+( paragraphs[i]||'—')+'</div></div>';}).join('');let hrBoxHtml=hrV.length>0?'<div class="hr-box"><strong>HR violations ('+hrP.toFixed(1)+' pts):</strong><br>'+hrV.map(v=>fds(v.date)+' — '+(HR_CATS[v.cat]?.label||v.cat)+' ('+v.pts+' pts)'+(v.desc?': '+v.desc:'')).join('<br>')+'</div>':'';let notesBoxHtml=notes.length>0?'<div class="notes-box"><div style="font-size:10px;font-weight:600;color:#FA873D;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Coaching Notes</div>'+notes.map(n=>'<div style="font-size:12px;margin-bottom:5px;color:var(--color-text-primary);"><strong>'+fds(n.date)+'</strong> ['+(CN_TYPES[n.type]||n.type)+']: '+n.note+'</div>').join('')+'</div>':'';let sectionCards=RVSECTIONS.map((s,i)=>{let ss=sss[i],r2=rfrom(ss.score);return'<div class="rv-section"><div class="rv-sec-hdr"><span class="rv-sec-title">'+s+'</span><span class="rb '+r2.c+'">'+r2.l+'</span></div><div class="rv-sec-body">'+(paragraphs[i]||'—')+'</div></div>';}).join('');let bodyHtml='<div class="mgrid">'+rKPI(sc.fin+'/5','Final score',rt.l,'#FA873D')+rKPI('$'+Math.round(tot.revenue/1000)+'K','Revenue',sc.sp.toFixed(0)+'% of '+q+' goal',sc.sp>=100?'#5DCAA5':sc.sp>=85?'#EF9F27':'#F09595')+rKPI(sc.ap.toFixed(1)+'%','Art error %',tot.art+' errors',sc.ap<=1?'#5DCAA5':sc.ap<=4?'#EF9F27':'#F09595')+rKPI(sc.cp.toFixed(0)+'%','Customers Called','of set',sc.cp>=100?'#5DCAA5':sc.cp>=85?'#EF9F27':'#F09595')+rKPI(hrP.toFixed(1),'HR points',q+' total',hrP>=3?'#F09595':hrP>0?'#EF9F27':'#5DCAA5')+(tot.topSale>0?rKPI('$'+Math.round(tot.topSale).toLocaleString(),'Top sale',tot.topSaleCustomer||'','#FA873D'):'')+'</div>'+hrBoxHtml+notesBoxHtml+'<div class="card"><div class="ct">Performance sections</div>'+sectionCards+'</div><div class="sec-analysis"><div style="font-size:10px;font-weight:600;color:#FA873D;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">📊 Data Analysis</div><div style="font-size:12px;line-height:1.8;color:var(--color-text-primary);">'+(paragraphs[6]||'—')+'</div></div><div class="sec-growth"><div style="font-size:10px;font-weight:600;color:#1D9E75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">🎯 Next Quarter Growth Plan</div><div style="font-size:12px;line-height:1.8;color:var(--color-text-primary);">'+(paragraphs[7]||'—')+'</div></div><div class="card" style="display:flex;align-items:center;gap:14px;">'+rAv(rep,ri)+'<div><div style="font-size:22px;font-weight:700;color:#FA873D;">'+sc.fin+'<span style="font-size:14px;color:var(--color-text-secondary);">/5</span></div><div style="margin-top:4px;"><span class="rb '+rt.c+'">'+rt.l+'</span>'+(sc.capped?'<span class="hrf">HR cap — raw '+sc.raw+'/5</span>':'')+'</div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:5px;">'+q+' '+yr+' goal: $'+Math.round(ro.rev).toLocaleString()+' · '+ro.hrs+' hrs/wk · '+ro.calls+' customers/wk</div></div></div><div class="sig-grid"><div><div style="height:44px;"></div><div class="sig-line">Employee signature &amp; date</div></div><div><div style="height:44px;"></div><div class="sig-line">Manager signature &amp; date</div></div></div>';let html=buildReport(rep+' — '+q+' '+yr+' Performance Review','Prepared '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),rt.l+' · '+sc.fin+'/5',bodyHtml);let reportId=saveReport('review',rep+' — '+q+' '+yr+' Review',rep,html);openInNewTab(html);btn.disabled=false;st.textContent='Review ready.';showResultBox('rvResultBox',reportId,rep+' — '+q+' '+yr+' Performance Review');}
+async function generateReview(){let rep=document.getElementById('rvRep').value,q=document.getElementById('rvQ').value,yr=parseInt(document.getElementById('rvYr').value);if(!rep)return;let ri=S.reps.findIndex(r=>r.name===rep),ro=repGoalObj(rep,yr,q),weeks=gwq(yr,q),we=weeksElapsed(yr,q),tot=totW(rep,weeks),hrP=getHRPoints(rep,yr,q),sc=calcSc(rep,tot,ro,weeks.length,hrP,we),rt=rfrom(sc.fin);let sss=RVSECTIONS.map(s=>({section:s,score:secScore(s,sc)}));let hrV=S.hrViolations.filter(v=>v.rep===rep&&v.yr==yr&&v.q===q),notes=S.coachingNotes.filter(n=>n.rep===rep&&n.yr==yr&&n.q===q);let btn=document.getElementById('genRevBtn'),st=document.getElementById('rvSt'),prev=document.getElementById('rvPreview');btn.disabled=true;document.getElementById('rvResultBox').style.display='none';prev.innerHTML='<div class="rv-section pulse"><div class="rv-section-body">Generating 8-section review...</div></div>';st.textContent='Generating...';const prompt='Sales manager '+q+' '+yr+' quarterly review for '+rep+'. Rating: '+rt.l+' ('+sc.fin+'/5)'+(sc.capped?' — HR cap, raw '+sc.raw+'/5':'')+'. '+(we>0&&we<weeks.length?'MID-QUARTER (Wk '+we+'/'+weeks.length+'): scoring is PACED — % values are against paced targets (what should be achieved by this point), not full-quarter goals. ':we>=weeks.length?'QUARTER COMPLETE: scoring against full-quarter targets. ':'NO DATA YET. ')+'Revenue: $'+Math.round(tot.revenue).toLocaleString()+' vs $'+Math.round(ro.rev).toLocaleString()+' qtr goal'+(we>0&&we<weeks.length?' (paced $'+Math.round(sc.revGoalPaced||ro.rev).toLocaleString()+')':'')+' ('+sc.sp.toFixed(1)+'%'+(we>0&&we<weeks.length?' of paced':'')+'). Calls Made pace: '+sc.cp.toFixed(1)+'%, Art: '+sc.ap.toFixed(1)+'%, Credits(rep): '+sc.crp.toFixed(1)+'%, Hours: '+sc.hp.toFixed(1)+'%, HR pts: '+hrP.toFixed(1)+'. Violations: '+(hrV.length>0?hrV.map(v=>HR_CATS[v.cat]?.label+' ('+v.pts+'pts)').join(', '):'none')+'. '+(notes.length>0?'Notes: '+notes.map(n=>n.date+' ['+CN_TYPES[n.type]+']: '+n.note).join(' | '):'')+'. Write EXACTLY 8 sections ||| separated: 1.Job Knowledge('+rfrom(sss[0].score).l+') 2.Work Quality('+rfrom(sss[1].score).l+') 3.Attendance/Punctuality('+rfrom(sss[2].score).l+') 4.Initiative('+rfrom(sss[3].score).l+') 5.Communication('+rfrom(sss[4].score).l+') 6.Dependability('+rfrom(sss[5].score).l+') 7.Data Analysis (5-7 sentences) 8.Next Quarter Growth Plan (5-7 sentences). No headers inside sections.';let paragraphs=[];try{let text=await callAI(prompt);paragraphs=text.split('|||').map(p=>p.trim()).filter(p=>p.length>0);while(paragraphs.length<8)paragraphs.push('Content unavailable.');}catch(e){paragraphs=Array(8).fill('AI error: '+e.message);console.error('Review AI error:',e);}const labels=[...RVSECTIONS,'Data Analysis','Next Quarter Growth Plan'];prev.innerHTML=labels.map((s,i)=>{let ss=sss[i],r2=ss?rfrom(ss.score):null;let isA=i===6,isG=i===7;return'<div class="rv-section" style="border-left:3px solid '+(isG?'#1D9E75':isA?'#FA873D':'var(--color-border-tertiary)')+';'+(isG?'background:var(--color-background-primary);':'')+'"><div class="rv-section-hdr"><span class="rv-section-title" style="'+(isG?'color:#1D9E75;':isA?'color:#FA873D;':'')+'">'+(isA?'📊 '+s:isG?'🎯 '+s:s)+'</span>'+(r2?'<span class="rb '+r2.c+'">'+r2.l+'</span>':'')+'</div><div class="rv-section-body" style="margin-top:7px;'+(isA||isG?'color:var(--color-text-primary);':'')+'">'+( paragraphs[i]||'—')+'</div></div>';}).join('');let hrBoxHtml=hrV.length>0?'<div class="hr-box"><strong>HR violations ('+hrP.toFixed(1)+' pts):</strong><br>'+hrV.map(v=>fds(v.date)+' — '+(HR_CATS[v.cat]?.label||v.cat)+' ('+v.pts+' pts)'+(v.desc?': '+v.desc:'')).join('<br>')+'</div>':'';let notesBoxHtml=notes.length>0?'<div class="notes-box"><div style="font-size:10px;font-weight:600;color:#FA873D;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Coaching Notes</div>'+notes.map(n=>'<div style="font-size:12px;margin-bottom:5px;color:var(--color-text-primary);"><strong>'+fds(n.date)+'</strong> ['+(CN_TYPES[n.type]||n.type)+']: '+n.note+'</div>').join('')+'</div>':'';let sectionCards=RVSECTIONS.map((s,i)=>{let ss=sss[i],r2=rfrom(ss.score);return'<div class="rv-section"><div class="rv-sec-hdr"><span class="rv-sec-title">'+s+'</span><span class="rb '+r2.c+'">'+r2.l+'</span></div><div class="rv-sec-body">'+(paragraphs[i]||'—')+'</div></div>';}).join('');let bodyHtml='<div class="mgrid">'+rKPI(sc.fin+'/5','Final score',rt.l,'#FA873D')+rKPI('$'+Math.round(tot.revenue/1000)+'K','Revenue',sc.sp.toFixed(0)+'% of '+q+' goal',sc.sp>=100?'#5DCAA5':sc.sp>=85?'#EF9F27':'#F09595')+rKPI(sc.ap.toFixed(1)+'%','Art error %',tot.art+' errors',sc.ap<=1?'#5DCAA5':sc.ap<=4?'#EF9F27':'#F09595')+rKPI(sc.cp.toFixed(0)+'%','Calls Made',Math.round(tot.calls||0)+' / '+Math.round(sc.callsGoalPaced||0)+' paced calls',sc.cp>=100?'#5DCAA5':sc.cp>=85?'#EF9F27':'#F09595')+rKPI(hrP.toFixed(1),'HR points',q+' total',hrP>=3?'#F09595':hrP>0?'#EF9F27':'#5DCAA5')+(tot.topSale>0?rKPI('$'+Math.round(tot.topSale).toLocaleString(),'Top sale',tot.topSaleCustomer||'','#FA873D'):'')+'</div>'+hrBoxHtml+notesBoxHtml+'<div class="card"><div class="ct">Performance sections</div>'+sectionCards+'</div><div class="sec-analysis"><div style="font-size:10px;font-weight:600;color:#FA873D;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">📊 Data Analysis</div><div style="font-size:12px;line-height:1.8;color:var(--color-text-primary);">'+(paragraphs[6]||'—')+'</div></div><div class="sec-growth"><div style="font-size:10px;font-weight:600;color:#1D9E75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">🎯 Next Quarter Growth Plan</div><div style="font-size:12px;line-height:1.8;color:var(--color-text-primary);">'+(paragraphs[7]||'—')+'</div></div><div class="card" style="display:flex;align-items:center;gap:14px;">'+rAv(rep,ri)+'<div><div style="font-size:22px;font-weight:700;color:#FA873D;">'+sc.fin+'<span style="font-size:14px;color:var(--color-text-secondary);">/5</span></div><div style="margin-top:4px;"><span class="rb '+rt.c+'">'+rt.l+'</span>'+(sc.capped?'<span class="hrf">HR cap — raw '+sc.raw+'/5</span>':'')+'</div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:5px;">'+q+' '+yr+' goal: $'+Math.round(ro.rev).toLocaleString()+' · '+ro.hrs+' hrs/wk · '+ro.calls+' calls/wk</div></div></div><div class="sig-grid"><div><div style="height:44px;"></div><div class="sig-line">Employee signature &amp; date</div></div><div><div style="height:44px;"></div><div class="sig-line">Manager signature &amp; date</div></div></div>';let html=buildReport(rep+' — '+q+' '+yr+' Performance Review','Prepared '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),rt.l+' · '+sc.fin+'/5',bodyHtml);let reportId=saveReport('review',rep+' — '+q+' '+yr+' Review',rep,html);openInNewTab(html);btn.disabled=false;st.textContent='Review ready.';showResultBox('rvResultBox',reportId,rep+' — '+q+' '+yr+' Performance Review');}
 
 async function genRepPDF(){
   let rep=document.getElementById('prRep').value;if(!rep)return;
@@ -9145,11 +9165,11 @@ async function genRepPDF(){
     'DATA:\n'+
     '- Rating: '+rt.l+' ('+sc.fin+'/5)'+(sc.capped?' (HR-capped from raw '+sc.raw+')':'')+'\n'+
     '- Revenue: $'+Math.round(tot.revenue).toLocaleString()+' vs paced goal $'+Math.round(sc.revGoalPaced||ro.rev).toLocaleString()+' ('+sc.sp.toFixed(0)+'%)\n'+
-    '- Customers Called: '+sc.cp.toFixed(0)+'% ('+tot.acctsCalled+'/'+Math.round(tot.setSize)+')\n'+
+    '- Calls Made: '+Math.round(tot.calls||0)+' vs paced target '+Math.round(sc.callsGoalPaced||0)+' ('+sc.cp.toFixed(0)+'%)\n'+
     '- Art rate: '+sc.ap.toFixed(1)+'% ('+tot.art+'/'+tot.orders+' orders)\n'+
     '- Rep-fault credits: '+sc.crp.toFixed(1)+'% ($'+Math.round(tot.credits).toLocaleString()+')\n'+
     '- Hours: '+tot.hours.toFixed(0)+'h ('+sc.hp.toFixed(0)+'%)\n'+
-    (function(){var nw=weeks.length;var wr=Math.max(0,nw-we);var wePct=we>0?we/nw:0;var paced=ro.rev*wePct;var gap=paced-tot.revenue;var avgW=we>0?tot.revenue/we:0;var needW=wr>0?Math.max(0,(ro.rev-tot.revenue)/wr):0;var pacedC=(tot.setSize||0)*wePct;var gapC=pacedC-tot.acctsCalled;var avgC=we>0?tot.acctsCalled/we:0;var needC=wr>0?Math.max(0,((tot.setSize||0)-tot.acctsCalled)/wr):0;return '- Quarter pace: Wk '+we+' of '+nw+' ('+Math.round(wePct*100)+'% elapsed, '+wr+' wks remain)\n- Weekly rev avg: $'+Math.round(avgW).toLocaleString()+'/wk (need $'+Math.round(needW).toLocaleString()+'/wk remaining)\n- Revenue '+(gap<=0?'AHEAD by $'+Math.round(-gap).toLocaleString():'BEHIND by $'+Math.round(gap).toLocaleString())+' vs paced target $'+Math.round(paced).toLocaleString()+'\n- Weekly customers-called avg: '+Math.round(avgC)+' accts/wk (need '+Math.ceil(needC)+'/wk)\n- Customers Called '+(gapC<=0?'AHEAD by '+Math.round(-gapC):'BEHIND by '+Math.round(gapC))+' vs paced target '+Math.round(pacedC)+'\n';})()+
+    (function(){var nw=weeks.length;var wr=Math.max(0,nw-we);var wePct=we>0?we/nw:0;var paced=ro.rev*wePct;var gap=paced-tot.revenue;var avgW=we>0?tot.revenue/we:0;var needW=wr>0?Math.max(0,(ro.rev-tot.revenue)/wr):0;var pacedC=(Number(ro.calls)||0)*we;var gapC=pacedC-Number(tot.calls||0);var avgC=we>0?Number(tot.calls||0)/we:0;var qCallTarget=(Number(ro.calls)||0)*nw;var needC=wr>0?Math.max(0,(qCallTarget-Number(tot.calls||0))/wr):0;return '- Quarter pace: Wk '+we+' of '+nw+' ('+Math.round(wePct*100)+'% elapsed, '+wr+' wks remain)\n- Weekly rev avg: $'+Math.round(avgW).toLocaleString()+'/wk (need $'+Math.round(needW).toLocaleString()+'/wk remaining)\n- Revenue '+(gap<=0?'AHEAD by $'+Math.round(-gap).toLocaleString():'BEHIND by $'+Math.round(gap).toLocaleString())+' vs paced target $'+Math.round(paced).toLocaleString()+'\n- Weekly Calls Made avg: '+Math.round(avgC)+' calls/wk (need '+Math.ceil(needC)+'/wk for quarter target)\n- Calls Made '+(gapC<=0?'AHEAD by '+Math.round(-gapC):'BEHIND by '+Math.round(gapC))+' vs paced target '+Math.round(pacedC)+'\n';})()+
     '- HR points: '+hrP.toFixed(1)+'\n'+
     '\n\nTONE \u2014 CRITICAL:\nYou are a direct, caring sales manager \u2014 a coach who genuinely wants this rep to win but will NOT let them coast. Calibrate your tone to actual performance:\n\n- AT OR ABOVE 100% paced goal: celebrate genuinely. Name SPECIFIC behaviors that are working using their actual numbers. Warm, encouraging.\n- 85-99% paced: acknowledge effort, then directly state the gap in dollars and a concrete weekly target to close it.\n- BELOW 85% paced: be FIRM and DIRECT. Don\'t sugarcoat. State the gap in plain numbers (\"You worked X hours, made $Y, did Z orders. You\'re $A behind paced and on track to miss the quarter by $B.\"). Then pivot immediately to specific behavioral changes for the coming week. Stay caring \u2014 never insulting \u2014 but unflinching.\n\nNEVER use empty phrases: \"great work,\" \"keep it up,\" \"you\'re doing amazing,\" \"outstanding job\" \u2014 unless the numbers actually warrant them. Every sentence must reference specific numbers from THIS rep\'s data. No generalities. The rep should finish reading and know EXACTLY where they stand and what to do this week.\n\nLength: 2-3 sentences per section.';
   let analysis='';
@@ -9167,7 +9187,7 @@ async function genRepPDF(){
     {value:'$'+Math.round(tot.revenue).toLocaleString(),label:'QTD Revenue',sub:'vs $'+Math.round(ro.rev/1000)+'K goal'},
     {value:sc.sp.toFixed(0)+'%',label:'Of paced goal',color:sc.sp>=100?'#6EE7B7':sc.sp>=85?'#FCD34D':'#FCA5A5'},
     {value:sc.fin+'/5',label:'Score',sub:rt.l,color:sc.fin>=4?'#6EE7B7':sc.fin>=3?'#FCD34D':'#FCA5A5'},
-    {value:sc.cp.toFixed(0)+'%',label:'Customers Called',sub:tot.acctsCalled+'/'+Math.round(tot.setSize),color:sc.cp>=90?'#6EE7B7':sc.cp>=70?'#FCD34D':'#FCA5A5'},
+    {value:sc.cp.toFixed(0)+'%',label:'Calls Made',sub:Math.round(tot.calls||0)+' / '+Math.round(sc.callsGoalPaced||0)+' paced',color:sc.cp>=90?'#6EE7B7':sc.cp>=70?'#FCD34D':'#FCA5A5'},
     {value:sc.ap.toFixed(1)+'%',label:'Art rate',sub:tot.art+'/'+tot.orders,color:sc.ap<=2?'#6EE7B7':sc.ap<=4?'#FCD34D':'#FCA5A5'},
     {value:tot.hours.toFixed(0)+'h',label:'Hours',sub:sc.hp.toFixed(0)+'% of goal',color:sc.hp>=95?'#6EE7B7':sc.hp>=80?'#FCD34D':'#FCA5A5'},
     {value:sc.crp.toFixed(1)+'%',label:'Rep credits',sub:'$'+Math.round(tot.credits).toLocaleString(),color:sc.crp<=1?'#6EE7B7':sc.crp<=3?'#FCD34D':'#FCA5A5'},
@@ -9176,7 +9196,7 @@ async function genRepPDF(){
   function _rb(r){return '<span class="rb r'+r.s+'">'+r.l+'</span>';}
   let scorecardRows=[
     ['Sales vs goal (50%)','$'+Math.round(tot.revenue).toLocaleString()+' of $'+Math.round(ro.rev).toLocaleString(),sc.sp.toFixed(1)+'%',rfrom(sc.ss)],
-    ['Customers Called (30%)',tot.acctsCalled+' of '+Math.round(tot.setSize)+' accts',sc.cp.toFixed(1)+'%',rfrom(sc.cs)],
+    ['Calls Made (30%)',Math.round(tot.calls||0)+' of '+Math.round(sc.callsGoalPaced||0)+' paced calls',sc.cp.toFixed(1)+'%',rfrom(sc.cs)],
     ['Credit memos (10%)','$'+Math.round(tot.credits).toLocaleString(),sc.crp.toFixed(1)+'%',rfrom(sc.crs)],
     ['Art error rate (5%)',tot.art+' / '+tot.orders+' orders',sc.ap.toFixed(1)+'%',rfrom(sc.as2)],
     ['Hours (5%)',tot.hours.toFixed(1)+' hrs',sc.hp.toFixed(1)+'%',rfrom(sc.hs)]
@@ -9192,7 +9212,7 @@ async function genRepPDF(){
     (repAEs.length?repAEs.map(function(a){return '<tr><td>'+_esc(a.date)+'</td><td style="font-weight:600;">'+_esc(a.so)+'</td><td>'+_esc(AET[a.type]||a.type)+'</td><td>'+_esc(a.desc||'\u2014')+'</td></tr>';}).join(''):'<tr><td colspan="4" style="text-align:center;color:#9ca3af;">No art errors this quarter</td></tr>')+'</tbody></table>';
   let cmHtml='<table><thead><tr><th>Date</th><th>Fault</th><th style="text-align:right;">Amount</th><th>Customer</th><th>SO #</th><th>Description</th></tr></thead><tbody>'+
     (repCMs.length?repCMs.map(function(c){var fc=c.fault==='rep'?'#DC2626':c.fault==='customer'?'#7C3AED':'#6b7280';return '<tr><td>'+_esc(c.date)+'</td><td style="color:'+fc+';font-weight:600;">'+_esc(FL[c.fault]||c.fault)+'</td><td style="text-align:right;font-weight:600;color:'+(c.fault==='rep'?'#DC2626':'#1a1a1a')+';">$'+c.amount.toFixed(2)+'</td><td>'+_esc(c.custName||'\u2014')+'</td><td>'+_esc(c.soNum||'\u2014')+'</td><td>'+_esc(c.desc||'\u2014')+'</td></tr>';}).join(''):'<tr><td colspan="6" style="text-align:center;color:#9ca3af;">No credit memos this quarter</td></tr>')+'</tbody></table>';
-  let wkHtml='<table><thead><tr><th>Week</th><th style="text-align:right;">Hours</th><th style="text-align:right;">Customers</th><th style="text-align:right;">Orders</th><th style="text-align:right;">Revenue</th><th style="text-align:right;">Art</th><th>Top sale</th></tr></thead><tbody>'+
+  let wkHtml='<table><thead><tr><th>Week</th><th style="text-align:right;">Hours</th><th style="text-align:right;">Calls Made</th><th style="text-align:right;">Orders</th><th style="text-align:right;">Revenue</th><th style="text-align:right;">Art</th><th>Top sale</th></tr></thead><tbody>'+
     weeks.map(function(w){var d=gd(rep+'|'+w.key);var art=repArt(rep,[w]);return '<tr><td>'+_esc(w.label)+'</td><td style="text-align:right;">'+d.hours.toFixed(1)+'</td><td style="text-align:right;">'+d.calls+'</td><td style="text-align:right;">'+d.orders+'</td><td style="text-align:right;font-weight:600;">'+(d.revenue>0?'$'+Math.round(d.revenue).toLocaleString():'\u2014')+'</td><td style="text-align:right;color:'+(art>0?'#DC2626':'#9ca3af')+';">'+(art||'\u2014')+'</td><td>'+(d.topSale>0?'$'+Math.round(d.topSale).toLocaleString()+(d.topSaleCustomer?' ('+_esc(d.topSaleCustomer)+')':''):'\u2014')+'</td></tr>';}).join('')+'</tbody></table>';
   let extrasHtml='<div class="sechdr"><span>&#128202; Scorecard breakdown</span></div>'+scorecardHtml+
     (hrHtml?'<div class="sechdr"><span>&#9888;&#65039; HR violations</span></div>'+hrHtml:'')+
@@ -9244,7 +9264,7 @@ async function genTeamPDF(){
     'TEAM DATA:\n'+
     '- Total revenue: $'+Math.round(tR).toLocaleString()+' vs $'+Math.round(tGoal).toLocaleString()+' goal ('+goalPct+'%)\n'+
     '- Total orders: '+tO+'\n'+
-    '- Total customers called: '+tCalls+'\n'+
+    '- Total calls made: '+tCalls+'\n'+
     '- Art rate: '+ap+'% ('+tArt+' on '+tO+' orders)\n'+
     '- Rep credits: $'+Math.round(tCr).toLocaleString()+'\n\n'+
     'PER REP:\n'+summary+'\n\n'+
@@ -9259,7 +9279,7 @@ async function genTeamPDF(){
     {value:'$'+Math.round(tR).toLocaleString(),label:'Team revenue',sub:goalPct+'% of $'+Math.round(tGoal/1000)+'K goal',color:goalPct>=100?'#6EE7B7':goalPct>=85?'#FCD34D':'#FCA5A5'},
     {value:(parseFloat(roi)>=0?'+':'')+roi+'%',label:'ROI vs goal',color:parseFloat(roi)>=0?'#6EE7B7':'#FCA5A5'},
     {value:tO,label:'Total orders'},
-    {value:tCalls,label:'Total customers'},
+    {value:tCalls,label:'Total calls made'},
     {value:ap+'%',label:'Art rate',sub:tArt+' errors',color:parseFloat(ap)<=2?'#6EE7B7':parseFloat(ap)<=4?'#FCD34D':'#FCA5A5'},
     {value:tCr>0?'$'+Math.round(tCr).toLocaleString():'$0',label:'Rep credits',sub:'fault only',color:tCr===0?'#6EE7B7':'#FCA5A5'},
     {value:reps.length,label:'Active reps'},
@@ -9267,7 +9287,7 @@ async function genTeamPDF(){
   ];
   let medals=['\ud83e\udd47','\ud83e\udd48','\ud83e\udd49'];
   function _rb(r){return '<span class="rb r'+r.s+'">'+r.l+'</span>';}
-  let standingsHtml='<table><thead><tr><th>Rank</th><th>Rep</th><th style="text-align:right;">Revenue</th><th style="text-align:right;">Goal %</th><th style="text-align:right;">Customers</th><th style="text-align:right;">Art %</th><th style="text-align:right;">HR</th><th>Rating</th></tr></thead><tbody>'+
+  let standingsHtml='<table><thead><tr><th>Rank</th><th>Rep</th><th style="text-align:right;">Revenue</th><th style="text-align:right;">Goal %</th><th style="text-align:right;">Calls Made</th><th style="text-align:right;">Art %</th><th style="text-align:right;">HR</th><th>Rating</th></tr></thead><tbody>'+
     rd.map(function(x,i){
       var aePct=x.t.orders>0?((x.t.art/x.t.orders)*100).toFixed(1):'0.0';
       var pct=x.ro.rev>0?Math.round(x.t.revenue/x.ro.rev*100):0;
@@ -9560,15 +9580,16 @@ function calcSc(rep,tot,ro,nw,hrP,weElapsed){
   var wePct=(weElapsed!=null&&weElapsed>0)?weElapsed/(nw||13):1;
   var revGoalPaced=ro.rev*wePct;
   var hrsGoalPaced=ro.hrs*(weElapsed!=null&&weElapsed>0?weElapsed:(nw||13));
-  var setPaced=tot.setSize*wePct;
+  var callWeeks=(weElapsed!=null&&weElapsed>0)?weElapsed:(nw||13);
+  var callsGoalPaced=(Number(ro.calls)||0)*callWeeks;
   var sp=revGoalPaced>0?(tot.revenue/revGoalPaced)*100:0,ss=spct(sp,[_tR.e5,_tR.e4,_tR.e3,_tR.e2]);
-  var cp=setPaced>0?(tot.acctsCalled/setPaced)*100:0,cs=spct(cp,[_tC.e5,_tC.e4,_tC.e3,_tC.e2]);
+  var cp=callsGoalPaced>0?(Number(tot.calls||0)/callsGoalPaced)*100:0,cs=spct(cp,[_tC.e5,_tC.e4,_tC.e3,_tC.e2]);
   var ap=tot.orders>0?(tot.art/tot.orders)*100:0,as2=smet(ap,[_tA.e5,_tA.e4,_tA.e3,_tA.e2]);
   var crp=tot.revenue>0?(tot.credits/tot.revenue)*100:0,crs=smet(crp,[_tCr.e5,_tCr.e4,_tCr.e3,_tCr.e2]);
   var hp=hrsGoalPaced>0?(tot.hours/hrsGoalPaced)*100:0,hs=spct(hp,[_tH.e5,_tH.e4,_tH.e3,_tH.e2]);
   var w=(ss*_wRev)+(cs*_wCalls)+(crs*_wCr)+(as2*_wArt)+(hs*_wHrs);
   var raw=Math.max(1,Math.min(5,Math.round(w))),ehr=hrP||0,cap=hrcap(ehr),fin=Math.min(raw,cap);
-  return{fin:fin,raw:raw,cap:cap,ss:ss,cs:cs,as2:as2,crs:crs,hs:hs,sp:sp,cp:cp,ap:ap,crp:crp,hp:hp,capped:fin<raw,hrPts:ehr,wePct:wePct,revGoalPaced:revGoalPaced,hrsGoalPaced:hrsGoalPaced,setPaced:setPaced};
+  return{fin:fin,raw:raw,cap:cap,ss:ss,cs:cs,as2:as2,crs:crs,hs:hs,sp:sp,cp:cp,ap:ap,crp:crp,hp:hp,capped:fin<raw,hrPts:ehr,wePct:wePct,revGoalPaced:revGoalPaced,hrsGoalPaced:hrsGoalPaced,callsGoalPaced:callsGoalPaced,setPaced:callsGoalPaced};
 }
 
 
@@ -13628,33 +13649,21 @@ function downloadRepSummaryPDF(repName){
   else{salesDiffLabel='$'+salesDiff.toLocaleString()+' to go';salesDiffColor='#B45309';}
   var salesPctColor=salesPercent>=100?'#1D9E75':salesPercent>=85?'#B45309':'#B91C1C';
 
-  // ── CALLS math (33/33/33 set coverage: call every customer once per quarter) ──
-  // Quarterly call goal = set size (call every customer in your set once)
-  // Total calls = unique accounts called this quarter
-  var callsQGoal=Math.round(t.setSize||0);
-  var totalCalls=Math.round(t.acctsCalled||0);
-  var callsDiff=callsQGoal-totalCalls;
-  var totalWorkDays=weeks.length*5;
-  var callsDailyOrig=totalWorkDays>0?Math.ceil(callsQGoal/totalWorkDays):0;
-  var callsWeeklyOrig=weeks.length>0?Math.ceil(callsQGoal/weeks.length):0;
-  var callsWeeklyAdj=weeksRemaining>0?Math.ceil(Math.max(0,callsDiff)/weeksRemaining):0;
+  // ── CALLS MADE math ──
+  // Calls are the one weekly call input. Pace is against the configured weekly call goal.
+  var callsWeeklyOrig=Math.round(ro.calls||0);
+  var callsQGoal=callsWeeklyOrig*weeks.length;
+  var totalCalls=Math.round(t.calls||0);
+  var callsExpected=Math.round(callsWeeklyOrig*we);
+  var callsDiff=callsExpected-totalCalls;
+  var callsWeeklyAdj=weeksRemaining>0?Math.ceil(Math.max(0,callsQGoal-totalCalls)/weeksRemaining):0;
+  var callsDailyOrig=Math.ceil(callsWeeklyOrig/5);
   var callsDailyAdj=Math.ceil(callsWeeklyAdj/5);
-  var callsPercent=callsQGoal>0?Math.round(totalCalls/callsQGoal*100):0;
+  var callsPercent=callsExpected>0?Math.round(totalCalls/callsExpected*100):0;
   var callsDiffLabel,callsDiffColor;
-  if(callsDiff<=0){callsDiffLabel=Math.abs(callsDiff).toLocaleString()+' accts over goal \u2713';callsDiffColor='#1D9E75';}
-  else{callsDiffLabel=callsDiff.toLocaleString()+' accts to go';callsDiffColor='#B45309';}
+  if(callsDiff<=0){callsDiffLabel=Math.abs(callsDiff).toLocaleString()+' calls ahead of pace ✓';callsDiffColor='#1D9E75';}
+  else{callsDiffLabel=callsDiff.toLocaleString()+' calls behind pace';callsDiffColor='#B45309';}
   var callsPctColor=callsPercent>=100?'#1D9E75':callsPercent>=85?'#B45309':'#B91C1C';
-
-  // ── ACCOUNT COVERAGE (the actual 33/33/33 model — set coverage by month) ──
-  var setSize=Math.round(t.setSize||0);
-  var acctsCalled=Math.round(t.acctsCalled||0);
-  var coveragePct=setSize>0?Math.round(acctsCalled/setSize*100):0;
-  var qMonths={Q1:[0,1,2],Q2:[3,4,5],Q3:[6,7,8],Q4:[9,10,11]};
-  var mIdx=(qMonths[q]||[0,1,2]).indexOf(new Date().getMonth());
-  if(mIdx<0)mIdx=0;
-  var coverageTarget=mIdx===0?33:mIdx===1?66:100;
-  var coverageDelta=coveragePct-coverageTarget;
-  var covCol=coveragePct>=coverageTarget?'#1D9E75':coveragePct>=coverageTarget-15?'#B45309':'#B91C1C';
 
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
 
@@ -13677,25 +13686,17 @@ function downloadRepSummaryPDF(repName){
   ].join('');
 
   var callsRows=[
-    row('Quarterly Call Goal',callsQGoal.toLocaleString()+' accts'),
-    row('Accounts Called',totalCalls.toLocaleString()),
+    row('Quarter Call Target',callsQGoal.toLocaleString()+' calls'),
+    row('Calls Made',totalCalls.toLocaleString()),
     row('Difference',callsDiffLabel,callsDiffColor),
-    row('Original Daily Goal (33/33/33)',callsDailyOrig.toLocaleString()+' / day'),
+    row('Original Daily Goal',callsDailyOrig.toLocaleString()+' / day'),
     row('Original Weekly Goal',callsWeeklyOrig.toLocaleString()+' / week'),
     row('Weekly Adjusted Goal',callsWeeklyAdj.toLocaleString()+' / week'),
     row('Daily Adjusted Goal',callsDailyAdj.toLocaleString()+' / day'),
-    row('Coverage',callsPercent+'%',callsPctColor)
+    row('Call Pace',callsPercent+'%',callsPctColor)
   ].join('');
 
-  // Tight one-line pacing note (replaces the old standalone coverage box).
-  // Shows where the rep should be RIGHT NOW per the 33/33/33 monthly target.
-  var monthLbl=mIdx===0?'Month 1':mIdx===1?'Month 2':'Month 3';
-  var coverageBlock=setSize>0?(
-    '<div style="margin-top:14px;padding:10px 14px;background:#f9fafb;border-left:3px solid '+covCol+';border-radius:0 6px 6px 0;font-size:11px;color:#1C1C1C;line-height:1.5;">'
-    +'<strong>33/33/33 pacing:</strong> at '+monthLbl+' of '+q+', target = <strong>'+coverageTarget+'%</strong> coverage. Currently <strong style="color:'+covCol+';">'+coveragePct+'%</strong> '
-    +(coverageDelta>=0?'(<span style="color:#1D9E75;">+'+coverageDelta+' pts ahead</span>)':'(<span style="color:#B91C1C;">'+coverageDelta+' pts behind</span>)')+'.'
-    +'</div>'
-  ):'';
+  var coverageBlock='<div style="margin-top:14px;padding:10px 14px;background:#f9fafb;border-left:3px solid #008CC0;border-radius:0 6px 6px 0;font-size:11px;color:#1C1C1C;line-height:1.5;"><strong>Calls Made:</strong> '+totalCalls.toLocaleString()+' actual vs '+callsExpected.toLocaleString()+' paced target through week '+we+'.</div>';
 
   var html='<!DOCTYPE html><html><head><title>'+repName+' \u2014 '+q+' '+yr+' Summary</title>'
     +'<style>@page{margin:0.4in;size:letter;}'
@@ -13715,11 +13716,11 @@ function downloadRepSummaryPDF(repName){
     ):'')
     +sectionHeader('Sales','#1D9E75')
     +salesRows
-    +sectionHeader('Customers Called','#FA873D')
+    +sectionHeader('Calls Made','#FA873D')
     +callsRows
     +'</tbody></table>'
     +coverageBlock
-    +'<div class="notes"><strong>Coverage</strong> = unique customer accounts contacted &divide; customers in set. The quarterly target is to call every customer at least once. <strong>Adjusted goals</strong> = what\u2019s needed per week / day going forward to hit goal, given how many weeks remain.</div>'
+    +'<div class="notes"><strong>Calls Made</strong> = total calls entered for the rep. <strong>Call Pace</strong> compares actual calls with the configured weekly call goal through the elapsed weeks. Adjusted goals show what is needed per week / day to reach the quarter call target.</div>'
     +'<div class="footer">Generated '+today+' \u00b7 Triple Crown Products \u00b7 PDF v319pi</div>'
     +'</body></html>';
   var w=window.open('','_blank');
@@ -16981,19 +16982,19 @@ window.addEventListener('load', function(){
   function signal(title,cls,copy){return '<div class="yo-signal '+cls+'"><div class="yo-signal-title">'+ySafe(title)+'</div><div class="yo-sub">'+ySafe(copy)+'</div></div>';}
   function bestQuarterText(yr){var arr=QTRS.map(function(q){var t=qTotals(yr,q);return{q:q,rev:t.revenue};}).sort(function(a,b){return b.rev-a.rev;});return arr[0]&&arr[0].rev>0?arr[0].q+' — '+yMoney(arr[0].rev):'No data';}
   window.renderYearOverview=function(){
-    var yr=getYr(),total=yearTotals(yr),months=monthTotals(yr),rows=repYearRows(yr),revP=yPct(total.revenue,total.revGoal),callP=yPct(total.calls,total.callGoal),covP=yPct(total.accts,total.setSize),artRate=total.orders>0?(total.art/total.orders*100):0;
+    var yr=getYr(),total=yearTotals(yr),months=monthTotals(yr),rows=repYearRows(yr),revP=yPct(total.revenue,total.revGoal),callP=yPct(total.calls,total.callGoal),artRate=total.orders>0?(total.art/total.orders*100):0;
     var t=document.getElementById('yoTitle'); if(!t)return;
     t.textContent=yr+' Year Overview';
-    document.getElementById('yoSubtitle').textContent='Bird’s-eye view of '+yr+' across revenue, orders, customers called, quality, and management records.';
+    document.getElementById('yoSubtitle').textContent='Bird’s-eye view of '+yr+' across revenue, orders, Calls Made, quality, and management records.';
     document.getElementById('yoCurrentContext').textContent='Year '+yr;
-    document.getElementById('yoScoreGrid').innerHTML=scoreCard('Revenue',yMoney(total.revenue),revP+'% of annual goal')+scoreCard('Orders',yNum(total.orders),'Total orders logged')+scoreCard('Customers Called',covP+'%',yNum(total.accts)+' / '+yNum(total.setSize)+' customers reached')+scoreCard('Art Errors',artRate.toFixed(1)+'%',yNum(total.art)+' total errors')+scoreCard('Credit Memo Cost',yMoney(total.credits),'Rep-fault credit dollars');
-    document.getElementById('yoQuarterCards').innerHTML=QTRS.map(function(q){var qt=qTotals(yr,q),p=yPct(qt.revenue,qt.revGoal);return '<div class="yo-quarter-card"><h3>'+q+'</h3><div class="yo-value">'+yMoney(qt.revenue)+'</div><div class="yo-sub">'+p+'% of '+yMoney(qt.revGoal)+' goal</div><div class="yo-progress"><span style="width:'+Math.min(100,p)+'%"></span></div><div class="yo-sub">Orders '+yNum(qt.orders)+' • Calls '+yNum(qt.calls)+' • Coverage '+yPct(qt.accts,qt.setSize)+'%</div></div>';}).join('');
-    document.getElementById('yoMonthlyTable').innerHTML='<table class="yo-table"><thead><tr><th>Month</th><th>Revenue</th><th>Orders</th><th>Customers</th><th>Art Errors</th><th>Credit Cost</th></tr></thead><tbody>'+months.map(function(m){return '<tr><td>'+m.month+'</td><td>'+yMoney(m.revenue)+'</td><td>'+yNum(m.orders)+'</td><td>'+yNum(m.calls)+'</td><td>'+yNum(m.art)+'</td><td>'+yMoney(m.credits)+'</td></tr>';}).join('')+'</tbody></table>';
-    try{if(window.ch&&ch.yoRevenueChart){ch.yoRevenueChart.destroy();}var c=document.getElementById('yoRevenueChart');if(c&&window.Chart){window.ch=window.ch||{};ch.yoRevenueChart=new Chart(c,{type:'line',data:{labels:months.map(function(m){return m.month;}),datasets:[{label:'Revenue',data:months.map(function(m){return Math.round(m.revenue);}),tension:.35,fill:false,borderColor:'#FA873D',backgroundColor:'#FA873D',yAxisID:'y'},{label:'Customers Called',data:months.map(function(m){return Math.round(m.calls||0);}),tension:.35,fill:false,borderColor:'#00AFEF',backgroundColor:'#00AFEF',yAxisID:'y1'}]},options:{plugins:{legend:{display:true,labels:{color:'#B8B8B8',usePointStyle:true,boxWidth:8}}},scales:{x:{ticks:{color:'#B8B8B8'},grid:{color:'rgba(255,255,255,.06)'}},y:{position:'left',ticks:{color:'#B8B8B8',callback:function(v){return '$'+Number(v).toLocaleString();}},grid:{color:'rgba(255,255,255,.06)'}},y1:{position:'right',ticks:{color:'#B8B8B8'},grid:{drawOnChartArea:false}}}}});}}catch(e){console.warn('Year chart failed',e);}
-    document.getElementById('yoTeamLeaders').innerHTML='<table class="yo-table"><thead><tr><th>Rep</th><th>Revenue</th><th>Rev Pace</th><th>Customers Called</th><th>Cust Pace</th></tr></thead><tbody>'+rows.slice(0,12).map(function(r){return '<tr><td>'+ySafe(r.name)+'</td><td>'+yMoney(r.t.revenue)+'</td><td>'+r.revP+'%</td><td>'+yNum(r.t.calls)+'</td><td>'+r.covP+'%</td></tr>';}).join('')+'</tbody></table>';
-    document.getElementById('yoHealthSignals').innerHTML=signal('Revenue Health',revP>=100?'green':revP>=85?'amber':'red',revP+'% of annual revenue goal')+signal('Customers Called Health',covP>=90?'green':covP>=70?'amber':'red',covP+'% of customer set reached')+signal('Quality Health',artRate<=3?'green':artRate<=5?'amber':'red',artRate.toFixed(1)+'% art error rate');
+    document.getElementById('yoScoreGrid').innerHTML=scoreCard('Revenue',yMoney(total.revenue),revP+'% of annual goal')+scoreCard('Orders',yNum(total.orders),'Total orders logged')+scoreCard('Calls Made',yNum(total.calls),callP+'% of annual call target')+scoreCard('Art Errors',artRate.toFixed(1)+'%',yNum(total.art)+' total errors')+scoreCard('Credit Memo Cost',yMoney(total.credits),'Rep-fault credit dollars');
+    document.getElementById('yoQuarterCards').innerHTML=QTRS.map(function(q){var qt=qTotals(yr,q),p=yPct(qt.revenue,qt.revGoal);return '<div class="yo-quarter-card"><h3>'+q+'</h3><div class="yo-value">'+yMoney(qt.revenue)+'</div><div class="yo-sub">'+p+'% of '+yMoney(qt.revGoal)+' goal</div><div class="yo-progress"><span style="width:'+Math.min(100,p)+'%"></span></div><div class="yo-sub">Orders '+yNum(qt.orders)+' • Calls '+yNum(qt.calls)+' • Call pace '+yPct(qt.calls,qt.callGoal)+'%</div></div>';}).join('');
+    document.getElementById('yoMonthlyTable').innerHTML='<table class="yo-table"><thead><tr><th>Month</th><th>Revenue</th><th>Orders</th><th>Calls Made</th><th>Art Errors</th><th>Credit Cost</th></tr></thead><tbody>'+months.map(function(m){return '<tr><td>'+m.month+'</td><td>'+yMoney(m.revenue)+'</td><td>'+yNum(m.orders)+'</td><td>'+yNum(m.calls)+'</td><td>'+yNum(m.art)+'</td><td>'+yMoney(m.credits)+'</td></tr>';}).join('')+'</tbody></table>';
+    try{if(window.ch&&ch.yoRevenueChart){ch.yoRevenueChart.destroy();}var c=document.getElementById('yoRevenueChart');if(c&&window.Chart){window.ch=window.ch||{};ch.yoRevenueChart=new Chart(c,{type:'line',data:{labels:months.map(function(m){return m.month;}),datasets:[{label:'Revenue',data:months.map(function(m){return Math.round(m.revenue);}),tension:.35,fill:false,borderColor:'#FA873D',backgroundColor:'#FA873D',yAxisID:'y'},{label:'Calls Made',data:months.map(function(m){return Math.round(m.calls||0);}),tension:.35,fill:false,borderColor:'#00AFEF',backgroundColor:'#00AFEF',yAxisID:'y1'}]},options:{plugins:{legend:{display:true,labels:{color:'#B8B8B8',usePointStyle:true,boxWidth:8}}},scales:{x:{ticks:{color:'#B8B8B8'},grid:{color:'rgba(255,255,255,.06)'}},y:{position:'left',ticks:{color:'#B8B8B8',callback:function(v){return '$'+Number(v).toLocaleString();}},grid:{color:'rgba(255,255,255,.06)'}},y1:{position:'right',ticks:{color:'#B8B8B8'},grid:{drawOnChartArea:false}}}}});}}catch(e){console.warn('Year chart failed',e);}
+    document.getElementById('yoTeamLeaders').innerHTML='<table class="yo-table"><thead><tr><th>Rep</th><th>Revenue</th><th>Rev Pace</th><th>Calls Made</th><th>Call Pace</th></tr></thead><tbody>'+rows.slice(0,12).map(function(r){return '<tr><td>'+ySafe(r.name)+'</td><td>'+yMoney(r.t.revenue)+'</td><td>'+r.revP+'%</td><td>'+yNum(r.t.calls)+'</td><td>'+r.callP+'%</td></tr>';}).join('')+'</tbody></table>';
+    document.getElementById('yoHealthSignals').innerHTML=signal('Revenue Health',revP>=100?'green':revP>=85?'amber':'red',revP+'% of annual revenue goal')+signal('Call Activity Health',callP>=100?'green':callP>=85?'amber':'red',callP+'% of annual call target')+signal('Quality Health',artRate<=3?'green':artRate<=5?'amber':'red',artRate.toFixed(1)+'% art error rate');
     var bestMonth=months.slice().sort(function(a,b){return b.revenue-a.revenue;})[0],top=rows[0],topCall=rows.slice().sort(function(a,b){return b.t.calls-a.t.calls;})[0];
-    document.getElementById('yoBestBoard').innerHTML=signal('Best Month','green',(bestMonth?bestMonth.month+' — '+yMoney(bestMonth.revenue):'No data'))+signal('Top Revenue Rep','green',(top?top.name+' — '+yMoney(top.t.revenue):'No data'))+signal('Most Customers Called','green',(topCall?topCall.name+' — '+yNum(topCall.t.calls)+' reached':'No data'))+signal('Largest Quarter','green',bestQuarterText(yr));
+    document.getElementById('yoBestBoard').innerHTML=signal('Best Month','green',(bestMonth?bestMonth.month+' — '+yMoney(bestMonth.revenue):'No data'))+signal('Top Revenue Rep','green',(top?top.name+' — '+yMoney(top.t.revenue):'No data'))+signal('Most Calls Made','green',(topCall?topCall.name+' — '+yNum(topCall.t.calls)+' calls':'No data'))+signal('Largest Quarter','green',bestQuarterText(yr));
     var n=document.getElementById('yoManagerNotes'); if(n)n.value=localStorage.getItem('tcp_year_notes_'+yr)||'';
   };
   window.saveYearNotes=function(){var yr=getYr(),el=document.getElementById('yoManagerNotes');if(el)localStorage.setItem('tcp_year_notes_'+yr,el.value||'');var st=document.getElementById('yoNotesStatus');if(st){st.textContent='Saved';setTimeout(function(){st.textContent='';},1600);}};
@@ -61156,6 +61157,7 @@ window.TCP_BUILD_VERSION=BUILD;try{document.documentElement.setAttribute('data-t
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(applyBadge,120)},{once:true});else setTimeout(applyBadge,120);
 })();
 </script>
+
 </body>
 </html>
 
@@ -66001,3 +66003,11 @@ window.TCP_BUILD_VERSION=BUILD;try{document.documentElement.setAttribute('data-t
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){applyBadge();applyDashboard()},180)},{once:true});else setTimeout(function(){applyBadge();applyDashboard()},180);
 })();
 </script>
+<style id="tcp-v645-report-call-reconciliation-css">
+html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v645"!important}
+body.nav-rail .tabs:after{content:"v645"!important}
+</style>
+<script id="tcp-v645-report-call-reconciliation-js">
+(function(){window.TCP_BUILD_VERSION='v645';window.TCP_REPORT_CALLS_V645={version:'v645',reportCalls:_tcp645TrustedCalls,canonicalField:'calls'};try{document.documentElement.setAttribute('data-tcp-build','v645');document.title='Sales Tracker v645 — Report Call Reconciliation'}catch(e){}})();
+</script>
+
