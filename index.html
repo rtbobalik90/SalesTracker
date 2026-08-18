@@ -14624,7 +14624,9 @@ window.addEventListener('load', function(){
 /* ===== MODULE: PHASE12-DAILYREP (per-rep cumulative daily sales, additive to combined totals) ===== */
 function _drEnsure(){if(!S.dailyRep||typeof S.dailyRep!=='object')S.dailyRep={};/* {date:{rep:cumAmt,...,__corp:amt}} */}
 function _drToday(){var n=new Date();function p(x){return (x<10?'0':'')+x;}return n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());}
-function _drDates(){_drEnsure();return Object.keys(S.dailyRep).sort();}
+var _drDatesCacheV648={rev:-1,count:-1,dates:[]},_drTotalsCacheV648={rev:-1,rows:{}};
+function _drRevV648(){return Number(window.__tcpPerfDataRevV646||0)}
+function _drDates(){_drEnsure();var keys=Object.keys(S.dailyRep),rev=_drRevV648();if(_drDatesCacheV648.rev===rev&&_drDatesCacheV648.count===keys.length)return _drDatesCacheV648.dates;keys.sort();_drDatesCacheV648={rev:rev,count:keys.length,dates:keys};_drTotalsCacheV648={rev:rev,rows:{}};return keys;}
 function _drWeekStart(dateISO){var p=String(dateISO).split('-');var d=new Date(Date.UTC(+p[0],(+p[1])-1,+p[2]));d.setUTCDate(d.getUTCDate()-d.getUTCDay());return d.toISOString().slice(0,10);}function _drValAt(dateISO,key){var v=(S.dailyRep[dateISO]||{});var x=(key==='__corp')?v.__corp:v[key];return (x!=null&&x!=='')?(Number(x)||0):null;}function _drLatestInWeek(dateISO,key){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d>=ws&&d<=dateISO;});for(var i=ds.length-1;i>=0;i--){var v=_drValAt(ds[i],key);if(v!=null)return v;}return 0;}function _drWTD(dateISO,key){return _drLatestInWeek(dateISO,key);}function _drPrevDate(dateISO){var ws=_drWeekStart(dateISO);var ds=_drDates().filter(function(d){return d<dateISO&&d>=ws;});return ds.length?ds[ds.length-1]:null;}
 function _drRepDay(dateISO,repName){ // that day's SMB = week-to-date today - week-to-date prev (within Sun-Sat work week)
   _drEnsure();var cur=_drWTD(dateISO,repName);
@@ -14633,18 +14635,18 @@ function _drRepDay(dateISO,repName){ // that day's SMB = week-to-date today - we
 }
 function _drDayTotals(dateISO){
   _drEnsure();
+  var rev=_drRevV648();if(_drTotalsCacheV648.rev!==rev)_drTotalsCacheV648={rev:rev,rows:{}};
+  if(_drTotalsCacheV648.rows[dateISO])return _drTotalsCacheV648.rows[dateISO];
   var reps=(typeof activeReps==='function'?activeReps():(S.reps||[]));
+  var ws=_drWeekStart(dateISO),dates=_drDates().filter(function(d){return d>=ws&&d<=dateISO}),prevDate='';
+  for(var pi=dates.length-1;pi>=0;pi--){if(dates[pi]<dateISO){prevDate=dates[pi];break}}
+  function latest(key,limit){for(var i=dates.length-1;i>=0;i--){var d=dates[i];if(limit&&d>limit)continue;var row=S.dailyRep[d]||{},x=(key==='__corp')?row.__corp:row[key];if(x!=null&&x!=='')return Number(x)||0}return 0}
   var smbDay=0,smbCum=0,rows=[];
-  reps.forEach(function(r){
-    var cum=_drWTD(dateISO,r.name);/* week-to-date SMB (resets Sunday) */
-    var dayS=_drRepDay(dateISO,r.name);
-    if(cum>0||dayS>0){rows.push({name:r.name,cum:cum,day:dayS});smbCum+=cum;smbDay+=dayS;}
-  });
-  rows.sort(function(a,b){return b.day-a.day||b.cum-a.cum;});
-  var corp=_drWTD(dateISO,'__corp');/* week-to-date corp (auto-detects weekly reset vs carried cumulative) */
-  var pd=_drPrevDate(dateISO);var corpPrev=pd?_drWTD(pd,'__corp'):0;
-  var corpDay=Math.max(0,corp-corpPrev);
-  return {rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
+  reps.forEach(function(r){var cum=latest(r.name,dateISO),prev=prevDate?latest(r.name,prevDate):0,dayS=Math.max(0,cum-prev);if(cum>0||dayS>0){rows.push({name:r.name,cum:cum,day:dayS});smbCum+=cum;smbDay+=dayS}});
+  rows.sort(function(a,b){return b.day-a.day||b.cum-a.cum});
+  var corp=latest('__corp',dateISO),corpPrev=prevDate?latest('__corp',prevDate):0,corpDay=Math.max(0,corp-corpPrev);
+  var result={rows:rows,smbDay:smbDay,smbCum:smbCum,corpCum:corp,corpDay:corpDay,totalDay:smbDay+corpDay,totalCum:smbCum+corp,top:rows[0]||null};
+  _drTotalsCacheV648.rows[dateISO]=result;return result;
 }
 function _drCorpCumulativeFor(dateISO){ try{ var v=(S.dailyRep&&S.dailyRep[dateISO]||{}).__corp; return (v!=null&&v!=='')?(Number(v)||0):''; }catch(e){ return ''; } }
 function _drRenderForm(){
@@ -47232,7 +47234,9 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   if(!S.dailyLiveBridge||typeof S.dailyLiveBridge!=='object')S.dailyLiveBridge={};
   if(!S.dailyLiveReconciliation||typeof S.dailyLiveReconciliation!=='object')S.dailyLiveReconciliation={}
  }
- function callDates(){ensure();return Object.keys(S.dailyCalls).filter(function(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)}).sort()}
+ var callDatesCacheV648={rev:-1,count:-1,dates:[]},callTotalsCacheV648={rev:-1,rows:{}};
+ function dataRevV648(){return Number(window.__tcpPerfDataRevV646||0)}
+ function callDates(){ensure();var keys=Object.keys(S.dailyCalls).filter(function(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)}),rev=dataRevV648();if(callDatesCacheV648.rev===rev&&callDatesCacheV648.count===keys.length)return callDatesCacheV648.dates;keys.sort();callDatesCacheV648={rev:rev,count:keys.length,dates:keys};callTotalsCacheV648={rev:rev,rows:{}};return keys}
  function weekStart(dateISO){
   var d=dateObj(dateISO);if(!d)return'';
   d.setDate(d.getDate()-d.getDay());return isoDate(d)
@@ -47256,17 +47260,15 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   return Math.max(0,current-previous)
  }
  function callTotals(dateISO){
-  var rows=active().map(function(rep){
-   var cumulative=callLatest(dateISO,rep.name),day=callDay(dateISO,rep.name);
-   return{name:rep.name,cumulative:cumulative,day:day}
-  }).filter(function(row){return row.cumulative>0||row.day>0})
-   .sort(function(a,b){return b.day-a.day||b.cumulative-a.cumulative});
-  return{
-   rows:rows,
-   daily:rows.reduce(function(sum,row){return sum+row.day},0),
-   cumulative:rows.reduce(function(sum,row){return sum+row.cumulative},0),
-   top:rows[0]||null
-  }
+  var rev=dataRevV648();if(callTotalsCacheV648.rev!==rev)callTotalsCacheV648={rev:rev,rows:{}};
+  if(callTotalsCacheV648.rows[dateISO])return callTotalsCacheV648.rows[dateISO];
+  var start=weekStart(dateISO),dates=callDates().filter(function(d){return d>=start&&d<=dateISO}),previousDate='';
+  for(var pi=dates.length-1;pi>=0;pi--){if(dates[pi]<dateISO){previousDate=dates[pi];break}}
+  function latest(rep,limit){for(var i=dates.length-1;i>=0;i--){var d=dates[i];if(limit&&d>limit)continue;var row=S.dailyCalls[d]||{},v=row[rep];if(v!=null&&v!=='')return n(v)}return 0}
+  var rows=active().map(function(rep){var cumulative=latest(rep.name,dateISO),previous=previousDate?latest(rep.name,previousDate):0,day=Math.max(0,cumulative-previous);return{name:rep.name,cumulative:cumulative,day:day}})
+   .filter(function(row){return row.cumulative>0||row.day>0}).sort(function(a,b){return b.day-a.day||b.cumulative-a.cumulative});
+  var result={rows:rows,daily:rows.reduce(function(sum,row){return sum+row.day},0),cumulative:rows.reduce(function(sum,row){return sum+row.cumulative},0),top:rows[0]||null};
+  callTotalsCacheV648.rows[dateISO]=result;return result
  }
  function salesWtd(dateISO,rep){
   try{return typeof _drWTD==='function'?n(_drWTD(dateISO,rep)):n((S.dailyRep&&S.dailyRep[dateISO]||{})[rep])}catch(e){return 0}
@@ -47636,13 +47638,13 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
   var date=selectedDate();
   var result=typeof baseSaveSales==='function'?baseSaveSales.apply(this,arguments):undefined;
   syncLiveWeek(date);
-  setTimeout(function(){polishSalesCard();renderCallsForm();renderDailyLog()},0);
+  setTimeout(function(){polishSalesCard();renderCallsForm();renderHeroSummary();renderBridge()},0);
   try{if(window.TCP_PERSISTENT_DATA_V550)TCP_PERSISTENT_DATA_V550.saveNow('daily-sales-v552')}catch(e){}
   return result
  };
  window.renderDailyLog=function(){
   var result=typeof baseRenderDailyLog==='function'?baseRenderDailyLog.apply(this,arguments):undefined;
-  setTimeout(function(){upgradePage();decorateCalendar();renderHeroSummary();renderBridge()},0);
+  setTimeout(function(){upgradePage()},0);
   return result
  };
  window.dailyOpenDayDetail=combinedDayPopup;
@@ -47652,9 +47654,7 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
 
  var baseSetup=window.setupDailyTab;
  window.setupDailyTab=function(){
-  var result=typeof baseSetup==='function'?baseSetup.apply(this,arguments):undefined;
-  setTimeout(function(){upgradePage();renderDailyLog()},0);
-  return result
+  return typeof baseSetup==='function'?baseSetup.apply(this,arguments):undefined
  };
 
  window.TCP_DAILY_SALES_CALLS_V552={
@@ -58580,6 +58580,98 @@ body.nav-rail .tabs:after{content:"v647"!important}
   try{document.documentElement.setAttribute('data-tcp-build','v647');document.title='Sales Tracker v647 — Lean Core';}catch(e){}
 })();
 </script>
+
+<!-- ======================================================================
+     v648 · REP HOME INTEGRITY + DAILY SALES RESPONSIVENESS
+     Rep Home: current-period metrics, Calls Made separated from Account Updates,
+     safe goals, ranked next-best actions, one cached cycle scan.
+     Daily Sales: render/calc caches are installed in the underlying modules above.
+     ====================================================================== -->
+<style id="tcp-v648-rep-home-integrity-css">
+#rp-overlay .p639-daily-stat .p648-source,#rp-overlay .p639-glance-label .p648-source{display:block;margin-top:3px;color:#6f8095;font-size:10px;font-weight:700}
+#rp-overlay .p639-book-rule{margin-top:9px;color:#71839a;font-size:10.5px;line-height:1.45}
+#rp-overlay .p639-book-rule strong{color:#b7c7d9}
+#rp-overlay .p639-glance-row.p648-no-pct .p639-track,#rp-overlay .p639-glance-row.p648-no-pct .p639-glance-pct{opacity:.25}
+#rp-overlay .p639-home-footer .p648-cutoff{color:#9fb0c3}
+html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v648"!important}
+body.nav-rail .tabs:after{content:"v648"!important}
+</style>
+<script id="tcp-v648-rep-home-integrity-js">
+(function(){
+'use strict';
+var BUILD='v648',priorPage=window._rp2Page,cycleCache={key:'',value:null},modelCache={key:'',value:null};
+function arr(v){return Array.isArray(v)?v:[]}
+function n(v){var x=Number(v);return isFinite(x)?x:0}
+function clean(v){return String(v==null?'':v).trim()}
+function esc(v){var s=clean(v);return typeof window._rp2Esc==='function'?window._rp2Esc(s):s.replace(/[&<>\"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c})}
+function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function own(o,k){return !!o&&Object.prototype.hasOwnProperty.call(o,k)}
+function money(v){return typeof window._rp2$==='function'?window._rp2$(n(v)):'$'+Math.round(n(v)).toLocaleString()}
+function num(v){return Math.round(n(v)).toLocaleString()}
+function pct(v){return Math.max(0,Math.min(999,Math.round(n(v))))}
+function first(v){return clean(v).split(/\s+/)[0]||'Rep'}
+function dateObj(v){var d=v instanceof Date?new Date(v.getTime()):new Date(String(v||'').length===10?String(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d}
+function iso(d){return d?d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'):''}
+function qFor(d){var m=d.getMonth();return m<3?'Q1':m<6?'Q2':m<9?'Q3':'Q4'}
+function currentWeek(d){var weeks=arr(typeof gwq==='function'?gwq(d.getFullYear(),qFor(d)):[]);for(var i=0;i<weeks.length;i++){var a=dateObj(weeks[i].start),b=dateObj(weeks[i].end);if(a&&b&&d>=a&&d<=b)return weeks[i]}return weeks[0]||null}
+function activeNames(){try{return arr(activeReps()).map(function(r){return r.name}).filter(Boolean)}catch(e){return arr(S&&S.reps).filter(function(r){return r&&!r.retired&&clean(r.name)}).map(function(r){return r.name})}}
+function row(rep,w){return w&&S&&S.data&&S.data[rep+'|'+w.key]||{}}
+function goal(rep,y,q){var g=S&&S.goals&&S.goals[rep]&&S.goals[rep][String(y)]&&S.goals[rep][String(y)][q];return g&&typeof g==='object'?g:null}
+function weekFraction(w,today){if(!w)return 0;var a=dateObj(w.start),b=dateObj(w.end);if(!a||!b)return 0;var total=0,elapsed=0;for(var d=new Date(a);d<=b;d.setDate(d.getDate()+1)){var wd=d.getDay();if(wd>=1&&wd<=5){total++;if(d<=today)elapsed++}}return total?Math.max(0,Math.min(1,elapsed/total)):1}
+function latestCumulative(source,rep,w,today){if(!source||!w)return{known:false,value:0,date:''};var a=iso(dateObj(w.start)),b=iso(today<dateObj(w.end)?today:dateObj(w.end)),dates=Object.keys(source).filter(function(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)&&d>=a&&d<=b&&source[d]&&own(source[d],rep)}).sort();if(!dates.length)return{known:false,value:0,date:''};var d=dates[dates.length-1];return{known:true,value:n(source[d][rep]),date:d}}
+function repWeek(rep,w,today){var r=row(rep,w),sales=latestCumulative(S&&S.dailyRep,rep,w,today),calls=latestCumulative(S&&S.dailyCalls,rep,w,today);if(!sales.known&&own(r,'revenue'))sales={known:true,value:n(r.revenue),date:clean(r._dailyLive&&r._dailyLive.lastDate)||iso(dateObj(w.end))};if(!calls.known&&own(r,'calls'))calls={known:true,value:n(r.calls),date:clean(r._dailyLive&&r._dailyLive.lastDate)||iso(dateObj(w.end))};return{sales:sales,calls:calls,orders:own(r,'orders')?n(r.orders):null}}
+function quarterRevenue(rep,y,q,today){var weeks=arr(typeof gwq==='function'?gwq(y,q):[]),cw=currentWeek(today),total=0;weeks.forEach(function(w){var a=dateObj(w.start);if(!a||a>today)return;if(cw&&w.key===cw.key){var live=repWeek(rep,w,today).sales;if(live.known)total+=live.value;return}var r=row(rep,w);if(own(r,'revenue'))total+=n(r.revenue)});return total}
+function quarterCalls(rep,y,q,today){var weeks=arr(typeof gwq==='function'?gwq(y,q):[]),cw=currentWeek(today),total=0;weeks.forEach(function(w){var a=dateObj(w.start);if(!a||a>today)return;if(cw&&w.key===cw.key){var live=repWeek(rep,w,today).calls;if(live.known)total+=live.value;return}var r=row(rep,w);if(own(r,'calls'))total+=n(r.calls)});return total}
+function portalData(){try{return window.TCP_PROJECT_SIMPLIFY_REP_V560&&typeof TCP_PROJECT_SIMPLIFY_REP_V560.portalData==='function'?TCP_PROJECT_SIMPLIFY_REP_V560.portalData():{}}catch(e){console.warn('[v648 portal data]',e);return{}}}
+function cycle(rep,today){var rev=Number(window.__tcpPerfDataRevV646||0),key=[rep,iso(today),rev].join('|');if(cycleCache.key===key)return cycleCache.value;var value={pace:null,queue:[]};try{if(window.TCP_CALL_CYCLE_V547&&typeof TCP_CALL_CYCLE_V547.paceFor==='function'){var p=TCP_CALL_CYCLE_V547.paceFor(rep,today),needed=n(p.todayRemaining),set=arr(p.set).filter(function(x){return x&&!x.completedAt}).slice(0,needed);value.pace=p;value.queue=set.map(function(item,i){return{customer:item.company,contact:item.contact||'',reason:'Account update due',copy:item.callAttemptAt&&!item.emailAt?'Call attempted; follow-up email still required.':(item.detail||'Complete the account update workflow.'),source:'Account Update Cycle',value:n(item.netSales),rank:i+1}})}}catch(e){console.warn('[v648 account cycle]',e)}cycleCache={key:key,value:value};return value}
+function companyOf(x){return clean(x&&(x.customer||x.company||x.account||x.companyName))}
+function dateVal(x){var v=x&&(x.due||x.follow||x.followUpDate||x.nextDate||x.expires||x.expirationDate);var d=dateObj(v);return d?d.getTime():Infinity}
+function nextActions(g,cy){var candidates=[],today=Date.now();function push(x){if(x&&companyOf(x))candidates.push(x)}
+ arr(g&&g.business&&g.business.lanes&&g.business.lanes.overdue).forEach(function(t){push({type:'task',company:companyOf(t),label:clean(t.title)||'Overdue follow-up',detail:clean(t.copy||t.source),priority:500+n(t.score),due:dateVal(t),page:clean(t.page)||'action',raw:t})});
+ arr(g&&g.business&&g.business.lanes&&g.business.lanes.today).forEach(function(t){push({type:'task',company:companyOf(t),label:clean(t.title)||'Follow-up due today',detail:clean(t.copy||t.source),priority:440+n(t.score),due:dateVal(t),page:clean(t.page)||'action',raw:t})});
+ arr(g&&g.quoteGroups&&g.quoteGroups['72']).forEach(function(q){push({type:'quote',company:companyOf(q),label:'72-hour quote follow-up',detail:(clean(q.number||q.title||'Quote')+(n(q.amount)?' · '+money(q.amount):'')),priority:420+Math.min(50,n(q.amount)/1000),due:dateVal(q),raw:q})});
+ arr(g&&g.quoteGroups&&g.quoteGroups['7']).forEach(function(q){push({type:'quote',company:companyOf(q),label:'1-week quote follow-up',detail:(clean(q.number||q.title||'Quote')+(n(q.amount)?' · '+money(q.amount):'')),priority:390+Math.min(50,n(q.amount)/1000),due:dateVal(q),raw:q})});
+ arr(g&&g.opps).forEach(function(o){push({type:'opp',company:companyOf(o),label:clean(o.next||o.title||'Opportunity next step'),detail:(clean(o.stage)+(n(o.amount)?' · '+money(o.amount):'')),priority:300+Math.min(70,n(o.amount)/2000),due:dateVal(o),raw:o})});
+ arr(cy&&cy.queue).forEach(function(c){push({type:'update',company:companyOf(c),label:clean(c.reason||'Account update due'),detail:clean(c.copy||c.source),priority:250,due:today,raw:c})});
+ candidates.sort(function(a,b){return b.priority-a.priority||a.due-b.due});var seen={},out=[];candidates.forEach(function(x){var k=norm(x.company);if(!k||seen[k])return;seen[k]=1;out.push(x)});return out.slice(0,3)}
+function model(){var rep=window._rp2&&_rp2.rep||'',today=new Date();today.setHours(12,0,0,0);var rev=Number(window.__tcpPerfDataRevV646||0),key=[rep,iso(today),rev].join('|');if(modelCache.key===key)return modelCache.value;var y=today.getFullYear(),q=qFor(today),w=currentWeek(today),wf=weekFraction(w,today),wr=repWeek(rep,w,today),g=portalData(),cy=cycle(rep,today),gr=goal(rep,y,q),qrev=quarterRevenue(rep,y,q,today),qc=quarterCalls(rep,y,q,today),names=activeNames(),ranking=names.map(function(name){return{name:name,revenue:quarterRevenue(name,y,q,today)}}).sort(function(a,b){return b.revenue-a.revenue}),rank=null;ranking.forEach(function(x,i){if(x.name===rep)rank=i+1});var callGoal=gr&&n(gr.calls)>0?n(gr.calls):0,revGoal=gr&&n(gr.rev)>0?n(gr.rev):0,callExpected=callGoal?callGoal*wf:0,salesWeekGoal=revGoal?revGoal/13:0,salesExpected=salesWeekGoal?salesWeekGoal*wf:0,pace=cy.pace||null,actions=nextActions(g,cy),pipeline=arr(g&&g.opps).reduce(function(s,o){return s+n(o&&o.amount)},0),overdue=arr(g&&g.business&&g.business.lanes&&g.business.lanes.overdue).length,todayDue=arr(g&&g.business&&g.business.lanes&&g.business.lanes.today).length,followDue=overdue+todayDue,completedToday=n(g&&g.perf&&g.perf.completed),q72=arr(g&&g.quoteGroups&&g.quoteGroups['72']),q7=arr(g&&g.quoteGroups&&g.quoteGroups['7']),quoteCount=q72.length+q7.length,cutSales=wr.sales.date||'',cutCalls=wr.calls.date||'';var out={rep:rep,today:today,year:y,q:q,week:w,wf:wf,weekSales:wr.sales,weekCalls:wr.calls,weekOrders:wr.orders,qRevenue:qrev,qCalls:qc,goal:gr,revGoal:revGoal,callGoal:callGoal,callExpected:callExpected,salesWeekGoal:salesWeekGoal,salesExpected:salesExpected,rank:rank,totalReps:ranking.length,g:g,cycle:cy,pace:pace,actions:actions,pipeline:pipeline,followDue:followDue,completedToday:completedToday,quoteCount:quoteCount,quoteTotal:q72.concat(q7).reduce(function(s,x){return s+n(x&&x.amount)},0),oppCount:arr(g&&g.opps).length,cutSales:cutSales,cutCalls:cutCalls};modelCache={key:key,value:out};window._tcp648RepHomeModel=out;return out}
+function customer(g,name){var customers=g&&g.customers||{},k=norm(name),hit=customers[k];if(hit)return hit;var keys=Object.keys(customers);for(var i=0;i<keys.length;i++){if(norm(customers[keys[i]]&&customers[keys[i]].name)===k)return customers[keys[i]]}return null}
+function field(o,names){for(var i=0;i<names.length;i++){if(o&&o[names[i]]!=null&&clean(o[names[i]])!=='')return o[names[i]]}return''}
+function daysAgo(v){var d=dateObj(v);if(!d)return null;var now=new Date();now.setHours(12,0,0,0);d.setHours(12,0,0,0);return Math.max(0,Math.round((now-d)/86400000))}
+function actionButtons(a){var c=encodeURIComponent(a.company);if(a.type==='quote')return'<button onclick="_ud4OpenQuote(\''+c+'\')">Review Quote</button><button class="primary" onclick="_ps60OpenCall(\''+c+'\')">☎ Call</button>';if(a.type==='task')return'<button onclick="_ps60OpenBusiness(\''+esc(a.page||'action')+'\',\''+c+'\')">Open Work</button><button class="primary" onclick="_rp2Go(\'action\')">Follow-Ups</button>';if(a.type==='opp')return'<button onclick="_ps60OpenBusiness(\'pipeline\',\''+c+'\')">Opportunity</button><button class="primary" onclick="_ps60OpenCall(\''+c+'\')">☎ Call</button>';return'<button onclick="_ps60OpenCall(\''+c+'\')">Prep</button><button class="primary" onclick="_ps60OpenCall(\''+c+'\')">☎ Start Update</button>'}
+function actionRow(a,i,m){var c=customer(m.g,a.company),contact=c&&c.primary&&clean(field(c.primary,['name','contactName'])),order=c&&c.lastOrder,amount=n(field(order,['total','amount','revenue','sales','orderTotal'],0)),ago=daysAgo(c&&c.lastOrderDate),sub=[];if(contact)sub.push('Contact: '+contact);if(amount>0)sub.push('Last order: '+money(amount));if(ago!=null)sub.push(ago===0?'today':ago+' days ago');var color=a.type==='quote'?'#9B6BFF':a.type==='task'?'#EF9F27':a.type==='opp'?'#FA873D':'#00AFEF',icon=a.type==='quote'?'▤':a.type==='task'?'✓':a.type==='opp'?'☆':'▦';return'<div class="p639-action" style="--action:'+color+'"><div class="p639-rank">'+(i+1)+'</div><div class="p639-action-icon">'+icon+'</div><div class="p639-action-copy"><h3>'+esc(a.company)+'</h3><b>'+esc(a.label)+'</b><p>'+esc(a.detail||'Complete the next customer action.')+'</p>'+(sub.length?'<small>'+esc(sub.join(' · '))+'</small>':'')+'</div><div class="p639-action-buttons">'+actionButtons(a)+'</div></div>'}
+function stat(icon,value,label,sub,color){return'<div class="p639-daily-stat" style="--accent:'+color+'"><div class="p639-stat-icon">'+icon+'</div><div><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span><small>'+esc(sub)+'</small></div></div>'}
+function glance(icon,label,sub,value,progress,color){var known=progress!=null;return'<div class="p639-glance-row'+(known?'':' p648-no-pct')+'" style="--accent:'+color+'"><div class="p639-mini-icon">'+icon+'</div><div class="p639-glance-label"><strong>'+esc(label)+'</strong><span>'+esc(sub)+'</span></div><div class="p639-glance-value">'+esc(value)+'</div><div class="p639-track"><i style="--pct:'+(known?Math.max(0,Math.min(100,n(progress))):0)+'%"></i></div><div class="p639-glance-pct">'+(known?pct(progress)+'%':'—')+'</div></div>'}
+function metric(icon,label,value,sub,progress,color){return'<div class="p639-metric" style="--accent:'+color+'"><div class="p639-metric-head"><div class="p639-metric-icon">'+icon+'</div><div><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong><small>'+esc(sub)+'</small></div></div><div class="p639-mini-progress"><i style="--pct:'+Math.max(0,Math.min(100,n(progress)))+'%"></i></div></div>'}
+function dateLabel(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
+function syncLabel(){try{var stamp=window._tcpStorageMeta&&(_tcpStorageMeta.lastHydrated||_tcpStorageMeta.lastSaved);if(!stamp)return'Cloud data loaded';var d=new Date(stamp),mins=Math.max(0,Math.round((Date.now()-d.getTime())/60000));return mins<1?'Last sync just now':mins===1?'Last sync 1 min ago':'Last sync '+mins+' min ago'}catch(e){return'Cloud data loaded'}}
+function home(){var m=model(),p=m.pace,rep=m.rep,greeting=m.today.getHours()<12?'Good morning':m.today.getHours()<17?'Good afternoon':'Good evening',callActual=m.weekCalls.known?m.weekCalls.value:null,callPace=callActual!=null&&m.callExpected>0?callActual/m.callExpected*100:null,salesPace=m.weekSales.known&&m.salesExpected>0?m.weekSales.value/m.salesExpected*100:null,qPct=m.revGoal?m.qRevenue/m.revGoal*100:0,followProgress=(m.completedToday+m.followDue)>0?m.completedToday/(m.completedToday+m.followDue)*100:100,set=p?n(p.size):0,completed=p?n(p.completed):0,coverage=set?completed/set*100:0,remainingTarget=p?Math.max(0,n(p.targetCount)-completed):0,accountStatus=p?clean(p.status):'Account update cycle unavailable',accountCopy=p?(completed+' completed · '+remainingTarget+' remaining to '+clean(p.milestone&&p.milestone.label||'current milestone')):'Account update data will appear when the cycle is available.',startLabel=m.actions.length?'START MY DAY →':'OPEN COMPANIES →';window._tcp648FirstAction=m.actions[0]||null;return'<div class="p639-home">'+
+'<div class="p639-hello"><div><h1>'+esc(greeting+', '+first(rep))+'.</h1><p>Here’s what moves your book forward today.</p></div><div class="p639-date"><i>▣</i>'+esc(dateLabel(m.today))+'</div></div>'+
+'<section class="p639-daily-strip">'+stat('☎',callActual==null?'—':num(callActual),'Calls made',m.callGoal?(num(m.callGoal)+' weekly goal'):'Call goal not set','#00AFEF')+stat('✓',num(m.followDue),'Follow-ups due',m.completedToday?num(m.completedToday)+' completed today':(m.followDue?'Work the highest-priority promises first':'You’re clear'),'#47D16C')+stat('▤',num(m.quoteCount),'Quotes need attention',m.quoteTotal?money(m.quoteTotal)+' currently due':'No timed quote follow-up due','#9B6BFF')+stat('☆',num(m.oppCount),'Customer opportunit'+(m.oppCount===1?'y':'ies'),m.oppCount?'Open opportunities in your book':'No open opportunity','#FA873D')+'<div class="p639-start"><button onclick="_tcp648StartDay()">'+startLabel+'</button><small>Open your highest-priority work</small></div></section>'+
+'<div class="p639-work"><section class="p639-panel"><div class="p639-panel-head"><strong>NEXT BEST ACTIONS <span class="p639-info">i</span></strong><button onclick="_rp2Go(\'action\')">View all actions →</button></div><div class="p639-action-list">'+(m.actions.length?m.actions.map(function(a,i){return actionRow(a,i,m)}).join(''):'<div class="p639-more">No urgent actions are waiting. Open Companies to plan the next customer move.</div>')+'</div>'+(m.actions.length?'<div class="p639-more">⌄ &nbsp; Ranked across overdue work, quotes, opportunities, and account updates</div>':'')+'</section><div class="p639-right">'+
+'<section class="p639-panel"><div class="p639-panel-head"><strong>TODAY AT A GLANCE</strong></div><div class="p639-glance">'+glance('☎','Calls Made',m.callExpected?('Paced target through today: '+num(m.callExpected)):'Weekly call goal not set',callActual==null?'Pending':num(callActual)+' / '+num(m.callExpected||m.callGoal||0),callPace,'#00AFEF')+glance('✓','Follow-Ups',m.followDue?'Due / overdue work':'You’re clear',m.followDue?num(m.followDue)+' due':'Clear',followProgress,'#47D16C')+glance('▤','Quotes',m.quoteCount?'Timed follow-up needs attention':'You’re clear',m.quoteCount?num(m.quoteCount)+' due':'Clear',null,'#9B6BFF')+'<div class="p639-glance-row p648-no-pct" style="--accent:#FA873D"><div class="p639-mini-icon">☆</div><div class="p639-glance-label"><strong>Opportunities</strong><span>Open opportunities</span></div><div class="p639-glance-value">'+num(m.oppCount)+'</div><div></div><div></div></div><div class="p639-day-status" style="--tone:'+(callPace==null?'#00AFEF':callPace>=100?'#47D16C':'#EF9F27')+'"><i>✓</i><div><strong>'+esc(callPace==null?'Calls are waiting for an entry':callPace>=100?'You’re on call pace':'Call pace needs attention')+'</strong><span>'+esc(callPace==null?'Enter cumulative calls in Daily Sales & Calls to activate live pace.':callPace>=100?'Keep protecting the customer work that is creating the activity.':num(Math.max(0,m.callExpected-callActual))+' calls will bring you to today’s paced target.')+'</span></div></div></div></section>'+
+'<section class="p639-panel"><div class="p639-panel-head"><strong>YOUR ACCOUNT BOOK <span class="p639-info">i</span></strong></div><div class="p639-book"><div class="p639-book-top"><strong>'+(p?(num(completed)+' of '+num(set)+' account updates completed'):'Account updates unavailable')+'</strong><b>'+(p?pct(coverage)+'%':'—')+'</b></div><div class="p639-book-track"><i style="--pct:'+Math.max(0,Math.min(100,coverage))+'%"></i></div><div class="p639-book-foot"><span>'+(p?num(remainingTarget)+' remaining to current milestone':'—')+'</span><b>'+(p?num(p.todayRemaining)+' targeted today':'—')+'</b></div><div class="p639-book-rule"><strong>Account Update ≠ Calls Made.</strong> An account update completes only after the cycle’s required customer touch is recorded (currently call attempt + follow-up email).</div><div class="p639-book-coach"><i>◎</i><div><strong>'+esc(accountStatus)+'</strong><span>'+esc(accountCopy)+'</span></div></div></div></section></div></div>'+
+'<section class="p639-panel p639-momentum"><div class="p639-momentum-title">MY MOMENTUM <span class="p639-info">i</span></div><div class="p639-momentum-grid">'+metric('$','Quarter Sales',money(m.qRevenue),m.revGoal?(pct(qPct)+'% of '+money(m.revGoal)):'Quarter goal not set',qPct,'#47D16C')+metric('♟','Account Updates',p?(num(completed)+' / '+num(set)):'—',p?(pct(coverage)+'% of assigned book'):'Cycle unavailable',coverage,'#00AFEF')+metric('▽','Pipeline',money(m.pipeline),num(m.oppCount)+' open opportunities',m.revGoal?m.pipeline/m.revGoal*100:0,'#9B6BFF')+metric('🏆','Quarter Sales Rank',m.rank?('#'+m.rank):'—',m.totalReps?('of '+num(m.totalReps)+' reps'):'Rank unavailable',m.rank&&m.totalReps?(m.totalReps-m.rank+1)/m.totalReps*100:0,'#EF9F27')+metric('◎','Week Sales',m.weekSales.known?money(m.weekSales.value):'Pending',m.weekSales.known?(m.salesExpected?(pct(salesPace)+' of pace through today'):'Revenue goal not set'):'No current-week sales entry',salesPace||0,'#FA873D')+'<button class="p639-performance-link" onclick="_rp2Go(\'profile\')">VIEW MY<br>PERFORMANCE →<br><span style="font-weight:600;color:#7F90A4;margin-top:5px">Detailed performance &amp; recognition</span></button></div></section>'+
+'<footer class="p639-home-footer"><div><span class="signal">★</span>'+(p&&p.todayRemaining?('Today’s account-update focus: <strong>'+num(p.todayRemaining)+' remaining.</strong>'):'<strong>Your prioritized work is ready.</strong>')+'</div><div class="p639-home-footer-right p648-cutoff">Sales through '+esc(m.cutSales||'pending')+' · Calls through '+esc(m.cutCalls||'pending')+' &nbsp; • &nbsp; '+esc(syncLabel())+' &nbsp; ↻</div></footer></div>'}
+function phased(){try{var forced=typeof window._rpUrlPortalView==='function'?clean(window._rpUrlPortalView()).toLowerCase():'';if(forced)return forced==='phased';if(window.TCP_REP_PORTAL_DUAL_VIEW_V608&&typeof TCP_REP_PORTAL_DUAL_VIEW_V608.getMode==='function')return TCP_REP_PORTAL_DUAL_VIEW_V608.getMode(window._rp2&&_rp2.rep)==='phased'}catch(e){}return !!document.querySelector('#rp-overlay .rp2-app.rp2-mode-phased')}
+window._tcp648StartDay=function(){var a=window._tcp648FirstAction;if(!a){_rp2Go('customers');return}var c=encodeURIComponent(a.company);if(a.type==='quote'&&typeof window._ud4OpenQuote==='function')return _ud4OpenQuote(c);if(a.type==='task'&&typeof window._ps60OpenBusiness==='function')return _ps60OpenBusiness(a.page||'action',c);if(a.type==='opp'&&typeof window._ps60OpenBusiness==='function')return _ps60OpenBusiness('pipeline',c);if(typeof window._ps60OpenCall==='function')return _ps60OpenCall(c);_rp2Go('call')};
+window._rp2Page=function(){if(phased()&&window._rp2&&_rp2.page==='home')return home();return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
+window.TCP_REP_HOME_INTEGRITY_V648={version:BUILD,model:model,render:home,cycle:function(){return cycle(window._rp2&&_rp2.rep,new Date())},invalidate:function(){modelCache={key:'',value:null};cycleCache={key:'',value:null}}};
+var priorMark=window.markDirty;if(typeof priorMark==='function'&&!priorMark._tcp648){var wrap=function(){modelCache={key:'',value:null};cycleCache={key:'',value:null};return priorMark.apply(this,arguments)};wrap._tcp648=true;window.markDirty=wrap}
+window.TCP_BUILD_VERSION=BUILD;try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v648 — Rep Home Integrity + Daily Responsiveness'}catch(e){}
+})();
+</script>
+<script id="tcp-v648-phased-dev-handoff-js">
+(function(){
+'use strict';
+var prior=window._rpPhasedDevBundle;
+function source(id){var el=document.getElementById(id);return el?String(el.textContent||'').trim():''}
+window._rpPhasedDevBundle=function(){var base=typeof prior==='function'?prior():'';return base+'\n\n/* v648 rollout integrity patch: current-period rep home + Calls Made / Account Updates separation */\n<style id="tcp-v648-rep-home-integrity-css">'+source('tcp-v648-rep-home-integrity-css')+'</style>\n<script id="tcp-v648-rep-home-integrity-js">'+source('tcp-v648-rep-home-integrity-js')+'<\\/script>'};
+window._rpCopyPhasedDevCode=function(){var code=window._rpPhasedDevBundle();if(typeof window._rpCopyText==='function')return window._rpCopyText(code,'Phased Rep Portal v648 DEV code copied — no customer data or passwords are included.','Copy the Phased Rep Portal v648 DEV code:');if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(code).then(function(){alert('Phased Rep Portal v648 DEV code copied.')});prompt('Copy the Phased Rep Portal v648 DEV code:',code)};
+window.TCP_PHASED_DEV_HANDOFF_V648={version:'v648',bundle:window._rpPhasedDevBundle,copy:window._rpCopyPhasedDevCode};
+})();
+</script>
+
 </body>
 </html>
 
@@ -60838,7 +60930,7 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
    panel.insertBefore(host,body)
   }
   var pill=page.querySelector('.daily-entry-married-head .daily-status-pill');
-  if(pill)pill.textContent='Local + cloud autosave';
+  if(pill&&pill.textContent!=='Local + cloud autosave')pill.textContent='Local + cloud autosave';
   renderStatus()
  }
 
@@ -61085,7 +61177,7 @@ body:has(#rp-overlay[style*="display:block"]){overflow:hidden!important;}
 
  var observer=new MutationObserver(function(){
   var page=document.getElementById('pg-daily');
-  if(page&&page.classList.contains('active'))mountStatus()
+  if(page&&page.classList.contains('active')&&!document.getElementById('tcp-v614-save-state'))mountStatus()
  });
  if(document.body)observer.observe(document.body,{childList:true,subtree:true});
 
