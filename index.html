@@ -68202,3 +68202,155 @@ html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F0F5F8
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v681 — Rep Portal Light Polish + Email Review'}catch(e){}
 })();
 </script>
+
+
+<!-- ======================================================================
+     SALES TRACKER v682 · LIGHT CONTRAST + TO DO LINKS
+     Focused patch:
+     1) strengthens light-mode action/accent contrast
+     2) makes To Do rail Open buttons explicit, reliable navigation controls
+     No business logic/data/storage changes.
+     ====================================================================== -->
+<style id="tcp-v682-light-contrast-todo-links-css">
+/* ---- LIGHT MODE: stronger cyan / status contrast ---- */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light{
+  --v682-cyan:#008FBE;
+  --v682-cyan-dark:#006F98;
+  --v682-cyan-soft:#E0F4FB;
+  --v682-cyan-line:#73C9E6;
+  --v682-green:#19845F;
+  --v682-green-soft:#E8F7F1;
+  --v682-green-line:#8BD7BA;
+  --v682-amber:#8A5A00;
+  --v682-amber-soft:#FFF4DD;
+  --v682-amber-line:#E5C06E;
+}
+/* Company directory active view: no more white text on nearly-white cyan. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .cw4-view.active{
+  background:var(--v682-cyan-soft)!important;
+  border-color:var(--v682-cyan-line)!important;
+  color:var(--v682-cyan-dark)!important;
+  box-shadow:inset 0 0 0 1px rgba(0,143,190,.05)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .cw4-view:not(.active){color:#60768A!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .cw4-view:hover{
+  background:#F0F7FA!important;color:#17384D!important;border-color:#C5D8E3!important;
+}
+/* Open / blue actions should read as real actions in light mode. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-mini-btn.blue,.cw4-btn.blue){
+  background:var(--v682-cyan)!important;
+  border-color:var(--v682-cyan-dark)!important;
+  color:#FFFFFF!important;
+  box-shadow:0 4px 12px rgba(0,143,190,.14)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-mini-btn.blue,.cw4-btn.blue):hover{
+  background:#007DA8!important;border-color:#006486!important;color:#fff!important;
+}
+/* Primary customer workspace controls should be unmistakable. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .cw4-btn.primary{
+  background:linear-gradient(180deg,#12A7D3,#008FBE)!important;
+  border-color:#007DA8!important;color:#fff!important;
+  box-shadow:0 5px 14px rgba(0,143,190,.16)!important;
+}
+/* Avatars can stay soft, but use a darker readable cyan family. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .cw4-avatar{
+  background:#D9F2FB!important;border-color:#9DDCF0!important;color:#006F98!important;
+}
+/* Shared semantic pills: stronger borders/text, still restrained. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-pill.good,.cw4-tag.good){
+  background:var(--v682-green-soft)!important;border-color:var(--v682-green-line)!important;color:var(--v682-green)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-pill.info,.cw4-tag.info){
+  background:var(--v682-cyan-soft)!important;border-color:var(--v682-cyan-line)!important;color:var(--v682-cyan-dark)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-pill.warn,.cw4-tag.warn){
+  background:var(--v682-amber-soft)!important;border-color:var(--v682-amber-line)!important;color:var(--v682-amber)!important;
+}
+/* Generic light-mode informational/blue controls across phased pages. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .c656-btn.cyan,.f654-btn.cyan,.q673-btn.primary,.q673-btn.cyan,
+ .o671-rp-btn.primary,.o671-rp-btn.cyan,.ms537-card button
+){
+  background:#E0F4FB!important;border-color:#73C9E6!important;color:#006F98!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .c656-btn.cyan,.f654-btn.cyan,.q673-btn.primary,.q673-btn.cyan,
+ .o671-rp-btn.primary,.o671-rp-btn.cyan,.ms537-card button
+):hover{
+  background:#CBEAF6!important;border-color:#42B5DA!important;color:#005D80!important;
+}
+/* To Do rail Open buttons: visible, button-like, and accessible. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp679-todo-section-head button{
+  min-height:27px!important;padding:0 8px!important;border:1px solid rgba(0,175,239,.28)!important;
+  border-radius:8px!important;background:rgba(0,175,239,.08)!important;color:#47D6FF!important;
+  font-size:9px!important;font-weight:950!important;cursor:pointer!important;pointer-events:auto!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp679-todo-section-head button:hover{
+  background:rgba(0,175,239,.16)!important;border-color:rgba(0,175,239,.48)!important;color:#B6F1FF!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-section-head button{
+  background:var(--v682-cyan-soft)!important;border-color:var(--v682-cyan-line)!important;color:var(--v682-cyan-dark)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-section-head button:hover{
+  background:#CBEAF6!important;border-color:#42B5DA!important;color:#005D80!important;
+}
+</style>
+<script id="tcp-v682-light-contrast-todo-links-js">
+(function(){
+ 'use strict';
+ var BUILD='v682';
+ function go(page){
+   try{
+     if(typeof window._rp2Go==='function'){
+       window._rp2Go(page);
+       return true;
+     }
+   }catch(e){}
+   return false;
+ }
+ function openCalls(){
+   if(!go('call'))return false;
+   setTimeout(function(){
+     try{
+       if(typeof window._call656Tab==='function')window._call656Tab('today');
+     }catch(e){}
+   },40);
+   return true;
+ }
+ function openFollowups(){return go('action')}
+ function openNotifications(){
+   try{
+     if(typeof window._rp2OpenDesktopNotifications==='function'){
+       window._rp2OpenDesktopNotifications();
+       return true;
+     }
+   }catch(e){}
+   return go('home');
+ }
+ window._rp682TodoOpen=function(section){
+   section=String(section||'').toLowerCase();
+   if(section==='calls')return openCalls();
+   if(section==='followups'||section==='follow-ups')return openFollowups();
+   if(section==='notifications'||section==='alerts')return openNotifications();
+   return false;
+ };
+ /* Capture the current v679-generated Open buttons so they remain reliable even
+    if older inline navigation wrappers are replaced later in the standalone file. */
+ document.addEventListener('click',function(e){
+   var btn=e.target&&e.target.closest?e.target.closest('#rp-overlay .rp679-todo-section-head button'):null;
+   if(!btn)return;
+   var section=btn.closest('.rp679-todo-section');
+   if(!section)return;
+   var heading=section.querySelector('.rp679-todo-section-head strong');
+   var label=heading?String(heading.textContent||'').toLowerCase():'';
+   var handled=false;
+   if(label.indexOf('next 3 calls')>=0)handled=openCalls();
+   else if(label.indexOf('follow-up')>=0)handled=openFollowups();
+   else if(label.indexOf('notification')>=0)handled=openNotifications();
+   if(handled){e.preventDefault();e.stopImmediatePropagation();}
+ },true);
+ window.TCP_BUILD_VERSION=BUILD;
+ window.TCP_REP_PORTAL_LIGHT_CONTRAST_TODO_LINKS_V682={version:BUILD,openTodo:window._rp682TodoOpen};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v682 — Light Contrast + To Do Links'}catch(e){}
+})();
+</script>
