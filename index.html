@@ -68385,3 +68385,188 @@ html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F0F5F8
 #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .q673-mini.blue{background:var(--v683-c)!important;border-color:#006F96!important;color:#fff!important}
 </style>
 <script id="tcp-v683-light-action-contrast-js">(function(){var B="v683";window.TCP_BUILD_VERSION=B;try{document.documentElement.setAttribute("data-tcp-build",B);document.title="Sales Tracker v683 — Light Theme Action Contrast"}catch(e){}})();</script>
+<!-- ======================================================================
+     SALES TRACKER v684 · REP PORTAL TEST HARNESS + TODO DESTINATIONS
+     Baseline: v683 known-good light action contrast.
+     Temporary developer/test layer. Remove this entire block before launch.
+     ====================================================================== -->
+<style id="tcp-v684-rep-portal-test-harness-css">
+#rp684TesterRoot{position:fixed;right:18px;bottom:18px;z-index:2147482100;font-family:"Open Sans","Segoe UI",Arial,sans-serif;pointer-events:none}
+#rp684TesterRoot *{box-sizing:border-box}
+#rp684TesterRoot .rp684-test-fab{pointer-events:auto;display:flex;align-items:center;gap:7px;min-height:38px;padding:0 13px;border:1px solid rgba(255,255,255,.15);border-radius:13px;background:linear-gradient(135deg,#FA873D,#D96A25);color:#fff;font-size:10px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.34)}
+#rp684TesterRoot .rp684-test-fab i{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.13)}
+#rp684TesterRoot .rp684-test-panel{pointer-events:auto;display:none;position:absolute;right:0;bottom:48px;width:318px;padding:14px;border:1px solid rgba(255,255,255,.13);border-radius:18px;background:#101923;color:#ECF5FB;box-shadow:0 22px 64px rgba(0,0,0,.48)}
+#rp684TesterRoot.open .rp684-test-panel{display:block}
+#rp684TesterRoot .rp684-test-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-bottom:11px;margin-bottom:11px;border-bottom:1px solid rgba(255,255,255,.09)}
+#rp684TesterRoot .rp684-test-kick{font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;color:#00AFEF;margin-bottom:3px}
+#rp684TesterRoot .rp684-test-title{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:900;color:#fff}
+#rp684TesterRoot .rp684-test-copy{font-size:9px;color:#91A5B7;line-height:1.45;margin-top:3px}
+#rp684TesterRoot .rp684-test-close{width:28px;height:28px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:rgba(255,255,255,.05);color:#B9C8D4;cursor:pointer}
+#rp684TesterRoot .rp684-test-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#rp684TesterRoot .rp684-test-action{min-height:58px;padding:9px 10px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(255,255,255,.045);color:#E9F2F8;text-align:left;cursor:pointer;font-family:inherit}
+#rp684TesterRoot .rp684-test-action:hover{border-color:rgba(0,175,239,.40);background:rgba(0,175,239,.08)}
+#rp684TesterRoot .rp684-test-action strong{display:block;font-size:10px;font-weight:950;margin-bottom:3px}
+#rp684TesterRoot .rp684-test-action span{display:block;font-size:8px;color:#8EA2B5;line-height:1.35}
+#rp684TesterRoot .rp684-test-action.hot{background:rgba(250,135,61,.11);border-color:rgba(250,135,61,.30)}
+#rp684TesterRoot .rp684-test-action.call{background:rgba(0,175,239,.08);border-color:rgba(0,175,239,.26)}
+#rp684TesterRoot .rp684-test-action.good{background:rgba(71,209,108,.07);border-color:rgba(71,209,108,.23)}
+#rp684TesterRoot .rp684-test-footer{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
+#rp684TesterRoot .rp684-test-note{font-size:7.5px;line-height:1.35;color:#74899B;max-width:175px}
+#rp684TesterRoot .rp684-test-clear{min-height:30px;padding:0 10px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:rgba(255,255,255,.04);color:#B9C8D4;font-size:8px;font-weight:900;cursor:pointer}
+
+/* Temporary forced To Do scenarios. */
+#rp-overlay .rp684-test-priority{border-color:rgba(250,135,61,.60)!important;box-shadow:0 0 0 1px rgba(250,135,61,.10),0 12px 26px rgba(250,135,61,.12)!important}
+#rp-overlay .rp684-test-priority:after{content:"TEST";position:absolute;right:10px;top:10px;padding:2px 6px;border-radius:999px;background:#FA873D;color:#fff;font-size:7px;font-weight:950;letter-spacing:.08em}
+#rp-overlay .rp684-test-item{position:relative}
+#rp-overlay .rp684-test-item:after{content:"TEST";position:absolute;right:8px;top:7px;padding:2px 5px;border-radius:999px;background:#FA873D;color:#fff;font-size:6px;font-weight:950;letter-spacing:.07em}
+
+/* Compact notifications drawer used by the To Do rail in phased mode. */
+#rp684NotifyDrawer{position:fixed;inset:0;z-index:2147482050;display:none;align-items:flex-start;justify-content:flex-end;padding:18px;background:rgba(2,8,13,.48);backdrop-filter:blur(5px);font-family:"Open Sans","Segoe UI",Arial,sans-serif}
+#rp684NotifyDrawer.open{display:flex}
+#rp684NotifyDrawer .rp684-nd{width:min(440px,calc(100vw - 36px));max-height:calc(100vh - 36px);overflow:auto;border:1px solid rgba(255,255,255,.13);border-radius:20px;background:#101923;color:#EDF5FB;box-shadow:0 28px 80px rgba(0,0,0,.50)}
+#rp684NotifyDrawer .rp684-nd-head{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 17px;border-bottom:1px solid rgba(255,255,255,.09);background:#101923}
+#rp684NotifyDrawer .rp684-nd-kick{font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;color:#00AFEF;margin-bottom:4px}
+#rp684NotifyDrawer .rp684-nd-title{font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:900}
+#rp684NotifyDrawer .rp684-nd-sub{font-size:9px;color:#91A5B7;margin-top:3px}
+#rp684NotifyDrawer .rp684-nd-close{width:30px;height:30px;border:1px solid rgba(255,255,255,.11);border-radius:10px;background:rgba(255,255,255,.05);color:#C8D5DF;cursor:pointer}
+#rp684NotifyDrawer .rp684-nd-list{display:flex;flex-direction:column;gap:8px;padding:13px}
+#rp684NotifyDrawer .rp684-nd-item{padding:11px 12px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(255,255,255,.035)}
+#rp684NotifyDrawer .rp684-nd-item strong{display:block;font-size:10px;color:#EDF5FB;margin-bottom:3px}
+#rp684NotifyDrawer .rp684-nd-item span{display:block;font-size:8.5px;color:#91A5B7;line-height:1.45}
+#rp684NotifyDrawer .rp684-nd-empty{padding:24px 16px;text-align:center;color:#879BAC;font-size:9px}
+#rp684NotifyDrawer .rp684-nd-actions{display:flex;gap:8px;padding:0 13px 13px}
+#rp684NotifyDrawer .rp684-nd-actions button{min-height:34px;padding:0 11px;border:1px solid rgba(255,255,255,.11);border-radius:10px;background:rgba(255,255,255,.05);color:#DDE8EF;font-size:8px;font-weight:900;cursor:pointer}
+#rp684NotifyDrawer .rp684-nd-actions button.primary{background:#078FBC;border-color:#006F96;color:#fff}
+
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-panel,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-head{background:#FFFFFF;color:#17384D;border-color:#B8CBD7;box-shadow:0 22px 64px rgba(38,63,80,.18)}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-title,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-title,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-item strong{color:#17384D}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-copy,
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-action span,
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-note,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-sub,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-item span{color:#617A8D}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-head,
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-footer,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-head{border-color:#D5E0E7}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-action,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-item{background:#F6F9FB;border-color:#C7D5DE;color:#17384D}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-action.hot{background:#FFF2E8;border-color:#E6A97E}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-action.call{background:#EAF6FA;border-color:#8DCDE2}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-action.good{background:#ECF7F2;border-color:#9FD2BD}
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-close,
+html[data-rp-theme="light"] #rp684TesterRoot .rp684-test-clear,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-close,
+html[data-rp-theme="light"] #rp684NotifyDrawer .rp684-nd-actions button{background:#F6F9FB;border-color:#B8CBD7;color:#294E64}
+html[data-rp-theme="light"] #rp684NotifyDrawer{background:rgba(218,228,235,.60)}
+
+@media(max-width:680px){#rp684TesterRoot{right:10px;bottom:10px}#rp684TesterRoot .rp684-test-panel{width:min(318px,calc(100vw - 20px))}#rp684NotifyDrawer{padding:10px}#rp684NotifyDrawer .rp684-nd{width:100%;max-height:calc(100vh - 20px)}}
+</style>
+<script id="tcp-v684-rep-portal-test-harness-js">
+(function(){
+ 'use strict';
+ var BUILD='v684',TEST_KEY='tcp.repPortal.tester.v684',ACTION_KEY='tcp_rp_action_center_v504',EMAIL_KEY='tcp_email_composer_v537';
+ var wireTimer=0,observer=null;
+ function qs(s,r){return (r||document).querySelector(s)}
+ function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+ function clean(v){return String(v==null?'':v).trim()}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function phased(){return !!qs('#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639')}
+ function getJSON(k,d,session){try{var raw=(session?sessionStorage:localStorage).getItem(k);if(!raw)return d;var x=JSON.parse(raw);return x==null?d:x}catch(e){return d}}
+ function setJSON(k,v,session){try{(session?sessionStorage:localStorage).setItem(k,JSON.stringify(v))}catch(e){}}
+ function testState(){var s=getJSON(TEST_KEY,{},true)||{};return{priority:!!s.priority,followup:!!s.followup,alert:!!s.alert}}
+ function saveTest(s){setJSON(TEST_KEY,s,true);wireSoon()}
+ function rep(){return clean(window._rp2&&_rp2.rep)||'Rep'}
+ function field(o,names){for(var i=0;i<names.length;i++){if(o&&o[names[i]]!=null&&clean(o[names[i]]))return clean(o[names[i]])}return''}
+ function sampleCompany(){
+  try{var w=window.TCP_PHASED_REP_DAILY_COCKPIT_V639&&typeof TCP_PHASED_REP_DAILY_COCKPIT_V639.workData==='function'?TCP_PHASED_REP_DAILY_COCKPIT_V639.workData():null,c=w&&Array.isArray(w.calls)&&w.calls[0];if(c){var n=field(c,['customer','company']);if(n)return n}}catch(e){}
+  try{var rows=window.S&&Array.isArray(S.customers)?S.customers:[];if(rows[0]){var n=field(rows[0],['name','customer','company','companyName']);if(n)return n}}catch(e){}
+  return'TCP Demo Customer';
+ }
+ function route(page){
+  try{
+   if(window._rp2)_rp2.page=page;
+   if(typeof window._rp2Go==='function'){window._rp2Go(page);return true}
+  }catch(e){console.warn('[v684 route]',e)}
+  return false;
+ }
+ function openCalls(){var ok=route('call');setTimeout(function(){try{if(typeof window._call656Tab==='function')window._call656Tab('today')}catch(e){}},60);return ok}
+ function openFollowups(){return route('action')}
+ function notificationRows(){
+  var out=[];
+  var test=testState();
+  if(test.alert)out.push({title:'TEST · Priority customer alert',copy:'A simulated alert was forced from the tester. This does not change customer data.'});
+  try{
+   if(typeof window._rp2NotificationsV2==='function'){
+    var host=document.createElement('div');host.innerHTML=window._rp2NotificationsV2();
+    var cards=qsa('.ntf-card',host);
+    for(var i=0;i<cards.length&&out.length<12;i++){
+     var t=clean((qs('.ntf-card-title',cards[i])||{}).textContent),m=clean((qs('.ntf-card-msg',cards[i])||{}).textContent);
+     if(t&&!out.some(function(x){return x.title===t}))out.push({title:t,copy:m||'Open the related workspace for details.'});
+    }
+   }
+  }catch(e){console.warn('[v684 notifications]',e)}
+  return out;
+ }
+ function ensureDrawer(){
+  var d=qs('#rp684NotifyDrawer');if(d)return d;
+  d=document.createElement('div');d.id='rp684NotifyDrawer';d.innerHTML='<div class="rp684-nd"><div class="rp684-nd-head"><div><div class="rp684-nd-kick">REP PORTAL · NOTIFICATIONS</div><div class="rp684-nd-title">Notifications</div><div class="rp684-nd-sub">A compact notification view so the To Do rail has a real destination.</div></div><button class="rp684-nd-close" type="button" aria-label="Close">×</button></div><div class="rp684-nd-list"></div><div class="rp684-nd-actions"><button type="button" class="primary" data-act="read">Mark all read</button><button type="button" data-act="close">Close</button></div></div>';
+  d.addEventListener('click',function(e){if(e.target===d||e.target.closest('[data-act="close"],.rp684-nd-close'))closeNotifications();var b=e.target.closest('[data-act="read"]');if(b){try{if(typeof window._rp2NotificationsMarkAllRead==='function')window._rp2NotificationsMarkAllRead()}catch(x){};renderNotifications()}});
+  document.body.appendChild(d);return d;
+ }
+ function renderNotifications(){var d=ensureDrawer(),list=qs('.rp684-nd-list',d),rows=notificationRows();list.innerHTML=rows.length?rows.map(function(x){return'<div class="rp684-nd-item"><strong>'+esc(x.title)+'</strong><span>'+esc(x.copy)+'</span></div>'}).join(''):'<div class="rp684-nd-empty">No unread notification details are waiting right now.</div>'}
+ function openNotifications(){renderNotifications();ensureDrawer().classList.add('open');return true}
+ function closeNotifications(){var d=qs('#rp684NotifyDrawer');if(d)d.classList.remove('open')}
+ function todoSection(label){return qsa('#rp-overlay .rp679-todo-section').filter(function(s){var h=qs('.rp679-todo-section-head strong',s);return h&&clean(h.textContent).toLowerCase().indexOf(label)>=0})[0]||null}
+ function wireTodoButtons(){
+  var calls=todoSection('next 3 calls'),follow=todoSection('follow-up'),alerts=todoSection('notification');
+  [[calls,openCalls],[follow,openFollowups],[alerts,openNotifications]].forEach(function(pair){var b=pair[0]&&qs('.rp679-todo-section-head button',pair[0]);if(!b)return;b.removeAttribute('onclick');b.onclick=function(e){e.preventDefault();e.stopPropagation();pair[1]();return false}});
+ }
+ function insertTests(){
+  var todo=qs('#rp-overlay .rp679-todo');if(!todo)return;
+  qsa('.rp684-test-priority,.rp684-test-item',todo).forEach(function(n){n.remove()});
+  var s=testState(),company=sampleCompany();
+  if(s.priority){var head=qs('.rp679-todo-head',todo),n=document.createElement('section');n.className='rp680-call-now rp684-test-priority';n.innerHTML='<div class="rp680-call-now-kick"><span></span>CALL NOW · TEST PRIORITY</div><strong>'+esc(company)+'</strong><b>Customer should be called right now</b><p>Forced by the temporary tester so we can validate the high-priority state.</p><button type="button">Open Call →</button>';n.onclick=function(e){e.preventDefault();e.stopPropagation();window._rp684TesterOpenPriority()};if(head)head.insertAdjacentElement('afterend',n);else todo.prepend(n)}
+  if(s.followup){var f=todoSection('follow-up'),list=f&&qs('.rp679-todo-list',f);if(list){var n=document.createElement('div');n.className='rp679-todo-item rp684-test-item';n.style.setProperty('--todo-accent','#47D16C');n.innerHTML='<div class="rp679-todo-icon">✓</div><div><strong>Follow up with '+esc(company)+'</strong><span>Forced test · due today</span></div>';n.onclick=function(){openFollowups()};list.prepend(n)}}
+  if(s.alert){var a=todoSection('notification'),list=a&&qs('.rp679-todo-list',a);if(list){var n=document.createElement('div');n.className='rp679-todo-item rp684-test-item';n.style.setProperty('--todo-accent','#EF9F27');n.innerHTML='<div class="rp679-todo-icon">🔔</div><div><strong>Priority customer alert</strong><span>Forced test · open notifications to review</span></div>';n.onclick=function(){openNotifications()};list.prepend(n)}}
+ }
+ function ensureTodoMode(){try{if(typeof window._rp679SetSideMode==='function')window._rp679SetSideMode('todo')}catch(e){};setTimeout(function(){wireTodoButtons();insertTests()},60)}
+ function testerRoot(){
+  var r=qs('#rp684TesterRoot');if(r)return r;
+  r=document.createElement('div');r.id='rp684TesterRoot';r.innerHTML='<div class="rp684-test-panel"><div class="rp684-test-head"><div><div class="rp684-test-kick">TEMPORARY BUILD TOOL</div><div class="rp684-test-title">Rep Portal Tester</div><div class="rp684-test-copy">Force uncommon states without waiting for live conditions.</div></div><button type="button" class="rp684-test-close">×</button></div><div class="rp684-test-grid"><button type="button" class="rp684-test-action call" data-test="incoming"><strong>☎ Incoming Call</strong><span>Shows the Caller ID card using a non-deliverable test email.</span></button><button type="button" class="rp684-test-action hot" data-test="priority"><strong>⚡ Call Right Now</strong><span>Forces the large priority card into the To Do rail.</span></button><button type="button" class="rp684-test-action good" data-test="followup"><strong>✓ Follow-Up Due</strong><span>Adds a temporary due-today item to the rail.</span></button><button type="button" class="rp684-test-action" data-test="alert"><strong>🔔 Priority Alert</strong><span>Adds a temporary alert and notification detail.</span></button><button type="button" class="rp684-test-action" data-test="all"><strong>▦ Run Demo Set</strong><span>Shows priority call, follow-up, and alert together.</span></button><button type="button" class="rp684-test-action" data-test="todo"><strong>☰ Open To Do</strong><span>Switches the sidebar directly into To Do mode.</span></button></div><div class="rp684-test-footer"><div class="rp684-test-note">Tester state uses session storage. “Clear Tests” also removes tester-created missed-call follow-ups/drafts.</div><button type="button" class="rp684-test-clear">Clear Tests</button></div></div><button type="button" class="rp684-test-fab"><i></i> Tester</button>';
+  r.addEventListener('click',function(e){var x=e.target.closest('.rp684-test-close');if(x){r.classList.remove('open');return}var fab=e.target.closest('.rp684-test-fab');if(fab){r.classList.toggle('open');return}var b=e.target.closest('[data-test]');if(!b)return;var k=b.getAttribute('data-test');if(k==='incoming')demoIncoming();else if(k==='priority')force('priority');else if(k==='followup')force('followup');else if(k==='alert')force('alert');else if(k==='all'){saveTest({priority:true,followup:true,alert:true});ensureTodoMode()}else if(k==='todo')ensureTodoMode()});
+  qs('.rp684-test-clear',r).onclick=clearTests;document.body.appendChild(r);return r;
+ }
+ function demoIncoming(){
+  var api=window.TCP_REP_PHONE_V681||window.TCP_REP_PHONE_V680;
+  if(!api||typeof api.demoIncomingCall!=='function'){alert('Incoming-call demo is not available in this build.');return}
+  api.demoIncomingCall({id:'rp684-test-'+Date.now(),demo:true,phone:'314-555-0100',company:'TCP Demo Customer',contactName:'Test Caller',email:'tester@example.invalid'});
+  testerRoot().classList.remove('open');
+ }
+ function force(kind){var s=testState();s[kind]=true;saveTest(s);ensureTodoMode();testerRoot().classList.remove('open')}
+ function clearTestArtifacts(){
+  try{var s=getJSON(ACTION_KEY,null,false),b=s&&s.reps&&s.reps[rep()];if(b){b.manual=(Array.isArray(b.manual)?b.manual:[]).filter(function(t){return !(t&&clean(t.incomingCallId).indexOf('rp684-test-')===0)});b.events=(Array.isArray(b.events)?b.events:[]).filter(function(x){return !(x&&clean(x.taskId).indexOf('missed_rp684-test-')===0)});setJSON(ACTION_KEY,s,false)}}catch(e){}
+  try{var e=getJSON(EMAIL_KEY,null,false),b=e&&e.reps&&e.reps[rep()];if(b&&b.drafts){Object.keys(b.drafts).forEach(function(k){var d=b.drafts[k]||{},to=Array.isArray(d.to)?d.to:[];if(to.some(function(v){return /@example\.invalid$/i.test(clean(v))}))delete b.drafts[k]});setJSON(EMAIL_KEY,e,false)}}catch(x){}
+ }
+ function clearTests(){try{sessionStorage.removeItem(TEST_KEY)}catch(e){};clearTestArtifacts();closeNotifications();wireSoon();try{if(typeof window._rp679RefreshTodo==='function')window._rp679RefreshTodo()}catch(e){};testerRoot().classList.remove('open')}
+ function wire(){
+  var r=qs('#rp684TesterRoot');if(phased()){testerRoot().style.display='block';wireTodoButtons();insertTests()}else if(r)r.style.display='none';
+ }
+ function wireSoon(){clearTimeout(wireTimer);wireTimer=setTimeout(wire,20);setTimeout(wire,100)}
+ window._rp684TodoOpen=function(section){section=clean(section).toLowerCase();if(section==='calls')return openCalls();if(section==='followups'||section==='follow-ups')return openFollowups();if(section==='notifications'||section==='alerts')return openNotifications();return false};
+ window._rp684TesterOpenPriority=function(){var c=sampleCompany();try{if(c&&c!=='TCP Demo Customer'&&typeof window._rp679OpenCall==='function'){window._rp679OpenCall(encodeURIComponent(c));return true}}catch(e){}return openCalls()};
+ window._rp684TesterClear=clearTests;
+ /* Replace the phased notification destination: v639's custom Home renderer cannot display the older desktop-notification mode. */
+ window._rp679OpenNotifications=openNotifications;
+ var oldRefresh=window._rp679RefreshTodo;if(typeof oldRefresh==='function'&&!oldRefresh._v684){var rr=function(){var x=oldRefresh.apply(this,arguments);setTimeout(function(){wireTodoButtons();insertTests()},30);return x};rr._v684=true;window._rp679RefreshTodo=rr}
+ var oldSide=window._rp679SetSideMode;if(typeof oldSide==='function'&&!oldSide._v684){var ss=function(){var x=oldSide.apply(this,arguments);setTimeout(function(){wireTodoButtons();insertTests()},40);return x};ss._v684=true;window._rp679SetSideMode=ss}
+ if(typeof MutationObserver!=='undefined'){observer=new MutationObserver(wireSoon);var target=qs('#rp-overlay')||document.body;observer.observe(target,{childList:true,subtree:true})}
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeNotifications();var r=qs('#rp684TesterRoot');if(r)r.classList.remove('open')}});
+ setTimeout(wire,0);setTimeout(wire,250);setTimeout(wire,900);
+ window.TCP_BUILD_VERSION=BUILD;window.TCP_REP_PORTAL_TEST_HARNESS_V684={version:BUILD,openTodo:window._rp684TodoOpen,openNotifications:openNotifications,clear:clearTests,demoIncoming:demoIncoming};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v684 — Rep Portal Test Harness'}catch(e){}
+})();
+</script>
