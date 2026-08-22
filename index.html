@@ -17698,7 +17698,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   var root=document.getElementById('rp-overlay');
   if(!root)return;
   observer=new MutationObserver(schedule);
-  observer.observe(root,{childList:true,subtree:true});
+  observer.observe(root,{childList:true});
   if(window.ResizeObserver){
    resizeObserver=new ResizeObserver(schedule);
    resizeObserver.observe(root);
@@ -38972,7 +38972,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  if(typeof MutationObserver!=='undefined'){
   observer=new MutationObserver(function(){schedule()});
   var target=document.getElementById('rp2-page');
-  if(target)observer.observe(target,{childList:true,subtree:true})
+  if(target)observer.observe(target,{childList:true})
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);
  else schedule()
@@ -67898,7 +67898,7 @@ body.nav-rail .tabs:after{content:"v672"!important}
 
  var baseAfter=window._rp2After;window._rp2After=function(){var r=typeof baseAfter==='function'?baseAfter.apply(this,arguments):undefined;schedule();return r};
  var baseGo=window._rp2Go;if(typeof baseGo==='function'&&!baseGo._v679){var wrapped=function(){var r=baseGo.apply(this,arguments);schedule();return r};wrapped._v679=true;window._rp2Go=wrapped}
- if(typeof MutationObserver!=='undefined'){observer=new MutationObserver(schedule);var root=document.getElementById('rp-overlay');if(root)observer.observe(root,{childList:true,subtree:true})}
+ if(typeof MutationObserver!=='undefined'){observer=new MutationObserver(schedule);var root=document.getElementById('rp-overlay');if(root)observer.observe(root,{childList:true})}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
 
  var priorBundle=window._rpPhasedDevBundle;
@@ -68563,10 +68563,188 @@ html[data-rp-theme="light"] #rp684NotifyDrawer{background:rgba(218,228,235,.60)}
  window._rp679OpenNotifications=openNotifications;
  var oldRefresh=window._rp679RefreshTodo;if(typeof oldRefresh==='function'&&!oldRefresh._v684){var rr=function(){var x=oldRefresh.apply(this,arguments);setTimeout(function(){wireTodoButtons();insertTests()},30);return x};rr._v684=true;window._rp679RefreshTodo=rr}
  var oldSide=window._rp679SetSideMode;if(typeof oldSide==='function'&&!oldSide._v684){var ss=function(){var x=oldSide.apply(this,arguments);setTimeout(function(){wireTodoButtons();insertTests()},40);return x};ss._v684=true;window._rp679SetSideMode=ss}
- if(typeof MutationObserver!=='undefined'){observer=new MutationObserver(wireSoon);var target=qs('#rp-overlay')||document.body;observer.observe(target,{childList:true,subtree:true})}
+ if(typeof MutationObserver!=='undefined'){observer=new MutationObserver(wireSoon);var target=qs('#rp-overlay')||document.body;observer.observe(target,{childList:true})}
  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeNotifications();var r=qs('#rp684TesterRoot');if(r)r.classList.remove('open')}});
  setTimeout(wire,0);setTimeout(wire,250);setTimeout(wire,900);
  window.TCP_BUILD_VERSION=BUILD;window.TCP_REP_PORTAL_TEST_HARNESS_V684={version:BUILD,openTodo:window._rp684TodoOpen,openNotifications:openNotifications,clear:clearTests,demoIncoming:demoIncoming};
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v684 — Rep Portal Test Harness'}catch(e){}
+})();
+</script>
+
+
+<!-- ======================================================================
+     SALES TRACKER v685 · TESTER STABILITY + LIVE TODO CALL
+     Baseline: v684 test harness.
+     Fixes:
+       1) stable To Do/tester DOM (observer feedback loop removed above)
+       2) capture-phase routing for every To Do Open / Quick Jump control
+       3) live incoming call appears in To Do rail and caller card together
+       4) tester actions remain deterministic when several are enabled
+     ====================================================================== -->
+<style id="tcp-v685-rep-portal-tester-stability-css">
+#rp-overlay .rp685-live-call{
+  margin:0 3px 10px;padding:11px;border:1px solid rgba(0,175,239,.62);border-radius:13px;
+  background:linear-gradient(145deg,rgba(0,175,239,.18),rgba(0,175,239,.055) 58%,rgba(255,255,255,.025));
+  box-shadow:0 10px 26px rgba(0,175,239,.12),inset 0 1px 0 rgba(255,255,255,.08);
+}
+#rp-overlay .rp685-live-call-kick{display:flex;align-items:center;gap:6px;color:#6DE3FF;font-size:8px;font-weight:950;letter-spacing:.10em;text-transform:uppercase}
+#rp-overlay .rp685-live-call-kick i{width:7px;height:7px;border-radius:50%;background:#00AFEF;box-shadow:0 0 0 4px rgba(0,175,239,.12),0 0 14px rgba(0,175,239,.7);animation:rp685Pulse 1.05s ease-in-out infinite}
+#rp-overlay .rp685-live-call strong{display:block;margin-top:7px;color:#fff;font-family:var(--rp674-heading,"Droid Serif",Georgia,serif);font-size:14px;line-height:1.15}
+#rp-overlay .rp685-live-call b{display:block;margin-top:3px;color:#B9C9D8;font-size:9.5px;line-height:1.35}
+#rp-overlay .rp685-live-call span{display:block;margin-top:3px;color:#7F93A7;font-size:8.5px;line-height:1.35}
+#rp-overlay .rp685-live-call-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
+#rp-overlay .rp685-live-call-actions button{min-height:31px;border-radius:9px;font-size:9px;font-weight:950;cursor:pointer}
+#rp-overlay .rp685-live-answer{border:1px solid #199A59;background:#25C96F;color:#06140B}
+#rp-overlay .rp685-live-silence{border:1px solid rgba(250,135,61,.55);background:rgba(250,135,61,.12);color:#FFD8BD}
+#rp-overlay .rp685-live-answer:hover{background:#2ED77A}
+#rp-overlay .rp685-live-silence:hover{background:rgba(250,135,61,.22)}
+@keyframes rp685Pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+
+/* Tester-active rail cards should never stack duplicate copies. */
+#rp-overlay .rp684-test-priority + .rp684-test-priority,
+#rp-overlay .rp684-test-item + .rp684-test-item[data-rp685-duplicate="1"]{display:none!important}
+
+/* Make every To Do destination visibly interactive. */
+#rp-overlay .rp679-todo-section-head button,
+#rp-overlay .rp679-quick-grid button{pointer-events:auto!important;cursor:pointer!important}
+
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp685-live-call{
+  background:linear-gradient(145deg,#E6F7FC,#F7FCFE)!important;border-color:#4CB5D5!important;box-shadow:0 8px 22px rgba(0,109,145,.10)!important
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp685-live-call-kick{color:#006F96!important}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp685-live-call strong{color:#102C3E!important}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp685-live-call b{color:#36596F!important}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp685-live-call span{color:#5F788A!important}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp685-live-silence{background:#FFF0E6!important;border-color:#E5A06E!important;color:#8A3E0D!important}
+</style>
+<script id="tcp-v685-rep-portal-tester-stability-js">
+(function(){
+ 'use strict';
+ var BUILD='v685',lastLiveId='',syncTimer=0;
+ function qs(s,r){return (r||document).querySelector(s)}
+ function clean(v){return String(v==null?'':v).trim()}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function phased(){return !!qs('#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639')}
+ function route(page){
+   try{
+     if(typeof window._rp2Go==='function'){
+       window._rp2Go(page);
+       return true;
+     }
+   }catch(e){console.warn('[v685 To Do route]',page,e)}
+   return false;
+ }
+ function openCalls(customer){
+   customer=clean(customer);
+   if(customer){try{if(typeof window._rp679OpenCall==='function'){window._rp679OpenCall(encodeURIComponent(customer));return true}}catch(e){}}
+   var ok=route('call');
+   setTimeout(function(){try{if(typeof window._call656Tab==='function')window._call656Tab('today')}catch(e){}},120);
+   return ok;
+ }
+ function openFollowups(){return route('action')}
+ function openNotifications(){
+   try{
+     if(typeof window._rp684TodoOpen==='function')return window._rp684TodoOpen('notifications');
+     if(typeof window._rp679OpenNotifications==='function')return window._rp679OpenNotifications();
+   }catch(e){console.warn('[v685 notifications]',e)}
+   return false;
+ }
+ function openQuick(label){
+   label=clean(label).toLowerCase();
+   if(label.indexOf('compan')>=0)return route('customers');
+   if(label.indexOf('quote')>=0)return route('dealdesk');
+   if(label.indexOf('order')>=0)return route('orders');
+   if(label.indexOf('refresh')>=0){try{if(typeof window._rp2RefreshCloud==='function')return window._rp2RefreshCloud(null,false)}catch(e){};return false}
+   return false;
+ }
+ function sectionLabel(btn){
+   var s=btn&&btn.closest('.rp679-todo-section'),h=s&&qs('.rp679-todo-section-head strong',s);
+   return clean(h&&h.textContent).toLowerCase();
+ }
+
+ /* Stable capture-phase delegation. It survives every To Do re-render and runs
+    before any old inline / detached handler. */
+ document.addEventListener('click',function(e){
+   if(!phased())return;
+   var headBtn=e.target&&e.target.closest?e.target.closest('#rp-overlay .rp679-todo-section-head button'):null;
+   if(headBtn){
+     var label=sectionLabel(headBtn);
+     if(label.indexOf('next 3 calls')>=0||label.indexOf('call')>=0){e.preventDefault();e.stopImmediatePropagation();openCalls();return}
+     if(label.indexOf('follow')>=0){e.preventDefault();e.stopImmediatePropagation();openFollowups();return}
+     if(label.indexOf('notification')>=0||label.indexOf('alert')>=0){e.preventDefault();e.stopImmediatePropagation();openNotifications();return}
+   }
+   var quick=e.target&&e.target.closest?e.target.closest('#rp-overlay .rp679-quick-grid button'):null;
+   if(quick){e.preventDefault();e.stopImmediatePropagation();openQuick(quick.textContent);return}
+   var item=e.target&&e.target.closest?e.target.closest('#rp-overlay .rp679-todo-item'):null;
+   if(item){
+     var sec=sectionLabel(item);
+     e.preventDefault();e.stopImmediatePropagation();
+     if(sec.indexOf('call')>=0){var nm=qs('strong',item);openCalls(clean(nm&&nm.textContent));}
+     else if(sec.indexOf('follow')>=0)openFollowups();
+     else if(sec.indexOf('notification')>=0||sec.indexOf('alert')>=0)openNotifications();
+     return;
+   }
+   var testPriority=e.target&&e.target.closest?e.target.closest('#rp-overlay .rp684-test-priority button'):null;
+   if(testPriority){e.preventDefault();e.stopImmediatePropagation();try{if(typeof window._rp684TesterOpenPriority==='function')window._rp684TesterOpenPriority();else openCalls()}catch(x){};return}
+   var live=e.target&&e.target.closest?e.target.closest('#rp-overlay .rp685-live-call button'):null;
+   if(live){
+     e.preventDefault();e.stopImmediatePropagation();
+     if(live.classList.contains('rp685-live-answer')){try{if(typeof window._rp680AnswerIncoming==='function')window._rp680AnswerIncoming()}catch(x){}}
+     else{try{if(typeof window._rp680SilenceIncoming==='function')window._rp680SilenceIncoming()}catch(x){}}
+     setTimeout(syncLiveRail,60);setTimeout(syncLiveRail,800);return;
+   }
+ },true);
+
+ function activeCall(){
+   try{var api=window.TCP_REP_PHONE_V681||window.TCP_REP_PHONE_V680;return api&&typeof api.getActiveCall==='function'?api.getActiveCall():null}catch(e){return null}
+ }
+ function liveHtml(c){
+   var name=clean(c.contactName||c.company||c.phone||'Incoming caller'),company=clean(c.company&&c.company!==name?c.company:''),phone=clean(c.phone||'Number unavailable');
+   return '<div class="rp685-live-call-kick"><i></i>Incoming now</div><strong>'+esc(name)+'</strong>'+(company?'<b>'+esc(company)+'</b>':'')+'<span>'+esc(phone)+'</span><div class="rp685-live-call-actions"><button type="button" class="rp685-live-answer">☎ Answer</button><button type="button" class="rp685-live-silence">Silence + Email</button></div>';
+ }
+ function syncLiveRail(){
+   if(!phased())return;
+   var todo=qs('#rp-overlay .rp679-todo'),existing=qs('#rp-overlay .rp685-live-call'),c=activeCall();
+   if(!todo){if(existing)existing.remove();lastLiveId='';return}
+   if(!c){if(existing)existing.remove();lastLiveId='';return}
+   var id=clean(c.id||c.phone||c.startedAt||'live');
+   if(!existing){existing=document.createElement('section');existing.className='rp685-live-call';existing.innerHTML=liveHtml(c)}
+   else if(lastLiveId!==id){existing.innerHTML=liveHtml(c)}
+   var head=qs('.rp679-todo-head',todo);
+   if(head&&existing.previousElementSibling!==head)head.insertAdjacentElement('afterend',existing);
+   else if(!existing.parentNode)todo.prepend(existing);
+   lastLiveId=id;
+ }
+ function syncAll(){
+   syncLiveRail();
+   /* Let v684 install its tester state once, without a recursive subtree observer. */
+   try{if(typeof window._rp684TodoOpen==='function'&&qs('#rp-overlay .rp679-todo')){} }catch(e){}
+ }
+
+ /* Wrap demo call entry so the rail mirrors the global caller popup immediately. */
+ function wrapPhoneApi(){
+   var api=window.TCP_REP_PHONE_V681||window.TCP_REP_PHONE_V680;
+   if(!api||api._v685)return;
+   ['demoIncomingCall','receiveIncomingCall'].forEach(function(k){var fn=api[k];if(typeof fn!=='function')return;api[k]=function(){var r=fn.apply(api,arguments);setTimeout(syncLiveRail,0);setTimeout(syncLiveRail,80);return r}});
+   api._v685=true;
+ }
+
+ /* Keep rail sync lightweight and state-based; no DOM feedback observer. */
+ clearInterval(syncTimer);
+ syncTimer=setInterval(function(){if(phased()){wrapPhoneApi();syncLiveRail()}},450);
+ var oldAfter=window._rp2After;
+ if(typeof oldAfter==='function'&&!oldAfter._v685){var aa=function(){var r=oldAfter.apply(this,arguments);setTimeout(syncAll,40);return r};aa._v685=true;window._rp2After=aa}
+ var oldSide=window._rp679SetSideMode;
+ if(typeof oldSide==='function'&&!oldSide._v685){var ss=function(){var r=oldSide.apply(this,arguments);setTimeout(syncAll,50);return r};ss._v685=true;window._rp679SetSideMode=ss}
+ window.addEventListener('tcp-incoming-call',function(){setTimeout(syncLiveRail,0);setTimeout(syncLiveRail,80)});
+ window._rp685OpenCalls=openCalls;
+ window._rp685OpenFollowups=openFollowups;
+ window._rp685OpenNotifications=openNotifications;
+ window._rp685SyncLiveCall=syncLiveRail;
+ try{var mk='tcp.repPortal.tester.v685.resetDone';if(!sessionStorage.getItem(mk)){if(typeof window._rp684TesterClear==='function')window._rp684TesterClear();else sessionStorage.removeItem('tcp.repPortal.tester.v684');sessionStorage.setItem(mk,'1')}}catch(e){}
+ wrapPhoneApi();setTimeout(syncAll,0);setTimeout(syncAll,300);setTimeout(syncAll,1000);
+ window.TCP_BUILD_VERSION=BUILD;
+ window.TCP_REP_PORTAL_TESTER_STABILITY_V685={version:BUILD,openCalls:openCalls,openFollowups:openFollowups,openNotifications:openNotifications,syncLiveCall:syncLiveRail};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v685 — Rep Portal Tester Stability'}catch(e){}
 })();
 </script>
