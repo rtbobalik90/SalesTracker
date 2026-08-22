@@ -66162,129 +66162,7 @@ body.nav-rail .tabs:after{content:"v672"!important}
   var issueHtml=issues.count?'<div class="issue-grid">'+issues.arts.map(function(a){return'<div class="issue"><strong>Art Error</strong>'+esc(a.issueTypeLabel||a.type||'Art issue')+(a.desc?'<br>'+esc(a.desc):'')+'</div>'}).concat(issues.cms.map(function(c){return'<div class="issue"><strong>Credit Memo · '+money(-Math.abs(n(c.amount)))+'</strong>'+esc(c.desc||'Credit memo')+'</div>'})).join('')+'</div>':'<div class="ok">✓ No linked Art Errors or Credit Memos</div>';
   function sectionTable(title,meta,headers,body){return body?'<section><div class="sec-head"><h2>'+title+'</h2><span>'+meta+'</span></div><table><thead><tr>'+headers.map(function(h){return'<th'+(h==='Qty'||h==='Revenue'||h==='Amount'?' class="num"':'')+'>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+body+'</tbody></table></section>':''}
   var toolbar=mode==='pdf'?'<div class="screen-note no-print"><strong>Save PDF:</strong> choose <b>Save as PDF</b> as the printer/destination, then save. <button onclick="window.print()">Open dialog again</button></div>':'<div class="screen-note no-print"><strong>Print-ready order detail.</strong> <button onclick="window.print()">Print</button> <button onclick="window.close()">Close</button></div>';
-  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Sales Tracker · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Sales Tracker</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n<!-- ======================================================================
-     SALES TRACKER v680 · REP PORTAL LIVE ASSIST
-     - theme preference applies before phased-page paint (no dark flash)
-     - promoted #1 ranked call in the To Do rail
-     - provider-ready incoming Caller ID card
-     - Answer/Silence workflow hooks
-     - Silence creates a return-call follow-up and auto-sends the missed-call email when Microsoft 365 is connected
-     ====================================================================== -->
-<style id="tcp-v680-rep-portal-live-assist-css">
-/* High-visibility top-ranked call */
-#rp-overlay .rp680-call-now{position:relative;overflow:hidden;margin:0 3px 10px;padding:12px 11px 11px;border:1px solid rgba(250,135,61,.42);border-radius:13px;background:radial-gradient(circle at 94% 0%,rgba(250,135,61,.21),transparent 43%),linear-gradient(145deg,rgba(250,135,61,.11),rgba(0,175,239,.055)),rgba(7,15,24,.88);box-shadow:0 12px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.06);cursor:pointer;}
-#rp-overlay .rp680-call-now:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#FA873D,#00AFEF);}
-#rp-overlay .rp680-call-now-kick{display:flex;align-items:center;gap:6px;color:#FFAD78;font-size:8px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;}
-#rp-overlay .rp680-call-now-kick span{width:7px;height:7px;border-radius:50%;background:#FA873D;box-shadow:0 0 0 4px rgba(250,135,61,.10),0 0 14px rgba(250,135,61,.42);animation:rp680Pulse 1.5s ease-in-out infinite;}
-#rp-overlay .rp680-call-now strong{display:block;margin-top:7px;color:#fff;font:800 13px/1.15 var(--rp674-heading,"Droid Serif",Georgia,serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#rp-overlay .rp680-call-now b{display:block;margin-top:4px;color:#C8D7E5;font-size:9px;line-height:1.3;}
-#rp-overlay .rp680-call-now p{margin:4px 0 9px;color:#8196AA;font-size:8.5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-#rp-overlay .rp680-call-now button{width:100%;min-height:31px;border:1px solid rgba(250,135,61,.36);border-radius:8px;background:#FA873D;color:#fff;font-size:8.5px;font-weight:950;cursor:pointer;}
-#rp-overlay .rp680-call-now:hover{border-color:rgba(250,135,61,.68);transform:translateY(-1px);}
-@keyframes rp680Pulse{50%{opacity:.48;transform:scale(.88)}}
-
-/* Incoming caller ID */
-#rp-overlay .rp680-caller-host{position:fixed;z-index:100060;top:18px;right:20px;width:min(390px,calc(100vw - 34px));pointer-events:none;}
-#rp-overlay .rp680-caller{pointer-events:auto;position:relative;overflow:hidden;border:1px solid rgba(0,175,239,.38);border-radius:20px;background:radial-gradient(circle at 95% 0%,rgba(0,175,239,.18),transparent 40%),radial-gradient(circle at 3% 100%,rgba(250,135,61,.13),transparent 42%),linear-gradient(155deg,#10202D,#0A141D 72%);box-shadow:0 26px 70px rgba(0,0,0,.44),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#F4F8FB;animation:rp680CallerIn .22s ease-out;}
-#rp-overlay .rp680-caller:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#00AFEF,#6FE5FF,#FA873D);}
-#rp-overlay .rp680-caller-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 17px 10px;}
-#rp-overlay .rp680-caller-live{display:inline-flex;align-items:center;gap:7px;color:#7FE8FF;font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;}
-#rp-overlay .rp680-caller-live i{width:8px;height:8px;border-radius:50%;background:#00AFEF;box-shadow:0 0 0 5px rgba(0,175,239,.10),0 0 18px rgba(0,175,239,.52);animation:rp680Pulse 1.25s ease-in-out infinite;}
-#rp-overlay .rp680-caller-time{color:#74899E;font-size:9px;font-weight:800;}
-#rp-overlay .rp680-caller-main{display:grid;grid-template-columns:50px minmax(0,1fr);gap:12px;align-items:center;padding:5px 17px 14px;}
-#rp-overlay .rp680-caller-avatar{width:50px;height:50px;display:grid;place-items:center;border:1px solid rgba(0,175,239,.28);border-radius:17px;background:linear-gradient(145deg,rgba(0,175,239,.14),rgba(250,135,61,.10));color:#8FEAFF;font-size:20px;font-weight:950;}
-#rp-overlay .rp680-caller-name{color:#fff;font:800 20px/1.05 var(--rp674-heading,"Droid Serif",Georgia,serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#rp-overlay .rp680-caller-company{margin-top:4px;color:#C0D0DD;font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#rp-overlay .rp680-caller-phone{margin-top:4px;color:#8094A7;font-size:10px;}
-#rp-overlay .rp680-caller-context{margin:0 17px 13px;padding:10px 11px;border:1px solid rgba(139,166,194,.13);border-radius:12px;background:rgba(255,255,255,.025);color:#93A7B8;font-size:9.5px;line-height:1.45;}
-#rp-overlay .rp680-caller-context strong{color:#D8E4EC;}
-#rp-overlay .rp680-caller-status{display:none;margin:0 17px 12px;padding:9px 10px;border:1px solid rgba(0,175,239,.18);border-radius:10px;background:rgba(0,175,239,.06);color:#A9DDF0;font-size:9.5px;line-height:1.4;}
-#rp-overlay .rp680-caller-status.show{display:block;}
-#rp-overlay .rp680-caller-status.warn{border-color:rgba(239,159,39,.25);background:rgba(239,159,39,.07);color:#FFD28C;}
-#rp-overlay .rp680-caller-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 17px 17px;}
-#rp-overlay .rp680-caller-actions button{min-height:42px;border-radius:12px;font-size:11px;font-weight:950;cursor:pointer;transition:.15s ease;}
-#rp-overlay .rp680-answer{border:1px solid rgba(71,209,108,.40);background:linear-gradient(135deg,#2BCB66,#26B85C);color:#07150D;box-shadow:0 10px 25px rgba(71,209,108,.18);}
-#rp-overlay .rp680-silence{border:1px solid rgba(250,135,61,.36);background:rgba(250,135,61,.10);color:#FFD0AF;}
-#rp-overlay .rp680-caller-actions button:hover{transform:translateY(-1px);filter:brightness(1.06);}
-#rp-overlay .rp680-caller-actions button:disabled{opacity:.55;cursor:wait;transform:none;}
-@keyframes rp680CallerIn{from{opacity:0;transform:translateY(-8px) scale(.985)}to{opacity:1;transform:none}}
-
-/* Light-theme aliases use the prepaint document flag so caller/priority UI never flashes dark. */
-html[data-rp-theme="light"] #rp-overlay .rp680-call-now{background:linear-gradient(145deg,#FFF8F3,#F4FBFE)!important;border-color:rgba(214,103,34,.34)!important;box-shadow:0 8px 22px rgba(36,58,76,.08)!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-call-now strong{color:#172A3A!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-call-now b{color:#3B556B!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-call-now p{color:#6A7E90!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller{background:radial-gradient(circle at 95% 0%,rgba(0,175,239,.08),transparent 40%),linear-gradient(155deg,#FFFFFF,#F4F8FB 78%)!important;border-color:rgba(0,135,185,.28)!important;color:#172A3A!important;box-shadow:0 24px 60px rgba(35,55,72,.18),inset 0 1px 0 rgba(255,255,255,.9)!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller-name{color:#162A3A!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller-company{color:#3E566A!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller-phone,html[data-rp-theme="light"] #rp-overlay .rp680-caller-time{color:#6B7F91!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F7FAFC!important;border-color:rgba(32,55,76,.12)!important;color:#607587!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller-context strong{color:#263F53!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-caller-status{background:#EDF9FD!important;color:#267493!important;border-color:rgba(0,145,198,.18)!important;}
-html[data-rp-theme="light"] #rp-overlay .rp680-silence{background:#FFF5ED!important;color:#A64B16!important;border-color:rgba(214,103,34,.28)!important;}
-@media(max-width:720px){#rp-overlay .rp680-caller-host{top:10px;right:10px;width:calc(100vw - 20px)}#rp-overlay .rp680-caller{border-radius:16px}}
-@media(prefers-reduced-motion:reduce){#rp-overlay .rp680-caller,#rp-overlay .rp680-call-now-kick span,#rp-overlay .rp680-caller-live i{animation:none!important}}
-</style>
-<script id="tcp-v680-rep-portal-live-assist-js">
-(function(){
- 'use strict';
- var BUILD='v680',THEME='tcp.repPortal.theme',OLD_THEME='tcp.repPortal.theme.v679',ACTION='tcp_rp_action_center_v504',EMAIL='tcp_email_composer_v537',SCHEDULE='tcp.repPortal.workSchedule.v680';
- var activeCall=null,provider=null,ringTimer=0;
- function arr(v){if(Array.isArray(v))return v;if(!v)return[];try{return typeof v==='object'?Object.keys(v).map(function(k){return v[k]}).filter(Boolean):[]}catch(e){return[]}}
- function clean(v){return String(v==null?'':v).trim()}
- function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
- function field(o,names,d){for(var i=0;i<names.length;i++){if(o&&o[names[i]]!=null&&clean(o[names[i]])!=='')return o[names[i]]}return d==null?'':d}
- function rep(){return clean(window._rp2&&_rp2.rep)||'Rep'}
- function id(p){return p+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
- function digits(v){var d=clean(v).replace(/\D/g,'');return d.length>10?d.slice(-10):d}
- function samePhone(a,b){var x=digits(a),y=digits(b);return !!(x&&y&&x===y)}
- function localDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
- function initials(name){var x=clean(name).split(/\s+/).filter(Boolean);return (x[0]?x[0][0]:'')+(x[1]?x[1][0]:'')||'☎'}
- function firstName(name){return clean(name).split(/\s+/)[0]||'there'}
- function getJSON(k,d){try{var x=JSON.parse(localStorage.getItem(k)||'null');return x==null?d:x}catch(e){return d}}
- function setJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
- function syncTheme(){var t='dark';try{t=localStorage.getItem(THEME)||localStorage.getItem(OLD_THEME)||'dark';localStorage.setItem(THEME,t);localStorage.setItem(OLD_THEME,t)}catch(e){};try{document.documentElement.setAttribute('data-rp-theme',t==='light'?'light':'dark');if(typeof window.__tcpV680SyncThemePrepaint==='function')window.__tcpV680SyncThemePrepaint()}catch(e){}}
- function accountFor(company){try{return window.TCP537&&typeof TCP537.account==='function'?TCP537.account(company,rep(),false):null}catch(e){return null}}
- function contactMatch(list,call){var p=digits(call.phone),name=clean(call.contactName).toLowerCase(),email=clean(call.email).toLowerCase();return arr(list).filter(function(c){return (p&&samePhone(field(c,['phone','mobile','phoneNumber'],''),p))||(email&&clean(field(c,['email'],'')).toLowerCase()===email)||(name&&clean(field(c,['name','contactName'],'')).toLowerCase()===name)})[0]||null}
- function resolveFromCompany(call){if(!call.company)return call;try{var b=accountFor(call.company),contacts=b&&b.data&&b.data.contacts||[],c=contactMatch(contacts,call)||contacts[0];if(c){call.contactId=call.contactId||field(c,['id','contactId'],'');call.contactName=call.contactName||field(c,['name','contactName'],'');call.email=call.email||field(c,['email'],'');call.phone=call.phone||field(c,['phone','mobile','phoneNumber'],'')}}catch(e){}return call}
- function resolveFromCustomers(call){var p=digits(call.phone);if(!p)return call;try{var rows=arr(window.S&&S.customers);for(var i=0;i<rows.length;i++){var r=rows[i]||{},company=clean(field(r,['name','customer','company','companyName'],'')),contacts=arr(r.contacts);if(r.primary)contacts.unshift(r.primary);var c=contactMatch(contacts,call);if(!c&&samePhone(field(r,['phone','mobile','phoneNumber'],''),p))c=r;if(c){call.company=call.company||company;call.contactId=call.contactId||field(c,['id','contactId'],'');call.contactName=call.contactName||field(c,['name','contactName'],'');call.email=call.email||field(c,['email'],'');call.phone=call.phone||field(c,['phone','mobile','phoneNumber'],'');return resolveFromCompany(call)}}}catch(e){}return call}
- function resolveFromCRM(call){var p=digits(call.phone);if(!p)return call;try{var store=getJSON('tcp_rp_company_crm_v510',{}),rb=store&&store.reps&&store.reps[rep()],accounts=rb&&rb.accounts||{};var keys=Object.keys(accounts);for(var i=0;i<keys.length;i++){var a=accounts[keys[i]]||{},c=contactMatch(a.contacts,call);if(c){call.company=call.company||clean(field(a.profile||{},['name','company'],'')||keys[i]);call.contactId=call.contactId||field(c,['id','contactId'],'');call.contactName=call.contactName||field(c,['name','contactName'],'');call.email=call.email||field(c,['email'],'');call.phone=call.phone||field(c,['phone','mobile','phoneNumber'],'');return call}}}catch(e){}return call}
- function resolve(payload){var call=Object.assign({},payload||{});call.id=clean(call.id)||id('incoming');call.startedAt=call.startedAt||new Date().toISOString();call.phone=clean(call.phone||call.from||call.number||'');call.company=clean(call.company||call.customer||'');call.contactName=clean(call.contactName||call.contact||call.name||'');call.email=clean(call.email||'');call=resolveFromCompany(call);call=resolveFromCustomers(call);call=resolveFromCRM(call);call=resolveFromCompany(call);return call}
- function scheduleCfg(){var cfg=getJSON(SCHEDULE,null)||{},start=clean(cfg.start||''),end=clean(cfg.end||'');try{var profiles=getJSON('tcp_rp_profile_v2',{}),p=profiles&&profiles.reps&&profiles.reps[rep()]||profiles&&profiles[rep()]||{};start=start||clean(field(p,['workStart','workdayStart','shiftStart','dayStart'],''));end=end||clean(field(p,['workEnd','workdayEnd','shiftEnd','dayEnd'],''))}catch(e){};try{var p2=window.S&&S.repProfiles&&S.repProfiles[rep()]||{};start=start||clean(field(p2,['workStart','workdayStart','shiftStart','dayStart'],''));end=end||clean(field(p2,['workEnd','workdayEnd','shiftEnd','dayEnd'],''))}catch(e){};return{start:start||'08:00',end:end||'17:00',weekdays:Array.isArray(cfg.weekdays)&&cfg.weekdays.length?cfg.weekdays:[1,2,3,4,5]}}
- function timeParts(v,def){var m=clean(v).match(/^(\d{1,2}):(\d{2})/);return m?[Number(m[1]),Number(m[2])]:def}
- function atTime(date,parts){var d=new Date(date);d.setHours(parts[0],parts[1],0,0);return d}
- function nextWorkday(date,cfg){var d=new Date(date);d.setDate(d.getDate()+1);d.setHours(0,0,0,0);for(var guard=0;guard<10;guard++){if(cfg.weekdays.indexOf(d.getDay())>=0)return d;d.setDate(d.getDate()+1)}return d}
- function followDue(now){var cfg=scheduleCfg(),sp=timeParts(cfg.start,[8,0]),ep=timeParts(cfg.end,[17,0]),work=cfg.weekdays.indexOf(now.getDay())>=0,start=atTime(now,sp),end=atTime(now,ep);if(!work||now>=end){var nd=nextWorkday(now,cfg),due=atTime(nd,sp);due.setHours(due.getHours()+1);return due}if(now<start){var pre=atTime(now,sp);pre.setHours(pre.getHours()+1);return pre}var due=new Date(now.getTime()+60*60000);if(due>end){var next=nextWorkday(now,cfg);due=atTime(next,sp);due.setHours(due.getHours()+1)}return due}
- function fmtDue(d){return d.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
- function actionStore(){var s=getJSON(ACTION,null);if(!s||s.version!==1||!s.reps)s={version:1,reps:{}};s.reps[rep()]=s.reps[rep()]||{manual:[],state:{},events:[]};s.reps[rep()].manual=arr(s.reps[rep()].manual);s.reps[rep()].events=arr(s.reps[rep()].events);s.reps[rep()].state=s.reps[rep()].state||{};return s}
- function createReturnFollowup(call,due){var s=actionStore(),b=s.reps[rep()],taskId='missed_'+call.id,existing=b.manual.filter(function(t){return t&&t.incomingCallId===call.id})[0];if(existing)return existing;var who=call.company||call.contactName||call.phone||'incoming caller',task={id:taskId,source:'phone-incoming-v680',category:'call',tone:'risk',score:285,title:'Return missed call — '+who,why:'An incoming call was silenced at '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.',action:'Return the customer call by '+fmtDue(due)+'.',measure:'Return the call and record the outcome.',dueDate:localDate(due),dueAt:due.toISOString(),customer:call.company||'',contactName:call.contactName||'',phone:call.phone||'',page:'call',incomingCallId:call.id,createdAt:new Date().toISOString()};b.manual.unshift(task);b.events.push({type:'create',taskId:task.id,title:task.title,customer:task.customer,at:new Date().toISOString(),dueAt:task.dueAt,source:task.source});setJSON(ACTION,s);return task}
- function persistDraft(draft){try{var s=getJSON(EMAIL,{version:1,reps:{}});if(!s||s.version!==1)s={version:1,reps:{}};s.reps=s.reps||{};s.reps[rep()]=s.reps[rep()]||{drafts:{},events:[]};s.reps[rep()].drafts=s.reps[rep()].drafts||{};s.reps[rep()].drafts[draft.id]=draft;s.reps[rep()].events=arr(s.reps[rep()].events);s.reps[rep()].events.push({type:'incoming-call-auto-draft',draftId:draft.id,at:new Date().toISOString()});setJSON(EMAIL,s)}catch(e){}}
- async function missedEmail(call){if(!call.email)return{status:'no-email'};if(!window.TCP537||typeof TCP537.createDraft!=='function')return{status:'unavailable'};var contact={id:call.contactId||'',name:call.contactName||'',email:call.email,phone:call.phone||''},draft=TCP537.createDraft({company:call.company||call.contactName||'Customer',contact:contact,source:'incoming-call-v680'});draft.to=[call.email];draft.subject='Sorry I missed your call';draft.bodyHtml='<p>Hi '+esc(firstName(call.contactName))+',</p><p>I’m sorry I wasn’t able to answer your call. I saw that you reached out and I’ll get back to you shortly.</p><p>Thank you,</p>';draft.localDirty=true;draft.updatedAt=new Date().toISOString();persistDraft(draft);var ms=typeof TCP537.microsoftStatus==='function'?TCP537.microsoftStatus('rep'):{connected:false};if(!ms.connected)return{status:'draft',draft:draft};try{await TCP537.sendDraft(draft);return{status:'sent',draft:draft}}catch(e){return{status:'error',draft:draft,error:e}}}
- function addActivity(call,detail){try{if(call.company&&window.TCP537&&typeof TCP537.addActivity==='function')TCP537.addActivity(call.company,{id:id('activity'),source:'incoming-call-v680',type:'Call',subject:'Incoming call',detail:detail,date:new Date().toISOString(),createdAt:new Date().toISOString(),phone:call.phone,contactName:call.contactName},rep())}catch(e){}}
- function addNotification(call,copy){try{if(!Array.isArray(window.notifLog))return;var nid='incoming_'+call.id;if(notifLog.some(function(n){return n&&n.id===nid}))return;notifLog.unshift({id:nid,type:'incoming_call',icon:'☎',html:'<strong>'+esc(call.company||call.contactName||call.phone||'Incoming call')+'</strong><br>'+esc(copy),cls:'alert-action',week:'Rep Portal',ts:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})});if(typeof window.updateNotifBadge==='function')updateNotifBadge()}catch(e){}}
- function providerCall(method,call){try{if(provider&&typeof provider[method]==='function')return Promise.resolve(provider[method](call));if(call&&call.demo)return Promise.resolve(true);return Promise.reject(new Error('Live phone provider is not connected.'))}catch(e){return Promise.reject(e)}}
- function host(){var h=document.querySelector('#rp-overlay .rp680-caller-host');if(!h){h=document.createElement('div');h.className='rp680-caller-host';var root=document.getElementById('rp-overlay');if(root)root.appendChild(h)}return h}
- function status(text,warn){var e=document.querySelector('#rp-overlay .rp680-caller-status');if(!e)return;e.textContent=text;e.classList.add('show');e.classList.toggle('warn',!!warn)}
- function setBusy(b){document.querySelectorAll('#rp-overlay .rp680-caller-actions button').forEach(function(x){x.disabled=!!b})}
- function callerContext(call){var bits=[];if(call.email)bits.push('Email on file');else bits.push('No email on file');if(provider)bits.push('Live phone connected');else if(call.demo)bits.push('Demo call');else bits.push('Provider event received');return bits.join(' · ')}
- function renderCaller(){var h=host();if(!h)return;if(!activeCall){h.innerHTML='';return}var c=activeCall,label=c.contactName||c.company||'Unknown caller',company=c.company&&c.company!==label?c.company:'',phone=c.phone||'Number unavailable';h.innerHTML='<section class="rp680-caller"><div class="rp680-caller-head"><div class="rp680-caller-live"><i></i>Incoming call</div><div class="rp680-caller-time">'+new Date(c.startedAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</div></div><div class="rp680-caller-main"><div class="rp680-caller-avatar">'+esc(initials(label))+'</div><div><div class="rp680-caller-name">'+esc(label)+'</div>'+(company?'<div class="rp680-caller-company">'+esc(company)+'</div>':'')+'<div class="rp680-caller-phone">'+esc(phone)+'</div></div></div><div class="rp680-caller-context"><strong>Caller ID</strong> · '+esc(callerContext(c))+'</div><div class="rp680-caller-status"></div><div class="rp680-caller-actions"><button class="rp680-answer" onclick="_rp680AnswerIncoming()">☎ Answer</button><button class="rp680-silence" onclick="_rp680SilenceIncoming()">Silence + Email</button></div></section>'}
- function receive(payload){activeCall=resolve(payload);renderCaller();addNotification(activeCall,'Incoming call from '+(activeCall.contactName||activeCall.company||activeCall.phone||'unknown caller')+'.');return activeCall}
- async function answer(){if(!activeCall)return false;var c=activeCall;setBusy(true);status('Connecting call…',false);try{await providerCall('answer',c);addActivity(c,'Incoming call answered from the Rep Portal.');activeCall=null;renderCaller();if(c.company&&typeof window._ps60OpenCall==='function')setTimeout(function(){try{window._ps60OpenCall(encodeURIComponent(c.company))}catch(e){}},0);return true}catch(e){status(e.message||'The call could not be answered.',true);setBusy(false);return false}}
- async function silence(){if(!activeCall)return false;var c=activeCall;setBusy(true);status('Silencing call and creating the return-call follow-up…',false);try{await providerCall('silence',c)}catch(e){if(!c.demo){status((e&&e.message)||'The phone provider could not silence the call.',true);setBusy(false);return false}}var due=followDue(new Date()),task=createReturnFollowup(c,due),email=await missedEmail(c),msg='Call silenced. Follow-up set for '+fmtDue(due)+'. ';if(email.status==='sent')msg+='Missed-call email sent automatically.';else if(email.status==='draft')msg+='Microsoft 365 is not connected, so the email was saved as a ready-to-send draft.';else if(email.status==='no-email')msg+='No customer email is on file, so no email was sent.';else msg+='The email could not be sent; the follow-up was still created.';addActivity(c,msg);addNotification(c,msg);status(msg,email.status!=='sent');try{if(typeof window._rp679RefreshTodo==='function')window._rp679RefreshTodo()}catch(e){};setTimeout(function(){activeCall=null;renderCaller()},email.status==='sent'?1800:4200);return{task:task,email:email}}
- function register(adapter){provider=adapter||null;try{if(provider&&typeof provider.subscribe==='function')provider.subscribe(receive)}catch(e){}return true}
- function demo(payload){payload=Object.assign({demo:true,phone:'314-555-0199',company:'Demo Customer',contactName:'Taylor Customer',email:''},payload||{});return receive(payload)}
- window._rp680AnswerIncoming=answer;window._rp680SilenceIncoming=silence;
- window.TCP_REP_PHONE_V680={version:BUILD,registerProvider:register,receiveIncomingCall:receive,answer:answer,silence:silence,getActiveCall:function(){return activeCall},demoIncomingCall:demo,workSchedule:function(){return scheduleCfg()},setWorkSchedule:function(cfg){setJSON(SCHEDULE,cfg||{});return scheduleCfg()}};
- window.addEventListener('tcp-incoming-call',function(e){receive(e&&e.detail||{})});
- window.addEventListener('message',function(e){try{if(e.origin===location.origin&&e.data&&e.data.type==='tcp-incoming-call')receive(e.data.call||e.data)}catch(x){}});
- var baseToggle=window._rp679ToggleTheme;if(typeof baseToggle==='function'&&!baseToggle._v680){var wrapped=function(){var r=baseToggle.apply(this,arguments);syncTheme();return r};wrapped._v680=true;window._rp679ToggleTheme=wrapped}
- var baseSide=window._rp679SetSideMode;if(typeof baseSide==='function'&&!baseSide._v680){var side=function(){var r=baseSide.apply(this,arguments);setTimeout(function(){try{if(typeof window._rp679RefreshTodo==='function')window._rp679RefreshTodo()}catch(e){}},0);return r};side._v680=true;window._rp679SetSideMode=side}
- syncTheme();
- window.TCP_BUILD_VERSION=BUILD;window.TCP_REP_PORTAL_LIVE_ASSIST_V680={version:BUILD,syncTheme:syncTheme};
- try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v680 — Rep Portal Live Assist'}catch(e){}
-})();
-</script>
-</body></html>'
+  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Sales Tracker · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Sales Tracker</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n</body></html>'
  }
  window._ord672Print=function(mode){var g=currentGroup();if(!g)return;mode=mode==='pdf'?'pdf':'print';var w=window.open('','_blank');if(!w){alert('Please allow pop-ups to create the print-friendly order document.');return}w.document.open();w.document.write(printDocument(g,mode));w.document.close();try{w.focus()}catch(e){}};
  try{document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('o671-modal'))window._ord671Close()})}catch(e){}
@@ -68030,3 +67908,297 @@ html[data-rp-theme="light"] #rp-overlay .rp680-silence{background:#FFF5ED!import
 })();
 </script>
 
+
+
+<!-- ======================================================================
+     SALES TRACKER v681 · LIGHT THEME POLISH + EMAIL REVIEW
+     - repairs v680 live-assist placement so it actually runs in the main app
+     - stronger premium light palette and crisper TCP logo
+     - missed-call email opens in the existing composer for rep review/send
+     ====================================================================== -->
+<style id="tcp-v681-rep-portal-light-polish-css">
+/* High-visibility top-ranked call */
+#rp-overlay .rp680-call-now{position:relative;overflow:hidden;margin:0 3px 10px;padding:12px 11px 11px;border:1px solid rgba(250,135,61,.42);border-radius:13px;background:radial-gradient(circle at 94% 0%,rgba(250,135,61,.21),transparent 43%),linear-gradient(145deg,rgba(250,135,61,.11),rgba(0,175,239,.055)),rgba(7,15,24,.88);box-shadow:0 12px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.06);cursor:pointer;}
+#rp-overlay .rp680-call-now:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#FA873D,#00AFEF);}
+#rp-overlay .rp680-call-now-kick{display:flex;align-items:center;gap:6px;color:#FFAD78;font-size:8px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;}
+#rp-overlay .rp680-call-now-kick span{width:7px;height:7px;border-radius:50%;background:#FA873D;box-shadow:0 0 0 4px rgba(250,135,61,.10),0 0 14px rgba(250,135,61,.42);animation:rp680Pulse 1.5s ease-in-out infinite;}
+#rp-overlay .rp680-call-now strong{display:block;margin-top:7px;color:#fff;font:800 13px/1.15 var(--rp674-heading,"Droid Serif",Georgia,serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .rp680-call-now b{display:block;margin-top:4px;color:#C8D7E5;font-size:9px;line-height:1.3;}
+#rp-overlay .rp680-call-now p{margin:4px 0 9px;color:#8196AA;font-size:8.5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+#rp-overlay .rp680-call-now button{width:100%;min-height:31px;border:1px solid rgba(250,135,61,.36);border-radius:8px;background:#FA873D;color:#fff;font-size:8.5px;font-weight:950;cursor:pointer;}
+#rp-overlay .rp680-call-now:hover{border-color:rgba(250,135,61,.68);transform:translateY(-1px);}
+@keyframes rp680Pulse{50%{opacity:.48;transform:scale(.88)}}
+
+/* Incoming caller ID */
+#rp-overlay .rp680-caller-host{position:fixed;z-index:100060;top:18px;right:20px;width:min(390px,calc(100vw - 34px));pointer-events:none;}
+#rp-overlay .rp680-caller{pointer-events:auto;position:relative;overflow:hidden;border:1px solid rgba(0,175,239,.38);border-radius:20px;background:radial-gradient(circle at 95% 0%,rgba(0,175,239,.18),transparent 40%),radial-gradient(circle at 3% 100%,rgba(250,135,61,.13),transparent 42%),linear-gradient(155deg,#10202D,#0A141D 72%);box-shadow:0 26px 70px rgba(0,0,0,.44),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#F4F8FB;animation:rp680CallerIn .22s ease-out;}
+#rp-overlay .rp680-caller:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#00AFEF,#6FE5FF,#FA873D);}
+#rp-overlay .rp680-caller-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 17px 10px;}
+#rp-overlay .rp680-caller-live{display:inline-flex;align-items:center;gap:7px;color:#7FE8FF;font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;}
+#rp-overlay .rp680-caller-live i{width:8px;height:8px;border-radius:50%;background:#00AFEF;box-shadow:0 0 0 5px rgba(0,175,239,.10),0 0 18px rgba(0,175,239,.52);animation:rp680Pulse 1.25s ease-in-out infinite;}
+#rp-overlay .rp680-caller-time{color:#74899E;font-size:9px;font-weight:800;}
+#rp-overlay .rp680-caller-main{display:grid;grid-template-columns:50px minmax(0,1fr);gap:12px;align-items:center;padding:5px 17px 14px;}
+#rp-overlay .rp680-caller-avatar{width:50px;height:50px;display:grid;place-items:center;border:1px solid rgba(0,175,239,.28);border-radius:17px;background:linear-gradient(145deg,rgba(0,175,239,.14),rgba(250,135,61,.10));color:#8FEAFF;font-size:20px;font-weight:950;}
+#rp-overlay .rp680-caller-name{color:#fff;font:800 20px/1.05 var(--rp674-heading,"Droid Serif",Georgia,serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .rp680-caller-company{margin-top:4px;color:#C0D0DD;font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .rp680-caller-phone{margin-top:4px;color:#8094A7;font-size:10px;}
+#rp-overlay .rp680-caller-context{margin:0 17px 13px;padding:10px 11px;border:1px solid rgba(139,166,194,.13);border-radius:12px;background:rgba(255,255,255,.025);color:#93A7B8;font-size:9.5px;line-height:1.45;}
+#rp-overlay .rp680-caller-context strong{color:#D8E4EC;}
+#rp-overlay .rp680-caller-status{display:none;margin:0 17px 12px;padding:9px 10px;border:1px solid rgba(0,175,239,.18);border-radius:10px;background:rgba(0,175,239,.06);color:#A9DDF0;font-size:9.5px;line-height:1.4;}
+#rp-overlay .rp680-caller-status.show{display:block;}
+#rp-overlay .rp680-caller-status.warn{border-color:rgba(239,159,39,.25);background:rgba(239,159,39,.07);color:#FFD28C;}
+#rp-overlay .rp680-caller-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 17px 17px;}
+#rp-overlay .rp680-caller-actions button{min-height:42px;border-radius:12px;font-size:11px;font-weight:950;cursor:pointer;transition:.15s ease;}
+#rp-overlay .rp680-answer{border:1px solid rgba(71,209,108,.40);background:linear-gradient(135deg,#2BCB66,#26B85C);color:#07150D;box-shadow:0 10px 25px rgba(71,209,108,.18);}
+#rp-overlay .rp680-silence{border:1px solid rgba(250,135,61,.36);background:rgba(250,135,61,.10);color:#FFD0AF;}
+#rp-overlay .rp680-caller-actions button:hover{transform:translateY(-1px);filter:brightness(1.06);}
+#rp-overlay .rp680-caller-actions button:disabled{opacity:.55;cursor:wait;transform:none;}
+@keyframes rp680CallerIn{from{opacity:0;transform:translateY(-8px) scale(.985)}to{opacity:1;transform:none}}
+
+/* Light-theme aliases use the prepaint document flag so caller/priority UI never flashes dark. */
+html[data-rp-theme="light"] #rp-overlay .rp680-call-now{background:linear-gradient(145deg,#FFF8F3,#F4FBFE)!important;border-color:rgba(214,103,34,.34)!important;box-shadow:0 8px 22px rgba(36,58,76,.08)!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-call-now strong{color:#172A3A!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-call-now b{color:#3B556B!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-call-now p{color:#6A7E90!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller{background:radial-gradient(circle at 95% 0%,rgba(0,175,239,.08),transparent 40%),linear-gradient(155deg,#FFFFFF,#F4F8FB 78%)!important;border-color:rgba(0,135,185,.28)!important;color:#172A3A!important;box-shadow:0 24px 60px rgba(35,55,72,.18),inset 0 1px 0 rgba(255,255,255,.9)!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-name{color:#162A3A!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-company{color:#3E566A!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-phone,html[data-rp-theme="light"] #rp-overlay .rp680-caller-time{color:#6B7F91!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F7FAFC!important;border-color:rgba(32,55,76,.12)!important;color:#607587!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-context strong{color:#263F53!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-status{background:#EDF9FD!important;color:#267493!important;border-color:rgba(0,145,198,.18)!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-silence{background:#FFF5ED!important;color:#A64B16!important;border-color:rgba(214,103,34,.28)!important;}
+@media(max-width:720px){#rp-overlay .rp680-caller-host{top:10px;right:10px;width:calc(100vw - 20px)}#rp-overlay .rp680-caller{border-radius:16px}}
+@media(prefers-reduced-motion:reduce){#rp-overlay .rp680-caller,#rp-overlay .rp680-call-now-kick span,#rp-overlay .rp680-caller-live i{animation:none!important}}
+
+/* ======================================================================
+   v681 LIGHT THEME POLISH
+   The light theme should feel like the same premium Sales Tracker product,
+   not a washed-out pastel skin.  Stronger ink, stronger borders, calmer
+   whites, and deeper status colors.
+   ====================================================================== */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light{
+ --rp681-bg:#F3F6F8;
+ --rp681-sidebar:#FBFCFD;
+ --rp681-panel:#FFFFFF;
+ --rp681-panel-soft:#F8FAFB;
+ --rp681-panel-alt:#EEF3F6;
+ --rp681-line:#CBD6DF;
+ --rp681-line-strong:#B8C6D1;
+ --rp681-ink:#102638;
+ --rp681-ink-2:#304B61;
+ --rp681-muted:#637A8D;
+ --rp681-muted-2:#7E91A1;
+ --rp681-cyan:#0089B5;
+ --rp681-cyan-soft:#E4F5FB;
+ --rp681-orange:#F47B2F;
+ --rp681-green:#17885A;
+ --rp681-green-soft:#E8F7F0;
+ --rp681-amber:#AA671B;
+ --rp681-red:#BE4655;
+ color:var(--rp681-ink)!important;
+ background:var(--rp681-bg)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp2-side{
+ background:linear-gradient(180deg,#FCFDFD 0%,#F8FAFB 72%,#F2F5F7 100%)!important;
+ border-right:1px solid var(--rp681-line)!important;
+ box-shadow:8px 0 26px rgba(27,47,63,.055)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp2-main{
+ background:linear-gradient(180deg,#F4F7F9 0%,#F1F4F6 100%)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-page-top{
+ background:rgba(252,253,254,.96)!important;
+ border-bottom:1px solid var(--rp681-line)!important;
+ box-shadow:0 5px 18px rgba(25,45,61,.035)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-page-top strong,
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-hello h1,
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-hero h1,.f654-hero h1,.c656-hero h1,.q673-hero h1,.o671-hero h1,.p670-hero h1,.p670-title,.cw4-title,.f654-title,.c656-title,.q673-title,.o671-title){
+ color:var(--rp681-ink)!important;
+ text-shadow:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.p639-page-top span,.p639-hello p,.p639-date,.cw4-copy,.f654-copy,.c656-copy,.q673-copy,.o671-copy,.p670-copy,.cw4-sub,.f654-sub,.c656-sub,.q673-sub,.o671-sub){
+ color:var(--rp681-muted)!important;
+}
+/* Logo: keep the original orange/black artwork crisp on white. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand img{
+ filter:saturate(1.13) contrast(1.08) drop-shadow(0 3px 5px rgba(31,49,62,.13))!important;
+ opacity:1!important;
+ background:radial-gradient(circle at 50% 48%,rgba(250,135,61,.055),rgba(255,255,255,0) 70%)!important;
+ padding:3px!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand strong{color:#152B3D!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand span{color:#526A7E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand em{
+ color:#006F96!important;background:#E6F6FB!important;border-color:#9ED7E8!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav-label{color:#547289!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button{color:#1E3A50!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button i{color:#66859B!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button:hover{background:#EEF3F6!important;color:#102638!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button.on{
+ background:linear-gradient(90deg,#FB812F,#FA873D)!important;border-color:#E96F23!important;color:#fff!important;box-shadow:0 8px 20px rgba(240,111,31,.20)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button.on i{color:#fff!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.p639-user-card,.p639-logout,.rp679-side-switch,.rp679-hide-btn,.p639-page-top-actions button,.rp679-theme-btn){
+ background:#FFFFFF!important;border-color:var(--rp681-line)!important;color:#314D63!important;box-shadow:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-side-switch button{color:#4D687E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-side-switch button.on{background:#DFF3FA!important;color:#006E96!important;box-shadow:inset 0 0 0 1px #A9DCEB!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-user-card strong{color:#153044!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-user-card span{color:#6D8293!important;}
+
+/* Canonical light panels across approved rep pages. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-daily-strip,.p639-panel,.p639-momentum,.cw4-hero,.cw4-tabs,.cw4-panel,.cw4-table-wrap,.cw4-card,
+ .f654-hero,.f654-kpi,.f654-panel,.f654-completed,.c656-hero,.c656-kpi,.c656-tabs,.c656-controls,.c656-table-wrap,
+ .q673-hero,.q673-controls,.q673-list,.o671-hero,.o671-controls,.o671-list,.p670-hero,.p670-panel,.p670-row,.ms537-card,
+ .rp679-todo-section,.rp679-todo-pulse div,.rp679-quick-grid button,.rp680-call-now
+ ){
+ background:var(--rp681-panel)!important;
+ border-color:var(--rp681-line)!important;
+ box-shadow:0 7px 18px rgba(30,48,63,.055)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.cw4-hero,.f654-hero,.c656-hero,.q673-hero,.o671-hero,.p670-hero){
+ background:radial-gradient(circle at 92% 5%,rgba(0,175,239,.055),transparent 35%),radial-gradient(circle at 4% 0%,rgba(250,135,61,.065),transparent 34%),#FFFFFF!important;
+}
+/* Remove the candy-like KPI glows in light mode. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.f654-kpi,.c656-kpi)::before,
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.f654-kpi,.c656-kpi)::after{opacity:.18!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.f654-kpi,.c656-kpi,.p639-daily-stat){background:#FFFFFF!important;}
+
+/* Stronger working text. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-panel-head strong,.p639-daily-stat strong,.p639-daily-stat span,.p639-glance-label strong,.p639-book-top strong,
+ .rp679-todo-title,.rp679-todo-pulse strong,.rp679-todo-item strong,
+ .cw4-panel h2,.cw4-panel h3,.f654-panel h2,.f654-panel h3,.c656-kpi strong,.c656-table strong,.q673-list strong,.o671-list strong,.p670-panel strong,.p670-row strong
+ ){color:var(--rp681-ink)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-daily-stat small,.p639-glance-label span,.p639-book-foot,.rp679-todo-copy,.rp679-todo-item span,
+ .cw4-muted,.f654-muted,.c656-muted,.q673-muted,.o671-muted,.p670-muted
+ ){color:var(--rp681-muted)!important;}
+
+/* Inputs and working controls: neutral white, not blue-gray. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ input,select,textarea,.cw4-search,.f654-search,.c656-search,.q673-search,.o671-search
+ ){
+ background:#FBFCFD!important;color:#183247!important;border-color:var(--rp681-line-strong)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.85)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(input,textarea)::placeholder{color:#8798A6!important;opacity:1!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(input,select,textarea):focus{border-color:#4DAECC!important;box-shadow:0 0 0 3px rgba(0,137,181,.12)!important;outline:none!important;}
+
+/* Tables/lists get clear contrast and borders. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.q673-table,.cw4-table,.c656-table,.o671-table,.p670-table){border-color:var(--rp681-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.q673-table th,.cw4-table th,.o671-rp-row.header,.c656-th,.p670-table th){
+ background:#EAF0F4!important;color:#49677E!important;border-color:var(--rp681-line)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.q673-table td,.cw4-table td,.o671-rp-row,.c656-cell,.p670-table td){
+ background:#FFFFFF!important;color:#1B3549!important;border-color:#D8E0E6!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.q673-table tr:hover td,.cw4-table tr:hover td,.c656-row:hover .c656-cell,.o671-rp-row:not(.header):hover){background:#F2F7FA!important;}
+
+/* Status color system with enough contrast on white. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.c656-badge.green,.q673-badge.green,.o671-badge.green){background:#E7F6EF!important;color:#157B52!important;border-color:#A9DDC7!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.c656-badge.orange,.q673-badge.orange,.o671-badge.orange){background:#FFF1E5!important;color:#A95619!important;border-color:#EBC29E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.c656-badge.red,.q673-badge.red,.o671-badge.red){background:#FDECEF!important;color:#AE3B4A!important;border-color:#E8B7BF!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.c656-badge.blue,.q673-badge.blue,.o671-badge.blue){background:#E5F5FB!important;color:#00789F!important;border-color:#AADBEA!important;}
+
+/* To Do rail + priority card in light mode. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-kick{color:#0089B5!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-section-head{border-color:#D5DEE5!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-section-head strong{color:#29465C!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp680-call-now{
+ background:linear-gradient(145deg,#FFF5EC,#FFFFFF 58%,#EEF9FC)!important;border-color:#E3AA7D!important;box-shadow:0 8px 20px rgba(42,58,70,.075)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp680-call-now strong{color:#173248!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp680-call-now b{color:#3F5C72!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp680-call-now p{color:#6B8091!important;}
+
+/* Incoming caller card light treatment. */
+html[data-rp-theme="light"] #rp-overlay .rp680-caller{
+ background:linear-gradient(155deg,#FFFFFF,#F5F8FA)!important;border-color:#B8CBD7!important;color:#173248!important;box-shadow:0 24px 60px rgba(30,48,63,.18)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-name{color:#112B3E!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-company{color:#3A566C!important;}
+html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F0F5F8!important;border-color:#CED9E1!important;color:#536C80!important;}
+
+</style>
+<script id="tcp-v681-rep-portal-live-assist-js">
+(function(){
+ 'use strict';
+ var BUILD='v681',THEME='tcp.repPortal.theme',OLD_THEME='tcp.repPortal.theme.v679',ACTION='tcp_rp_action_center_v504',EMAIL='tcp_email_composer_v537',SCHEDULE='tcp.repPortal.workSchedule.v680';
+ var activeCall=null,provider=null,ringTimer=0;
+ function arr(v){if(Array.isArray(v))return v;if(!v)return[];try{return typeof v==='object'?Object.keys(v).map(function(k){return v[k]}).filter(Boolean):[]}catch(e){return[]}}
+ function clean(v){return String(v==null?'':v).trim()}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function field(o,names,d){for(var i=0;i<names.length;i++){if(o&&o[names[i]]!=null&&clean(o[names[i]])!=='')return o[names[i]]}return d==null?'':d}
+ function rep(){return clean(window._rp2&&_rp2.rep)||'Rep'}
+ function id(p){return p+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
+ function digits(v){var d=clean(v).replace(/\D/g,'');return d.length>10?d.slice(-10):d}
+ function samePhone(a,b){var x=digits(a),y=digits(b);return !!(x&&y&&x===y)}
+ function localDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+ function initials(name){var x=clean(name).split(/\s+/).filter(Boolean);return (x[0]?x[0][0]:'')+(x[1]?x[1][0]:'')||'☎'}
+ function firstName(name){return clean(name).split(/\s+/)[0]||'there'}
+ function getJSON(k,d){try{var x=JSON.parse(localStorage.getItem(k)||'null');return x==null?d:x}catch(e){return d}}
+ function setJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+ function syncTheme(){var t='dark';try{t=localStorage.getItem(THEME)||localStorage.getItem(OLD_THEME)||'dark';localStorage.setItem(THEME,t);localStorage.setItem(OLD_THEME,t)}catch(e){};try{document.documentElement.setAttribute('data-rp-theme',t==='light'?'light':'dark');if(typeof window.__tcpV680SyncThemePrepaint==='function')window.__tcpV680SyncThemePrepaint()}catch(e){}}
+ function accountFor(company){try{return window.TCP537&&typeof TCP537.account==='function'?TCP537.account(company,rep(),false):null}catch(e){return null}}
+ function contactMatch(list,call){var p=digits(call.phone),name=clean(call.contactName).toLowerCase(),email=clean(call.email).toLowerCase();return arr(list).filter(function(c){return (p&&samePhone(field(c,['phone','mobile','phoneNumber'],''),p))||(email&&clean(field(c,['email'],'')).toLowerCase()===email)||(name&&clean(field(c,['name','contactName'],'')).toLowerCase()===name)})[0]||null}
+ function resolveFromCompany(call){if(!call.company)return call;try{var b=accountFor(call.company),contacts=b&&b.data&&b.data.contacts||[],c=contactMatch(contacts,call)||contacts[0];if(c){call.contactId=call.contactId||field(c,['id','contactId'],'');call.contactName=call.contactName||field(c,['name','contactName'],'');call.email=call.email||field(c,['email'],'');call.phone=call.phone||field(c,['phone','mobile','phoneNumber'],'')}}catch(e){}return call}
+ function resolveFromCustomers(call){var p=digits(call.phone);if(!p)return call;try{var rows=arr(window.S&&S.customers);for(var i=0;i<rows.length;i++){var r=rows[i]||{},company=clean(field(r,['name','customer','company','companyName'],'')),contacts=arr(r.contacts);if(r.primary)contacts.unshift(r.primary);var c=contactMatch(contacts,call);if(!c&&samePhone(field(r,['phone','mobile','phoneNumber'],''),p))c=r;if(c){call.company=call.company||company;call.contactId=call.contactId||field(c,['id','contactId'],'');call.contactName=call.contactName||field(c,['name','contactName'],'');call.email=call.email||field(c,['email'],'');call.phone=call.phone||field(c,['phone','mobile','phoneNumber'],'');return resolveFromCompany(call)}}}catch(e){}return call}
+ function resolveFromCRM(call){var p=digits(call.phone);if(!p)return call;try{var store=getJSON('tcp_rp_company_crm_v510',{}),rb=store&&store.reps&&store.reps[rep()],accounts=rb&&rb.accounts||{};var keys=Object.keys(accounts);for(var i=0;i<keys.length;i++){var a=accounts[keys[i]]||{},c=contactMatch(a.contacts,call);if(c){call.company=call.company||clean(field(a.profile||{},['name','company'],'')||keys[i]);call.contactId=call.contactId||field(c,['id','contactId'],'');call.contactName=call.contactName||field(c,['name','contactName'],'');call.email=call.email||field(c,['email'],'');call.phone=call.phone||field(c,['phone','mobile','phoneNumber'],'');return call}}}catch(e){}return call}
+ function resolve(payload){var call=Object.assign({},payload||{});call.id=clean(call.id)||id('incoming');call.startedAt=call.startedAt||new Date().toISOString();call.phone=clean(call.phone||call.from||call.number||'');call.company=clean(call.company||call.customer||'');call.contactName=clean(call.contactName||call.contact||call.name||'');call.email=clean(call.email||'');call=resolveFromCompany(call);call=resolveFromCustomers(call);call=resolveFromCRM(call);call=resolveFromCompany(call);return call}
+ function scheduleCfg(){var cfg=getJSON(SCHEDULE,null)||{},start=clean(cfg.start||''),end=clean(cfg.end||'');try{var profiles=getJSON('tcp_rp_profile_v2',{}),p=profiles&&profiles.reps&&profiles.reps[rep()]||profiles&&profiles[rep()]||{};start=start||clean(field(p,['workStart','workdayStart','shiftStart','dayStart'],''));end=end||clean(field(p,['workEnd','workdayEnd','shiftEnd','dayEnd'],''))}catch(e){};try{var p2=window.S&&S.repProfiles&&S.repProfiles[rep()]||{};start=start||clean(field(p2,['workStart','workdayStart','shiftStart','dayStart'],''));end=end||clean(field(p2,['workEnd','workdayEnd','shiftEnd','dayEnd'],''))}catch(e){};return{start:start||'08:00',end:end||'17:00',weekdays:Array.isArray(cfg.weekdays)&&cfg.weekdays.length?cfg.weekdays:[1,2,3,4,5]}}
+ function timeParts(v,def){var m=clean(v).match(/^(\d{1,2}):(\d{2})/);return m?[Number(m[1]),Number(m[2])]:def}
+ function atTime(date,parts){var d=new Date(date);d.setHours(parts[0],parts[1],0,0);return d}
+ function nextWorkday(date,cfg){var d=new Date(date);d.setDate(d.getDate()+1);d.setHours(0,0,0,0);for(var guard=0;guard<10;guard++){if(cfg.weekdays.indexOf(d.getDay())>=0)return d;d.setDate(d.getDate()+1)}return d}
+ function followDue(now){var cfg=scheduleCfg(),sp=timeParts(cfg.start,[8,0]),ep=timeParts(cfg.end,[17,0]),work=cfg.weekdays.indexOf(now.getDay())>=0,start=atTime(now,sp),end=atTime(now,ep);if(!work||now>=end){var nd=nextWorkday(now,cfg),due=atTime(nd,sp);due.setHours(due.getHours()+1);return due}if(now<start){var pre=atTime(now,sp);pre.setHours(pre.getHours()+1);return pre}var due=new Date(now.getTime()+60*60000);if(due>end){var next=nextWorkday(now,cfg);due=atTime(next,sp);due.setHours(due.getHours()+1)}return due}
+ function fmtDue(d){return d.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
+ function actionStore(){var s=getJSON(ACTION,null);if(!s||s.version!==1||!s.reps)s={version:1,reps:{}};s.reps[rep()]=s.reps[rep()]||{manual:[],state:{},events:[]};s.reps[rep()].manual=arr(s.reps[rep()].manual);s.reps[rep()].events=arr(s.reps[rep()].events);s.reps[rep()].state=s.reps[rep()].state||{};return s}
+ function createReturnFollowup(call,due){var s=actionStore(),b=s.reps[rep()],taskId='missed_'+call.id,existing=b.manual.filter(function(t){return t&&t.incomingCallId===call.id})[0];if(existing)return existing;var who=call.company||call.contactName||call.phone||'incoming caller',task={id:taskId,source:'phone-incoming-v681',category:'call',tone:'risk',score:285,title:'Return missed call — '+who,why:'An incoming call was silenced at '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.',action:'Return the customer call by '+fmtDue(due)+'.',measure:'Return the call and record the outcome.',dueDate:localDate(due),dueAt:due.toISOString(),customer:call.company||'',contactName:call.contactName||'',phone:call.phone||'',page:'call',incomingCallId:call.id,createdAt:new Date().toISOString()};b.manual.unshift(task);b.events.push({type:'create',taskId:task.id,title:task.title,customer:task.customer,at:new Date().toISOString(),dueAt:task.dueAt,source:task.source});setJSON(ACTION,s);return task}
+ function persistDraft(draft){try{var s=getJSON(EMAIL,{version:1,reps:{}});if(!s||s.version!==1)s={version:1,reps:{}};s.reps=s.reps||{};s.reps[rep()]=s.reps[rep()]||{drafts:{},events:[]};s.reps[rep()].drafts=s.reps[rep()].drafts||{};s.reps[rep()].drafts[draft.id]=draft;s.reps[rep()].events=arr(s.reps[rep()].events);s.reps[rep()].events.push({type:'incoming-call-auto-draft',draftId:draft.id,at:new Date().toISOString()});setJSON(EMAIL,s)}catch(e){}}
+ async function missedEmail(call){
+  if(!call.email)return{status:'no-email'};
+  if(!window.TCP537||typeof TCP537.createDraft!=='function')return{status:'unavailable'};
+  var contact={id:call.contactId||'',name:call.contactName||'',email:call.email,phone:call.phone||''};
+  var draft=TCP537.createDraft({company:call.company||call.contactName||'Customer',contact:contact,source:'incoming-call-v681'});
+  draft.to=[call.email];
+  draft.subject='Sorry I missed your call';
+  draft.bodyHtml='<p>Hi '+esc(firstName(call.contactName))+',</p><p>I’m sorry I wasn’t able to answer your call. I saw that you reached out and I’ll get back to you shortly.</p><p>Thank you,</p>';
+  draft.localDirty=true;
+  draft.updatedAt=new Date().toISOString();
+  persistDraft(draft);
+  try{
+   if(typeof window._em537OpenDraft==='function'){
+    window._em537OpenDraft(encodeURIComponent(draft.id));
+   }else{
+    window._em537ActiveId=draft.id;
+   }
+  }catch(e){}
+  return{status:'review',draft:draft}
+ }
+ function addActivity(call,detail){try{if(call.company&&window.TCP537&&typeof TCP537.addActivity==='function')TCP537.addActivity(call.company,{id:id('activity'),source:'incoming-call-v681',type:'Call',subject:'Incoming call',detail:detail,date:new Date().toISOString(),createdAt:new Date().toISOString(),phone:call.phone,contactName:call.contactName},rep())}catch(e){}}
+ function addNotification(call,copy){try{if(!Array.isArray(window.notifLog))return;var nid='incoming_'+call.id;if(notifLog.some(function(n){return n&&n.id===nid}))return;notifLog.unshift({id:nid,type:'incoming_call',icon:'☎',html:'<strong>'+esc(call.company||call.contactName||call.phone||'Incoming call')+'</strong><br>'+esc(copy),cls:'alert-action',week:'Rep Portal',ts:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})});if(typeof window.updateNotifBadge==='function')updateNotifBadge()}catch(e){}}
+ function providerCall(method,call){try{if(provider&&typeof provider[method]==='function')return Promise.resolve(provider[method](call));if(call&&call.demo)return Promise.resolve(true);return Promise.reject(new Error('Live phone provider is not connected.'))}catch(e){return Promise.reject(e)}}
+ function host(){var h=document.querySelector('#rp-overlay .rp680-caller-host');if(!h){h=document.createElement('div');h.className='rp680-caller-host';var root=document.getElementById('rp-overlay');if(root)root.appendChild(h)}return h}
+ function status(text,warn){var e=document.querySelector('#rp-overlay .rp680-caller-status');if(!e)return;e.textContent=text;e.classList.add('show');e.classList.toggle('warn',!!warn)}
+ function setBusy(b){document.querySelectorAll('#rp-overlay .rp680-caller-actions button').forEach(function(x){x.disabled=!!b})}
+ function callerContext(call){var bits=[];if(call.email)bits.push('Email on file');else bits.push('No email on file');if(provider)bits.push('Live phone connected');else if(call.demo)bits.push('Demo call');else bits.push('Provider event received');return bits.join(' · ')}
+ function renderCaller(){var h=host();if(!h)return;if(!activeCall){h.innerHTML='';return}var c=activeCall,label=c.contactName||c.company||'Unknown caller',company=c.company&&c.company!==label?c.company:'',phone=c.phone||'Number unavailable';h.innerHTML='<section class="rp680-caller"><div class="rp680-caller-head"><div class="rp680-caller-live"><i></i>Incoming call</div><div class="rp680-caller-time">'+new Date(c.startedAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</div></div><div class="rp680-caller-main"><div class="rp680-caller-avatar">'+esc(initials(label))+'</div><div><div class="rp680-caller-name">'+esc(label)+'</div>'+(company?'<div class="rp680-caller-company">'+esc(company)+'</div>':'')+'<div class="rp680-caller-phone">'+esc(phone)+'</div></div></div><div class="rp680-caller-context"><strong>Caller ID</strong> · '+esc(callerContext(c))+'</div><div class="rp680-caller-status"></div><div class="rp680-caller-actions"><button class="rp680-answer" onclick="_rp680AnswerIncoming()">☎ Answer</button><button class="rp680-silence" onclick="_rp680SilenceIncoming()">Silence + Email</button></div></section>'}
+ function receive(payload){activeCall=resolve(payload);renderCaller();addNotification(activeCall,'Incoming call from '+(activeCall.contactName||activeCall.company||activeCall.phone||'unknown caller')+'.');return activeCall}
+ async function answer(){if(!activeCall)return false;var c=activeCall;setBusy(true);status('Connecting call…',false);try{await providerCall('answer',c);addActivity(c,'Incoming call answered from the Rep Portal.');activeCall=null;renderCaller();if(c.company&&typeof window._ps60OpenCall==='function')setTimeout(function(){try{window._ps60OpenCall(encodeURIComponent(c.company))}catch(e){}},0);return true}catch(e){status(e.message||'The call could not be answered.',true);setBusy(false);return false}}
+ async function silence(){if(!activeCall)return false;var c=activeCall;setBusy(true);status('Silencing call and creating the return-call follow-up…',false);try{await providerCall('silence',c)}catch(e){if(!c.demo){status((e&&e.message)||'The phone provider could not silence the call.',true);setBusy(false);return false}}var due=followDue(new Date()),task=createReturnFollowup(c,due),email=await missedEmail(c),msg='Call silenced. Follow-up set for '+fmtDue(due)+'. ';if(email.status==='review')msg+='Missed-call email opened for review. Edit it if needed, then press Send.';else if(email.status==='draft')msg+='The missed-call email was saved as a ready-to-send draft.';else if(email.status==='no-email')msg+='No customer email is on file, so no email draft was created.';else msg+='The email draft could not be opened; the follow-up was still created.';addActivity(c,msg);addNotification(c,msg);status(msg,email.status!=='review');try{if(typeof window._rp679RefreshTodo==='function')window._rp679RefreshTodo()}catch(e){};setTimeout(function(){activeCall=null;renderCaller()},email.status==='review'?650:2600);return{task:task,email:email}}
+ function register(adapter){provider=adapter||null;try{if(provider&&typeof provider.subscribe==='function')provider.subscribe(receive)}catch(e){}return true}
+ function demo(payload){payload=Object.assign({demo:true,phone:'314-555-0199',company:'Demo Customer',contactName:'Taylor Customer',email:''},payload||{});return receive(payload)}
+ window._rp680AnswerIncoming=answer;window._rp680SilenceIncoming=silence;
+ window.TCP_REP_PHONE_V681={version:BUILD,registerProvider:register,receiveIncomingCall:receive,answer:answer,silence:silence,getActiveCall:function(){return activeCall},demoIncomingCall:demo,workSchedule:function(){return scheduleCfg()},setWorkSchedule:function(cfg){setJSON(SCHEDULE,cfg||{});return scheduleCfg()}};window.TCP_REP_PHONE_V680=window.TCP_REP_PHONE_V681;
+ window.addEventListener('tcp-incoming-call',function(e){receive(e&&e.detail||{})});
+ window.addEventListener('message',function(e){try{if(e.origin===location.origin&&e.data&&e.data.type==='tcp-incoming-call')receive(e.data.call||e.data)}catch(x){}});
+ var baseToggle=window._rp679ToggleTheme;if(typeof baseToggle==='function'&&!baseToggle._v680){var wrapped=function(){var r=baseToggle.apply(this,arguments);syncTheme();return r};wrapped._v680=true;window._rp679ToggleTheme=wrapped}
+ var baseSide=window._rp679SetSideMode;if(typeof baseSide==='function'&&!baseSide._v680){var side=function(){var r=baseSide.apply(this,arguments);setTimeout(function(){try{if(typeof window._rp679RefreshTodo==='function')window._rp679RefreshTodo()}catch(e){}},0);return r};side._v680=true;window._rp679SetSideMode=side}
+ syncTheme();
+ window.TCP_BUILD_VERSION=BUILD;window.TCP_REP_PORTAL_LIVE_ASSIST_V681={version:BUILD,syncTheme:syncTheme};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v681 — Rep Portal Light Polish + Email Review'}catch(e){}
+})();
+</script>
