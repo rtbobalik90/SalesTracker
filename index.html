@@ -67620,3 +67620,271 @@ body.nav-rail .tabs:after{content:"v672"!important}
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v678 — Rep Portal Section Gutters'}catch(e){}
 })();
 </script>
+
+
+<!-- ======================================================================
+     SALES TRACKER v679 · REP PORTAL WORKSPACE CONTROLS
+     1) hides the phased-nav scrollbar without disabling scrolling
+     2) adds a persistent dark/light theme (theme button on My Day)
+     3) adds a collapsible sliding nav rail with automatic workspace expansion
+     4) adds Menu / To Do rail modes with live calls, follow-ups and alerts
+     Scoped to the Phased Rep Portal. Business/data logic is read-only here.
+     ====================================================================== -->
+<style id="tcp-v679-rep-portal-workspace-controls-css">
+/* ---------- nav scrollbar: preserve scrolling, remove visible chrome ---------- */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .p639-nav,
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp679-todo{
+  scrollbar-width:none!important;
+  -ms-overflow-style:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .p639-nav::-webkit-scrollbar,
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp679-todo::-webkit-scrollbar{display:none!important;width:0!important;height:0!important;}
+
+/* ---------- side rail controls ---------- */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639{
+  --rp679-side-width:210px;
+  transition:grid-template-columns .24s ease,background .22s ease!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-side{
+  transition:transform .24s ease,opacity .18s ease,width .24s ease,padding .24s ease,border-color .18s ease,background .22s ease!important;
+}
+#rp-overlay .rp679-side-tools{flex:none;display:grid;grid-template-columns:minmax(0,1fr) 38px;gap:7px;padding:10px 0 5px;}
+#rp-overlay .rp679-side-switch{display:grid;grid-template-columns:1fr 1fr;padding:3px;border:1px solid rgba(139,166,194,.16);border-radius:11px;background:rgba(255,255,255,.025);}
+#rp-overlay .rp679-side-switch button,#rp-overlay .rp679-hide-btn{
+  min-height:32px;border:0;border-radius:8px;background:transparent;color:#8FA1B6;font:900 9.5px/1 var(--rp674-body,"Open Sans","Segoe UI",Arial,sans-serif);cursor:pointer;transition:.15s ease;
+}
+#rp-overlay .rp679-side-switch button.on{background:rgba(0,175,239,.10);color:#A8ECFF;box-shadow:inset 0 0 0 1px rgba(0,175,239,.18);}
+#rp-overlay .rp679-side-switch button:hover,#rp-overlay .rp679-hide-btn:hover{background:rgba(255,255,255,.055);color:#fff;}
+#rp-overlay .rp679-hide-btn{border:1px solid rgba(139,166,194,.16);font-size:15px;}
+
+/* ---------- To Do rail ---------- */
+#rp-overlay .rp679-todo{display:none;flex:1;min-height:0;overflow:auto;padding:9px 0 6px;}
+#rp-overlay .rp2-side.rp679-todo-mode .p639-nav{display:none!important;}
+#rp-overlay .rp2-side.rp679-todo-mode .rp679-todo{display:block!important;}
+#rp-overlay .rp679-todo-head{padding:6px 6px 10px;}
+#rp-overlay .rp679-todo-kick{color:#54D9FF;font-size:9px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;}
+#rp-overlay .rp679-todo-title{margin-top:4px;color:#fff;font-family:var(--rp674-heading,"Droid Serif",Georgia,serif);font-size:17px;font-weight:800;}
+#rp-overlay .rp679-todo-copy{margin-top:3px;color:#71849A;font-size:9.5px;line-height:1.4;}
+#rp-overlay .rp679-todo-pulse{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 4px 10px;}
+#rp-overlay .rp679-todo-pulse div{padding:7px 5px;border:1px solid rgba(139,166,194,.13);border-radius:9px;background:rgba(255,255,255,.025);text-align:center;}
+#rp-overlay .rp679-todo-pulse strong{display:block;color:#fff;font-size:14px;line-height:1;font-weight:950;}
+#rp-overlay .rp679-todo-pulse span{display:block;margin-top:4px;color:#70839A;font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
+#rp-overlay .rp679-todo-section{margin:0 3px 10px;border:1px solid rgba(139,166,194,.13);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.032),rgba(255,255,255,.014));overflow:hidden;}
+#rp-overlay .rp679-todo-section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;border-bottom:1px solid rgba(139,166,194,.10);}
+#rp-overlay .rp679-todo-section-head strong{color:#DDE7F0;font-size:9.5px;font-weight:950;letter-spacing:.035em;text-transform:uppercase;}
+#rp-overlay .rp679-todo-section-head button{border:0;background:transparent;color:#36CFFF;font-size:8.5px;font-weight:900;cursor:pointer;}
+#rp-overlay .rp679-todo-list{display:flex;flex-direction:column;}
+#rp-overlay .rp679-todo-item{display:grid;grid-template-columns:27px minmax(0,1fr);gap:8px;padding:9px 9px;border-bottom:1px solid rgba(139,166,194,.09);cursor:pointer;transition:.15s ease;}
+#rp-overlay .rp679-todo-item:last-child{border-bottom:0;}
+#rp-overlay .rp679-todo-item:hover{background:rgba(0,175,239,.045);}
+#rp-overlay .rp679-todo-icon{width:27px;height:27px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--todo-accent,#00AFEF) 34%,transparent);border-radius:9px;background:color-mix(in srgb,var(--todo-accent,#00AFEF) 9%,transparent);color:var(--todo-accent,#00AFEF);font-size:12px;}
+#rp-overlay .rp679-todo-item strong{display:block;color:#F2F6FA;font-size:10px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .rp679-todo-item span{display:block;margin-top:3px;color:#7F91A6;font-size:8.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+#rp-overlay .rp679-todo-empty{padding:12px 10px;color:#71849A;font-size:9px;line-height:1.4;}
+#rp-overlay .rp679-quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;}
+#rp-overlay .rp679-quick-grid button{min-height:34px;border:1px solid rgba(139,166,194,.14);border-radius:9px;background:rgba(255,255,255,.025);color:#C9D4E0;font-size:8.5px;font-weight:900;cursor:pointer;}
+#rp-overlay .rp679-quick-grid button:hover{border-color:rgba(250,135,61,.30);background:rgba(250,135,61,.07);color:#fff;}
+
+/* ---------- slide-away nav ---------- */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-nav-collapsed{grid-template-columns:0 minmax(0,1fr)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-nav-collapsed .rp2-side{
+  width:0!important;min-width:0!important;padding-left:0!important;padding-right:0!important;border-right-color:transparent!important;
+  transform:translateX(-104%)!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important;
+}
+#rp-overlay .rp679-nav-reveal{display:none;position:fixed;left:7px;top:14px;z-index:100002;width:34px;height:38px;border:1px solid rgba(0,175,239,.26);border-radius:0 11px 11px 0;background:rgba(5,14,22,.94);color:#8FE7FF;font-size:18px;font-weight:950;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.26);backdrop-filter:blur(14px);}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-nav-collapsed .rp679-nav-reveal{display:grid;place-items:center;}
+
+/* ---------- My Day theme control ---------- */
+#rp-overlay .rp679-home-tools{margin-left:auto;display:flex;align-items:center;gap:9px;}
+#rp-overlay .rp679-home-tools .p639-date{padding-top:0!important;}
+#rp-overlay .rp679-theme-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(139,166,194,.18);border-radius:11px;background:rgba(255,255,255,.035);color:#F4C45F;font-size:18px;cursor:pointer;transition:.15s ease;}
+#rp-overlay .rp679-theme-btn:hover{transform:translateY(-1px);border-color:rgba(250,135,61,.36);background:rgba(250,135,61,.07);}
+
+/* ======================================================================
+   LIGHT THEME · phased portal only
+   ====================================================================== */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light{
+  --p639-bg:#EEF3F7;--p639-panel:#FFFFFF;--p639-panel2:#F7FAFC;--p639-line:rgba(32,55,76,.14);--p639-text:#162433;--p639-muted:#607286;
+  --rp674-bg:#EEF3F7;--rp674-bg-deep:#F7FAFC;--rp674-panel:#FFFFFF;--rp674-panel-2:#F6F9FB;--rp674-panel-soft:rgba(30,55,77,.035);
+  --rp674-line:rgba(32,55,76,.14);--rp674-line-strong:rgba(32,55,76,.20);--rp674-text:#162433;--rp674-text-2:#33495E;--rp674-muted:#65778A;--rp674-muted-2:#7A8B9B;
+  background:radial-gradient(circle at 80% -12%,rgba(0,175,239,.08),transparent 34rem),radial-gradient(circle at 32% -10%,rgba(250,135,61,.07),transparent 31rem),linear-gradient(135deg,#F8FAFC,#EDF3F7 48%,#F5F8FA)!important;
+  color:#162433!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp2-side{background:linear-gradient(180deg,#FBFCFD,#F5F8FA 68%,#EFF4F7)!important;border-right-color:rgba(32,55,76,.13)!important;box-shadow:10px 0 32px rgba(31,50,67,.07)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand{border-color:rgba(32,55,76,.12)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand strong{color:#162433!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand span{color:#536C82!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-brand em{background:#EAF8FE!important;border-color:rgba(0,145,198,.24)!important;color:#007FAE!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav-label{color:#718296!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button{color:#31475B!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button i{color:#6F879C!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button:hover{background:rgba(20,52,76,.05)!important;color:#132636!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button.on{background:linear-gradient(90deg,#FF893D,#FA873D 72%,#F6A16A)!important;border-color:#FA873D!important;color:#fff!important;box-shadow:0 8px 22px rgba(250,135,61,.18)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-nav button.on i{color:#fff!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-user{border-color:rgba(32,55,76,.12)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-user-card,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-logout{background:#F8FAFC!important;border-color:rgba(32,55,76,.14)!important;color:#536B80!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-user-card strong{color:#1B2C3C!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-user-card span{color:#75879A!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-side-switch,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-hide-btn{background:#F7FAFC!important;border-color:rgba(32,55,76,.14)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-side-switch button,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-hide-btn{color:#5D7287!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-side-switch button.on{background:#E8F7FD!important;color:#007DAA!important;box-shadow:inset 0 0 0 1px rgba(0,145,198,.16)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp2-main{background:#EEF3F7!important;scrollbar-color:rgba(80,109,130,.25) transparent!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-page-top{background:rgba(248,251,253,.93)!important;border-color:rgba(32,55,76,.12)!important;box-shadow:0 8px 24px rgba(28,49,65,.05)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-page-top strong{color:#172636!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-page-top span{color:#718397!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-page-top-actions button{background:#F6F9FB!important;border-color:rgba(32,55,76,.14)!important;color:#425B70!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-home{background:radial-gradient(circle at 48% -16%,rgba(0,175,239,.055),transparent 32%),#EEF3F7!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-hello h1{color:#172636!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-hello p,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .p639-date{color:#667A8E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-theme-btn{background:#FFF!important;border-color:rgba(32,55,76,.15)!important;color:#335068!important;box-shadow:0 5px 15px rgba(32,55,76,.06)!important;}
+
+/* shared light surfaces across the approved phased pages */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-daily-strip,.p639-panel,.p639-metric,.p639-performance-link,
+ .c656-hero,.c656-tabs,.c656-panel,.c656-metric,.c656-modebar,
+ .f654-hero,.f654-kpi,.f654-panel,
+ .cw4-directory-hero,.cw4-kpi,.cw4-viewbar,.cw4-toolbar,.cw4-table-shell,
+ .q673-hero,.q673-workbar,.q673-table-panel,
+ .o671-rp-hero,.o671-rp-panel,.o671-rp-toolbar,
+ .ms537-card,.mp669-hero,.mp669-overall,.mp669-scorecard,.mp669-panel
+){background:linear-gradient(180deg,#FFFFFF,#FAFCFD)!important;border-color:rgba(32,55,76,.14)!important;box-shadow:0 12px 30px rgba(31,50,67,.055),inset 0 1px 0 rgba(255,255,255,.9)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-panel-head,.c656-panel-head,.f654-panel-head,.q673-table-head,.mp669-score-head,.mp669-columns
+){border-color:rgba(32,55,76,.11)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-daily-stat,.p639-action,.p639-glance-row,.p639-book-coach,
+ .c656-th,.c656-cell,.f654-card,.cw4-table th,.cw4-table td,.q673-table th,.q673-table td,.o671-rp-row,.mp669-row
+){border-color:rgba(32,55,76,.10)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-daily-stat strong,.p639-glance-label strong,.p639-glance-value,.p639-book-top strong,.p639-metric strong,
+ .c656-title,.c656-panel-head h2,.c656-company-btn,
+ .f654-hero h1,.f654-panel-head h2,
+ .cw4-directory-title,.cw4-kpi-value,.cw4-company-name,.cw4-cell-main,
+ .q673-title,.q673-section-title,
+ .o671-rp-title,.o671-rp-row strong,
+ .mp669-hero h1,.mp669-score-head h2,.mp669-metric-name,.mp669-live strong,.mp669-score strong
+){color:#172636!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .p639-daily-stat span,.p639-action-copy p,.p639-action-copy small,.p639-glance-label span,.p639-book-foot,.p639-book-coach span,.p639-metric small,.p639-home-footer,
+ .c656-copy,.c656-panel-head p,.c656-empty,.c656-cell,
+ .f654-hero p,.f654-kpi em,.f654-panel-head p,.f654-empty,
+ .cw4-directory-copy,.cw4-kpi-sub,.cw4-company-sub,.cw4-cell-sub,
+ .q673-copy,.q673-footnote,.q673-empty-row td,
+ .o671-rp-copy,.o671-rp-row span,
+ .ms537-card p,.mp669-hero p,.mp669-score-head p,.mp669-metric-meta,.mp669-live span,.mp669-score small,.mp669-pace small,.mp669-rec
+){color:#62768A!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(
+ .c656-select,.c656-search,.c656-btn,.cw4-toolbar input,.cw4-toolbar select,.cw4-btn,.q673-search,.q673-select,.q673-btn,.o671-rp-search,.o671-rp-select,.o671-rp-btn,.ms537-card button
+){background:#F7FAFC!important;border-color:rgba(32,55,76,.16)!important;color:#263B4E!important;box-shadow:none!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.q673-table th,.cw4-table th,.o671-rp-row.header,.c656-th){background:#EEF4F8!important;color:#637A8E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.q673-table td,.cw4-table td,.o671-rp-row,.c656-cell){background:#FFFFFF!important;color:#2A3E50!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-title,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-pulse strong,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-item strong{color:#1A2C3C!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-copy,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-item span{color:#6E8296!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light :is(.rp679-todo-pulse div,.rp679-todo-section,.rp679-quick-grid button){background:#FAFCFD!important;border-color:rgba(32,55,76,.12)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-section-head{border-color:rgba(32,55,76,.10)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-todo-section-head strong{color:#334B5F!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .rp679-quick-grid button{color:#425B70!important;}
+
+@media(max-width:780px){
+ #rp-overlay .rp679-side-tools{display:none!important;}
+ #rp-overlay .rp679-nav-reveal{display:none!important;}
+ #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-nav-collapsed{display:block!important;}
+ #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-nav-collapsed .rp2-side{width:auto!important;transform:none!important;opacity:1!important;pointer-events:auto!important;padding-left:10px!important;padding-right:10px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+ #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639,#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-side,#rp-overlay .rp679-theme-btn{transition:none!important;}
+}
+</style>
+<script id="tcp-v679-rep-portal-workspace-controls-js">
+(function(){
+ 'use strict';
+ var BUILD='v679',KEY_THEME='tcp.repPortal.theme.v679',KEY_COLLAPSE='tcp.repPortal.navCollapsed.v679',KEY_SIDE='tcp.repPortal.sideMode.v679';
+ var observer=null,timer=0;
+ function get(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
+ function set(k,v){try{localStorage.setItem(k,String(v))}catch(e){}}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function clean(v){return String(v==null?'':v).trim()}
+ function app(){return document.querySelector('#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639')}
+ function phased(){return !!app()}
+ function work(){try{return window.TCP_PHASED_REP_DAILY_COCKPIT_V639&&typeof TCP_PHASED_REP_DAILY_COCKPIT_V639.workData==='function'?TCP_PHASED_REP_DAILY_COCKPIT_V639.workData():null}catch(e){return null}}
+ function navTo(page){try{if(typeof window._rp2Go==='function')window._rp2Go(page)}catch(e){}}
+ function openCall(name){try{if(typeof window._ps60OpenCall==='function')return window._ps60OpenCall(encodeURIComponent(name));navTo('call')}catch(e){navTo('call')}}
+ function openNotifications(){try{if(typeof window._rp2OpenDesktopNotifications==='function')return window._rp2OpenDesktopNotifications();navTo('home')}catch(e){navTo('home')}}
+ function unreadCount(){try{return typeof window._rp2NotificationUnreadCount==='function'?Number(window._rp2NotificationUnreadCount())||0:0}catch(e){return 0}}
+ function notificationPreview(){
+  var out=[];
+  try{
+   if(typeof window._rp2NotificationsV2!=='function')return out;
+   var host=document.createElement('div');host.innerHTML=window._rp2NotificationsV2();
+   var nodes=host.querySelectorAll('.ntf-card.unread,.ntf-card');
+   for(var i=0;i<nodes.length&&out.length<3;i++){
+    var title=nodes[i].querySelector('.ntf-card-title'),msg=nodes[i].querySelector('.ntf-card-msg');
+    var t=clean(title&&title.textContent),m=clean(msg&&msg.textContent);if(!t)continue;
+    if(!out.some(function(x){return x.title===t}))out.push({title:t,copy:m});
+   }
+  }catch(e){}
+  return out;
+ }
+ function todoItem(icon,accent,title,copy,onclick){return '<div class="rp679-todo-item" style="--todo-accent:'+accent+'" '+(onclick?'onclick="'+onclick+'"':'')+'><div class="rp679-todo-icon">'+icon+'</div><div><strong>'+esc(title)+'</strong><span>'+esc(copy||'')+'</span></div></div>'}
+ function todoHtml(){
+  var w=work()||{},allCalls=Array.isArray(w.calls)?w.calls:[],allFollow=Array.isArray(w.business)?w.business:[],calls=allCalls.slice(0,3),follow=allFollow.slice(0,3),alerts=notificationPreview(),unread=unreadCount();
+  var callsHtml=calls.length?calls.map(function(c){var name=clean(c.customer||c.company)||'Customer',copy=clean(c.reason||c.copy||c.source)||'Next scheduled customer call';return todoItem('☎','#00AFEF',name,copy,"_rp679OpenCall('"+encodeURIComponent(name)+"')")}).join(''):'<div class="rp679-todo-empty">No ranked calls are waiting right now.</div>';
+  var followHtml=follow.length?follow.map(function(f){var title=clean(f.title||f.customer||f.company)||'Customer follow-up',copy=[clean(f.customer||f.company),clean(f.copy||f.source)].filter(Boolean).join(' · ');return todoItem('✓','#47D16C',title,copy,"_rp2Go('action')")}).join(''):'<div class="rp679-todo-empty">No follow-ups are due today.</div>';
+  var alertHtml=alerts.length?alerts.map(function(a){return todoItem('🔔','#EF9F27',a.title,a.copy,'_rp679OpenNotifications()')}).join(''):'<div class="rp679-todo-empty">No unread notification details are waiting.</div>';
+  return '<div class="rp679-todo-head"><div class="rp679-todo-kick">TODAY · LIVE WORK</div><div class="rp679-todo-title">To Do</div><div class="rp679-todo-copy">A compact view of what needs your attention without leaving the rail.</div></div>'+
+   '<div class="rp679-todo-pulse"><div><strong>'+allCalls.length+'</strong><span>Calls</span></div><div><strong>'+allFollow.length+'</strong><span>Follow-ups</span></div><div><strong>'+unread+'</strong><span>Alerts</span></div></div>'+
+   '<section class="rp679-todo-section"><div class="rp679-todo-section-head"><strong>Next 3 Calls</strong><button onclick="_rp2Go(\'call\')">Open</button></div><div class="rp679-todo-list">'+callsHtml+'</div></section>'+
+   '<section class="rp679-todo-section"><div class="rp679-todo-section-head"><strong>Today\'s Follow-Ups</strong><button onclick="_rp2Go(\'action\')">Open</button></div><div class="rp679-todo-list">'+followHtml+'</div></section>'+
+   '<section class="rp679-todo-section"><div class="rp679-todo-section-head"><strong>Notifications</strong><button onclick="_rp679OpenNotifications()">Open</button></div><div class="rp679-todo-list">'+alertHtml+'</div></section>'+
+   '<section class="rp679-todo-section"><div class="rp679-todo-section-head"><strong>Quick Jump</strong></div><div class="rp679-quick-grid"><button onclick="_rp2Go(\'customers\')">Companies</button><button onclick="_rp2Go(\'dealdesk\')">Quotes</button><button onclick="_rp2Go(\'orders\')">Orders</button><button onclick="_rp2RefreshCloud(this,false)">Refresh</button></div></section>';
+ }
+ function applyTheme(a){
+  if(!a)return;var light=get(KEY_THEME,'dark')==='light';a.classList.toggle('rp679-light',light);
+  var btn=a.querySelector('.rp679-theme-btn');if(btn){btn.innerHTML=light?'☾':'☀';btn.title=light?'Switch to dark mode':'Switch to light mode';btn.setAttribute('aria-label',btn.title)}
+ }
+ function applyCollapse(a){if(!a)return;var collapsed=get(KEY_COLLAPSE,'0')==='1';a.classList.toggle('rp679-nav-collapsed',collapsed);var r=a.querySelector('.rp679-nav-reveal');if(r)r.title=collapsed?'Show navigation':'Hide navigation'}
+ function applySideMode(a){
+  if(!a)return;var side=a.querySelector('.rp2-side'),mode=get(KEY_SIDE,'nav');if(!side)return;
+  side.classList.toggle('rp679-todo-mode',mode==='todo');
+  Array.prototype.forEach.call(side.querySelectorAll('.rp679-side-switch button'),function(b){b.classList.toggle('on',b.getAttribute('data-mode')===mode)});
+  if(mode==='todo'){var todo=side.querySelector('.rp679-todo');if(todo)todo.innerHTML=todoHtml()}
+ }
+ function installSide(a){
+  var side=a&&a.querySelector('.rp2-side'),brand=side&&side.querySelector('.p639-brand');if(!side||!brand)return;
+  var tools=side.querySelector('.rp679-side-tools');
+  if(!tools){tools=document.createElement('div');tools.className='rp679-side-tools';tools.innerHTML='<div class="rp679-side-switch"><button data-mode="nav" onclick="_rp679SetSideMode(\'nav\')">Menu</button><button data-mode="todo" onclick="_rp679SetSideMode(\'todo\')">To Do</button></div><button class="rp679-hide-btn" onclick="_rp679ToggleNav()" title="Hide navigation">‹</button>';brand.insertAdjacentElement('afterend',tools)}
+  var todo=side.querySelector('.rp679-todo');if(!todo){todo=document.createElement('div');todo.className='rp679-todo';var nav=side.querySelector('.p639-nav');if(nav)nav.insertAdjacentElement('afterend',todo)}
+  var reveal=a.querySelector('.rp679-nav-reveal');if(!reveal){reveal=document.createElement('button');reveal.className='rp679-nav-reveal';reveal.type='button';reveal.innerHTML='›';reveal.title='Show navigation';reveal.onclick=function(){window._rp679ToggleNav(false)};a.appendChild(reveal)}
+ }
+ function installHomeTheme(a){
+  if(!a)return;var hello=a.querySelector('.p639-home .p639-hello');if(!hello)return;
+  var tools=hello.querySelector('.rp679-home-tools');
+  if(!tools){
+   tools=document.createElement('div');tools.className='rp679-home-tools';
+   var date=hello.querySelector('.p639-date');if(date)tools.appendChild(date);
+   var btn=document.createElement('button');btn.type='button';btn.className='rp679-theme-btn';btn.onclick=function(){window._rp679ToggleTheme()};tools.appendChild(btn);hello.appendChild(tools)
+  }
+ }
+ function install(){
+  var a=app();if(!a)return;installSide(a);installHomeTheme(a);applyTheme(a);applyCollapse(a);applySideMode(a)
+ }
+ function schedule(){clearTimeout(timer);timer=setTimeout(install,0);setTimeout(install,80);setTimeout(install,260)}
+ window._rp679ToggleTheme=function(){var next=get(KEY_THEME,'dark')==='light'?'dark':'light';set(KEY_THEME,next);applyTheme(app())};
+ window._rp679ToggleNav=function(force){var next=typeof force==='boolean'?force:!(get(KEY_COLLAPSE,'0')==='1');set(KEY_COLLAPSE,next?'1':'0');applyCollapse(app())};
+ window._rp679SetSideMode=function(mode){mode=mode==='todo'?'todo':'nav';set(KEY_SIDE,mode);applySideMode(app())};
+ window._rp679OpenCall=function(encoded){var name='';try{name=decodeURIComponent(encoded||'')}catch(e){name=encoded||''}openCall(name)};
+ window._rp679OpenNotifications=openNotifications;
+ window._rp679RefreshTodo=function(){applySideMode(app())};
+
+ var baseAfter=window._rp2After;window._rp2After=function(){var r=typeof baseAfter==='function'?baseAfter.apply(this,arguments):undefined;schedule();return r};
+ var baseGo=window._rp2Go;if(typeof baseGo==='function'&&!baseGo._v679){var wrapped=function(){var r=baseGo.apply(this,arguments);schedule();return r};wrapped._v679=true;window._rp2Go=wrapped}
+ if(typeof MutationObserver!=='undefined'){observer=new MutationObserver(schedule);var root=document.getElementById('rp-overlay');if(root)observer.observe(root,{childList:true,subtree:true})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
+
+ var priorBundle=window._rpPhasedDevBundle;
+ if(typeof priorBundle==='function'&&!priorBundle._v679){var bundle=function(){var base=priorBundle.apply(this,arguments),css=document.getElementById('tcp-v679-rep-portal-workspace-controls-css'),js=document.getElementById('tcp-v679-rep-portal-workspace-controls-js');return base+'\n\n<!-- v679 REP PORTAL WORKSPACE CONTROLS -->\n<style id="tcp-v679-rep-portal-workspace-controls-css">\n'+(css?css.textContent:'')+'\n<\/style>\n<script id="tcp-v679-rep-portal-workspace-controls-js">\n'+(js?js.textContent:'')+'\n<\\/script>'};bundle._v679=true;window._rpPhasedDevBundle=bundle}
+ window.TCP_BUILD_VERSION=BUILD;window.TCP_REP_PORTAL_WORKSPACE_CONTROLS_V679={version:BUILD,install:install};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v679 — Rep Portal Workspace Controls'}catch(e){}
+})();
+</script>
+
