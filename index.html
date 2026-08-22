@@ -3581,6 +3581,7 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   <button class="tab" onclick="gt('year',this)">🗓️ Year Overview</button>
   <button class="tab" onclick="gt('entry',this)">Data entry</button>
   <button class="tab" onclick="gt('profiles',this)">Rep profiles</button>  <button class="tab" onclick="gt('repportal',this)">&#128272; Rep Portal</button>
+  <button class="tab" onclick="gt('callcampaigns',this)">&#128227; Call Campaigns</button>
   <button class="tab" onclick="gt('hr',this)">HR &amp; Notes</button>
   <button class="tab" onclick="gt('credits',this)">Credit memos</button>  <button class="tab" onclick="gt('reviews',this)">⭐ Customer Reviews</button>
   <button class="tab" onclick="gt('art',this)">Art errors</button>
@@ -5002,6 +5003,8 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
 <div id="pg-orders" class="page"><div id="ord-page"></div></div>
 <div id="pg-repportal" class="page"><div id="rp-admin"></div></div>
 <div id="pg-reviews" class="page"><div id="reviews-page"></div></div>
+<div id="pg-callcampaigns" class="page call-campaigns-page"></div>
+
 <div id="pg-admin" class="page admin-system-page">
 <div id="ds-panel"></div>
 <div id="ai-conn"></div>
@@ -14616,7 +14619,7 @@ window.addEventListener('load', function(){
   var NAV_GROUPS=[
     {key:'command',icon:'🏠',label:'Command Center',open:true,items:[['year','Year Overview','🗓️'],['lb','Leaderboard','🏆']]},
     {key:'salesperf',icon:'📈',label:'Sales Performance',open:true,items:[['daily','Daily Sales & Calls','🗓️'],['intel','Forecast','🔮'],['inbound','Inbound Leads','📥'],['customers','Customers','🏢'],['orders','Orders','📦'],['reports','Reports Hub','📄']]},
-    {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['repportal','Rep Portal','🔐'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
+    {key:'repmgmt',icon:'👥',label:'Rep Management',open:true,items:[['profiles','Rep Profiles','👤'],['repportal','Rep Portal','🔐'],['callcampaigns','Call Campaigns','📣'],['review','Reviews','📝'],['hr','HR & Notes','📋']]},
     {key:'opsg',icon:'🛠️',label:'Operations',open:true,items:[['entry','Data Entry','⌨️'],['credits','Credit Memos','💳'],['reviews','Customer Reviews','⭐'],['art','Art Errors','🎨'],['prodintel','Production Intelligence','📊']]},,
     {key:'system',icon:'⚙️',label:'Admin',open:false,items:[['admin','Admin','⚙️'],['cknow','Company Knowledge','🧠']]}
   ];
@@ -64922,44 +64925,44 @@ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title
 <script id="tcp-v663-final-identity-js">(function(){window.TCP_BUILD_VERSION='v663';try{document.documentElement.setAttribute('data-tcp-build','v663');document.title='Sales Tracker v663 — My Call Lists Command Center'}catch(e){}})();</script>
 <!-- v664 Manager Campaign Builder: manager-defined Required/Suggested call lists pushed as rep-owned static snapshots -->
 <style id="tcp-v664-manager-campaign-css">
-#pg-admin #cc664-campaigns{margin:18px 0 22px;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:radial-gradient(circle at 90% 0,rgba(0,175,239,.09),transparent 34%),linear-gradient(145deg,rgba(17,27,42,.96),rgba(8,15,26,.96));box-shadow:0 20px 52px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden}
-#pg-admin .cc664-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
-#pg-admin .cc664-kick{font-size:10px;font-weight:950;letter-spacing:.15em;text-transform:uppercase;color:#00AFEF;margin-bottom:6px}
-#pg-admin .cc664-head h2{margin:0;color:#fff;font-family:'Droid Serif',Georgia,serif;font-size:26px;letter-spacing:-.03em}
-#pg-admin .cc664-head p{max-width:820px;margin:7px 0 0;color:#98A7BC;font-size:12px;line-height:1.55}
-#pg-admin .cc664-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-#pg-admin .cc664-stat{min-width:88px;padding:9px 11px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.025);text-align:center}
-#pg-admin .cc664-stat span{display:block;color:#7E91A7;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
-#pg-admin .cc664-stat strong{display:block;margin-top:3px;color:#fff;font-size:16px}
-#pg-admin .cc664-btn{min-height:38px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:#101E2B;color:#EAF1F6;font-size:10.5px;font-weight:900;cursor:pointer;font-family:inherit}
-#pg-admin .cc664-btn:hover{filter:brightness(1.08)}
-#pg-admin .cc664-btn.primary{border:0;background:linear-gradient(135deg,#FA873D,#F27C2D 55%,#00AFEF);color:#fff;box-shadow:0 10px 24px rgba(250,135,61,.15)}
-#pg-admin .cc664-btn.cyan{border-color:rgba(0,175,239,.30);background:rgba(0,175,239,.08);color:#A4EAFC}
-#pg-admin .cc664-btn.danger{border-color:rgba(226,75,74,.24);background:rgba(226,75,74,.06);color:#FFB2B2}
-#pg-admin .cc664-body{padding:18px 20px 20px}
-#pg-admin .cc664-empty{padding:25px;border:1px dashed rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.018);text-align:center;color:#8092A6;font-size:11px;line-height:1.5}
-#pg-admin .cc664-empty strong{display:block;color:#E8EFF5;font-family:'Droid Serif',Georgia,serif;font-size:17px;margin-bottom:5px}
-#pg-admin .cc664-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:12px}
-#pg-admin .cc664-card{position:relative;padding:15px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015));overflow:hidden}
-#pg-admin .cc664-card.required{border-color:rgba(250,135,61,.24);box-shadow:inset 3px 0 0 rgba(250,135,61,.55)}
-#pg-admin .cc664-card.suggested{border-color:rgba(0,175,239,.18);box-shadow:inset 3px 0 0 rgba(0,175,239,.38)}
-#pg-admin .cc664-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-#pg-admin .cc664-badges{display:flex;gap:5px;flex-wrap:wrap}
-#pg-admin .cc664-badge{display:inline-flex;padding:4px 7px;border:1px solid rgba(255,255,255,.11);border-radius:999px;color:#A6B5C5;font-size:8px;font-weight:950;letter-spacing:.05em;text-transform:uppercase}
-#pg-admin .cc664-badge.required{border-color:rgba(250,135,61,.27);background:rgba(250,135,61,.07);color:#FFC49D}
-#pg-admin .cc664-badge.suggested{border-color:rgba(0,175,239,.25);background:rgba(0,175,239,.06);color:#A5EAFE}
-#pg-admin .cc664-card h3{margin:9px 0 0;color:#fff;font-family:'Droid Serif',Georgia,serif;font-size:18px;letter-spacing:-.02em}
-#pg-admin .cc664-card-copy{margin:5px 0 0;color:#8496A9;font-size:9.5px;line-height:1.45}
-#pg-admin .cc664-progress{height:7px;margin-top:12px;border-radius:999px;background:#172A36;overflow:hidden}
-#pg-admin .cc664-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00AFEF,#70D8F3)}
-#pg-admin .cc664-card.required .cc664-progress i{background:linear-gradient(90deg,#FA873D,#FFB180)}
-#pg-admin .cc664-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
-#pg-admin .cc664-metrics div{padding:8px 9px;border:1px solid rgba(255,255,255,.07);border-radius:10px;background:rgba(0,0,0,.14)}
-#pg-admin .cc664-metrics span{display:block;color:#74889D;font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
-#pg-admin .cc664-metrics strong{display:block;margin-top:3px;color:#F3F7FA;font-size:12px}
-#pg-admin .cc664-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07)}
-#pg-admin .cc664-card-foot span{color:#71869B;font-size:8.5px}
-#pg-admin .cc664-card-foot>div{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#pg-callcampaigns #cc664-campaigns{margin:18px 0 22px;border:1px solid rgba(255,255,255,.10);border-radius:24px;background:radial-gradient(circle at 90% 0,rgba(0,175,239,.09),transparent 34%),linear-gradient(145deg,rgba(17,27,42,.96),rgba(8,15,26,.96));box-shadow:0 20px 52px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden}
+#pg-callcampaigns .cc664-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+#pg-callcampaigns .cc664-kick{font-size:10px;font-weight:950;letter-spacing:.15em;text-transform:uppercase;color:#00AFEF;margin-bottom:6px}
+#pg-callcampaigns .cc664-head h2{margin:0;color:#fff;font-family:'Droid Serif',Georgia,serif;font-size:26px;letter-spacing:-.03em}
+#pg-callcampaigns .cc664-head p{max-width:820px;margin:7px 0 0;color:#98A7BC;font-size:12px;line-height:1.55}
+#pg-callcampaigns .cc664-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#pg-callcampaigns .cc664-stat{min-width:88px;padding:9px 11px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.025);text-align:center}
+#pg-callcampaigns .cc664-stat span{display:block;color:#7E91A7;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
+#pg-callcampaigns .cc664-stat strong{display:block;margin-top:3px;color:#fff;font-size:16px}
+#pg-callcampaigns .cc664-btn{min-height:38px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:#101E2B;color:#EAF1F6;font-size:10.5px;font-weight:900;cursor:pointer;font-family:inherit}
+#pg-callcampaigns .cc664-btn:hover{filter:brightness(1.08)}
+#pg-callcampaigns .cc664-btn.primary{border:0;background:linear-gradient(135deg,#FA873D,#F27C2D 55%,#00AFEF);color:#fff;box-shadow:0 10px 24px rgba(250,135,61,.15)}
+#pg-callcampaigns .cc664-btn.cyan{border-color:rgba(0,175,239,.30);background:rgba(0,175,239,.08);color:#A4EAFC}
+#pg-callcampaigns .cc664-btn.danger{border-color:rgba(226,75,74,.24);background:rgba(226,75,74,.06);color:#FFB2B2}
+#pg-callcampaigns .cc664-body{padding:18px 20px 20px}
+#pg-callcampaigns .cc664-empty{padding:25px;border:1px dashed rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.018);text-align:center;color:#8092A6;font-size:11px;line-height:1.5}
+#pg-callcampaigns .cc664-empty strong{display:block;color:#E8EFF5;font-family:'Droid Serif',Georgia,serif;font-size:17px;margin-bottom:5px}
+#pg-callcampaigns .cc664-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:12px}
+#pg-callcampaigns .cc664-card{position:relative;padding:15px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015));overflow:hidden}
+#pg-callcampaigns .cc664-card.required{border-color:rgba(250,135,61,.24);box-shadow:inset 3px 0 0 rgba(250,135,61,.55)}
+#pg-callcampaigns .cc664-card.suggested{border-color:rgba(0,175,239,.18);box-shadow:inset 3px 0 0 rgba(0,175,239,.38)}
+#pg-callcampaigns .cc664-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#pg-callcampaigns .cc664-badges{display:flex;gap:5px;flex-wrap:wrap}
+#pg-callcampaigns .cc664-badge{display:inline-flex;padding:4px 7px;border:1px solid rgba(255,255,255,.11);border-radius:999px;color:#A6B5C5;font-size:8px;font-weight:950;letter-spacing:.05em;text-transform:uppercase}
+#pg-callcampaigns .cc664-badge.required{border-color:rgba(250,135,61,.27);background:rgba(250,135,61,.07);color:#FFC49D}
+#pg-callcampaigns .cc664-badge.suggested{border-color:rgba(0,175,239,.25);background:rgba(0,175,239,.06);color:#A5EAFE}
+#pg-callcampaigns .cc664-card h3{margin:9px 0 0;color:#fff;font-family:'Droid Serif',Georgia,serif;font-size:18px;letter-spacing:-.02em}
+#pg-callcampaigns .cc664-card-copy{margin:5px 0 0;color:#8496A9;font-size:9.5px;line-height:1.45}
+#pg-callcampaigns .cc664-progress{height:7px;margin-top:12px;border-radius:999px;background:#172A36;overflow:hidden}
+#pg-callcampaigns .cc664-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00AFEF,#70D8F3)}
+#pg-callcampaigns .cc664-card.required .cc664-progress i{background:linear-gradient(90deg,#FA873D,#FFB180)}
+#pg-callcampaigns .cc664-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+#pg-callcampaigns .cc664-metrics div{padding:8px 9px;border:1px solid rgba(255,255,255,.07);border-radius:10px;background:rgba(0,0,0,.14)}
+#pg-callcampaigns .cc664-metrics span{display:block;color:#74889D;font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+#pg-callcampaigns .cc664-metrics strong{display:block;margin-top:3px;color:#F3F7FA;font-size:12px}
+#pg-callcampaigns .cc664-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07)}
+#pg-callcampaigns .cc664-card-foot span{color:#71869B;font-size:8.5px}
+#pg-callcampaigns .cc664-card-foot>div{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .cc664-modal-wrap{position:fixed;inset:0;z-index:2147483300;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(1,5,10,.78);backdrop-filter:blur(10px)}
 .cc664-modal{width:min(1120px,97vw);max-height:94vh;overflow:auto;border:1px solid rgba(255,255,255,.13);border-radius:24px;background:linear-gradient(180deg,#101D2A,#07111B);box-shadow:0 34px 100px rgba(0,0,0,.58);color:#F3F7FA;font-family:'Open Sans','Segoe UI',Arial,sans-serif}
 .cc664-modal *{box-sizing:border-box}
@@ -65022,12 +65025,12 @@ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title
 .cc664-modal-actions{position:sticky;bottom:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 20px;border-top:1px solid rgba(255,255,255,.08);background:rgba(8,18,28,.97);backdrop-filter:blur(14px)}
 .cc664-modal-actions>div{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
 .cc664-detail-reps{display:flex;flex-direction:column;gap:7px}.cc664-detail-rep{display:grid;grid-template-columns:minmax(130px,1fr) 100px 100px;gap:8px;align-items:center;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:#081621;font-size:9px;color:#8FA2B5}.cc664-detail-rep strong{color:#fff}.cc664-detail-rep b{text-align:right;color:#CDEBF4}
-@media(max-width:900px){#pg-admin .cc664-head{grid-template-columns:1fr}#pg-admin .cc664-head-actions{justify-content:flex-start}.cc664-grid2,.cc664-grid3{grid-template-columns:1fr}.cc664-preview-summary{grid-template-columns:1fr 1fr}.cc664-modal{width:min(760px,97vw)}}
+@media(max-width:900px){#pg-callcampaigns .cc664-head{grid-template-columns:1fr}#pg-callcampaigns .cc664-head-actions{justify-content:flex-start}.cc664-grid2,.cc664-grid3{grid-template-columns:1fr}.cc664-preview-summary{grid-template-columns:1fr 1fr}.cc664-modal{width:min(760px,97vw)}}
 @media(max-width:620px){.cc664-steps{grid-template-columns:1fr}.cc664-preview-row,.cc664-detail-rep{grid-template-columns:1fr}.cc664-preview-row.head{display:none}.cc664-preview-summary{grid-template-columns:1fr}.cc664-modal-actions{align-items:stretch;flex-direction:column}.cc664-modal-actions>div{justify-content:stretch}.cc664-modal-actions .cc664-btn{flex:1}}
 </style>
 <script id="tcp-v664-manager-campaign-js">
 (function(){'use strict';
-var BUILD='v664',state=window._cc664CampaignState||(window._cc664CampaignState={modal:'',step:1,draft:null,preview:null,detailId:''}),cache={sig:'',reps:{}};
+var BUILD='v665',state=window._cc664CampaignState||(window._cc664CampaignState={modal:'',step:1,draft:null,preview:null,detailId:''}),cache={sig:'',reps:{}};
 function arr(v){if(Array.isArray(v))return v;if(!v)return[];try{if(typeof v.length==='number'&&typeof v!=='string')return Array.prototype.slice.call(v);if(typeof v==='object')return Object.keys(v).map(function(k){return v[k]}).filter(Boolean)}catch(e){}return[]}
 function clean(v){return String(v==null?'':v).trim()}function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}function n(v){var x=Number(v);return isFinite(x)?x:0}
 function esc(v){return String(v==null?'':v).replace(/[&<>\"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}
@@ -65059,8 +65062,8 @@ function listById(id){return lists().filter(function(x){return x&&String(x.id)==
 function campaignProgress(c){var total=0,worked=0;arr(c&&c.assignments).forEach(function(a){var l=listById(a.listId),m=arr(l&&l.members);total+=m.length;worked+=m.filter(function(x){return x&&x.workedAt}).length});return{total:total,worked:worked,pct:total?Math.round(worked/total*100):0}}
 function activeCounts(){var required=0,suggested=0;campaigns().forEach(function(c){if(c.archivedAt)return;if(c.assignmentType==='required')required++;else suggested++});return{required:required,suggested:suggested,total:required+suggested}}
 function campaignCard(c){var p=campaignProgress(c),kind=c.assignmentType==='required'?'required':'suggested',repsCount=arr(c.assignments).length,selectedCount=arr(c.selectedReps).length||repsCount,customers=arr(c.assignments).reduce(function(t,a){return t+n(a.count)},0),due=kind==='required'&&c.dueDate?' · Due '+fmt(c.dueDate):'';return'<article class="cc664-card '+kind+'"><div class="cc664-card-top"><div class="cc664-badges"><span class="cc664-badge '+kind+'">Manager '+(kind==='required'?'Required':'Suggested')+'</span>'+(c.archivedAt?'<span class="cc664-badge">Archived</span>':'')+'</div><strong style="color:#fff;font-size:13px">'+p.pct+'%</strong></div><h3>'+esc(c.name||'Untitled Campaign')+'</h3><p class="cc664-card-copy">'+selectedCount+' reps selected · '+repsCount+' lists · '+customers+' customer assignments'+esc(due)+'</p><div class="cc664-progress"><i style="width:'+p.pct+'%"></i></div><div class="cc664-metrics"><div><span>Progress</span><strong>'+p.worked+' / '+p.total+'</strong></div><div><span>Rep Lists</span><strong>'+repsCount+'</strong></div><div><span>Created</span><strong>'+esc(fmt(c.createdAt))+'</strong></div></div><div class="cc664-card-foot"><span>Each rep has independent list progress.</span><div><button type="button" class="cc664-btn" onclick="_cc664ViewCampaign(\''+esc(c.id)+'\')">View Rep Progress</button>'+(c.archivedAt?'':'<button type="button" class="cc664-btn danger" onclick="_cc664Archive(\''+esc(c.id)+'\')">Archive</button>')+'</div></div></article>'}
-function sectionHtml(){var counts=activeCounts(),rows=campaigns().slice().sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''))});return'<section id="cc664-campaigns"><div class="cc664-head"><div><div class="cc664-kick">REP CALL CAMPAIGNS · BUILD v664</div><h2>Create once. Push each rep their own matching list.</h2><p>Define one audience, choose the reps, then push independent static call lists. Required campaigns can carry a due date; Suggested campaigns stay optional.</p></div><div class="cc664-head-actions"><div class="cc664-stat"><span>Required</span><strong>'+counts.required+'</strong></div><div class="cc664-stat"><span>Suggested</span><strong>'+counts.suggested+'</strong></div><button type="button" class="cc664-btn primary" onclick="_cc664New()">＋ Create Campaign</button></div></div><div class="cc664-body">'+(rows.length?'<div class="cc664-cards">'+rows.map(campaignCard).join('')+'</div>':'<div class="cc664-empty"><strong>No manager call campaigns yet</strong>Create a Required or Suggested campaign and Sales Tracker will generate a separate static list for each selected rep.</div>')+'</div></section>'}
-function mount(){var page=document.getElementById('pg-admin');if(!page)return false;var old=document.getElementById('cc664-campaigns');if(old)old.remove();var anchor=document.getElementById('cc547-admin')||document.getElementById('cc653-eligibility');if(anchor)anchor.insertAdjacentHTML('afterend',sectionHtml());else page.insertAdjacentHTML('afterbegin',sectionHtml());renderOverlay();return true}
+function sectionHtml(){var counts=activeCounts(),rows=campaigns().slice().sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''))});return'<section id="cc664-campaigns"><div class="cc664-head"><div><div class="cc664-kick">REP CALL CAMPAIGNS · BUILD v665</div><h2>Create once. Push each rep their own matching list.</h2><p>Define one audience, choose the reps, then push independent static call lists. Required campaigns can carry a due date; Suggested campaigns stay optional.</p></div><div class="cc664-head-actions"><div class="cc664-stat"><span>Required</span><strong>'+counts.required+'</strong></div><div class="cc664-stat"><span>Suggested</span><strong>'+counts.suggested+'</strong></div><button type="button" class="cc664-btn primary" onclick="_cc664New()">＋ Create Campaign</button></div></div><div class="cc664-body">'+(rows.length?'<div class="cc664-cards">'+rows.map(campaignCard).join('')+'</div>':'<div class="cc664-empty"><strong>No manager call campaigns yet</strong>Create a Required or Suggested campaign and Sales Tracker will generate a separate static list for each selected rep.</div>')+'</div></section>'}
+function mount(){var page=document.getElementById('pg-callcampaigns');if(!page)return false;var old=document.getElementById('cc664-campaigns');if(old)old.remove();page.insertAdjacentHTML('afterbegin',sectionHtml());renderOverlay();return true}
 function typeSeg(d){return'<div class="cc664-field"><span>Campaign Type</span><small>Required is pinned for the rep. Suggested is optional.</small><div class="cc664-seg"><button type="button" class="required '+(d.assignmentType==='required'?'on':'')+'" onclick="_cc664Set(\'assignmentType\',\'required\')">Required</button><button type="button" class="'+(d.assignmentType==='suggested'?'on':'')+'" onclick="_cc664Set(\'assignmentType\',\'suggested\')">Suggested</button></div></div>'}
 function multi(label,key,map,selected,allMode){var vals=facetKeys(map),sel={};arr(selected).forEach(function(x){sel[x]=1});return'<div class="cc664-filter-group"><div class="cc664-filter-head"><div><div class="cc664-filter-title">'+esc(label)+'</div><small>'+(allMode?'All start included. Click off what you do not want.':'Select any values you want to include.')+'</small></div><span style="color:#7990A4;font-size:8px">'+arr(selected).length+(allMode?' included':' selected')+'</span></div>'+(vals.length>10?'<input class="cc664-multi-search" placeholder="Search '+esc(label.toLowerCase())+'" oninput="_cc664SearchMulti(this)">':'')+'<div class="cc664-choices">'+(vals.length?vals.map(function(v){return'<button type="button" data-search="'+esc(norm(v))+'" class="cc664-choice '+(sel[v]?'on':'')+'" onclick="_cc664ToggleMulti(\''+key+'\',\''+encodeURIComponent(v)+'\')"><span>'+esc(v)+'</span><small>'+n(map[v])+'</small></button>'}).join(''):'<span style="color:#6F8397;font-size:9px">No loaded values</span>')+'</div></div>'}
 function selectField(label,key,value,opts,sub){return'<div class="cc664-field"><span>'+esc(label)+'</span>'+(sub?'<small>'+esc(sub)+'</small>':'')+'<select onchange="_cc664SetCriteria(\''+key+'\',this.value)">'+opts.map(function(o){return'<option value="'+esc(o[0])+'" '+(String(value)===String(o[0])?'selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select></div>'}
@@ -65080,11 +65083,11 @@ window._cc664ToggleMulti=function(key,encoded){if(!state.draft)return;var v=deco
 window._cc664SearchMulti=function(input){var q=norm(input&&input.value||''),box=input&&input.nextElementSibling;if(!box)return;arr(box.querySelectorAll('.cc664-choice')).forEach(function(b){b.style.display=!q||String(b.getAttribute('data-search')||'').indexOf(q)>=0?'':'none'})};
 window._cc664Next=function(){if(!state.draft)return;var errors=[];if(state.step===1){if(!clean(state.draft.name))errors.push('name');if(!state.draft.reps.length)errors.push('reps');if(state.draft.assignmentType==='required'&&!state.draft.dueDate)errors.push('due')}else if(state.step===2)errors=criteriaErrors(state.draft.criteria);if(errors.length){renderOverlay();return false}state.step=Math.min(3,state.step+1);if(state.step===2){var f=facets(state.draft.reps);ensureLevels(state.draft,f)}if(state.step===3)state.preview=makePreview(state.draft);renderOverlay();return true};
 window._cc664Back=function(){state.step=Math.max(1,state.step-1);state.preview=null;renderOverlay()};
-window._cc664Push=function(){if(!state.draft||!state.preview||!state.preview.nonzero)return false;var d=state.draft,stamp=new Date().toISOString(),cid=id('campaign'),assignmentType=d.assignmentType==='required'?'required':'suggested',camp={id:cid,name:clean(d.name),assignmentType:assignmentType,dueDate:assignmentType==='required'?d.dueDate:'',criteria:clone(d.criteria),selectedReps:d.reps.slice(),createdAt:stamp,updatedAt:stamp,createdBy:'Management',source:'manager-call-campaign-v664',repPreview:state.preview.rows.map(function(r){return{rep:r.rep,count:r.count}}),assignments:[]};state.preview.rows.forEach(function(r){if(!r.count)return;var lid=id('mgrlist'),list={id:lid,name:camp.name,assignedRep:r.rep,assignmentType:assignmentType,dueDate:camp.dueDate,createdAt:stamp,updatedAt:stamp,createdBy:'Management',createdByName:'Management',managerCampaignId:cid,criteria:clone(d.criteria),members:r.names.map(function(name){return{company:name,addedAt:stamp,workedAt:''}}),source:'manager-call-campaign-v664'};lists().push(list);camp.assignments.push({rep:r.rep,listId:lid,count:r.count})});campaigns().push(camp);dirty();state.modal='';state.step=1;state.draft=null;state.preview=null;cache={sig:'',reps:{}};mount();try{alert(camp.name+' was pushed to '+camp.assignments.length+' rep'+(camp.assignments.length===1?'':'s')+'.')}catch(e){}return true};
+window._cc664Push=function(){if(!state.draft||!state.preview||!state.preview.nonzero)return false;var d=state.draft,stamp=new Date().toISOString(),cid=id('campaign'),assignmentType=d.assignmentType==='required'?'required':'suggested',camp={id:cid,name:clean(d.name),assignmentType:assignmentType,dueDate:assignmentType==='required'?d.dueDate:'',criteria:clone(d.criteria),selectedReps:d.reps.slice(),createdAt:stamp,updatedAt:stamp,createdBy:'Management',source:'manager-call-campaign-v665',repPreview:state.preview.rows.map(function(r){return{rep:r.rep,count:r.count}}),assignments:[]};state.preview.rows.forEach(function(r){if(!r.count)return;var lid=id('mgrlist'),list={id:lid,name:camp.name,assignedRep:r.rep,assignmentType:assignmentType,dueDate:camp.dueDate,createdAt:stamp,updatedAt:stamp,createdBy:'Management',createdByName:'Management',managerCampaignId:cid,criteria:clone(d.criteria),members:r.names.map(function(name){return{company:name,addedAt:stamp,workedAt:''}}),source:'manager-call-campaign-v665'};lists().push(list);camp.assignments.push({rep:r.rep,listId:lid,count:r.count})});campaigns().push(camp);dirty();state.modal='';state.step=1;state.draft=null;state.preview=null;cache={sig:'',reps:{}};mount();try{alert(camp.name+' was pushed to '+camp.assignments.length+' rep'+(camp.assignments.length===1?'':'s')+'.')}catch(e){}return true};
 window._cc664ViewCampaign=function(id){state.modal='detail';state.detailId=id;renderOverlay()};
 window._cc664Archive=function(id){var c=campaigns().filter(function(x){return x&&x.id===id})[0];if(!c)return false;try{if(!confirm('Archive '+c.name+'? Rep lists and all progress will remain available.'))return false}catch(e){}c.archivedAt=new Date().toISOString();c.updatedAt=c.archivedAt;dirty();mount();return true};
 var priorTab=window._cc547AdminTab;if(typeof priorTab==='function'&&!priorTab._cc664){var wrapTab=function(){var r=priorTab.apply(this,arguments);setTimeout(mount,30);return r};wrapTab._cc664=true;window._cc547AdminTab=wrapTab}
-var priorGt=window.gt;if(typeof priorGt==='function'&&!priorGt._cc664){var wrapGt=function(){var r=priorGt.apply(this,arguments);setTimeout(function(){try{if(document.getElementById('pg-admin')&&document.getElementById('pg-admin').classList.contains('active'))mount()}catch(e){}},80);return r};wrapGt._cc664=true;window.gt=wrapGt}
+var priorGt=window.gt;if(typeof priorGt==='function'&&!priorGt._cc664){var wrapGt=function(){var r=priorGt.apply(this,arguments);setTimeout(function(){try{if(document.getElementById('pg-callcampaigns')&&document.getElementById('pg-callcampaigns').classList.contains('active'))mount()}catch(e){}},80);return r};wrapGt._cc664=true;window.gt=wrapGt}
 setTimeout(function(){mount();var tries=0,t=setInterval(function(){tries++;if(mount()||tries>20)clearInterval(t)},500)},0);
 window.TCP_MANAGER_CALL_CAMPAIGNS_V664={version:BUILD,mount:mount,managerData:managerData,matchRep:matchRep,campaigns:campaigns,lists:lists};
 var priorBundle=window._rpPhasedDevBundle;window._rpPhasedDevBundle=function(){var base=typeof priorBundle==='function'?priorBundle():'',css=document.getElementById('tcp-v664-manager-campaign-css'),js=document.getElementById('tcp-v664-manager-campaign-js');return base+'\n\n/* v664 Manager Campaign Builder */\n<style id="tcp-v664-manager-campaign-css">'+(css?css.textContent:'')+'<\/style>\n<script id="tcp-v664-manager-campaign-js">'+(js?js.textContent:'')+'<\/script>'};
@@ -65092,3 +65095,12 @@ var priorBundle=window._rpPhasedDevBundle;window._rpPhasedDevBundle=function(){v
 </script>
 <style id="tcp-v664-footer">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v664"!important}body.nav-rail .tabs:after{content:"v664"!important}</style>
 <script id="tcp-v664-final-identity-js">(function(){window.TCP_BUILD_VERSION='v664';try{document.documentElement.setAttribute('data-tcp-build','v664');document.title='Sales Tracker v664 — Manager Campaign Builder'}catch(e){}})();</script>
+
+<!-- v665 Call Campaigns dedicated manager tab -->
+<style id="tcp-v665-call-campaigns-page-css">
+#pg-callcampaigns.call-campaigns-page{max-width:1540px;margin:0 auto;padding:4px 0 44px}
+#pg-callcampaigns #cc664-campaigns{margin-top:4px}
+@media(max-width:1050px){#pg-callcampaigns.call-campaigns-page{padding:0 0 34px}}
+html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v665"!important}body.nav-rail .tabs:after{content:"v665"!important}
+</style>
+<script id="tcp-v665-final-identity-js">(function(){window.TCP_BUILD_VERSION='v665';try{document.documentElement.setAttribute('data-tcp-build','v665');document.title='Sales Tracker v665 — Call Campaigns'}catch(e){}})();</script>
