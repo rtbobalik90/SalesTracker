@@ -64277,3 +64277,81 @@ setTimeout(function(){try{if(isPhased()&&window._rp2&&_rp2.page==='call'&&!windo
 </script>
 <style id="tcp-v656-footer">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v656"!important}body.nav-rail .tabs:after{content:"v656"!important}</style>
 <script id="tcp-v656-final-identity-js">(function(){window.TCP_BUILD_VERSION='v656';try{document.documentElement.setAttribute('data-tcp-build','v656');document.title='Sales Tracker v656 — Call Workspace Hub'}catch(e){}})();</script>
+
+
+<!-- v657 Rep Portal Admin Layout / Style Initialization Fix -->
+<style id="tcp-v657-rep-admin-layout-css">
+/* Manager-side Rep Portal admin must look correct even before the login overlay ever runs. */
+#rp-admin{width:100%;min-width:0;box-sizing:border-box}
+#rp-admin .rp-card{background:linear-gradient(180deg,rgba(15,22,31,.98),rgba(9,14,21,.98));border:1px solid rgba(148,163,184,.16);border-radius:18px;padding:20px;box-shadow:0 18px 45px rgba(0,0,0,.22);color:#eef5ff;box-sizing:border-box}
+#rp-admin .rp-admin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:2px}
+#rp-admin .rp-kick{font-size:10px;line-height:1.2;letter-spacing:1.15px;text-transform:uppercase;color:#77cfff;font-weight:900}
+#rp-admin .rp-h2{font-size:21px;line-height:1.15;font-weight:900;color:#fff;margin:4px 0 0}
+#rp-admin .rp-help{max-width:1050px;font-size:12px;line-height:1.55;color:#93a4ba;margin:8px 0 14px}
+#rp-admin .rp-sub{font-size:10px;line-height:1.2;text-transform:uppercase;letter-spacing:.9px;color:#7f91aa;font-weight:900;margin:20px 0 9px}
+#rp-admin .rp-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+#rp-admin .rp-switch{display:inline-flex;align-items:center;gap:8px;min-height:34px;font-size:12px;font-weight:800;color:#dce8f7;cursor:pointer}
+#rp-admin .rp-switch input{width:16px;height:16px;accent-color:#00AFEF}
+#rp-admin .rp-in{appearance:none;min-height:34px;min-width:180px;box-sizing:border-box;background:#0b1119;border:1px solid #293748;border-radius:9px;color:#f5f9ff;font-size:12px;padding:7px 10px;outline:none}
+#rp-admin .rp-in:focus{border-color:#00AFEF;box-shadow:0 0 0 3px rgba(0,175,239,.11)}
+#rp-admin .rp-in::placeholder{color:#66758a}
+#rp-admin .rp-btn{appearance:none;min-height:33px;box-sizing:border-box;background:#15202d;border:1px solid #324256;color:#e9f2ff;border-radius:9px;padding:6px 11px;font:800 11px/1.2 inherit;cursor:pointer;transition:border-color .15s ease,transform .15s ease,background .15s ease}
+#rp-admin .rp-btn:hover{border-color:#60758e;background:#1a2838;transform:translateY(-1px)}
+#rp-admin .rp-btn.pri{background:linear-gradient(135deg,#f98a3d,#e66e1d);border-color:transparent;color:#fff}
+#rp-admin .rp-link-full{border-color:rgba(250,135,61,.58)!important;color:#ffd2b1!important;background:rgba(250,135,61,.08)!important}
+#rp-admin .rp-link-phased{border-color:rgba(0,175,239,.58)!important;color:#a6eaff!important;background:rgba(0,175,239,.08)!important}
+#rp-admin .rp-dev-code{border-color:rgba(0,175,239,.5)!important;color:#a6eaff!important;background:rgba(0,175,239,.08)!important}
+#rp-admin .rp-chips{display:flex;flex-wrap:wrap;gap:7px}
+#rp-admin .rp-chip{appearance:none;background:#101821;border:1px solid #2a394b;color:#aebdd0;border-radius:999px;padding:7px 11px;font:800 11px/1.15 inherit;cursor:pointer}
+#rp-admin .rp-chip.on{background:rgba(250,135,61,.12);border-color:rgba(250,135,61,.62);color:#ffd5b8}
+#rp-admin .rp638-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 18px}
+#rp-admin .rp638-link-card{position:relative;overflow:hidden;border:1px solid #2b3a4d;border-radius:15px;padding:16px;background:rgba(255,255,255,.022);min-width:0}
+#rp-admin .rp638-link-card.full{border-color:rgba(250,135,61,.38);background:linear-gradient(135deg,rgba(250,135,61,.09),rgba(255,255,255,.018) 60%)}
+#rp-admin .rp638-link-card.phased{border-color:rgba(0,175,239,.42);background:linear-gradient(135deg,rgba(0,175,239,.10),rgba(255,255,255,.018) 60%)}
+#rp-admin .rp638-link-kick{font-size:9px;font-weight:900;letter-spacing:1.3px;color:#8092ab;margin-bottom:6px}
+#rp-admin .rp638-link-card strong{display:block;color:#fff;font-size:16px;margin-bottom:5px}
+#rp-admin .rp638-link-card p{margin:0 0 13px;color:#8fa0b6;font-size:11px;line-height:1.5}
+#rp-admin .rp638-card-actions{display:flex;gap:8px;flex-wrap:wrap}
+#rp-admin .rp-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;background:#0c131c;border:1px solid #223044;border-radius:13px;overflow:hidden;table-layout:auto}
+#rp-admin .rp-tbl thead{background:#111b27}
+#rp-admin .rp-tbl th{font-size:9px;text-transform:uppercase;letter-spacing:.75px;color:#7890ae;text-align:right;padding:10px 10px;border-bottom:1px solid #263448;white-space:nowrap}
+#rp-admin .rp-tbl td{padding:8px 10px;text-align:right;border-bottom:1px solid rgba(148,163,184,.08);vertical-align:middle;color:#dbe7f5}
+#rp-admin .rp-tbl tbody tr:last-child td{border-bottom:0}
+#rp-admin .rp-tbl tbody tr:hover td{background:rgba(255,255,255,.018)}
+#rp-admin .rp-tbl th:first-child,#rp-admin .rp-tbl td:first-child{text-align:left;width:28%}
+#rp-admin .rp-tbl td:nth-child(2){width:120px}
+#rp-admin .rp-tbl td:nth-child(3){width:210px}
+#rp-admin .rp-tbl td:nth-child(3) .rp-in{width:100%;min-width:150px;max-width:210px}
+#rp-admin .rp-tbl th:last-child,#rp-admin .rp-tbl td:last-child{min-width:285px;text-align:right;white-space:nowrap}
+@media(max-width:900px){
+  #rp-admin .rp638-link-grid{grid-template-columns:1fr}
+  #rp-admin .rp-card{padding:16px}
+  #rp-admin .rp-tbl{display:block;overflow-x:auto;white-space:nowrap}
+  #rp-admin .rp-tbl th:last-child,#rp-admin .rp-tbl td:last-child{min-width:260px}
+}
+</style>
+<script id="tcp-v657-rep-admin-layout-js">
+(function(){
+'use strict';
+var BUILD='v657';
+/* v651 diagnosed this correctly: rp-* admin styles historically lived inside _rpCss(),
+   which only ran when the portal overlay initialized. Keep the manager page independent. */
+var priorRender=window._rpRenderAdmin;
+function ensureAdminCss(){
+  try{if(typeof window._rpCss==='function')window._rpCss();}catch(e){console.warn('[v657 admin css]',e)}
+}
+if(typeof priorRender==='function'){
+  window._rpRenderAdmin=function(){ensureAdminCss();return priorRender.apply(this,arguments)};
+}
+ensureAdminCss();
+try{
+  var host=document.getElementById('rp-admin');
+  if(host&&host.children.length===0&&typeof window._rpRenderAdmin==='function')window._rpRenderAdmin();
+}catch(e){console.warn('[v657 admin redraw]',e)}
+window.TCP_REP_PORTAL_ADMIN_LAYOUT_V657={version:BUILD,ensure:ensureAdminCss};
+window.TCP_BUILD_VERSION=BUILD;
+try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v657 — Rep Portal Admin Layout Fix'}catch(e){}
+})();
+</script>
+<style id="tcp-v657-footer">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v657"!important}body.nav-rail .tabs:after{content:"v657"!important}</style>
+<script id="tcp-v657-final-identity-js">(function(){window.TCP_BUILD_VERSION='v657';try{document.documentElement.setAttribute('data-tcp-build','v657');document.title='Sales Tracker v657 — Rep Portal Admin Layout Fix'}catch(e){}})();</script>
