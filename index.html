@@ -69302,3 +69302,208 @@ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title
 setTimeout(decorate,0);setTimeout(decorate,600);
 })();
 </script>
+<!-- ======================================================================
+     v689 · GROWTH OPPORTUNITY CENTERED ACTION MODAL
+     Visual/interaction refinement only. Keeps v688 lifecycle logic intact.
+     ====================================================================== -->
+<style id="tcp-v689-growth-centered-action-modal-css">
+#rp-overlay .go689-modal-backdrop{
+  position:fixed;inset:0;z-index:2147482998;
+  background:rgba(2,8,13,.68);
+  backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+}
+#rp-overlay .go688-action-menu.go689-centered{
+  position:fixed!important;
+  left:50%!important;top:50%!important;right:auto!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:2147483000!important;
+  width:min(640px,calc(100vw - 44px))!important;
+  max-height:min(760px,calc(100vh - 44px));
+  overflow:auto;
+  padding:0!important;
+  border:1px solid rgba(151,178,196,.34)!important;
+  border-radius:22px!important;
+  background:#10212D!important;
+  box-shadow:0 34px 100px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+#rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head{
+  position:relative;
+  padding:22px 58px 19px 22px!important;
+  margin:0!important;
+  border-bottom:1px solid rgba(151,178,196,.16)!important;
+  background:linear-gradient(135deg,rgba(0,175,239,.08),rgba(250,135,61,.045));
+}
+#rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head:before{
+  content:"MANAGE OPPORTUNITY";
+  display:block;margin-bottom:7px;
+  color:#19C9FF;font-size:10px;font-weight:950;letter-spacing:.12em;
+}
+#rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head strong{
+  display:block!important;
+  color:#fff!important;
+  font:900 23px/1.15 Georgia,"Times New Roman",serif!important;
+  white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
+}
+#rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head span{
+  display:block!important;margin-top:7px!important;
+  color:#9BB0BF!important;font-size:12px!important;line-height:1.45!important;
+}
+#rp-overlay .go689-modal-close{
+  position:absolute;top:17px;right:17px;
+  width:34px;height:34px;padding:0!important;
+  display:grid!important;place-items:center;
+  border:1px solid rgba(151,178,196,.22)!important;
+  border-radius:11px!important;
+  background:rgba(255,255,255,.035)!important;
+  color:#CFE0EA!important;
+  font-size:20px!important;font-weight:500!important;line-height:1!important;
+}
+#rp-overlay .go689-modal-close:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+#rp-overlay .go689-choice-list{padding:14px;display:grid;gap:9px}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-list>button{
+  position:relative;
+  display:grid!important;
+  grid-template-columns:38px minmax(0,1fr) 22px;
+  column-gap:12px;align-items:center;
+  width:100%;min-height:68px;
+  padding:12px 14px!important;
+  border:1px solid rgba(151,178,196,.16)!important;
+  border-radius:14px!important;
+  background:rgba(255,255,255,.025)!important;
+  color:#DDE8EE!important;
+  text-align:left!important;
+}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-list>button:hover{
+  background:rgba(0,175,239,.075)!important;
+  border-color:rgba(0,175,239,.38)!important;
+  transform:translateY(-1px);
+}
+#rp-overlay .go689-choice-icon{
+  width:38px;height:38px;border-radius:12px;
+  display:grid;place-items:center;
+  background:rgba(0,175,239,.09);border:1px solid rgba(0,175,239,.20);
+  color:#42D7FF;font-size:16px;font-weight:900;
+}
+#rp-overlay .go689-choice-copy{min-width:0}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-copy strong{
+  display:block!important;color:#F6FAFC!important;font-size:13px!important;font-weight:900!important;line-height:1.25!important;
+}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-copy small{
+  display:block!important;margin-top:4px!important;color:#8FA7B7!important;font-size:10.5px!important;line-height:1.45!important;
+}
+#rp-overlay .go689-choice-arrow{color:#67869A;font-size:18px;text-align:right}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-danger{
+  border-color:rgba(219,80,96,.22)!important;background:rgba(219,80,96,.025)!important;
+}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-danger:hover{
+  background:rgba(219,80,96,.09)!important;border-color:rgba(219,80,96,.42)!important;
+}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-danger .go689-choice-icon{
+  background:rgba(219,80,96,.08);border-color:rgba(219,80,96,.20);color:#FF98A5;
+}
+#rp-overlay .go688-action-menu.go689-centered .go689-choice-danger .go689-choice-copy strong{color:#FFB2BC!important}
+#rp-overlay .go689-modal-foot{
+  display:flex;justify-content:flex-end;align-items:center;gap:9px;
+  padding:12px 14px 15px;border-top:1px solid rgba(151,178,196,.13);
+}
+#rp-overlay .go689-modal-foot button{
+  width:auto!important;padding:9px 15px!important;
+  border:1px solid rgba(151,178,196,.22)!important;border-radius:11px!important;
+  background:rgba(255,255,255,.045)!important;color:#D8E4EB!important;
+  font-size:11px!important;font-weight:900!important;
+}
+#rp-overlay .go689-modal-foot button:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+/* Light theme */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light~.go689-modal-backdrop,
+#rp-overlay:has(.rp679-light) .go689-modal-backdrop{background:rgba(28,48,61,.34)!important}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered{
+  background:#FFFFFF!important;border-color:#AFC2CF!important;
+  box-shadow:0 28px 80px rgba(45,67,82,.24)!important;
+}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go688-action-menu-head{
+  background:linear-gradient(135deg,#F3FAFC,#FFF7F1)!important;border-color:#D5E0E7!important;
+}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go688-action-menu-head strong{color:#17384D!important}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go688-action-menu-head span{color:#587286!important}
+#rp-overlay:has(.rp679-light) .go689-modal-close{background:#F6F9FB!important;border-color:#C8D6DF!important;color:#294E64!important}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-list>button{
+  background:#F9FBFC!important;border-color:#D3DEE5!important;color:#294E64!important;
+}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-list>button:hover{
+  background:#EEF7FA!important;border-color:#76BFD7!important;
+}
+#rp-overlay:has(.rp679-light) .go689-choice-icon{background:#E8F6FB;border-color:#9ED5E5;color:#007CA5}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-copy strong{color:#17384D!important}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-copy small{color:#587286!important}
+#rp-overlay:has(.rp679-light) .go689-choice-arrow{color:#7891A5}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-danger{background:#FFF8F9!important;border-color:#EDC7CD!important}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-danger .go689-choice-icon{background:#FDECEF;border-color:#E8B8BF;color:#B33F4D}
+#rp-overlay:has(.rp679-light) .go688-action-menu.go689-centered .go689-choice-danger .go689-choice-copy strong{color:#A63D4A!important}
+#rp-overlay:has(.rp679-light) .go689-modal-foot{border-color:#D5E0E7!important}
+#rp-overlay:has(.rp679-light) .go689-modal-foot button{background:#F4F8FA!important;border-color:#C7D5DE!important;color:#294E64!important}
+@media(max-width:650px){
+  #rp-overlay .go688-action-menu.go689-centered{width:calc(100vw - 24px)!important;max-height:calc(100vh - 24px)!important;border-radius:18px!important}
+  #rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head{padding:18px 52px 16px 17px!important}
+  #rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head strong{font-size:20px!important}
+  #rp-overlay .go689-choice-list{padding:10px;gap:7px}
+  #rp-overlay .go688-action-menu.go689-centered .go689-choice-list>button{grid-template-columns:34px minmax(0,1fr) 18px;column-gap:9px;padding:10px!important;min-height:62px}
+  #rp-overlay .go689-choice-icon{width:34px;height:34px}
+}
+</style>
+<script id="tcp-v689-growth-centered-action-modal-js">
+(function(){
+'use strict';
+var BUILD='v689';
+function qs(s,r){return (r||document).querySelector(s)}
+function removeBackdrop(){var b=qs('#rp-overlay #go689ModalBackdrop');if(b)b.remove()}
+function close(){var m=qs('#rp-overlay #go688ActionMenu');if(m)m.remove();removeBackdrop()}
+function decorate(){
+  var overlay=qs('#rp-overlay'),m=qs('#rp-overlay #go688ActionMenu');
+  if(!overlay||!m)return;
+  m.classList.add('go689-centered');
+  var head=qs('.go688-action-menu-head',m);
+  if(head&&!qs('.go689-modal-close',head)){
+    var x=document.createElement('button');x.type='button';x.className='go689-modal-close';x.setAttribute('aria-label','Close');x.innerHTML='×';x.onclick=close;head.appendChild(x);
+  }
+  var buttons=Array.prototype.slice.call(m.querySelectorAll(':scope > button'));
+  if(buttons.length){
+    var list=document.createElement('div');list.className='go689-choice-list';
+    var icons=['⏱','✓','↘','⊘','×'];
+    buttons.forEach(function(btn,i){
+      var strong=btn.querySelector('strong'),small=btn.querySelector('small');
+      var copy=document.createElement('div');copy.className='go689-choice-copy';
+      if(strong)copy.appendChild(strong);if(small)copy.appendChild(small);
+      var icon=document.createElement('span');icon.className='go689-choice-icon';icon.textContent=icons[i]||'•';
+      var arrow=document.createElement('span');arrow.className='go689-choice-arrow';arrow.textContent='›';
+      if(i===4)btn.classList.add('go689-choice-danger');
+      btn.appendChild(icon);btn.appendChild(copy);btn.appendChild(arrow);list.appendChild(btn);
+    });
+    m.appendChild(list);
+  }
+  if(!qs('.go689-modal-foot',m)){
+    var foot=document.createElement('div');foot.className='go689-modal-foot';
+    var keep=document.createElement('button');keep.type='button';keep.textContent='Keep Opportunity';keep.onclick=close;foot.appendChild(keep);m.appendChild(foot);
+  }
+  if(!qs('#rp-overlay #go689ModalBackdrop')){
+    var b=document.createElement('div');b.className='go689-modal-backdrop';b.id='go689ModalBackdrop';b.onclick=close;overlay.appendChild(b);
+    /* Keep modal above backdrop even when appended before it. */
+    overlay.appendChild(m);
+  }
+}
+var prior=window._go688Menu;
+if(typeof prior==='function'){
+  window._go688Menu=function(){var r=prior.apply(this,arguments);setTimeout(decorate,0);return r};
+}
+var priorDisp=window._go688Disposition;
+if(typeof priorDisp==='function'){
+  window._go688Disposition=function(){removeBackdrop();return priorDisp.apply(this,arguments)};
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&qs('#rp-overlay #go688ActionMenu'))close()},true);
+document.addEventListener('click',function(){setTimeout(function(){if(!qs('#rp-overlay #go688ActionMenu'))removeBackdrop()},0)},true);
+window._go689CloseGrowthAction=close;
+window.TCP_GROWTH_CENTERED_ACTION_MODAL_V689={version:BUILD};window.TCP_BUILD_VERSION=BUILD;
+try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v689 — Growth Opportunity Centered Actions'}catch(e){}
+})();
+</script>
+
+  
