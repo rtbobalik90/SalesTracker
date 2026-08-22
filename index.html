@@ -65208,3 +65208,263 @@ window.TCP_MY_PERFORMANCE_V668={version:'v668',render:render,model:model};window
 })();
 </script>
 <style id="tcp-v668-build-identity">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v668"!important}body.nav-rail .tabs:after{content:"v668"!important}</style>
+
+
+<style id="tcp-v669-unified-performance-css">
+/* ===== v669 Unified My Performance Scorecard ===== */
+#rp-overlay .rp2-app.rp2-mode-phased .mp669{
+  --bg:#07111A;--panel:#0D1823;--panel2:#101D29;--line:rgba(148,163,184,.16);
+  --text:#F5F8FB;--muted:#91A0B3;--cyan:#00AFEF;--orange:#FA873D;
+  --green:#5DCAA5;--yellow:#EF9F27;--red:#F09595;
+  max-width:1540px;margin:0 auto;padding:28px 30px 64px;color:var(--text);
+  font-family:"Open Sans","Segoe UI",Arial,sans-serif;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669 *{box-sizing:border-box}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{
+  display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:24px;align-items:center;
+  padding:27px 30px;margin-bottom:16px;border:1px solid rgba(250,135,61,.25);border-radius:24px;
+  background:radial-gradient(circle at 5% 0%,rgba(250,135,61,.19),transparent 35%),
+             radial-gradient(circle at 94% 0%,rgba(0,175,239,.14),transparent 32%),
+             linear-gradient(135deg,#0A1621,#08131D 62%,#07111A);
+  box-shadow:0 22px 58px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-kicker,
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-section-kicker{
+  color:var(--cyan);font-size:9px;font-weight:950;letter-spacing:.15em;text-transform:uppercase;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero h1{
+  margin:6px 0 7px;color:#fff;font:800 34px/1.03 Georgia,"Times New Roman",serif;letter-spacing:-.035em;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero p{max-width:850px;margin:0;color:#A8B7C7;font-size:11.5px;line-height:1.6}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-overall{
+  display:grid;grid-template-columns:105px minmax(0,1fr);gap:16px;align-items:center;
+  padding:14px 16px;border:1px solid rgba(148,163,184,.15);border-radius:18px;background:rgba(255,255,255,.035);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-ring{
+  width:94px;height:94px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--overall-color) calc(var(--overall-score)*1%),rgba(255,255,255,.08) 0);
+  position:relative;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-ring:after{
+  content:"";position:absolute;inset:8px;border-radius:50%;background:#0D1B27;border:1px solid rgba(255,255,255,.06);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-ring div{position:relative;z-index:1;text-align:center}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-ring strong{display:block;color:#fff;font:900 28px/1 Georgia,"Times New Roman",serif}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-ring span{display:block;margin-top:4px;color:#9AAABC;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-overall small{display:block;color:#7F91A5;font-size:7.5px;font-weight:950;letter-spacing:.10em;text-transform:uppercase}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-overall h2{margin:4px 0 3px;color:#fff;font:800 21px/1 Georgia,"Times New Roman",serif}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-overall p{margin:0;color:#A9B8C8;font-size:9px;line-height:1.4}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-asof{margin-top:7px;color:#6F8397;font-size:8px}
+
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-scorecard{
+  overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),var(--panel);
+  box-shadow:0 18px 44px rgba(0,0,0,.21),inset 0 1px 0 rgba(255,255,255,.04);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:19px 21px 16px;border-bottom:1px solid rgba(148,163,184,.13);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head h2{margin:5px 0 0;color:#fff;font:800 24px/1 Georgia,"Times New Roman",serif}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head p{max-width:590px;margin:0;text-align:right;color:#8293A7;font-size:9px;line-height:1.45}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-columns{
+  display:grid;grid-template-columns:minmax(150px,.7fr) minmax(250px,1.1fr) 115px minmax(180px,.75fr) minmax(300px,1.3fr);
+  gap:13px;padding:8px 18px;border-bottom:1px solid rgba(148,163,184,.10);background:rgba(255,255,255,.016);
+  color:#6F8195;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-row{
+  --state:#91A0B3;
+  display:grid;grid-template-columns:minmax(150px,.7fr) minmax(250px,1.1fr) 115px minmax(180px,.75fr) minmax(300px,1.3fr);
+  gap:13px;align-items:center;padding:15px 18px;border-bottom:1px solid rgba(148,163,184,.10);
+  position:relative;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-row:last-child{border-bottom:0}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-row:before{
+  content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 99px 99px 0;background:var(--state);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-row:hover{background:rgba(255,255,255,.018)}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-metric-name{color:#fff;font-size:11px;font-weight:950}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-metric-meta{margin-top:4px;color:#718398;font-size:8px;line-height:1.35}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-live strong{display:block;color:#fff;font-size:18px;font-weight:950;letter-spacing:-.025em}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-live span{display:block;margin-top:4px;color:#9AABBD;font-size:8.5px;line-height:1.4}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score{text-align:center}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score strong{display:block;color:#fff;font-size:20px;font-weight:950}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score small{display:block;margin-top:3px;color:#74869B;font-size:7px}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-state{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:66px;margin-top:6px;padding:4px 6px;
+  border:1px solid color-mix(in srgb,var(--state) 34%,transparent);border-radius:999px;
+  background:color-mix(in srgb,var(--state) 9%,transparent);color:var(--state);font-size:6.5px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-pace-top{display:flex;justify-content:space-between;gap:8px;color:#9EADBD;font-size:8px}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-track{height:8px;margin-top:7px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-track i{display:block;height:100%;width:var(--pct);max-width:100%;border-radius:inherit;background:var(--state)}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-pace small{display:block;margin-top:6px;color:#718398;font-size:7.5px;line-height:1.35}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-rec{
+  padding:10px 11px;border:1px solid color-mix(in srgb,var(--state) 20%,rgba(148,163,184,.12));border-radius:12px;
+  background:color-mix(in srgb,var(--state) 4%,rgba(255,255,255,.018));color:#AAB8C7;font-size:8.5px;line-height:1.45;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-rec strong{color:var(--state);font-weight:950}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-weight{
+  display:inline-block;margin-top:5px;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,.045);color:#7E90A4;font-size:6.5px;font-weight:950;text-transform:uppercase;
+}
+
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-summary{
+  display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;margin-top:16px;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-panel{
+  padding:17px 18px;border:1px solid var(--line);border-radius:18px;background:rgba(13,24,35,.88);
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-panel h3{margin:5px 0 5px;color:#fff;font:800 18px/1.1 Georgia,"Times New Roman",serif}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-panel p{margin:0;color:#8596A8;font-size:9px;line-height:1.45}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-next{
+  display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 13px;border-radius:13px;border:1px solid rgba(148,163,184,.12);background:rgba(255,255,255,.022)
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-next i{font-style:normal;width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:rgba(250,135,61,.10);color:#FA873D;font-weight:950}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-next strong{display:block;color:#fff;font-size:10px;margin-bottom:3px}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-next span{display:block;color:#91A2B4;font-size:8.5px;line-height:1.4}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-btn{min-height:36px;padding:0 12px;border:1px solid rgba(148,163,184,.16);border-radius:10px;background:rgba(255,255,255,.035);color:#E5ECF2;font-size:8px;font-weight:950;cursor:pointer}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-btn:hover{border-color:rgba(250,135,61,.45);background:rgba(250,135,61,.08)}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-legend{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-legend span{display:inline-flex;align-items:center;gap:5px;color:#8293A6;font-size:7.5px}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-legend i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-note{margin-top:11px;color:#667B90;font-size:7.5px;line-height:1.45}
+
+@media(max-width:1180px){
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{grid-template-columns:1fr}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-overall{max-width:440px}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-columns{display:none}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-row{grid-template-columns:1fr 1fr 100px}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-pace,#rp-overlay .rp2-app.rp2-mode-phased .mp669-rec{grid-column:1/-1}
+}
+@media(max-width:760px){
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669{padding:20px 14px 52px}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{padding:21px}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-row{grid-template-columns:1fr}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-summary{grid-template-columns:1fr}
+ #rp-overlay .rp2-app.rp2-mode-phased .mp669-score{text-align:left}
+}
+</style>
+
+
+<script id="tcp-v669-unified-performance-js">
+(function(){'use strict';
+var priorPage=window._rp2Page;if(typeof priorPage!=='function')return;
+function A(v){return Array.isArray(v)?v:[]}
+function N(v){var x=Number(v);return isFinite(x)?x:0}
+function C(v){return String(v==null?'':v).trim()}
+function E(v){return C(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function money(v){var x=N(v);return(x<0?'-$':'$')+Math.abs(Math.round(x)).toLocaleString()}
+function num(v,d){return N(v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
+function pct(v,d){return N(v).toFixed(d==null?1:d)+'%'}
+function clamp(v){return Math.max(0,Math.min(100,N(v)))}
+function rep(){return window._rp2&&_rp2.rep||''}
+function phased(){try{var f=typeof window._rpUrlPortalView==='function'?C(_rpUrlPortalView()).toLowerCase():'';if(f)return f==='phased';if(window.TCP_REP_PORTAL_DUAL_VIEW_V608&&typeof TCP_REP_PORTAL_DUAL_VIEW_V608.getMode==='function')return TCP_REP_PORTAL_DUAL_VIEW_V608.getMode(rep())==='phased'}catch(e){}return false}
+function goals(){try{return S&&S.goals&&S.goals[rep()]&&S.goals[rep()][String(getYr())]&&S.goals[rep()][String(getYr())][getQ()]||{}}catch(e){return{}}}
+function cfg(){try{return window.TCP_TRAFFIC_SCORE_V548&&TCP_TRAFFIC_SCORE_V548.loadConfig?TCP_TRAFFIC_SCORE_V548.loadConfig():null}catch(e){return null}}
+function score(){try{return window.TCP_TRAFFIC_SCORE_V548&&typeof TCP_TRAFFIC_SCORE_V548.repScore==='function'?TCP_TRAFFIC_SCORE_V548.repScore(rep(),'quarter',getYr(),getQ()):null}catch(e){console.warn('[v669 score]',e);return null}}
+function callsForWeeks(ws){var t=0;A(ws).forEach(function(w){var d=S&&S.data&&S.data[rep()+'|'+w.key]||{};t+=N(d.calls)});return t}
+function stColor(st){return st&&st.color?st.color:(st&&st.key==='green'?'#5DCAA5':st&&st.key==='yellow'?'#EF9F27':'#F09595')}
+function threshold(config,key){var t=config&&config.thresholds&&config.thresholds[key]||config&&config.thresholds&&config.thresholds.overall||{green:90,yellow:80};return{green:N(t.green)||90,yellow:N(t.yellow)||80}}
+function statusForValue(value,t){value=N(value);if(value>=t.green)return{key:'green',label:'Green',color:'#5DCAA5'};if(value>=t.yellow)return{key:'yellow',label:'Yellow',color:'#EF9F27'};return{key:'red',label:'Red',color:'#F09595'}}
+function model(){
+ var s=score(),g=goals(),config=cfg()||{weights:{sales:65,outbound:20,hours:5,art:5,credit:5},thresholds:{overall:{green:90,yellow:80},sales:{green:90,yellow:80},outbound:{green:90,yellow:80},hours:{green:90,yellow:80},art:{green:90,yellow:80}},creditScale:{greenMax:.5,yellowMax:1}};
+ if(!s)return{score:null,config:config};
+ var r=s.raw||{},m=s.metrics||{},co=s.contributions||{},calls=callsForWeeks(s.weeks),callGoal=N(g.calls),eff=N(s.effectiveWeeks||s.enteredWeeks),callTarget=callGoal*eff,callPace=callTarget?calls/callTarget*100:null;
+ var callT=threshold(config,'outbound'),callStatus=callPace==null?{key:'na',label:'No goal',color:'#91A0B3'}:statusForValue(callPace,callT);
+ var fullGoal=N(g.rev),totalWeeks=N(s.totalWeeks)||13,projected=eff>0?N(r.salesActual)/eff*totalWeeks:0;
+ return{score:s,raw:r,metrics:m,contrib:co,weights:config.weights||{},config:config,calls:calls,callGoal:callGoal,callTarget:callTarget,callPace:callPace,callStatus:callStatus,fullGoal:fullGoal,projected:projected}
+}
+function paceBar(value,state,right,sub){
+ return'<div class="mp669-pace"><div class="mp669-pace-top"><span>'+E(pct(value,0))+' of pace</span><span>'+E(right||'')+'</span></div><div class="mp669-track"><i style="--pct:'+clamp(value)+'%"></i></div><small>'+E(sub||'')+'</small></div>'
+}
+function recommendation(key,x,state){
+ var r=x.raw,m=x.metrics,c=x.config,t=threshold(c,key),green=t.green;
+ if(state.key==='green'){
+  if(key==='sales')return'<strong>In good standing.</strong> Protect the current sales pace; you are at '+pct(m.sales,1)+' of today’s paced target.';
+  if(key==='outbound')return'<strong>In good standing.</strong> Keep Account Updates at or above the live required pace.';
+  if(key==='hours')return'<strong>In good standing.</strong> Continue logging work hours at the current paced level.';
+  if(key==='art')return'<strong>In good standing.</strong> Keep the art-error rate at or below '+pct(100-green,1)+'.';
+  if(key==='credit')return'<strong>In good standing.</strong> Keep rep-fault credits at or below '+pct(N(c.creditScale&&c.creditScale.greenMax),2)+' of sales.';
+  if(key==='calls')return'<strong>Activity is on pace.</strong> Maintain the configured Calls Made pace.';
+ }
+ if(key==='sales'){
+  var needed=Math.max(0,N(r.salesTarget)*green/100-N(r.salesActual));
+  return'<strong>To reach Green:</strong> add about '+money(needed)+' in sales versus today’s paced target.';
+ }
+ if(key==='outbound'){
+  var a=Math.max(0,Math.ceil(N(r.outboundTarget)*green/100-N(r.outboundActual)));
+  return'<strong>To reach Green:</strong> complete about '+a.toLocaleString()+' additional Account Updates against today’s required pace.';
+ }
+ if(key==='hours'){
+  var h=Math.max(0,N(r.hoursTarget)*green/100-N(r.hoursActual));
+  return'<strong>To reach Green:</strong> log about '+h.toFixed(1)+' additional paced work hours.';
+ }
+ if(key==='art'){
+  var errors=N(r.artErrors),orders=N(r.orders),maxRate=Math.max(.0001,(100-green)/100),needTotal=Math.ceil(errors/maxRate),extra=Math.max(0,needTotal-orders);
+  if(extra>0)return'<strong>To reach Green:</strong> with '+Math.round(errors)+' recorded errors, about '+extra.toLocaleString()+' additional error-free scored orders would bring accuracy to '+pct(green,0)+' or better. Preventing new errors is the controllable lever.';
+  return'<strong>To reach Green:</strong> keep future scored orders error-free and hold accuracy at '+pct(green,0)+' or better.';
+ }
+ if(key==='credit'){
+  var rate=N(r.creditRate),greenMax=N(c.creditScale&&c.creditScale.greenMax);
+  if(greenMax<=0)return'<strong>Improve credit quality:</strong> avoid new rep-fault credits.';
+  var credits=N(r.credits),neededSales=Math.max(0,credits/(greenMax/100)-N(r.salesActual));
+  return'<strong>To reach Green:</strong> avoid new rep-fault credits. At the current credit total, about '+money(neededSales)+' of additional sales would dilute the rate to '+pct(greenMax,2)+'.';
+ }
+ if(key==='calls'){
+  var neededCalls=Math.max(0,Math.ceil(x.callTarget*green/100-x.calls));
+  return'<strong>To reach Green activity pace:</strong> make about '+neededCalls.toLocaleString()+' more calls against today’s configured target.';
+ }
+ return'<strong>Improve this category:</strong> move the live result to the Green threshold.';
+}
+function row(o){
+ return'<div class="mp669-row" style="--state:'+o.state.color+'">'+
+  '<div><div class="mp669-metric-name">'+E(o.name)+'</div><div class="mp669-metric-meta">'+E(o.meta||'')+'</div>'+(o.weight!=null?'<span class="mp669-weight">'+E(Math.round(N(o.weight))+'% score weight')+'</span>':'<span class="mp669-weight">Operating metric · not weighted</span>')+'</div>'+
+  '<div class="mp669-live"><strong>'+E(o.live)+'</strong><span>'+o.context+'</span></div>'+
+  '<div class="mp669-score"><strong>'+E(o.scoreText)+'</strong><small>'+E(o.scoreSub||'score / 100')+'</small><span class="mp669-state">'+E(o.state.label)+'</span></div>'+
+  paceBar(o.pace,o.state,o.paceRight,o.paceSub)+
+  '<div class="mp669-rec">'+recommendation(o.key,o.x,o.state)+'</div>'+
+ '</div>'
+}
+function render(){
+ var x=model();if(!x.score||x.score.unscored)return'<div class="mp669"><div class="mp669-panel"><div class="mp669-section-kicker">MY PERFORMANCE SCORECARD</div><h3>Scorecard is not available yet</h3><p>The current quarter needs a valid revenue goal before the official weighted score can be calculated.</p></div></div>';
+ var s=x.score,r=x.raw,m=x.metrics,w=x.weights,config=x.config;
+ var st=s.metricStatus||{},overall=s.status||{label:'Status',color:'#91A0B3'};
+ var salesState=st.sales||statusForValue(m.sales,threshold(config,'sales'));
+ var covState=st.outbound||statusForValue(m.outbound,threshold(config,'outbound'));
+ var hoursState=st.hours||statusForValue(m.hours,threshold(config,'hours'));
+ var artState=st.art||statusForValue(m.art,threshold(config,'art'));
+ var creditState=st.credit||{key:'green',label:'Green',color:'#5DCAA5'};
+ var currentDate='';try{currentDate=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}catch(e){}
+ var salesGoal=x.fullGoal,projectedPct=salesGoal?x.projected/salesGoal*100:0;
+ var rows=[];
+ rows.push(row({key:'sales',x:x,name:'Sales Performance',meta:'Quarter revenue · paced through today',weight:w.sales,state:salesState,live:money(r.salesActual),context:E(money(r.salesTarget)+' paced target today')+(salesGoal?'<br>'+E(money(salesGoal)+' full-quarter goal · '+money(x.projected)+' projected finish'):''),
+   scoreText:N(m.sales).toFixed(1),pace:N(m.sales),paceRight:salesGoal?pct(N(r.salesActual)/salesGoal*100,0)+' of quarter goal':'',paceSub:'Pace uses the tracker’s live as-of calculation, including the current partial selling week.'}));
+ rows.push(row({key:'outbound',x:x,name:'Account Coverage',meta:'Account Update completion · weighted outbound category',weight:w.outbound,state:covState,live:Math.round(N(r.outboundActual)).toLocaleString()+' completed',context:E(Math.round(N(r.outboundTarget)).toLocaleString()+' required through today')+'<br>'+E(r.outboundSource||'Account Update pace'),
+   scoreText:N(m.outbound).toFixed(1),pace:N(m.outbound),paceRight:pct(N(m.outbound),0),paceSub:'Coverage is paced to the current Account Update cycle and remains separate from raw call volume.'}));
+ rows.push(row({key:'calls',x:x,name:'Calls Made',meta:'Canonical S.data.calls · operating activity',weight:null,state:x.callStatus,live:Math.round(x.calls).toLocaleString()+' calls',context:x.callGoal?E(Math.round(x.callTarget).toLocaleString()+' paced calls through today')+'<br>'+E(Math.round(x.callGoal).toLocaleString()+' configured calls/week'):'Configured weekly Calls Made goal unavailable',
+   scoreText:x.callPace==null?'—':N(x.callPace).toFixed(1),scoreSub:'pace / 100',pace:x.callPace||0,paceRight:x.callPace==null?'No goal':pct(x.callPace,0),paceSub:'Calls Made is visible for coaching and activity management but is not double-counted in the official weighted score.'}));
+ rows.push(row({key:'hours',x:x,name:'Work Hours',meta:'Actual hours · paced through today',weight:w.hours,state:hoursState,live:N(r.hoursActual).toFixed(1)+' hrs',context:E(N(r.hoursTarget).toFixed(1)+' paced hours through today'),
+   scoreText:N(m.hours).toFixed(1),pace:N(m.hours),paceRight:pct(N(m.hours),0),paceSub:'Current-week hours follow the tracker’s data-integrity rules and do not penalize an unclosed live week.'}));
+ rows.push(row({key:'art',x:x,name:'Art Errors',meta:'Error-free order accuracy',weight:w.art,state:artState,live:Math.round(N(r.artErrors)).toLocaleString()+' errors',context:E(Math.round(N(r.orders)).toLocaleString()+' scored orders · '+pct(N(r.artRate),1)+' error rate'),
+   scoreText:N(m.art).toFixed(1),pace:N(m.art),paceRight:pct(N(m.art),1)+' accuracy',paceSub:'Quality is scored from completed/scored order volume; current unclosed-week order data is excluded when appropriate.'}));
+ rows.push(row({key:'credit',x:x,name:'Credit Memos',meta:'Rep-fault credit impact',weight:w.credit,state:creditState,live:money(r.credits),context:E(pct(N(r.creditRate),2)+' of quarter sales')+'<br>'+E('Green ≤ '+pct(N(config.creditScale&&config.creditScale.greenMax),2)+' · Yellow ≤ '+pct(N(config.creditScale&&config.creditScale.yellowMax),2)),
+   scoreText:N(m.credit).toFixed(1),pace:N(m.credit),paceRight:pct(N(m.credit),1)+' credit score',paceSub:'Credit standing is based on rep-fault credit dollars as a percentage of sales.'}));
+ var bad=[{n:'Sales',s:salesState},{n:'Account Coverage',s:covState},{n:'Calls Made',s:x.callStatus},{n:'Work Hours',s:hoursState},{n:'Art Errors',s:artState},{n:'Credit Memos',s:creditState}].filter(function(z){return z.s&&z.s.key!=='green'&&z.s.key!=='na'});
+ var nextTitle=bad.length?bad[0].n+' is the first priority':'All tracked categories are in Green';
+ var nextCopy=bad.length?'Start with the first non-Green row above. Its recommendation shows the measurable gap to improve standing.':'Protect the current pace and quality levels. No category currently requires recovery action.';
+ return'<div class="mp669">'+
+  '<header class="mp669-hero"><div><div class="mp669-kicker">MY PERFORMANCE SCORECARD · '+E(getQ()+' '+getYr())+'</div><h1>One scorecard. One clear story.</h1><p>Every performance category is shown once: live result, status, today’s pace, score impact, and the clearest action to improve it.</p></div>'+
+  '<div class="mp669-overall" style="--overall-color:'+stColor(overall)+';--overall-score:'+clamp(s.total)+'"><div class="mp669-ring"><div><strong>'+E(N(s.total).toFixed(1))+'</strong><span>Overall</span></div></div><div><small>Current weighted score</small><h2>'+E(overall.label||'Status')+'</h2><p>'+E(overall.action||'')+'</p><div class="mp669-asof">Live as of '+E(currentDate)+' · partial-week pace included</div></div></div></header>'+
+  '<section class="mp669-scorecard"><div class="mp669-score-head"><div><div class="mp669-section-kicker">LIVE SCORECARD</div><h2>Where you stand right now</h2></div><p>Bars and status labels use the configured Red / Yellow / Green thresholds. Recommendations calculate the measurable gap to Green using today’s paced targets.</p></div>'+
+  '<div class="mp669-columns"><span>Category</span><span>Current result</span><span>Score</span><span>Pace / standing</span><span>Recommendation</span></div>'+rows.join('')+'</section>'+
+  '<div class="mp669-summary"><section class="mp669-panel"><div class="mp669-section-kicker">NEXT BEST MOVE</div><h3>'+E(nextTitle)+'</h3><p>'+E(nextCopy)+'</p><div class="mp669-next"><i>→</i><div><strong>Use the scorecard from top to bottom</strong><span>Prioritize Red first, then Yellow. Green rows are maintenance—not extra work to chase.</span></div></div><div class="mp669-actions"><button class="mp669-btn" onclick="_rp2Go(\'call\')">Open Call Workspace</button><button class="mp669-btn" onclick="_rp2Go(\'action\')">Open Follow-Ups</button><button class="mp669-btn" onclick="_rp2Go(\'orders\')">Review Orders</button></div></section>'+
+  '<aside class="mp669-panel"><div class="mp669-section-kicker">STATUS KEY</div><h3>Read it at a glance</h3><p>Green is good standing. Yellow needs attention. Red needs recovery action.</p><div class="mp669-legend"><span><i style="--c:#5DCAA5"></i> Green</span><span><i style="--c:#EF9F27"></i> Yellow</span><span><i style="--c:#F09595"></i> Red</span></div><div class="mp669-note">Overall and category thresholds remain Admin-configurable. Credit Memo standing uses the configured credit-rate thresholds.</div></aside></div>'+
+ '</div>'
+}
+window._rp2Page=function(){if(phased()&&window._rp2&&_rp2.page==='profile'){try{return render()}catch(err){console.error('[v669 unified scorecard]',err);return priorPage.apply(this,arguments)}}return priorPage.apply(this,arguments)};
+window.TCP_MY_PERFORMANCE_V669={version:'v669',render:render,model:model};
+window.TCP_BUILD_VERSION='v669';
+try{document.documentElement.setAttribute('data-tcp-build','v669');document.title='Sales Tracker v669 — Unified My Performance Scorecard'}catch(e){}
+})();
+</script>
+<style id="tcp-v669-build-identity">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v669"!important}body.nav-rail .tabs:after{content:"v669"!important}</style>
+
