@@ -67297,3 +67297,249 @@ body.nav-rail .tabs:after{content:"v672"!important}
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v676 — Rep Portal Page Cohesion'}catch(e){}
 })();
 </script>
+
+<!-- ======================================================================
+     SALES TRACKER v677 · REP PORTAL MY DAY ALIGNMENT
+     Approved My Day is the visual source of truth. This pass aligns the
+     remaining phased Rep pages to the same page rhythm: outer gutter,
+     visible border, dark navy surface, compact operational headers,
+     readable text, restrained glow, and efficient empty-state density.
+     Presentation only: no business logic, storage, routing, or calculations.
+     ====================================================================== -->
+<style id="tcp-v677-rep-portal-my-day-alignment-css">
+#rp-overlay .rp2-app.rp2-mode-phased{
+  --v677-line:rgba(139,165,188,.20);
+  --v677-line-soft:rgba(139,165,188,.13);
+  --v677-surface:#0B1721;
+  --v677-surface-2:#0D1A25;
+  --v677-surface-deep:#08131C;
+  --v677-text:#F3F7FB;
+  --v677-muted:#91A4B8;
+  --v677-cyan:#00C3F5;
+  --v677-orange:#FA873D;
+  --v677-radius:18px;
+  --v677-radius-lg:20px;
+  --v677-shadow:0 12px 34px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+/* My Day page rhythm is canonical: one 30px workspace gutter, 16-18px major gaps. */
+#rp-overlay .rp2-app.rp2-mode-phased .p639-subpage{padding:26px 30px 46px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased :is(.c656,.f654-shell,.cw4-shell,.q673-shell,.o671-rp-shell,.mp669){
+  width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;
+}
+
+/* Shared visual construction for the visible phased-page surfaces. */
+#rp-overlay .rp2-app.rp2-mode-phased :is(
+  .c656-hero,.c656-tabs,.c656-panel,
+  .f654-hero,.f654-kpi,.f654-panel,
+  .cw4-directory-hero,.cw4-kpi,.cw4-viewbar,.cw4-toolbar,.cw4-table-shell,.cw4-tabs,
+  .q673-hero,.q673-workbar,.q673-table-panel,
+  .o671-rp-hero,.o671-rp-panel,
+  .ms537-card,.mp669-hero,.mp669-overall,.mp669-scorecard,.mp669-panel
+){
+  border-color:var(--v677-line)!important;
+  box-shadow:var(--v677-shadow)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased :is(.c656-panel,.f654-panel,.cw4-table-shell,.q673-workbar,.q673-table-panel,.o671-rp-panel,.mp669-scorecard,.mp669-panel){
+  background:linear-gradient(180deg,rgba(255,255,255,.040),rgba(255,255,255,.015)),var(--v677-surface)!important;
+}
+
+/* ----------------------------------------------------------------------
+   CALL WORKSPACE · compact hub, no oversized internal canvas
+   ---------------------------------------------------------------------- */
+#rp-overlay .rp2-app.rp2-mode-phased .c656{padding:0 0 44px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-hero{
+  grid-template-columns:minmax(0,1fr) minmax(420px,.52fr)!important;
+  gap:22px!important;padding:19px 22px!important;border-radius:var(--v677-radius-lg)!important;
+  background:radial-gradient(circle at 94% 0,rgba(250,135,61,.10),transparent 30%),radial-gradient(circle at 2% 100%,rgba(0,175,239,.07),transparent 32%),linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-kick{font-size:10.5px!important;color:var(--v677-cyan)!important;letter-spacing:.12em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-title{font-size:31px!important;line-height:1.04!important;margin-top:4px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-copy{margin-top:6px!important;font-size:12.5px!important;line-height:1.5!important;max-width:820px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-hero-metrics{min-width:0!important;gap:8px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric{min-height:74px!important;padding:11px 12px!important;border-radius:12px!important;background:rgba(255,255,255,.025)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric span{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric strong{font-size:18px!important;margin-top:4px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric small{font-size:10.5px!important;margin-top:3px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tabs{margin-top:14px!important;padding:6px!important;border-radius:15px!important;background:var(--v677-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tab{min-height:40px!important;font-size:12px!important;padding:8px 14px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel{margin-top:14px!important;border-radius:var(--v677-radius)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel-head{padding:14px 16px!important;align-items:center!important;border-color:var(--v677-line-soft)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel-head h2{font-size:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel-head p{margin-top:4px!important;font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-select,#rp-overlay .rp2-app.rp2-mode-phased .c656-search,#rp-overlay .rp2-app.rp2-mode-phased .c656-btn{min-height:40px!important;font-size:12px!important;border-radius:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-modebar{padding:9px 16px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-th{min-height:38px!important;font-size:10.5px!important;padding:10px 11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-cell{font-size:12px!important;padding:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-company-btn{font-size:13px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-empty{padding:20px 18px!important;font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-empty strong{font-size:17px!important;margin-bottom:4px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-pager{padding:9px 15px!important;}
+
+/* ----------------------------------------------------------------------
+   FOLLOW-UPS · same calm panel language as My Day, less cinematic glow
+   ---------------------------------------------------------------------- */
+#rp-overlay .rp2-app.rp2-mode-phased .f654-shell{gap:14px!important;padding-bottom:44px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero{
+  padding:20px 23px!important;border-radius:var(--v677-radius-lg)!important;align-items:center!important;
+  background:radial-gradient(circle at 96% 0,rgba(250,135,61,.09),transparent 31%),radial-gradient(circle at 0 100%,rgba(0,175,239,.07),transparent 33%),linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kick{font-size:10.5px!important;color:var(--v677-cyan)!important;letter-spacing:.12em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero h1{font-size:31px!important;line-height:1.05!important;margin-bottom:6px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero p{font-size:12.5px!important;line-height:1.5!important;max-width:760px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpis{gap:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi{min-height:94px!important;padding:13px 15px!important;border-radius:16px!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014)),var(--v677-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi:after{display:none!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi span{font-size:10px!important;margin-bottom:7px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi strong{font-size:24px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi em{font-size:10.5px!important;margin-top:6px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel{border-radius:var(--v677-radius)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel-head{padding:14px 17px!important;border-color:var(--v677-line-soft)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel-head h2{font-size:19px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel-head p{font-size:11.5px!important;margin-top:4px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-empty{padding:20px 18px!important;min-height:82px!important;display:grid!important;place-content:center!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-empty strong{font-size:13.5px!important;}
+
+/* ----------------------------------------------------------------------
+   COMPANIES · preserve CRM functionality but remove dashboard-heavy rhythm
+   ---------------------------------------------------------------------- */
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-shell{gap:14px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-hero{
+  padding:20px 23px!important;border-radius:var(--v677-radius-lg)!important;
+  background:radial-gradient(circle at 96% 0,rgba(0,175,239,.09),transparent 31%),radial-gradient(circle at 0 100%,rgba(250,135,61,.07),transparent 33%),linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kick{font-size:10.5px!important;color:var(--v677-cyan)!important;letter-spacing:.12em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-title{font-size:30px!important;line-height:1.05!important;max-width:1040px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-copy{font-size:12px!important;line-height:1.5!important;max-width:980px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpis{gap:9px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi{min-height:94px!important;padding:13px 14px!important;border-radius:15px!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014)),var(--v677-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi-label{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi-value{font-size:23px!important;margin-top:6px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi-sub{font-size:10.5px!important;margin-top:4px!important;line-height:1.4!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-viewbar{padding:6px!important;border-radius:15px!important;background:var(--v677-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-view{min-height:38px!important;font-size:11.5px!important;padding:8px 11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar{padding:10px!important;gap:8px!important;border-radius:15px!important;background:var(--v677-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar input,#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar select,#rp-overlay .rp2-app.rp2-mode-phased .cw4-btn{min-height:40px!important;font-size:12px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table-shell{border-radius:17px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table th{font-size:10.5px!important;padding:11px 10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table td{font-size:12px!important;padding:11px 10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-company-name{font-size:13px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-company-sub,#rp-overlay .rp2-app.rp2-mode-phased .cw4-cell-sub{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-cell-main{font-size:12px!important;}
+
+/* ----------------------------------------------------------------------
+   QUOTES · keep v673 workflow; align shell, surface, scale and empty density
+   ---------------------------------------------------------------------- */
+#rp-overlay .rp2-app.rp2-mode-phased .q673-shell{gap:14px!important;padding-bottom:30px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-hero{
+  padding:20px 23px!important;border-radius:var(--v677-radius-lg)!important;align-items:center!important;
+  background:radial-gradient(circle at 96% 0,rgba(0,175,239,.09),transparent 31%),radial-gradient(circle at 0 100%,rgba(250,135,61,.08),transparent 33%),linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-kick{font-size:10.5px!important;color:var(--v677-cyan)!important;letter-spacing:.12em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-title{font-size:31px!important;line-height:1.05!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-copy{font-size:12.5px!important;line-height:1.5!important;margin-top:7px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-workbar{padding:13px!important;border-radius:18px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-search,#rp-overlay .rp2-app.rp2-mode-phased .q673-select{min-height:41px!important;font-size:12px!important;border-radius:11px!important;background:var(--v677-surface-deep)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-search{font-size:12.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-chip{min-height:32px!important;font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-table-panel{border-radius:var(--v677-radius)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-table-head{padding:14px 16px 12px!important;border-color:var(--v677-line-soft)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-section-title{font-size:18px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-table th{font-size:10.5px!important;padding:10px 11px!important;background:#101C27!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-table td{font-size:12px!important;padding:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-table-wrap:has(.q673-empty-row){min-height:0!important;max-height:none!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-empty-row td{padding:22px!important;font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .q673-footnote{font-size:10.5px!important;padding:10px 16px!important;}
+
+/* ----------------------------------------------------------------------
+   ORDERS · already strong; polish it into the same My Day frame
+   ---------------------------------------------------------------------- */
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-shell{gap:14px!important;padding-bottom:30px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-hero{
+  padding:20px 23px!important;border-radius:var(--v677-radius-lg)!important;align-items:center!important;
+  background:radial-gradient(circle at 96% 0,rgba(0,175,239,.09),transparent 31%),radial-gradient(circle at 0 100%,rgba(250,135,61,.08),transparent 33%),linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-kick{font-size:10.5px!important;color:var(--v677-cyan)!important;letter-spacing:.12em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-title{font-size:31px!important;line-height:1.05!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-copy{font-size:12.5px!important;line-height:1.5!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-panel{border-radius:var(--v677-radius)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-toolbar{padding:12px!important;border-color:var(--v677-line-soft)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-search,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-select,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-btn{min-height:40px!important;font-size:12px!important;border-radius:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-table-head{padding-top:13px!important;padding-bottom:13px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row{min-height:50px!important;padding:11px 14px!important;border-color:var(--v677-line-soft)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row.header{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row strong{font-size:12.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row span{font-size:11.5px!important;}
+
+/* ----------------------------------------------------------------------
+   MY PERFORMANCE · same scorecard, calmer page framing and readable rows
+   ---------------------------------------------------------------------- */
+#rp-overlay .rp2-app.rp2-mode-phased .mp669{padding:0 0 46px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:auto auto!important;column-gap:18px!important;
+  margin:0 0 14px!important;padding:13px 16px!important;border-radius:16px!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card strong{grid-column:1;font-size:12.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card p{grid-column:1;margin:4px 0 0!important;font-size:10.5px!important;line-height:1.45!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card button{grid-column:2;grid-row:1/3;align-self:center;margin:0!important;min-height:38px!important;font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{
+  grid-template-columns:minmax(0,1fr) 360px!important;gap:22px!important;min-height:150px!important;padding:20px 23px!important;margin-bottom:14px!important;border-radius:var(--v677-radius-lg)!important;
+  background:radial-gradient(circle at 96% 0,rgba(0,175,239,.09),transparent 31%),radial-gradient(circle at 0 100%,rgba(250,135,61,.08),transparent 33%),linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014)),var(--v677-surface)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-kicker,#rp-overlay .rp2-app.rp2-mode-phased .mp669-section-kicker{font-size:10.5px!important;color:var(--v677-cyan)!important;letter-spacing:.12em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero h1{font-size:31px!important;line-height:1.05!important;margin:6px 0 7px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero p{font-size:12px!important;line-height:1.5!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-overall{padding:12px 14px!important;border-radius:16px!important;background:rgba(255,255,255,.025)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-scorecard{border-radius:var(--v677-radius)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head{padding:16px 18px 14px!important;border-color:var(--v677-line-soft)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head h2{font-size:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head p{font-size:10.5px!important;line-height:1.45!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-columns{padding:10px 18px!important;font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-row{min-height:118px!important;padding:15px 18px!important;gap:14px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-metric-name{font-size:13px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-metric-meta{font-size:10.5px!important;line-height:1.4!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-live strong{font-size:22px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-live span{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score strong{font-size:24px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score small,#rp-overlay .rp2-app.rp2-mode-phased .mp669-pace small{font-size:10px!important;line-height:1.4!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-pace-top,#rp-overlay .rp2-app.rp2-mode-phased .mp669-rec{font-size:10.5px!important;}
+
+/* One border language and readable controls everywhere on these six pages. */
+#rp-overlay .rp2-app.rp2-mode-phased :is(.c656-select,.c656-search,.c656-btn,.f654-btn,.cw4-btn,.cw4-toolbar input,.cw4-toolbar select,.q673-btn,.q673-search,.q673-select,.o671-rp-search,.o671-rp-select,.o671-rp-btn,.ms537-card button){
+  border-color:rgba(139,165,188,.22)!important;
+}
+
+@media(max-width:1320px){
+  #rp-overlay .rp2-app.rp2-mode-phased .c656-hero{grid-template-columns:1fr!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .c656-hero-metrics{max-width:650px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{grid-template-columns:1fr!important;}
+}
+@media(max-width:1180px){
+  #rp-overlay .rp2-app.rp2-mode-phased .p639-subpage{padding:22px 22px 42px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .cw4-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+}
+@media(max-width:780px){
+  #rp-overlay .rp2-app.rp2-mode-phased .p639-subpage{padding:16px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased :is(.c656-hero,.f654-hero,.cw4-directory-hero,.q673-hero,.o671-rp-hero,.mp669-hero){padding:18px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .ms537-card{grid-template-columns:1fr!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .ms537-card button{grid-column:1!important;grid-row:auto!important;justify-self:start;margin-top:9px!important;}
+}
+</style>
+<script id="tcp-v677-rep-portal-my-day-alignment-js">
+(function(){
+ 'use strict';
+ var BUILD='v677';
+ var priorBundle=window._rpPhasedDevBundle;
+ if(typeof priorBundle==='function'&&!priorBundle._v677){
+   var wrapped=function(){
+     var base=priorBundle.apply(this,arguments),el=document.getElementById('tcp-v677-rep-portal-my-day-alignment-css'),css=el?String(el.textContent||'').trim():'';
+     return base+'\n\n<!-- v677 REP PORTAL MY DAY ALIGNMENT -->\n<style id="tcp-v677-rep-portal-my-day-alignment-css">\n'+css+'\n<\/style>';
+   };
+   wrapped._v677=true;
+   window._rpPhasedDevBundle=wrapped;
+ }
+ window.TCP_BUILD_VERSION=BUILD;
+ window.TCP_REP_PORTAL_MY_DAY_ALIGNMENT_V677={version:BUILD};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v677 — Rep Portal My Day Alignment'}catch(e){}
+})();
+</script>
