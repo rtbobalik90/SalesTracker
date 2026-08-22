@@ -67543,3 +67543,80 @@ body.nav-rail .tabs:after{content:"v672"!important}
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v677 — Rep Portal My Day Alignment'}catch(e){}
 })();
 </script>
+
+<!-- ======================================================================
+     SALES TRACKER v678 · REP PORTAL SECTION GUTTERS
+     Fixes the phased subpage wrapper specificity conflict so non-My-Day
+     pages receive the same visible left/right breathing room as My Day.
+     Presentation only.
+     ====================================================================== -->
+<style id="tcp-v678-rep-portal-section-gutters-css">
+/*
+  v639 zeroes #rp2-page padding with a higher-specificity !important rule.
+  Match that specificity here so the approved My Day outer gutter actually
+  applies to Call Workspace, Follow-Ups, Companies, Quotes, Orders and
+  My Performance instead of letting their panels touch the workspace edges.
+*/
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 #rp2-page.p639-subpage{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:26px 30px 46px!important;
+  overflow:visible!important;
+}
+
+/* Align the sticky subpage header with the same 30px content gutter. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .p639-page-top{
+  padding-left:30px!important;
+  padding-right:30px!important;
+}
+
+/* Every first-level workspace stays inside that gutter; no negative/full-bleed drift. */
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 #rp2-page.p639-subpage > :is(
+  .c656,.f654-shell,.cw4-shell,.q673-shell,.o671-rp-shell,.mp669
+){
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+@media(max-width:1180px){
+  #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 #rp2-page.p639-subpage{
+    padding:22px 22px 42px!important;
+  }
+  #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .p639-page-top{
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+}
+@media(max-width:780px){
+  #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 #rp2-page.p639-subpage{
+    padding:16px!important;
+  }
+  #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .p639-page-top{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+}
+</style>
+<script id="tcp-v678-rep-portal-section-gutters-js">
+(function(){
+ 'use strict';
+ var BUILD='v678';
+ var priorBundle=window._rpPhasedDevBundle;
+ if(typeof priorBundle==='function'&&!priorBundle._v678){
+   var wrapped=function(){
+     var base=priorBundle.apply(this,arguments),el=document.getElementById('tcp-v678-rep-portal-section-gutters-css'),css=el?String(el.textContent||'').trim():'';
+     return base+'\n\n<!-- v678 REP PORTAL SECTION GUTTERS -->\n<style id="tcp-v678-rep-portal-section-gutters-css">\n'+css+'\n<\/style>';
+   };
+   wrapped._v678=true;
+   window._rpPhasedDevBundle=wrapped;
+ }
+ window.TCP_BUILD_VERSION=BUILD;
+ window.TCP_REP_PORTAL_SECTION_GUTTERS_V678={version:BUILD};
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v678 — Rep Portal Section Gutters'}catch(e){}
+})();
+</script>
