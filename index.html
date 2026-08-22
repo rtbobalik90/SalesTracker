@@ -65722,3 +65722,274 @@ try{document.documentElement.setAttribute('data-tcp-build','v669');document.titl
 })();
 </script>
 
+
+<!-- ===== v671 Orders Simplification: search-first manager + rep Orders, unified detail, preserved data engines ===== -->
+<style id="tcp-orders-v671-css">
+/* ===== v671 ORDERS SIMPLIFICATION ===== */
+#pg-orders{position:relative;}
+#ord-page .o671-shell{display:flex;flex-direction:column;gap:16px;width:100%;padding-bottom:34px;}
+#ord-page .o671-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:27px 30px;border:1px solid rgba(255,255,255,.10);border-radius:26px;background:radial-gradient(circle at 12% 6%,rgba(250,135,61,.28),transparent 34%),radial-gradient(circle at 88% 18%,rgba(0,175,239,.15),transparent 31%),linear-gradient(135deg,rgba(18,24,42,.97),rgba(9,14,27,.97));box-shadow:0 22px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);}
+#ord-page .o671-hero:after{content:"";position:absolute;right:-115px;bottom:-155px;width:370px;height:370px;border-radius:999px;background:radial-gradient(circle,rgba(0,175,239,.17),transparent 67%);pointer-events:none;}
+#ord-page .o671-hero>*{position:relative;z-index:1;}
+#ord-page .o671-kicker{font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.16em;color:#00AFEF;margin-bottom:7px;}
+#ord-page .o671-hero h1{margin:0;color:#fff;font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:1;font-weight:900;letter-spacing:-.04em;}
+#ord-page .o671-hero p{max-width:780px;margin:10px 0 0;color:#AAB6D1;font-size:13px;line-height:1.65;}
+#ord-page .o671-hero-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end;}
+#ord-page .o671-btn{min-height:40px;padding:0 14px;border-radius:13px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#EEF3FF;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:transform .15s ease,border-color .15s ease,background .15s ease;}
+#ord-page .o671-btn:hover{transform:translateY(-1px);border-color:rgba(250,135,61,.48);background:rgba(250,135,61,.13);}
+#ord-page .o671-btn.primary{background:linear-gradient(135deg,#FA873D,#00AFEF);border-color:rgba(255,255,255,.16);color:#fff;box-shadow:0 12px 30px rgba(0,175,239,.16);}
+#ord-page .o671-summary{display:flex;align-items:center;gap:0;flex-wrap:wrap;border:1px solid rgba(255,255,255,.085);border-radius:19px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 16px 38px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden;}
+#ord-page .o671-summary-item{min-width:170px;flex:1;padding:16px 19px;border-right:1px solid rgba(255,255,255,.07);}
+#ord-page .o671-summary-item:last-child{border-right:0;}
+#ord-page .o671-summary-item span{display:block;font-size:10px;color:#8D99B6;text-transform:uppercase;letter-spacing:.09em;font-weight:900;}
+#ord-page .o671-summary-item strong{display:block;margin-top:5px;color:#fff;font-size:22px;line-height:1;font-weight:950;letter-spacing:-.035em;}
+#ord-page .o671-summary-item small{display:block;margin-top:6px;color:#7E8AA5;font-size:10.5px;line-height:1.35;}
+#ord-page .o671-workspace{border:1px solid rgba(255,255,255,.095);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(15,20,35,.88);box-shadow:0 18px 48px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.055);overflow:hidden;}
+#ord-page .o671-toolbar{display:grid;grid-template-columns:minmax(320px,1.55fr) repeat(3,minmax(150px,.48fr)) auto;gap:10px;align-items:end;padding:18px;border-bottom:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.018);}
+#ord-page .o671-field label{display:block;margin-bottom:6px;color:#93A0BE;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.085em;}
+#ord-page .o671-search-row{display:flex;gap:8px;}
+#ord-page .o671-search,#ord-page .o671-select{width:100%;min-height:43px;border:1px solid rgba(255,255,255,.13);border-radius:13px;background:rgba(3,7,14,.42);color:#F7F9FF;font:700 12.5px inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+#ord-page .o671-search{padding:0 13px;font-size:14px;}
+#ord-page .o671-select{padding:0 34px 0 11px;}
+#ord-page .o671-search:focus,#ord-page .o671-select:focus{outline:none;border-color:rgba(250,135,61,.9);box-shadow:0 0 0 3px rgba(250,135,61,.15);}
+#ord-page .o671-search::placeholder{color:#69758D;}
+#ord-page .o671-more{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(0,175,239,.025);}
+#ord-page .o671-more-grid{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:10px;}
+#ord-page .o671-table-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:17px 18px 10px;}
+#ord-page .o671-table-title{font-size:17px;font-weight:950;color:#fff;letter-spacing:-.025em;}
+#ord-page .o671-table-note{margin-top:4px;color:#8793AD;font-size:11px;line-height:1.45;}
+#ord-page .o671-table-controls{display:flex;align-items:center;gap:8px;color:#8793AD;font-size:10.5px;white-space:nowrap;}
+#ord-page .o671-table-controls .o671-select{width:auto;min-width:82px;min-height:35px;font-size:11px;}
+#ord-page .o671-table-wrap{overflow:auto;max-height:min(66vh,760px);border-top:1px solid rgba(255,255,255,.055);}
+#ord-page table.o671-table{width:100%;min-width:1050px;border-collapse:separate;border-spacing:0;font-size:12.5px;}
+#ord-page table.o671-table thead th{position:sticky;top:0;z-index:3;padding:11px 13px;background:#101522;border-bottom:1px solid rgba(255,255,255,.10);color:#9FAACA;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;text-align:left;white-space:nowrap;}
+#ord-page table.o671-table th.num,#ord-page table.o671-table td.num{text-align:right;}
+#ord-page .o671-sort{border:0;background:transparent;color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;cursor:pointer;padding:0;}
+#ord-page .o671-sort:hover{color:#fff;}
+#ord-page table.o671-table tbody tr{cursor:pointer;transition:background .14s ease;}
+#ord-page table.o671-table tbody tr:hover,#ord-page table.o671-table tbody tr:focus{outline:none;background:rgba(250,135,61,.075);}
+#ord-page table.o671-table td{padding:13px;border-bottom:1px solid rgba(255,255,255,.06);color:#DDE4F4;vertical-align:middle;}
+#ord-page .o671-order-num{font-weight:950;color:#fff;white-space:nowrap;}
+#ord-page .o671-customer{font-weight:850;color:#F3F6FF;}
+#ord-page .o671-sub{display:block;margin-top:3px;color:#7E8AA4;font-size:10px;font-weight:650;}
+#ord-page .o671-status,#ord-page .o671-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:#B8C4DA;font-size:9.5px;font-weight:900;white-space:nowrap;}
+#ord-page .o671-status.good,#ord-page .o671-tag.good{color:#A7FFC0;border-color:rgba(71,209,108,.24);background:rgba(71,209,108,.08);}
+#ord-page .o671-status.warn,#ord-page .o671-tag.warn{color:#FFD27A;border-color:rgba(250,135,61,.26);background:rgba(250,135,61,.08);}
+#ord-page .o671-status.risk,#ord-page .o671-tag.risk{color:#FFB3C8;border-color:rgba(240,100,120,.25);background:rgba(240,100,120,.08);}
+#ord-page .o671-issue-stack{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+#ord-page .o671-empty{padding:50px 24px;text-align:center;color:#8996B2;}
+#ord-page .o671-empty strong{display:block;color:#fff;font-size:16px;margin-bottom:7px;}
+#ord-page .o671-pager{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;border-top:1px solid rgba(255,255,255,.07);color:#8793AD;font-size:11px;}
+#ord-page .o671-pager-actions{display:flex;gap:7px;}
+#ord-page .o671-pager .o671-btn{min-height:34px;padding:0 11px;font-size:11px;}
+#ord-page .o671-data{border:1px solid rgba(255,255,255,.085);border-radius:20px;background:rgba(255,255,255,.026);overflow:hidden;}
+#ord-page .o671-data summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;cursor:pointer;list-style:none;}
+#ord-page .o671-data summary::-webkit-details-marker{display:none;}
+#ord-page .o671-data-title{font-size:13px;font-weight:900;color:#EDF3FF;}
+#ord-page .o671-data-sub{margin-top:3px;color:#78859D;font-size:10.5px;}
+#ord-page .o671-data-body{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:14px;padding:0 17px 17px;border-top:1px solid rgba(255,255,255,.07);}
+#ord-page .o671-data-copy{padding-top:15px;color:#9BA8C2;font-size:11px;line-height:1.65;}
+#ord-page .o671-data-copy strong{color:#fff;}
+#ord-page .o671-data-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:15px;}
+#ord-page .o671-data-stat{padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(0,0,0,.16);}
+#ord-page .o671-data-stat span{display:block;color:#7F8BA4;font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;}
+#ord-page .o671-data-stat strong{display:block;margin-top:5px;color:#fff;font-size:14px;}
+
+.o671-modal-wrap{position:fixed;inset:0;z-index:1000015;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(2,6,12,.78);backdrop-filter:blur(9px);}
+.o671-modal{width:min(1160px,97vw);max-height:94vh;overflow:auto;border:1px solid rgba(250,135,61,.28);border-radius:24px;background:linear-gradient(180deg,#101722,#0A1019);box-shadow:0 30px 90px rgba(0,0,0,.56);color:#EAF0FA;}
+.o671-modal-head{position:sticky;top:0;z-index:5;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(12,18,28,.96);backdrop-filter:blur(14px);}
+.o671-modal-kick{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.14em;color:#00AFEF;}
+.o671-modal-title{margin-top:6px;color:#fff;font:900 28px/1.08 Georgia,"Times New Roman",serif;letter-spacing:-.035em;}
+.o671-modal-sub{margin-top:7px;color:#94A2BC;font-size:11.5px;line-height:1.5;}
+.o671-modal-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.o671-modal-btn{min-height:38px;padding:0 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.05);color:#EAF0FA;font-size:11px;font-weight:850;cursor:pointer;}
+.o671-modal-btn.primary{background:linear-gradient(135deg,#FA873D,#00AFEF);color:#fff;}
+.o671-modal-body{padding:20px 24px 25px;}
+.o671-detail-summary{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:10px;}
+.o671-detail-stat{padding:13px;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:rgba(255,255,255,.035);}
+.o671-detail-stat span{display:block;color:#8290AA;font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;}
+.o671-detail-stat strong{display:block;margin-top:6px;color:#fff;font-size:15px;font-weight:950;}
+.o671-detail-section{margin-top:17px;padding-top:17px;border-top:1px solid rgba(255,255,255,.07);}
+.o671-detail-section h3{margin:0 0 9px;color:#fff;font-size:14px;font-weight:950;}
+.o671-detail-note{color:#9AA8C1;font-size:11px;line-height:1.6;}
+.o671-detail-family{display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;}
+.o671-detail-family-row{display:grid;grid-template-columns:120px 120px minmax(180px,1fr) 130px;gap:10px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px;color:#C9D2E4;}
+.o671-detail-family-row:last-child{border-bottom:0;}
+.o671-detail-family-row strong{color:#fff;}
+.o671-detail-table-wrap{overflow:auto;border:1px solid rgba(255,255,255,.07);border-radius:14px;}
+.o671-detail-table{width:100%;min-width:900px;border-collapse:collapse;font-size:11px;}
+.o671-detail-table th{padding:9px 10px;background:#111927;color:#8F9EB9;font-size:9px;text-align:left;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.o671-detail-table td{padding:10px;border-top:1px solid rgba(255,255,255,.055);color:#DCE4F2;}
+.o671-issues{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.o671-issue-card{padding:12px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.03);color:#AAB6CB;font-size:11px;line-height:1.55;}
+.o671-issue-card strong{display:block;color:#fff;margin-bottom:4px;}
+
+/* Rep Portal simplified Orders */
+#rp-overlay .o671-rp-shell{display:flex;flex-direction:column;gap:15px;min-width:0;padding-bottom:26px;}
+#rp-overlay .o671-rp-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:27px 29px;border:1px solid rgba(250,135,61,.30);border-radius:23px;background:radial-gradient(circle at 86% 10%,rgba(0,175,239,.16),transparent 31%),radial-gradient(circle at 8% 100%,rgba(250,135,61,.18),transparent 31%),linear-gradient(135deg,#191D2C,#10212A 62%,#0B151B);box-shadow:0 20px 58px rgba(0,0,0,.22);}
+#rp-overlay .o671-rp-kicker{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.14em;color:#00AFEF;}
+#rp-overlay .o671-rp-title{margin-top:6px;color:#fff;font:900 31px/1.05 Georgia,"Times New Roman",serif;letter-spacing:-.04em;}
+#rp-overlay .o671-rp-copy{max-width:760px;margin-top:9px;color:#A8B5C9;font-size:11.5px;line-height:1.62;}
+#rp-overlay .o671-rp-summary{display:flex;gap:0;min-width:380px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:rgba(3,8,15,.34);overflow:hidden;}
+#rp-overlay .o671-rp-summary div{flex:1;min-width:120px;padding:14px;border-right:1px solid rgba(255,255,255,.065);}
+#rp-overlay .o671-rp-summary div:last-child{border-right:0;}
+#rp-overlay .o671-rp-summary span{display:block;color:#75849A;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;}
+#rp-overlay .o671-rp-summary strong{display:block;margin-top:6px;color:#fff;font-size:18px;font-weight:950;}
+#rp-overlay .o671-rp-panel{border:1px solid var(--rp-line,rgba(255,255,255,.08));border-radius:20px;background:linear-gradient(145deg,rgba(17,27,42,.98),rgba(11,18,29,.99));box-shadow:0 16px 42px rgba(0,0,0,.12);overflow:hidden;}
+#rp-overlay .o671-rp-toolbar{display:grid;grid-template-columns:minmax(280px,1.5fr) minmax(150px,.45fr) minmax(150px,.45fr) auto;gap:9px;align-items:end;padding:16px;border-bottom:1px solid rgba(255,255,255,.07);}
+#rp-overlay .o671-rp-field label{display:block;margin-bottom:5px;color:#8190A8;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;}
+#rp-overlay .o671-rp-search-row{display:flex;gap:7px;}
+#rp-overlay .o671-rp-search,#rp-overlay .o671-rp-select{width:100%;min-height:40px;border:1px solid rgba(255,255,255,.10);border-radius:11px;background:rgba(2,7,13,.42);color:#F4F7FC;font-size:11px;font-weight:750;}
+#rp-overlay .o671-rp-search{padding:0 11px;font-size:12px;}
+#rp-overlay .o671-rp-select{padding:0 28px 0 10px;}
+#rp-overlay .o671-rp-btn{min-height:40px;padding:0 12px;border:1px solid rgba(255,255,255,.10);border-radius:11px;background:rgba(255,255,255,.04);color:#DCE5EF;font-size:9.5px;font-weight:900;cursor:pointer;}
+#rp-overlay .o671-rp-btn.primary{background:linear-gradient(135deg,rgba(250,135,61,.22),rgba(0,175,239,.18));border-color:rgba(250,135,61,.32);color:#fff;}
+#rp-overlay .o671-status,#rp-overlay .o671-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:#B8C4DA;font-size:8.5px;font-weight:900;white-space:nowrap;}
+#rp-overlay .o671-status.good,#rp-overlay .o671-tag.good{color:#A7FFC0;border-color:rgba(71,209,108,.24);background:rgba(71,209,108,.08);}
+#rp-overlay .o671-status.warn,#rp-overlay .o671-tag.warn{color:#FFD27A;border-color:rgba(250,135,61,.26);background:rgba(250,135,61,.08);}
+#rp-overlay .o671-status.risk,#rp-overlay .o671-tag.risk{color:#FFB3C8;border-color:rgba(240,100,120,.25);background:rgba(240,100,120,.08);}
+#rp-overlay .o671-rp-table-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:15px 16px 9px;}
+#rp-overlay .o671-rp-table-title{color:#fff;font-size:14px;font-weight:950;}
+#rp-overlay .o671-rp-table-note{margin-top:3px;color:#74839A;font-size:9px;}
+#rp-overlay .o671-rp-table-controls{display:flex;align-items:center;gap:7px;color:#718099;font-size:9px;}
+#rp-overlay .o671-rp-table-controls .o671-rp-select{width:auto;min-width:75px;min-height:33px;}
+#rp-overlay .o671-rp-table-wrap{overflow:auto;max-height:min(63vh,720px);border-top:1px solid rgba(255,255,255,.055);}
+#rp-overlay .o671-rp-table{min-width:870px;}
+#rp-overlay .o671-rp-row{display:grid;grid-template-columns:125px 140px minmax(220px,1fr) 130px 130px 130px;gap:9px;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);background:transparent;color:#DDE5F2;text-align:left;cursor:pointer;}
+#rp-overlay button.o671-rp-row{width:100%;border-left:0;border-right:0;border-top:0;border-bottom:1px solid rgba(255,255,255,.06);font:inherit;}
+#rp-overlay button.o671-rp-row:hover{background:rgba(250,135,61,.065);}
+#rp-overlay .o671-rp-row.header{position:sticky;top:0;z-index:2;background:#101722;color:#8290A8;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;cursor:default;}
+#rp-overlay .o671-rp-row strong{color:#fff;font-size:10.5px;}
+#rp-overlay .o671-rp-row span{font-size:10px;}
+#rp-overlay .o671-rp-row .val{text-align:right;font-weight:950;color:#fff;}
+#rp-overlay .o671-rp-row .issues{text-align:right;}
+#rp-overlay .o671-rp-empty{padding:45px 20px;text-align:center;color:#7E8DA4;font-size:10px;}
+#rp-overlay .o671-rp-empty strong{display:block;color:#fff;font-size:14px;margin-bottom:6px;}
+#rp-overlay .o671-rp-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);color:#74839A;font-size:9.5px;}
+#rp-overlay .o671-rp-pager div{display:flex;gap:7px;}
+#rp-overlay .o671-rp-pager .o671-rp-btn{min-height:32px;}
+
+@media(max-width:1280px){#ord-page .o671-toolbar{grid-template-columns:1fr 1fr 1fr;}#ord-page .o671-toolbar .o671-search-field{grid-column:1/-1;}#ord-page .o671-more-grid{grid-template-columns:1fr 1fr;}.o671-detail-summary{grid-template-columns:repeat(3,1fr);}#rp-overlay .o671-rp-hero{align-items:flex-start;flex-direction:column;}#rp-overlay .o671-rp-summary{width:100%;min-width:0;}#rp-overlay .o671-rp-toolbar{grid-template-columns:1fr 1fr;}#rp-overlay .o671-rp-toolbar .o671-rp-search-field{grid-column:1/-1;}}
+@media(max-width:760px){#ord-page .o671-hero{padding:22px;align-items:flex-start;flex-direction:column;}#ord-page .o671-hero h1{font-size:29px;}#ord-page .o671-hero-actions{width:100%;justify-content:flex-start;}#ord-page .o671-summary{display:grid;grid-template-columns:1fr 1fr;}#ord-page .o671-summary-item{min-width:0;border-bottom:1px solid rgba(255,255,255,.06);}#ord-page .o671-toolbar{grid-template-columns:1fr;}#ord-page .o671-toolbar .o671-search-field{grid-column:auto;}#ord-page .o671-more-grid{grid-template-columns:1fr;}#ord-page .o671-table-head,#ord-page .o671-pager{align-items:flex-start;flex-direction:column;}#ord-page .o671-data-body{grid-template-columns:1fr;}.o671-modal-wrap{padding:8px;}.o671-modal-head{padding:18px;flex-direction:column;}.o671-modal-body{padding:16px 18px 20px;}.o671-detail-summary{grid-template-columns:1fr 1fr;}.o671-detail-family-row{grid-template-columns:1fr 1fr;}.o671-issues{grid-template-columns:1fr;}#rp-overlay .o671-rp-hero{padding:22px 20px;}#rp-overlay .o671-rp-title{font-size:27px;}#rp-overlay .o671-rp-summary{display:grid;grid-template-columns:1fr 1fr;}#rp-overlay .o671-rp-toolbar{grid-template-columns:1fr;}#rp-overlay .o671-rp-toolbar .o671-rp-search-field{grid-column:auto;}#rp-overlay .o671-rp-table-head,#rp-overlay .o671-rp-pager{align-items:flex-start;flex-direction:column;}}
+</style>
+<style id="tcp-v671-build-identity">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v671"!important}body.nav-rail .tabs:after{content:"v671"!important}</style>
+<script id="tcp-orders-v671-js">
+/* ===== v671 ORDERS SIMPLIFICATION ===== */
+(function(){
+ 'use strict';
+ var M=window._ord671Mgr=window._ord671Mgr||{q:'',rep:'all',status:'all',range:'all',type:'all',placement:'all',customerClass:'all',source:'all',more:false,sort:'date_desc',page:0,pageSize:25};
+ var R=window._ord671Rep=window._ord671Rep||{rep:'',q:'',status:'all',range:'all',sort:'date_desc',page:0,pageSize:25};
+ function arr(v){return Array.isArray(v)?v:[]}
+ function n(v){return Number(v)||0}
+ function clean(v){return String(v==null?'':v).trim()}
+ function esc(v){return typeof _ordEsc==='function'?_ordEsc(v):String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function money(v){return typeof _ordMoney==='function'?_ordMoney(v):('$'+Math.round(n(v)).toLocaleString())}
+ function dt(v){if(!v)return null;var d=new Date(String(v).length===10?String(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d}
+ function fmtDate(v){var d=dt(v);return d?d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}
+ function enc(v){return encodeURIComponent(String(v||'')).replace(/'/g,'%27')}
+ function dec(v){try{return decodeURIComponent(v||'')}catch(e){return String(v||'')}}
+ function statusTone(v){v=clean(v).toLowerCase();if(/hold|delay|problem|backorder|cancel|void|credit/.test(v))return'risk';if(/pending|open|approval|proof|progress|production/.test(v))return'warn';if(/closed|complete|completed|shipped|invoiced/.test(v))return'good';return''}
+ function statusLabel(v){return clean(v)||'Not recorded'}
+ function placementValue(o){var p=clean(o&&o.legacyPlacement)||clean(o&&o.placement);if(!p||/line-item report/i.test(p))return'Unknown';if(/website/i.test(p))return'Website';if(/entered/i.test(p))return'Entered';return p}
+ function customerClass(o){if(!o)return'Unknown';if(o.newCustomerKnown===false)return'Unknown';return o.newCustomer?'New':'Repeat'}
+ function sourceValue(o){return o&&o.lineItemOrderKey?'Line-item':'Weekly'}
+ function issueInfo(group){
+  var arts=[],cms=[],seenA={},seenC={};
+  group.lines.forEach(function(o){
+   var a=[],c=[];try{if(typeof _ordArtFor==='function')a=_ordArtFor(o)||[]}catch(e){}try{if(typeof _ordCmFor==='function')c=_ordCmFor(o)||[]}catch(e){}
+   a.forEach(function(x){var k=String(x&&x.id||x&&x.so||'')+'|'+String(x&&x.weekKey||'')+'|'+String(x&&x.desc||'');if(!seenA[k]){seenA[k]=1;arts.push(x)}});
+   c.forEach(function(x){var k=String(x&&x.id||x&&x.soNum||'')+'|'+String(x&&x.weekKey||'')+'|'+String(x&&x.amount||'')+'|'+String(x&&x.desc||'');if(!seenC[k]){seenC[k]=1;cms.push(x)}})
+  });
+  return{arts:arts,cms:cms,count:arts.length+cms.length}
+ }
+ function groupKey(o){return [clean(o&&o.rep),clean(o&&o.base||o&&o.orderNum),clean(o&&o.orderType||'General Sale')].join('|')}
+ function chooseHead(lines){return lines.filter(function(o){return o&&o.kind==='order'&&o.lineItemOrderKey})[0]||lines.filter(function(o){return o&&o.kind==='order'})[0]||lines.filter(function(o){return o&&o.lineItemOrderKey})[0]||lines[0]}
+ function allGroups(rep){
+  var by={};arr(S&&S.orders).forEach(function(o){if(!o)return;if(rep&&o.rep!==rep)return;var k=groupKey(o);(by[k]=by[k]||[]).push(o)});
+  return Object.keys(by).map(function(k){var lines=by[k].slice().sort(function(a,b){return String(a.orderDate||'').localeCompare(String(b.orderDate||''))}),head=chooseHead(lines),net=lines.reduce(function(s,x){return s+n(x.total)},0),primary=lines.filter(function(x){return x.kind==='order'}),issues;var g={key:k,head:head,lines:lines,net:net,primaryCount:primary.length||0};issues=issueInfo(g);g.issues=issues;g.date=head&&head.orderDate||lines[lines.length-1]&&lines[lines.length-1].orderDate||'';return g}).sort(function(a,b){return String(b.date).localeCompare(String(a.date))})
+ }
+ function lineSearchIndex(){var idx={};arr(S&&S.orderLineItems).forEach(function(x){if(!x||!x.lineItemOrderKey)return;idx[x.lineItemOrderKey]=(idx[x.lineItemOrderKey]||'')+' '+[x.sku,x.productName,x.productCategory,x.productSubcategory,x.decorationType,x.invoiceNumber,x.accountId].join(' ')});return idx}
+ function selectedQuarterMatch(o){try{return String(o.effYr||o.yr||'')===String(getYr())&&String(o.effQ||o.q||'')===String(getQ())}catch(e){return true}}
+ function rangeMatch(g,range){
+  if(!range||range==='all')return true;var o=g.head||{},d=dt(g.date);if(range==='qtr')return selectedQuarterMatch(o);if(range==='ytd'){try{return d&&d.getFullYear()===Number(getYr())}catch(e){return true}}if(range==='month'){var now=new Date();return d&&d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()}if(range==='90'){if(!d)return false;var cut=new Date();cut.setHours(0,0,0,0);cut.setDate(cut.getDate()-90);return d>=cut}return true
+ }
+ function groupSearch(g,q,index){if(!q)return true;q=q.toLowerCase();var o=g.head||{},text=[o.orderNum,o.base,o.invoiceNumber,o.customer,o.rep,o.status,o.orderType,placementValue(o),sourceValue(o)].join(' ').toLowerCase();if(text.indexOf(q)>=0)return true;return g.lines.some(function(x){var t=index[x.lineItemOrderKey];return t&&String(t).toLowerCase().indexOf(q)>=0})}
+ function commonFilter(groups,state,isRep){
+  var idx=lineSearchIndex(),q=clean(state.q).toLowerCase();return groups.filter(function(g){var o=g.head||{};if(!rangeMatch(g,state.range))return false;if(state.status!=='all'&&statusLabel(o.status)!==state.status)return false;if(!isRep&&state.rep!=='all'&&o.rep!==state.rep)return false;if(!isRep&&state.type!=='all'&&clean(o.orderType)!==state.type)return false;if(!isRep&&state.placement!=='all'&&placementValue(o)!==state.placement)return false;if(!isRep&&state.customerClass!=='all'&&customerClass(o)!==state.customerClass)return false;if(!isRep&&state.source!=='all'&&sourceValue(o)!==state.source)return false;if(!groupSearch(g,q,idx))return false;return true})
+ }
+ function sortGroups(groups,sort){groups=groups.slice();groups.sort(function(a,b){var A=a.head||{},B=b.head||{};if(sort==='date_asc')return String(a.date).localeCompare(String(b.date));if(sort==='amount_desc')return b.net-a.net;if(sort==='amount_asc')return a.net-b.net;if(sort==='customer')return clean(A.customer).localeCompare(clean(B.customer));if(sort==='rep')return clean(A.rep).localeCompare(clean(B.rep));if(sort==='status')return statusLabel(A.status).localeCompare(statusLabel(B.status));return String(b.date).localeCompare(String(a.date))});return groups}
+ function rangeLabel(v){return v==='qtr'?'Selected quarter':v==='ytd'?'Selected year':v==='month'?'This month':v==='90'?'Last 90 days':'All history'}
+ function option(value,label,current){return'<option value="'+esc(value)+'"'+(String(value)===String(current)?' selected':'')+'>'+esc(label)+'</option>'}
+ function selectHtml(cls,value,items,change){return'<select class="'+cls+'" onchange="'+change+'">'+items.map(function(x){return option(x[0],x[1],value)}).join('')+'</select>'}
+ function getStatusOptions(groups){var vals={};groups.forEach(function(g){vals[statusLabel(g.head&&g.head.status)]=1});return Object.keys(vals).sort()}
+ function pageInfo(groups,state){var size=state.pageSize==='all'?Math.max(1,groups.length):Math.max(1,Number(state.pageSize)||25),pages=Math.max(1,Math.ceil(Math.max(1,groups.length)/size));state.page=Math.max(0,Math.min(pages-1,Number(state.page)||0));var start=state.page*size,end=Math.min(groups.length,start+size);return{size:size,pages:pages,start:start,end:end,shown:groups.slice(start,end)}}
+ function sortMark(state,key){return state.sort===key?' ▲':state.sort===key+'_desc'?' ▼':state.sort===key+'_asc'?' ▲':''}
+ function sortButton(label,key,state){var next;if(key==='date')next=state.sort==='date_desc'?'date_asc':'date_desc';else if(key==='amount')next=state.sort==='amount_desc'?'amount_asc':'amount_desc';else next=key;return'<button class="o671-sort" onclick="_ord671MgrSort(\''+next+'\')">'+label+sortMark(state,key)+'</button>'}
+ function managerRow(g){var o=g.head||{},issues=g.issues||{arts:[],cms:[],count:0},tags=[];if(issues.arts.length)tags.push('<span class="o671-tag risk">🎨 '+issues.arts.length+' Art</span>');if(issues.cms.length)tags.push('<span class="o671-tag warn">💳 '+issues.cms.length+' CM</span>');if(g.lines.some(function(x){return x.kind==='adjustment'}))tags.push('<span class="o671-tag warn">Adjustment</span>');if(g.lines.some(function(x){return x.kind==='backorder'}))tags.push('<span class="o671-tag risk">Backorder</span>');return'<tr tabindex="0" role="button" onclick="_ord671Open(\''+enc(g.key)+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();_ord671Open(\''+enc(g.key)+'\')}"><td>'+fmtDate(g.date)+'</td><td><span class="o671-order-num">'+esc(o.orderNum||o.base||'Order')+'</span><span class="o671-sub">'+esc(sourceValue(o))+(o.invoiceNumber?' · Inv '+esc(o.invoiceNumber):'')+'</span></td><td><span class="o671-customer">'+esc(o.customer||'Customer not recorded')+'</span><span class="o671-sub">'+esc(customerClass(o))+' customer</span></td><td>'+esc(o.rep||'—')+'</td><td><span class="o671-status '+statusTone(o.status)+'">'+esc(statusLabel(o.status))+'</span></td><td class="num" style="font-weight:950;color:#fff">'+money(g.net)+'</td><td class="num"><div class="o671-issue-stack">'+(tags.join('')||'<span class="o671-sub" style="margin:0">—</span>')+'</div></td></tr>'}
+ function dataSourceHtml(){var meta=S&&S.orderLineItemsMeta||{},imports=arr(meta.imports),last=imports.slice().sort(function(a,b){return String(b.importedAt||'').localeCompare(String(a.importedAt||''))})[0]||null,starts=imports.map(function(x){return x.startDate}).filter(Boolean).sort(),ends=imports.map(function(x){return x.endDate}).filter(Boolean).sort(),unmatched=arr(S&&S.orderLineItemsUnmatched).length,legacy=S&&S.ordersMeta||{};return'<details id="li524-manager-card" class="o671-data"><summary><div><div class="o671-data-title">Manage order data</div><div class="o671-data-sub">Import and data-health controls stay available without competing with the working order list.</div></div><span class="o671-tag">Data Sources</span></summary><div class="o671-data-body"><div class="o671-data-copy"><strong>Smart Order Import</strong><br>One uploader auto-detects the supported monthly line-item report or weekly SalesRepPerformance workbook before anything is committed. Monthly detail supplies invoice/product history; weekly files can continue supplying official summary context.<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="o671-btn primary" onclick="_liImportChoose()">⬆ Upload order report</button><input id="li524-file" type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="_liImportRead(this)"></div><div id="ord-upload-status" style="margin-top:10px;color:#7F8DA6;font-size:10px">'+(legacy.lastUpload?('Legacy history last updated '+esc(new Date(legacy.lastUpload).toLocaleString())+(legacy.lastFile?' · '+esc(legacy.lastFile):'')):'No legacy weekly upload timestamp recorded.')+'</div></div><div class="o671-data-stats"><div class="o671-data-stat"><span>Line-item imports</span><strong>'+imports.length+'</strong></div><div class="o671-data-stat"><span>Unmatched lines</span><strong>'+unmatched.toLocaleString()+'</strong></div><div class="o671-data-stat"><span>Line-item coverage</span><strong style="font-size:12px">'+(starts.length?esc(fmtDate(starts[0])+' – '+fmtDate(ends[ends.length-1])):'Not loaded')+'</strong></div><div class="o671-data-stat"><span>Last line import</span><strong style="font-size:12px">'+(last&&last.importedAt?esc(new Date(last.importedAt).toLocaleString()):'Not loaded')+'</strong></div></div></div></details>'}
+ function managerHtml(){
+  var all=allGroups(),filtered=sortGroups(commonFilter(all,M,false),M.sort),p=pageInfo(filtered,M),reps={},types={};all.forEach(function(g){var o=g.head||{};if(o.rep)reps[o.rep]=1;if(o.orderType)types[o.orderType]=1});var statuses=getStatusOptions(all),net=filtered.reduce(function(s,g){return s+g.net},0),issueCount=filtered.filter(function(g){return g.issues&&g.issues.count}).length,dates=filtered.map(function(g){return g.date}).filter(Boolean).sort(),span=dates.length?(fmtDate(dates[0])+' – '+fmtDate(dates[dates.length-1])):'No matching dates';
+  var hero='<div class="o671-hero"><div><div class="o671-kicker">Order Workspace · Build v671</div><h1>Orders</h1><p>Find an order, understand what happened, and get to the customer quickly. Search is now the primary workflow; reporting and import controls stay secondary.</p></div><div class="o671-hero-actions"><button class="o671-btn primary" onclick="var d=document.getElementById(\'li524-manager-card\');if(d){d.open=true;d.scrollIntoView({behavior:\'smooth\',block:\'center\'})}">Manage Order Data</button></div></div>';
+  var summary='<div class="o671-summary"><div class="o671-summary-item"><span>Orders in view</span><strong>'+filtered.length.toLocaleString()+'</strong><small>'+esc(rangeLabel(M.range))+'</small></div><div class="o671-summary-item"><span>Net value</span><strong>'+money(net)+'</strong><small>Order families including linked adjustments/backorders</small></div><div class="o671-summary-item"><span>Orders with issues</span><strong>'+issueCount.toLocaleString()+'</strong><small>Art errors or credit memos linked to the order family</small></div><div class="o671-summary-item"><span>Date coverage</span><strong style="font-size:16px">'+esc(span)+'</strong><small>Based on the current filtered results</small></div></div>';
+  var ranges=[['all','All history'],['qtr','Selected quarter'],['ytd','Selected year'],['month','This month'],['90','Last 90 days']],repOpts=[['all','All reps']].concat(Object.keys(reps).sort().map(function(x){return[x,x]})),statusOpts=[['all','All statuses']].concat(statuses.map(function(x){return[x,x]}));
+  var toolbar='<div class="o671-toolbar"><div class="o671-field o671-search-field"><label>Search Orders</label><div class="o671-search-row"><input id="o671-search" class="o671-search" value="'+esc(M.q)+'" placeholder="Order #, customer, rep, product or SKU…" onkeydown="if(event.key===\'Enter\')_ord671MgrSearch(this.value)"><button class="o671-btn primary" onclick="_ord671MgrSearch((document.getElementById(\'o671-search\')||{}).value||\'\')">Search</button>'+(M.q?'<button class="o671-btn" onclick="_ord671MgrSearch(\'\')">Clear</button>':'')+'</div></div><div class="o671-field"><label>Date</label>'+selectHtml('o671-select',M.range,ranges,"_ord671MgrSet('range',this.value)")+'</div><div class="o671-field"><label>Rep</label>'+selectHtml('o671-select',M.rep,repOpts,"_ord671MgrSet('rep',this.value)")+'</div><div class="o671-field"><label>Status</label>'+selectHtml('o671-select',M.status,statusOpts,"_ord671MgrSet('status',this.value)")+'</div><button class="o671-btn" onclick="_ord671MgrMore()">'+(M.more?'Hide':'More')+' Filters</button></div>';
+  var more=M.more?'<div class="o671-more"><div class="o671-more-grid"><div class="o671-field"><label>Order Type</label>'+selectHtml('o671-select',M.type,[['all','All types']].concat(Object.keys(types).sort().map(function(x){return[x,x]})),"_ord671MgrSet('type',this.value)")+'</div><div class="o671-field"><label>Placement</label>'+selectHtml('o671-select',M.placement,[['all','All placement'],['Website','Website'],['Entered','Entered'],['Unknown','Unknown / not supplied']],"_ord671MgrSet('placement',this.value)")+'</div><div class="o671-field"><label>Customer</label>'+selectHtml('o671-select',M.customerClass,[['all','All customers'],['New','New'],['Repeat','Repeat'],['Unknown','Unknown / not supplied']],"_ord671MgrSet('customerClass',this.value)")+'</div><div class="o671-field"><label>Source</label>'+selectHtml('o671-select',M.source,[['all','All sources'],['Line-item','Line-item detail'],['Weekly','Weekly / legacy']],"_ord671MgrSet('source',this.value)")+'</div></div></div>':'';
+  var rows=p.shown.map(managerRow).join(''),sizes=[[10,'10'],[25,'25'],[50,'50'],[100,'100'],['all','All']],table='<div class="o671-table-head"><div><div class="o671-table-title">Order list</div><div class="o671-table-note">Click any row for one consolidated order detail view. Unknown source fields stay explicitly unknown instead of being inferred.</div></div><div class="o671-table-controls"><span>Rows</span>'+selectHtml('o671-select',M.pageSize,sizes,"_ord671MgrPageSize(this.value)")+'</div></div><div class="o671-table-wrap"><table class="o671-table"><thead><tr><th>'+sortButton('Date','date',M)+'</th><th>Order #</th><th>'+sortButton('Customer','customer',M)+'</th><th>'+sortButton('Rep','rep',M)+'</th><th>'+sortButton('Status','status',M)+'</th><th class="num">'+sortButton('Amount','amount',M)+'</th><th class="num">Issues</th></tr></thead><tbody>'+rows+'</tbody></table>'+(rows?'':'<div class="o671-empty"><strong>No orders match this view</strong>Clear the search or loosen a filter. Imported data has not been changed.</div>')+'</div><div class="o671-pager"><span>'+(filtered.length?('Showing '+(p.start+1)+'–'+p.end+' of '+filtered.length.toLocaleString()):'0 orders')+'</span><div class="o671-pager-actions"><button class="o671-btn" '+(M.page<=0?'disabled':'')+' onclick="_ord671MgrPage(-1)">← Previous</button><button class="o671-btn" '+(M.page>=p.pages-1?'disabled':'')+' onclick="_ord671MgrPage(1)">Next →</button></div></div>';
+  return'<div class="o671-shell">'+hero+summary+'<section class="o671-workspace">'+toolbar+more+table+'</section>'+dataSourceHtml()+'</div>'
+ }
+ window.renderOrdersPage=function(){var host=document.getElementById('ord-page');if(!host)return;host.innerHTML=managerHtml();var s=document.getElementById('o671-search');if(s&&M.q){try{s.focus();s.setSelectionRange(s.value.length,s.value.length)}catch(e){}}};
+ window._ord671MgrSet=function(k,v){M[k]=v;M.page=0;window.renderOrdersPage()};
+ window._ord671MgrSearch=function(v){M.q=clean(v);M.page=0;window.renderOrdersPage()};
+ window._ord671MgrMore=function(){M.more=!M.more;window.renderOrdersPage()};
+ window._ord671MgrSort=function(v){M.sort=v;M.page=0;window.renderOrdersPage()};
+ window._ord671MgrPage=function(delta){M.page=Math.max(0,n(M.page)+n(delta));window.renderOrdersPage()};
+ window._ord671MgrPageSize=function(v){M.pageSize=v==='all'?'all':Number(v)||25;M.page=0;window.renderOrdersPage()};
+
+ function findGroup(encoded){var key=dec(encoded);return allGroups().filter(function(g){return g.key===key})[0]||null}
+ function lineItemsFor(g){var keys={},out=[];g.lines.forEach(function(o){if(o&&o.lineItemOrderKey)keys[o.lineItemOrderKey]=1});Object.keys(keys).forEach(function(k){try{if(typeof window._li524OrderLines==='function')out=out.concat(window._li524OrderLines(k)||[])}catch(e){}});return out.sort(function(a,b){return n(a.rowNumber)-n(b.rowNumber)})}
+ function detailModal(g){
+  var o=g.head||{},issues=g.issues||issueInfo(g),items=lineItemsFor(g),source=sourceValue(o),placement=placementValue(o),cls=customerClass(o),invoice=clean(o.invoiceNumber),account=clean(o.accountId),familyRows=g.lines.map(function(x){return'<div class="o671-detail-family-row"><span>'+fmtDate(x.orderDate)+'</span><span><strong>'+esc(x.kind||'order')+'</strong></span><span>'+esc(x.orderNum||x.base||'Order')+(x.invoiceNumber?' · Inv '+esc(x.invoiceNumber):'')+'</span><span style="text-align:right;font-weight:900;color:#fff">'+money(x.total)+'</span></div>'}).join('');
+  var itemRows=items.map(function(x){return'<tr><td>'+esc(x.lineClass||'—')+'</td><td>'+esc(x.sku||'—')+'</td><td><strong>'+esc(x.productName||'—')+'</strong></td><td>'+esc(x.productCategory||'—')+'</td><td>'+esc(x.decorationType||'—')+'</td><td style="text-align:right">'+n(x.quantityOrdered).toLocaleString()+'</td><td style="text-align:right;font-weight:900">'+money(x.extendedSalesRevenue)+'</td></tr>'}).join('');
+  var issueCards=[];issues.arts.forEach(function(a){issueCards.push('<div class="o671-issue-card"><strong>🎨 Art Error</strong>'+esc(a.issueTypeLabel||a.type||'Art issue')+(a.desc?'<br>'+esc(a.desc):'')+'</div>')});issues.cms.forEach(function(c){issueCards.push('<div class="o671-issue-card"><strong>💳 Credit Memo · '+money(-Math.abs(n(c.amount)))+'</strong>'+esc(c.desc||'Credit memo')+(c.fault?'<br>Fault: '+esc(c.fault):'')+'</div>')});
+  var repMode=!!(window._rp2&&_rp2.rep&&document.getElementById('rp-overlay'));
+  return'<div class="o671-modal-wrap" id="o671-modal" onclick="if(event.target===this)_ord671Close()"><div class="o671-modal"><div class="o671-modal-head"><div><div class="o671-modal-kick">Unified Order Detail · Build v671</div><div class="o671-modal-title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</div><div class="o671-modal-sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div></div><div class="o671-modal-actions"><button class="o671-modal-btn primary" onclick="_ord671OpenCustomer(\''+enc(o.customer||'')+'\')">Open Customer</button><button class="o671-modal-btn" onclick="_ord671Close()">Close</button></div></div><div class="o671-modal-body"><div class="o671-detail-summary"><div class="o671-detail-stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="o671-detail-stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="o671-detail-stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="o671-detail-stat"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="o671-detail-stat"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="o671-detail-stat"><span>Source</span><strong>'+esc(source)+'</strong></div></div>'+
+   (account||invoice?'<div class="o671-detail-section"><h3>Order information</h3><div class="o671-detail-note">'+(invoice?'<strong style="color:#fff">Invoice:</strong> '+esc(invoice)+' &nbsp; ':'')+(account?'<strong style="color:#fff">Account ID:</strong> '+esc(account)+' &nbsp; ':'')+'<strong style="color:#fff">Rep:</strong> '+esc(o.rep||'—')+'</div></div>':'')+
+   '<div class="o671-detail-section"><h3>Order family activity</h3><div class="o671-detail-note" style="margin-bottom:9px">Primary order, adjustments and backorders that Sales Tracker currently links to this order family. Net value above reflects these records together.</div><div class="o671-detail-family">'+familyRows+'</div></div>'+
+   '<div class="o671-detail-section"><h3>Items purchased</h3>'+(items.length?'<div class="o671-detail-table-wrap"><table class="o671-detail-table"><thead><tr><th>Class</th><th>SKU</th><th>Product / charge / credit</th><th>Category</th><th>Decoration</th><th style="text-align:right">Qty</th><th style="text-align:right">Revenue</th></tr></thead><tbody>'+itemRows+'</tbody></table></div>':'<div class="o671-detail-note">Detailed line items are not loaded for this order. The summary/order-family record remains available.</div>')+'</div>'+
+   '<div class="o671-detail-section"><h3>Order issues</h3>'+(issueCards.length?'<div class="o671-issues">'+issueCards.join('')+'</div>':'<div class="o671-detail-note">No Art Error or Credit Memo record is currently linked to this order family.</div>')+'</div>'+
+   '<div class="o671-detail-section"><div class="o671-detail-note">Data note: line-item reports can cover only part of history. Unknown new/repeat or placement values are intentionally shown as Unknown rather than inferred. Production timing remains in Production Intelligence and should be verified there.</div></div></div></div></div>'
+ }
+ window._ord671Open=function(encoded){var g=findGroup(encoded),old=document.getElementById('o671-modal');if(old)old.remove();if(!g)return;document.body.insertAdjacentHTML('beforeend',detailModal(g))};
+ window._ord671Close=function(){var e=document.getElementById('o671-modal');if(e)e.remove()};
+ window._ord671OpenCustomer=function(encoded){var name=dec(encoded);window._ord671Close();if(!name)return;if(document.getElementById('rp-overlay')&&window._rp2&&_rp2.rep&&typeof window._call656Company==='function'){window._call656Company(enc(name));return}try{var btn=Array.prototype.slice.call(document.querySelectorAll('.tab')).filter(function(b){return /gt\(['\"]customers['\"]/.test(b.getAttribute('onclick')||'')})[0];if(btn&&typeof gt==='function'){gt('customers',btn);setTimeout(function(){var s=document.getElementById('cu-search');if(s){s.value=name;if(typeof renderCustomersPage==='function')renderCustomersPage()}},20)}}catch(e){}}
+
+ function repReset(){var rep=window._rp2&&_rp2.rep||'';if(R.rep!==rep){R.rep=rep;R.q='';R.status='all';R.range='all';R.sort='date_desc';R.page=0;R.pageSize=25}}
+ function repHtml(){
+  repReset();var rep=R.rep,all=allGroups(rep),filtered=sortGroups(commonFilter(all,R,true),R.sort),p=pageInfo(filtered,R),statuses=getStatusOptions(all),net=filtered.reduce(function(s,g){return s+g.net},0),issues=filtered.filter(function(g){return g.issues&&g.issues.count}).length,ranges=[['all','All history'],['qtr','Selected quarter'],['90','Last 90 days'],['month','This month']],statusOpts=[['all','All statuses']].concat(statuses.map(function(x){return[x,x]}));
+  var hero='<section class="o671-rp-hero"><div><div class="o671-rp-kicker">My Orders · Build v671</div><div class="o671-rp-title">Find the order you need.</div><div class="o671-rp-copy">Search your customer order history by order number, customer, product or SKU. Open a row to see the order family, purchased items, and linked issues without navigating through separate analytics tabs.</div></div><div class="o671-rp-summary"><div><span>Orders</span><strong>'+filtered.length.toLocaleString()+'</strong></div><div><span>Net value</span><strong>'+money(net)+'</strong></div><div><span>With issues</span><strong>'+issues.toLocaleString()+'</strong></div></div></section>';
+  var toolbar='<div class="o671-rp-toolbar"><div class="o671-rp-field o671-rp-search-field"><label>Search Orders</label><div class="o671-rp-search-row"><input id="o671-rp-search" class="o671-rp-search" value="'+esc(R.q)+'" placeholder="Order #, customer, product or SKU…" onkeydown="if(event.key===\'Enter\')_ord671RepSearch(this.value)"><button class="o671-rp-btn primary" onclick="_ord671RepSearch((document.getElementById(\'o671-rp-search\')||{}).value||\'\')">Search</button>'+(R.q?'<button class="o671-rp-btn" onclick="_ord671RepSearch(\'\')">Clear</button>':'')+'</div></div><div class="o671-rp-field"><label>Date</label>'+selectHtml('o671-rp-select',R.range,ranges,"_ord671RepSet('range',this.value)")+'</div><div class="o671-rp-field"><label>Status</label>'+selectHtml('o671-rp-select',R.status,statusOpts,"_ord671RepSet('status',this.value)")+'</div><button class="o671-rp-btn" onclick="_ord671RepSort()">Sort: '+(R.sort==='amount_desc'?'Amount':R.sort==='customer'?'Customer':'Newest')+'</button></div>';
+  var rows=p.shown.map(function(g){var o=g.head||{},issue=g.issues&&g.issues.count||0;return'<button class="o671-rp-row" onclick="_ord671Open(\''+enc(g.key)+'\')"><span>'+fmtDate(g.date)+'</span><strong>'+esc(o.orderNum||o.base||'Order')+'</strong><span><strong>'+esc(o.customer||'Customer')+'</strong><small style="display:block;margin-top:3px;color:#718099">'+esc(sourceValue(o))+(o.invoiceNumber?' · Inv '+esc(o.invoiceNumber):'')+'</small></span><span class="val">'+money(g.net)+'</span><span><span class="o671-status '+statusTone(o.status)+'">'+esc(statusLabel(o.status))+'</span></span><span class="issues">'+(issue?'<span class="o671-tag risk">'+issue+' issue'+(issue===1?'':'s')+'</span>':'—')+'</span></button>'}).join('');
+  var sizes=[[10,'10'],[25,'25'],[50,'50'],[100,'100'],['all','All']],table='<div class="o671-rp-table-head"><div><div class="o671-rp-table-title">Your order history</div><div class="o671-rp-table-note">'+esc(rangeLabel(R.range))+' · '+filtered.length.toLocaleString()+' matching order families</div></div><div class="o671-rp-table-controls"><span>Rows</span>'+selectHtml('o671-rp-select',R.pageSize,sizes,"_ord671RepPageSize(this.value)")+'</div></div><div class="o671-rp-table-wrap"><div class="o671-rp-table"><div class="o671-rp-row header"><span>Date</span><span>Order #</span><span>Customer</span><span style="text-align:right">Amount</span><span>Status</span><span style="text-align:right">Issues</span></div>'+rows+'</div>'+(rows?'':'<div class="o671-rp-empty"><strong>No orders match this view</strong>Clear the search or choose a wider date range.</div>')+'</div><div class="o671-rp-pager"><span>'+(filtered.length?('Showing '+(p.start+1)+'–'+p.end+' of '+filtered.length.toLocaleString()):'0 orders')+'</span><div><button class="o671-rp-btn" '+(R.page<=0?'disabled':'')+' onclick="_ord671RepPage(-1)">← Previous</button><button class="o671-rp-btn" '+(R.page>=p.pages-1?'disabled':'')+' onclick="_ord671RepPage(1)">Next →</button></div></div>';
+  return'<div class="o671-rp-shell">'+hero+'<section class="o671-rp-panel">'+toolbar+table+'</section></div>'
+ }
+ window._rp2OrdersV2=function(){return repHtml()};
+ window._rp2OrdersDraw=function(){};
+ function repRerender(){var page=document.getElementById('rp2-page');if(page)page.innerHTML=window._rp2OrdersV2();var s=document.getElementById('o671-rp-search');if(s&&R.q){try{s.focus();s.setSelectionRange(s.value.length,s.value.length)}catch(e){}}}
+ window._ord671RepSet=function(k,v){R[k]=v;R.page=0;repRerender()};
+ window._ord671RepSearch=function(v){R.q=clean(v);R.page=0;repRerender()};
+ window._ord671RepPage=function(delta){R.page=Math.max(0,n(R.page)+n(delta));repRerender()};
+ window._ord671RepPageSize=function(v){R.pageSize=v==='all'?'all':Number(v)||25;R.page=0;repRerender()};
+ window._ord671RepSort=function(){R.sort=R.sort==='date_desc'?'amount_desc':R.sort==='amount_desc'?'customer':'date_desc';R.page=0;repRerender()};
+ window._rp2OrderOpen=function(encoded){var id=dec(encoded),o=arr(S&&S.orders).filter(function(x){return String(x&&x.id||x&&x.sig||((x&&x.orderNum||'order')+'|'+(x&&x.orderDate||'')+'|'+n(x&&x.total)))===id})[0];if(o)window._ord671Open(enc(groupKey(o)))};
+ window._rp2OrderClose=window._ord671Close;
+})();
+</script>
+<script id="tcp-v671-build-js">
+(function(){
+  window.TCP_BUILD_VERSION='v671';
+  try{
+    document.documentElement.setAttribute('data-tcp-build','v671');
+    document.title='Sales Tracker v671 — Orders Simplification';
+  }catch(e){}
+})();
+</script>
