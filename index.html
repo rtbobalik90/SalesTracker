@@ -7633,7 +7633,59 @@ document.addEventListener('visibilitychange',function(){
   }catch(e){}
 });
 
-function _rpBoot(){ try{ _rpEnsure(); var gid=_rpUrlGist(); if(gid){ _rpCss(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); } ov.style.display='block'; ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub">Loading your portal\u2026</div></div></div>'; Promise.resolve().then(function(){ return _rpPullGist(gid); }).then(function(){ _rpEnsure(); _rpApply(); }); return; } if(S.repPortal.enabled)_rpApply(); }catch(e){} }
+function _rpBoot(){
+  try{
+    _rpEnsure();
+    var gid=_rpUrlGist();
+    if(gid){
+      _rpCss();
+      var ov=document.getElementById('rp-overlay');
+      if(!ov){ov=document.createElement('div');ov.id='rp-overlay';document.body.appendChild(ov);}
+      ov.style.display='block';
+      ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub" id="rp-boot-status">Loading your portal\u2026</div></div></div>';
+      var finished=false;
+      var statusTimer=setTimeout(function(){
+        try{var el=document.getElementById('rp-boot-status');if(el)el.textContent='Still connecting to your Sales Tracker data\u2026';}catch(e){}
+      },6500);
+      var watchdog=setTimeout(function(){
+        if(finished)return;
+        finished=true;
+        try{clearTimeout(statusTimer);}catch(e){}
+        var canUseLocal=false;
+        try{canUseLocal=!!localStorage.getItem(STORE_KEY)&&_trackerHasRealData();}catch(e){}
+        if(canUseLocal){
+          try{if(typeof loadFromStorage==='function')loadFromStorage();}catch(e){}
+          window._rpCloudMeta={gistId:gid||'',loadedAt:new Date().toISOString(),ok:false,stale:true,error:'Cloud load timed out; showing the last data saved on this device.'};
+          try{_rpEnsure();_rpApply();}catch(e){}
+        }else{
+          try{
+            var card=ov.querySelector('.rp-login-card');
+            if(card)card.innerHTML='<div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub" style="margin-bottom:14px;line-height:1.5">We could not reach the Sales Tracker cloud data. This is usually a temporary GitHub/network connection issue.</div><button class="rp-login-btn" onclick="location.reload()">Retry</button>';
+          }catch(e){}
+        }
+      },24000);
+      Promise.resolve().then(function(){return _rpPullGist(gid);}).then(function(ok){
+        if(finished)return;
+        finished=true;
+        clearTimeout(statusTimer);clearTimeout(watchdog);
+        _rpEnsure();
+        _rpApply();
+        if(!ok)try{console.warn('[rep portal] Cloud pull failed; portal rendered with available local state.',window._rpCloudMeta||{});}catch(e){}
+      }).catch(function(err){
+        if(finished)return;
+        finished=true;
+        clearTimeout(statusTimer);clearTimeout(watchdog);
+        try{console.warn('[rep portal boot]',err);}catch(e){}
+        var canUseLocal=false;
+        try{canUseLocal=!!localStorage.getItem(STORE_KEY)&&_trackerHasRealData();}catch(e){}
+        if(canUseLocal){try{if(typeof loadFromStorage==='function')loadFromStorage();_rpEnsure();_rpApply();}catch(e){}}
+        else try{var el=document.getElementById('rp-boot-status');if(el)el.textContent='Could not load portal data. Refresh to try again.';}catch(e){}
+      });
+      return;
+    }
+    if(S.repPortal.enabled)_rpApply();
+  }catch(e){try{console.warn('[rep portal boot fatal]',e);}catch(x){}}
+}
 
 /* ---------- rep bundle (filter S to one rep) ---------- */
 
@@ -12585,7 +12637,7 @@ async function _readGistFileContent(file){
   if(!file)return'';
   var content=file.content||'';
   if(file.truncated&&file.raw_url){
-    var rawResp=await fetch(file.raw_url);
+    var rawResp=await _gistFetch(file.raw_url,'',{timeoutMs:18000,headers:{'Accept':'text/plain,*/*'}});
     if(!rawResp.ok)throw new Error('raw fetch '+rawResp.status);
     content=await rawResp.text();
   }
@@ -12613,18 +12665,36 @@ async function _readCloudContentFromGist(gistData){
 // Try a GitHub API request with Bearer, falling back to token-prefix on 401.
 async function _gistFetch(url,token,opts){
   opts=opts||{};
-  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json'},opts.headers||{});
+  var method=String(opts.method||'GET').toUpperCase();
+  var timeoutMs=Number(opts.timeoutMs)||((method==='GET'||method==='HEAD')?18000:45000);
+  var fetchOpts=Object.assign({},opts);
+  delete fetchOpts.timeoutMs;
+  var controller=null,timer=null;
+  if(!fetchOpts.signal&&typeof AbortController!=='undefined'&&timeoutMs>0){
+    controller=new AbortController();
+    fetchOpts.signal=controller.signal;
+    timer=setTimeout(function(){try{controller.abort()}catch(e){}},timeoutMs);
+  }
+  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json'},fetchOpts.headers||{});
   var h1=Object.assign({},baseHeaders);
   if(token)h1['Authorization']='Bearer '+token;
-  var resp=await fetch(url,Object.assign({},opts,{headers:h1}));
-  if(resp.status===401&&token){
-    // Retry with the classic "token" prefix
-    var h2=Object.assign({},baseHeaders);
-    h2['Authorization']='token '+token;
-    var resp2=await fetch(url,Object.assign({},opts,{headers:h2}));
-    return resp2;
+  try{
+    var resp=await fetch(url,Object.assign({},fetchOpts,{headers:h1}));
+    if(resp.status===401&&token){
+      // Retry with the classic "token" prefix.
+      var h2=Object.assign({},baseHeaders);
+      h2['Authorization']='token '+token;
+      if(timer){clearTimeout(timer);timer=null;}
+      if(controller){controller=new AbortController();fetchOpts.signal=controller.signal;timer=setTimeout(function(){try{controller.abort()}catch(e){}},timeoutMs);}
+      return await fetch(url,Object.assign({},fetchOpts,{headers:h2}));
+    }
+    return resp;
+  }catch(e){
+    if(e&&e.name==='AbortError')throw new Error('Cloud request timed out after '+Math.round(timeoutMs/1000)+' seconds.');
+    throw e;
+  }finally{
+    if(timer)clearTimeout(timer);
   }
-  return resp;
 }
 
 async function testGistToken(){
@@ -68353,4 +68423,10 @@ html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F0F5F8
  window.TCP_REP_PORTAL_LIGHT_CONTRAST_TODO_LINKS_V682={version:BUILD,openTodo:window._rp682TodoOpen};
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v682 — Light Contrast + To Do Links'}catch(e){}
 })();
+</script>
+
+
+<!-- Sales Tracker v683: Rep Portal boot timeout + graceful cloud-load fallback. -->
+<script id="tcp-v683-rep-portal-boot-timeout-marker">
+try{window.TCP_BUILD_VERSION='v683';document.documentElement.setAttribute('data-tcp-build','v683');document.title='Sales Tracker v683 — Rep Portal Boot Timeout Fix';}catch(e){}
 </script>
