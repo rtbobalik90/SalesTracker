@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v675 — Rep Portal Manager Scale</title>
+<title>Sales Tracker v676 — Rep Portal Page Cohesion</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -67099,3 +67099,201 @@ body.nav-rail .tabs:after{content:"v672"!important}
 })();
 </script>
 
+
+
+<!-- ======================================================================
+     SALES TRACKER v676 · PHASED REP PORTAL PAGE COHESION
+     My Day is the visual source of truth. This pass normalizes the visible
+     phased pages to the same outer gutter, readable text scale, panel line,
+     dark-glass surface, corner radius, and control density.
+     Presentation only: no business logic, storage, routing, or calculations.
+     ====================================================================== -->
+<style id="tcp-v676-rep-portal-page-cohesion-css">
+#rp-overlay .rp2-app.rp2-mode-phased{
+  --v676-line:rgba(149,171,194,.18);
+  --v676-line-strong:rgba(255,255,255,.16);
+  --v676-surface:#0B1721;
+  --v676-surface-2:#0D1A25;
+  --v676-muted:#91A4B8;
+  --v676-text:#F3F7FB;
+  --v676-radius:18px;
+  --v676-radius-lg:20px;
+  --v676-shadow:0 14px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+/* One outer page gutter. Individual pages should not add another 30–40px. */
+#rp-overlay .rp2-app.rp2-mode-phased .p639-subpage{
+  padding:26px 30px 46px!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased #rp2-page{
+  max-width:none!important;
+  margin:0!important;
+  width:100%!important;
+}
+
+/* CALL WORKSPACE */
+#rp-overlay .rp2-app.rp2-mode-phased .c656{
+  max-width:none!important;width:100%!important;margin:0!important;padding:0 0 54px!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-hero,
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tabs,
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel,
+#rp-overlay .rp2-app.rp2-mode-phased .c658-lists,
+#rp-overlay .rp2-app.rp2-mode-phased .c660-review{border-color:var(--v676-line)!important;box-shadow:var(--v676-shadow)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-hero{border-radius:var(--v676-radius-lg)!important;padding:25px 27px!important;background:radial-gradient(circle at 93% 0,rgba(250,135,61,.12),transparent 31%),radial-gradient(circle at 0 100%,rgba(0,175,239,.08),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014)),#0A151E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-title{font-size:36px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-copy{font-size:13px!important;line-height:1.58!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-hero-metrics{gap:9px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric{padding:13px 14px!important;border-color:var(--v676-line)!important;background:rgba(255,255,255,.025)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric span{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric strong{font-size:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-metric small{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tabs{margin-top:16px!important;padding:7px!important;border-radius:15px!important;background:var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tab{min-height:42px!important;font-size:12px!important;padding:9px 15px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tab em{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-tab .next{font-size:9.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel{margin-top:16px!important;border-radius:var(--v676-radius)!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016)),var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel-head{padding:17px 18px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel-head h2{font-size:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-panel-head p{font-size:11.5px!important;line-height:1.5!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-select,#rp-overlay .rp2-app.rp2-mode-phased .c656-search,#rp-overlay .rp2-app.rp2-mode-phased .c656-btn{min-height:40px!important;font-size:12px!important;border-color:var(--v676-line-strong)!important;border-radius:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-modebar{padding:11px 17px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-modecopy{font-size:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-modecopy strong{font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-pill{font-size:10px!important;min-height:25px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-th{font-size:10px!important;min-height:38px!important;padding:10px 11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-cell{font-size:11.5px!important;padding:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-company-btn{font-size:12.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-contact{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-local strong{font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-local span{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-empty{padding:28px 22px!important;font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .c656-empty strong{font-size:18px!important;}
+
+/* FOLLOW-UPS */
+#rp-overlay .rp2-app.rp2-mode-phased .f654-shell{gap:16px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero,#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi,#rp-overlay .rp2-app.rp2-mode-phased .f654-panel{border-color:var(--v676-line)!important;box-shadow:var(--v676-shadow)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero{border-radius:var(--v676-radius-lg)!important;padding:25px 27px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero h1{font-size:34px!important;line-height:1.08!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-hero p{font-size:12.5px!important;line-height:1.58!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-btn{font-size:12px!important;min-height:40px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpis{gap:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi{min-height:108px!important;padding:15px 16px!important;border-radius:16px!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016)),var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi span{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi strong{font-size:26px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-kpi em{font-size:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel{border-radius:var(--v676-radius)!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016)),var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel-head{padding:16px 18px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel-head h2{font-size:19px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-panel-head p{font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-company{font-size:13.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-action{font-size:12px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-meta{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-pill{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-note{font-size:11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-mini{font-size:11px!important;min-height:36px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-empty{font-size:11.5px!important;padding:25px 20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .f654-empty strong{font-size:13.5px!important;}
+
+/* COMPANIES */
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-shell{gap:16px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-hero,#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi,#rp-overlay .rp2-app.rp2-mode-phased .cw4-viewbar,#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar,#rp-overlay .rp2-app.rp2-mode-phased .cw4-table-shell,#rp-overlay .rp2-app.rp2-mode-phased .cw4-tabs{border-color:var(--v676-line)!important;box-shadow:var(--v676-shadow)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-hero{padding:25px 27px!important;border-radius:var(--v676-radius-lg)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kick{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-title{font-size:34px!important;line-height:1.08!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-copy{font-size:12.5px!important;line-height:1.58!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-btn{min-height:40px!important;font-size:12px!important;padding:0 14px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-mini-btn{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-pill,#rp-overlay .rp2-app.rp2-mode-phased .cw4-tag{font-size:9.5px!important;padding:5px 9px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpis{gap:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi{min-height:112px!important;padding:15px 16px!important;border-radius:16px!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016)),var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi-label{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi-value{font-size:24px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-kpi-sub{font-size:10.5px!important;line-height:1.45!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-viewbar{padding:8px!important;border-radius:15px!important;background:var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-view{font-size:11px!important;padding:10px 12px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar{padding:12px!important;gap:9px!important;border-radius:15px!important;background:var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar input,#rp-overlay .rp2-app.rp2-mode-phased .cw4-toolbar select{font-size:12px!important;min-height:40px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table-shell{border-radius:17px!important;background:var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table{font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table th{font-size:10px!important;padding:12px 11px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-table td{padding:12px 11px!important;font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-company-name{font-size:12.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-company-sub,#rp-overlay .rp2-app.rp2-mode-phased .cw4-cell-sub{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .cw4-cell-main{font-size:11.5px!important;}
+
+/* ORDERS */
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-shell{gap:16px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-hero,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-panel{border-color:var(--v676-line)!important;box-shadow:var(--v676-shadow)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-hero{padding:25px 27px!important;border-radius:var(--v676-radius-lg)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-title{font-size:34px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-copy{font-size:12.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-panel{border-radius:var(--v676-radius)!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016)),var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-toolbar{padding:14px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-field label{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-search,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-select,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-btn{min-height:40px!important;font-size:12px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-table-title{font-size:16px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-table-note,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-table-controls{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row{min-height:48px!important;padding:11px 14px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row.header{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row strong{font-size:12px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-row span{font-size:11.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .o671-status,#rp-overlay .rp2-app.rp2-mode-phased .o671-tag{font-size:10px!important;}
+
+/* MY PERFORMANCE / PROFILE */
+#rp-overlay .rp2-app.rp2-mode-phased .mp669{max-width:none!important;width:100%!important;margin:0!important;padding:0 0 60px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card,#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero,#rp-overlay .rp2-app.rp2-mode-phased .mp669-scorecard,#rp-overlay .rp2-app.rp2-mode-phased .mp669-panel{border-color:var(--v676-line)!important;box-shadow:var(--v676-shadow)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card{margin:0 0 16px!important;padding:16px 18px!important;border-radius:var(--v676-radius)!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014)),#0A151E!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card strong{font-size:13px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card p{font-size:11px!important;line-height:1.5!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .ms537-card button{font-size:11.5px!important;min-height:38px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{grid-template-columns:minmax(0,1fr) 390px!important;gap:24px!important;min-height:176px!important;padding:27px 30px!important;margin-bottom:16px!important;border-radius:var(--v676-radius-lg)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero h1{font-size:36px!important;margin:8px 0 9px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero p{font-size:12.5px!important;line-height:1.58!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-overall{padding:16px 18px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-scorecard{border-radius:var(--v676-radius-lg)!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016)),var(--v676-surface)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head{padding:20px 22px 17px!important;border-color:var(--v676-line)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head h2{font-size:22px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score-head p{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-columns{padding:11px 22px!important;font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-row{min-height:130px!important;padding:18px 22px!important;gap:16px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-metric-name{font-size:13px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-metric-meta{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-live strong{font-size:23px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-live span{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score strong{font-size:25px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-score small{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-state{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-pace-top{font-size:10.5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-pace small{font-size:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased .mp669-rec{font-size:10.5px!important;}
+
+/* Quotes already has the right workflow; just use the same border strength. */
+#rp-overlay .rp2-app.rp2-mode-phased :is(.q673-hero,.q673-panel,.q673-table-shell,.q673-attention,.q673-modal){border-color:var(--v676-line)!important;}
+
+@media(max-width:1180px){
+  #rp-overlay .rp2-app.rp2-mode-phased .p639-subpage{padding:22px 22px 42px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{grid-template-columns:1fr!important;}
+}
+@media(max-width:780px){
+  #rp-overlay .rp2-app.rp2-mode-phased .p639-subpage{padding:16px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased .c656-hero,#rp-overlay .rp2-app.rp2-mode-phased .f654-hero,#rp-overlay .rp2-app.rp2-mode-phased .cw4-directory-hero,#rp-overlay .rp2-app.rp2-mode-phased .o671-rp-hero,#rp-overlay .rp2-app.rp2-mode-phased .mp669-hero{padding:20px!important;}
+}
+</style>
+<script id="tcp-v676-rep-portal-page-cohesion-js">
+(function(){
+ 'use strict';
+ var BUILD='v676';
+ var priorBundle=window._rpPhasedDevBundle;
+ if(typeof priorBundle==='function'&&!priorBundle._v676){
+   var wrapped=function(){
+     var base=priorBundle.apply(this,arguments),el=document.getElementById('tcp-v676-rep-portal-page-cohesion-css'),css=el?String(el.textContent||'').trim():'';
+     return base+'\n\n<!-- v676 REP PORTAL PAGE COHESION -->\n<style id="tcp-v676-rep-portal-page-cohesion-css">\n'+css+'\n<\/style>';
+   };
+   wrapped._v676=true;
+   window._rpPhasedDevBundle=wrapped;
+ }
+ window.TCP_BUILD_VERSION=BUILD;
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v676 — Rep Portal Page Cohesion'}catch(e){}
+})();
+</script>
