@@ -7495,116 +7495,50 @@ function _rpCopyPhasedDevCode(){
   _rpCopyText(code,'Phased Rep Portal DEV code copied — no customer data or passwords are included.','Copy the Phased Rep Portal DEV code:');
 }
 async function _rpProfileSavePw(rep){ if(!rep){alert('Open a rep first.');return;} var el=document.getElementById('rp-prof-pw'); var v=el?el.value.trim():''; if(!v){alert('Enter a password for '+rep+'.');return;} var G=_rpEnsure(); G.accounts[rep]=G.accounts[rep]||{}; G.accounts[rep].hash=await _rpHash(v); if(el)el.value=''; _rpDirty(); alert(rep+'\u2019s portal password saved.'); }
-
-/* v684: Rep Portal cloud-read transport.
-   Rep links should not depend on GitHub's low anonymous API rate limit.
-   Read the known Gist files directly from gist.githubusercontent.com first,
-   then fall back to the GitHub API for compatibility/diagnostics. */
-function _rpBootStatus(msg){
-  try{var el=document.getElementById('rp-boot-status');if(el)el.textContent=String(msg||'');}catch(e){}
-}
-function _rpGistOwner(){
-  try{
-    var host=String(location.hostname||'').toLowerCase();
-    if(/\.github\.io$/.test(host))return host.split('.')[0]||'rtbobalik90';
-  }catch(e){}
-  return 'rtbobalik90';
-}
-function _rpRawGistUrl(gistId,fileName){
-  return 'https://gist.githubusercontent.com/'+encodeURIComponent(_rpGistOwner())+'/'+encodeURIComponent(String(gistId||''))+'/raw/'+encodeURIComponent(String(fileName||GIST_FILENAME))+'?tcp='+Date.now();
-}
-async function _rpFetchRawGistFile(gistId,fileName){
-  var url=_rpRawGistUrl(gistId,fileName);
-  var resp=await _gistFetch(url,'',{timeoutMs:12000,cache:'no-store',headers:{'Accept':'text/plain,*/*'}});
-  if(!resp||!resp.ok)throw new Error('Direct cloud file '+(resp&&resp.status||'unavailable')+' ('+String(fileName||GIST_FILENAME)+')');
-  return await resp.text();
-}
-async function _rpReadCloudContentDirect(gistId){
-  _rpBootStatus('Connecting to your Sales Tracker data…');
-  var content=await _rpFetchRawGistFile(gistId,GIST_FILENAME);
-  if(content.indexOf(CLOUD_CHUNK_MARKER+'\\n')!==0)return content;
-  var manifest=JSON.parse(content.substring((CLOUD_CHUNK_MARKER+'\\n').length));
-  var count=Math.max(0,Number(manifest&&manifest.count)||0);
-  if(!count)throw new Error('Direct cloud manifest has no data parts.');
-  _rpBootStatus('Loading your Sales Tracker data…');
-  var prefix=(manifest&&manifest.prefix)||CLOUD_CHUNK_PREFIX;
-  var jobs=[];
-  for(var i=1;i<=count;i++){
-    var num=String(i).padStart(3,'0');
-    jobs.push(_rpFetchRawGistFile(gistId,prefix+num+'.txt'));
-  }
-  /* Fetch all chunks together. The older API path handled these serially in some
-     situations, which could make a clean Incognito/new-device boot take too long. */
-  var parts=await Promise.all(jobs);
-  return parts.join('');
-}
-function _rpApiError(resp){
-  try{
-    var status=resp&&resp.status||'unavailable';
-    var msg='GitHub API '+status;
-    if(Number(status)===403){
-      var rem=resp.headers&&resp.headers.get?resp.headers.get('x-ratelimit-remaining'):null;
-      if(rem==='0')msg+=' (anonymous API rate limit reached)';
-    }
-    return msg;
-  }catch(e){return 'GitHub API unavailable';}
-}
 async function _rpPullGist(gistId){
-  var source='';
-  var directErr='';
   try{
-    /* SAFETY GUARD: never overwrite local work that is newer than the last cloud push. */
+    /* SAFETY GUARD: if this device has local edits newer than its last successful cloud push,
+       pulling would DESTROY un-synced work. Keep local, render from it, and say so. */
     try{
       var _le=localStorage.getItem('_tcp_last_local_edit');
       var _cs=localStorage.getItem('_tcp_last_cloud_save');
       var _hasData=!!localStorage.getItem(STORE_KEY)&&_trackerHasRealData();
       if(_hasData&&_le&&(!_cs||new Date(_le)>new Date(_cs))){
-        window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:true,skipped:'local-newer',source:'local',error:''};
+        window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:true,skipped:'local-newer',error:''};
+        console.warn('[rep portal] pull skipped: this device has un-synced edits ('+_le+') newer than last cloud push ('+(_cs||'never')+'). Local data preserved.');
         if(typeof loadFromStorage==='function')loadFromStorage();
         return true;
       }
     }catch(_ge){}
-
-    var content='';
-    try{
-      content=await _rpReadCloudContentDirect(gistId);
-      source='direct-raw';
-    }catch(rawErr){
-      directErr=(rawErr&&rawErr.message)||String(rawErr);
-      console.warn('[rep portal direct cloud]',rawErr);
-      _rpBootStatus('Direct cloud connection unavailable — trying backup connection…');
+    var resp=await _gistFetch('https://api.github.com/gists/'+gistId,'');
+    if(!resp||!resp.ok){
+      window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'GitHub API '+(resp&&resp.status||'unavailable')};
+      return false;
     }
-
-    if(!content){
-      var resp=await _gistFetch('https://api.github.com/gists/'+gistId,'',{timeoutMs:18000});
-      if(!resp||!resp.ok){
-        var apiErr=_rpApiError(resp);
-        window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,source:'none',error:(directErr?directErr+' · ':'')+apiErr};
-        return false;
-      }
-      var data=await resp.json();
-      content=await _readCloudContentFromGist(data);
-      source='github-api';
-    }
-
+    var data=await resp.json();
+    var content=await _readCloudContentFromGist(data);
     content=await _decompressPayload(content);
     var parsed=JSON.parse(content);
     if(!parsed||!parsed.data){
-      window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,source:source,error:'Invalid cloud payload'};
+      window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'Invalid cloud payload'};
       return false;
     }
     _restoreTrackerKeys(parsed.data);
     if(typeof loadFromStorage==='function')loadFromStorage();
     window._rpCloudMeta={
-      gistId:gistId||'',exportedAt:parsed.exportedAt||'',loadedAt:new Date().toISOString(),ok:true,error:'',source:source,
+      gistId:gistId||'',
+      exportedAt:parsed.exportedAt||'',
+      loadedAt:new Date().toISOString(),
+      ok:true,
+      error:'',
       weeklyDataCount:Number(parsed.weeklyDataCount)||0,
       latestWeeklyKeys:Array.isArray(parsed.latestWeeklyKeys)?parsed.latestWeeklyKeys:[],
       selectedWeekKey:parsed.selectedWeekKey||''
     };
     return true;
   }catch(e){
-    window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,source:source||'none',error:(directErr?directErr+' · ':'')+((e&&e.message)||String(e))};
-    console.warn('[rep portal cloud pull v684]',e);
+    window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:(e&&e.message)||String(e)};
+    console.warn('[rep portal cloud pull]',e);
     return false;
   }
 }
@@ -7699,59 +7633,7 @@ document.addEventListener('visibilitychange',function(){
   }catch(e){}
 });
 
-function _rpBoot(){
-  try{
-    _rpEnsure();
-    var gid=_rpUrlGist();
-    if(gid){
-      _rpCss();
-      var ov=document.getElementById('rp-overlay');
-      if(!ov){ov=document.createElement('div');ov.id='rp-overlay';document.body.appendChild(ov);}
-      ov.style.display='block';
-      ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub" id="rp-boot-status">Loading your portal\u2026</div></div></div>';
-      var finished=false;
-      var statusTimer=setTimeout(function(){
-        try{var el=document.getElementById('rp-boot-status');if(el)el.textContent='Still connecting to your Sales Tracker data\u2026';}catch(e){}
-      },6500);
-      var watchdog=setTimeout(function(){
-        if(finished)return;
-        finished=true;
-        try{clearTimeout(statusTimer);}catch(e){}
-        var canUseLocal=false;
-        try{canUseLocal=!!localStorage.getItem(STORE_KEY)&&_trackerHasRealData();}catch(e){}
-        if(canUseLocal){
-          try{if(typeof loadFromStorage==='function')loadFromStorage();}catch(e){}
-          window._rpCloudMeta={gistId:gid||'',loadedAt:new Date().toISOString(),ok:false,stale:true,error:'Cloud load timed out; showing the last data saved on this device.'};
-          try{_rpEnsure();_rpApply();}catch(e){}
-        }else{
-          try{
-            var card=ov.querySelector('.rp-login-card');
-            if(card){var detail=((window._rpCloudMeta||{}).error)||'No cloud response was received.';card.innerHTML='<div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub" style="margin-bottom:8px;line-height:1.5">We could not load the Sales Tracker cloud data.</div><div class="rp-login-sub" style="margin-bottom:14px;line-height:1.45;color:#F0A9A9">'+_rpEsc(detail)+'</div><button class="rp-login-btn" onclick="location.reload()">Retry</button>'; }
-          }catch(e){}
-        }
-      },42000);
-      Promise.resolve().then(function(){return _rpPullGist(gid);}).then(function(ok){
-        if(finished)return;
-        finished=true;
-        clearTimeout(statusTimer);clearTimeout(watchdog);
-        _rpEnsure();
-        _rpApply();
-        if(!ok)try{console.warn('[rep portal] Cloud pull failed; portal rendered with available local state.',window._rpCloudMeta||{});}catch(e){}
-      }).catch(function(err){
-        if(finished)return;
-        finished=true;
-        clearTimeout(statusTimer);clearTimeout(watchdog);
-        try{console.warn('[rep portal boot]',err);}catch(e){}
-        var canUseLocal=false;
-        try{canUseLocal=!!localStorage.getItem(STORE_KEY)&&_trackerHasRealData();}catch(e){}
-        if(canUseLocal){try{if(typeof loadFromStorage==='function')loadFromStorage();_rpEnsure();_rpApply();}catch(e){}}
-        else try{var el=document.getElementById('rp-boot-status');if(el)el.textContent='Could not load portal data. Refresh to try again.';}catch(e){}
-      });
-      return;
-    }
-    if(S.repPortal.enabled)_rpApply();
-  }catch(e){try{console.warn('[rep portal boot fatal]',e);}catch(x){}}
-}
+function _rpBoot(){ try{ _rpEnsure(); var gid=_rpUrlGist(); if(gid){ _rpCss(); var ov=document.getElementById('rp-overlay'); if(!ov){ ov=document.createElement('div'); ov.id='rp-overlay'; document.body.appendChild(ov); } ov.style.display='block'; ov.innerHTML='<div class="rp-login-wrap"><div class="rp-login-card"><div class="rp-login-logo">Triple Crown \u2014 Rep Portal</div><div class="rp-login-sub">Loading your portal\u2026</div></div></div>'; Promise.resolve().then(function(){ return _rpPullGist(gid); }).then(function(){ _rpEnsure(); _rpApply(); }); return; } if(S.repPortal.enabled)_rpApply(); }catch(e){} }
 
 /* ---------- rep bundle (filter S to one rep) ---------- */
 
@@ -12703,7 +12585,7 @@ async function _readGistFileContent(file){
   if(!file)return'';
   var content=file.content||'';
   if(file.truncated&&file.raw_url){
-    var rawResp=await _gistFetch(file.raw_url,'',{timeoutMs:18000,headers:{'Accept':'text/plain,*/*'}});
+    var rawResp=await fetch(file.raw_url);
     if(!rawResp.ok)throw new Error('raw fetch '+rawResp.status);
     content=await rawResp.text();
   }
@@ -12731,36 +12613,18 @@ async function _readCloudContentFromGist(gistData){
 // Try a GitHub API request with Bearer, falling back to token-prefix on 401.
 async function _gistFetch(url,token,opts){
   opts=opts||{};
-  var method=String(opts.method||'GET').toUpperCase();
-  var timeoutMs=Number(opts.timeoutMs)||((method==='GET'||method==='HEAD')?18000:45000);
-  var fetchOpts=Object.assign({},opts);
-  delete fetchOpts.timeoutMs;
-  var controller=null,timer=null;
-  if(!fetchOpts.signal&&typeof AbortController!=='undefined'&&timeoutMs>0){
-    controller=new AbortController();
-    fetchOpts.signal=controller.signal;
-    timer=setTimeout(function(){try{controller.abort()}catch(e){}},timeoutMs);
-  }
-  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json'},fetchOpts.headers||{});
+  var baseHeaders=Object.assign({'Accept':'application/vnd.github+json'},opts.headers||{});
   var h1=Object.assign({},baseHeaders);
   if(token)h1['Authorization']='Bearer '+token;
-  try{
-    var resp=await fetch(url,Object.assign({},fetchOpts,{headers:h1}));
-    if(resp.status===401&&token){
-      // Retry with the classic "token" prefix.
-      var h2=Object.assign({},baseHeaders);
-      h2['Authorization']='token '+token;
-      if(timer){clearTimeout(timer);timer=null;}
-      if(controller){controller=new AbortController();fetchOpts.signal=controller.signal;timer=setTimeout(function(){try{controller.abort()}catch(e){}},timeoutMs);}
-      return await fetch(url,Object.assign({},fetchOpts,{headers:h2}));
-    }
-    return resp;
-  }catch(e){
-    if(e&&e.name==='AbortError')throw new Error('Cloud request timed out after '+Math.round(timeoutMs/1000)+' seconds.');
-    throw e;
-  }finally{
-    if(timer)clearTimeout(timer);
+  var resp=await fetch(url,Object.assign({},opts,{headers:h1}));
+  if(resp.status===401&&token){
+    // Retry with the classic "token" prefix
+    var h2=Object.assign({},baseHeaders);
+    h2['Authorization']='token '+token;
+    var resp2=await fetch(url,Object.assign({},opts,{headers:h2}));
+    return resp2;
   }
+  return resp;
 }
 
 async function testGistToken(){
@@ -36969,26 +36833,35 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  }
 
  window._rpPullGist=async function(gistId){
-  var source='',directErr='';
   try{
-    var content='';
-    try{content=await _rpReadCloudContentDirect(gistId);source='direct-raw';}
-    catch(rawErr){directErr=(rawErr&&rawErr.message)||String(rawErr);console.warn('[rep portal direct cloud refresh]',rawErr);}
-    if(!content){
-      var resp=await _gistFetch('https://api.github.com/gists/'+gistId,'',{timeoutMs:18000});
-      if(!resp||!resp.ok){window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,source:'none',error:(directErr?directErr+' · ':'')+_rpApiError(resp)};return false;}
-      var data=await resp.json();content=await _readCloudContentFromGist(data);source='github-api';
-    }
-    content=await _decompressPayload(content);
-    var parsed=JSON.parse(content);
-    if(!parsed||!parsed.data){window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,source:source,error:'Invalid cloud payload'};return false;}
-    if(window._tcpStorageV528&&typeof window._tcpStorageV528.restoreRep==='function')await window._tcpStorageV528.restoreRep(parsed.data,gistId);
-    else{_restoreTrackerKeys(parsed.data);if(typeof loadFromStorage==='function')loadFromStorage();}
-    window._rpCloudMeta={gistId:gistId||'',exportedAt:parsed.exportedAt||'',loadedAt:new Date().toISOString(),ok:true,error:'',source:source,
-      weeklyDataCount:Number(parsed.weeklyDataCount)||0,latestWeeklyKeys:Array.isArray(parsed.latestWeeklyKeys)?parsed.latestWeeklyKeys:[],selectedWeekKey:parsed.selectedWeekKey||'',
-      storageMode:window._tcpStorageMeta&&window._tcpStorageMeta.mode||'',customerCount:(S&&S.customers?(Array.isArray(S.customers)?S.customers.length:Object.keys(S.customers).length):0),orderCount:(S&&S.orders?(Array.isArray(S.orders)?S.orders.length:Object.keys(S.orders).length):0)};
-    return true;
-  }catch(e){window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,source:source||'none',error:(directErr?directErr+' · ':'')+((e&&e.message)||String(e))};console.warn('[rep portal cloud pull v684 refresh]',e);return false;}
+   var resp=await _gistFetch('https://api.github.com/gists/'+gistId,'');
+   if(!resp||!resp.ok){
+    window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'GitHub API '+(resp&&resp.status||'unavailable')};
+    return false
+   }
+   var data=await resp.json();
+   var content=await _readCloudContentFromGist(data);
+   content=await _decompressPayload(content);
+   var parsed=JSON.parse(content);
+   if(!parsed||!parsed.data){
+    window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:'Invalid cloud payload'};
+    return false
+   }
+   await restoreRepCloudSnapshot(parsed.data,gistId);
+   window._rpCloudMeta={
+    gistId:gistId||'',exportedAt:parsed.exportedAt||'',loadedAt:new Date().toISOString(),ok:true,error:'',
+    weeklyDataCount:Number(parsed.weeklyDataCount)||0,
+    latestWeeklyKeys:Array.isArray(parsed.latestWeeklyKeys)?parsed.latestWeeklyKeys:[],
+    selectedWeekKey:parsed.selectedWeekKey||'',
+    storageMode:window._tcpStorageMeta.mode,
+    customerCount:countOf(S.customers),orderCount:countOf(S.orders),lineItemCount:countOf(S.orderLineItems)
+   };
+   return true
+  }catch(e){
+   window._rpCloudMeta={gistId:gistId||'',loadedAt:new Date().toISOString(),ok:false,error:(e&&e.message)||String(e)};
+   console.warn('[rep portal cloud pull v528]',e);
+   return false
+  }
  };
 
  /* Use an IndexedDB snapshot immediately when available, while the network refresh runs. */
@@ -68480,16 +68353,4 @@ html[data-rp-theme="light"] #rp-overlay .rp680-caller-context{background:#F0F5F8
  window.TCP_REP_PORTAL_LIGHT_CONTRAST_TODO_LINKS_V682={version:BUILD,openTodo:window._rp682TodoOpen};
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v682 — Light Contrast + To Do Links'}catch(e){}
 })();
-</script>
-
-
-<!-- Sales Tracker v683: Rep Portal boot timeout + graceful cloud-load fallback. -->
-<script id="tcp-v683-rep-portal-boot-timeout-marker">
-try{window.TCP_BUILD_VERSION='v683';document.documentElement.setAttribute('data-tcp-build','v683');document.title='Sales Tracker v683 — Rep Portal Boot Timeout Fix';}catch(e){}
-</script>
-
-
-<!-- Sales Tracker v684: Rep Portal direct raw cloud transport + API fallback. -->
-<script id="tcp-v684-rep-portal-cloud-direct-marker">
-try{window.TCP_BUILD_VERSION='v684';document.documentElement.setAttribute('data-tcp-build','v684');document.title='Sales Tracker v684 — Rep Portal Cloud Direct Fallback';}catch(e){}
 </script>
