@@ -69506,4 +69506,65 @@ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title
 })();
 </script>
 
-  
+<!-- ======================================================================
+     v690 · GROWTH OPPORTUNITY MODAL CLOSE CONTROL POSITION
+     Moves the X out of the header and anchors it to the true modal corner.
+     ====================================================================== -->
+<style id="tcp-v690-growth-modal-close-corner-css">
+#rp-overlay .go688-action-menu.go689-centered{position:fixed!important;}
+#rp-overlay .go688-action-menu.go689-centered > .go689-modal-close{
+  position:absolute!important;
+  top:14px!important;
+  right:14px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:20!important;
+  width:36px!important;
+  height:36px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:11px!important;
+}
+/* Reserve the corner so long customer names never collide with the close control. */
+#rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head{
+  padding-right:68px!important;
+}
+@media(max-width:650px){
+  #rp-overlay .go688-action-menu.go689-centered > .go689-modal-close{
+    top:11px!important;
+    right:11px!important;
+    width:34px!important;
+    height:34px!important;
+  }
+  #rp-overlay .go688-action-menu.go689-centered .go688-action-menu-head{
+    padding-right:58px!important;
+  }
+}
+</style>
+<script id="tcp-v690-growth-modal-close-corner-js">
+(function(){
+'use strict';
+var BUILD='v690';
+function relocate(){
+  var m=document.querySelector('#rp-overlay #go688ActionMenu.go689-centered');
+  if(!m)return;
+  var x=m.querySelector('.go689-modal-close');
+  if(x && x.parentNode!==m)m.appendChild(x);
+}
+var prior=window._go688Menu;
+if(typeof prior==='function'){
+  window._go688Menu=function(){var r=prior.apply(this,arguments);setTimeout(relocate,0);return r;};
+}
+var obs=new MutationObserver(function(){setTimeout(relocate,0);});
+function start(){
+  var o=document.querySelector('#rp-overlay');
+  if(o)obs.observe(o,{childList:true,subtree:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+setTimeout(relocate,0);setTimeout(relocate,500);
+window.TCP_BUILD_VERSION=BUILD;
+try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v690 — Growth Opportunity Close Corner';}catch(e){}
+})();
+</script>
