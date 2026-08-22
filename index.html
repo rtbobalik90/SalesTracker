@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Sales Tracker v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Sales Tracker v674 — Rep Portal Visual Foundation</title>
+<title>Sales Tracker v675 — Rep Portal Manager Scale</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -66821,3 +66821,281 @@ body.nav-rail .tabs:after{content:"v672"!important}
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v674 — Rep Portal Visual Foundation'}catch(e){}
 })();
 </script>
+<!-- ======================================================================
+     SALES TRACKER v675 · REP PORTAL MANAGER-SCALE READABILITY
+     Uses the Manager Portal screenshot as the scale reference: readable
+     typography, efficient screen use, and no tiny operational text.
+     Scoped to the Rep Portal only. No business logic is changed.
+     ====================================================================== -->
+<style id="tcp-v675-rep-portal-manager-scale-css">
+/* --------------------------------------------------------------------------
+   MANAGER-SCALE SHELL
+   The Manager workspace works because it uses a compact 220-ish sidebar,
+   wide content canvas, and readable text rather than micro typography.
+   -------------------------------------------------------------------------- */
+#rp-overlay .rp2-app{
+  --rp675-body:13px;
+  --rp675-body-sm:12px;
+  --rp675-meta:10.5px;
+  --rp675-control:12px;
+  --rp675-section:19px;
+  --rp675-page:36px;
+  font-size:var(--rp675-body)!important;
+}
+#rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-side{
+  width:224px!important;flex-basis:224px!important;padding:14px 10px 12px!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639{grid-template-columns:224px minmax(0,1fr)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639 .rp2-side{padding:14px 10px 12px!important;}
+#rp-overlay .rp2-logo.v674-brand,#rp-overlay .p639-brand{min-height:128px!important;padding:0 8px 15px!important;}
+#rp-overlay .rp2-logo.v674-brand img,#rp-overlay .p639-brand img{width:96px!important;height:72px!important;}
+#rp-overlay .rp2-logo.v674-brand strong,#rp-overlay .p639-brand strong{font-size:16px!important;}
+#rp-overlay .rp2-logo.v674-brand span,#rp-overlay .p639-brand span{font-size:10px!important;letter-spacing:.13em!important;margin-top:5px!important;}
+#rp-overlay .rp2-logo.v674-brand em,#rp-overlay .p639-brand em{font-size:9.5px!important;margin-top:7px!important;padding:4px 9px!important;}
+#rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-navg,#rp-overlay .p639-nav-label{padding:15px 10px 6px!important;font-size:10px!important;letter-spacing:.13em!important;}
+#rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-nav,#rp-overlay .p639-nav button{min-height:42px!important;margin:2px 0!important;font-size:12px!important;padding:0 11px!important;}
+#rp-overlay .rp2-view-mode-label{font-size:10px!important;}
+#rp-overlay .rp2-view-mode-btn{min-height:32px!important;font-size:10.5px!important;}
+#rp-overlay .rp2-view-mode-copy{font-size:10.5px!important;line-height:1.4!important;}
+#rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-main{padding:0 24px 62px!important;}
+#rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-top{margin:0 -24px 20px!important;padding:13px 24px!important;}
+#rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-top,#rp-overlay .p639-page-top{min-height:70px!important;}
+#rp-overlay .p639-page-top{padding:13px 24px!important;}
+#rp-overlay .rp2-hi,#rp-overlay .p639-page-top strong{font-size:28px!important;}
+#rp-overlay .rp2-sub,#rp-overlay .p639-page-top span{font-size:12px!important;margin-top:4px!important;}
+#rp-overlay .rp2-context-select,#rp-overlay .rp2-readonly,#rp-overlay .p639-page-top-actions button{font-size:12px!important;min-height:40px!important;}
+#rp-overlay .p639-subpage{padding:20px 24px 46px!important;}
+#rp-overlay #rp2-page{max-width:1760px!important;width:100%!important;margin:0 auto!important;font-size:13px!important;}
+
+/* --------------------------------------------------------------------------
+   READABILITY BASELINE · entire Rep Portal
+   This does not flatten the design hierarchy; it only establishes the same
+   readable floor visible in the Manager Portal.
+   -------------------------------------------------------------------------- */
+#rp-overlay #rp2-page h1{font-family:var(--rp674-heading)!important;font-size:36px!important;line-height:1.06!important;letter-spacing:-.035em!important;}
+#rp-overlay #rp2-page h2{font-size:20px!important;line-height:1.15!important;}
+#rp-overlay #rp2-page h3{font-size:16px!important;line-height:1.2!important;}
+#rp-overlay #rp2-page p{line-height:1.52;}
+#rp-overlay #rp2-page small{font-size:10.5px!important;line-height:1.4!important;}
+#rp-overlay #rp2-page table{font-size:12px;}
+#rp-overlay #rp2-page th{font-size:10.5px!important;line-height:1.25!important;}
+#rp-overlay #rp2-page td{font-size:12px;line-height:1.4;}
+#rp-overlay #rp2-page input,#rp-overlay #rp2-page select,#rp-overlay #rp2-page textarea{font-size:12px!important;}
+#rp-overlay #rp2-page :is([class*="-kicker"],[class*="-kick"],[class*="-eyebrow"]){font-size:10.5px!important;line-height:1.25!important;}
+#rp-overlay #rp2-page :is([class*="-meta"],[class*="-footnote"],[class*="-footer-note"],[class*="-hint"]){font-size:10.5px!important;line-height:1.4!important;}
+#rp-overlay #rp2-page :is([class*="-copy"],[class*="-description"],[class*="-desc"]){line-height:1.5!important;}
+
+/* --------------------------------------------------------------------------
+   MY DAY · keep it dense enough to fit, but remove micro text
+   -------------------------------------------------------------------------- */
+#rp-overlay .ps68-command{padding:24px 26px!important;column-gap:24px!important;min-height:205px!important;}
+#rp-overlay .ps68-greeting h1{font-size:38px!important;}
+#rp-overlay .ps68-greeting p{font-size:13px!important;}
+#rp-overlay .ps68-day-stat span{font-size:11px!important;}
+#rp-overlay .ps68-cycle-kick{font-size:10.5px!important;}
+#rp-overlay .ps68-cycle-title{font-size:23px!important;}
+#rp-overlay .ps68-cycle-status{font-size:10.5px!important;}
+#rp-overlay .ps68-cycle-metric span{font-size:10.5px!important;}
+#rp-overlay .ps68-cycle-metric strong{font-size:17px!important;}
+#rp-overlay .ps68-cycle-metric small{font-size:10.5px!important;}
+#rp-overlay .ps68-progress-head{font-size:10.5px!important;}
+#rp-overlay .ps68-work-head{min-height:60px!important;padding:13px 17px!important;}
+#rp-overlay .ps68-kick{font-size:10.5px!important;}
+#rp-overlay .ps68-work-title{font-size:21px!important;}
+#rp-overlay .ps68-work-copy{font-size:12px!important;}
+#rp-overlay .ps68-work-grid{grid-template-rows:minmax(365px,1fr)!important;gap:12px!important;padding:12px!important;}
+#rp-overlay .ps68-primary,#rp-overlay .ps68-other-card{min-height:365px!important;}
+#rp-overlay .ps68-card-head strong,#rp-overlay .ps68-other-head strong{font-size:13.5px!important;}
+#rp-overlay .ps68-count,#rp-overlay .ps68-other-head span{font-size:11px!important;}
+#rp-overlay .ps68-row-name,#rp-overlay .ps68-other-row strong{font-size:13px!important;}
+#rp-overlay .ps68-row-sub,#rp-overlay .ps68-other-row span{font-size:11px!important;}
+#rp-overlay .ps68-due{font-size:10.5px!important;}
+#rp-overlay .ps68-score-card span{font-size:10.5px!important;}
+#rp-overlay .ps68-score-card small{font-size:10.5px!important;}
+
+/* Phased My Day */
+#rp-overlay .p639-daily-stat small,#rp-overlay .p639-start small,#rp-overlay .p639-action-copy small,#rp-overlay .p639-book-foot,#rp-overlay .p639-book-coach span,#rp-overlay .p639-metric small,#rp-overlay .p639-home-footer{font-size:10.5px!important;}
+#rp-overlay .p639-panel-head strong,#rp-overlay .p639-momentum-title,#rp-overlay .p639-book-coach strong{font-size:11px!important;}
+#rp-overlay .p639-action-copy b,#rp-overlay .p639-glance-label span,#rp-overlay .p639-day-status span,#rp-overlay .p639-metric span{font-size:10.5px!important;}
+#rp-overlay .p639-action-buttons button{font-size:11.5px!important;}
+#rp-overlay .p639-performance-link{font-size:11.5px!important;}
+
+/* --------------------------------------------------------------------------
+   TODAY'S BUSINESS · same manager-scale hierarchy
+   -------------------------------------------------------------------------- */
+#rp-overlay .tb607-hero{padding:25px 27px!important;}
+#rp-overlay .tb607-title{font-size:38px!important;}
+#rp-overlay .tb607-kick,#rp-overlay .tb607-section-kick{font-size:10.5px!important;}
+#rp-overlay .tb607-sub{font-size:13px!important;}
+#rp-overlay .tb607-date{font-size:11px!important;}
+#rp-overlay .tb607-btn{font-size:12px!important;}
+#rp-overlay .tb607-progress-ring span{font-size:10px!important;}
+#rp-overlay .tb607-progress-copy p{font-size:11.5px!important;}
+#rp-overlay .tb607-progress-copy small{font-size:10.5px!important;}
+#rp-overlay .tb607-kpi-label{font-size:10.5px!important;}
+#rp-overlay .tb607-kpi-value{font-size:26px!important;}
+#rp-overlay .tb607-kpi-sub{font-size:11px!important;}
+#rp-overlay .tb607-section-copy{font-size:12px!important;}
+#rp-overlay .tb607-lane{font-size:11px!important;}
+#rp-overlay .tb607-lane b{font-size:10px!important;}
+#rp-overlay .tb607-focus-label{font-size:10.5px!important;}
+#rp-overlay .tb607-focus-copy{font-size:12px!important;}
+#rp-overlay .tb607-tag{font-size:10px!important;min-height:22px!important;}
+#rp-overlay .tb607-task-title{font-size:13px!important;}
+#rp-overlay .tb607-task-why,#rp-overlay .tb607-task-do{font-size:11.5px!important;}
+#rp-overlay .tb607-task-meta div{font-size:10.5px!important;}
+#rp-overlay .tb607-task-meta strong{font-size:11.5px!important;}
+#rp-overlay .tb607-mini{font-size:11px!important;}
+#rp-overlay .tb607-side-title{font-size:13px!important;}
+#rp-overlay .tb607-side-title span,#rp-overlay .tb607-next-label,#rp-overlay .tb607-watch em{font-size:10.5px!important;}
+#rp-overlay .tb607-next p,#rp-overlay .tb607-watch strong{font-size:11.5px!important;}
+#rp-overlay .tb607-watch span,#rp-overlay .tb607-footnote{font-size:10.5px!important;}
+
+/* --------------------------------------------------------------------------
+   ORDERS · retain simplified workflow, repair tiny table/meta text
+   -------------------------------------------------------------------------- */
+#rp-overlay .o671-rp-kicker{font-size:10.5px!important;}
+#rp-overlay .o671-rp-title{font-size:34px!important;}
+#rp-overlay .o671-rp-copy{font-size:12.5px!important;}
+#rp-overlay .o671-rp-summary span{font-size:10px!important;}
+#rp-overlay .o671-rp-summary strong{font-size:19px!important;}
+#rp-overlay .o671-rp-field label{font-size:10.5px!important;}
+#rp-overlay .o671-rp-search,#rp-overlay .o671-rp-select{font-size:12px!important;}
+#rp-overlay .o671-rp-btn{font-size:11.5px!important;}
+#rp-overlay .o671-status,#rp-overlay .o671-tag{font-size:10px!important;}
+#rp-overlay .o671-rp-table-title{font-size:15px!important;}
+#rp-overlay .o671-rp-table-note,#rp-overlay .o671-rp-table-controls{font-size:10.5px!important;}
+#rp-overlay .o671-rp-row{min-height:46px!important;padding:11px 14px!important;}
+#rp-overlay .o671-rp-row.header{font-size:10.5px!important;}
+#rp-overlay .o671-rp-row strong{font-size:12px!important;}
+#rp-overlay .o671-rp-row span{font-size:11.5px!important;}
+#rp-overlay .o671-rp-empty{font-size:11.5px!important;}
+#rp-overlay .o671-rp-pager{font-size:10.5px!important;}
+
+/* --------------------------------------------------------------------------
+   QUOTES · same search/table scale as Orders and Manager lists
+   -------------------------------------------------------------------------- */
+#rp-overlay .q673-kick{font-size:10.5px!important;}
+#rp-overlay .q673-title{font-size:34px!important;}
+#rp-overlay .q673-copy{font-size:13px!important;}
+#rp-overlay .q673-btn{font-size:12px!important;}
+#rp-overlay .q673-search,#rp-overlay .q673-select{font-size:12.5px!important;}
+#rp-overlay .q673-table th{font-size:10.5px!important;}
+#rp-overlay .q673-table td{font-size:12px!important;padding:12px 11px!important;}
+#rp-overlay .q673-attn,#rp-overlay .q673-status{font-size:10px!important;}
+#rp-overlay .q673-quote-num{font-size:12.5px!important;}
+#rp-overlay .q673-quote-sub,#rp-overlay .q673-contact,#rp-overlay .q673-date span,#rp-overlay .q673-next span{font-size:10.5px!important;}
+#rp-overlay .q673-customer{font-size:12px!important;}
+#rp-overlay .q673-date strong{font-size:11.5px!important;}
+#rp-overlay .q673-mini{font-size:10.5px!important;min-height:33px!important;}
+#rp-overlay .q673-footnote{font-size:10.5px!important;}
+#rp-overlay .q673-modal-kick{font-size:10.5px!important;}
+#rp-overlay .q673-modal-sub{font-size:12px!important;}
+#rp-overlay .q673-primary span,#rp-overlay .q673-info span,#rp-overlay .q673-price span{font-size:10px!important;}
+#rp-overlay .q673-alert strong{font-size:12px!important;}
+#rp-overlay .q673-alert span,#rp-overlay .q673-section-copy,#rp-overlay .q673-order-box span,#rp-overlay .q673-coverage{font-size:10.5px!important;}
+#rp-overlay .q673-section-title{font-size:13px!important;}
+#rp-overlay .q673-info strong{font-size:11.5px!important;}
+#rp-overlay .q673-line-table{font-size:11.5px!important;}
+#rp-overlay .q673-line-table th{font-size:10px!important;}
+#rp-overlay .q673-line-table td{font-size:11.5px!important;}
+#rp-overlay .q673-price strong{font-size:12px!important;}
+#rp-overlay .q673-activity-row time,#rp-overlay .q673-activity-row span{font-size:10.5px!important;}
+#rp-overlay .q673-activity-row strong{font-size:11.5px!important;}
+
+/* --------------------------------------------------------------------------
+   Shared dense CRM / call / list pages
+   These selectors are intentionally semantic: they raise tiny supporting
+   copy without changing layouts or forcing a new component tree.
+   -------------------------------------------------------------------------- */
+#rp-overlay #rp2-page :is(
+  [class^="cw"],[class*=" cw"],
+  [class^="c649"],[class*=" c649"],
+  [class^="c652"],[class*=" c652"],
+  [class^="c656"],[class*=" c656"],
+  [class^="c658"],[class*=" c658"],
+  [class^="c659"],[class*=" c659"],
+  [class^="c660"],[class*=" c660"],
+  [class^="c663"],[class*=" c663"],
+  [class^="cux"],[class*=" cux"],
+  [class^="cs3"],[class*=" cs3"]
+) small{font-size:10.5px!important;}
+
+/* Wide laptop behavior matching the supplied Manager Portal reference. */
+@media(min-width:1501px){
+  #rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-main{padding-left:26px!important;padding-right:26px!important;}
+  #rp-overlay .p639-subpage{padding-left:26px!important;padding-right:26px!important;}
+}
+@media(max-width:1180px){
+  #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639{grid-template-columns:210px minmax(0,1fr)!important;}
+  #rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-side{width:210px!important;flex-basis:210px!important;}
+}
+@media(max-width:780px){
+  #rp-overlay .rp2-app:not(.rp2-mode-phased) .rp2-main{padding-left:14px!important;padding-right:14px!important;}
+  #rp-overlay #rp2-page h1{font-size:31px!important;}
+}
+</style>
+<script id="tcp-v675-rep-portal-manager-scale-js">
+(function(){
+ 'use strict';
+ var BUILD='v675';
+ var queued=false;
+ function excluded(el){
+  if(!el||el.nodeType!==1)return true;
+  var tag=(el.tagName||'').toUpperCase();
+  if(/^(SVG|PATH|I|CANVAS|IMG|OPTION)$/.test(tag))return true;
+  if(el.closest&&el.closest('svg,canvas,[aria-hidden="true"]'))return true;
+  return false;
+ }
+ function readableFloor(root){
+  try{
+   root=root||document.getElementById('rp-overlay');
+   if(!root)return;
+   var nodes=root.querySelectorAll('#rp2-page *, .rp2-side *, .p639-page-top *');
+   for(var i=0;i<nodes.length;i++){
+    var el=nodes[i];
+    if(excluded(el))continue;
+    var text=(el.textContent||'').replace(/\s+/g,' ').trim();
+    if(!text)continue;
+    var cs=getComputedStyle(el),fs=parseFloat(cs.fontSize)||0;
+    var tag=(el.tagName||'').toUpperCase();
+    var cls=String(el.className||'');
+    var floor=0;
+    if(/^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(tag)) floor=11.5;
+    else if(tag==='TH') floor=10.5;
+    else if(tag==='TD') floor=11.5;
+    else if(tag==='SMALL') floor=10.5;
+    else if(/(?:meta|label|kicker|kick|eyebrow|badge|tag|status|note|hint|foot|date|sub|copy)/i.test(cls)) floor=10.5;
+    else if(fs>0&&fs<10) floor=10;
+    if(floor&&fs<floor){
+      el.style.setProperty('font-size',floor+'px','important');
+      if(parseFloat(cs.lineHeight)&&parseFloat(cs.lineHeight)<floor*1.25)el.style.setProperty('line-height','1.35','important');
+    }
+   }
+  }catch(e){console.warn('[v675 readability floor]',e)}
+ }
+ function schedule(){
+  if(queued)return;queued=true;
+  setTimeout(function(){queued=false;readableFloor();},35);
+ }
+ function install(){
+  var overlay=document.getElementById('rp-overlay');
+  if(!overlay)return;
+  readableFloor(overlay);
+  try{new MutationObserver(schedule).observe(overlay,{childList:true,subtree:true});}catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+ window.addEventListener('load',function(){setTimeout(readableFloor,80)});
+ var priorBundle=window._rpPhasedDevBundle;
+ if(typeof priorBundle==='function'){
+  window._rpPhasedDevBundle=function(){
+   var base=priorBundle.apply(this,arguments),el=document.getElementById('tcp-v675-rep-portal-manager-scale-css'),css=el?String(el.textContent||'').trim():'';
+   return base+'\n\n<!-- v675 REP PORTAL MANAGER SCALE -->\n<style id="tcp-v675-rep-portal-manager-scale-css">\n'+css+'\n</style>';
+  };
+ }
+ window.TCP_REP_PORTAL_MANAGER_SCALE_V675={version:BUILD,refresh:readableFloor};
+ window.TCP_BUILD_VERSION=BUILD;
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v675 — Rep Portal Manager Scale'}catch(e){}
+})();
+</script>
+
