@@ -69642,3 +69642,58 @@ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title
   }catch(e){}
 })();
 </script>
+
+<!-- ===== CONNECT v693 · SALES PORTAL BRAND POLISH ===== -->
+<style id="connect-v693-sales-portal-brand-css">
+/* Rep Portal left-rail brand lockup:
+   Connect is the primary product name; Sales Portal is the workspace label. */
+#rp-overlay .p639-brand strong,
+#rp-overlay .rp2-logo.v674-brand strong{
+  font-size:22px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:-.015em!important;
+  text-transform:none!important;
+}
+#rp-overlay .p639-brand span,
+#rp-overlay .rp2-logo.v674-brand span{
+  margin-top:8px!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase!important;
+}
+#rp-overlay .p639-brand{
+  padding-top:4px!important;
+}
+@media(max-width:780px){
+  #rp-overlay .p639-brand strong,
+  #rp-overlay .rp2-logo.v674-brand strong{font-size:20px!important;}
+}
+</style>
+<script id="connect-v693-sales-portal-brand-js">
+(function(){
+  var BUILD='v693';
+  function apply(){
+    try{
+      document.querySelectorAll('#rp-overlay .p639-brand span, #rp-overlay .rp2-logo.v674-brand span').forEach(function(el){
+        var t=(el.textContent||'').trim().toLowerCase();
+        if(t==='rep portal' || t==='sales portal') el.textContent='Sales Portal';
+      });
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true});
+  else apply();
+  /* The Rep Portal rerenders its shell, so re-apply when opened without observing the whole app. */
+  document.addEventListener('click',function(){
+    setTimeout(apply,40);
+    setTimeout(apply,250);
+  },true);
+  try{
+    document.documentElement.setAttribute('data-tcp-build',BUILD);
+    document.title='Connect — Sales Portal';
+  }catch(e){}
+})();
+</script>
+
