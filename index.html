@@ -69568,3 +69568,67 @@ window.TCP_BUILD_VERSION=BUILD;
 try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v690 — Growth Opportunity Close Corner';}catch(e){}
 })();
 </script>
+
+
+<!-- ======================================================================
+     v691 RECOVERY · TO DO TESTER ISOLATION
+     Keeps oversized "Call Right Now" and Growth Signal rail cards tester-only.
+     Real calls/follow-ups/notifications remain in their normal live sections.
+     Built from the clean v690 recovery baseline — not the contaminated old v691.
+     ====================================================================== -->
+<style id="tcp-v691-recovery-todo-test-isolation-css">
+#rp-overlay .rp691-hidden-live-priority{display:none!important}
+</style>
+<script id="tcp-v691-recovery-todo-test-isolation-js">
+(function(){
+'use strict';
+var BUILD='v691-recovery',GROWTH_TEST='tcp.repPortal.growthTest.v686',timer=0;
+function qs(s,r){return (r||document).querySelector(s)}
+function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function phased(){return !!qs('#rp-overlay .rp2-app.rp2-mode-phased.rp2-v639')}
+function growthTestOn(){try{return sessionStorage.getItem(GROWTH_TEST)==='1'}catch(e){return false}}
+function clearStaleGrowthTest(){try{sessionStorage.removeItem(GROWTH_TEST)}catch(e){}}
+function cleanRail(){
+  if(!phased())return;
+  var todo=qs('#rp-overlay .rp679-todo');
+  if(!todo)return;
+
+  /* The normal live queue already has Next 3 Calls. The large orange priority
+     card is reserved for the tester's explicit "Call Right Now" state. */
+  qsa('.rp680-call-now:not(.rp684-test-priority)',todo).forEach(function(n){n.remove()});
+
+  /* Growth Opportunity rail cards are exception/test presentation only.
+     The live Growth Opportunities page + normal call queue remain untouched. */
+  if(!growthTestOn())qsa('.go686-todo-growth',todo).forEach(function(n){n.remove()});
+}
+function wrap(name,after){
+  var fn=window[name];
+  if(typeof fn!=='function'||fn._rp691Isolation)return;
+  var w=function(){var r=fn.apply(this,arguments);setTimeout(function(){try{after&&after()}catch(e){};cleanRail()},0);setTimeout(cleanRail,80);return r};
+  w._rp691Isolation=true;window[name]=w;
+}
+function wrapClearTests(){
+  var fn=window._rp684TesterClear;
+  if(typeof fn!=='function'||fn._rp691Isolation)return;
+  var w=function(){clearStaleGrowthTest();var r=fn.apply(this,arguments);setTimeout(cleanRail,0);setTimeout(cleanRail,100);return r};
+  w._rp691Isolation=true;window._rp684TesterClear=w;
+}
+function wire(){
+  wrap('_rp679RefreshTodo');
+  wrap('_rp679SetSideMode');
+  wrap('_rp2After');
+  wrapClearTests();
+  cleanRail();
+}
+/* A stale tester growth flag can survive reloads in the same browser tab.
+   Clear it once when this corrected build starts. New tester clicks after boot
+   can still turn it on normally. */
+clearStaleGrowthTest();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(wire,0);setTimeout(wire,500)},{once:true});
+else{setTimeout(wire,0);setTimeout(wire,500)}
+clearInterval(timer);timer=setInterval(function(){if(phased()){wire();cleanRail()}},700);
+window.TCP_BUILD_VERSION=BUILD;
+window.TCP_REP_TODO_TEST_ISOLATION_V691={version:BUILD,clean:cleanRail};
+try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Sales Tracker v691 Recovery — To Do Tester Isolation'}catch(e){}
+})();
+</script>
