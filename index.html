@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v701 — Sales Portal</title>
-<script id="connect-build-authority-v701">
+<title>Connect v702 — Sales Portal</title>
+<script id="connect-build-authority-v702">
 (function(){
   'use strict';
-  var BUILD='v701', DISPLAY='V701', TITLE='Connect v701 — Sales Portal';
+  var BUILD='v702', DISPLAY='V702', TITLE='Connect v702 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -53,10 +53,10 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
   window.CONNECT_ENFORCE_BUILD=enforce;
 })();
 </script>
-<style id="connect-build-authority-v701-css">
-html[data-connect-authoritative="v701"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V701";--connect-build-short:"BUILD V701";}
-html[data-connect-authoritative="v701"] body .tabs:after{content:var(--connect-build-long)!important;}
-html[data-connect-authoritative="v701"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+<style id="connect-build-authority-v702-css">
+html[data-connect-authoritative="v702"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V702";--connect-build-short:"BUILD V702";}
+html[data-connect-authoritative="v702"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v702"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -71129,4 +71129,179 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
  window.TCP_COMPANY_SALES_WORKFLOW_V700={version:BUILD,focus:'rep workflow company overview: orient, decide, prepare, act, investigate',enhance:enhance,brand:brand};window.TCP_BUILD_IDENTITY_V701={version:BUILD,authority:true};
 })();
 
+</script>
+
+
+<!-- ===== CONNECT v702 · COMPANY SIGNAL KPI BAND ===== -->
+<style id="connect-v702-company-signal-kpi-band-css">
+/* Company Overview: use the same visual grammar as the Manager Dashboard, but answer rep questions. */
+#rp-overlay .cux702-company .cux700-action-grid{display:none!important;}
+#rp-overlay .cux702-signal-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 12px;
+}
+#rp-overlay .cux702-kpi-card{
+  --accent:#00AFEF;--glow:rgba(0,175,239,.14);
+  position:relative;min-width:0;min-height:188px;padding:16px 16px 14px;border:1px solid rgba(255,255,255,.085);
+  border-radius:17px;background:radial-gradient(circle at 12% 5%,var(--glow),transparent 46%),linear-gradient(160deg,rgba(18,31,43,.97),rgba(11,20,30,.98));
+  color:#EDF5FA;text-align:left;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035);
+}
+#rp-overlay button.cux702-kpi-card{cursor:pointer;font-family:inherit;}
+#rp-overlay button.cux702-kpi-card:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 45%,transparent);box-shadow:0 16px 34px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.05);}
+#rp-overlay .cux702-next{--accent:#FA873D;--glow:rgba(250,135,61,.17);}
+#rp-overlay .cux702-sales{--accent:#00AFEF;--glow:rgba(0,175,239,.16);}
+#rp-overlay .cux702-relationship.good{--accent:#47D16C;--glow:rgba(71,209,108,.14);}
+#rp-overlay .cux702-relationship.warn{--accent:#FBBF24;--glow:rgba(251,191,36,.13);}
+#rp-overlay .cux702-relationship.risk{--accent:#FB7185;--glow:rgba(251,113,133,.14);}
+#rp-overlay .cux702-opportunity{--accent:#B36CFF;--glow:rgba(179,108,255,.14);}
+#rp-overlay .cux702-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:15px;}
+#rp-overlay .cux702-card-label{display:flex;align-items:center;gap:9px;color:#83E8FF;font-size:8.3px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;}
+#rp-overlay .cux702-card-icon{width:29px;height:29px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 20%,rgba(255,255,255,.035));border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);color:#fff;font-size:13px;box-shadow:0 8px 20px var(--glow);}
+#rp-overlay .cux702-card-badge{max-width:44%;padding:4px 7px;border:1px solid color-mix(in srgb,var(--accent) 32%,transparent);border-radius:999px;background:color-mix(in srgb,var(--accent) 9%,transparent);color:color-mix(in srgb,var(--accent) 72%,white);font-size:7.2px;font-weight:950;line-height:1.15;text-align:center;}
+#rp-overlay .cux702-card-value{color:#fff;font-size:24px;font-weight:950;letter-spacing:-.035em;line-height:1.03;overflow-wrap:anywhere;}
+#rp-overlay .cux702-next .cux702-card-value,#rp-overlay .cux702-opportunity .cux702-card-value{font-size:19px;line-height:1.12;}
+#rp-overlay .cux702-card-copy{margin-top:8px;color:#9DB0C1;font-size:9.3px;line-height:1.48;}
+#rp-overlay .cux702-card-copy b{color:#DDEAF3;font-weight:900;}
+#rp-overlay .cux702-card-foot{position:absolute;left:16px;right:16px;bottom:13px;display:flex;align-items:end;justify-content:space-between;gap:8px;color:#718399;font-size:7.8px;line-height:1.3;}
+#rp-overlay .cux702-card-foot strong{color:#E5EEF5;font-size:8.2px;}
+#rp-overlay .cux702-route{color:color-mix(in srgb,var(--accent) 78%,white);font-size:15px;font-weight:950;line-height:1;}
+
+/* Seasonal sales pace bar: actual fill + prior-year same-date expected marker. */
+#rp-overlay .cux702-pace-wrap{position:absolute;left:16px;right:16px;bottom:14px;}
+#rp-overlay .cux702-pace-bar{position:relative;height:7px;margin:0 0 7px;border-radius:99px;background:rgba(255,255,255,.10);overflow:visible;}
+#rp-overlay .cux702-pace-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#00AFEF,#7FE8FF);box-shadow:0 0 13px rgba(0,175,239,.22);}
+#rp-overlay .cux702-pace-marker{position:absolute;top:-4px;width:2px;height:15px;border-radius:2px;background:#F5F7FB;box-shadow:0 0 0 1px rgba(0,0,0,.15);}
+#rp-overlay .cux702-pace-marker:after{content:"";position:absolute;left:50%;top:-2px;transform:translate(-50%,-100%);width:5px;height:5px;border:1px solid #DDEAF4;border-radius:50%;background:#142330;}
+#rp-overlay .cux702-pace-labels{display:flex;justify-content:space-between;gap:8px;color:#72869A;font-size:7.4px;}
+#rp-overlay .cux702-pace-labels span:nth-child(2){text-align:center;}
+#rp-overlay .cux702-pace-labels strong{color:#DCE8F1;font-weight:900;}
+
+/* Conversation Prep is now the full-width working canvas directly under the KPI band. */
+#rp-overlay .cux702-company .cux700-conversation{
+  width:100%!important;min-height:0!important;margin:0 0 12px!important;padding:17px 18px!important;
+  border-radius:18px!important;background:linear-gradient(145deg,rgba(14,34,49,.97),rgba(15,27,40,.98))!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-head{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:start!important;gap:10px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-title{font-size:19px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-copy{max-width:760px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;margin-top:10px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{display:block!important;min-width:0!important;padding:10px 11px!important;border:1px solid rgba(255,255,255,.075)!important;border-radius:11px!important;background:rgba(255,255,255,.025)!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row b{display:block!important;margin-bottom:5px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{font-size:9px!important;line-height:1.42!important;}
+
+/* Account Intelligence stays secondary and quieter. */
+#rp-overlay .cux702-company .cux700-intelligence{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:0!important;margin-bottom:10px!important;border-radius:17px!important;}
+#rp-overlay .cux702-company .cux700-intelligence-head{padding:13px 16px 11px!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile{min-height:86px!important;border-radius:0!important;padding:11px 34px 10px 12px!important;grid-template-columns:38px minmax(0,1fr)!important;column-gap:9px!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-icon{width:36px!important;height:36px!important;min-width:36px!important;border-radius:11px!important;font-size:16px!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-name{font-size:11.5px!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-copy{font-size:7.8px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;-webkit-line-clamp:1!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-meta{font-size:7.8px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+#rp-overlay .cux702-company .cux700-history{min-height:0!important;padding:8px 12px!important;grid-template-columns:auto 1fr!important;}
+#rp-overlay .cux702-company .cux700-history-action{display:none!important;}
+
+@media(max-width:1450px){
+  #rp-overlay .cux702-signal-grid{gap:10px!important;}
+  #rp-overlay .cux702-kpi-card{min-height:176px!important;padding:14px!important;}
+  #rp-overlay .cux702-card-value{font-size:21px!important;}
+  #rp-overlay .cux702-next .cux702-card-value,#rp-overlay .cux702-opportunity .cux702-card-value{font-size:17px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+@media(max-width:1080px){
+  #rp-overlay .cux702-signal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #rp-overlay .cux702-company .cux700-intelligence{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+@media(max-width:700px){
+  #rp-overlay .cux702-signal-grid{grid-template-columns:1fr!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{grid-template-columns:1fr!important;}
+  #rp-overlay .cux702-company .cux700-intelligence{grid-template-columns:1fr!important;}
+}
+
+html[data-rp-theme="light"] #rp-overlay .cux702-kpi-card{background:radial-gradient(circle at 12% 5%,var(--glow),transparent 46%),linear-gradient(160deg,#FFFFFF,#F4F8FA)!important;border-color:#D5E0E7!important;color:#183246!important;box-shadow:0 8px 24px rgba(35,55,72,.08)!important;}
+html[data-rp-theme="light"] #rp-overlay .cux702-card-value{color:#173044!important;}
+html[data-rp-theme="light"] #rp-overlay .cux702-card-copy{color:#60798D!important;}
+html[data-rp-theme="light"] #rp-overlay .cux702-card-copy b{color:#29465B!important;}
+</style>
+<script id="connect-v702-company-signal-kpi-band-js">
+(function(){
+ 'use strict';
+ var BUILD=(window.CONNECT_BUILD_AUTHORITY||'v702'),DISPLAY=(window.CONNECT_BUILD_DISPLAY||'V702');
+ var PLAN_STORE='tcp_rp_account_plans_v517',GROWTH=1.10;
+ var BASE_CUSTOMERS=window._rp2CustomersV2,BASE_PROFILE=window._rp2CompanyProfileV3;
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var b=document.createElement('div');b.appendChild(frag.cloneNode(true));return b.innerHTML}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function field(o,keys,def){o=o||{};for(var i=0;i<keys.length;i++){var v=o[keys[i]];if(v!==undefined&&v!==null&&String(v)!=='')return v}return def}
+ function moneyNum(v){var n=parseFloat(String(v==null?'':v).replace(/[^0-9.-]/g,''));return isFinite(n)?n:0}
+ function money(v){return '$'+Math.round(Number(v)||0).toLocaleString()}
+ function pct(v){return (v>=0?'+':'')+Number(v||0).toFixed(1)+'%'}
+ function dateOf(v){if(!v)return null;var d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(String(v))?String(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d}
+ function rep(){return window._rp2&&window._rp2.rep||''}
+ function currentName(frag){return clean(frag.querySelector('.cux8-name')&&frag.querySelector('.cux8-name').textContent)||clean(window._cux8CurrentName)||clean(window._cw4CompanyName)||'Customer'}
+ function readPlan(name){try{var s=JSON.parse(localStorage.getItem(PLAN_STORE)||'null'),r=rep(),p=s&&s.reps&&s.reps[r]&&s.reps[r].plans||{};return Object.assign({company:name},p[norm(name)]||{})}catch(e){return{company:name}}}
+ function metricValue(frag,label){var out=0;Array.prototype.slice.call(frag.querySelectorAll('.cux8-metric')).some(function(m){var l=clean(m.querySelector('span')&&m.querySelector('span').textContent);if(l.toLowerCase().indexOf(label.toLowerCase())<0)return false;out=moneyNum(clean(m.querySelector('strong')&&m.querySelector('strong').textContent));return true});return out}
+ function ordersFor(name){try{if(typeof window._cx586Orders==='function')return arr(window._cx586Orders(name))}catch(e){}var key=norm(name);return arr(window.S&&S.orders).filter(function(o){return norm(field(o,['customer','customerName','company','companyName','accountName','account'],''))===key})}
+ function salesPace(frag,name){
+   var now=new Date(),cy=now.getFullYear(),py=cy-1,rows=ordersFor(name),cur=0,priorFull=0,priorSame=0;
+   rows.forEach(function(o){var d=dateOf(field(o,['orderDate','date','createdAt','enteredAt'],''));if(!d)return;var val=Number(field(o,['total','amount','revenue','sales','extendedSalesRevenue','netRevenue'],0))||0;if(d.getFullYear()===cy&&d<=now)cur+=val;if(d.getFullYear()===py){priorFull+=val;var cutoff=new Date(py,now.getMonth(),now.getDate(),23,59,59,999);if(d<=cutoff)priorSame+=val}});
+   var hero=metricValue(frag,'YTD');if(hero>0)cur=hero;
+   var target=priorFull*GROWTH,expected=priorSame*GROWTH,delta=cur-expected,deltaPct=expected>0?delta/expected*100:null;
+   return{actual:cur,priorFull:priorFull,priorSame:priorSame,target:target,expected:expected,delta:delta,deltaPct:deltaPct,fill:target>0?Math.max(0,Math.min(100,cur/target*100)):0,mark:target>0?Math.max(0,Math.min(100,expected/target*100)):0,has:priorFull>0};
+ }
+ function contactModel(name){
+   var key=norm(name),seen={},rows=[];
+   function add(c){if(!c)return;var nm=clean(field(c,['name','contactName','fullName'],'Unnamed contact')),id=clean(field(c,['id','contactId','email'],''))||norm(nm+'|'+field(c,['phone','phoneNumber','mobile'],''));if(seen[id])return;seen[id]=1;rows.push(c)}
+   try{[S&&S.accountContacts,S&&S.customerContacts,S&&S.crmContacts,S&&S.contacts].forEach(function(pool){arr(pool).forEach(function(c){var co=field(c,['company','customer','companyName','customerName','account','accountName'],'');if(norm(co)===key)add(c)})});arr(S&&S.customers).forEach(function(c){var co=field(c,['name','customer','company','companyName'],'');if(norm(co)===key){arr(c.contacts).forEach(add);if(c.primary)add(c.primary)}})}catch(e){}
+   try{var st=JSON.parse(localStorage.getItem('tcp_rp_company_crm_v510')||'null'),accounts=st&&st.reps&&st.reps[rep()]&&st.reps[rep()].accounts||{};Object.keys(accounts).forEach(function(k){var a=accounts[k]||{},co=field(a.profile||{},['name','company'],k);if(norm(co)===key)arr(a.contacts).forEach(add)})}catch(e){}
+   var decision=rows.filter(function(c){return !!field(c,['decisionMaker','isDecisionMaker'],false)||/decision|purchas|buyer|owner|procurement/i.test(clean(field(c,['buyingRole','role','title','jobTitle'],'')))}).length;
+   return{count:rows.length,decision:decision};
+ }
+ function nextTarget(title){var t=clean(title).toLowerCase();if(/decision|purchasing/.test(t))return'contacts';if(/reorder|order|re-engage|dormant|reactivat/.test(t))return'orders';if(/product|cross-sell|cross sell/.test(t))return'products';return'activity'}
+ function nextCard(next){
+   var title=clean(next&&next.querySelector('.cux694-next-title')&&next.querySelector('.cux694-next-title').textContent)||'Set the next customer action';
+   var why=clean(next&&next.querySelector('.cux696-why span')&&next.querySelector('.cux696-why span').textContent)||clean(next&&next.querySelector('.cux694-next-copy')&&next.querySelector('.cux694-next-copy').textContent)||'Connect ranked this as the most useful next move.';
+   var target=nextTarget(title),priority=/decision|dormant|overdue|risk/i.test(title+' '+why)?'High priority':'Recommended';
+   return '<button class="cux702-kpi-card cux702-next" onclick="_cux8Open(\''+target+'\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">➜</span>Next Best Step</div><span class="cux702-card-badge">'+esc(priority)+'</span></div><div class="cux702-card-value">'+esc(title)+'</div><div class="cux702-card-copy"><b>Why now:</b> '+esc(why)+'</div><div class="cux702-card-foot"><span>Open the relevant account section</span><span class="cux702-route">→</span></div></button>';
+ }
+ function salesCard(m){
+   if(!m.has)return '<button class="cux702-kpi-card cux702-sales" onclick="_cux8Open(\'orders\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">$</span>Sales Pace</div><span class="cux702-card-badge">10% growth model</span></div><div class="cux702-card-value">'+money(m.actual)+'</div><div class="cux702-card-copy">Prior-year order history is not complete enough to calculate a seasonal growth marker yet.</div><div class="cux702-card-foot"><span>YTD sales</span><span class="cux702-route">→</span></div></button>';
+   var ahead=m.delta>=0,tag=(ahead?'Ahead ':'Behind ')+money(Math.abs(m.delta)),desc=(m.deltaPct==null?'':pct(m.deltaPct)+' vs seasonal growth pace');
+   return '<button class="cux702-kpi-card cux702-sales" onclick="_cux8Open(\'orders\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">$</span>Sales Pace</div><span class="cux702-card-badge">'+esc(tag)+'</span></div><div class="cux702-card-value">'+money(m.actual)+'</div><div class="cux702-card-copy">'+esc(desc||'Compared with the same point in last year’s buying cycle.')+'</div><div class="cux702-pace-wrap"><div class="cux702-pace-bar"><span class="cux702-pace-fill" style="width:'+m.fill.toFixed(1)+'%"></span><i class="cux702-pace-marker" style="left:'+m.mark.toFixed(1)+'%" title="Expected by today"></i></div><div class="cux702-pace-labels"><span>Actual <strong>'+money(m.actual)+'</strong></span><span>│ expected <strong>'+money(m.expected)+'</strong></span><span>10% goal <strong>'+money(m.target)+'</strong></span></div></div></button>';
+ }
+ function relationshipCard(frag,name,p){
+   var cm=contactModel(name),tile=frag.querySelector('[data-cux700-section="contacts"]'),signal=clean(tile&&tile.querySelector('.cux8-tile-meta')&&tile.querySelector('.cux8-tile-meta').textContent),backup=clean(p.backupContact),tone='good',title='Strong coverage',badge='Healthy',bits=[];
+   if(!cm.decision||/decision-maker missing/i.test(signal)){tone='warn';title='Needs attention';badge='Decision-maker missing'}else if(cm.count<2&&!backup){tone='warn';title='Single-threaded';badge='Relationship risk'}
+   if(cm.count)bits.push(cm.count+' known contact'+(cm.count===1?'':'s'));else bits.push('No contact depth loaded');
+   if(cm.decision)bits.push(cm.decision+' buying decision contact'+(cm.decision===1?'':'s'));else bits.push('purchasing authority not identified');
+   if(backup)bits.push('backup relationship recorded');else if(cm.count<2)bits.push('no backup relationship');
+   return '<button class="cux702-kpi-card cux702-relationship '+tone+'" onclick="_cux8Open(\'contacts\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">◎</span>Relationship Health</div><span class="cux702-card-badge">'+esc(badge)+'</span></div><div class="cux702-card-value">'+esc(title)+'</div><div class="cux702-card-copy">'+esc(bits.join(' · '))+'</div><div class="cux702-card-foot"><span>Coverage, roles &amp; relationship protection</span><span class="cux702-route">→</span></div></button>';
+ }
+ function opportunityCard(frag,name,p){
+   var open=clean(frag.querySelector('.cux694-open-state')&&frag.querySelector('.cux694-open-state').textContent),v={};try{v=typeof window._cx586Vitals==='function'?window._cx586Vitals(name):{}}catch(e){}
+   var kick='Opportunity',title='',copy='',target='strategy',badge='Review for fit';
+   if(open&&!/^no open business/i.test(open)&&!/pipeline\s*—.*quotes\s*—.*orders\s*—/i.test(open)){kick='Open Business';title='Active opportunity';copy=open;target='orders';badge='In motion'}
+   else if(clean(p.biggestOpportunity)){kick='Account Opportunity';title=clean(p.biggestOpportunity);copy=clean(p.strategy)?'Account strategy: '+clean(p.strategy):'Saved in Account Strategy';target='strategy';badge='Planned'}
+   else if(v&&v.due){kick='Buying Signal';title='Reorder window is here';copy=(v.top&&v.top[0]?'Top product: '+v.top[0].p+' · ':'')+(v.cad?'Typical cadence ~'+v.cad+' days.':'Buying cadence indicates the account is due.');target='products';badge='Timing signal'}
+   else if(v&&v.top&&v.top[0]){kick='Buying Signal';title='Review reorder & cross-sell';copy='Top product: '+v.top[0].p+'. Use purchase history to look for the next adjacent need.';target='products';badge='Product signal'}
+   else {kick='Opportunity';title='No strong buying signal yet';copy='Use discovery, purchasing history, and Account Strategy to define the next growth opportunity.';target='strategy';badge='Build the signal'}
+   return '<button class="cux702-kpi-card cux702-opportunity" onclick="'+(target==='strategy'?'_cux698OpenStrategy()':"_cux8Open('"+target+"')")+'"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">✦</span>'+esc(kick)+'</div><span class="cux702-card-badge">'+esc(badge)+'</span></div><div class="cux702-card-value">'+esc(title)+'</div><div class="cux702-card-copy">'+esc(copy)+'</div><div class="cux702-card-foot"><span>Where the next revenue can come from</span><span class="cux702-route">→</span></div></button>';
+ }
+ function enhance(markup){
+   if(!markup||String(markup).indexOf('cux700-company')<0||String(markup).indexOf('cux700-action-grid')<0)return markup;
+   var frag=parse(markup);if(frag.querySelector('.cux702-signal-grid'))return markup;
+   var shell=frag.querySelector('.cux700-company'),overview=frag.querySelector('.cux8-overview'),action=frag.querySelector('.cux700-action-grid');if(!shell||!overview||!action)return markup;
+   shell.classList.add('cux702-company');var name=currentName(frag),p=readPlan(name),next=action.querySelector('.cux694-nextbar'),conversation=action.querySelector('.cux700-conversation');
+   var grid=document.createElement('section');grid.className='cux702-signal-grid';grid.innerHTML=nextCard(next)+salesCard(salesPace(frag,name))+relationshipCard(frag,name,p)+opportunityCard(frag,name,p);
+   if(conversation)conversation.remove();action.remove();overview.insertBefore(grid,overview.firstChild);if(conversation)overview.insertBefore(conversation,grid.nextSibling);
+   var history=overview.querySelector('.cux700-history'),historyBtn=history&&history.querySelector('.cux700-history-action');if(historyBtn)historyBtn.remove();
+   return stringify(frag)
+ }
+ function wrap(base){return typeof base==='function'?function(){window._cux10NotesTab='summary';return enhance(base.apply(this,arguments))}:base}
+ window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+ function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[100,500,1200,2600].forEach(function(ms){setTimeout(brand,ms)});
+ window.TCP_COMPANY_SIGNAL_KPI_V702={version:BUILD,growthTarget:GROWTH,focus:'Next Best Step · seasonal Sales Pace · Relationship Health · Opportunity',enhance:enhance};window.TCP_BUILD_IDENTITY_V702={version:BUILD,authority:true};
+})();
 </script>
