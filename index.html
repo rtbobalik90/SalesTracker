@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v697 — Sales Portal</title>
+<title>Connect v696 — Sales Portal</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -66162,226 +66162,7 @@ body.nav-rail .tabs:after{content:"v672"!important}
   var issueHtml=issues.count?'<div class="issue-grid">'+issues.arts.map(function(a){return'<div class="issue"><strong>Art Error</strong>'+esc(a.issueTypeLabel||a.type||'Art issue')+(a.desc?'<br>'+esc(a.desc):'')+'</div>'}).concat(issues.cms.map(function(c){return'<div class="issue"><strong>Credit Memo · '+money(-Math.abs(n(c.amount)))+'</strong>'+esc(c.desc||'Credit memo')+'</div>'})).join('')+'</div>':'<div class="ok">✓ No linked Art Errors or Credit Memos</div>';
   function sectionTable(title,meta,headers,body){return body?'<section><div class="sec-head"><h2>'+title+'</h2><span>'+meta+'</span></div><table><thead><tr>'+headers.map(function(h){return'<th'+(h==='Qty'||h==='Revenue'||h==='Amount'?' class="num"':'')+'>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+body+'</tbody></table></section>':''}
   var toolbar=mode==='pdf'?'<div class="screen-note no-print"><strong>Save PDF:</strong> choose <b>Save as PDF</b> as the printer/destination, then save. <button onclick="window.print()">Open dialog again</button></div>':'<div class="screen-note no-print"><strong>Print-ready order detail.</strong> <button onclick="window.print()">Print</button> <button onclick="window.close()">Close</button></div>';
-  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n
-<!-- ===== CONNECT v698 · COMPANY WORKSPACE REBALANCE + INLINE ACCOUNT STRATEGY ===== -->
-<style id="connect-v698-company-workspace-rebalance-css">
-/* v698 — reduce horizontal competition on the Company Overview.
-   Account Essentials owns a full-width row; Customer Workspace + Conversation Brief
-   become the only two competing work areas below it. */
-#rp-overlay .cux8-shell{padding-top:18px!important;}
-#rp-overlay .cux694-nextbar{margin-top:16px!important;padding:16px 18px!important;border-radius:17px!important;}
-#rp-overlay .cux694-next-title{font-size:18px!important;}
-#rp-overlay .cux694-next-copy{font-size:10.7px!important;line-height:1.5!important;}
-#rp-overlay .cux694-next-actions{gap:8px!important;}
-#rp-overlay .cux8-overview{margin-top:16px!important;}
-
-/* Account Essentials replaces the old narrow tabbed snapshot. */
-#rp-overlay .cux8-brief.cux698-essentials{
-  padding:17px 18px!important;border-radius:20px!important;
-  background:linear-gradient(135deg,rgba(0,175,239,.075),rgba(255,255,255,.03) 45%,rgba(16,185,129,.035))!important;
-  border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 14px 34px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.045)!important;
-}
-#rp-overlay .cux698-essential-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px;}
-#rp-overlay .cux698-essential-kicker{color:#72DDFD;font-size:8.8px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;}
-#rp-overlay .cux698-essential-title{margin-top:4px;color:#F4F8FB;font-size:17px;font-weight:950;letter-spacing:-.02em;}
-#rp-overlay .cux698-essential-copy{margin-top:3px;color:#8495A9;font-size:9.7px;line-height:1.4;}
-#rp-overlay .cux698-essential-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
-#rp-overlay .cux698-strategy-state{display:inline-flex;align-items:center;gap:6px;min-height:31px;padding:0 10px;border-radius:999px;border:1px solid rgba(16,185,129,.19);background:rgba(16,185,129,.055);color:#8EDDC0;font-size:8.7px;font-weight:900;white-space:nowrap;}
-#rp-overlay .cux698-strategy-state.empty{border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.025);color:#7F8FA2;}
-#rp-overlay .cux698-strategy-btn{min-height:33px;padding:0 12px;border-radius:10px;border:1px solid rgba(16,185,129,.30);background:rgba(16,185,129,.09);color:#B7F0DA;font-size:9px;font-weight:950;cursor:pointer;}
-#rp-overlay .cux698-strategy-btn:hover{background:rgba(16,185,129,.16);border-color:rgba(16,185,129,.50);color:#fff;}
-#rp-overlay .cux698-essential-facts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
-#rp-overlay .cux698-essential-facts .cux8-fact{min-width:0;min-height:58px!important;padding:9px 10px!important;border-radius:11px!important;background:rgba(5,13,22,.25)!important;border:1px solid rgba(255,255,255,.065)!important;}
-#rp-overlay .cux698-essential-facts .cux8-fact.cux694-missing{background:rgba(251,191,36,.045)!important;border-color:rgba(251,191,36,.25)!important;}
-#rp-overlay .cux698-essential-facts .cux8-fact span{font-size:7.6px!important;line-height:1.2!important;}
-#rp-overlay .cux698-essential-facts .cux8-fact strong{margin-top:5px!important;font-size:10.6px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#rp-overlay .cux698-strategy-summary{display:flex;align-items:center;gap:8px;min-width:0;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.065);color:#8494A6;font-size:9.2px;line-height:1.4;}
-#rp-overlay .cux698-strategy-summary b{color:#BCEBD8;font-size:9.2px;}
-#rp-overlay .cux698-strategy-summary span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-/* Account Strategy no longer competes as a Workspace header button. */
-#rp-overlay .cux697-resource-link{display:none!important;}
-#rp-overlay .cux696-resource-link{min-height:31px!important;padding:0 11px!important;font-size:9px!important;}
-
-/* Workspace + Conversation Brief get the space. */
-#rp-overlay .cux694-workspace-head{min-height:50px!important;padding:0 3px 5px!important;align-items:center!important;}
-#rp-overlay .cux694-workspace-title{font-size:18px!important;}
-#rp-overlay .cux694-workspace-copy{font-size:9.8px!important;max-width:300px!important;}
-#rp-overlay .cux8-overview .cux8-tile{border-radius:17px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;}
-#rp-overlay .cux8-overview .cux8-tile-name{font-size:14.5px!important;}
-#rp-overlay .cux8-overview .cux8-tile-copy{font-size:10.2px!important;line-height:1.38!important;color:#A5B2C1!important;}
-#rp-overlay .cux8-overview .cux8-tile-meta{font-size:9.6px!important;line-height:1.28!important;}
-#rp-overlay .cux10-notes{border-radius:20px!important;padding:18px!important;background:linear-gradient(145deg,rgba(38,44,78,.92),rgba(28,31,57,.94))!important;}
-#rp-overlay .cux10-title{font-size:20px!important;}
-#rp-overlay .cux10-copy{font-size:10.2px!important;line-height:1.5!important;}
-#rp-overlay .cux10-tabs{margin-top:14px!important;}
-#rp-overlay .cux10-summary-card{padding:13px 14px!important;border-radius:14px!important;}
-#rp-overlay .cux696-plan-row{padding:8px 9px!important;grid-template-columns:62px minmax(0,1fr)!important;}
-#rp-overlay .cux696-plan-row>div{font-size:10.5px!important;line-height:1.45!important;}
-
-@media(min-width:1550px){
-  #rp-overlay .cux8-overview{
-    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(410px,.38fr)!important;
-    grid-template-areas:"essentials essentials" "workspace brief"!important;gap:18px!important;align-items:start!important;
-  }
-  #rp-overlay .cux8-overview>.cux8-brief{grid-area:essentials!important;}
-  #rp-overlay .cux8-overview>.cux8-modules{grid-area:workspace!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:auto repeat(2,128px)!important;grid-auto-rows:128px!important;gap:12px!important;align-content:start!important;}
-  #rp-overlay .cux8-overview>.cux10-notes{grid-area:brief!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:start!important;position:sticky!important;top:14px!important;}
-  #rp-overlay .cux8-overview .cux8-tile{height:128px!important;min-height:128px!important;padding:14px 38px 13px 13px!important;}
-  #rp-overlay .cux8-overview .cux8-tile-icon{width:42px!important;height:42px!important;flex-basis:42px!important;font-size:19px!important;}
-}
-@media(min-width:1200px) and (max-width:1549px){
-  #rp-overlay .cux8-overview{
-    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(365px,.43fr)!important;
-    grid-template-areas:"essentials essentials" "workspace brief"!important;gap:15px!important;align-items:start!important;
-  }
-  #rp-overlay .cux8-overview>.cux8-brief{grid-area:essentials!important;}
-  #rp-overlay .cux8-overview>.cux8-modules{grid-area:workspace!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:auto repeat(3,120px)!important;grid-auto-rows:120px!important;gap:10px!important;}
-  #rp-overlay .cux8-overview>.cux10-notes{grid-area:brief!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:start!important;}
-  #rp-overlay .cux8-overview .cux8-tile{height:120px!important;min-height:120px!important;}
-  #rp-overlay .cux698-essential-facts{grid-template-columns:repeat(3,minmax(0,1fr));}
-}
-@media(max-width:1199px){
-  #rp-overlay .cux8-overview{display:grid!important;grid-template-columns:1fr!important;gap:14px!important;}
-  #rp-overlay .cux8-overview>.cux8-brief,#rp-overlay .cux8-overview>.cux8-modules,#rp-overlay .cux8-overview>.cux10-notes{grid-column:1/-1!important;height:auto!important;min-height:0!important;max-height:none!important;}
-  #rp-overlay .cux698-essential-facts{grid-template-columns:repeat(3,minmax(0,1fr));}
-  #rp-overlay .cux8-overview>.cux8-modules{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:auto!important;grid-auto-rows:120px!important;}
-}
-@media(max-width:720px){
-  #rp-overlay .cux698-essential-head{align-items:flex-start;flex-direction:column;}
-  #rp-overlay .cux698-essential-tools{justify-content:flex-start;}
-  #rp-overlay .cux698-essential-facts{grid-template-columns:repeat(2,minmax(0,1fr));}
-  #rp-overlay .cux8-overview>.cux8-modules{grid-template-columns:1fr!important;grid-auto-rows:118px!important;}
-}
-
-/* Inline strategy modal — deliberately available inside the phased portal. */
-.cux698-modal{position:fixed;inset:0;z-index:2147482500;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(2,6,12,.76);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-.cux698-modal-panel{width:min(1080px,calc(100vw - 50px));max-height:calc(100vh - 50px);overflow:auto;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:radial-gradient(circle at 92% 2%,rgba(16,185,129,.14),transparent 28%),linear-gradient(145deg,#111C28,#0B131D 72%);box-shadow:0 36px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.06);color:#EAF1F6;scrollbar-width:thin;}
-.cux698-modal-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:19px 21px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(12,20,30,.94);backdrop-filter:blur(16px);}
-.cux698-modal-kicker{color:#79E2BE;font-size:8.5px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;}
-.cux698-modal-title{margin-top:4px;font-size:21px;font-weight:950;letter-spacing:-.025em;color:#fff;}
-.cux698-modal-sub{margin-top:3px;color:#7F91A4;font-size:9.5px;}
-.cux698-modal-x{width:36px;height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);color:#D7E1E9;font-size:17px;cursor:pointer;}
-.cux698-modal-x:hover{background:rgba(255,255,255,.09);color:#fff;}
-.cux698-modal-body{padding:18px 20px 4px;}
-.cux698-section{margin-bottom:14px;padding:15px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.025);}
-.cux698-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;}
-.cux698-section-head strong{font-size:14px;color:#F1F6F9;}
-.cux698-section-head span{max-width:520px;text-align:right;color:#718397;font-size:8.6px;line-height:1.45;}
-.cux698-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-.cux698-form.three{grid-template-columns:repeat(3,minmax(0,1fr));}
-.cux698-field{display:flex;flex-direction:column;gap:5px;min-width:0;}
-.cux698-field.wide{grid-column:1/-1;}
-.cux698-field label{color:#8294A7;font-size:7.8px;font-weight:950;letter-spacing:.07em;text-transform:uppercase;}
-.cux698-field input,.cux698-field select,.cux698-field textarea{width:100%;min-height:36px;padding:8px 9px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:rgba(2,8,14,.35);color:#EEF4F8;font:inherit;font-size:10.5px;outline:none;}
-.cux698-field textarea{min-height:64px;resize:vertical;line-height:1.45;}
-.cux698-field input:focus,.cux698-field select:focus,.cux698-field textarea:focus{border-color:rgba(16,185,129,.58);box-shadow:0 0 0 3px rgba(16,185,129,.08);}
-.cux698-advanced{margin-bottom:14px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.02);overflow:hidden;}
-.cux698-advanced summary{cursor:pointer;padding:14px 15px;color:#CCD8E1;font-size:10.5px;font-weight:900;list-style:none;}
-.cux698-advanced summary::-webkit-details-marker{display:none;}
-.cux698-advanced summary:before{content:'＋';display:inline-block;margin-right:8px;color:#79E2BE;}
-.cux698-advanced[open] summary:before{content:'−';}
-.cux698-advanced .cux698-section{margin:0;border:0;border-top:1px solid rgba(255,255,255,.06);border-radius:0;background:transparent;}
-.cux698-modal-foot{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);background:rgba(10,17,26,.95);backdrop-filter:blur(16px);}
-.cux698-save-note{color:#718397;font-size:8.8px;}
-.cux698-modal-actions{display:flex;gap:8px;}
-.cux698-modal-btn{min-height:36px;padding:0 13px;border-radius:10px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.045);color:#DCE6ED;font-size:9px;font-weight:950;cursor:pointer;}
-.cux698-modal-btn.primary{border-color:rgba(16,185,129,.42);background:linear-gradient(135deg,rgba(16,185,129,.35),rgba(0,175,239,.18));color:#E9FFF7;}
-.cux698-modal-btn:hover{transform:translateY(-1px);}
-@media(max-width:760px){.cux698-modal{padding:10px;}.cux698-modal-panel{width:100%;max-height:calc(100vh - 20px);}.cux698-form,.cux698-form.three{grid-template-columns:1fr;}.cux698-field.wide{grid-column:auto;}.cux698-section-head{flex-direction:column;}.cux698-section-head span{text-align:left;}.cux698-modal-foot{align-items:flex-start;flex-direction:column;}.cux698-modal-actions{width:100%;}.cux698-modal-btn{flex:1;}}
-</style>
-<script id="connect-v698-company-workspace-rebalance-js">
-(function(){
- 'use strict';
- var BUILD='v698',PLAN_STORE='tcp_rp_account_plans_v517';
- var STRATEGIES=['Grow','Protect','Recover','Reactivate','Maintain','Cross-Sell','Optimize Margin','Develop Relationship','Deprioritize'];
- var RISKS=['Low','Medium','High','Critical'];
- var METHODS=['Call','Email','Visit','Sample','Quote','Proposal','Other'];
- var TIERS=['Strategic','Core','Growth','Standard','Monitor'];
- var STATUSES=['Draft','Active','Review Due','At Risk','Completed','Archived'];
- var BASE_PROFILE=window._rp2CompanyProfileV3,BASE_CUSTOMERS=window._rp2CustomersV2;
- function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
- function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
- function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
- function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
- function stringify(frag){var b=document.createElement('div');b.appendChild(frag.cloneNode(true));return b.innerHTML}
- function readStore(){try{var s=JSON.parse(localStorage.getItem(PLAN_STORE)||'null');return s&&s.version===1&&s.reps?s:{version:1,reps:{}}}catch(e){return{version:1,reps:{}}}}
- function rep(){return window._rp2&&window._rp2.rep||''}
- function bucket(){var s=readStore(),r=rep();s.reps[r]=s.reps[r]||{plans:{},events:[]};s.reps[r].plans=s.reps[r].plans||{};return{store:s,rep:r,data:s.reps[r]}}
- function planFor(name){var b=bucket();return Object.assign({company:name},b.data.plans[norm(name)]||{})}
- function savePlanFields(name,fields){var b=bucket(),k=norm(name),p=b.data.plans[k]||{company:name};Object.keys(fields).forEach(function(key){p[key]=fields[key]});p.company=name;p.updatedAt=new Date().toISOString();if(!p.createdAt)p.createdAt=p.updatedAt;p.history=Array.isArray(p.history)?p.history:[];p.history.push({type:'Account strategy updated',copy:'Updated from Company workspace',at:p.updatedAt});b.data.plans[k]=p;b.store.reps[b.rep]=b.data;try{localStorage.setItem(PLAN_STORE,JSON.stringify(b.store))}catch(e){}return p}
- function hasDepth(p){return !!(clean(p.strategy)||clean(p.objective)||clean(p.customerGoals)||clean(p.biggestOpportunity)||clean(p.nextBestAction)||clean(p.budgetOwner)||clean(p.orderTriggers)||clean(p.buyingProcess)||clean(p.competitivePosition)||clean(p.plan30)||clean(p.plan60)||clean(p.plan90))}
- function currentName(){return clean(document.querySelector('#rp-overlay .cux8-name')&&document.querySelector('#rp-overlay .cux8-name').textContent)||clean(window._cux8CurrentName)||clean(window._cw4CompanyName)||'Customer'}
- function nameFrom(frag){return clean(frag.querySelector('.cux8-name')&&frag.querySelector('.cux8-name').textContent)||'Customer'}
- function selectOptions(list,current){return list.map(function(x){return '<option value="'+esc(x)+'" '+(String(current||'')===String(x)?'selected':'')+'>'+esc(x)+'</option>'}).join('')}
- function factValue(f){var s=f.querySelector('strong');return clean(s&&s.textContent)}
- function redesignSnapshot(frag,p){
-   var brief=frag.querySelector('.cux8-brief');if(!brief)return;
-   var facts=Array.prototype.slice.call(brief.querySelectorAll('.cux8-fact')).slice(0,6).map(function(f){return f.outerHTML}).join('');
-   var state=hasDepth(p)?'<span class="cux698-strategy-state">Strategy · '+esc(clean(p.strategy)||clean(p.status)||'In progress')+'</span>':'<span class="cux698-strategy-state empty">Strategy not set</span>';
-   var summary=[];if(clean(p.biggestOpportunity))summary.push('<b>Opportunity:</b> '+esc(p.biggestOpportunity));if(clean(p.budgetOwner))summary.push('<b>Budget owner:</b> '+esc(p.budgetOwner));if(clean(p.orderTriggers))summary.push('<b>Trigger:</b> '+esc(p.orderTriggers));
-   brief.className='cux8-brief cux698-essentials';
-   brief.innerHTML='<div class="cux698-essential-head"><div><div class="cux698-essential-kicker">Account Essentials</div><div class="cux698-essential-title">Know the customer at a glance</div><div class="cux698-essential-copy">Core account context stays visible. Deeper planning opens only when you need it.</div></div><div class="cux698-essential-tools">'+state+'<button class="cux698-strategy-btn" onclick="_cux698OpenStrategy()">Strategy &amp; Plan</button></div></div>'
-    +'<div class="cux698-essential-facts">'+facts+'</div>'
-    +(summary.length?'<div class="cux698-strategy-summary"><span>'+summary.join(' <span style="opacity:.45">·</span> ')+'</span></div>':'');
- }
- function rebalanceWorkspace(frag){
-   var head=frag.querySelector('.cux694-workspace-head');if(head){var title=head.querySelector('.cux694-workspace-title'),copy=head.querySelector('.cux694-workspace-copy');if(title)title.textContent='Customer Workspace';if(copy)copy.textContent='Open the detail you need. Status tells you where attention belongs.';var old=head.querySelector('.cux697-resource-link');if(old)old.remove();}
- }
- function enhance(markup){if(!markup||String(markup).indexOf('cux8-overview')<0)return markup;var frag=parse(markup),name=nameFrom(frag),p=planFor(name);redesignSnapshot(frag,p);rebalanceWorkspace(frag);return stringify(frag)}
- function wrap(base){return typeof base==='function'?function(){return enhance(base.apply(this,arguments))}:base}
- window._rp2CompanyProfileV3=wrap(BASE_PROFILE);window._rp2CustomersV2=wrap(BASE_CUSTOMERS);
-
- function field(label,id,val,type,wide,placeholder,options){
-   var cls='cux698-field'+(wide?' wide':'');
-   if(type==='textarea')return '<div class="'+cls+'"><label>'+esc(label)+'</label><textarea id="'+id+'" placeholder="'+esc(placeholder||'')+'">'+esc(val||'')+'</textarea></div>';
-   if(type==='select')return '<div class="'+cls+'"><label>'+esc(label)+'</label><select id="'+id+'">'+selectOptions(options||[],val)+'</select></div>';
-   return '<div class="'+cls+'"><label>'+esc(label)+'</label><input id="'+id+'" type="'+esc(type||'text')+'" value="'+esc(val||'')+'" placeholder="'+esc(placeholder||'')+'"></div>';
- }
- function val(id){var e=document.getElementById(id);return e?clean(e.value):''}
- function numberVal(id,def){var n=Number(val(id));return isFinite(n)?n:(def||0)}
- function section(title,copy,body){return '<section class="cux698-section"><div class="cux698-section-head"><strong>'+esc(title)+'</strong><span>'+esc(copy)+'</span></div>'+body+'</section>'}
- window._cux698OpenStrategy=function(){
-   window._cux698CloseStrategy();var name=currentName(),p=planFor(name),m=document.createElement('div');m.className='cux698-modal';m.id='cux698-strategy-modal';m.dataset.company=name;
-   var owner=clean(p.actionOwner)||clean(p.owner)||rep();
-   var primary=section('Account direction','Set the sales posture and the one move that matters most.',
-      '<div class="cux698-form three">'+field('Strategy','c698-strategy',p.strategy||'Maintain','select',false,'',STRATEGIES)+field('Risk','c698-risk',p.riskLevel||'Low','select',false,'',RISKS)+field('Account tier','c698-tier',p.tier||'Standard','select',false,'',TIERS)+'</div>'
-     +'<div class="cux698-form" style="margin-top:10px">'+field('Strategic objective','c698-objective',p.objective||'','textarea',true,'What are we trying to accomplish with this account?')+field('Biggest opportunity','c698-opportunity',p.biggestOpportunity||p.opportunitiesText||'','textarea',true,'The clearest growth or retention opportunity.')+field('Next Best Action','c698-nba',p.nextBestAction||'','textarea',true,'The one clear customer action the rep should make next.')+'</div>');
-   var motion=section('Execution plan','Turn strategy into a specific customer action and dated next step.',
-      '<div class="cux698-form">'+field('Why this move matters','c698-why',p.nextMoveWhy||'','textarea',true,'Why is this the right move now?')+field('How to approach it','c698-how',p.nextMoveHow||'','textarea',true,'Suggested approach, opener, or desired outcome.')+'</div>'
-     +'<div class="cux698-form three" style="margin-top:10px">'+field('Contact method','c698-method',p.contactMethod||'Call','select',false,'',METHODS)+field('Action owner','c698-owner',owner,'text',false,'Rep or partner')+field('Manager support','c698-manager',p.managerSupport?'Yes':'No','select',false,'',['No','Yes'])+field('Action due','c698-due',p.actionDueDate||'','date')+field('Follow-up','c698-follow',p.followUpDate||'','date')+field('Review date','c698-review',p.reviewDate||'','date')+'</div>');
-   var buying=section('Buying & relationship intelligence','Capture what helps the rep understand how the customer buys and how protected the relationship is.',
-      '<div class="cux698-form">'+field('Budget owner','c698-budget-owner',p.budgetOwner||'','text',false,'Who owns or approves the spend?')+field('Budget cycle','c698-budget-cycle',p.budgetCycle||'','text',false,'When is budget planned or spent?')+field('Buying process','c698-buying-process',p.buyingProcess||'','textarea',true,'PO, approvals, procurement steps, webstore, bids, etc.')+field('Order triggers','c698-triggers',p.orderTriggers||'','textarea',true,'Season, event, safety audit, new hires, annual reorder, etc.')+field('Relationship strategy','c698-relationship',p.relationshipStrategy||'','textarea',true,'Who should we strengthen, add, or protect?')+field('Backup relationship','c698-backup',p.backupContact||'','text',false,'Who can keep the account moving if the main contact changes?')+'</div>');
-   var advanced='<details class="cux698-advanced"><summary>Deep account intelligence &amp; 30/60/90 plan</summary>'+
-      section('Customer context','Useful for strategic accounts; leave blank when it does not add value.',
-       '<div class="cux698-form">'+field('Customer goals','c698-goals',p.customerGoals||'','textarea',true,'What are they trying to accomplish?')+field('Success definition','c698-success',p.successDefinition||'','textarea',true,'What would a successful program look like to them?')+field('Their business','c698-business',p.theirBusiness||'','textarea',true,'Business model, seasonality, growth, leadership, operational context.')+field('Competitive position','c698-competition',p.competitivePosition||'','textarea',true,'Who else serves them and what do we win or lose on?')+field('Share of wallet','c698-wallet',p.shareOfWallet||'','text',false,'Our spend vs estimated total spend')+field('Brand standards','c698-brand',p.brandStandards||'','text',false,'Logo rules, colors, decoration standards')+field('Risks / concerns','c698-risks',p.risks||'','textarea',true,'Relationship, retention, service, pricing, or competitive concerns.')+field('Blockers','c698-blockers',p.blockers||'','textarea',true,'What could prevent progress?')+'</div>')+
-      section('30 / 60 / 90','Use only when the account warrants a longer strategic plan.',
-       '<div class="cux698-form three">'+field('30 days','c698-30',p.plan30||'','textarea',false,'Immediate move')+field('60 days','c698-60',p.plan60||'','textarea',false,'Relationship / program progress')+field('90 days','c698-90',p.plan90||'','textarea',false,'Desired position / outcome')+'</div>')+'</details>';
-   m.innerHTML='<div class="cux698-modal-panel" role="dialog" aria-modal="true" aria-label="Account Strategy"><div class="cux698-modal-head"><div><div class="cux698-modal-kicker">Company strategy</div><div class="cux698-modal-title">'+esc(name)+'</div><div class="cux698-modal-sub">Plan the account without leaving the Company workspace.</div></div><button class="cux698-modal-x" onclick="_cux698CloseStrategy()" aria-label="Close">×</button></div><div class="cux698-modal-body">'+primary+motion+buying+advanced+'</div><div class="cux698-modal-foot"><div class="cux698-save-note">Saved into the existing Connect Account Plans record for this company.</div><div class="cux698-modal-actions"><button class="cux698-modal-btn" onclick="_cux698CloseStrategy()">Cancel</button><button class="cux698-modal-btn primary" onclick="_cux698SaveStrategy()">Save Strategy</button></div></div></div>';
-   m.addEventListener('click',function(e){if(e.target===m)window._cux698CloseStrategy()});document.body.appendChild(m);setTimeout(function(){var e=document.getElementById('c698-strategy');if(e)e.focus()},0)
- };
- window._cux698CloseStrategy=function(){var m=document.getElementById('cux698-strategy-modal');if(m)m.remove()};
- window._cux698SaveStrategy=function(){var m=document.getElementById('cux698-strategy-modal');if(!m)return;var name=m.dataset.company||currentName();savePlanFields(name,{
-   strategy:val('c698-strategy'),riskLevel:val('c698-risk'),tier:val('c698-tier'),objective:val('c698-objective'),biggestOpportunity:val('c698-opportunity'),opportunitiesText:val('c698-opportunity'),nextBestAction:val('c698-nba'),nextMoveWhy:val('c698-why'),nextMoveHow:val('c698-how'),contactMethod:val('c698-method'),actionOwner:val('c698-owner'),managerSupport:/^yes$/i.test(val('c698-manager')),actionDueDate:val('c698-due'),followUpDate:val('c698-follow'),reviewDate:val('c698-review'),budgetOwner:val('c698-budget-owner'),budgetCycle:val('c698-budget-cycle'),buyingProcess:val('c698-buying-process'),orderTriggers:val('c698-triggers'),relationshipStrategy:val('c698-relationship'),backupContact:val('c698-backup'),customerGoals:val('c698-goals'),successDefinition:val('c698-success'),theirBusiness:val('c698-business'),competitivePosition:val('c698-competition'),shareOfWallet:val('c698-wallet'),brandStandards:val('c698-brand'),risks:val('c698-risks'),blockers:val('c698-blockers'),plan30:val('c698-30'),plan60:val('c698-60'),plan90:val('c698-90')
-   });window._cux698CloseStrategy();try{if(window._rp2&&_rp2.page==='customers'&&typeof window._rp2Go==='function')window._rp2Go('customers');else if(typeof window._rp2CompanyProfileDraw==='function')window._rp2CompanyProfileDraw()}catch(e){}
- };
- document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('cux698-strategy-modal'))window._cux698CloseStrategy()});
-
- /* Strong final build authority. Earlier version scripts re-apply branding on delayed timers,
-    so v698 brands after portal renders and only mutates nodes when needed. */
- var brandQueued=false;
- function brand(){brandQueued=false;try{window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-tcp-build',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.querySelectorAll('.tabs').forEach(function(t){if(t.getAttribute('data-connect-build-long')!=='Cloud Sync • Admin  ·  BUILD '+BUILD)t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+BUILD);if(t.getAttribute('data-connect-build-short')!=='BUILD '+BUILD)t.setAttribute('data-connect-build-short','BUILD '+BUILD)});document.querySelectorAll('#rp-overlay .cux695-build-badge').forEach(function(b){var x='Sales Portal · Build '+BUILD;if(b.textContent!==x)b.textContent=x});if(document.title!=='Connect '+BUILD+' — Sales Portal')document.title='Connect '+BUILD+' — Sales Portal'}catch(e){}}
- function scheduleBrand(){if(brandQueued)return;brandQueued=true;setTimeout(brand,35)}
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleBrand,{once:true});else scheduleBrand();
- [120,450,900,1400,2200].forEach(function(ms){setTimeout(brand,ms)});
- document.addEventListener('click',function(){scheduleBrand();setTimeout(brand,180);setTimeout(brand,850);setTimeout(brand,1600)},true);
- var priorAfter=window._rp2After;if(typeof priorAfter==='function')window._rp2After=function(){var r=priorAfter.apply(this,arguments);setTimeout(brand,0);setTimeout(brand,500);setTimeout(brand,1300);return r};
- try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(scheduleBrand).observe(host,{childList:true,subtree:true})}catch(e){}
- window.TCP_COMPANY_WORKSPACE_REBALANCE_V698={version:BUILD,focus:'full-width account essentials + two-column selling workspace + phased-safe inline account strategy',planStore:PLAN_STORE,openStrategy:window._cux698OpenStrategy,enhance:enhance,brand:brand};
-})();
-</script>
-
-</body></html>'
+  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n</body></html>'
  }
  window._ord672Print=function(mode){var g=currentGroup();if(!g)return;mode=mode==='pdf'?'pdf':'print';var w=window.open('','_blank');if(!w){alert('Please allow pop-ups to create the print-friendly order document.');return}w.document.open();w.document.write(printDocument(g,mode));w.document.close();try{w.focus()}catch(e){}};
  try{document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('o671-modal'))window._ord671Close()})}catch(e){}
@@ -70771,5 +70552,223 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();
  document.addEventListener('click',function(){setTimeout(brand,80);setTimeout(brand,420)},true);setTimeout(brand,700);setTimeout(brand,1000);
  window.TCP_COMPANY_ACCOUNT_STRATEGY_V697={version:BUILD,focus:'merged Connect sales workspace + strategic account depth',planStore:PLAN_STORE,enhanceCompany:enhanceCompany,enhancePlanMarkup:enhancePlanMarkup,brand:brand};
+})();
+</script>
+
+<!-- ===== CONNECT v699 · COMPANY WORKSPACE REBALANCE + INLINE ACCOUNT STRATEGY ===== -->
+<style id="connect-v699-company-workspace-rebalance-css">
+/* v699 — reduce horizontal competition on the Company Overview.
+   Account Essentials owns a full-width row; Customer Workspace + Conversation Brief
+   become the only two competing work areas below it. */
+#rp-overlay .cux8-shell{padding-top:18px!important;}
+#rp-overlay .cux694-nextbar{margin-top:16px!important;padding:16px 18px!important;border-radius:17px!important;}
+#rp-overlay .cux694-next-title{font-size:18px!important;}
+#rp-overlay .cux694-next-copy{font-size:10.7px!important;line-height:1.5!important;}
+#rp-overlay .cux694-next-actions{gap:8px!important;}
+#rp-overlay .cux8-overview{margin-top:16px!important;}
+
+/* Account Essentials replaces the old narrow tabbed snapshot. */
+#rp-overlay .cux8-brief.cux698-essentials{
+  padding:17px 18px!important;border-radius:20px!important;
+  background:linear-gradient(135deg,rgba(0,175,239,.075),rgba(255,255,255,.03) 45%,rgba(16,185,129,.035))!important;
+  border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 14px 34px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+#rp-overlay .cux698-essential-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px;}
+#rp-overlay .cux698-essential-kicker{color:#72DDFD;font-size:8.8px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;}
+#rp-overlay .cux698-essential-title{margin-top:4px;color:#F4F8FB;font-size:17px;font-weight:950;letter-spacing:-.02em;}
+#rp-overlay .cux698-essential-copy{margin-top:3px;color:#8495A9;font-size:9.7px;line-height:1.4;}
+#rp-overlay .cux698-essential-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+#rp-overlay .cux698-strategy-state{display:inline-flex;align-items:center;gap:6px;min-height:31px;padding:0 10px;border-radius:999px;border:1px solid rgba(16,185,129,.19);background:rgba(16,185,129,.055);color:#8EDDC0;font-size:8.7px;font-weight:900;white-space:nowrap;}
+#rp-overlay .cux698-strategy-state.empty{border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.025);color:#7F8FA2;}
+#rp-overlay .cux698-strategy-btn{min-height:33px;padding:0 12px;border-radius:10px;border:1px solid rgba(16,185,129,.30);background:rgba(16,185,129,.09);color:#B7F0DA;font-size:9px;font-weight:950;cursor:pointer;}
+#rp-overlay .cux698-strategy-btn:hover{background:rgba(16,185,129,.16);border-color:rgba(16,185,129,.50);color:#fff;}
+#rp-overlay .cux698-essential-facts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
+#rp-overlay .cux698-essential-facts .cux8-fact{min-width:0;min-height:58px!important;padding:9px 10px!important;border-radius:11px!important;background:rgba(5,13,22,.25)!important;border:1px solid rgba(255,255,255,.065)!important;}
+#rp-overlay .cux698-essential-facts .cux8-fact.cux694-missing{background:rgba(251,191,36,.045)!important;border-color:rgba(251,191,36,.25)!important;}
+#rp-overlay .cux698-essential-facts .cux8-fact span{font-size:7.6px!important;line-height:1.2!important;}
+#rp-overlay .cux698-essential-facts .cux8-fact strong{margin-top:5px!important;font-size:10.6px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .cux698-strategy-summary{display:flex;align-items:center;gap:8px;min-width:0;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.065);color:#8494A6;font-size:9.2px;line-height:1.4;}
+#rp-overlay .cux698-strategy-summary b{color:#BCEBD8;font-size:9.2px;}
+#rp-overlay .cux698-strategy-summary span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* Account Strategy no longer competes as a Workspace header button. */
+#rp-overlay .cux697-resource-link{display:none!important;}
+#rp-overlay .cux696-resource-link{min-height:31px!important;padding:0 11px!important;font-size:9px!important;}
+
+/* Workspace + Conversation Brief get the space. */
+#rp-overlay .cux694-workspace-head{min-height:50px!important;padding:0 3px 5px!important;align-items:center!important;}
+#rp-overlay .cux694-workspace-title{font-size:18px!important;}
+#rp-overlay .cux694-workspace-copy{font-size:9.8px!important;max-width:300px!important;}
+#rp-overlay .cux8-overview .cux8-tile{border-radius:17px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;}
+#rp-overlay .cux8-overview .cux8-tile-name{font-size:14.5px!important;}
+#rp-overlay .cux8-overview .cux8-tile-copy{font-size:10.2px!important;line-height:1.38!important;color:#A5B2C1!important;}
+#rp-overlay .cux8-overview .cux8-tile-meta{font-size:9.6px!important;line-height:1.28!important;}
+#rp-overlay .cux10-notes{border-radius:20px!important;padding:18px!important;background:linear-gradient(145deg,rgba(38,44,78,.92),rgba(28,31,57,.94))!important;}
+#rp-overlay .cux10-title{font-size:20px!important;}
+#rp-overlay .cux10-copy{font-size:10.2px!important;line-height:1.5!important;}
+#rp-overlay .cux10-tabs{margin-top:14px!important;}
+#rp-overlay .cux10-summary-card{padding:13px 14px!important;border-radius:14px!important;}
+#rp-overlay .cux696-plan-row{padding:8px 9px!important;grid-template-columns:62px minmax(0,1fr)!important;}
+#rp-overlay .cux696-plan-row>div{font-size:10.5px!important;line-height:1.45!important;}
+
+@media(min-width:1550px){
+  #rp-overlay .cux8-overview{
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(410px,.38fr)!important;
+    grid-template-areas:"essentials essentials" "workspace brief"!important;gap:18px!important;align-items:start!important;
+  }
+  #rp-overlay .cux8-overview>.cux8-brief{grid-area:essentials!important;}
+  #rp-overlay .cux8-overview>.cux8-modules{grid-area:workspace!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:auto repeat(2,128px)!important;grid-auto-rows:128px!important;gap:12px!important;align-content:start!important;}
+  #rp-overlay .cux8-overview>.cux10-notes{grid-area:brief!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:start!important;position:sticky!important;top:14px!important;}
+  #rp-overlay .cux8-overview .cux8-tile{height:128px!important;min-height:128px!important;padding:14px 38px 13px 13px!important;}
+  #rp-overlay .cux8-overview .cux8-tile-icon{width:42px!important;height:42px!important;flex-basis:42px!important;font-size:19px!important;}
+}
+@media(min-width:1200px) and (max-width:1549px){
+  #rp-overlay .cux8-overview{
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(365px,.43fr)!important;
+    grid-template-areas:"essentials essentials" "workspace brief"!important;gap:15px!important;align-items:start!important;
+  }
+  #rp-overlay .cux8-overview>.cux8-brief{grid-area:essentials!important;}
+  #rp-overlay .cux8-overview>.cux8-modules{grid-area:workspace!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:auto repeat(3,120px)!important;grid-auto-rows:120px!important;gap:10px!important;}
+  #rp-overlay .cux8-overview>.cux10-notes{grid-area:brief!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:start!important;}
+  #rp-overlay .cux8-overview .cux8-tile{height:120px!important;min-height:120px!important;}
+  #rp-overlay .cux698-essential-facts{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:1199px){
+  #rp-overlay .cux8-overview{display:grid!important;grid-template-columns:1fr!important;gap:14px!important;}
+  #rp-overlay .cux8-overview>.cux8-brief,#rp-overlay .cux8-overview>.cux8-modules,#rp-overlay .cux8-overview>.cux10-notes{grid-column:1/-1!important;height:auto!important;min-height:0!important;max-height:none!important;}
+  #rp-overlay .cux698-essential-facts{grid-template-columns:repeat(3,minmax(0,1fr));}
+  #rp-overlay .cux8-overview>.cux8-modules{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:auto!important;grid-auto-rows:120px!important;}
+}
+@media(max-width:720px){
+  #rp-overlay .cux698-essential-head{align-items:flex-start;flex-direction:column;}
+  #rp-overlay .cux698-essential-tools{justify-content:flex-start;}
+  #rp-overlay .cux698-essential-facts{grid-template-columns:repeat(2,minmax(0,1fr));}
+  #rp-overlay .cux8-overview>.cux8-modules{grid-template-columns:1fr!important;grid-auto-rows:118px!important;}
+}
+
+/* Inline strategy modal — deliberately available inside the phased portal. */
+.cux698-modal{position:fixed;inset:0;z-index:2147482500;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(2,6,12,.76);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.cux698-modal-panel{width:min(1080px,calc(100vw - 50px));max-height:calc(100vh - 50px);overflow:auto;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:radial-gradient(circle at 92% 2%,rgba(16,185,129,.14),transparent 28%),linear-gradient(145deg,#111C28,#0B131D 72%);box-shadow:0 36px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.06);color:#EAF1F6;scrollbar-width:thin;}
+.cux698-modal-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:19px 21px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(12,20,30,.94);backdrop-filter:blur(16px);}
+.cux698-modal-kicker{color:#79E2BE;font-size:8.5px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;}
+.cux698-modal-title{margin-top:4px;font-size:21px;font-weight:950;letter-spacing:-.025em;color:#fff;}
+.cux698-modal-sub{margin-top:3px;color:#7F91A4;font-size:9.5px;}
+.cux698-modal-x{width:36px;height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);color:#D7E1E9;font-size:17px;cursor:pointer;}
+.cux698-modal-x:hover{background:rgba(255,255,255,.09);color:#fff;}
+.cux698-modal-body{padding:18px 20px 4px;}
+.cux698-section{margin-bottom:14px;padding:15px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.025);}
+.cux698-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;}
+.cux698-section-head strong{font-size:14px;color:#F1F6F9;}
+.cux698-section-head span{max-width:520px;text-align:right;color:#718397;font-size:8.6px;line-height:1.45;}
+.cux698-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.cux698-form.three{grid-template-columns:repeat(3,minmax(0,1fr));}
+.cux698-field{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.cux698-field.wide{grid-column:1/-1;}
+.cux698-field label{color:#8294A7;font-size:7.8px;font-weight:950;letter-spacing:.07em;text-transform:uppercase;}
+.cux698-field input,.cux698-field select,.cux698-field textarea{width:100%;min-height:36px;padding:8px 9px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:rgba(2,8,14,.35);color:#EEF4F8;font:inherit;font-size:10.5px;outline:none;}
+.cux698-field textarea{min-height:64px;resize:vertical;line-height:1.45;}
+.cux698-field input:focus,.cux698-field select:focus,.cux698-field textarea:focus{border-color:rgba(16,185,129,.58);box-shadow:0 0 0 3px rgba(16,185,129,.08);}
+.cux698-advanced{margin-bottom:14px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.02);overflow:hidden;}
+.cux698-advanced summary{cursor:pointer;padding:14px 15px;color:#CCD8E1;font-size:10.5px;font-weight:900;list-style:none;}
+.cux698-advanced summary::-webkit-details-marker{display:none;}
+.cux698-advanced summary:before{content:'＋';display:inline-block;margin-right:8px;color:#79E2BE;}
+.cux698-advanced[open] summary:before{content:'−';}
+.cux698-advanced .cux698-section{margin:0;border:0;border-top:1px solid rgba(255,255,255,.06);border-radius:0;background:transparent;}
+.cux698-modal-foot{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);background:rgba(10,17,26,.95);backdrop-filter:blur(16px);}
+.cux698-save-note{color:#718397;font-size:8.8px;}
+.cux698-modal-actions{display:flex;gap:8px;}
+.cux698-modal-btn{min-height:36px;padding:0 13px;border-radius:10px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.045);color:#DCE6ED;font-size:9px;font-weight:950;cursor:pointer;}
+.cux698-modal-btn.primary{border-color:rgba(16,185,129,.42);background:linear-gradient(135deg,rgba(16,185,129,.35),rgba(0,175,239,.18));color:#E9FFF7;}
+.cux698-modal-btn:hover{transform:translateY(-1px);}
+@media(max-width:760px){.cux698-modal{padding:10px;}.cux698-modal-panel{width:100%;max-height:calc(100vh - 20px);}.cux698-form,.cux698-form.three{grid-template-columns:1fr;}.cux698-field.wide{grid-column:auto;}.cux698-section-head{flex-direction:column;}.cux698-section-head span{text-align:left;}.cux698-modal-foot{align-items:flex-start;flex-direction:column;}.cux698-modal-actions{width:100%;}.cux698-modal-btn{flex:1;}}
+</style>
+<script id="connect-v699-company-workspace-rebalance-js">
+(function(){
+ 'use strict';
+ var BUILD='v699',PLAN_STORE='tcp_rp_account_plans_v517';
+ var STRATEGIES=['Grow','Protect','Recover','Reactivate','Maintain','Cross-Sell','Optimize Margin','Develop Relationship','Deprioritize'];
+ var RISKS=['Low','Medium','High','Critical'];
+ var METHODS=['Call','Email','Visit','Sample','Quote','Proposal','Other'];
+ var TIERS=['Strategic','Core','Growth','Standard','Monitor'];
+ var STATUSES=['Draft','Active','Review Due','At Risk','Completed','Archived'];
+ var BASE_PROFILE=window._rp2CompanyProfileV3,BASE_CUSTOMERS=window._rp2CustomersV2;
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var b=document.createElement('div');b.appendChild(frag.cloneNode(true));return b.innerHTML}
+ function readStore(){try{var s=JSON.parse(localStorage.getItem(PLAN_STORE)||'null');return s&&s.version===1&&s.reps?s:{version:1,reps:{}}}catch(e){return{version:1,reps:{}}}}
+ function rep(){return window._rp2&&window._rp2.rep||''}
+ function bucket(){var s=readStore(),r=rep();s.reps[r]=s.reps[r]||{plans:{},events:[]};s.reps[r].plans=s.reps[r].plans||{};return{store:s,rep:r,data:s.reps[r]}}
+ function planFor(name){var b=bucket();return Object.assign({company:name},b.data.plans[norm(name)]||{})}
+ function savePlanFields(name,fields){var b=bucket(),k=norm(name),p=b.data.plans[k]||{company:name};Object.keys(fields).forEach(function(key){p[key]=fields[key]});p.company=name;p.updatedAt=new Date().toISOString();if(!p.createdAt)p.createdAt=p.updatedAt;p.history=Array.isArray(p.history)?p.history:[];p.history.push({type:'Account strategy updated',copy:'Updated from Company workspace',at:p.updatedAt});b.data.plans[k]=p;b.store.reps[b.rep]=b.data;try{localStorage.setItem(PLAN_STORE,JSON.stringify(b.store))}catch(e){}return p}
+ function hasDepth(p){return !!(clean(p.strategy)||clean(p.objective)||clean(p.customerGoals)||clean(p.biggestOpportunity)||clean(p.nextBestAction)||clean(p.budgetOwner)||clean(p.orderTriggers)||clean(p.buyingProcess)||clean(p.competitivePosition)||clean(p.plan30)||clean(p.plan60)||clean(p.plan90))}
+ function currentName(){return clean(document.querySelector('#rp-overlay .cux8-name')&&document.querySelector('#rp-overlay .cux8-name').textContent)||clean(window._cux8CurrentName)||clean(window._cw4CompanyName)||'Customer'}
+ function nameFrom(frag){return clean(frag.querySelector('.cux8-name')&&frag.querySelector('.cux8-name').textContent)||'Customer'}
+ function selectOptions(list,current){return list.map(function(x){return '<option value="'+esc(x)+'" '+(String(current||'')===String(x)?'selected':'')+'>'+esc(x)+'</option>'}).join('')}
+ function factValue(f){var s=f.querySelector('strong');return clean(s&&s.textContent)}
+ function redesignSnapshot(frag,p){
+   var brief=frag.querySelector('.cux8-brief');if(!brief)return;
+   var facts=Array.prototype.slice.call(brief.querySelectorAll('.cux8-fact')).slice(0,6).map(function(f){return f.outerHTML}).join('');
+   var state=hasDepth(p)?'<span class="cux698-strategy-state">Strategy · '+esc(clean(p.strategy)||clean(p.status)||'In progress')+'</span>':'<span class="cux698-strategy-state empty">Strategy not set</span>';
+   var summary=[];if(clean(p.biggestOpportunity))summary.push('<b>Opportunity:</b> '+esc(p.biggestOpportunity));if(clean(p.budgetOwner))summary.push('<b>Budget owner:</b> '+esc(p.budgetOwner));if(clean(p.orderTriggers))summary.push('<b>Trigger:</b> '+esc(p.orderTriggers));
+   brief.className='cux8-brief cux698-essentials';
+   brief.innerHTML='<div class="cux698-essential-head"><div><div class="cux698-essential-kicker">Account Essentials</div><div class="cux698-essential-title">Know the customer at a glance</div><div class="cux698-essential-copy">Core account context stays visible. Deeper planning opens only when you need it.</div></div><div class="cux698-essential-tools">'+state+'<button class="cux698-strategy-btn" onclick="_cux698OpenStrategy()">Strategy &amp; Plan</button></div></div>'
+    +'<div class="cux698-essential-facts">'+facts+'</div>'
+    +(summary.length?'<div class="cux698-strategy-summary"><span>'+summary.join(' <span style="opacity:.45">·</span> ')+'</span></div>':'');
+ }
+ function rebalanceWorkspace(frag){
+   var head=frag.querySelector('.cux694-workspace-head');if(head){var title=head.querySelector('.cux694-workspace-title'),copy=head.querySelector('.cux694-workspace-copy');if(title)title.textContent='Customer Workspace';if(copy)copy.textContent='Open the detail you need. Status tells you where attention belongs.';var old=head.querySelector('.cux697-resource-link');if(old)old.remove();}
+ }
+ function enhance(markup){if(!markup||String(markup).indexOf('cux8-overview')<0)return markup;var frag=parse(markup),name=nameFrom(frag),p=planFor(name);redesignSnapshot(frag,p);rebalanceWorkspace(frag);return stringify(frag)}
+ function wrap(base){return typeof base==='function'?function(){return enhance(base.apply(this,arguments))}:base}
+ window._rp2CompanyProfileV3=wrap(BASE_PROFILE);window._rp2CustomersV2=wrap(BASE_CUSTOMERS);
+
+ function field(label,id,val,type,wide,placeholder,options){
+   var cls='cux698-field'+(wide?' wide':'');
+   if(type==='textarea')return '<div class="'+cls+'"><label>'+esc(label)+'</label><textarea id="'+id+'" placeholder="'+esc(placeholder||'')+'">'+esc(val||'')+'</textarea></div>';
+   if(type==='select')return '<div class="'+cls+'"><label>'+esc(label)+'</label><select id="'+id+'">'+selectOptions(options||[],val)+'</select></div>';
+   return '<div class="'+cls+'"><label>'+esc(label)+'</label><input id="'+id+'" type="'+esc(type||'text')+'" value="'+esc(val||'')+'" placeholder="'+esc(placeholder||'')+'"></div>';
+ }
+ function val(id){var e=document.getElementById(id);return e?clean(e.value):''}
+ function numberVal(id,def){var n=Number(val(id));return isFinite(n)?n:(def||0)}
+ function section(title,copy,body){return '<section class="cux698-section"><div class="cux698-section-head"><strong>'+esc(title)+'</strong><span>'+esc(copy)+'</span></div>'+body+'</section>'}
+ window._cux698OpenStrategy=function(){
+   window._cux698CloseStrategy();var name=currentName(),p=planFor(name),m=document.createElement('div');m.className='cux698-modal';m.id='cux698-strategy-modal';m.dataset.company=name;
+   var owner=clean(p.actionOwner)||clean(p.owner)||rep();
+   var primary=section('Account direction','Set the sales posture and the one move that matters most.',
+      '<div class="cux698-form three">'+field('Strategy','c698-strategy',p.strategy||'Maintain','select',false,'',STRATEGIES)+field('Risk','c698-risk',p.riskLevel||'Low','select',false,'',RISKS)+field('Account tier','c698-tier',p.tier||'Standard','select',false,'',TIERS)+'</div>'
+     +'<div class="cux698-form" style="margin-top:10px">'+field('Strategic objective','c698-objective',p.objective||'','textarea',true,'What are we trying to accomplish with this account?')+field('Biggest opportunity','c698-opportunity',p.biggestOpportunity||p.opportunitiesText||'','textarea',true,'The clearest growth or retention opportunity.')+field('Next Best Action','c698-nba',p.nextBestAction||'','textarea',true,'The one clear customer action the rep should make next.')+'</div>');
+   var motion=section('Execution plan','Turn strategy into a specific customer action and dated next step.',
+      '<div class="cux698-form">'+field('Why this move matters','c698-why',p.nextMoveWhy||'','textarea',true,'Why is this the right move now?')+field('How to approach it','c698-how',p.nextMoveHow||'','textarea',true,'Suggested approach, opener, or desired outcome.')+'</div>'
+     +'<div class="cux698-form three" style="margin-top:10px">'+field('Contact method','c698-method',p.contactMethod||'Call','select',false,'',METHODS)+field('Action owner','c698-owner',owner,'text',false,'Rep or partner')+field('Manager support','c698-manager',p.managerSupport?'Yes':'No','select',false,'',['No','Yes'])+field('Action due','c698-due',p.actionDueDate||'','date')+field('Follow-up','c698-follow',p.followUpDate||'','date')+field('Review date','c698-review',p.reviewDate||'','date')+'</div>');
+   var buying=section('Buying & relationship intelligence','Capture what helps the rep understand how the customer buys and how protected the relationship is.',
+      '<div class="cux698-form">'+field('Budget owner','c698-budget-owner',p.budgetOwner||'','text',false,'Who owns or approves the spend?')+field('Budget cycle','c698-budget-cycle',p.budgetCycle||'','text',false,'When is budget planned or spent?')+field('Buying process','c698-buying-process',p.buyingProcess||'','textarea',true,'PO, approvals, procurement steps, webstore, bids, etc.')+field('Order triggers','c698-triggers',p.orderTriggers||'','textarea',true,'Season, event, safety audit, new hires, annual reorder, etc.')+field('Relationship strategy','c698-relationship',p.relationshipStrategy||'','textarea',true,'Who should we strengthen, add, or protect?')+field('Backup relationship','c698-backup',p.backupContact||'','text',false,'Who can keep the account moving if the main contact changes?')+'</div>');
+   var advanced='<details class="cux698-advanced"><summary>Deep account intelligence &amp; 30/60/90 plan</summary>'+
+      section('Customer context','Useful for strategic accounts; leave blank when it does not add value.',
+       '<div class="cux698-form">'+field('Customer goals','c698-goals',p.customerGoals||'','textarea',true,'What are they trying to accomplish?')+field('Success definition','c698-success',p.successDefinition||'','textarea',true,'What would a successful program look like to them?')+field('Their business','c698-business',p.theirBusiness||'','textarea',true,'Business model, seasonality, growth, leadership, operational context.')+field('Competitive position','c698-competition',p.competitivePosition||'','textarea',true,'Who else serves them and what do we win or lose on?')+field('Share of wallet','c698-wallet',p.shareOfWallet||'','text',false,'Our spend vs estimated total spend')+field('Brand standards','c698-brand',p.brandStandards||'','text',false,'Logo rules, colors, decoration standards')+field('Risks / concerns','c698-risks',p.risks||'','textarea',true,'Relationship, retention, service, pricing, or competitive concerns.')+field('Blockers','c698-blockers',p.blockers||'','textarea',true,'What could prevent progress?')+'</div>')+
+      section('30 / 60 / 90','Use only when the account warrants a longer strategic plan.',
+       '<div class="cux698-form three">'+field('30 days','c698-30',p.plan30||'','textarea',false,'Immediate move')+field('60 days','c698-60',p.plan60||'','textarea',false,'Relationship / program progress')+field('90 days','c698-90',p.plan90||'','textarea',false,'Desired position / outcome')+'</div>')+'</details>';
+   m.innerHTML='<div class="cux698-modal-panel" role="dialog" aria-modal="true" aria-label="Account Strategy"><div class="cux698-modal-head"><div><div class="cux698-modal-kicker">Company strategy</div><div class="cux698-modal-title">'+esc(name)+'</div><div class="cux698-modal-sub">Plan the account without leaving the Company workspace.</div></div><button class="cux698-modal-x" onclick="_cux698CloseStrategy()" aria-label="Close">×</button></div><div class="cux698-modal-body">'+primary+motion+buying+advanced+'</div><div class="cux698-modal-foot"><div class="cux698-save-note">Saved into the existing Connect Account Plans record for this company.</div><div class="cux698-modal-actions"><button class="cux698-modal-btn" onclick="_cux698CloseStrategy()">Cancel</button><button class="cux698-modal-btn primary" onclick="_cux698SaveStrategy()">Save Strategy</button></div></div></div>';
+   m.addEventListener('click',function(e){if(e.target===m)window._cux698CloseStrategy()});document.body.appendChild(m);setTimeout(function(){var e=document.getElementById('c698-strategy');if(e)e.focus()},0)
+ };
+ window._cux698CloseStrategy=function(){var m=document.getElementById('cux698-strategy-modal');if(m)m.remove()};
+ window._cux698SaveStrategy=function(){var m=document.getElementById('cux698-strategy-modal');if(!m)return;var name=m.dataset.company||currentName();savePlanFields(name,{
+   strategy:val('c698-strategy'),riskLevel:val('c698-risk'),tier:val('c698-tier'),objective:val('c698-objective'),biggestOpportunity:val('c698-opportunity'),opportunitiesText:val('c698-opportunity'),nextBestAction:val('c698-nba'),nextMoveWhy:val('c698-why'),nextMoveHow:val('c698-how'),contactMethod:val('c698-method'),actionOwner:val('c698-owner'),managerSupport:/^yes$/i.test(val('c698-manager')),actionDueDate:val('c698-due'),followUpDate:val('c698-follow'),reviewDate:val('c698-review'),budgetOwner:val('c698-budget-owner'),budgetCycle:val('c698-budget-cycle'),buyingProcess:val('c698-buying-process'),orderTriggers:val('c698-triggers'),relationshipStrategy:val('c698-relationship'),backupContact:val('c698-backup'),customerGoals:val('c698-goals'),successDefinition:val('c698-success'),theirBusiness:val('c698-business'),competitivePosition:val('c698-competition'),shareOfWallet:val('c698-wallet'),brandStandards:val('c698-brand'),risks:val('c698-risks'),blockers:val('c698-blockers'),plan30:val('c698-30'),plan60:val('c698-60'),plan90:val('c698-90')
+   });window._cux698CloseStrategy();try{if(window._rp2&&_rp2.page==='customers'&&typeof window._rp2Go==='function')window._rp2Go('customers');else if(typeof window._rp2CompanyProfileDraw==='function')window._rp2CompanyProfileDraw()}catch(e){}
+ };
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('cux698-strategy-modal'))window._cux698CloseStrategy()});
+
+ /* Strong final build authority. Earlier version scripts re-apply branding on delayed timers,
+    so v698 brands after portal renders and only mutates nodes when needed. */
+ var brandQueued=false;
+ function brand(){brandQueued=false;try{window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-tcp-build',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.querySelectorAll('.tabs').forEach(function(t){if(t.getAttribute('data-connect-build-long')!=='Cloud Sync • Admin  ·  BUILD '+BUILD)t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+BUILD);if(t.getAttribute('data-connect-build-short')!=='BUILD '+BUILD)t.setAttribute('data-connect-build-short','BUILD '+BUILD)});document.querySelectorAll('#rp-overlay .cux695-build-badge').forEach(function(b){var x='Sales Portal · Build '+BUILD;if(b.textContent!==x)b.textContent=x});if(document.title!=='Connect '+BUILD+' — Sales Portal')document.title='Connect '+BUILD+' — Sales Portal'}catch(e){}}
+ function scheduleBrand(){if(brandQueued)return;brandQueued=true;setTimeout(brand,35)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleBrand,{once:true});else scheduleBrand();
+ [120,450,900,1400,2200].forEach(function(ms){setTimeout(brand,ms)});
+ document.addEventListener('click',function(){scheduleBrand();setTimeout(brand,180);setTimeout(brand,850);setTimeout(brand,1600)},true);
+ var priorAfter=window._rp2After;if(typeof priorAfter==='function')window._rp2After=function(){var r=priorAfter.apply(this,arguments);setTimeout(brand,0);setTimeout(brand,500);setTimeout(brand,1300);return r};
+ try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(scheduleBrand).observe(host,{childList:true,subtree:true})}catch(e){}
+ window.TCP_COMPANY_WORKSPACE_REBALANCE_V699={version:BUILD,focus:'code-leak-safe company workspace rebalance + phased inline account strategy',planStore:PLAN_STORE,openStrategy:window._cux698OpenStrategy,enhance:enhance,brand:brand};
 })();
 </script>
