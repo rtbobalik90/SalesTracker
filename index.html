@@ -70772,3 +70772,324 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
  window.TCP_COMPANY_WORKSPACE_REBALANCE_V699={version:BUILD,focus:'code-leak-safe company workspace rebalance + phased inline account strategy',planStore:PLAN_STORE,openStrategy:window._cux698OpenStrategy,enhance:enhance,brand:brand};
 })();
 </script>
+
+
+<!-- ===== CONNECT v700 · COMPANY SALES WORKFLOW RESET ===== -->
+<style id="connect-v700-company-sales-workflow-reset-css">
+/* ===== CONNECT v700 · COMPANY SALES WORKFLOW RESET =====
+   Sales flow: Orient -> Decide -> Prepare -> Act -> Investigate.
+   The Company Overview is no longer a dashboard of equally weighted cards. */
+
+/* Compact the portal page chrome while a company is open. */
+#rp-overlay:has(.cux700-company) .p639-page-top{padding:6px 0 10px!important;margin-bottom:8px!important;min-height:0!important;}
+#rp-overlay:has(.cux700-company) .p639-page-top>div:first-child>strong{font-size:22px!important;line-height:1!important;}
+#rp-overlay:has(.cux700-company) .p639-page-top>div:first-child>span{font-size:9px!important;margin-top:4px!important;}
+
+#rp-overlay .cux700-company{width:100%!important;max-width:none!important;min-width:0!important;}
+#rp-overlay .cux700-company .cux8-stage{display:block!important;}
+
+/* 1) COMPANY COMMAND HEADER — identity, status and actions without a dashboard-sized KPI band. */
+#rp-overlay .cux700-company .cux8-hero{
+  padding:14px 18px 12px!important;border-radius:20px!important;
+  background:linear-gradient(110deg,rgba(14,68,97,.88),rgba(28,39,69,.92) 55%,rgba(91,52,36,.78))!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+#rp-overlay .cux700-company .cux8-hero-top{padding-bottom:10px!important;gap:14px!important;align-items:center!important;}
+#rp-overlay .cux700-company .cux8-identity{gap:11px!important;}
+#rp-overlay .cux700-company .cux8-back{width:38px!important;height:38px!important;min-width:38px!important;border-radius:12px!important;}
+#rp-overlay .cux700-company .cux8-avatar{width:50px!important;height:50px!important;min-width:50px!important;border-radius:15px!important;font-size:17px!important;}
+#rp-overlay .cux700-company .cux8-name{font-size:25px!important;line-height:1.05!important;letter-spacing:-.035em!important;}
+#rp-overlay .cux700-company .cux8-sub{font-size:10.3px!important;margin-top:3px!important;line-height:1.25!important;}
+#rp-overlay .cux700-company .cux8-contact{font-size:9.7px!important;margin-top:5px!important;gap:5px!important;}
+#rp-overlay .cux700-company .cux694-rel-pill{font-size:8px!important;padding:3px 7px!important;}
+#rp-overlay .cux700-company .cux8-actions{gap:6px!important;justify-content:flex-end!important;}
+#rp-overlay .cux700-company .cux8-action{min-height:34px!important;height:34px!important;padding:0 11px!important;border-radius:10px!important;font-size:9.4px!important;}
+
+/* Turn the large metric cards into one quiet account stat line. */
+#rp-overlay .cux700-company .cux8-metrics{
+  display:flex!important;align-items:center!important;gap:0!important;grid-template-columns:none!important;
+  padding:9px 0 0!important;border-top:1px solid rgba(255,255,255,.09)!important;min-height:0!important;
+}
+#rp-overlay .cux700-company .cux8-metric{
+  flex:0 0 auto!important;display:flex!important;align-items:baseline!important;gap:6px!important;
+  min-height:0!important;margin:0!important;padding:0 16px!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+}
+#rp-overlay .cux700-company .cux8-metric:first-child{padding-left:0!important;}
+#rp-overlay .cux700-company .cux8-metric+.cux8-metric{border-left:1px solid rgba(255,255,255,.10)!important;}
+#rp-overlay .cux700-company .cux8-metric span{font-size:8px!important;letter-spacing:.07em!important;color:#91A2B6!important;white-space:nowrap!important;}
+#rp-overlay .cux700-company .cux8-metric strong{font-size:12.5px!important;line-height:1!important;margin:0!important;color:#F5F8FC!important;white-space:nowrap!important;}
+#rp-overlay .cux700-company .cux694-open-state{
+  flex:1 1 auto!important;min-width:220px!important;margin-left:4px!important;padding:0 0 0 16px!important;
+  border:0!important;border-left:1px solid rgba(255,255,255,.10)!important;border-radius:0!important;background:transparent!important;
+  font-size:8.7px!important;box-shadow:none!important;
+}
+#rp-overlay .cux700-company .cux695-open-title{font-size:8.6px!important;white-space:nowrap!important;}
+#rp-overlay .cux700-company .cux695-open-items{gap:8px!important;}
+#rp-overlay .cux700-company .cux695-open-item{font-size:8.2px!important;}
+
+/* 2) REAL COMPANY SUB-NAVIGATION. */
+#rp-overlay .cux700-subnav{
+  display:flex;align-items:center;gap:3px;margin:9px 0 11px;padding:4px;
+  border:1px solid rgba(255,255,255,.075);border-radius:13px;background:rgba(7,14,23,.48);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);overflow-x:auto;scrollbar-width:none;
+}
+#rp-overlay .cux700-subnav::-webkit-scrollbar{display:none;}
+#rp-overlay .cux700-subnav button{
+  flex:0 0 auto;min-height:32px;padding:0 12px;border:1px solid transparent;border-radius:9px;
+  background:transparent;color:#899AAD;font-size:9px;font-weight:900;letter-spacing:.02em;cursor:pointer;white-space:nowrap;
+}
+#rp-overlay .cux700-subnav button:hover{background:rgba(255,255,255,.045);color:#E9F1F8;}
+#rp-overlay .cux700-subnav button.active{background:rgba(0,175,239,.10);border-color:rgba(0,175,239,.24);color:#BCEFFF;}
+#rp-overlay .cux700-subnav button.strategy{margin-left:auto;color:#9FE7C2;}
+#rp-overlay .cux700-subnav button.strategy:hover{background:rgba(71,209,108,.08);border-color:rgba(71,209,108,.22);}
+
+/* The legacy three-column overview is now a vertical sales workflow. */
+#rp-overlay .cux700-company .cux8-overview{
+  display:block!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;
+  margin:0!important;overflow:visible!important;
+}
+
+/* 3) DECIDE + PREPARE — the two most important jobs live together. */
+#rp-overlay .cux700-action-grid{
+  display:grid;grid-template-columns:minmax(360px,.88fr) minmax(520px,1.12fr);gap:12px;align-items:stretch;margin:0 0 12px;
+}
+#rp-overlay .cux700-action-grid .cux694-nextbar{
+  margin:0!important;min-height:100%!important;padding:18px!important;border-radius:18px!important;
+  grid-template-columns:1fr!important;align-content:space-between!important;align-items:start!important;gap:14px!important;
+  background:linear-gradient(145deg,rgba(250,135,61,.105),rgba(15,25,35,.88) 52%,rgba(0,175,239,.04))!important;
+  border-color:rgba(250,135,61,.28)!important;
+}
+#rp-overlay .cux700-action-grid .cux694-next-kick{font-size:9px!important;letter-spacing:.12em!important;color:#FFAF79!important;}
+#rp-overlay .cux700-action-grid .cux694-next-title{font-size:21px!important;line-height:1.12!important;margin-top:3px!important;}
+#rp-overlay .cux700-action-grid .cux694-next-copy{display:grid!important;gap:9px!important;margin-top:12px!important;font-size:10.8px!important;line-height:1.5!important;}
+#rp-overlay .cux700-action-grid .cux696-why,
+#rp-overlay .cux700-action-grid .cux696-how{display:grid!important;grid-template-columns:34px 1fr!important;gap:7px!important;align-items:start!important;}
+#rp-overlay .cux700-action-grid .cux696-why b,
+#rp-overlay .cux700-action-grid .cux696-how b{padding-top:1px!important;font-size:8.4px!important;}
+#rp-overlay .cux700-action-grid .cux694-next-actions{justify-content:flex-start!important;align-self:end!important;padding-top:3px!important;}
+
+/* Conversation Prep is one job, not another mini-app. */
+#rp-overlay .cux700-conversation{
+  position:relative!important;top:auto!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;
+  height:auto!important;min-height:0!important;max-height:none!important;padding:18px!important;border-radius:18px!important;
+  border:1px solid rgba(0,175,239,.18)!important;background:linear-gradient(145deg,rgba(18,34,49,.96),rgba(18,27,42,.96))!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#rp-overlay .cux700-conversation:after{display:none!important;}
+#rp-overlay .cux700-conversation .cux10-head{margin-bottom:10px!important;align-items:flex-start!important;}
+#rp-overlay .cux700-conversation .cux10-kicker{font-size:8.7px!important;color:#73D9FF!important;}
+#rp-overlay .cux700-conversation .cux10-title{font-size:20px!important;line-height:1.08!important;}
+#rp-overlay .cux700-conversation .cux10-copy{font-size:10px!important;line-height:1.4!important;color:#8FA1B5!important;}
+#rp-overlay .cux700-conversation .cux10-add{min-height:31px!important;height:31px!important;font-size:8.8px!important;border-radius:9px!important;}
+#rp-overlay .cux700-conversation .cux10-tabs{display:none!important;}
+#rp-overlay .cux700-conversation .cux10-body{overflow:visible!important;min-height:0!important;height:auto!important;padding:0!important;}
+#rp-overlay .cux700-conversation .cux10-summary-grid{display:block!important;}
+#rp-overlay .cux700-conversation .cux10-summary-card{display:none!important;}
+#rp-overlay .cux700-conversation .cux10-summary-card:first-child{
+  display:block!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;
+}
+#rp-overlay .cux700-conversation .cux10-card-kick{font-size:8.6px!important;color:#7EE8FF!important;}
+#rp-overlay .cux700-conversation .cux10-card-title{font-size:14.5px!important;margin:3px 0 9px!important;}
+#rp-overlay .cux700-conversation .cux10-disclaimer{display:none!important;}
+#rp-overlay .cux700-conversation .cux696-plan{display:grid!important;gap:6px!important;}
+#rp-overlay .cux700-conversation .cux696-plan-row{
+  display:grid!important;grid-template-columns:58px 1fr!important;gap:9px!important;align-items:start!important;
+  margin:0!important;padding:8px 9px!important;border:1px solid rgba(255,255,255,.065)!important;border-radius:10px!important;background:rgba(255,255,255,.025)!important;
+}
+#rp-overlay .cux700-conversation .cux696-plan-row span{font-size:8px!important;letter-spacing:.09em!important;color:#73D9FF!important;}
+#rp-overlay .cux700-conversation .cux696-plan-row div{font-size:10.6px!important;line-height:1.43!important;color:#CDD7E2!important;}
+#rp-overlay .cux700-conversation .cux696-plan-row.say{border-color:rgba(0,175,239,.12)!important;background:rgba(0,175,239,.035)!important;}
+#rp-overlay .cux700-conversation .cux696-plan-row.say div{color:#EFF8FC!important;font-weight:780!important;}
+
+/* 4) ACCOUNT INTELLIGENCE — one quiet panel of signals, not six decorative destination cards. */
+#rp-overlay .cux700-intelligence{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:auto!important;grid-auto-rows:auto!important;
+  gap:0!important;margin:0!important;padding:0!important;border:1px solid rgba(255,255,255,.085)!important;border-radius:18px!important;
+  background:rgba(8,17,27,.56)!important;overflow:hidden!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+#rp-overlay .cux700-intelligence-head{
+  grid-column:1/-1;display:flex;align-items:end;justify-content:space-between;gap:14px;padding:15px 16px 12px;
+  border-bottom:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.015);
+}
+#rp-overlay .cux700-intelligence-kick{font-size:8.5px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;color:#8EDCFA;}
+#rp-overlay .cux700-intelligence-title{margin-top:3px;font-size:16px;font-weight:950;color:#F3F7FB;letter-spacing:-.02em;}
+#rp-overlay .cux700-intelligence-copy{font-size:9px;line-height:1.35;color:#7F90A2;text-align:right;max-width:370px;}
+#rp-overlay .cux700-intelligence .cux8-tile{
+  position:relative!important;display:grid!important;grid-template-columns:35px minmax(110px,.42fr) minmax(0,1fr) 23px!important;
+  grid-template-rows:auto auto!important;column-gap:10px!important;row-gap:2px!important;align-items:center!important;
+  width:100%!important;height:auto!important;min-height:73px!important;margin:0!important;padding:11px 12px!important;
+  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;text-align:left!important;opacity:1!important;
+}
+#rp-overlay .cux700-intelligence .cux8-tile:nth-of-type(odd){border-right:1px solid rgba(255,255,255,.065)!important;}
+#rp-overlay .cux700-intelligence .cux8-tile{border-bottom:1px solid rgba(255,255,255,.065)!important;}
+#rp-overlay .cux700-intelligence .cux8-tile:hover{background:rgba(255,255,255,.032)!important;transform:none!important;filter:none!important;}
+#rp-overlay .cux700-intelligence .cux8-tile:before{display:none!important;}
+#rp-overlay .cux700-intelligence .cux8-tile:after{
+  content:"→"!important;position:static!important;grid-column:4!important;grid-row:1/3!important;display:grid!important;place-items:center!important;
+  width:22px!important;height:22px!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:999px!important;background:rgba(255,255,255,.025)!important;
+  color:#66798D!important;font-size:11px!important;transform:none!important;
+}
+#rp-overlay .cux700-intelligence .cux8-tile:hover:after{color:#CFEFFF!important;border-color:rgba(0,175,239,.25)!important;transform:none!important;}
+#rp-overlay .cux700-intelligence .cux8-tile-icon{
+  grid-column:1!important;grid-row:1/3!important;width:32px!important;height:32px!important;min-width:32px!important;margin:0!important;border-radius:10px!important;font-size:14px!important;
+  opacity:.82!important;box-shadow:none!important;
+}
+#rp-overlay .cux700-intelligence .cux8-tile-name{grid-column:2!important;grid-row:1!important;margin:0!important;font-size:11.5px!important;line-height:1.15!important;color:#E5EDF4!important;}
+#rp-overlay .cux700-intelligence .cux8-tile-copy{grid-column:2!important;grid-row:2!important;margin:0!important;display:block!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:8.5px!important;line-height:1.2!important;color:#6F8193!important;}
+#rp-overlay .cux700-intelligence .cux8-tile-meta{
+  grid-column:3!important;grid-row:1/3!important;position:static!important;margin:0!important;display:block!important;align-self:center!important;
+  white-space:normal!important;overflow:visible!important;text-overflow:clip!important;text-align:right!important;font-size:9.7px!important;line-height:1.3!important;font-weight:850!important;color:#AFC0D0!important;
+}
+#rp-overlay .cux700-intelligence .cux8-tile.cux694-warn{background:rgba(251,191,36,.028)!important;}
+#rp-overlay .cux700-intelligence .cux8-tile.cux694-warn .cux8-tile-meta{color:#FFD58D!important;}
+#rp-overlay .cux700-intelligence .cux8-tile.cux696-quiet{opacity:.62!important;filter:none!important;}
+
+/* 5) RECENT ACCOUNT ACTIVITY — small protection strip, not another dashboard card. */
+#rp-overlay .cux700-history{
+  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin:10px 0 0;padding:10px 12px;
+  border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.018);
+}
+#rp-overlay .cux700-history-title{font-size:8.7px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;color:#71869A;white-space:nowrap;}
+#rp-overlay .cux700-history-items{display:flex;align-items:center;gap:9px 18px;flex-wrap:wrap;min-width:0;color:#95A6B8;font-size:9.2px;}
+#rp-overlay .cux700-history-items b{color:#D9E3EC;font-weight:900;}
+#rp-overlay .cux700-history-items button{border:0;background:transparent;color:#8EDCFA;font:900 9.2px/1 inherit;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+#rp-overlay .cux700-history-action{min-height:29px;padding:0 10px;border:1px solid rgba(255,255,255,.09);border-radius:8px;background:rgba(255,255,255,.03);color:#AFC0D0;font-size:8.6px;font-weight:900;cursor:pointer;white-space:nowrap;}
+#rp-overlay .cux700-history-action:hover{border-color:rgba(0,175,239,.24);color:#D9F7FF;background:rgba(0,175,239,.05);}
+
+/* The removed Account Essentials block must stay removed if older CSS tries to revive it. */
+#rp-overlay .cux700-company .cux698-essentials{display:none!important;}
+
+@media(max-width:1450px){
+  #rp-overlay .cux700-action-grid{grid-template-columns:minmax(330px,.82fr) minmax(440px,1.18fr)!important;gap:10px!important;}
+  #rp-overlay .cux700-company .cux8-metric{padding:0 11px!important;}
+  #rp-overlay .cux700-subnav button{padding:0 9px!important;}
+}
+@media(max-width:1180px){
+  #rp-overlay .cux700-action-grid{grid-template-columns:1fr!important;}
+  #rp-overlay .cux700-conversation{position:relative!important;top:auto!important;}
+  #rp-overlay .cux700-company .cux8-metrics{flex-wrap:wrap!important;gap:8px 0!important;}
+  #rp-overlay .cux700-company .cux694-open-state{flex-basis:100%!important;margin-left:0!important;padding:7px 0 0!important;border-left:0!important;border-top:1px solid rgba(255,255,255,.08)!important;}
+}
+@media(max-width:760px){
+  #rp-overlay .cux700-company .cux8-hero{padding:13px!important;}
+  #rp-overlay .cux700-company .cux8-hero-top{grid-template-columns:1fr!important;}
+  #rp-overlay .cux700-company .cux8-actions{justify-content:flex-start!important;}
+  #rp-overlay .cux700-company .cux8-metrics{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:0!important;}
+  #rp-overlay .cux700-company .cux8-metric{padding:7px 8px!important;border-left:0!important;border-bottom:1px solid rgba(255,255,255,.07)!important;}
+  #rp-overlay .cux700-company .cux694-open-state{grid-column:1/-1!important;}
+  #rp-overlay .cux700-subnav button.strategy{margin-left:0!important;}
+  #rp-overlay .cux700-intelligence{grid-template-columns:1fr!important;}
+  #rp-overlay .cux700-intelligence .cux8-tile:nth-of-type(odd){border-right:0!important;}
+  #rp-overlay .cux700-intelligence-copy{display:none!important;}
+  #rp-overlay .cux700-history{grid-template-columns:1fr auto!important;}
+  #rp-overlay .cux700-history-title{grid-column:1/-1!important;}
+}
+
+</style>
+<script id="connect-v700-company-sales-workflow-reset-js">
+(function(){
+ 'use strict';
+ var BUILD='v700',DISPLAY='V700';
+ var BASE_CUSTOMERS=window._rp2CustomersV2;
+ var BASE_PROFILE=window._rp2CompanyProfileV3;
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var b=document.createElement('div');b.appendChild(frag.cloneNode(true));return b.innerHTML}
+ function sectionOf(tile){var c=clean(tile&&tile.getAttribute('onclick')),m=c.match(/_cux8Open\(['"]([^'"]+)/);return m?m[1]:''}
+ function makeNav(){
+   var nav=document.createElement('nav');nav.className='cux700-subnav';nav.setAttribute('aria-label','Company sections');
+   nav.innerHTML='<button class="active" onclick="_cux700Overview()">Overview</button>'+
+     '<button onclick="_cux8Open(\'contacts\')">Contacts</button>'+
+     '<button onclick="_cux8Open(\'orders\')">Orders</button>'+
+     '<button onclick="_cux8Open(\'products\')">Products</button>'+
+     '<button onclick="_cux8Open(\'activity\')">Activity</button>'+
+     '<button onclick="_cux8Open(\'artwork\')">Artwork</button>'+
+     '<button class="strategy" onclick="_cux698OpenStrategy()">Strategy</button>';
+   return nav
+ }
+ function prepConversation(panel){
+   if(!panel)return null;
+   panel.classList.add('cux700-conversation');
+   var kick=panel.querySelector('.cux10-kicker'),title=panel.querySelector('.cux10-title'),copy=panel.querySelector('.cux10-copy');
+   if(kick)kick.textContent='Conversation prep';if(title)title.textContent='Be ready before you reach out';if(copy)copy.textContent='Know the context, use a strong opener, ask the right questions, and leave with a next step.';
+   var tabs=panel.querySelector('.cux10-tabs');if(tabs)tabs.remove();
+   var body=panel.querySelector('.cux10-body');if(body){
+     var first=body.querySelector('.cux10-summary-card');
+     if(first){body.innerHTML='<div class="cux10-summary-grid">'+first.outerHTML+'</div>'}
+   }
+   return panel
+ }
+ function buildHistory(status){
+   var sec=document.createElement('section');sec.className='cux700-history';
+   var items='';
+   if(status){
+     var parts=Array.prototype.slice.call(status.querySelectorAll('.cux696-status-item'));
+     items=parts.map(function(p){return '<span>'+p.innerHTML+'</span>'}).join('');
+   }
+   if(!items)items='<span><b>Account activity</b> Open Activity for the latest customer touches and follow-ups.</span>';
+   sec.innerHTML='<div class="cux700-history-title">Recent account activity</div><div class="cux700-history-items">'+items+'</div><button class="cux700-history-action" onclick="_cux8Open(\'activity\')">Open Activity</button>';
+   return sec
+ }
+ function intelligence(modules){
+   if(!modules)return null;
+   var old=modules.querySelector('.cux694-workspace-head');if(old)old.remove();
+   modules.classList.add('cux700-intelligence');
+   var head=document.createElement('div');head.className='cux700-intelligence-head';
+   head.innerHTML='<div><div class="cux700-intelligence-kick">Account intelligence</div><div class="cux700-intelligence-title">What is happening across this account</div></div><div class="cux700-intelligence-copy">Open a section when you need the detail. The signal tells you where attention belongs first.</div>';
+   modules.insertBefore(head,modules.firstChild);
+   Array.prototype.slice.call(modules.querySelectorAll('.cux8-tile')).forEach(function(tile){
+     var s=sectionOf(tile);tile.setAttribute('data-cux700-section',s);
+     var nm=tile.querySelector('.cux8-tile-name');if(nm&&s==='activity')nm.textContent='Activity';
+   });
+   return modules
+ }
+ function enhance(markup){
+   if(!markup||String(markup).indexOf('cux8-overview')<0)return markup;
+   var frag=parse(markup),stage=frag.querySelector('.cux8-stage'),hero=frag.querySelector('.cux8-hero'),overview=frag.querySelector('.cux8-overview');
+   if(!stage||!hero||!overview)return markup;
+   var shell=frag.querySelector('.cux8-shell');if(shell)shell.classList.add('cux700-company');
+   hero.classList.add('cux700-command-hero');
+   var status=hero.querySelector('.cux696-account-status');
+   var history=buildHistory(status);if(status)status.remove();
+   var next=frag.querySelector('.cux694-nextbar');
+   var conversation=prepConversation(overview.querySelector('.cux10-notes'));
+   var modules=intelligence(overview.querySelector('.cux8-modules'));
+   var essentials=overview.querySelector('.cux8-brief');if(essentials)essentials.remove();
+   var oldNav=frag.querySelector('.cux700-subnav');if(oldNav)oldNav.remove();
+   var nav=makeNav();hero.insertAdjacentElement('afterend',nav);
+   var action=document.createElement('section');action.className='cux700-action-grid';
+   if(next){next.remove();action.appendChild(next)}
+   if(conversation){conversation.remove();action.appendChild(conversation)}
+   overview.innerHTML='';overview.appendChild(action);if(modules){modules.remove();overview.appendChild(modules)}overview.appendChild(history);
+   return stringify(frag)
+ }
+ function wrap(base){return typeof base==='function'?function(){window._cux10NotesTab='summary';return enhance(base.apply(this,arguments))}:base}
+ window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+ window._cux700Overview=function(){try{var el=document.querySelector('#rp-overlay .cux700-company');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}}
+
+ /* Final build authority. Older branding layers still wake up on delayed timers, so v700
+    corrects known badges plus any leaf label in the Sales Portal rail that was rewritten. */
+ var brandTimer=0;
+ function brand(){
+   brandTimer=0;
+   try{
+     window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
+     document.documentElement.setAttribute('data-tcp-build',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);
+     document.querySelectorAll('.tabs').forEach(function(t){t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+DISPLAY);t.setAttribute('data-connect-build-short','BUILD '+DISPLAY)});
+     document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){var x='Sales Portal · Build '+DISPLAY;if(clean(b.textContent)!==x)b.textContent=x});
+     document.querySelectorAll('#rp-overlay .rp2-side *').forEach(function(el){if(el.children.length)return;var t=clean(el.textContent);if(/^sales portal\s*[·•-]\s*build\s*v\d+$/i.test(t))el.textContent='Sales Portal · Build '+DISPLAY});
+     document.title='Connect '+BUILD+' — Sales Portal';
+   }catch(e){}
+ }
+ function queueBrand(){if(brandTimer)return;brandTimer=setTimeout(brand,25)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',queueBrand,{once:true});else queueBrand();
+ [90,260,620,1100,1900,3200,5200].forEach(function(ms){setTimeout(brand,ms)});
+ document.addEventListener('click',function(){queueBrand();setTimeout(brand,220);setTimeout(brand,900)},true);
+ try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(queueBrand).observe(host,{childList:true,subtree:true,characterData:true})}catch(e){}
+ var priorAfter=window._rp2After;if(typeof priorAfter==='function')window._rp2After=function(){var out=priorAfter.apply(this,arguments);setTimeout(brand,0);setTimeout(brand,420);return out};
+ window.TCP_COMPANY_SALES_WORKFLOW_V700={version:BUILD,focus:'rep workflow company overview: orient, decide, prepare, act, investigate',enhance:enhance,brand:brand};
+})();
+
+</script>
