@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v680 — Rep Portal Live Assist</title>
+<title>Connect — Sales Portal</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -69931,5 +69931,187 @@ html[data-rp-theme="light"] #rp-overlay .cux694-mini-btn.orange{background:#FFF4
  document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('.cux694-more'))window._cux694CloseMore()},true);
  try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Connect — Sales Portal'}catch(e){}
  window.TCP_COMPANY_SALES_WORKSPACE_V694={version:BUILD,focus:'company overview as a rep-first sales workspace',upgrade:upgrade};
+})();
+</script>
+
+
+<!-- ===== CONNECT v695 · COMPANY WORKSPACE ALIGNMENT + GLOBAL BUILD ID ===== -->
+<style id="connect-v695-company-workspace-alignment-css">
+/* v695 final authority: the company overview begins as one aligned sales desk.
+   Remove the older forced-equal-height behavior that created the large blank
+   center gutter and let each column begin at the same top edge. */
+@media (min-width:1200px){
+  #rp-overlay .cux8-overview{
+    height:auto!important;min-height:0!important;max-height:none!important;
+    overflow:visible!important;align-items:start!important;
+    grid-template-columns:minmax(286px,.64fr) minmax(540px,1.24fr) minmax(390px,.86fr)!important;
+    gap:14px!important;
+  }
+  #rp-overlay .cux8-overview .cux8-brief,
+  #rp-overlay .cux8-overview .cux8-modules,
+  #rp-overlay .cux8-overview .cux10-notes{
+    height:auto!important;min-height:0!important;max-height:none!important;
+    align-self:start!important;overflow:visible!important;
+  }
+  #rp-overlay .cux8-overview .cux8-modules{
+    padding-top:0!important;display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:auto repeat(3,116px)!important;
+    grid-auto-rows:116px!important;gap:10px!important;align-content:start!important;
+  }
+  #rp-overlay .cux8-overview .cux8-tile{
+    height:116px!important;min-height:116px!important;
+    padding:11px 38px 11px 11px!important;
+  }
+}
+@media (min-width:1200px) and (max-width:1450px){
+  #rp-overlay .cux8-overview{
+    grid-template-columns:minmax(275px,.64fr) minmax(500px,1.20fr) minmax(360px,.86fr)!important;
+    gap:12px!important;
+  }
+  #rp-overlay .cux8-overview .cux8-modules{grid-template-rows:auto repeat(3,112px)!important;grid-auto-rows:112px!important;gap:9px!important;}
+  #rp-overlay .cux8-overview .cux8-tile{height:112px!important;min-height:112px!important;}
+}
+
+/* Snapshot: the relationship condition is already surfaced in the hero. */
+#rp-overlay .cux8-brief .cx586-health-line{display:none!important;}
+#rp-overlay .cux8-brief-foot{margin-top:12px!important;padding-top:10px!important;}
+
+/* Working text floor. Tiny labels can stay compact; information should not. */
+#rp-overlay .cux694-workspace-copy{font-size:10.5px!important;line-height:1.45!important;max-width:285px!important;}
+#rp-overlay .cux8-overview .cux8-tile-copy{font-size:10.6px!important;line-height:1.42!important;}
+#rp-overlay .cux8-overview .cux8-tile-meta{font-size:10px!important;line-height:1.28!important;font-weight:850!important;}
+#rp-overlay .cux8-overview .cux8-tile-name{font-size:14.5px!important;}
+#rp-overlay .cux8-overview .cux8-brief-copy,
+#rp-overlay .cux10-notes .cux10-copy,
+#rp-overlay .cux10-notes .cux10-card-copy,
+#rp-overlay .cux10-notes .cux10-log-copy{font-size:10.8px!important;line-height:1.55!important;}
+#rp-overlay .cux10-notes .cux10-disclaimer,
+#rp-overlay .cux10-notes .cux10-log-meta{font-size:9.7px!important;line-height:1.45!important;}
+
+/* Open-business summary: useful status, not a debug-looking sentence. */
+#rp-overlay .cux694-open-state{
+  display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;gap:9px 12px!important;align-items:center!important;
+  padding:10px 12px!important;
+}
+#rp-overlay .cux695-open-title{color:#EAF2F8;font-size:10px;font-weight:950;white-space:nowrap;}
+#rp-overlay .cux695-open-items{display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;min-width:0;}
+#rp-overlay .cux695-open-item{display:inline-flex;align-items:center;gap:5px;color:#8FA0B3;font-size:9.6px;font-weight:850;white-space:nowrap;}
+#rp-overlay .cux695-open-item b{color:#DCE7F0;font-size:10px;}
+#rp-overlay .cux695-open-item.on{color:#8EDCFA;}
+#rp-overlay .cux695-open-item.on b{color:#B8F2FF;}
+
+/* Conversation Brief: show a short, readable shortlist instead of a wall of pills. */
+#rp-overlay .cux695-recommendations{display:grid!important;gap:7px!important;margin-top:10px!important;}
+#rp-overlay .cux695-rec{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:7px!important;align-items:center!important;
+  padding:8px 9px!important;border:1px solid rgba(71,209,108,.19)!important;border-radius:11px!important;
+  background:rgba(71,209,108,.055)!important;color:#DFF8E8!important;white-space:normal!important;
+}
+#rp-overlay .cux695-rec strong{font-size:10.2px!important;line-height:1.28!important;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .cux695-rec small{font-size:8.8px!important;color:#8FA5A0!important;white-space:nowrap;}
+#rp-overlay .cux695-rec:before{content:none!important;}
+#rp-overlay .cux695-rec-more{font-size:9.3px;color:#8394A7;margin-top:2px;}
+
+/* Keep the temporary Tester tool from sitting on top of customer controls. */
+#rp684TesterRoot{bottom:58px!important;right:18px!important;}
+
+/* One visible build identity. Manager rail and Sales Portal both read the same build. */
+html body .tabs:after{content:attr(data-connect-build-long)!important;}
+body.nav-rail .tabs:after{content:attr(data-connect-build-short)!important;}
+#rp-overlay .cux695-build-badge{
+  display:flex;align-items:center;justify-content:center;margin:8px 0 0;padding:6px 9px;
+  border:1px solid rgba(255,255,255,.09);border-radius:9px;background:rgba(255,255,255,.025);
+  color:#718497;font-size:8.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+}
+#rp-overlay .rp2-app.rp679-light .cux695-build-badge{background:#F5F8FA;border-color:rgba(32,55,76,.12);color:#6A7F8F;}
+@media(max-width:780px){#rp-overlay .cux695-build-badge{display:none!important;}}
+</style>
+<script id="connect-v695-company-workspace-alignment-js">
+(function(){
+ 'use strict';
+ var BUILD='v695';
+ var BASE_CUSTOMERS=window._rp2CustomersV2;
+ var BASE_PROFILE=window._rp2CompanyProfileV3;
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var box=document.createElement('div');box.appendChild(frag.cloneNode(true));return box.innerHTML}
+ function rebuildOpenState(frag){
+   var state=frag.querySelector('.cux694-open-state');if(!state)return;
+   var rows=[];
+   Array.prototype.slice.call(state.children).forEach(function(n){
+     var strong=n.querySelector&&n.querySelector('strong');if(!strong)return;
+     var label=clean(strong.textContent).replace(/:$/,'');
+     var full=clean(n.textContent),value=clean(full.replace(clean(strong.textContent),'')).replace(/^[:\s]+/,'');
+     if(label)rows.push({label:label,value:value||'None',on:!/^(none|0|\$0|—)$/i.test(value||'None')});
+   });
+   if(!rows.length)return;
+   var any=rows.some(function(r){return r.on});
+   state.innerHTML='<span class="cux695-open-title">'+(any?'Open business':'No open business')+'</span><span class="cux695-open-items">'+rows.map(function(r){return '<span class="cux695-open-item '+(r.on?'on':'')+'">'+esc(r.label)+' <b>'+esc(r.on?r.value:'—')+'</b></span>'}).join('')+'</span>';
+ }
+ function cleanSnapshot(frag){
+   var brief=frag.querySelector('.cux8-brief');if(!brief)return;
+   var foot=brief.querySelector('.cux8-brief-foot');
+   if(foot){
+     Array.prototype.slice.call(foot.querySelectorAll('button')).forEach(function(b){if(/review contacts/i.test(clean(b.textContent)))b.remove()});
+   }
+ }
+ function shortenRecommendations(frag){
+   var cards=frag.querySelectorAll('.cux10-summary-card');if(cards.length<2)return;
+   var card=cards[1],list=card.querySelector('.cux10-list');if(!list)return;
+   var chips=Array.prototype.slice.call(list.querySelectorAll('.cux10-chip'));
+   if(!chips.length)return;
+   list.classList.add('cux695-recommendations');
+   chips.forEach(function(chip,i){
+     if(i>2){chip.remove();return}
+     var name=clean(chip.textContent);
+     chip.className='cux695-rec';
+     chip.innerHTML='<strong>'+esc(name)+'</strong><small>Review fit</small>';
+   });
+   if(chips.length>3&&!card.querySelector('.cux695-rec-more')){
+     var more=document.createElement('div');more.className='cux695-rec-more';more.textContent='Top 3 shown · Open Products for the full buying history and recommendations.';list.insertAdjacentElement('afterend',more);
+   }
+ }
+ function upgrade(markup){
+   if(!markup||String(markup).indexOf('cux8-overview')<0)return markup;
+   var frag=parse(markup);
+   rebuildOpenState(frag);cleanSnapshot(frag);shortenRecommendations(frag);
+   return stringify(frag)
+ }
+ function wrap(base){return typeof base==='function'?function(){return upgrade(base.apply(this,arguments))}:base}
+ window._rp2CustomersV2=wrap(BASE_CUSTOMERS);
+ window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+ var BASE_CUX10_TAB_V695=window._cux10SetTab;
+ if(typeof BASE_CUX10_TAB_V695==='function')window._cux10SetTab=function(){var out=BASE_CUX10_TAB_V695.apply(this,arguments);setTimeout(function(){try{shortenRecommendations(document)}catch(e){}},0);return out};
+
+ function buildBadge(){
+   try{
+     document.querySelectorAll('#rp-overlay .rp2-side').forEach(function(side){
+       var user=side.querySelector('.p639-user'),out=side.querySelector('.rp2-out');
+       var badge=side.querySelector('.cux695-build-badge');
+       if(!badge){badge=document.createElement('div');badge.className='cux695-build-badge';}
+       badge.textContent='Sales Portal · Build '+BUILD;
+       if(user&&!user.contains(badge))user.insertBefore(badge,user.firstChild);
+       else if(!user&&out&&badge.parentNode!==side)side.insertBefore(badge,out);
+     });
+   }catch(e){}
+ }
+ function brand(){
+   try{
+     window.CONNECT_BUILD=BUILD;
+     window.TCP_BUILD_VERSION=BUILD;
+     document.documentElement.setAttribute('data-tcp-build',BUILD);
+     document.documentElement.setAttribute('data-connect-build',BUILD);
+     document.querySelectorAll('.tabs').forEach(function(t){t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+BUILD);t.setAttribute('data-connect-build-short','BUILD '+BUILD)});
+     document.title='Connect '+BUILD+' — Sales Portal';
+     buildBadge();
+   }catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();
+ document.addEventListener('click',function(){setTimeout(brand,320);setTimeout(brand,620)},true);
+ try{new MutationObserver(function(){if(document.documentElement.getAttribute('data-tcp-build')!==BUILD)setTimeout(brand,0)}).observe(document.documentElement,{attributes:true,attributeFilter:['data-tcp-build']})}catch(e){}
+ setTimeout(brand,700);
+ window.TCP_COMPANY_SALES_WORKSPACE_V695={version:BUILD,focus:'aligned rep-first company overview + authoritative build identity',upgrade:upgrade,brand:brand};
 })();
 </script>
