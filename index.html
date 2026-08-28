@@ -20,7 +20,44 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v696 — Sales Portal</title>
+<title>Connect v701 — Sales Portal</title>
+<script id="connect-build-authority-v701">
+(function(){
+  'use strict';
+  var BUILD='v701', DISPLAY='V701', TITLE='Connect v701 — Sales Portal';
+  window.CONNECT_BUILD_AUTHORITY=BUILD;
+  window.CONNECT_BUILD_DISPLAY=DISPLAY;
+  window.CONNECT_BUILD_TITLE=TITLE;
+  window.CONNECT_BUILD=BUILD;
+  window.TCP_BUILD_VERSION=BUILD;
+  try{
+    document.documentElement.setAttribute('data-connect-authoritative',BUILD);
+    document.documentElement.setAttribute('data-tcp-build',BUILD);
+    document.documentElement.setAttribute('data-connect-build',BUILD);
+    document.title=TITLE;
+  }catch(e){}
+  function enforce(){
+    try{
+      window.CONNECT_BUILD=BUILD;
+      window.TCP_BUILD_VERSION=BUILD;
+      if(document.documentElement.getAttribute('data-tcp-build')!==BUILD)document.documentElement.setAttribute('data-tcp-build',BUILD);
+      if(document.documentElement.getAttribute('data-connect-build')!==BUILD)document.documentElement.setAttribute('data-connect-build',BUILD);
+      if(document.title!==TITLE)document.title=TITLE;
+    }catch(e){}
+  }
+  try{
+    new MutationObserver(enforce).observe(document.documentElement,{attributes:true,attributeFilter:['data-tcp-build','data-connect-build']});
+    var titleNode=document.querySelector('title');
+    if(titleNode)new MutationObserver(enforce).observe(titleNode,{childList:true,subtree:true,characterData:true});
+  }catch(e){}
+  window.CONNECT_ENFORCE_BUILD=enforce;
+})();
+</script>
+<style id="connect-build-authority-v701-css">
+html[data-connect-authoritative="v701"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V701";--connect-build-short:"BUILD V701";}
+html[data-connect-authoritative="v701"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v701"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -70030,7 +70067,7 @@ body.nav-rail .tabs:after{content:attr(data-connect-build-short)!important;}
 <script id="connect-v695-company-workspace-alignment-js">
 (function(){
  'use strict';
- var BUILD='v696';
+ var BUILD=(window.CONNECT_BUILD_AUTHORITY||'v696');
  var BASE_CUSTOMERS=window._rp2CustomersV2;
  var BASE_PROFILE=window._rp2CompanyProfileV3;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
@@ -70235,7 +70272,7 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
 <script id="connect-v696-company-sales-coach-cleanup-js">
 (function(){
  'use strict';
- var BUILD='v696';
+ var BUILD=(window.CONNECT_BUILD_AUTHORITY||'v696');
  var BASE_CUSTOMERS=window._rp2CustomersV2;
  var BASE_PROFILE=window._rp2CompanyProfileV3;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
@@ -70395,7 +70432,7 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
 <script id="connect-v697-company-account-strategy-js">
 (function(){
  'use strict';
- var BUILD='v697';
+ var BUILD=(window.CONNECT_BUILD_AUTHORITY||'v697');
  var PLAN_STORE='tcp_rp_account_plans_v517';
  var STRATEGIES=['Grow','Protect','Recover','Reactivate','Maintain','Cross-Sell','Optimize Margin','Develop Relationship','Deprioritize'];
  var RISKS=['Low','Medium','High','Critical'];
@@ -70685,7 +70722,7 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
 <script id="connect-v699-company-workspace-rebalance-js">
 (function(){
  'use strict';
- var BUILD='v699',PLAN_STORE='tcp_rp_account_plans_v517';
+ var BUILD=(window.CONNECT_BUILD_AUTHORITY||'v699'),PLAN_STORE='tcp_rp_account_plans_v517';
  var STRATEGIES=['Grow','Protect','Recover','Reactivate','Maintain','Cross-Sell','Optimize Margin','Develop Relationship','Deprioritize'];
  var RISKS=['Low','Medium','High','Critical'];
  var METHODS=['Call','Email','Visit','Sample','Quote','Proposal','Other'];
@@ -70990,7 +71027,7 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
 <script id="connect-v700-company-sales-workflow-reset-js">
 (function(){
  'use strict';
- var BUILD='v700',DISPLAY='V700';
+ var BUILD=(window.CONNECT_BUILD_AUTHORITY||'v701'),DISPLAY=(window.CONNECT_BUILD_DISPLAY||'V701');
  var BASE_CUSTOMERS=window._rp2CustomersV2;
  var BASE_PROFILE=window._rp2CompanyProfileV3;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
@@ -71080,7 +71117,7 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
      document.querySelectorAll('.tabs').forEach(function(t){t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+DISPLAY);t.setAttribute('data-connect-build-short','BUILD '+DISPLAY)});
      document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){var x='Sales Portal · Build '+DISPLAY;if(clean(b.textContent)!==x)b.textContent=x});
      document.querySelectorAll('#rp-overlay .rp2-side *').forEach(function(el){if(el.children.length)return;var t=clean(el.textContent);if(/^sales portal\s*[·•-]\s*build\s*v\d+$/i.test(t))el.textContent='Sales Portal · Build '+DISPLAY});
-     document.title='Connect '+BUILD+' — Sales Portal';
+     document.title=(window.CONNECT_BUILD_TITLE||('Connect '+BUILD+' — Sales Portal'));if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();
    }catch(e){}
  }
  function queueBrand(){if(brandTimer)return;brandTimer=setTimeout(brand,25)}
@@ -71089,7 +71126,7 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
  document.addEventListener('click',function(){queueBrand();setTimeout(brand,220);setTimeout(brand,900)},true);
  try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(queueBrand).observe(host,{childList:true,subtree:true,characterData:true})}catch(e){}
  var priorAfter=window._rp2After;if(typeof priorAfter==='function')window._rp2After=function(){var out=priorAfter.apply(this,arguments);setTimeout(brand,0);setTimeout(brand,420);return out};
- window.TCP_COMPANY_SALES_WORKFLOW_V700={version:BUILD,focus:'rep workflow company overview: orient, decide, prepare, act, investigate',enhance:enhance,brand:brand};
+ window.TCP_COMPANY_SALES_WORKFLOW_V700={version:BUILD,focus:'rep workflow company overview: orient, decide, prepare, act, investigate',enhance:enhance,brand:brand};window.TCP_BUILD_IDENTITY_V701={version:BUILD,authority:true};
 })();
 
 </script>
