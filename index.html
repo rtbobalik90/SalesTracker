@@ -69697,3 +69697,239 @@ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title
 })();
 </script>
 
+
+<!-- ===== CONNECT v694 · COMPANY SALES WORKSPACE ===== -->
+<style id="connect-v694-company-sales-workspace-css">
+/* Company overview goal: prepare → act → sell.  Keep the deep records, but make
+   the first screen read like a salesperson's pre-call workspace rather than a CRM. */
+#rp-overlay .cux694-nextbar{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;
+  margin:14px 0 0;padding:14px 16px;border:1px solid rgba(250,135,61,.28);border-radius:18px;
+  background:linear-gradient(135deg,rgba(250,135,61,.12),rgba(0,175,239,.055) 58%,rgba(255,255,255,.025));
+  box-shadow:0 14px 34px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.055);
+}
+#rp-overlay .cux694-next-kick{color:#FFAF79;font-size:8.5px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;margin-bottom:4px;}
+#rp-overlay .cux694-next-title{color:#fff;font-size:17px;font-weight:950;letter-spacing:-.02em;line-height:1.18;}
+#rp-overlay .cux694-next-copy{margin-top:4px;color:#A8B6C8;font-size:10px;line-height:1.45;max-width:900px;}
+#rp-overlay .cux694-next-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end;}
+#rp-overlay .cux694-next-actions .cux8-action{min-height:36px!important;}
+#rp-overlay .cux694-nextbar + .cux8-overview{margin-top:12px!important;}
+
+/* Compact sales actions: the rep sees the selling actions first; record-keeping is under More. */
+#rp-overlay .cux694-more{position:relative;display:inline-flex;}
+#rp-overlay .cux694-more-menu{display:none;position:absolute;right:0;top:44px;z-index:40;width:188px;padding:6px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:#0D1824;box-shadow:0 20px 54px rgba(0,0,0,.45);}
+#rp-overlay .cux694-more.open .cux694-more-menu{display:grid;gap:4px;}
+#rp-overlay .cux694-more-menu button{min-height:34px;padding:0 10px;border:0;border-radius:9px;background:transparent;color:#DDE7F1;text-align:left;font-size:9.5px;font-weight:850;cursor:pointer;}
+#rp-overlay .cux694-more-menu button:hover{background:rgba(0,175,239,.10);color:#fff;}
+#rp-overlay .cux694-follow{border-color:rgba(0,175,239,.30)!important;background:rgba(0,175,239,.08)!important;color:#A9E8FF!important;}
+
+/* Hero: identity + sales status + only the metrics that help the rep decide what to do. */
+#rp-overlay .cux8-hero{padding:18px 20px 0!important;}
+#rp-overlay .cux8-hero-top{padding-bottom:14px!important;gap:16px!important;}
+#rp-overlay .cux8-avatar{width:58px!important;height:58px!important;border-radius:18px!important;}
+#rp-overlay .cux8-name{font-size:28px!important;}
+#rp-overlay .cux8-sub{margin-top:5px!important;}
+#rp-overlay .cux8-contact{margin-top:6px!important;}
+#rp-overlay .cux694-rel-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.045);color:#C8D4E2;font-size:8.5px;font-weight:900;white-space:nowrap;}
+#rp-overlay .cux694-rel-pill:before{content:"";width:6px;height:6px;border-radius:50%;background:#47D16C;box-shadow:0 0 10px rgba(71,209,108,.45);}
+#rp-overlay .cux694-rel-pill.warn:before{background:#FBBF24;box-shadow:0 0 10px rgba(251,191,36,.45);}
+#rp-overlay .cux694-rel-pill.risk:before{background:#FB7185;box-shadow:0 0 10px rgba(251,113,133,.48);}
+#rp-overlay .cux8-metrics{grid-template-columns:repeat(3,minmax(150px,1fr)) minmax(245px,1.15fr)!important;gap:8px!important;padding-bottom:14px!important;}
+#rp-overlay .cux8-metric{padding:10px 12px!important;}
+#rp-overlay .cux8-metric strong{font-size:15px!important;margin-top:4px!important;}
+#rp-overlay .cux694-open-state{min-width:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(4,10,19,.26);color:#8998AB;font-size:9px;font-weight:800;line-height:1.35;}
+#rp-overlay .cux694-open-state strong{color:#DDE7F1;font-size:9.3px;}
+#rp-overlay .cux694-open-state .has-open{color:#A9E8FF;}
+
+/* Snapshot: quiet complete data, make missing/actionable data visible. */
+#rp-overlay .cux8-kicker{color:#00AFEF!important;}
+#rp-overlay .cux8-brief-copy{max-width:none!important;}
+#rp-overlay .cux8-fact.cux694-missing{border-color:rgba(251,191,36,.28)!important;background:rgba(251,191,36,.055)!important;}
+#rp-overlay .cux8-fact.cux694-missing strong{color:#FFD58D!important;}
+#rp-overlay .cx586-health-line{font-weight:900!important;}
+#rp-overlay .cx586-tabs .cx586-tab{font-weight:900!important;}
+#rp-overlay .cux8-brief-foot{margin-top:12px!important;}
+
+/* Customer Workspace: compact horizontal intelligence cards instead of six giant destinations. */
+#rp-overlay .cux8-modules{grid-template-rows:auto repeat(3,minmax(0,1fr))!important;grid-auto-rows:minmax(0,1fr)!important;padding-top:0!important;}
+#rp-overlay .cux694-workspace-head{grid-column:1/-1;display:flex;align-items:end;justify-content:space-between;gap:12px;padding:0 2px 2px;min-height:42px;}
+#rp-overlay .cux694-workspace-kick{color:#8EDCFA;font-size:8.6px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;}
+#rp-overlay .cux694-workspace-title{margin-top:4px;color:#fff;font-size:17px;font-weight:950;letter-spacing:-.02em;}
+#rp-overlay .cux694-workspace-copy{color:#8392A6;font-size:9px;text-align:right;max-width:260px;line-height:1.35;}
+#rp-overlay .cux8-overview .cux8-tile{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr);grid-template-rows:auto auto auto!important;
+  column-gap:12px!important;row-gap:4px!important;align-items:start!important;justify-content:stretch!important;text-align:left!important;
+  min-height:0!important;padding:13px 38px 12px 13px!important;border-radius:18px!important;
+}
+#rp-overlay .cux8-overview .cux8-tile:before{left:-45px!important;top:-72px!important;width:170px!important;height:170px!important;transform:none!important;opacity:.52!important;}
+#rp-overlay .cux8-overview .cux8-tile:after{right:12px!important;bottom:auto!important;top:50%!important;transform:translateY(-50%)!important;width:27px;height:27px;display:grid!important;place-items:center!important;}
+#rp-overlay .cux8-overview .cux8-tile:hover:after{transform:translate(3px,-50%)!important;}
+#rp-overlay .cux8-overview .cux8-tile-icon{grid-column:1;grid-row:1/4;width:44px!important;height:44px!important;flex:0 0 44px!important;margin:0!important;border-radius:14px!important;font-size:20px!important;}
+#rp-overlay .cux8-overview .cux8-tile-name{grid-column:2;grid-row:1;margin:0!important;width:100%!important;text-align:left!important;font-size:14px!important;line-height:1.15!important;}
+#rp-overlay .cux8-overview .cux8-tile-copy{grid-column:2;grid-row:2;margin:0!important;max-width:none!important;text-align:left!important;font-size:9px!important;line-height:1.38!important;-webkit-line-clamp:2!important;}
+#rp-overlay .cux8-overview .cux8-tile-meta{grid-column:2;grid-row:3;position:static!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;margin:3px 0 0!important;justify-content:flex-start!important;font-size:8.2px!important;line-height:1.2!important;text-transform:none!important;white-space:normal!important;}
+#rp-overlay .cux8-overview .cux8-tile-meta b{display:none!important;}
+#rp-overlay .cux8-tile.cux694-warn{border-color:rgba(251,191,36,.34)!important;}
+#rp-overlay .cux8-tile.cux694-empty{opacity:.84;}
+#rp-overlay .cux8-tile.cux694-warn .cux8-tile-meta{color:#FFD58D!important;}
+
+/* Conversation Brief: sales prep first, channel history second. */
+#rp-overlay .cux10-notes{border-radius:22px!important;}
+#rp-overlay .cux10-title{font-size:21px!important;}
+#rp-overlay .cux10-summary-card{border-radius:14px!important;}
+#rp-overlay .cux10-summary-card:first-child{border-color:rgba(0,175,239,.18)!important;background:linear-gradient(135deg,rgba(0,175,239,.065),rgba(255,255,255,.025))!important;}
+#rp-overlay .cux10-list{display:grid!important;gap:6px!important;margin-top:9px!important;}
+#rp-overlay .cux10-chip{display:flex!important;align-items:center!important;padding:7px 9px!important;border-radius:10px!important;white-space:normal!important;text-align:left!important;}
+#rp-overlay .cux10-chip:before{content:"→";margin-right:7px;color:#7FE8FF;font-weight:950;}
+#rp-overlay .cux694-card-action{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+#rp-overlay .cux694-mini-btn{min-height:31px;padding:0 10px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:rgba(255,255,255,.045);color:#DCE7F1;font-size:8.8px;font-weight:900;cursor:pointer;}
+#rp-overlay .cux694-mini-btn:hover{border-color:rgba(0,175,239,.42);background:rgba(0,175,239,.09);color:#fff;}
+#rp-overlay .cux694-mini-btn.orange{border-color:rgba(250,135,61,.34);background:rgba(250,135,61,.09);color:#FFD3B5;}
+
+/* Desktop proportions: snapshot / compact workspace / conversation brief. */
+@media(min-width:1200px){
+  #rp-overlay .cux8-stage>.cux8-hero+.cux694-nextbar+.cux8-overview{margin-top:12px!important;}
+  #rp-overlay .cux8-overview{grid-template-columns:minmax(285px,.62fr) minmax(520px,1.25fr) minmax(380px,.88fr)!important;gap:16px!important;}
+}
+@media(max-width:1400px) and (min-width:1200px){
+  #rp-overlay .cux8-overview{grid-template-columns:minmax(270px,.62fr) minmax(470px,1.18fr) minmax(350px,.86fr)!important;gap:13px!important;}
+  #rp-overlay .cux694-workspace-copy{display:none;}
+  #rp-overlay .cux8-actions{max-width:520px!important;}
+  #rp-overlay .cux8-action{padding:0 10px!important;}
+}
+@media(max-width:1199px){
+  #rp-overlay .cux694-nextbar{grid-template-columns:1fr;}
+  #rp-overlay .cux694-next-actions{justify-content:flex-start;}
+  #rp-overlay .cux8-metrics{grid-template-columns:repeat(2,minmax(140px,1fr))!important;}
+  #rp-overlay .cux694-open-state{grid-column:1/-1;}
+  #rp-overlay .cux8-modules{grid-template-rows:auto!important;grid-auto-rows:auto!important;}
+  #rp-overlay .cux8-overview .cux8-tile{min-height:112px!important;}
+}
+@media(max-width:720px){
+  #rp-overlay .cux8-metrics{grid-template-columns:1fr!important;}
+  #rp-overlay .cux694-workspace-head{align-items:flex-start;flex-direction:column;}
+  #rp-overlay .cux694-workspace-copy{text-align:left;}
+  #rp-overlay .cux694-next-actions .cux8-action{flex:1;}
+}
+
+/* Light theme parity. */
+html[data-rp-theme="light"] #rp-overlay .cux694-nextbar{background:linear-gradient(135deg,#FFF5EC,#F1F9FC)!important;border-color:rgba(214,103,34,.28)!important;box-shadow:0 8px 22px rgba(36,58,76,.07)!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-next-title,html[data-rp-theme="light"] #rp-overlay .cux694-workspace-title{color:#142B3D!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-next-copy,html[data-rp-theme="light"] #rp-overlay .cux694-workspace-copy{color:#637A8D!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-open-state{background:#F7FAFC!important;border-color:#CBD6DF!important;color:#637A8D!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-open-state strong{color:#243E52!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-more-menu{background:#FFFFFF!important;border-color:#CBD6DF!important;box-shadow:0 18px 44px rgba(35,55,72,.18)!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-more-menu button{color:#304B61!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-more-menu button:hover{background:#EAF6FB!important;color:#102638!important;}
+html[data-rp-theme="light"] #rp-overlay .cux8-tile.cux694-warn{border-color:rgba(170,103,27,.34)!important;}
+html[data-rp-theme="light"] #rp-overlay .cux8-fact.cux694-missing{background:#FFF8EA!important;border-color:#E4C58D!important;}
+html[data-rp-theme="light"] #rp-overlay .cux8-fact.cux694-missing strong{color:#8E5616!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-mini-btn{background:#F7FAFC!important;border-color:#CBD6DF!important;color:#304B61!important;}
+html[data-rp-theme="light"] #rp-overlay .cux694-mini-btn.orange{background:#FFF4EC!important;border-color:rgba(214,103,34,.28)!important;color:#A64B16!important;}
+</style>
+<script id="connect-v694-company-sales-workspace-js">
+(function(){
+ 'use strict';
+ if(window.TCP_COMPANY_SALES_WORKSPACE_V694)return;
+ var BUILD='v694';
+ var BASE_CUSTOMERS=window._rp2CustomersV2;
+ var BASE_PROFILE=window._rp2CompanyProfileV3;
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function esc(v){return clean(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var box=document.createElement('div');box.appendChild(frag.cloneNode(true));return box.innerHTML}
+ function zeroish(v){var s=clean(v).toLowerCase();return !s||s==='—'||s==='none'||s==='none recorded'||/^\$?0(?:\.0+)?$/.test(s)||/^0\s/.test(s)}
+ function rawCount(tile){var b=tile&&tile.querySelector('.cux8-tile-meta b');return b?Number(clean(b.textContent).replace(/,/g,''))||0:0}
+ function sectionOf(tile){var m=clean(tile&&tile.getAttribute('onclick')).match(/_cux8Open\(['"]([^'"]+)/);return m?m[1]:''}
+ function activeTitle(raw){var t=clean(raw);if(/decision-maker coverage is missing/i.test(t))return'Identify the purchasing decision-maker';if(/no future relationship action/i.test(t))return'Schedule the next customer touch';if(/dormant/i.test(t))return'Re-engage this customer';return t||'Set the next customer action'}
+ function nextActionBar(next){
+   if(!next)return null;
+   var raw=clean(next.querySelector('strong')&&next.querySelector('strong').textContent),copy=clean(next.querySelector('p')&&next.querySelector('p').textContent),decision=/decision-maker/i.test(raw);
+   var el=document.createElement('section');el.className='cux694-nextbar';
+   el.innerHTML='<div><div class="cux694-next-kick">Recommended next move</div><div class="cux694-next-title">'+esc(activeTitle(raw))+'</div><div class="cux694-next-copy">'+esc(copy||'Choose one useful customer action and leave the account with a clear next step.')+'</div></div>'+
+     '<div class="cux694-next-actions"><button class="cux8-action primary" onclick="'+(decision?"_cux8Open('contacts')":"_cux8Action('task')")+'">'+(decision?'Open Contacts':'Create Follow-Up')+'</button><button class="cux8-action" onclick="_cux8Action(\'call\')">☎ Call Now</button></div>';
+   return el;
+ }
+ function replaceActions(frag){
+   var host=frag.querySelector('.cux8-actions');if(!host)return;
+   host.innerHTML='<button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button>'+
+    '<button class="cux8-action" onclick="_cux8Action(\'email\')">✉ Email</button>'+
+    '<button class="cux8-action cux694-follow" onclick="_cux8Action(\'task\')">＋ Follow-Up</button>'+
+    '<button class="cux8-action orange" onclick="_cux8Action(\'quote\')">Create Quote</button>'+
+    '<span class="cux694-more"><button class="cux8-action" onclick="event.stopPropagation();_cux694ToggleMore(this)">••• More</button><span class="cux694-more-menu"><button onclick="_cux694CloseMore();_cux8Action(\'note\')">＋ Add Note</button><button onclick="_cux694CloseMore();_cux8Action(\'activity\')">Log Activity</button><button onclick="_cux694CloseMore();_cux8Open(\'service\')">Service & Approvals</button></span></span>';
+ }
+ function upgradeHero(frag){
+   var hero=frag.querySelector('.cux8-hero');if(!hero)return;
+   replaceActions(frag);
+   var health=clean(frag.querySelector('.cx586-health-line')&&frag.querySelector('.cx586-health-line').textContent);
+   var contact=hero.querySelector('.cux8-contact');
+   if(contact&&health){var pill=document.createElement('span');pill.className='cux694-rel-pill '+(/dormant|overdue|risk/i.test(health)?'risk':/cooling|due|weak/i.test(health)?'warn':'');pill.textContent=health;contact.appendChild(pill)}
+   var metrics=Array.prototype.slice.call(hero.querySelectorAll('.cux8-metric'));
+   var open=[],keep=[];
+   metrics.forEach(function(m){var l=clean(m.querySelector('span')&&m.querySelector('span').textContent),v=clean(m.querySelector('strong')&&m.querySelector('strong').textContent),ll=l.toLowerCase();
+     if(/next best action/.test(ll)){m.remove();return}
+     if(/open pipeline|active quotes|open orders/.test(ll)){open.push({label:l,value:v,zero:zeroish(v)});m.remove();return}
+     if(/ytd sales|lifetime|last order/.test(ll))keep.push(m);else m.remove();
+   });
+   var box=hero.querySelector('.cux8-metrics');if(!box)return;
+   keep.forEach(function(m){box.appendChild(m)});
+   var state=document.createElement('div');state.className='cux694-open-state';
+   var parts=open.map(function(x){return '<span class="'+(x.zero?'':'has-open')+'"><strong>'+esc(x.label.replace(/^open\s+/i,'').replace(/^active\s+/i,''))+':</strong> '+esc(x.zero?'None':x.value)+'</span>'});
+   state.innerHTML=parts.length?parts.join('<span>·</span>'):'<span><strong>Open business:</strong> No active quote, order, or pipeline signal</span>';
+   box.appendChild(state);
+ }
+ function upgradeSnapshot(frag,nextRaw){
+   var brief=frag.querySelector('.cux8-brief');if(!brief)return;
+   var kick=brief.querySelector('.cux8-kicker'),title=brief.querySelector('.cux8-brief-title'),copy=brief.querySelector('.cux8-brief-copy');
+   if(kick)kick.textContent='Customer Snapshot';if(title)title.textContent='Account Snapshot';if(copy)copy.textContent='Only the account context that helps you prepare, sell, and keep the relationship moving.';
+   brief.querySelectorAll('.cux8-fact').forEach(function(f){var v=clean(f.querySelector('strong')&&f.querySelector('strong').textContent);if(!v||/not recorded|missing|unknown/i.test(v))f.classList.add('cux694-missing')});
+   var tabs=brief.querySelectorAll('.cx586-tab');if(tabs[0])tabs[0].textContent='Account';if(tabs[1])tabs[1].textContent='Buying';
+   var foot=brief.querySelector('.cux8-brief-foot');if(foot){var decision=/decision-maker/i.test(nextRaw);foot.innerHTML='<button class="cux8-action primary" onclick="'+(decision?"_cux8Open('contacts')":"_cux8Action('task')")+'">'+(decision?'Review Contacts':'Create Follow-Up')+'</button><button class="cux8-action" onclick="_cux8Open(\'service\')">Service & Approvals</button>'}
+ }
+ function tileStatus(section,count,needsDecision){
+   if(section==='products')return count?count.toLocaleString()+' products in buying history':'No product history loaded';
+   if(section==='orders')return count?count.toLocaleString()+' order'+(count===1?'':'s')+' in account history':'No orders loaded';
+   if(section==='contacts')return needsDecision?'Decision-maker coverage needs attention':(count?count.toLocaleString()+' known contact'+(count===1?'':'s'):'No contacts recorded');
+   if(section==='activity')return count?count.toLocaleString()+' recorded customer touch'+(count===1?'':'es'):'No conversations recorded yet';
+   if(section==='artwork')return count?count.toLocaleString()+' artwork / file record'+(count===1?'':'s'):'No artwork records loaded';
+   if(section==='events')return count?count.toLocaleString()+' customer date'+(count===1?'':'s')+' to review':'No upcoming customer dates';
+   return count.toLocaleString()+' records';
+ }
+ function tileCopy(section){return({products:'Buying history, reorder timing, and cross-sell ideas.',orders:'Order history, commitments, totals, and deadlines.',contacts:'People, buying roles, and decision authority.',activity:'Calls, emails, notes, meetings, and follow-ups.',artwork:'Logos, proofs, approvals, and customer files.',events:'Dates, quote decisions, tasks, and reorder reminders.'})[section]||'Open the connected customer records.'}
+ function upgradeModules(frag,nextRaw){
+   var host=frag.querySelector('.cux8-modules');if(!host)return;
+   var head=document.createElement('div');head.className='cux694-workspace-head';head.innerHTML='<div><div class="cux694-workspace-kick">Customer Workspace</div><div class="cux694-workspace-title">Everything you need to sell this account</div></div><div class="cux694-workspace-copy">Open the detail only when you need it. The status line tells you where attention belongs first.</div>';
+   host.insertBefore(head,host.firstChild);
+   var needsDecision=/decision-maker/i.test(nextRaw);
+   host.querySelectorAll('.cux8-tile').forEach(function(tile){var section=sectionOf(tile),count=rawCount(tile),copy=tile.querySelector('.cux8-tile-copy'),meta=tile.querySelector('.cux8-tile-meta');if(copy)copy.textContent=tileCopy(section);if(meta)meta.innerHTML='<span>'+esc(tileStatus(section,count,needsDecision&&section==='contacts'))+'</span>';if(!count)tile.classList.add('cux694-empty');if(needsDecision&&section==='contacts')tile.classList.add('cux694-warn')});
+ }
+ function upgradeConversation(frag){
+   var panel=frag.querySelector('.cux10-notes');if(!panel)return;
+   var kick=panel.querySelector('.cux10-kicker'),title=panel.querySelector('.cux10-title'),copy=panel.querySelector('.cux10-copy');
+   if(kick)kick.textContent='Sales Prep';if(title)title.textContent='Conversation Brief';if(copy)copy.textContent='What to know, what to talk about, and what happened last.';
+   var firstTab=panel.querySelector('[data-cux10-tab="summary"]');if(firstTab)firstTab.textContent='Brief';
+   var cards=panel.querySelectorAll('.cux10-summary-card');
+   if(cards[0]){var k0=cards[0].querySelector('.cux10-card-kick'),t0=cards[0].querySelector('.cux10-card-title');if(k0)k0.textContent='Conversation context';if(t0)t0.textContent='What to know before you reach out'}
+   if(cards[1]){var t1=cards[1].querySelector('.cux10-card-title');if(t1)t1.textContent='Good starting points for the next conversation';if(!cards[1].querySelector('.cux694-card-action')){var a1=document.createElement('div');a1.className='cux694-card-action';a1.innerHTML='<button class="cux694-mini-btn" onclick="_cux8Open(\'products\')">Open Products</button>';cards[1].appendChild(a1)}}
+   if(cards[2]){var k2=cards[2].querySelector('.cux10-card-kick');if(k2)k2.textContent='Current sales opportunity · Review for fit';if(!cards[2].querySelector('.cux694-card-action')){var a2=document.createElement('div');a2.className='cux694-card-action';a2.innerHTML='<button class="cux694-mini-btn orange" onclick="_cux8Action(\'quote\')">Create Quote</button><button class="cux694-mini-btn" onclick="_cux8Action(\'task\')">Set Follow-Up</button>';cards[2].appendChild(a2)}}
+ }
+ function upgrade(markup){
+   if(!markup||String(markup).indexOf('cux8-overview')<0)return markup;
+   var frag=parse(markup);if(frag.querySelector('.cux694-nextbar'))return markup;var hero=frag.querySelector('.cux8-hero'),overview=frag.querySelector('.cux8-overview'),next=frag.querySelector('.cux8-next');if(!hero||!overview)return markup;
+   var nextRaw=clean(next&&next.querySelector('strong')&&next.querySelector('strong').textContent);
+   var bar=nextActionBar(next);if(bar){hero.insertAdjacentElement('afterend',bar);next.remove()}
+   upgradeHero(frag);upgradeSnapshot(frag,nextRaw);upgradeModules(frag,nextRaw);upgradeConversation(frag);
+   return stringify(frag)
+ }
+ function wrap(base){return typeof base==='function'?function(){return upgrade(base.apply(this,arguments))}:base}
+ window._rp2CustomersV2=wrap(BASE_CUSTOMERS);
+ window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+ var BASE_CUX10_TAB=window._cux10SetTab;
+ if(typeof BASE_CUX10_TAB==='function')window._cux10SetTab=function(tab){var out=BASE_CUX10_TAB.apply(this,arguments);setTimeout(function(){try{upgradeConversation(document)}catch(e){}},0);return out};
+ window._cux694ToggleMore=function(btn){var w=btn&&btn.closest('.cux694-more');if(!w)return;var open=w.classList.contains('open');window._cux694CloseMore();if(!open)w.classList.add('open')};
+ window._cux694CloseMore=function(){document.querySelectorAll('.cux694-more.open').forEach(function(x){x.classList.remove('open')})};
+ document.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('.cux694-more'))window._cux694CloseMore()},true);
+ try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Connect — Sales Portal'}catch(e){}
+ window.TCP_COMPANY_SALES_WORKSPACE_V694={version:BUILD,focus:'company overview as a rep-first sales workspace',upgrade:upgrade};
+})();
+</script>
