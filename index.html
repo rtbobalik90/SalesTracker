@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v696 — Sales Portal</title>
+<title>Connect v697 — Sales Portal</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -70341,5 +70341,216 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
  function brand(){try{window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-tcp-build',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.querySelectorAll('.tabs').forEach(function(t){t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+BUILD);t.setAttribute('data-connect-build-short','BUILD '+BUILD)});document.querySelectorAll('#rp-overlay .cux695-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+BUILD});document.title='Connect '+BUILD+' — Sales Portal';placeBuild()}catch(e){}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();document.addEventListener('click',function(){setTimeout(brand,80);setTimeout(brand,420);setTimeout(brand,760)},true);setTimeout(brand,650);setTimeout(brand,920);
  window.TCP_COMPANY_SALES_COACH_CLEANUP_V696={version:BUILD,focus:'rep-first company overview cleanup, coaching context, execution status, overflow safety',upgrade:cleanup,brand:brand};
+})();
+</script>
+
+<!-- ===== CONNECT v697 · COMPANY ACCOUNT STRATEGY MERGE ===== -->
+<style id="connect-v697-company-account-strategy-css">
+/* v697: Scott's strategic-account depth is merged into Connect's existing
+   Account Plans + Company Overview. The Overview stays scan-first; deeper
+   buying/process/dossier information remains progressively disclosed. */
+#rp-overlay .cux697-resource-link{
+  min-height:29px;padding:0 10px;border-radius:9px;border:1px solid rgba(16,185,129,.20);
+  background:rgba(16,185,129,.055);color:#8FE0C1;font-size:8.7px;font-weight:950;cursor:pointer;
+}
+#rp-overlay .cux697-resource-link:hover{border-color:rgba(16,185,129,.40);background:rgba(16,185,129,.11);color:#C7F5E5;}
+#rp-overlay .cx586-tab[data-t="strategy"]{color:#8FE0C1;}
+#rp-overlay .cx586-tab[data-t="strategy"].on{color:#fff;}
+#rp-overlay .cux697-strategy-pane{display:grid;gap:7px;}
+#rp-overlay .cux697-strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+#rp-overlay .cux697-strategy-fact{min-width:0;padding:8px 9px;border-radius:10px;border:1px solid rgba(255,255,255,.065);background:rgba(255,255,255,.022);}
+#rp-overlay .cux697-strategy-fact span{display:block;color:#718099;font-size:7.2px;font-weight:950;letter-spacing:.72px;text-transform:uppercase;}
+#rp-overlay .cux697-strategy-fact strong{display:block;margin-top:4px;color:#E8EFF6;font-size:9.7px;font-weight:900;line-height:1.32;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#rp-overlay .cux697-strategy-empty{padding:10px;border-radius:10px;border:1px dashed rgba(16,185,129,.18);background:rgba(16,185,129,.035);color:#8493A6;font-size:9px;line-height:1.45;}
+#rp-overlay .cux697-strategy-empty button{margin-top:8px;min-height:28px;padding:0 9px;border-radius:8px;border:1px solid rgba(16,185,129,.22);background:rgba(16,185,129,.08);color:#A9ECD3;font-size:8px;font-weight:950;cursor:pointer;}
+#rp-overlay .cux697-plan-source{display:inline-flex;align-items:center;margin-left:8px;padding:3px 6px;border-radius:999px;border:1px solid rgba(16,185,129,.22);background:rgba(16,185,129,.07);color:#8FE0C1;font-size:7px;font-weight:950;letter-spacing:.55px;text-transform:uppercase;vertical-align:middle;}
+#rp-overlay .cux697-plan-note{margin-top:6px;color:#71899A;font-size:8.5px;font-weight:800;}
+
+/* Account Strategy form groups */
+#rp-overlay .cux697-form-section{margin-top:4px;padding:14px;border-radius:15px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.022);}
+#rp-overlay .cux697-form-section + .cux697-form-section{margin-top:2px;}
+#rp-overlay .cux697-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+#rp-overlay .cux697-form-kick{color:#79E2BE;font-size:7.5px;font-weight:950;letter-spacing:1px;text-transform:uppercase;}
+#rp-overlay .cux697-form-title{margin-top:4px;color:#F3F7FA;font-size:14px;font-weight:950;}
+#rp-overlay .cux697-form-copy{max-width:480px;color:#718099;font-size:8.3px;line-height:1.45;text-align:right;}
+#rp-overlay .cux697-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+#rp-overlay .cux697-form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr));}
+#rp-overlay .cux697-form-grid + .cux697-form-grid,#rp-overlay .cux697-form-grid + .ap3-field,#rp-overlay .ap3-field + .cux697-form-grid{margin-top:10px;}
+#rp-overlay .cux697-form-section .ap3-field + .ap3-field{margin-top:10px;}
+#rp-overlay .cux697-help{margin-top:8px;color:#64758A;font-size:8px;line-height:1.45;}
+#rp-overlay .cux697-detail-section{margin:16px 0 0;padding:16px;border-radius:16px;border:1px solid rgba(16,185,129,.13);background:rgba(16,185,129,.025);}
+#rp-overlay .cux697-detail-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px;}
+#rp-overlay .cux697-detail-head strong{color:#F0F7F4;font-size:14px;}
+#rp-overlay .cux697-detail-head span{color:#718099;font-size:8px;}
+#rp-overlay .cux697-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+#rp-overlay .cux697-detail-card{min-width:0;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.022);}
+#rp-overlay .cux697-detail-card span{display:block;color:#718099;font-size:7px;font-weight:950;letter-spacing:.72px;text-transform:uppercase;}
+#rp-overlay .cux697-detail-card div{margin-top:5px;color:#DDE7EE;font-size:9.2px;line-height:1.5;white-space:pre-wrap;}
+#rp-overlay .cux697-detail-card.wide{grid-column:1/-1;}
+@media(max-width:680px){
+  #rp-overlay .cux697-strategy-grid,#rp-overlay .cux697-form-grid,#rp-overlay .cux697-form-grid.three,#rp-overlay .cux697-detail-grid{grid-template-columns:1fr;}
+  #rp-overlay .cux697-form-copy{text-align:left;}
+}
+</style>
+<script id="connect-v697-company-account-strategy-js">
+(function(){
+ 'use strict';
+ var BUILD='v697';
+ var PLAN_STORE='tcp_rp_account_plans_v517';
+ var STRATEGIES=['Grow','Protect','Recover','Reactivate','Maintain','Cross-Sell','Optimize Margin','Develop Relationship','Deprioritize'];
+ var RISKS=['Low','Medium','High','Critical'];
+ var METHODS=['Call','Email','Visit','Sample','Quote','Proposal','Other'];
+ var BASE_PROFILE=window._rp2CompanyProfileV3;
+ var BASE_CUSTOMERS=window._rp2CustomersV2;
+ var BASE_PLANS=window._rp2AccountPlansV3;
+ var BASE_SAVE=window._rp2AccountPlansSave;
+ var BASE_SAVE_PROGRAM=window._rp2AccountPlansSaveProgram;
+ var BASE_SAVE_PRIORITY=window._rp2AccountPlansSavePriority;
+ var BASE_PUSH_PRIORITY=window._rp2AccountPlansPushPriority;
+ var EXTRA_KEYS=['strategy','riskLevel','biggestOpportunity','nextBestAction','nextMoveWhy','nextMoveHow','contactMethod','actionOwner','managerSupport','actionDueDate','followUpDate','theirBusiness','budgetOwner','budgetCycle','buyingProcess','orderTriggers','backupContact','shareOfWallet','competitivePosition','brandStandards','plan30','plan60','plan90'];
+
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+ function stringify(frag){var box=document.createElement('div');box.appendChild(frag.cloneNode(true));return box.innerHTML}
+ function readStore(){try{var s=JSON.parse(localStorage.getItem(PLAN_STORE)||'null');return s&&s.version===1&&s.reps?s:{version:1,reps:{}}}catch(e){return{version:1,reps:{}}}}
+ function repName(){return window._rp2&&window._rp2.rep||''}
+ function plansBucket(){var s=readStore(),r=repName();s.reps[r]=s.reps[r]||{plans:{},events:[]};s.reps[r].plans=s.reps[r].plans||{};return{store:s,rep:r,data:s.reps[r]}}
+ function planFor(name){var b=plansBucket(),p=b.data.plans[norm(name)]||{};return Object.assign({company:name},p)}
+ function saveExtras(name,extra){var b=plansBucket(),k=norm(name),p=b.data.plans[k]||{company:name};Object.keys(extra).forEach(function(key){p[key]=extra[key]});p.company=name;p.updatedAt=new Date().toISOString();b.data.plans[k]=p;b.store.reps[b.rep]=b.data;try{localStorage.setItem(PLAN_STORE,JSON.stringify(b.store))}catch(e){}}
+ function hasPlanDepth(p){return !!(clean(p.strategy)||clean(p.biggestOpportunity)||clean(p.nextBestAction)||clean(p.budgetOwner)||clean(p.buyingProcess)||clean(p.budgetCycle)||clean(p.orderTriggers)||clean(p.theirBusiness)||clean(p.competitivePosition)||clean(p.plan30)||clean(p.plan60)||clean(p.plan90))}
+ function extraSnapshot(name){var p=planFor(name),out={};EXTRA_KEYS.forEach(function(k){if(Object.prototype.hasOwnProperty.call(p,k))out[k]=p[k]});return out}
+ function preserveExtras(base,resolver){if(typeof base!=='function')return base;return function(){var name='';try{name=clean(resolver.apply(this,arguments))}catch(e){}var snap=name?extraSnapshot(name):{};var out=base.apply(this,arguments);if(name)saveExtras(name,snap);return out}}
+ function value(id){var e=document.getElementById(id);return e?clean(e.value):''}
+ function checkedYes(id){return /^yes$/i.test(value(id))}
+ function opts(list,current){return list.map(function(x){return '<option value="'+esc(x)+'" '+(String(current||'')===String(x)?'selected':'')+'>'+esc(x)+'</option>'}).join('')}
+ function field(label,id,val,type,options,placeholder){
+   if(type==='textarea')return '<div class="ap3-field"><label>'+esc(label)+'</label><textarea id="'+id+'" placeholder="'+esc(placeholder||'')+'">'+esc(val||'')+'</textarea></div>';
+   if(type==='select')return '<div class="ap3-field"><label>'+esc(label)+'</label><select id="'+id+'">'+opts(options||[],val)+'</select></div>';
+   return '<div class="ap3-field"><label>'+esc(label)+'</label><input id="'+id+'" type="'+esc(type||'text')+'" value="'+esc(val||'')+'" placeholder="'+esc(placeholder||'')+'"></div>';
+ }
+ function sectionHead(kick,title,copy){return '<div class="cux697-form-head"><div><div class="cux697-form-kick">'+esc(kick)+'</div><div class="cux697-form-title">'+esc(title)+'</div></div><div class="cux697-form-copy">'+esc(copy)+'</div></div>'}
+ function extraFields(p){
+   return ''
+    +'<section class="cux697-form-section" data-cux697="strategy">'+sectionHead('Strategy & execution','Turn account thinking into one clear sales motion','Rep-entered planning context. Saved Next Best Action can feed the Company Overview.')
+    +'<div class="cux697-form-grid three">'+field('Account strategy','ap3-x-strategy',p.strategy||'Maintain','select',STRATEGIES)+field('Risk level','ap3-x-risk',p.riskLevel||'Low','select',RISKS)+field('Biggest opportunity','ap3-x-opportunity',p.biggestOpportunity||'','text',null,'What is the clearest growth or retention opportunity?')+'</div>'
+    +field('Next Best Action','ap3-x-nba',p.nextBestAction||'','textarea',null,'The one clear move the rep should make next.')
+    +'<div class="cux697-form-grid">'+field('Why this move matters','ap3-x-why',p.nextMoveWhy||'','textarea',null,'What signal or account condition makes this the priority?')+field('How to approach it','ap3-x-how',p.nextMoveHow||'','textarea',null,'Practical talk track, positioning, or execution guidance.')+'</div>'
+    +'<div class="cux697-form-grid three">'+field('Contact method','ap3-x-method',p.contactMethod||'Call','select',METHODS)+field('Action owner','ap3-x-owner',p.actionOwner||repName(),'text')+field('Manager support','ap3-x-manager',p.managerSupport?'Yes':'No','select',['No','Yes'])+'</div>'
+    +'<div class="cux697-form-grid">'+field('Action due date','ap3-x-due',p.actionDueDate||'','date')+field('Follow-up date','ap3-x-followup',p.followUpDate||'','date')+'</div>'
+    +'</section>'
+    +'<section class="cux697-form-section" data-cux697="buying">'+sectionHead('Customer & buying process','Understand how the account actually buys','Use this for customer knowledge—not as a substitute for connected order or contact evidence.')
+    +field('Their business','ap3-x-business',p.theirBusiness||'','textarea',null,'What they do, what matters operationally, busy season, recent changes, and context worth remembering.')
+    +'<div class="cux697-form-grid">'+field('Budget owner / contact','ap3-x-budget-owner',p.budgetOwner||'','text',null,'Who owns or approves this spend?')+field('Budget cycle','ap3-x-budget-cycle',p.budgetCycle||'','text',null,'When is budget planned, approved, or spent?')+'</div>'
+    +field('Buying process','ap3-x-buying-process',p.buyingProcess||'','textarea',null,'PO, quote, committee, webstore, approval flow, procurement, terms, or other steps.')
+    +field('Order triggers','ap3-x-triggers',p.orderTriggers||'','textarea',null,'New hires, safety audits, annual events, seasonal programs, projects, anniversaries, etc.')
+    +'</section>'
+    +'<section class="cux697-form-section" data-cux697="position">'+sectionHead('Relationship & position','Protect the relationship and understand where we stand','Relationship roles still belong in Contacts; these fields capture strategic context around that map.')
+    +'<div class="cux697-form-grid">'+field('Backup relationship','ap3-x-backup',p.backupContact||'','text',null,'If the primary contact left tomorrow, who keeps the account?')+field('Share of wallet','ap3-x-wallet',p.shareOfWallet||'','text',null,'Known or estimated share—include context, not just a number.')+'</div>'
+    +'<div class="cux697-form-grid">'+field('Competitive position','ap3-x-competition',p.competitivePosition||'','textarea',null,'Who else sells them and what do we win/lose on?')+field('Brand standards','ap3-x-brand',p.brandStandards||'','textarea',null,'Logo rules, colors, decoration expectations, standard products, or approval requirements.')+'</div>'
+    +'</section>'
+    +'<section class="cux697-form-section" data-cux697="plan90">'+sectionHead('30 / 60 / 90','Keep strategic accounts moving','Use only when the account warrants a deeper plan. Smaller accounts can leave this blank.')
+    +'<div class="cux697-form-grid three">'+field('Next 30 days','ap3-x-30',p.plan30||'','textarea')+field('Next 60 days','ap3-x-60',p.plan60||'','textarea')+field('Next 90 days','ap3-x-90',p.plan90||'','textarea')+'</div>'
+    +'</section>';
+ }
+ function currentPlanFromForm(frag){var select=frag.querySelector('#ap3-f-company'),name=select?clean(select.value):'';if(!name&&window._rp2AccountPlansModal&&window._rp2AccountPlansModal.company)try{name=decodeURIComponent(window._rp2AccountPlansModal.company)}catch(e){}return planFor(name)}
+ function enhancePlanMarkup(markup){
+   if(!markup||String(markup).indexOf('ap3-modal')<0)return markup;
+   var frag=parse(markup),form=frag.querySelector('.ap3-modal .ap3-form'),companySelect=frag.querySelector('#ap3-f-company');
+   if(form&&companySelect&&!form.querySelector('[data-cux697="strategy"]')){
+     companySelect.setAttribute('onchange','_cux697PlanCompanyChanged()');
+     var p=currentPlanFromForm(frag),holder=document.createElement('div');holder.innerHTML=extraFields(p);while(holder.firstChild)form.appendChild(holder.firstChild);
+     var sub=frag.querySelector('.ap3-modal-sub');if(sub)sub.textContent='Connect customer goals, buying process, relationship depth, opportunity, risk, and one clear Next Best Action.';
+   }
+   var detailActions=frag.querySelector('.ap3-modal-actions'),detailGrid=frag.querySelector('.ap3-detail-grid');
+   if(detailActions&&detailGrid&&!frag.querySelector('.cux697-detail-section')&&window._rp2AccountPlansModal&&window._rp2AccountPlansModal.mode==='detail'){
+     var name='';try{name=decodeURIComponent(window._rp2AccountPlansModal.company||'')}catch(e){}var p2=planFor(name);
+     if(hasPlanDepth(p2)){
+       var sec=document.createElement('section');sec.className='cux697-detail-section';sec.innerHTML=detailSummary(p2);detailGrid.insertAdjacentElement('afterend',sec);
+     }
+   }
+   return stringify(frag)
+ }
+ function detailCard(label,val,wide){return '<div class="cux697-detail-card'+(wide?' wide':'')+'"><span>'+esc(label)+'</span><div>'+esc(clean(val)||'Not recorded')+'</div></div>'}
+ function detailSummary(p){
+   var motion=[clean(p.strategy)||'Maintain',clean(p.riskLevel)?p.riskLevel+' risk':'',clean(p.contactMethod)?p.contactMethod+' next':'' ].filter(Boolean).join(' · ');
+   return '<div class="cux697-detail-head"><strong>Account Strategy</strong><span>Rep-entered strategic context · actual sales remain connected-data evidence</span></div><div class="cux697-detail-grid">'
+    +detailCard('Strategy / posture',motion)+detailCard('Biggest opportunity',p.biggestOpportunity)
+    +detailCard('Next Best Action',p.nextBestAction,true)+detailCard('Why it matters',p.nextMoveWhy)+detailCard('How to approach it',p.nextMoveHow)
+    +detailCard('Budget owner',p.budgetOwner)+detailCard('Budget cycle',p.budgetCycle)+detailCard('Buying process',p.buyingProcess,true)+detailCard('Order triggers',p.orderTriggers,true)
+    +detailCard('Backup relationship',p.backupContact)+detailCard('Share of wallet',p.shareOfWallet)+detailCard('Competitive position',p.competitivePosition)+detailCard('Brand standards',p.brandStandards)
+    +detailCard('30 days',p.plan30)+detailCard('60 days',p.plan60)+detailCard('90 days',p.plan90)
+    +'</div>';
+ }
+ window._cux697PlanCompanyChanged=function(){
+   var name=value('ap3-f-company'),p=planFor(name),map={
+     'ap3-x-strategy':p.strategy||'Maintain','ap3-x-risk':p.riskLevel||'Low','ap3-x-opportunity':p.biggestOpportunity||'','ap3-x-nba':p.nextBestAction||'',
+     'ap3-x-why':p.nextMoveWhy||'','ap3-x-how':p.nextMoveHow||'','ap3-x-method':p.contactMethod||'Call','ap3-x-owner':p.actionOwner||repName(),'ap3-x-manager':p.managerSupport?'Yes':'No',
+     'ap3-x-due':p.actionDueDate||'','ap3-x-followup':p.followUpDate||'','ap3-x-business':p.theirBusiness||'','ap3-x-budget-owner':p.budgetOwner||'',
+     'ap3-x-budget-cycle':p.budgetCycle||'','ap3-x-buying-process':p.buyingProcess||'','ap3-x-triggers':p.orderTriggers||'','ap3-x-backup':p.backupContact||'',
+     'ap3-x-wallet':p.shareOfWallet||'','ap3-x-competition':p.competitivePosition||'','ap3-x-brand':p.brandStandards||'','ap3-x-30':p.plan30||'','ap3-x-60':p.plan60||'','ap3-x-90':p.plan90||''
+   };Object.keys(map).forEach(function(id){var e=document.getElementById(id);if(e)e.value=map[id]})
+ };
+ if(typeof BASE_PLANS==='function')window._rp2AccountPlansV3=function(){return enhancePlanMarkup(BASE_PLANS.apply(this,arguments))};
+ if(typeof BASE_SAVE==='function')window._rp2AccountPlansSave=function(){
+   var company=value('ap3-f-company'),extra={
+     strategy:value('ap3-x-strategy'),riskLevel:value('ap3-x-risk'),biggestOpportunity:value('ap3-x-opportunity'),nextBestAction:value('ap3-x-nba'),nextMoveWhy:value('ap3-x-why'),nextMoveHow:value('ap3-x-how'),
+     contactMethod:value('ap3-x-method'),actionOwner:value('ap3-x-owner'),managerSupport:checkedYes('ap3-x-manager'),actionDueDate:value('ap3-x-due'),followUpDate:value('ap3-x-followup'),
+     theirBusiness:value('ap3-x-business'),budgetOwner:value('ap3-x-budget-owner'),budgetCycle:value('ap3-x-budget-cycle'),buyingProcess:value('ap3-x-buying-process'),orderTriggers:value('ap3-x-triggers'),
+     backupContact:value('ap3-x-backup'),shareOfWallet:value('ap3-x-wallet'),competitivePosition:value('ap3-x-competition'),brandStandards:value('ap3-x-brand'),plan30:value('ap3-x-30'),plan60:value('ap3-x-60'),plan90:value('ap3-x-90')
+   };
+   var out=BASE_SAVE.apply(this,arguments);if(company)saveExtras(company,extra);
+   try{if(typeof window._rp2AccountPlansSetTab==='function')window._rp2AccountPlansSetTab(window._rp2AccountPlansTab||'library')}catch(e){}
+   return out
+ };
+ window._rp2AccountPlansSaveProgram=preserveExtras(BASE_SAVE_PROGRAM,function(){return value('ap3-p-company')});
+ window._rp2AccountPlansSavePriority=preserveExtras(BASE_SAVE_PRIORITY,function(){return value('ap3-a-company')});
+ window._rp2AccountPlansPushPriority=preserveExtras(BASE_PUSH_PRIORITY,function(c){try{return decodeURIComponent(c||'')}catch(e){return c||''}});
+
+ function nameOf(frag){return clean(frag.querySelector('.cux8-name')&&frag.querySelector('.cux8-name').textContent)||window._cux8CurrentName||window._cw4CompanyName||'Customer'}
+ function tileBySection(frag,section){return Array.prototype.slice.call(frag.querySelectorAll('.cux8-tile')).filter(function(t){var c=clean(t.getAttribute('onclick'));return c.indexOf("_cux8Open('"+section+"')")>=0||c.indexOf('_cux8Open("'+section+'")')>=0})[0]||null}
+ function tileCount(tile){var s=clean(tile&&tile.querySelector('.cux8-tile-meta')&&tile.querySelector('.cux8-tile-meta').textContent),m=s.match(/\d[\d,]*/);return m?Number(m[0].replace(/,/g,''))||0:0}
+ function addStrategyTab(frag,name,p){
+   var wrap=frag.querySelector('.cx586-wrap'),tabs=wrap&&wrap.querySelector('.cx586-tabs');if(!wrap||!tabs||tabs.querySelector('[data-t="strategy"]'))return;
+   var btn=document.createElement('button');btn.className='cx586-tab';btn.dataset.t='strategy';btn.setAttribute('onclick','_cx586Tab(this)');btn.textContent='Strategy';var saved=tabs.querySelector('.cx586-saved');tabs.insertBefore(btn,saved||null);
+   var pane=document.createElement('div');pane.className='cx586-pane cux697-strategy-pane';pane.dataset.pane='strategy';
+   if(!hasPlanDepth(p))pane.innerHTML='<div class="cux697-strategy-empty">No deeper account strategy has been recorded yet.<br><button onclick="_rp2AccountPlansOpenCompanyCenter()">Open Account Strategy</button></div>';
+   else{
+     var buying=clean(p.budgetCycle)||clean(p.orderTriggers)||clean(p.buyingProcess)||'Not recorded';
+     pane.innerHTML='<div class="cux697-strategy-grid">'
+      +'<div class="cux697-strategy-fact"><span>Strategy</span><strong>'+esc(clean(p.strategy)||'Maintain')+'</strong></div>'
+      +'<div class="cux697-strategy-fact"><span>Biggest opportunity</span><strong>'+esc(clean(p.biggestOpportunity)||'Not recorded')+'</strong></div>'
+      +'<div class="cux697-strategy-fact"><span>Budget owner</span><strong>'+esc(clean(p.budgetOwner)||'Not recorded')+'</strong></div>'
+      +'<div class="cux697-strategy-fact"><span>Buying signal</span><strong>'+esc(buying)+'</strong></div>'
+      +'</div>';
+   }
+   wrap.appendChild(pane)
+ }
+ function addStrategyLink(frag){var head=frag.querySelector('.cux694-workspace-head');if(!head||head.querySelector('.cux697-resource-link'))return;var b=document.createElement('button');b.className='cux697-resource-link';b.textContent='Account Strategy';b.setAttribute('onclick','_rp2AccountPlansOpenCompanyCenter()');var service=head.querySelector('.cux696-resource-link');if(service)head.insertBefore(b,service);else head.appendChild(b)}
+ function applyPlanNextMove(frag,p){
+   if(!clean(p.nextBestAction))return;var bar=frag.querySelector('.cux694-nextbar');if(!bar)return;var title=bar.querySelector('.cux694-next-title'),copy=bar.querySelector('.cux694-next-copy'),kick=bar.querySelector('.cux694-next-kick');
+   if(title)title.textContent=clean(p.nextBestAction);if(kick&&!kick.querySelector('.cux697-plan-source'))kick.insertAdjacentHTML('beforeend','<span class="cux697-plan-source">Account strategy</span>');
+   var why=clean(p.nextMoveWhy)||('Saved '+(clean(p.strategy)||'account')+' strategy'+(clean(p.biggestOpportunity)?' focused on '+clean(p.biggestOpportunity):'.'));
+   var how=clean(p.nextMoveHow)||([clean(p.contactMethod),clean(p.budgetOwner)?'Budget owner: '+clean(p.budgetOwner):'',clean(p.actionDueDate)?'Due '+clean(p.actionDueDate):''].filter(Boolean).join(' · ')||'Complete the planned customer action and leave a dated next step.');
+   if(copy)copy.innerHTML='<span class="cux696-why"><b>Why</b><span>'+esc(why)+'</span></span><span class="cux696-how"><b>How</b><span>'+esc(how)+'</span></span>';
+ }
+ function enrichConversation(frag,p){
+   var plan=frag.querySelector('.cux696-plan');if(!plan||!hasPlanDepth(p))return;var rows=plan.querySelectorAll('.cux696-plan-row'),know=rows[0]&&rows[0].querySelector('div'),ask=rows[2]&&rows[2].querySelector('div'),next=rows[3]&&rows[3].querySelector('div'),bits=[];
+   if(clean(p.strategy))bits.push('strategy: '+clean(p.strategy));if(clean(p.budgetOwner))bits.push('budget owner: '+clean(p.budgetOwner));if(clean(p.orderTriggers))bits.push('trigger: '+clean(p.orderTriggers));if(know&&bits.length)know.textContent=clean(know.textContent)+' · '+bits.join(' · ');
+   if(ask){var q=[];if(!clean(p.budgetOwner))q.push('Who owns or approves this budget?');if(!clean(p.budgetCycle))q.push('When is this budget normally planned or spent?');if(!clean(p.orderTriggers))q.push('What usually triggers the next order?');if(q.length)ask.textContent=clean(ask.textContent)+' · '+q.slice(0,2).join(' · ')}
+   if(next&&clean(p.nextBestAction))next.textContent=clean(p.nextBestAction)
+ }
+ function improveContactsSignal(frag,p){var tile=tileBySection(frag,'contacts');if(!tile||/cux694-warn/.test(tile.className))return;var count=tileCount(tile),meta=tile.querySelector('.cux8-tile-meta');if(meta&&count<2&&!clean(p.backupContact))meta.textContent='Single-threaded relationship'}
+ function enhanceCompany(markup){
+   if(!markup||String(markup).indexOf('cux8-overview')<0)return markup;var frag=parse(markup),name=nameOf(frag),p=planFor(name);addStrategyTab(frag,name,p);addStrategyLink(frag);applyPlanNextMove(frag,p);enrichConversation(frag,p);improveContactsSignal(frag,p);return stringify(frag)
+ }
+ function wrapCompany(base){return typeof base==='function'?function(){return enhanceCompany(base.apply(this,arguments))}:base}
+ window._rp2CompanyProfileV3=wrapCompany(BASE_PROFILE);window._rp2CustomersV2=wrapCompany(BASE_CUSTOMERS);
+
+ function brand(){try{window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-tcp-build',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.querySelectorAll('.tabs').forEach(function(t){t.setAttribute('data-connect-build-long','Cloud Sync • Admin  ·  BUILD '+BUILD);t.setAttribute('data-connect-build-short','BUILD '+BUILD)});document.querySelectorAll('#rp-overlay .cux695-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+BUILD});document.title='Connect '+BUILD+' — Sales Portal'}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();
+ document.addEventListener('click',function(){setTimeout(brand,80);setTimeout(brand,420)},true);setTimeout(brand,700);setTimeout(brand,1000);
+ window.TCP_COMPANY_ACCOUNT_STRATEGY_V697={version:BUILD,focus:'merged Connect sales workspace + strategic account depth',planStore:PLAN_STORE,enhanceCompany:enhanceCompany,enhancePlanMarkup:enhancePlanMarkup,brand:brand};
 })();
 </script>
