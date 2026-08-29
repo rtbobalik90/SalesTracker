@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v711 — Sales Portal</title>
-<script id="connect-build-authority-v711">
+<title>Connect v712 — Sales Portal</title>
+<script id="connect-build-authority-v712">
 (function(){
   'use strict';
-  var BUILD='v711', DISPLAY='V711', TITLE='Connect v711 — Sales Portal';
+  var BUILD='v712', DISPLAY='V712', TITLE='Connect v712 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -72271,5 +72271,95 @@ html[data-connect-authoritative="v711"] body.nav-rail .tabs:after{content:var(--
  function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[100,500,1300].forEach(function(ms){setTimeout(brand,ms)});
  window.TCP_COMPANY_OWNERSHIP_PROFILE_V711={version:BUILD,focus:'REP1/REP2 + selected decision maker + billing/shipping company Profile tab'};window.TCP_BUILD_IDENTITY_V711={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v712 · COMPANY OVERVIEW GRID AUTHORITY ===== -->
+<style id="connect-v712-company-overview-grid-authority-css">
+/*
+  v712: Legacy v698 desktop rules still define a two-column grid-template on
+  .cux8-overview. v710 intentionally changed the overview to two ROWS but did
+  not clear those old COLUMNS, allowing a fresh v711 render to auto-place
+  Conversation Prep into the stale right-hand column.
+
+  The Overview now has one authoritative layout:
+    row 1 = four sales signal cards, full width
+    row 2 = Conversation Prep, full width
+*/
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-areas:none!important;
+  grid-auto-columns:minmax(0,1fr)!important;
+  justify-items:stretch!important;
+  align-items:stretch!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux702-signal-grid{
+  grid-column:1/-1!important;
+  grid-row:1!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-conversation{
+  grid-column:1/-1!important;
+  grid-row:2!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  justify-self:stretch!important;
+  align-self:stretch!important;
+  position:relative!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+}
+/* Defensive: stale named areas from the pre-v700 Company layout must never
+   influence the two current Overview children. */
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux702-signal-grid,
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-conversation{
+  grid-area:auto!important;
+}
+/* Re-assert rows after grid-area reset. */
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux702-signal-grid{grid-column:1/-1!important;grid-row:1!important;}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-conversation{grid-column:1/-1!important;grid-row:2!important;}
+
+html[data-connect-authoritative="v712"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V712";--connect-build-short:"BUILD V712";}
+html[data-connect-authoritative="v712"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v712"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
+<script id="connect-v712-company-overview-grid-authority-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v712',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V712';
+ function repair(){
+  try{
+   var root=document.getElementById('rp-overlay');if(!root)return;
+   root.querySelectorAll('.cux702-company .cux8-overview').forEach(function(overview){
+    var signals=overview.querySelector(':scope > .cux702-signal-grid');
+    var prep=overview.querySelector(':scope > .cux700-conversation');
+    if(!signals||!prep)return;
+    /* Inline properties are a final safety net against legacy rules that may
+       be injected/reapplied after this stylesheet during a Company re-render. */
+    overview.style.setProperty('grid-template-columns','minmax(0, 1fr)','important');
+    overview.style.setProperty('grid-template-areas','none','important');
+    signals.style.setProperty('grid-column','1 / -1','important');
+    signals.style.setProperty('grid-row','1','important');
+    signals.style.setProperty('width','100%','important');
+    prep.style.setProperty('grid-column','1 / -1','important');
+    prep.style.setProperty('grid-row','2','important');
+    prep.style.setProperty('width','100%','important');
+   });
+   if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();
+   document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY});
+  }catch(e){}
+ }
+ var raf=0;function queue(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;repair()})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',queue,{once:true});else queue();
+ try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(queue).observe(host,{childList:true,subtree:true})}catch(e){}
+ window.addEventListener('resize',queue,{passive:true});
+ [60,180,500,1100].forEach(function(ms){setTimeout(queue,ms)});
+ window.TCP_COMPANY_OVERVIEW_GRID_V712={version:BUILD,focus:'single-column overview grid authority; KPI band row 1 + full-width Conversation Prep row 2'};
+ window.TCP_BUILD_IDENTITY_V712={version:BUILD,authority:true};
 })();
 </script>
