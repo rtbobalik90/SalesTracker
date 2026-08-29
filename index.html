@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v702 — Sales Portal</title>
-<script id="connect-build-authority-v702">
+<title>Connect v703 — Sales Portal</title>
+<script id="connect-build-authority-v703">
 (function(){
   'use strict';
-  var BUILD='v702', DISPLAY='V702', TITLE='Connect v702 — Sales Portal';
+  var BUILD='v703', DISPLAY='V703', TITLE='Connect v703 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -53,10 +53,10 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
   window.CONNECT_ENFORCE_BUILD=enforce;
 })();
 </script>
-<style id="connect-build-authority-v702-css">
-html[data-connect-authoritative="v702"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V702";--connect-build-short:"BUILD V702";}
-html[data-connect-authoritative="v702"] body .tabs:after{content:var(--connect-build-long)!important;}
-html[data-connect-authoritative="v702"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+<style id="connect-build-authority-v703-css">
+html[data-connect-authoritative="v703"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V703";--connect-build-short:"BUILD V703";}
+html[data-connect-authoritative="v703"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v703"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -71169,6 +71169,10 @@ html[data-rp-theme="light"] #rp-overlay .cux696-plan-row>span{color:#087FA4!impo
 #rp-overlay .cux702-pace-wrap{position:absolute;left:16px;right:16px;bottom:14px;}
 #rp-overlay .cux702-pace-bar{position:relative;height:7px;margin:0 0 7px;border-radius:99px;background:rgba(255,255,255,.10);overflow:visible;}
 #rp-overlay .cux702-pace-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#00AFEF,#7FE8FF);box-shadow:0 0 13px rgba(0,175,239,.22);}
+#rp-overlay .cux703-pace-unavailable .cux702-pace-bar{overflow:hidden;background:rgba(255,255,255,.075);}
+#rp-overlay .cux703-pace-placeholder{position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(0,175,239,.22) 0 8px,rgba(255,255,255,.035) 8px 16px);opacity:.75;}
+#rp-overlay .cux703-pace-unavailable .cux702-pace-labels strong{color:#AAB8C5;}
+
 #rp-overlay .cux702-pace-marker{position:absolute;top:-4px;width:2px;height:15px;border-radius:2px;background:#F5F7FB;box-shadow:0 0 0 1px rgba(0,0,0,.15);}
 #rp-overlay .cux702-pace-marker:after{content:"";position:absolute;left:50%;top:-2px;transform:translate(-50%,-100%);width:5px;height:5px;border:1px solid #DDEAF4;border-radius:50%;background:#142330;}
 #rp-overlay .cux702-pace-labels{display:flex;justify-content:space-between;gap:8px;color:#72869A;font-size:7.4px;}
@@ -71266,7 +71270,7 @@ html[data-rp-theme="light"] #rp-overlay .cux702-card-copy b{color:#29465B!import
    return '<button class="cux702-kpi-card cux702-next" onclick="_cux8Open(\''+target+'\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">➜</span>Next Best Step</div><span class="cux702-card-badge">'+esc(priority)+'</span></div><div class="cux702-card-value">'+esc(title)+'</div><div class="cux702-card-copy"><b>Why now:</b> '+esc(why)+'</div><div class="cux702-card-foot"><span>Open the relevant account section</span><span class="cux702-route">→</span></div></button>';
  }
  function salesCard(m){
-   if(!m.has)return '<button class="cux702-kpi-card cux702-sales" onclick="_cux8Open(\'orders\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">$</span>Sales Pace</div><span class="cux702-card-badge">10% growth model</span></div><div class="cux702-card-value">'+money(m.actual)+'</div><div class="cux702-card-copy">Prior-year order history is not complete enough to calculate a seasonal growth marker yet.</div><div class="cux702-card-foot"><span>YTD sales</span><span class="cux702-route">→</span></div></button>';
+   if(!m.has)return '<button class="cux702-kpi-card cux702-sales" onclick="_cux8Open(\'orders\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">$</span>Sales Pace</div><span class="cux702-card-badge">Building history</span></div><div class="cux702-card-value">'+money(m.actual)+'</div><div class="cux702-card-copy">Seasonal pace will activate when enough prior-year order history is available.</div><div class="cux702-pace-wrap cux703-pace-unavailable"><div class="cux702-pace-bar"><span class="cux703-pace-placeholder"></span></div><div class="cux702-pace-labels"><span>Actual <strong>'+money(m.actual)+'</strong></span><span>│ expected <strong>—</strong></span><span>10% goal <strong>—</strong></span></div></div></button>';
    var ahead=m.delta>=0,tag=(ahead?'Ahead ':'Behind ')+money(Math.abs(m.delta)),desc=(m.deltaPct==null?'':pct(m.deltaPct)+' vs seasonal growth pace');
    return '<button class="cux702-kpi-card cux702-sales" onclick="_cux8Open(\'orders\')"><div class="cux702-card-head"><div class="cux702-card-label"><span class="cux702-card-icon">$</span>Sales Pace</div><span class="cux702-card-badge">'+esc(tag)+'</span></div><div class="cux702-card-value">'+money(m.actual)+'</div><div class="cux702-card-copy">'+esc(desc||'Compared with the same point in last year’s buying cycle.')+'</div><div class="cux702-pace-wrap"><div class="cux702-pace-bar"><span class="cux702-pace-fill" style="width:'+m.fill.toFixed(1)+'%"></span><i class="cux702-pace-marker" style="left:'+m.mark.toFixed(1)+'%" title="Expected by today"></i></div><div class="cux702-pace-labels"><span>Actual <strong>'+money(m.actual)+'</strong></span><span>│ expected <strong>'+money(m.expected)+'</strong></span><span>10% goal <strong>'+money(m.target)+'</strong></span></div></div></button>';
  }
@@ -71302,6 +71306,6 @@ html[data-rp-theme="light"] #rp-overlay .cux702-card-copy b{color:#29465B!import
  window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
  function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[100,500,1200,2600].forEach(function(ms){setTimeout(brand,ms)});
- window.TCP_COMPANY_SIGNAL_KPI_V702={version:BUILD,growthTarget:GROWTH,focus:'Next Best Step · seasonal Sales Pace · Relationship Health · Opportunity',enhance:enhance};window.TCP_BUILD_IDENTITY_V702={version:BUILD,authority:true};
+ window.TCP_COMPANY_SIGNAL_KPI_V702={version:BUILD,growthTarget:GROWTH,focus:'Next Best Step · seasonal Sales Pace · Relationship Health · Opportunity',enhance:enhance};window.TCP_SALES_PACE_TRACKER_V703={version:BUILD,alwaysVisible:true};window.TCP_BUILD_IDENTITY_V703={version:BUILD,authority:true};
 })();
 </script>
