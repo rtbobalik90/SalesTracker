@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v712 — Sales Portal</title>
-<script id="connect-build-authority-v712">
+<title>Connect v713 — Sales Portal</title>
+<script id="connect-build-authority-v713">
 (function(){
   'use strict';
-  var BUILD='v712', DISPLAY='V712', TITLE='Connect v712 — Sales Portal';
+  var BUILD='v713', DISPLAY='V713', TITLE='Connect v713 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -72361,5 +72361,131 @@ html[data-connect-authoritative="v712"] body.nav-rail .tabs:after{content:var(--
  [60,180,500,1100].forEach(function(ms){setTimeout(queue,ms)});
  window.TCP_COMPANY_OVERVIEW_GRID_V712={version:BUILD,focus:'single-column overview grid authority; KPI band row 1 + full-width Conversation Prep row 2'};
  window.TCP_BUILD_IDENTITY_V712={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v713 · COMPANY FINAL SPACING POLISH ===== -->
+<style id="connect-v713-company-final-spacing-polish-css">
+/* v713 — final Overview rhythm pass.
+   1) Use the remaining Conversation Prep height intentionally: the actual
+      KNOW / SAY / ASK / NEXT STEP working row sits at the bottom of the panel
+      instead of leaving a dead band beneath it.
+   2) Give the company command header a few more pixels of internal breathing
+      room without turning it back into a large hero. */
+
+/* Company command header — just a touch more air between identity, relationship
+   status and the compact sales-stat line. */
+#rp-overlay .cux702-company .cux8-hero{
+  padding:15px 20px 13px!important;
+}
+#rp-overlay .cux702-company .cux8-hero-top{
+  padding-bottom:11px!important;
+  gap:16px!important;
+}
+#rp-overlay .cux702-company .cux8-identity{
+  gap:13px!important;
+}
+#rp-overlay .cux702-company .cux8-sub{
+  margin-top:5px!important;
+  line-height:1.38!important;
+}
+#rp-overlay .cux702-company .cux8-contact{
+  margin-top:7px!important;
+  gap:7px!important;
+  line-height:1.38!important;
+}
+#rp-overlay .cux702-company .cux8-metrics{
+  padding-top:10px!important;
+}
+
+/* Conversation Prep — make the full-height panel intentional. The summary
+   stack is a real flex column, and the four working cards are anchored to the
+   bottom edge. This removes the accidental empty space below them while keeping
+   the larger monitor layout calm and readable. */
+#rp-overlay .cux702-company .cux700-conversation .cux10-body{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-grid{
+  display:flex!important;
+  flex-direction:column!important;
+  flex:1 1 auto!important;
+  height:100%!important;
+  min-height:0!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
+  display:flex!important;
+  flex-direction:column!important;
+  flex:1 1 auto!important;
+  height:100%!important;
+  min-height:0!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+  flex:0 0 auto!important;
+  height:auto!important;
+  min-height:clamp(104px,13vh,132px)!important;
+  margin-top:auto!important;
+  padding-top:clamp(10px,1.1vh,15px)!important;
+  align-items:stretch!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+  height:auto!important;
+  min-height:clamp(96px,11.8vh,122px)!important;
+}
+
+/* Shorter laptop viewports still anchor the work row at the bottom, but use a
+   tighter minimum so readable text never gets pushed below the visible area. */
+@media (min-width:1181px) and (max-height:900px){
+  #rp-overlay .cux702-company .cux8-hero{padding:13px 18px 11px!important;}
+  #rp-overlay .cux702-company .cux8-hero-top{padding-bottom:9px!important;gap:14px!important;}
+  #rp-overlay .cux702-company .cux8-sub{margin-top:4px!important;}
+  #rp-overlay .cux702-company .cux8-contact{margin-top:5px!important;}
+  #rp-overlay .cux702-company .cux8-metrics{padding-top:8px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+    min-height:96px!important;
+    padding-top:8px!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+    min-height:90px!important;
+  }
+}
+
+/* Once the layout legitimately stacks/scrolls, bottom anchoring is no longer
+   useful; return to normal document flow. */
+@media(max-width:1180px){
+  #rp-overlay .cux702-company .cux700-conversation .cux10-summary-grid,
+  #rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
+    height:auto!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+    margin-top:12px!important;
+    padding-top:0!important;
+    min-height:0!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+    min-height:118px!important;
+  }
+}
+
+html[data-connect-authoritative="v713"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V713";--connect-build-short:"BUILD V713";}
+html[data-connect-authoritative="v713"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v713"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
+<script id="connect-v713-company-final-spacing-polish-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v713',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V713';
+ function polish(){
+  try{
+   if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();
+   document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY});
+  }catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',polish,{once:true});else polish();
+ [80,300,900].forEach(function(ms){setTimeout(polish,ms)});
+ window.TCP_COMPANY_SPACING_V713={version:BUILD,focus:'bottom-aligned conversation work row + lightly relaxed company command header'};
+ window.TCP_BUILD_IDENTITY_V713={version:BUILD,authority:true};
 })();
 </script>
