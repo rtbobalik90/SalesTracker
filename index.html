@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v709 — Sales Portal</title>
-<script id="connect-build-authority-v709">
+<title>Connect v711 — Sales Portal</title>
+<script id="connect-build-authority-v711">
 (function(){
   'use strict';
-  var BUILD='v709', DISPLAY='V709', TITLE='Connect v709 — Sales Portal';
+  var BUILD='v711', DISPLAY='V711', TITLE='Connect v711 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -35779,6 +35779,8 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   id:['custid','customerid','id'],
   name:['custname','customer','customername','company','companyname'],
   rep:['salesrep','salesspecialist','rep','owner','salesrepresentative'],
+  rep1:['rep1salesperson','rep1salesrep','rep1','rep1owner','rep1sales'],
+  rep2:['rep2salesperson','rep2salesrep','rep2','rep2owner','rep2sales'],
   loyalty:['customerlist','loyalty','tier','customerlevel'],
   position:['position','9010','top90bottom10','setposition'],
   status:['cstatus','status','assignmentstatus'],
@@ -35797,7 +35799,18 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   currentCCNew:['salescurrentyearccnewcustomer'],lastCCNew:['saleslastyearccnewcustomer'],
   contact:['contact','primarycontact','contactname'],
   addr1:['addr1','address1','streetaddress','address'],
-  addr2:['addr2','address2','suite']
+  addr2:['addr2','address2','suite'],
+  city:['city','billingcity'],
+  state:['state','region','province','billingstate'],
+  country:['country','billingcountry'],
+  postal:['postalcode','zipcode','zip','billingpostalcode','billingzip'],
+  phone:['phone','businessphone','customerphone','billingphone'],
+  fax:['fax','faxnumber'],
+  terms:['termscode','terms','paymentterms'],
+  classId:['classid','classcode','customerclass'],
+  taxLocId:['taxlocid','taxlocationid'],
+  taxExemptId:['taxexemptid','taxexempt'],
+  creditHold:['credithold','creditonhold']
  };
  function colMap(headers){
   var normalized=headers.map(norm),map={};
@@ -35808,10 +35821,10 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   var best={index:-1,score:-1,map:null,headers:[]};
   for(var i=0;i<Math.min(rows.length,25);i++){
    var h=arr(rows[i]).map(clean),m=colMap(h),score=0;
-   if(m.name>=0)score+=5;if(m.rep>=0)score+=4;if(m.id>=0)score+=2;if(m.current>=0)score+=2;if(m.contact>=0)score+=1;if(m.total>=0)score+=1;
+   if(m.name>=0)score+=5;if(m.rep>=0||m.rep2>=0)score+=4;if(m.id>=0)score+=2;if(m.current>=0)score+=2;if(m.contact>=0)score+=1;if(m.total>=0)score+=1;
    if(score>best.score)best={index:i,score:score,map:m,headers:h}
   }
-  if(best.score<7)throw new Error('Could not find a customer header row. Expected fields such as CustName/Customer and Sales Rep.');
+  if(best.score<7)throw new Error('Could not find a customer header row. Expected fields such as CustName/Customer and Sales Rep or REP2 Sales Person.');
   return best
  }
  function at(row,i){return i>=0?clean(row[i]):''}
@@ -35819,11 +35832,11 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   var h=detectHeader(rows),m=h.map,out=[],seen={};
   rows.slice(h.index+1).forEach(function(row,idx){
    row=arr(row);var name=at(row,m.name);if(!name)return;
-   var repMatch=matchRep(at(row,m.rep)),customerNumber=at(row,m.id),key=(customerNumber?customerNumber:norm(name))+'|'+norm(repMatch.name||at(row,m.rep));
+   var rep2Raw=at(row,m.rep2)||at(row,m.rep),rep1Raw=at(row,m.rep1),repMatch=matchRep(rep2Raw),customerNumber=at(row,m.id),key=(customerNumber?customerNumber:norm(name))+'|'+norm(repMatch.name||rep2Raw);
    if(seen[key])return;seen[key]=1;
    var status=at(row,m.status),loyalty=at(row,m.loyalty),position=at(row,m.position);
    out.push({
-    rowNumber:h.index+idx+2,customerNumber:customerNumber,name:name,repRaw:at(row,m.rep),rep:repMatch.name,repState:repMatch.state,
+    rowNumber:h.index+idx+2,customerNumber:customerNumber,name:name,repRaw:rep2Raw,rep:repMatch.name,repState:repMatch.state,rep1Owner:rep1Raw,rep2Owner:rep2Raw,
     loyalty:loyalty,position:position,customerStatus:status,
     importedSalesCurrentYear:n(at(row,m.current)),importedSalesCurrentYearNew:n(at(row,m.currentNew)),
     importedTotalSales3Years:n(at(row,m.threeYear)),importedSalesLastYear:n(at(row,m.lastYear)),importedSalesLastYearNew:n(at(row,m.lastYearNew)),
@@ -35832,7 +35845,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
     importedCurrentYearCCNew:n(at(row,m.currentCCNew)),importedLastYearCCNew:n(at(row,m.lastCCNew)),
     quarters:{q1:n(at(row,m.q1)),q2:n(at(row,m.q2)),q3:n(at(row,m.q3)),q4:n(at(row,m.q4))},
     months:{jan:n(at(row,m.jan)),feb:n(at(row,m.feb)),mar:n(at(row,m.mar)),apr:n(at(row,m.apr)),may:n(at(row,m.may)),jun:n(at(row,m.jun)),jul:n(at(row,m.jul)),aug:n(at(row,m.aug)),sep:n(at(row,m.sep)),oct:n(at(row,m.oct)),nov:n(at(row,m.nov)),dec:n(at(row,m.dec))},
-    contact:at(row,m.contact),address1:at(row,m.addr1),address2:at(row,m.addr2),importFile:fileName||'',doNotCall:repMatch.state==='do-not-call'
+    contact:at(row,m.contact),address1:at(row,m.addr1),address2:at(row,m.addr2),city:at(row,m.city),state:at(row,m.state),country:at(row,m.country),postalCode:at(row,m.postal),phone:at(row,m.phone),fax:at(row,m.fax),termsCode:at(row,m.terms),classId:at(row,m.classId),taxLocId:at(row,m.taxLocId),taxExemptId:at(row,m.taxExemptId),creditHold:at(row,m.creditHold),importFile:fileName||'',doNotCall:repMatch.state==='do-not-call'
    })
   });
   return{header:h,records:out}
@@ -35891,7 +35904,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
   var added=0,updated=0;
   matched.forEach(function(r){
    var key=recordKey(r),idx=S.customers.findIndex(function(c){return existingKey(c)===key}),old=idx>=0?S.customers[idx]:null,rec=Object.assign({},old||{});
-   rec.id=old&&old.id||Date.now()+Math.floor(Math.random()*1000000);rec.name=r.name;rec.rep=r.rep;rec.customerNumber=r.customerNumber;rec.custId=r.customerNumber;rec.loyalty=r.loyalty;rec.position=r.position;rec.customerStatus=r.customerStatus;rec.contact=r.contact;rec.address1=r.address1;rec.address2=r.address2;rec.importedSalesCurrentYear=r.importedSalesCurrentYear;rec.importedSalesCurrentYearNew=r.importedSalesCurrentYearNew;rec.importedTotalSales3Years=r.importedTotalSales3Years;rec.importedSalesLastYear=r.importedSalesLastYear;rec.importedSalesLastYearNew=r.importedSalesLastYearNew;rec.importedSales2YearsAgo=r.importedSales2YearsAgo;rec.importedSales3YearsAgo=r.importedSales3YearsAgo;rec.importedLifetimeSales=r.importedLifetimeSales;rec.importedYoyText=r.importedYoyText;rec.percentLastYear=r.percentLastYear;rec.cumulativePercentLastYear=r.cumulativePercentLastYear;rec.importedCurrentYearCCNew=r.importedCurrentYearCCNew;rec.importedLastYearCCNew=r.importedLastYearCCNew;rec.quarters=r.quarters;rec.months=r.months;rec.doNotCall=false;rec.src='customer-spreadsheet';rec.importBatchId=batch;rec.importFile=st.fileName;rec.importedAt=nowISO;
+   rec.id=old&&old.id||Date.now()+Math.floor(Math.random()*1000000);rec.name=r.name;rec.rep=r.rep;rec.rep1Owner=r.rep1Owner||rec.rep1Owner||'';rec.rep2Owner=r.rep2Owner||r.rep||rec.rep2Owner||'';rec.customerNumber=r.customerNumber;rec.custId=r.customerNumber;rec.loyalty=r.loyalty;rec.position=r.position;rec.customerStatus=r.customerStatus;rec.contact=r.contact;rec.address1=r.address1;rec.address2=r.address2;rec.city=r.city||rec.city||'';rec.state=r.state||rec.state||'';rec.country=r.country||rec.country||'';rec.postalCode=r.postalCode||rec.postalCode||'';rec.phone=r.phone||rec.phone||'';rec.fax=r.fax||rec.fax||'';rec.termsCode=r.termsCode||rec.termsCode||'';rec.classId=r.classId||rec.classId||'';rec.taxLocId=r.taxLocId||rec.taxLocId||'';rec.taxExemptId=r.taxExemptId||rec.taxExemptId||'';rec.creditHold=r.creditHold||rec.creditHold||'';rec.importedSalesCurrentYear=r.importedSalesCurrentYear;rec.importedSalesCurrentYearNew=r.importedSalesCurrentYearNew;rec.importedTotalSales3Years=r.importedTotalSales3Years;rec.importedSalesLastYear=r.importedSalesLastYear;rec.importedSalesLastYearNew=r.importedSalesLastYearNew;rec.importedSales2YearsAgo=r.importedSales2YearsAgo;rec.importedSales3YearsAgo=r.importedSales3YearsAgo;rec.importedLifetimeSales=r.importedLifetimeSales;rec.importedYoyText=r.importedYoyText;rec.percentLastYear=r.percentLastYear;rec.cumulativePercentLastYear=r.cumulativePercentLastYear;rec.importedCurrentYearCCNew=r.importedCurrentYearCCNew;rec.importedLastYearCCNew=r.importedLastYearCCNew;rec.quarters=r.quarters;rec.months=r.months;rec.doNotCall=false;rec.src='customer-spreadsheet';rec.importBatchId=batch;rec.importFile=st.fileName;rec.importedAt=nowISO;
    if(!old||old.src==='customer-spreadsheet')rec.revenue=r.importedSalesCurrentYear;
    rec.orders=old&&old.orders||0;rec.firstOrder=old&&old.firstOrder||'';rec.lastOrder=old&&old.lastOrder||'';rec.notes=old&&old.notes||'';
    if(idx>=0){S.customers[idx]=rec;updated++}else{S.customers.push(rec);added++}
@@ -35904,8 +35917,8 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  };
  window.downloadCustomerImportTemplate=function(){
   if(typeof XLSX==='undefined'){alert('Spreadsheet writer is not available.');return}
-  var headers=['CustId','CustName','Sales Rep','CustomerList','Position','CStatus','SalesCurrentYear','SalesCurrentYearNewCustomer','TotalSales3Years','SalesLastYear','SalesLastYearNewCustomer','SalesLastYearQ1','SalesLastYearQ2','SalesLastYearQ3','SalesLastYearQ4','SalesLastYearJanuary','SalesLastYearFebruary','SalesLastYearMarch','SalesLastYearApril','SalesLastYearMay','SalesLastYearJune','SalesLastYearJuly','SalesLastYearAugust','SalesLastYearSeptember','SalesLastYearOctober','SalesLastYearNovember','SalesLastYearDecember','SalesLastYearYOYpct','Sales2YearsAgo','Sales3YearsAgo','TotalSales','PercentLastYear','CumulativePercentLastYear','SalesCurrentYearCCNewCustomer','SalesLastYearCCNewCustomer','contact','Addr1','Addr2'];
-  var example=['59242','The Payne Company','Ben Quernemoen','Platinum','Top90','Assigned',5024,0,63510,27399,0,0,0,12248,15151,0,0,0,0,0,0,0,12248,3919,11232,0,'-12%',31086,0,63510,'1.80%','16%',0,3934.80,'Jill Shannon','7235 West Bert Kouns',''];
+  var headers=['CustId','CustName','Sales Rep','REP1 Sales Person','REP2 Sales Person','CustomerList','Position','CStatus','SalesCurrentYear','SalesCurrentYearNewCustomer','TotalSales3Years','SalesLastYear','SalesLastYearNewCustomer','SalesLastYearQ1','SalesLastYearQ2','SalesLastYearQ3','SalesLastYearQ4','SalesLastYearJanuary','SalesLastYearFebruary','SalesLastYearMarch','SalesLastYearApril','SalesLastYearMay','SalesLastYearJune','SalesLastYearJuly','SalesLastYearAugust','SalesLastYearSeptember','SalesLastYearOctober','SalesLastYearNovember','SalesLastYearDecember','SalesLastYearYOYpct','Sales2YearsAgo','Sales3YearsAgo','TotalSales','PercentLastYear','CumulativePercentLastYear','SalesCurrentYearCCNewCustomer','SalesLastYearCCNewCustomer','contact','Addr1','Addr2','City','State','Country','PostalCode','Phone','Fax','TermsCode','ClassId','TaxLocId','TaxExemptId','CreditHold'];
+  var example=['59242','The Payne Company','Ben Quernemoen','Triple Crown','Ben Quernemoen','Platinum','Top90','Assigned',5024,0,63510,27399,0,0,0,12248,15151,0,0,0,0,0,0,0,12248,3919,11232,0,'-12%',31086,0,63510,'1.80%','16%',0,3934.80,'Jill Shannon','7235 West Bert Kouns','','Shreveport','LA','US','71129','318-555-0100','','NET30','MA','','','No'];
   var ws=XLSX.utils.aoa_to_sheet([headers,example]);ws['!cols']=headers.map(function(h){return{wch:Math.max(12,Math.min(28,h.length+2))}});var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Customer Import');XLSX.writeFile(wb,'tcp_customer_import_template.xlsx')
  };
  window._custImportNormalizeRows=normalizeRows;
@@ -66201,243 +66214,6 @@ body.nav-rail .tabs:after{content:"v672"!important}
   var toolbar=mode==='pdf'?'<div class="screen-note no-print"><strong>Save PDF:</strong> choose <b>Save as PDF</b> as the printer/destination, then save. <button onclick="window.print()">Open dialog again</button></div>':'<div class="screen-note no-print"><strong>Print-ready order detail.</strong> <button onclick="window.print()">Print</button> <button onclick="window.close()">Close</button></div>';
   return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n
 
-<!-- ===== CONNECT v709 · ADAPTIVE COMPANY VIEWPORT ===== -->
-<style id="connect-v709-adaptive-company-viewport-css">
-/* v709 — one Company Overview composition at every desktop size.
-   Preserve readable typography; adapt vertical rhythm to the actual viewport. */
-
-/* The Company profile itself is the page title. Remove the redundant
-   "Companies / Phased Rep Portal" bar only while a company profile is open. */
-#rp-overlay:has(.cux702-company) .p639-page-top{display:none!important;}
-
-/* Remove legacy bottom reserves on the Overview. Other Company tabs retain
-   their normal scrolling behavior. */
-#rp-overlay .rp2-main:has(.cux702-company .cux702-signal-grid){
-  overflow-y:hidden!important;
-  padding-top:0!important;
-  padding-bottom:0!important;
-  overscroll-behavior-y:none!important;
-}
-#rp-overlay #rp2-page.p639-subpage:has(.cux702-company .cux702-signal-grid){
-  padding-top:0!important;
-  padding-bottom:0!important;
-  height:100%!important;
-  overflow:hidden!important;
-}
-#rp-overlay .cux702-company:has(.cux702-signal-grid){
-  height:100%!important;
-  min-height:0!important;
-  display:grid!important;
-  grid-template-rows:auto auto minmax(0,1fr)!important;
-  gap:0!important;
-  padding-top:8px!important;
-  padding-bottom:8px!important;
-  overflow:hidden!important;
-}
-
-/* Compact header/nav use intrinsic height; the Overview receives precisely
-   the remaining visible height from JS through --cux709-overview-h. */
-#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-hero{
-  margin:0!important;
-  flex:none!important;
-}
-#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-subnav{
-  margin:8px 0 12px!important;
-  flex:none!important;
-}
-#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{
-  height:var(--cux709-overview-h,auto)!important;
-  min-height:0!important;
-  max-height:none!important;
-  display:grid!important;
-  grid-template-rows:clamp(214px,27.5vh,266px) minmax(0,1fr)!important;
-  gap:12px!important;
-  overflow:hidden!important;
-  margin:0!important;
-  padding:0!important;
-}
-
-/* KPI cards: same visual language, but height comes from the adaptive row.
-   Typography remains command-center size; spacing does the adapting. */
-#rp-overlay .cux702-company .cux702-signal-grid{
-  height:100%!important;
-  min-height:0!important;
-  margin:0!important;
-  gap:clamp(11px,.9vw,17px)!important;
-  align-items:stretch!important;
-}
-#rp-overlay .cux702-company .cux702-kpi-card{
-  height:100%!important;
-  min-height:0!important;
-  padding:clamp(16px,2.05vh,24px) clamp(17px,1.25vw,24px) clamp(15px,1.9vh,22px)!important;
-}
-#rp-overlay .cux702-company .cux702-card-head{
-  margin-bottom:clamp(13px,1.85vh,24px)!important;
-}
-#rp-overlay .cux702-company .cux702-card-icon{
-  width:clamp(36px,4.2vh,42px)!important;
-  height:clamp(36px,4.2vh,42px)!important;
-  min-width:clamp(36px,4.2vh,42px)!important;
-}
-#rp-overlay .cux702-company .cux702-card-value{
-  font-size:clamp(29px,3.35vh,37px)!important;
-}
-#rp-overlay .cux702-company .cux702-next .cux702-card-value,
-#rp-overlay .cux702-company .cux702-opportunity .cux702-card-value{
-  font-size:clamp(23px,2.6vh,28px)!important;
-}
-#rp-overlay .cux702-company .cux702-card-copy{
-  margin-top:clamp(9px,1.2vh,15px)!important;
-  font-size:clamp(11.5px,1.25vh,13px)!important;
-  line-height:1.42!important;
-  -webkit-line-clamp:2!important;
-}
-#rp-overlay .cux702-company .cux702-card-foot{
-  left:clamp(17px,1.25vw,24px)!important;
-  right:clamp(17px,1.25vw,24px)!important;
-  bottom:clamp(13px,1.55vh,20px)!important;
-}
-#rp-overlay .cux702-company .cux702-sales{padding-bottom:clamp(82px,9.4vh,100px)!important;}
-#rp-overlay .cux702-company .cux702-pace-wrap{
-  left:clamp(17px,1.25vw,24px)!important;
-  right:clamp(17px,1.25vw,24px)!important;
-  bottom:clamp(13px,1.55vh,20px)!important;
-}
-
-/* Conversation Prep fills the remainder exactly. No duplicate Add Note and no
-   bottom bleed under the browser viewport. */
-#rp-overlay .cux702-company .cux700-conversation{
-  height:100%!important;
-  min-height:0!important;
-  max-height:100%!important;
-  margin:0!important;
-  padding:clamp(16px,2vh,25px) clamp(18px,1.35vw,24px)!important;
-  display:flex!important;
-  flex-direction:column!important;
-  overflow:hidden!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-add{display:none!important;}
-#rp-overlay .cux702-company .cux700-conversation .cux10-head{
-  flex:0 0 auto!important;
-  margin-bottom:clamp(8px,1.1vh,14px)!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-title{
-  font-size:clamp(24px,2.75vh,29px)!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-copy{
-  font-size:clamp(11.5px,1.2vh,12.5px)!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-body{
-  flex:1 1 auto!important;
-  min-height:0!important;
-  overflow:hidden!important;
-  display:flex!important;
-  flex-direction:column!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-summary-grid,
-#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
-  flex:1 1 auto!important;
-  min-height:0!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
-  display:flex!important;
-  flex-direction:column!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux10-card-title{
-  flex:none!important;
-  font-size:clamp(15px,1.65vh,17px)!important;
-  margin-bottom:clamp(8px,1.05vh,13px)!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux696-plan{
-  flex:1 1 auto!important;
-  min-height:0!important;
-  height:auto!important;
-  margin-top:clamp(9px,1.2vh,17px)!important;
-  gap:clamp(9px,.75vw,14px)!important;
-  align-items:stretch!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
-  height:100%!important;
-  min-height:0!important;
-  padding:clamp(11px,1.45vh,16px)!important;
-  overflow:hidden!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{
-  font-size:clamp(11.5px,1.25vh,12.8px)!important;
-  line-height:1.43!important;
-  display:-webkit-box!important;
-  -webkit-box-orient:vertical!important;
-  -webkit-line-clamp:4!important;
-  overflow:hidden!important;
-}
-#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say div{
-  font-size:clamp(12px,1.3vh,13.5px)!important;
-  -webkit-line-clamp:5!important;
-}
-
-/* Short desktop/laptop windows: preserve text scale, tighten only vertical air. */
-@media (min-width:1181px) and (max-height:900px){
-  #rp-overlay .cux702-company:has(.cux702-signal-grid){padding-top:5px!important;padding-bottom:5px!important;}
-  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-subnav{margin:6px 0 9px!important;min-height:42px!important;}
-  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{grid-template-rows:clamp(205px,25.5vh,232px) minmax(0,1fr)!important;gap:9px!important;}
-  #rp-overlay .cux702-company .cux702-card-head{margin-bottom:12px!important;}
-  #rp-overlay .cux702-company .cux702-card-copy{margin-top:8px!important;}
-  #rp-overlay .cux702-company .cux700-conversation{padding-top:14px!important;padding-bottom:14px!important;}
-  #rp-overlay .cux702-company .cux700-conversation .cux10-head{margin-bottom:6px!important;}
-  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{margin-top:8px!important;}
-}
-
-/* Width adaptation remains structural: four cards while readable, then 2x2. */
-@media(max-width:1180px){
-  #rp-overlay .rp2-main:has(.cux702-company .cux702-signal-grid){overflow-y:auto!important;padding-bottom:16px!important;}
-  #rp-overlay #rp2-page.p639-subpage:has(.cux702-company .cux702-signal-grid){height:auto!important;overflow:visible!important;}
-  #rp-overlay .cux702-company:has(.cux702-signal-grid){height:auto!important;overflow:visible!important;display:block!important;padding-bottom:12px!important;}
-  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{height:auto!important;display:flex!important;flex-direction:column!important;overflow:visible!important;}
-  #rp-overlay .cux702-company .cux700-conversation{height:auto!important;max-height:none!important;overflow:visible!important;}
-  #rp-overlay .cux702-company .cux700-conversation .cux10-body{overflow:visible!important;}
-  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{height:auto!important;min-height:118px!important;}
-}
-
-/* Build identity */
-html[data-connect-authoritative="v709"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V709";--connect-build-short:"BUILD V709";}
-html[data-connect-authoritative="v709"] body .tabs:after{content:var(--connect-build-long)!important;}
-html[data-connect-authoritative="v709"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
-</style>
-<script id="connect-v709-adaptive-company-viewport-js">
-(function(){
- 'use strict';
- var BUILD=window.CONNECT_BUILD_AUTHORITY||'v709',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V709';
- var raf=0,lastCompany=null;
- function viewportH(){return Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight||0)}
- function fit(){
-   raf=0;
-   try{
-     var root=document.getElementById('rp-overlay');
-     if(!root)return;
-     var shell=root.querySelector('.cux702-company:has(.cux702-signal-grid)');
-     if(!shell){root.style.removeProperty('--cux709-overview-h');lastCompany=null;return;}
-     var overview=shell.querySelector('.cux8-overview');
-     if(!overview)return;
-     var top=Math.round(overview.getBoundingClientRect().top);
-     var bottomPad=8;
-     var available=Math.max(300,viewportH()-top-bottomPad);
-     root.style.setProperty('--cux709-overview-h',available+'px');
-     var main=root.querySelector('.rp2-main');
-     if(main&&lastCompany!==shell){main.scrollTop=0;lastCompany=shell;}
-   }catch(e){}
- }
- function schedule(){if(raf)return;raf=requestAnimationFrame(fit)}
- function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){schedule();brand()},{once:true});else{schedule();brand()}
- window.addEventListener('resize',schedule,{passive:true});
- if(window.visualViewport)window.visualViewport.addEventListener('resize',schedule,{passive:true});
- try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(schedule).observe(host,{childList:true,subtree:true})}catch(e){}
- [80,250,650,1300].forEach(function(ms){setTimeout(schedule,ms)});
- [120,600,1500].forEach(function(ms){setTimeout(brand,ms)});
- window.TCP_COMPANY_ADAPTIVE_VIEWPORT_V709={version:BUILD,focus:'hide redundant company page bar + exact viewport fit + no bottom creep'};
- window.TCP_BUILD_IDENTITY_V709={version:BUILD,authority:true};
-})();
-</script>
 </body></html>'
  }
  window._ord672Print=function(mode){var g=currentGroup();if(!g)return;mode=mode==='pdf'?'pdf':'print';var w=window.open('','_blank');if(!w){alert('Please allow pop-ups to create the print-friendly order document.');return}w.document.open();w.document.write(printDocument(g,mode));w.document.close();try{w.focus()}catch(e){}};
@@ -72229,5 +72005,271 @@ html[data-rp-theme="light"] #rp-overlay .cux706-sales-kpi strong{color:#173044!i
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[120,500,1200,2400].forEach(function(ms){setTimeout(brand,ms)});
  window.TCP_COMPANY_READABILITY_V708={version:BUILD,focus:'manager-dashboard typography scale + company readability'};
  window.TCP_BUILD_IDENTITY_V708={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v710 · REP PORTAL CLEAN CHROME + ADAPTIVE COMPANY VIEWPORT ===== -->
+<style id="connect-v710-rep-portal-clean-chrome-css">
+/* The left rail already identifies the active section. Do not spend vertical
+   workspace repeating Companies / Quotes / Orders / etc. in a second header. */
+#rp-overlay .rp2-app.rp2-mode-phased .p639-page-top{display:none!important;}
+
+/* Once the redundant page header is gone, phased subpages begin directly in
+   the working canvas. Keep a restrained perimeter rather than a replacement gap. */
+#rp-overlay .rp2-app.rp2-mode-phased #rp2-page.p639-subpage{
+  padding-top:clamp(8px,1.15vh,14px)!important;
+}
+
+/* Company Overview uses the visible browser area rather than a monitor-specific
+   fixed height. Header + subnav stay intrinsic; signals and prep share the rest. */
+#rp-overlay .rp2-main:has(.cux702-company .cux702-signal-grid){
+  overflow-y:hidden!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  overscroll-behavior-y:none!important;
+}
+#rp-overlay #rp2-page.p639-subpage:has(.cux702-company .cux702-signal-grid){
+  padding-top:clamp(6px,.8vh,10px)!important;
+  padding-bottom:clamp(6px,.8vh,10px)!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid){
+  height:100%!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-rows:auto auto minmax(0,1fr)!important;
+  gap:0!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-hero{margin-bottom:clamp(6px,.85vh,10px)!important;}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-subnav{margin:0 0 clamp(8px,1vh,12px)!important;}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{
+  height:var(--cux710-overview-h,auto)!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  display:grid!important;
+  grid-template-rows:clamp(220px,29vh,270px) minmax(0,1fr)!important;
+  gap:clamp(9px,1.2vh,14px)!important;
+  align-content:stretch!important;
+}
+#rp-overlay .cux702-company .cux702-signal-grid{
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  gap:clamp(12px,1vw,17px)!important;
+}
+#rp-overlay .cux702-company .cux702-kpi-card{
+  height:100%!important;
+  min-height:0!important;
+  padding:clamp(18px,2.1vh,24px) clamp(18px,1.35vw,24px)!important;
+}
+#rp-overlay .cux702-company .cux702-card-head{margin-bottom:clamp(13px,1.8vh,22px)!important;}
+#rp-overlay .cux702-company .cux702-card-copy{margin-top:clamp(8px,1.15vh,14px)!important;}
+#rp-overlay .cux702-company .cux702-card-foot{
+  left:clamp(18px,1.35vw,24px)!important;
+  right:clamp(18px,1.35vw,24px)!important;
+  bottom:clamp(13px,1.55vh,20px)!important;
+}
+#rp-overlay .cux702-company .cux702-sales{padding-bottom:clamp(82px,9.4vh,100px)!important;}
+#rp-overlay .cux702-company .cux702-pace-wrap{
+  left:clamp(18px,1.35vw,24px)!important;
+  right:clamp(18px,1.35vw,24px)!important;
+  bottom:clamp(13px,1.55vh,20px)!important;
+}
+
+/* Conversation Prep owns the exact remaining space and never leaks below the
+   browser viewport. Add Note already lives in the company command header. */
+#rp-overlay .cux702-company .cux700-conversation{
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:clamp(15px,2vh,25px) clamp(18px,1.35vw,24px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-add{display:none!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-head{flex:0 0 auto!important;margin-bottom:clamp(7px,1vh,13px)!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-body{flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-grid,
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{flex:1 1 auto!important;min-height:0!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{display:flex!important;flex-direction:column!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{flex:1 1 auto!important;min-height:0!important;height:auto!important;margin-top:clamp(8px,1.1vh,16px)!important;gap:clamp(9px,.75vw,14px)!important;align-items:stretch!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{height:100%!important;min-height:0!important;padding:clamp(11px,1.4vh,16px)!important;overflow:hidden!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:4!important;overflow:hidden!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say div{-webkit-line-clamp:5!important;}
+
+/* Preserve large readable type on short laptop displays by reducing vertical
+   air before reducing typography. */
+@media (min-width:1181px) and (max-height:900px){
+  #rp-overlay .rp2-app.rp2-mode-phased #rp2-page.p639-subpage{padding-top:6px!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{grid-template-rows:clamp(205px,25.5vh,232px) minmax(0,1fr)!important;gap:9px!important;}
+  #rp-overlay .cux702-company .cux702-card-head{margin-bottom:12px!important;}
+  #rp-overlay .cux702-company .cux702-card-copy{margin-top:8px!important;}
+  #rp-overlay .cux702-company .cux700-conversation{padding-top:13px!important;padding-bottom:13px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux10-head{margin-bottom:6px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{margin-top:7px!important;}
+}
+
+/* At genuinely narrower widths, switch structure instead of crushing content. */
+@media(max-width:1180px){
+  #rp-overlay .rp2-main:has(.cux702-company .cux702-signal-grid){overflow-y:auto!important;padding-bottom:14px!important;}
+  #rp-overlay #rp2-page.p639-subpage:has(.cux702-company .cux702-signal-grid){height:auto!important;overflow:visible!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid){height:auto!important;overflow:visible!important;display:block!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{height:auto!important;display:flex!important;flex-direction:column!important;overflow:visible!important;}
+  #rp-overlay .cux702-company .cux700-conversation{height:auto!important;max-height:none!important;overflow:visible!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux10-body{overflow:visible!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{height:auto!important;min-height:118px!important;}
+}
+
+html[data-connect-authoritative="v710"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V710";--connect-build-short:"BUILD V710";}
+html[data-connect-authoritative="v710"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v710"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
+<script id="connect-v710-rep-portal-clean-chrome-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v710',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V710';
+ var raf=0,lastCompany=null;
+ function viewportH(){return Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight||0)}
+ function fit(){
+   raf=0;
+   try{
+     var root=document.getElementById('rp-overlay');
+     if(!root)return;
+     /* Defensive removal in addition to CSS so later legacy render layers cannot
+        resurrect the redundant page-title strip. */
+     root.querySelectorAll('.rp2-app.rp2-mode-phased .p639-page-top').forEach(function(el){el.style.setProperty('display','none','important')});
+     var shell=root.querySelector('.cux702-company:has(.cux702-signal-grid)');
+     if(!shell){root.style.removeProperty('--cux710-overview-h');lastCompany=null;return;}
+     var overview=shell.querySelector('.cux8-overview');
+     if(!overview)return;
+     var top=Math.round(overview.getBoundingClientRect().top);
+     var available=Math.max(300,viewportH()-top-7);
+     root.style.setProperty('--cux710-overview-h',available+'px');
+     var main=root.querySelector('.rp2-main');
+     if(main&&lastCompany!==shell){main.scrollTop=0;lastCompany=shell;}
+   }catch(e){}
+ }
+ function schedule(){if(raf)return;raf=requestAnimationFrame(fit)}
+ function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){schedule();brand()},{once:true});else{schedule();brand()}
+ window.addEventListener('resize',schedule,{passive:true});
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',schedule,{passive:true});
+ try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(schedule).observe(host,{childList:true,subtree:true})}catch(e){}
+ [60,180,500,1100].forEach(function(ms){setTimeout(schedule,ms)});
+ [100,500,1300].forEach(function(ms){setTimeout(brand,ms)});
+ window.TCP_REP_PORTAL_CLEAN_CHROME_V710={version:BUILD,focus:'remove redundant phased page title bar globally + adaptive company viewport'};
+ window.TCP_BUILD_IDENTITY_V710={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v711 · COMPANY OWNERSHIP + PROFILE REFERENCE ===== -->
+<style id="connect-v711-company-ownership-profile-css">
+/* v711 — the Overview stays sales-first; database/reference fields live in Profile. */
+#rp-overlay .cux711-company .cux8-sub{display:flex!important;flex-wrap:wrap!important;gap:0!important;align-items:center!important;}
+#rp-overlay .cux711-company .cux8-contact strong{font-weight:900!important;}
+#rp-overlay .cux711-company .cux700-subnav button.profile{color:#AFC2D4!important;}
+#rp-overlay .cux711-company .cux700-subnav button.profile:hover,
+#rp-overlay .cux711-company .cux700-subnav button.profile.active{background:rgba(142,220,250,.07)!important;border-color:rgba(142,220,250,.19)!important;color:#DDF6FF!important;}
+
+#rp-overlay .cux711-profile-page{display:flex;flex-direction:column;gap:14px;padding-bottom:12px;}
+#rp-overlay .cux711-profile-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:19px 21px;border:1px solid rgba(255,255,255,.085);border-radius:18px;background:radial-gradient(circle at 10% 5%,rgba(142,220,250,.085),transparent 40%),linear-gradient(155deg,rgba(16,29,41,.97),rgba(10,18,27,.98));box-shadow:0 12px 30px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.035);}
+#rp-overlay .cux711-profile-kick{font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;color:#79DFFF;margin-bottom:5px;}
+#rp-overlay .cux711-profile-title{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:900;line-height:1.04;color:#F4F8FB;}
+#rp-overlay .cux711-profile-copy{font-size:12px;line-height:1.45;color:#91A5B7;max-width:760px;margin-top:6px;}
+#rp-overlay .cux711-profile-pill{padding:8px 11px;border:1px solid rgba(142,220,250,.18);border-radius:999px;background:rgba(142,220,250,.055);font-size:10px;font-weight:900;color:#BCEFFF;white-space:nowrap;}
+#rp-overlay .cux711-profile-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:14px;align-items:stretch;}
+#rp-overlay .cux711-profile-panel{min-width:0;border:1px solid rgba(255,255,255,.075);border-radius:17px;background:rgba(10,19,29,.80);overflow:hidden;}
+#rp-overlay .cux711-profile-panel.full{grid-column:1/-1;}
+#rp-overlay .cux711-profile-panel-head{padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.055);}
+#rp-overlay .cux711-profile-panel-kick{font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;color:#72DFFF;margin-bottom:4px;}
+#rp-overlay .cux711-profile-panel-title{font-size:18px;font-weight:950;color:#EDF4F8;}
+#rp-overlay .cux711-profile-panel-copy{margin-top:4px;font-size:10.5px;line-height:1.4;color:#768B9E;}
+#rp-overlay .cux711-profile-panel-body{padding:16px 18px 18px;}
+#rp-overlay .cux711-profile-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+#rp-overlay .cux711-profile-fact{padding:11px 12px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.022);min-width:0;}
+#rp-overlay .cux711-profile-fact span{display:block;font-size:8.5px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#718699;margin-bottom:5px;}
+#rp-overlay .cux711-profile-fact strong{display:block;font-size:13px;line-height:1.35;color:#E8F0F5;overflow-wrap:anywhere;}
+#rp-overlay .cux711-address-card{padding:15px 16px;border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(255,255,255,.022);}
+#rp-overlay .cux711-address-card+.cux711-address-card{margin-top:10px;}
+#rp-overlay .cux711-address-label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;font-size:9px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#76DFFF;}
+#rp-overlay .cux711-address-label em{font-style:normal;color:#647A8E;font-size:8px;letter-spacing:.04em;}
+#rp-overlay .cux711-address-lines{font-size:14px;line-height:1.55;color:#E8EFF4;}
+#rp-overlay .cux711-empty{padding:18px;border:1px dashed rgba(255,255,255,.09);border-radius:12px;color:#71879A;font-size:11px;line-height:1.45;background:rgba(255,255,255,.014);}
+@media(max-width:1050px){#rp-overlay .cux711-profile-grid{grid-template-columns:1fr;}#rp-overlay .cux711-profile-panel.full{grid-column:auto;}}
+@media(max-width:700px){#rp-overlay .cux711-profile-hero{align-items:flex-start;flex-direction:column;}#rp-overlay .cux711-profile-facts{grid-template-columns:1fr;}}
+html[data-rp-theme="light"] #rp-overlay .cux711-profile-panel,html[data-rp-theme="light"] #rp-overlay .cux711-profile-hero{background:#fff!important;border-color:#D6E0E6!important;}html[data-rp-theme="light"] #rp-overlay .cux711-profile-title,html[data-rp-theme="light"] #rp-overlay .cux711-profile-panel-title,html[data-rp-theme="light"] #rp-overlay .cux711-profile-fact strong,html[data-rp-theme="light"] #rp-overlay .cux711-address-lines{color:#173044!important;}
+html[data-connect-authoritative="v711"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V711";--connect-build-short:"BUILD V711";}
+html[data-connect-authoritative="v711"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v711"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
+<script id="connect-v711-company-ownership-profile-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v711',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V711';
+ var BASE_CUSTOMERS=window._rp2CustomersV2,BASE_PROFILE=window._rp2CompanyProfileV3;
+ var OLD_OVERVIEW=window._cux700Overview,OLD_SALES=window._cux706SalesHistory;
+ var profileCache={company:'',overview:''};
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function keynorm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]/g,'')}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function arr(v){if(Array.isArray(v))return v;if(!v)return[];try{if(typeof v==='object')return Object.keys(v).map(function(k){return v[k]}).filter(Boolean)}catch(e){}return[]}
+ function field(o,keys,def){o=o||{};for(var i=0;i<keys.length;i++){var v=o[keys[i]];if(v!==undefined&&v!==null&&clean(v)!=='')return v}var wanted=keys.map(keynorm),ks=Object.keys(o);for(var j=0;j<ks.length;j++){if(wanted.indexOf(keynorm(ks[j]))>=0){var x=o[ks[j]];if(x!==undefined&&x!==null&&clean(x)!=='')return x}}return def==null?'':def}
+ function sources(o){var out=[];function add(x){if(x&&typeof x==='object'&&out.indexOf(x)<0)out.push(x)}add(o);['profile','imported','raw','source','customer','account'].forEach(function(k){add(o&&o[k])});return out}
+ function valueFrom(list,keys,def){for(var i=0;i<list.length;i++){var v=field(list[i],keys,'');if(clean(v)!=='')return v}return def==null?'':def}
+ function currentName(frag){return clean(frag&&frag.querySelector('.cux8-name')&&frag.querySelector('.cux8-name').textContent)||clean(window._cux8CurrentName)||clean(window._cw4CompanyName)||'Customer'}
+ function customerRecords(name){var k=norm(name),rows=[];try{arr(window.S&&S.customers).forEach(function(c){if(norm(field(c,['name','customer','company','companyName'],'')||'')===k)rows.push(c)})}catch(e){}return rows}
+ function ownership(name){var recs=customerRecords(name),src=[];recs.forEach(function(r){src=src.concat(sources(r))});var p1=clean(valueFrom(src,['rep1Owner','rep1SalesPerson','rep1SalesRep','rep1','REP1 Sales Person','REP1SalesPerson'],'')),p2=clean(valueFrom(src,['rep2Owner','rep2SalesPerson','rep2SalesRep','rep2','REP2 Sales Person','REP2SalesPerson'],''));
+  try{if(window.TCP_CUSTOMER_OWNERSHIP_V634&&typeof window.TCP_CUSTOMER_OWNERSHIP_V634.get==='function'){var st=window.TCP_CUSTOMER_OWNERSHIP_V634.get(name);if(!p1)p1=clean(st&&st.rep1Owner);if(!p2)p2=clean(st&&st.rep2Owner)}}catch(e){}
+  if(!p2)p2=clean(valueFrom(src,['rep','salesRep','owner','assignedRep'],''))||clean(window._rp2&&window._rp2.rep);
+  return{rep1:p1||'—',rep2:p2||'—'}
+ }
+ function contactRows(name){var k=norm(name),seen={},rows=[];function add(c){if(!c||typeof c!=='object')return;var nm=clean(field(c,['name','contactName','fullName'],'Unnamed contact')),id=clean(field(c,['id','contactId','email'],'')||nm+'|'+field(c,['phone','phoneNumber','mobile'],''));if(seen[id])return;seen[id]=1;rows.push(c)}
+  try{[S&&S.accountContacts,S&&S.customerContacts,S&&S.crmContacts,S&&S.contacts].forEach(function(pool){arr(pool).forEach(function(c){if(norm(field(c,['company','customer','companyName','customerName','account','accountName'],'')||'')===k)add(c)})});customerRecords(name).forEach(function(c){arr(c.contacts).forEach(add);if(c.primary)add(c.primary)})}catch(e){}
+  try{var rep=window._rp2&&window._rp2.rep||'',st=JSON.parse(localStorage.getItem('tcp_rp_company_crm_v510')||'null'),accounts=st&&st.reps&&st.reps[rep]&&st.reps[rep].accounts||{};Object.keys(accounts).forEach(function(q){var a=accounts[q]||{},co=field(a.profile||{},['name','company'],q);if(norm(co)===k)arr(a.contacts).forEach(add)})}catch(e){}
+  return rows
+ }
+ function decisionMaker(name){var rows=contactRows(name),explicit=rows.filter(function(c){return field(c,['decisionMaker','isDecisionMaker','decision_maker'],false)===true||/^(yes|true|1)$/i.test(clean(field(c,['decisionMaker','isDecisionMaker','decision_maker'],'')))});var picked=explicit[0]||rows.filter(function(c){return /^decision maker$/i.test(clean(field(c,['buyingRole','role','contactRole'],'')))})[0]||null;return picked?clean(field(picked,['name','contactName','fullName'],'Decision maker')):''}
+ function localProfile(name){var rep=window._rp2&&window._rp2.rep||'',k=norm(name);try{var st=JSON.parse(localStorage.getItem('tcp_rp_company_crm_v510')||'null'),accounts=st&&st.reps&&st.reps[rep]&&st.reps[rep].accounts||{},hit=null;Object.keys(accounts).some(function(q){var a=accounts[q]||{},co=field(a.profile||{},['name','company'],q);if(norm(co)===k){hit=a.profile||{};return true}return false});return hit||{}}catch(e){return{}}}
+ function companySources(name){var out=[];customerRecords(name).forEach(function(r){out=out.concat(sources(r))});out.push(localProfile(name));return out.filter(Boolean)}
+ function addressFrom(obj,prefix){obj=obj||{};var nested=field(obj,[prefix+'Address',prefix+'address',prefix],null);if(nested&&typeof nested==='object'&&nested!==obj)return addressFrom(nested,'');var pref=prefix||'',p=pref?pref.charAt(0).toUpperCase()+pref.slice(1):'';function f(keys){return clean(field(obj,keys,''))}
+  var line1=f([pref+'address1',pref+'Address1',pref+'street',pref+'Street',pref+'address',pref+'Address',pref+'streetAddress',pref+'StreetAddress']);
+  var line2=f([pref+'address2',pref+'Address2',pref+'suite',pref+'Suite']);
+  var city=f([pref+'city',pref+'City']),state=f([pref+'state',pref+'State',pref+'region',pref+'Region']),zip=f([pref+'postalCode',pref+'PostalCode',pref+'zip',pref+'Zip',pref+'zipCode',pref+'ZipCode']),country=f([pref+'country',pref+'Country']);
+  return{line1:line1,line2:line2,city:city,state:state,zip:zip,country:country}
+ }
+ function hasAddress(a){return !!(a&&(a.line1||a.line2||a.city||a.state||a.zip||a.country))}
+ function addrKey(a){return norm([a.line1,a.line2,a.city,a.state,a.zip,a.country].join('|'))}
+ function formatAddress(a){var lines=[];if(a.line1)lines.push(a.line1);if(a.line2)lines.push(a.line2);var cs=[a.city,a.state].filter(Boolean).join(', ')+(a.zip?((a.city||a.state?' ':'')+a.zip):'');if(cs)lines.push(cs);if(a.country)lines.push(a.country);return lines}
+ function billingAddress(name){var src=companySources(name),best=null;for(var i=0;i<src.length;i++){var a=addressFrom(src[i],'billing');if(hasAddress(a)){best=a;break}}if(!best){for(var j=0;j<src.length;j++){var x=addressFrom(src[j],'');if(hasAddress(x)){best=x;break}}}return best||{}}
+ function orderCompany(o){return clean(field(o,['customer','customerName','company','companyName','account','accountName'],'')||'')}
+ function shippingAddresses(name){var k=norm(name),found={},rows=[];function add(a,source){if(!hasAddress(a))return;var key=addrKey(a);if(!key||found[key])return;found[key]=1;rows.push({address:a,source:source||'Account record'})}
+  companySources(name).forEach(function(s){var pools=field(s,['shippingAddresses','shipToAddresses','shipAddresses'],null);arr(pools).forEach(function(x){add(addressFrom(x,''),'Account shipping address')});add(addressFrom(s,'shipping'),'Account shipping address')});
+  try{arr(window.S&&S.orders).forEach(function(o){if(norm(orderCompany(o))!==k)return;var a=addressFrom(o,'shipping');if(!hasAddress(a))a=addressFrom(o,'shipTo');if(!hasAddress(a))a=addressFrom(o,'ship');var n=clean(field(o,['orderNum','so','soNum','base'],'')||'');add(a,n?'Order '+n:'Order history')})}catch(e){}
+  return rows
+ }
+ function profileModel(name){var src=companySources(name),own=ownership(name),bill=billingAddress(name),ships=shippingAddresses(name),first=src[0]||{};return{name:name,ownership:own,billing:bill,shipping:ships,customerId:clean(valueFrom(src,['customerNumber','custId','customerId','Cust Id','CustId'],'')),status:clean(valueFrom(src,['customerStatus','status','assignmentStatus'],'')),phone:clean(valueFrom(src,['phone','businessPhone','customerPhone'],'')),terms:clean(valueFrom(src,['termsCode','terms','paymentTerms'],'')),classId:clean(valueFrom(src,['classId','classCode','customerClass'],'')),creditHold:clean(valueFrom(src,['creditHold','creditOnHold'],'')),taxLoc:clean(valueFrom(src,['taxLocId','taxLocationId'],'')),taxExempt:clean(valueFrom(src,['taxExemptId','taxExempt'],''))}}
+ function fact(label,value){return '<div class="cux711-profile-fact"><span>'+esc(label)+'</span><strong>'+esc(clean(value)||'—')+'</strong></div>'}
+ function addressCard(label,a,source){var lines=formatAddress(a);return '<div class="cux711-address-card"><div class="cux711-address-label"><span>'+esc(label)+'</span>'+(source?'<em>'+esc(source)+'</em>':'')+'</div><div class="cux711-address-lines">'+(lines.length?lines.map(esc).join('<br>'):'No address loaded')+'</div></div>'}
+ function renderProfile(name){var m=profileModel(name),bill=hasAddress(m.billing)?addressCard('Billing address',m.billing,'Customer record'):'<div class="cux711-empty">No billing address is loaded for this account yet.</div>',ships=m.shipping.length?m.shipping.map(function(x,i){return addressCard(m.shipping.length>1?'Shipping address '+(i+1):'Shipping address',x.address,x.source)}).join(''):'<div class="cux711-empty">No separate shipping address is loaded yet. As order/shipping records are connected, unique ship-to locations will appear here automatically.</div>';return '<section class="cux711-profile-page"><div class="cux711-profile-hero"><div><div class="cux711-profile-kick">Company profile</div><div class="cux711-profile-title">Reference details for '+esc(name)+'</div><div class="cux711-profile-copy">Company record information stays available here without taking over the sales-focused Overview. Use it for ownership, billing, shipping, and account-reference details.</div></div><div class="cux711-profile-pill">'+m.shipping.length+' shipping location'+(m.shipping.length===1?'':'s')+' loaded</div></div><div class="cux711-profile-grid"><section class="cux711-profile-panel"><div class="cux711-profile-panel-head"><div class="cux711-profile-panel-kick">Account record</div><div class="cux711-profile-panel-title">Company details</div><div class="cux711-profile-panel-copy">Reference fields from the connected/imported customer record.</div></div><div class="cux711-profile-panel-body"><div class="cux711-profile-facts">'+fact('Customer ID',m.customerId)+fact('Customer status',m.status)+fact('REP1',m.ownership.rep1)+fact('REP2',m.ownership.rep2)+fact('Phone',m.phone)+fact('Terms',m.terms)+fact('Class',m.classId)+fact('Credit hold',m.creditHold)+fact('Tax location',m.taxLoc)+fact('Tax exempt ID',m.taxExempt)+'</div></div></section><section class="cux711-profile-panel"><div class="cux711-profile-panel-head"><div class="cux711-profile-panel-kick">Billing</div><div class="cux711-profile-panel-title">Billing address</div><div class="cux711-profile-panel-copy">The main billing/company address associated with the account.</div></div><div class="cux711-profile-panel-body">'+bill+'</div></section><section class="cux711-profile-panel full"><div class="cux711-profile-panel-head"><div class="cux711-profile-panel-kick">Shipping</div><div class="cux711-profile-panel-title">Ship-to locations</div><div class="cux711-profile-panel-copy">Every unique shipping address Connect can find from the customer record and linked order history.</div></div><div class="cux711-profile-panel-body">'+ships+'</div></section></div></section>'}
+ function setNav(which){document.querySelectorAll('#rp-overlay .cux700-subnav button').forEach(function(b){var t=clean(b.textContent).toLowerCase();b.classList.toggle('active',(which==='profile'&&t==='profile')||(which==='overview'&&t==='overview')||(which==='sales'&&t==='sales history'))})}
+ function restoreProfile(){var shell=document.querySelector('#rp-overlay .cux711-company'),overview=shell&&shell.querySelector('.cux8-overview'),name=currentName();if(shell&&overview&&overview.querySelector('.cux711-profile-page')&&profileCache.company===name&&profileCache.overview){overview.innerHTML=profileCache.overview;shell.classList.remove('cux711-profile-open');setNav('overview');return true}return false}
+ window._cux711Profile=function(){var sales=document.querySelector('#rp-overlay .cux706-sales-history');if(sales&&typeof OLD_OVERVIEW==='function')OLD_OVERVIEW();var shell=document.querySelector('#rp-overlay .cux711-company'),overview=shell&&shell.querySelector('.cux8-overview'),name=currentName();if(!shell||!overview)return;if(!overview.querySelector('.cux711-profile-page'))profileCache={company:name,overview:overview.innerHTML};overview.innerHTML=renderProfile(name);shell.classList.add('cux711-profile-open');shell.classList.remove('cux706-sales-open');setNav('profile');try{shell.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}}
+ if(typeof OLD_OVERVIEW==='function')window._cux700Overview=function(){if(restoreProfile())return;return OLD_OVERVIEW.apply(this,arguments)};
+ if(typeof OLD_SALES==='function')window._cux706SalesHistory=function(){restoreProfile();return OLD_SALES.apply(this,arguments)};
+ function refine(markup){if(!markup||String(markup).indexOf('cux702-company')<0)return markup;var t=document.createElement('template');t.innerHTML=String(markup).trim();var f=t.content,shell=f.querySelector('.cux702-company');if(!shell)return markup;shell.classList.add('cux711-company');var name=currentName(f),own=ownership(name),sub=f.querySelector('.cux8-sub');if(sub){var parts=clean(sub.textContent).split('·').map(clean).filter(Boolean).filter(function(x){return !/^owned by\b/i.test(x)&&!/^rep\s*[12]\s*:/i.test(x)});parts.push('Rep 1: '+own.rep1);parts.push('Rep 2: '+own.rep2);sub.textContent=parts.join(' · ')}var contact=f.querySelector('.cux8-contact');if(contact){var health=contact.querySelector('.cux694-rel-pill');var dm=decisionMaker(name);contact.innerHTML='<strong>Decision Maker: '+esc(dm||'Not selected')+'</strong>';if(health)contact.appendChild(health)}var nav=f.querySelector('.cux700-subnav');if(nav&&!Array.prototype.some.call(nav.querySelectorAll('button'),function(b){return clean(b.textContent).toLowerCase()==='profile'})){var b=document.createElement('button');b.className='profile';b.textContent='Profile';b.setAttribute('onclick','_cux711Profile()');var strategy=Array.prototype.slice.call(nav.querySelectorAll('button')).filter(function(x){return clean(x.textContent).toLowerCase()==='strategy'})[0];if(strategy&&strategy.nextSibling)nav.insertBefore(b,strategy.nextSibling);else nav.appendChild(b)}var d=document.createElement('div');d.appendChild(f.cloneNode(true));return d.innerHTML}
+ function wrap(fn){return typeof fn==='function'?function(){return refine(fn.apply(this,arguments))}:fn}
+ window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+ function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[100,500,1300].forEach(function(ms){setTimeout(brand,ms)});
+ window.TCP_COMPANY_OWNERSHIP_PROFILE_V711={version:BUILD,focus:'REP1/REP2 + selected decision maker + billing/shipping company Profile tab'};window.TCP_BUILD_IDENTITY_V711={version:BUILD,authority:true};
 })();
 </script>
