@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v715 — Sales Portal</title>
-<script id="connect-build-authority-v715">
+<title>Connect v716 — Sales Portal</title>
+<script id="connect-build-authority-v716">
 (function(){
   'use strict';
-  var BUILD='v715', DISPLAY='V715', TITLE='Connect v715 — Sales Portal';
+  var BUILD='v716', DISPLAY='V716', TITLE='Connect v716 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -72650,5 +72650,147 @@ html[data-connect-authoritative="v715"] body.nav-rail .tabs:after{content:var(--
  [60,180,500,1100].forEach(function(ms){setTimeout(queue,ms)});
  window.TCP_COMPANY_PREP_HEIGHT_FIX_V715={version:BUILD,focus:'Conversation Prep stretches inside row 2 instead of height:100% overflowing the Overview grid'};
  window.TCP_BUILD_IDENTITY_V715={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v716 · CONVERSATION PREP FINISH ===== -->
+<style id="connect-v716-conversation-prep-finish-css">
+/* v716 — finish the Conversation Prep composition.
+   The working cards belong directly under the pre-call heading, not pinned to
+   the bottom of the available row. The outer panel still stretches with the
+   Overview grid and keeps a clearly visible rounded bottom edge. */
+
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-conversation{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  align-self:stretch!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  border-radius:22px!important;
+  border-bottom-left-radius:22px!important;
+  border-bottom-right-radius:22px!important;
+  padding-bottom:clamp(14px,1.65vh,20px)!important;
+}
+
+/* Keep the body stretchable, but stop the summary stack from consuming all
+   remaining height. That old flex:1 + margin-top:auto combination created the
+   large empty pocket above KNOW / SAY / ASK / NEXT STEP. */
+#rp-overlay .cux702-company .cux700-conversation .cux10-body{
+  display:flex!important;
+  flex-direction:column!important;
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-grid,
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
+  display:flex!important;
+  flex-direction:column!important;
+  flex:0 0 auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+}
+
+/* Put the actionable prep row directly under its heading. */
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+  flex:0 0 auto!important;
+  height:clamp(102px,11.8vh,122px)!important;
+  min-height:102px!important;
+  max-height:122px!important;
+  margin-top:clamp(12px,1.35vh,16px)!important;
+  margin-bottom:0!important;
+  padding-top:0!important;
+  box-sizing:border-box!important;
+  align-items:stretch!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  box-sizing:border-box!important;
+}
+
+/* The first summary card should not grow downward and visually push the plan. */
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
+  padding-bottom:0!important;
+}
+
+/* Short laptops: preserve the same composition and readability, just trim the
+   prep-row height slightly. The bottom of the outer card stays visible. */
+@media (min-width:1181px) and (max-height:820px){
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-conversation{
+    padding-bottom:12px!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+    height:94px!important;
+    min-height:94px!important;
+    max-height:94px!important;
+    margin-top:10px!important;
+  }
+}
+
+/* Narrow/stacked mode remains content-driven but keeps the finished card edge. */
+@media(max-width:1180px){
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-conversation{
+    height:auto!important;
+    max-height:none!important;
+    overflow:hidden!important;
+    border-radius:20px!important;
+    padding-bottom:14px!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux10-body{
+    overflow:visible!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin-top:12px!important;
+  }
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+    height:auto!important;
+    min-height:118px!important;
+    max-height:none!important;
+  }
+}
+
+html[data-connect-authoritative="v716"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V716";--connect-build-short:"BUILD V716";}
+html[data-connect-authoritative="v716"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v716"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
+<script id="connect-v716-conversation-prep-finish-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v716',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V716';
+ function finish(){
+  try{
+   document.querySelectorAll('#rp-overlay .cux702-company .cux700-conversation').forEach(function(panel){
+    panel.style.setProperty('height','auto','important');
+    panel.style.setProperty('min-height','0','important');
+    panel.style.setProperty('max-height','none','important');
+    panel.style.setProperty('align-self','stretch','important');
+    panel.style.setProperty('overflow','hidden','important');
+    panel.style.setProperty('border-radius','22px','important');
+   });
+   document.querySelectorAll('#rp-overlay .cux702-company .cux700-conversation .cux696-plan').forEach(function(plan){
+    plan.style.setProperty('margin-top','clamp(12px,1.35vh,16px)','important');
+   });
+   if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();
+   document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY});
+  }catch(e){}
+ }
+ var raf=0;function queue(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;finish()})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',queue,{once:true});else queue();
+ window.addEventListener('resize',queue,{passive:true});
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',queue,{passive:true});
+ try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(queue).observe(host,{childList:true,subtree:true})}catch(e){}
+ [60,180,500,1100].forEach(function(ms){setTimeout(queue,ms)});
+ window.TCP_COMPANY_PREP_FINISH_V716={version:BUILD,focus:'top-aligned pre-call work row + finished rounded Conversation Prep bottom'};
+ window.TCP_BUILD_IDENTITY_V716={version:BUILD,authority:true};
 })();
 </script>
