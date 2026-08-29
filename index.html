@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v708 — Sales Portal</title>
-<script id="connect-build-authority-v708">
+<title>Connect v709 — Sales Portal</title>
+<script id="connect-build-authority-v709">
 (function(){
   'use strict';
-  var BUILD='v708', DISPLAY='V708', TITLE='Connect v708 — Sales Portal';
+  var BUILD='v709', DISPLAY='V709', TITLE='Connect v709 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -66199,7 +66199,246 @@ body.nav-rail .tabs:after{content:"v672"!important}
   var issueHtml=issues.count?'<div class="issue-grid">'+issues.arts.map(function(a){return'<div class="issue"><strong>Art Error</strong>'+esc(a.issueTypeLabel||a.type||'Art issue')+(a.desc?'<br>'+esc(a.desc):'')+'</div>'}).concat(issues.cms.map(function(c){return'<div class="issue"><strong>Credit Memo · '+money(-Math.abs(n(c.amount)))+'</strong>'+esc(c.desc||'Credit memo')+'</div>'})).join('')+'</div>':'<div class="ok">✓ No linked Art Errors or Credit Memos</div>';
   function sectionTable(title,meta,headers,body){return body?'<section><div class="sec-head"><h2>'+title+'</h2><span>'+meta+'</span></div><table><thead><tr>'+headers.map(function(h){return'<th'+(h==='Qty'||h==='Revenue'||h==='Amount'?' class="num"':'')+'>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+body+'</tbody></table></section>':''}
   var toolbar=mode==='pdf'?'<div class="screen-note no-print"><strong>Save PDF:</strong> choose <b>Save as PDF</b> as the printer/destination, then save. <button onclick="window.print()">Open dialog again</button></div>':'<div class="screen-note no-print"><strong>Print-ready order detail.</strong> <button onclick="window.print()">Print</button> <button onclick="window.close()">Close</button></div>';
-  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n</body></html>'
+  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n
+
+<!-- ===== CONNECT v709 · ADAPTIVE COMPANY VIEWPORT ===== -->
+<style id="connect-v709-adaptive-company-viewport-css">
+/* v709 — one Company Overview composition at every desktop size.
+   Preserve readable typography; adapt vertical rhythm to the actual viewport. */
+
+/* The Company profile itself is the page title. Remove the redundant
+   "Companies / Phased Rep Portal" bar only while a company profile is open. */
+#rp-overlay:has(.cux702-company) .p639-page-top{display:none!important;}
+
+/* Remove legacy bottom reserves on the Overview. Other Company tabs retain
+   their normal scrolling behavior. */
+#rp-overlay .rp2-main:has(.cux702-company .cux702-signal-grid){
+  overflow-y:hidden!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  overscroll-behavior-y:none!important;
+}
+#rp-overlay #rp2-page.p639-subpage:has(.cux702-company .cux702-signal-grid){
+  padding-top:0!important;
+  padding-bottom:0!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid){
+  height:100%!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-rows:auto auto minmax(0,1fr)!important;
+  gap:0!important;
+  padding-top:8px!important;
+  padding-bottom:8px!important;
+  overflow:hidden!important;
+}
+
+/* Compact header/nav use intrinsic height; the Overview receives precisely
+   the remaining visible height from JS through --cux709-overview-h. */
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-hero{
+  margin:0!important;
+  flex:none!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-subnav{
+  margin:8px 0 12px!important;
+  flex:none!important;
+}
+#rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{
+  height:var(--cux709-overview-h,auto)!important;
+  min-height:0!important;
+  max-height:none!important;
+  display:grid!important;
+  grid-template-rows:clamp(214px,27.5vh,266px) minmax(0,1fr)!important;
+  gap:12px!important;
+  overflow:hidden!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+/* KPI cards: same visual language, but height comes from the adaptive row.
+   Typography remains command-center size; spacing does the adapting. */
+#rp-overlay .cux702-company .cux702-signal-grid{
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  gap:clamp(11px,.9vw,17px)!important;
+  align-items:stretch!important;
+}
+#rp-overlay .cux702-company .cux702-kpi-card{
+  height:100%!important;
+  min-height:0!important;
+  padding:clamp(16px,2.05vh,24px) clamp(17px,1.25vw,24px) clamp(15px,1.9vh,22px)!important;
+}
+#rp-overlay .cux702-company .cux702-card-head{
+  margin-bottom:clamp(13px,1.85vh,24px)!important;
+}
+#rp-overlay .cux702-company .cux702-card-icon{
+  width:clamp(36px,4.2vh,42px)!important;
+  height:clamp(36px,4.2vh,42px)!important;
+  min-width:clamp(36px,4.2vh,42px)!important;
+}
+#rp-overlay .cux702-company .cux702-card-value{
+  font-size:clamp(29px,3.35vh,37px)!important;
+}
+#rp-overlay .cux702-company .cux702-next .cux702-card-value,
+#rp-overlay .cux702-company .cux702-opportunity .cux702-card-value{
+  font-size:clamp(23px,2.6vh,28px)!important;
+}
+#rp-overlay .cux702-company .cux702-card-copy{
+  margin-top:clamp(9px,1.2vh,15px)!important;
+  font-size:clamp(11.5px,1.25vh,13px)!important;
+  line-height:1.42!important;
+  -webkit-line-clamp:2!important;
+}
+#rp-overlay .cux702-company .cux702-card-foot{
+  left:clamp(17px,1.25vw,24px)!important;
+  right:clamp(17px,1.25vw,24px)!important;
+  bottom:clamp(13px,1.55vh,20px)!important;
+}
+#rp-overlay .cux702-company .cux702-sales{padding-bottom:clamp(82px,9.4vh,100px)!important;}
+#rp-overlay .cux702-company .cux702-pace-wrap{
+  left:clamp(17px,1.25vw,24px)!important;
+  right:clamp(17px,1.25vw,24px)!important;
+  bottom:clamp(13px,1.55vh,20px)!important;
+}
+
+/* Conversation Prep fills the remainder exactly. No duplicate Add Note and no
+   bottom bleed under the browser viewport. */
+#rp-overlay .cux702-company .cux700-conversation{
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:clamp(16px,2vh,25px) clamp(18px,1.35vw,24px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-add{display:none!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-head{
+  flex:0 0 auto!important;
+  margin-bottom:clamp(8px,1.1vh,14px)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-title{
+  font-size:clamp(24px,2.75vh,29px)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-copy{
+  font-size:clamp(11.5px,1.2vh,12.5px)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-body{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-grid,
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
+  flex:1 1 auto!important;
+  min-height:0!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-summary-card:first-child{
+  display:flex!important;
+  flex-direction:column!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-card-title{
+  flex:none!important;
+  font-size:clamp(15px,1.65vh,17px)!important;
+  margin-bottom:clamp(8px,1.05vh,13px)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  height:auto!important;
+  margin-top:clamp(9px,1.2vh,17px)!important;
+  gap:clamp(9px,.75vw,14px)!important;
+  align-items:stretch!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+  height:100%!important;
+  min-height:0!important;
+  padding:clamp(11px,1.45vh,16px)!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{
+  font-size:clamp(11.5px,1.25vh,12.8px)!important;
+  line-height:1.43!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:4!important;
+  overflow:hidden!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say div{
+  font-size:clamp(12px,1.3vh,13.5px)!important;
+  -webkit-line-clamp:5!important;
+}
+
+/* Short desktop/laptop windows: preserve text scale, tighten only vertical air. */
+@media (min-width:1181px) and (max-height:900px){
+  #rp-overlay .cux702-company:has(.cux702-signal-grid){padding-top:5px!important;padding-bottom:5px!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux700-subnav{margin:6px 0 9px!important;min-height:42px!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{grid-template-rows:clamp(205px,25.5vh,232px) minmax(0,1fr)!important;gap:9px!important;}
+  #rp-overlay .cux702-company .cux702-card-head{margin-bottom:12px!important;}
+  #rp-overlay .cux702-company .cux702-card-copy{margin-top:8px!important;}
+  #rp-overlay .cux702-company .cux700-conversation{padding-top:14px!important;padding-bottom:14px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux10-head{margin-bottom:6px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{margin-top:8px!important;}
+}
+
+/* Width adaptation remains structural: four cards while readable, then 2x2. */
+@media(max-width:1180px){
+  #rp-overlay .rp2-main:has(.cux702-company .cux702-signal-grid){overflow-y:auto!important;padding-bottom:16px!important;}
+  #rp-overlay #rp2-page.p639-subpage:has(.cux702-company .cux702-signal-grid){height:auto!important;overflow:visible!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid){height:auto!important;overflow:visible!important;display:block!important;padding-bottom:12px!important;}
+  #rp-overlay .cux702-company:has(.cux702-signal-grid) .cux8-overview{height:auto!important;display:flex!important;flex-direction:column!important;overflow:visible!important;}
+  #rp-overlay .cux702-company .cux700-conversation{height:auto!important;max-height:none!important;overflow:visible!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux10-body{overflow:visible!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{height:auto!important;min-height:118px!important;}
+}
+
+/* Build identity */
+html[data-connect-authoritative="v709"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V709";--connect-build-short:"BUILD V709";}
+html[data-connect-authoritative="v709"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v709"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+</style>
+<script id="connect-v709-adaptive-company-viewport-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v709',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V709';
+ var raf=0,lastCompany=null;
+ function viewportH(){return Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight||0)}
+ function fit(){
+   raf=0;
+   try{
+     var root=document.getElementById('rp-overlay');
+     if(!root)return;
+     var shell=root.querySelector('.cux702-company:has(.cux702-signal-grid)');
+     if(!shell){root.style.removeProperty('--cux709-overview-h');lastCompany=null;return;}
+     var overview=shell.querySelector('.cux8-overview');
+     if(!overview)return;
+     var top=Math.round(overview.getBoundingClientRect().top);
+     var bottomPad=8;
+     var available=Math.max(300,viewportH()-top-bottomPad);
+     root.style.setProperty('--cux709-overview-h',available+'px');
+     var main=root.querySelector('.rp2-main');
+     if(main&&lastCompany!==shell){main.scrollTop=0;lastCompany=shell;}
+   }catch(e){}
+ }
+ function schedule(){if(raf)return;raf=requestAnimationFrame(fit)}
+ function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){schedule();brand()},{once:true});else{schedule();brand()}
+ window.addEventListener('resize',schedule,{passive:true});
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',schedule,{passive:true});
+ try{var host=document.getElementById('rp-overlay');if(host)new MutationObserver(schedule).observe(host,{childList:true,subtree:true})}catch(e){}
+ [80,250,650,1300].forEach(function(ms){setTimeout(schedule,ms)});
+ [120,600,1500].forEach(function(ms){setTimeout(brand,ms)});
+ window.TCP_COMPANY_ADAPTIVE_VIEWPORT_V709={version:BUILD,focus:'hide redundant company page bar + exact viewport fit + no bottom creep'};
+ window.TCP_BUILD_IDENTITY_V709={version:BUILD,authority:true};
+})();
+</script>
+</body></html>'
  }
  window._ord672Print=function(mode){var g=currentGroup();if(!g)return;mode=mode==='pdf'?'pdf':'print';var w=window.open('','_blank');if(!w){alert('Please allow pop-ups to create the print-friendly order document.');return}w.document.open();w.document.write(printDocument(g,mode));w.document.close();try{w.focus()}catch(e){}};
  try{document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('o671-modal'))window._ord671Close()})}catch(e){}
