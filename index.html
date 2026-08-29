@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v724 — Sales Portal</title>
+<title>Connect v725 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v724', DISPLAY='V724', TITLE='Connect v724 — Sales Portal';
+  var BUILD='v725', DISPLAY='V725', TITLE='Connect v725 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -72991,12 +72991,12 @@ html[data-connect-authoritative="v718"] body.nav-rail .tabs:after{content:var(--
   runtimePush('artwork',{id:'demo_art_proof',company:DEMO,customer:DEMO,rep:r,title:'Fall jacket left-chest proof',fileName:'fall-jacket-proof.pdf',approvalStatus:'Pending',status:'Pending Approval',updatedAt:'2026-08-27',orderNumber:'D2604',coid:'CO-DEMO-1002',__demoV718:true},'id','demo_art_proof');
   return true
  }
- function seedLocal(reset){var r=rep(),st=read(CRM,{version:1,reps:{}});st.version=1;st.reps=st.reps||{};st.reps[r]=st.reps[r]||{accounts:{}};st.reps[r].accounts=st.reps[r].accounts||{};var key=norm(DEMO),acct=st.reps[r].accounts[key];if(reset||!acct||!acct.profile||!acct.profile.__demoV718){acct={profile:{name:DEMO,company:DEMO,customerNumber:CUST,custId:CUST,owner:r,rep:r,rep1Owner:'Triple Crown',rep2Owner:r,lifecycle:'Customer',tier:'Platinum',status:'Active Customer',customerStatus:'Active Customer',assignmentStatus:'Assigned',industry:'Industrial Services',phone:'608-555-0100',terms:'Net 30',termsCode:'Net 30',classId:'IND',creditHold:'No',taxLocId:'WI-MAD',taxExemptId:'EXEMPT-DEMO',address:'1450 Meridian Avenue',address1:'1450 Meridian Avenue',city:'Madison',state:'WI',postalCode:'53718',country:'US',billingAddress1:'1450 Meridian Avenue',billingCity:'Madison',billingState:'WI',billingPostalCode:'53718',billingCountry:'US',shippingAddresses:[{address1:'800 Industrial Loop',city:'Madison',state:'WI',postalCode:'53718',country:'US'},{address1:'4220 Highway 51',city:'DeForest',state:'WI',postalCode:'53532',country:'US'}],source:'Connect demo customer',__demoV718:true},contacts:demoContacts(),opportunities:[{id:'demo_opp_fall',source:'local',title:'2026 Fall Safety Program',stage:'Quote Sent',amount:28500,probability:65,nextStep:'Confirm final headcount and jacket size breakdown',nextStepDate:'2026-09-03',expectedClose:'2026-09-15',products:'Hi-vis softshell jackets + winter headwear',updatedAt:'2026-08-27',createdAt:'2026-08-14'}],quotes:[{id:'demo_quote_fall',source:'local',quoteNumber:'Q-DEMO-2608',title:'Fall Safety Program',status:'Sent',amount:27850,followUpDate:'2026-09-03',decisionDate:'2026-09-12',issueDate:'2026-08-27',updatedAt:'2026-08-27'}],activities:[{id:'demo_act_1',source:'local',type:'Call',subject:'Fall safety planning',detail:'Reviewed expected cold-weather headcount and timing.',outcome:'Taylor requested a jacket + knit cap quote for 150–175 field employees.',date:'2026-08-22',nextStep:'Send options and pricing',nextDate:'2026-08-27',contactName:'Taylor Morgan'},{id:'demo_act_2',source:'local',type:'Email',subject:'Sizing and safety requirements',detail:'Jordan confirmed ANSI Class 2 requirement and field sizing assumptions.',outcome:'Use current vest sizing as the starting distribution.',date:'2026-08-21',nextStep:'Confirm final headcount',nextDate:'2026-09-03',contactName:'Jordan Lee'},{id:'demo_act_3',source:'local',type:'Meeting',subject:'2026 program review',detail:'Quarterly account review covering safety apparel, onboarding kits, and branded drinkware.',outcome:'Customer wants fewer vendors and more repeatable standards.',date:'2026-07-15',nextStep:'Build fall program recommendation',nextDate:'2026-08-15',contactName:'Taylor Morgan'}],notes:[{id:'demo_note_1',type:'Note',text:'Customer values reliable in-hands dates more than lowest price. Standardize products where possible.',date:'2026-07-15'}],files:[]};st.reps[r].accounts[key]=acct;write(CRM,st)}
+ function seedLocal(reset){var r=rep(),st=read(CRM,{version:1,reps:{}});st.version=1;st.reps=st.reps||{};st.reps[r]=st.reps[r]||{accounts:{}};st.reps[r].accounts=st.reps[r].accounts||{};var key=norm(DEMO),acct=st.reps[r].accounts[key];if(reset||!acct||!acct.profile||!acct.profile.__demoV718){acct={profile:{name:DEMO,company:DEMO,customerNumber:CUST,custId:CUST,owner:r,rep:r,rep1Owner:'Triple Crown',rep2Owner:r,lifecycle:'Customer',tier:'Platinum',status:'Active Customer',customerStatus:'Active Customer',assignmentStatus:'Assigned',industry:'Industrial Services',phone:'608-555-0100',terms:'Net 30',termsCode:'Net 30',classId:'IND',creditHold:'No',taxLocId:'WI-MAD',taxExemptId:'EXEMPT-DEMO',address:'1450 Meridian Avenue',address1:'1450 Meridian Avenue',city:'Madison',state:'WI',postalCode:'53718',country:'US',billingAddress1:'1450 Meridian Avenue',billingCity:'Madison',billingState:'WI',billingPostalCode:'53718',billingCountry:'US',shippingAddresses:[{address1:'800 Industrial Loop',city:'Madison',state:'WI',postalCode:'53718',country:'US'},{address1:'4220 Highway 51',city:'DeForest',state:'WI',postalCode:'53532',country:'US'}],source:'Connect demo customer',__demoV718:true},contacts:demoContacts(),opportunities:[{id:'demo_opp_fall',source:'local',title:'2026 Fall Safety Program',stage:'Quote Sent',amount:28500,probability:65,nextStep:'Confirm final headcount and jacket size breakdown',nextStepDate:'2026-09-03',expectedClose:'2026-09-15',products:'Hi-vis softshell jackets + winter headwear',updatedAt:'2026-08-27',createdAt:'2026-08-14'}],quotes:[{id:'demo_quote_fall',source:'local',quoteNumber:'Q-DEMO-2608',title:'Fall Safety Program',status:'Sent',amount:27850,contactName:'Taylor Morgan',contactId:'demo_ct_taylor',followUpDate:'2026-09-03',decisionDate:'2026-09-12',issueDate:'2026-08-27',updatedAt:'2026-08-27'}],activities:[{id:'demo_act_1',source:'local',type:'Call',subject:'Fall safety planning',detail:'Reviewed expected cold-weather headcount and timing.',outcome:'Taylor requested a jacket + knit cap quote for 150–175 field employees.',date:'2026-08-22',nextStep:'Send options and pricing',nextDate:'2026-08-27',contactName:'Taylor Morgan'},{id:'demo_act_2',source:'local',type:'Email',subject:'Sizing and safety requirements',detail:'Jordan confirmed ANSI Class 2 requirement and field sizing assumptions.',outcome:'Use current vest sizing as the starting distribution.',date:'2026-08-21',nextStep:'Confirm final headcount',nextDate:'2026-09-03',contactName:'Jordan Lee'},{id:'demo_act_3',source:'local',type:'Meeting',subject:'2026 program review',detail:'Quarterly account review covering safety apparel, onboarding kits, and branded drinkware.',outcome:'Customer wants fewer vendors and more repeatable standards.',date:'2026-07-15',nextStep:'Build fall program recommendation',nextDate:'2026-08-15',contactName:'Taylor Morgan'}],notes:[{id:'demo_note_1',type:'Note',text:'Customer values reliable in-hands dates more than lowest price. Standardize products where possible.',date:'2026-07-15',contactName:'Taylor Morgan',contactId:'demo_ct_taylor'}],files:[]};st.reps[r].accounts[key]=acct;write(CRM,st)}
   var ps=ensureBucket(PLAN,{plans:{},events:[]});ps.reps[r].plans=ps.reps[r].plans||{};if(reset||!ps.reps[r].plans[key]||!ps.reps[r].plans[key].__demoV718)ps.reps[r].plans[key]={__demoV718:true,company:DEMO,strategy:'Grow',riskLevel:'Low',tier:'Strategic',objective:'Make Summit Ridge’s safety and onboarding programs predictable, standardized, and easier to reorder.',biggestOpportunity:'Expand the annual safety program into cold-weather outerwear and new-hire kits.',nextBestAction:'Confirm fall headcount and jacket sizes with Taylor Morgan.',nextMoveWhy:'The customer’s largest purchase window is Q4 and a fall quote is already in customer review.',nextMoveHow:'Call Taylor, confirm final headcount and size mix, then lock the in-hands date before production tightens.',contactMethod:'Call',actionOwner:r,managerSupport:false,actionDueDate:'2026-09-03',followUpDate:'2026-09-03',reviewDate:'2026-10-01',theirBusiness:'Regional industrial rental and field-services company supporting construction and utility crews across southern Wisconsin.',budgetOwner:'Taylor Morgan — Director of Purchasing',budgetCycle:'Safety apparel is planned in late Q3 for Q4 distribution; new-hire items replenish throughout the year.',buyingProcess:'Taylor selects the program with Jordan; Morgan approves artwork; Casey handles PO/invoice requirements.',orderTriggers:'Cold-weather season, new-hire classes, annual safety refresh, and customer events.',relationshipStrategy:'Protect Taylor while building Jordan as an operational champion and Morgan as the brand/art relationship.',backupContact:'Jordan Lee',customerGoals:'Standardize field apparel, reduce rush orders, and simplify vendor management.',successDefinition:'Approved core product list, predictable reorder cadence, and no missed in-hands dates.',competitivePosition:'Incumbent supplier for safety apparel; promotional and onboarding spend is still split with another vendor.',shareOfWallet:'Estimated 65–70% of branded apparel spend; under 30% of promotional spend.',brandStandards:'Navy, safety yellow, white. Left chest logo on apparel; full-color mark approved for promo.',risks:'Q4 production timing and split promotional spend.',blockers:'Final fall headcount and size distribution.',plan30:'Close fall safety jacket program and confirm production schedule.',plan60:'Present standardized new-hire kit with replenishment quantities.',plan90:'Review 2027 program calendar and consolidate promotional categories.'};write(PLAN,ps);
   var ds=ensureBucket(DOCS,{documents:[],events:[]});ds.reps[r].documents=arr(ds.reps[r].documents).filter(function(x){return !x.__demoV718});ds.reps[r].documents.push({id:'demo_doc_logo',__demoV718:true,company:DEMO,title:'Primary logo artwork',fileName:'summit-ridge-primary-logo.ai',type:'Artwork',approvalStatus:'Approved',status:'Approved',updatedAt:'2026-07-30',coid:'CO-DEMO-1001'},{id:'demo_doc_proof',__demoV718:true,company:DEMO,title:'Fall jacket proof',fileName:'fall-jacket-proof.pdf',type:'Proof',approvalStatus:'Pending',status:'Pending Approval',updatedAt:'2026-08-27',coid:'CO-DEMO-1002'});write(DOCS,ds);
   var cs=ensureBucket(CASES,{cases:[],events:[]});cs.reps[r].cases=arr(cs.reps[r].cases).filter(function(x){return !x.__demoV718});cs.reps[r].cases.push({id:'demo_case_1',__demoV718:true,company:DEMO,title:'Spring vest size exchange',caseNumber:'CS-DEMO-104',status:'Resolved',issueType:'Size exchange',description:'Two medium vests exchanged for large sizes.',openedAt:'2026-03-04',updatedAt:'2026-03-08'},{id:'demo_case_2',__demoV718:true,company:DEMO,title:'Verify fall jacket in-hands date',caseNumber:'CS-DEMO-118',status:'Open',issueType:'Delivery planning',description:'Confirm production capacity before customer finalizes quantities.',openedAt:'2026-08-27',updatedAt:'2026-08-27'});write(CASES,cs);
   var prs=ensureBucket(PRODUCTS,{products:[],recommendations:[],assortments:[],samples:[],favorites:{},events:[]});prs.reps[r].recommendations=arr(prs.reps[r].recommendations).filter(function(x){return !x.__demoV718});prs.reps[r].samples=arr(prs.reps[r].samples).filter(function(x){return !x.__demoV718});prs.reps[r].recommendations.push({id:'demo_rec_1',__demoV718:true,company:DEMO,productName:'Insulated Hi-Vis Parka',category:'Outerwear',reason:'Customer buys hi-vis jackets and has a strong Q4 buying cycle.',status:'Recommended'},{id:'demo_rec_2',__demoV718:true,company:DEMO,productName:'New-Hire Safety Kit',category:'Kits',reason:'Customer wants fewer vendors and repeatable onboarding standards.',status:'Recommended'});prs.reps[r].samples.push({id:'demo_sample_1',__demoV718:true,company:DEMO,productName:'Hi-Vis Softshell Jacket',status:'Out',requestedDate:'2026-08-25',updatedAt:'2026-08-27',color:'Safety Yellow / Navy',size:'L'});write(PRODUCTS,prs);
-  var ac=ensureBucket(ACTION,{manual:[],state:{},events:[]});ac.reps[r].manual=arr(ac.reps[r].manual).filter(function(x){return !x.__demoV718});ac.reps[r].manual.push({id:'demo_task_1',__demoV718:true,source:'demo-customer',category:'followup',tone:'info',score:190,title:'Confirm fall headcount with Taylor',why:'Fall safety quote is open and Q4 is the account’s strongest buying period.',action:'Call Taylor and confirm quantity, size mix, and in-hands date.',measure:'Final quantities are confirmed and the quote has a dated next step.',dueDate:'2026-09-03',customer:DEMO,page:'customers'});write(ACTION,ac);
+  var ac=ensureBucket(ACTION,{manual:[],state:{},events:[]});ac.reps[r].manual=arr(ac.reps[r].manual).filter(function(x){return !x.__demoV718});ac.reps[r].manual.push({id:'demo_task_1',__demoV718:true,source:'demo-customer',category:'followup',tone:'info',score:190,title:'Confirm fall headcount with Taylor',contactName:'Taylor Morgan',contactId:'demo_ct_taylor',why:'Fall safety quote is open and Q4 is the account’s strongest buying period.',action:'Call Taylor and confirm quantity, size mix, and in-hands date.',measure:'Final quantities are confirmed and the quote has a dated next step.',dueDate:'2026-09-03',customer:DEMO,page:'customers'});write(ACTION,ac);
  }
  function seed(reset){seedLocal(!!reset);seedRuntime();window._cw4DirectoryCache=null;window._cw4ProfileCache={};try{sessionStorage.setItem(SESSION,'1')}catch(e){}return true}
  function clearRuntime(){if(!window.S)return;['customers','orders','orderLineItems','artwork'].forEach(function(k){if(Array.isArray(S[k]))S[k]=S[k].filter(function(x){return !x.__demoV718})})}
@@ -73139,9 +73139,9 @@ html[data-connect-authoritative="v718"] body.nav-rail .tabs:after{content:var(--
 @media(max-width:1180px){#rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))}#rp-overlay .cux719-workspace{grid-template-columns:minmax(250px,290px) minmax(0,1fr)}#rp-overlay .cux719-profile-grid{grid-template-columns:1fr}#rp-overlay .cux719-card.wide{grid-column:auto}#rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){#rp-overlay .cux719-workspace{grid-template-columns:1fr}#rp-overlay .cux719-roster{border-right:0;border-bottom:1px solid rgba(255,255,255,.06)}#rp-overlay .cux719-roster-list{max-height:280px}#rp-overlay .cux719-profile-hero{flex-direction:column}#rp-overlay .cux719-profile-actions{justify-content:flex-start}}
 @media(max-width:620px){#rp-overlay .cux719-summary,#rp-overlay .cux719-quick,#rp-overlay .cux719-fields,#rp-overlay .cux719-form-grid{grid-template-columns:1fr}#rp-overlay .cux719-shell-head{align-items:flex-start;flex-direction:column}#rp-overlay .cux719-detail{padding:16px}#rp-overlay .cux719-activity{grid-template-columns:68px minmax(0,1fr)}#rp-overlay .cux719-activity div{grid-column:1/-1}}
-html[data-connect-authoritative="v724"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V724";--connect-build-short:"BUILD V724"}
-html[data-connect-authoritative="v724"] body .tabs:after{content:var(--connect-build-long)!important}
-html[data-connect-authoritative="v724"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
+html[data-connect-authoritative="v725"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V725";--connect-build-short:"BUILD V725"}
+html[data-connect-authoritative="v725"] body .tabs:after{content:var(--connect-build-long)!important}
+html[data-connect-authoritative="v725"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
 </style>
 <script id="connect-v720-relationship-workspace-js">
 (function(){
@@ -73201,9 +73201,9 @@ html[data-connect-authoritative="v724"] body.nav-rail .tabs:after{content:var(--
 
 
 <style id="connect-v721-live-contacts-css">
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster{display:flex!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-detail{display:block!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster{display:flex!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-detail{display:block!important}
 </style>
 <script id="connect-v721-live-contacts-binding">
 (function(){
@@ -73244,154 +73244,154 @@ html[data-connect-authoritative="v724"] #rp-overlay .cux719-detail{display:block
 <!-- ===== CONNECT v723 · CONTACTS UI PARITY / READABILITY ===== -->
 <style id="connect-v723-contacts-ui-parity">
 /* Contacts should feel like the same command-center product as Company Overview / Manager Dashboard. */
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{
   max-width:1720px!important;margin:0 auto!important;padding:0 18px 28px!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{
   grid-template-columns:minmax(0,1fr) auto!important;gap:28px!important;align-items:center!important;
   min-height:118px!important;padding:24px 28px!important;border-radius:24px!important;overflow:hidden!important;
   background:radial-gradient(circle at 92% 4%,rgba(155,107,255,.18),transparent 35%),linear-gradient(135deg,#16304A 0%,#17253F 52%,#252044 100%)!important;
   border-color:rgba(155,107,255,.25)!important;box-shadow:0 20px 52px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-id{gap:18px!important;align-items:center!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-back{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-id{gap:18px!important;align-items:center!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-back{
   width:46px!important;height:46px!important;flex:0 0 46px!important;border-radius:14px!important;font-size:17px!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-icon{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-icon{
   width:58px!important;height:58px!important;flex:0 0 58px!important;border-radius:18px!important;font-size:25px!important;
   background:linear-gradient(145deg,rgba(155,107,255,.24),rgba(0,175,239,.09))!important;border-color:rgba(155,107,255,.38)!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-company{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-company{
   font-size:10.5px!important;line-height:1.3!important;letter-spacing:.12em!important;color:#94A6BF!important;margin-bottom:3px!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-title{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-title{
   margin-top:2px!important;font-size:31px!important;line-height:1.02!important;letter-spacing:-.035em!important;color:#F7FAFC!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-copy{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-copy{
   margin-top:8px!important;font-size:13px!important;line-height:1.5!important;color:#A3B2C3!important;max-width:720px!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{gap:10px!important;justify-content:flex-end!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions .cux8-action{
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{gap:10px!important;justify-content:flex-end!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions .cux8-action{
   min-height:44px!important;padding:0 16px!important;border-radius:12px!important;font-size:12px!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-content{margin-top:18px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-content{margin-top:18px!important}
 
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-wrap{max-width:none!important;gap:18px!important;padding-bottom:30px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-summary{gap:16px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-stat{padding:20px 22px!important;border-radius:19px!important;min-height:118px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-stat span{font-size:10.5px!important;margin-bottom:8px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-stat strong{font-size:28px!important;line-height:1.05!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-stat small{margin-top:8px!important;font-size:12.5px!important;line-height:1.45!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-wrap{max-width:none!important;gap:18px!important;padding-bottom:30px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-summary{gap:16px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-stat{padding:20px 22px!important;border-radius:19px!important;min-height:118px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-stat span{font-size:10.5px!important;margin-bottom:8px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-stat strong{font-size:28px!important;line-height:1.05!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-stat small{margin-top:8px!important;font-size:12.5px!important;line-height:1.45!important}
 
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-shell{border-radius:22px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-shell-head{padding:22px 26px!important;min-height:98px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-kick{font-size:10.5px!important;margin-bottom:6px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-title{font-size:27px!important;line-height:1.05!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-copy{margin-top:7px!important;font-size:13px!important;line-height:1.55!important;max-width:900px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-shell{border-radius:22px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-shell-head{padding:22px 26px!important;min-height:98px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-kick{font-size:10.5px!important;margin-bottom:6px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-title{font-size:27px!important;line-height:1.05!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-copy{margin-top:7px!important;font-size:13px!important;line-height:1.55!important;max-width:900px!important}
 /* Header actions already exist above; don't repeat them inside the relationship workspace. */
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-shell-head>.cux719-actions{display:none!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-shell-head>.cux719-actions{display:none!important}
 
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-workspace{
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-workspace{
   grid-template-columns:clamp(340px,24vw,390px) minmax(0,1fr)!important;min-height:680px!important;
 }
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-head{padding:20px 18px 15px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-title{font-size:17px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-count{font-size:9.5px!important;padding:5px 8px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-search{margin-top:13px!important;min-height:43px!important;padding:0 13px!important;font-size:12px!important;border-radius:11px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-list{max-height:720px!important;padding:10px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-row{grid-template-columns:46px minmax(0,1fr) auto!important;gap:12px!important;padding:13px 12px!important;border-radius:13px!important;margin-bottom:6px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-avatar{width:46px!important;height:46px!important;border-radius:13px!important;font-size:13px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-name{font-size:14.5px!important;line-height:1.2!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-role{font-size:11px!important;margin-top:4px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-meta{margin-top:7px!important;gap:5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-mini-tag{font-size:8.5px!important;padding:4px 7px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-next{font-size:9.5px!important;line-height:1.4!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-add{padding:14px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-head{padding:20px 18px 15px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-title{font-size:17px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-count{font-size:9.5px!important;padding:5px 8px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-search{margin-top:13px!important;min-height:43px!important;padding:0 13px!important;font-size:12px!important;border-radius:11px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-list{max-height:720px!important;padding:10px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-row{grid-template-columns:46px minmax(0,1fr) auto!important;gap:12px!important;padding:13px 12px!important;border-radius:13px!important;margin-bottom:6px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-avatar{width:46px!important;height:46px!important;border-radius:13px!important;font-size:13px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-name{font-size:14.5px!important;line-height:1.2!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-role{font-size:11px!important;margin-top:4px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-meta{margin-top:7px!important;gap:5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-mini-tag{font-size:8.5px!important;padding:4px 7px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-next{font-size:9.5px!important;line-height:1.4!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-add{padding:14px!important}
 
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-detail{padding:28px 30px 32px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-hero{gap:22px!important;padding-bottom:21px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-main{gap:17px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-avatar{width:70px!important;height:70px!important;flex-basis:70px!important;border-radius:19px!important;font-size:20px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-name{font-size:30px!important;line-height:1.04!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-title{font-size:14px!important;margin-top:6px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-tags{margin-top:11px!important;gap:7px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-tag{font-size:9px!important;padding:5px 9px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-actions{gap:8px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-actions .cux719-btn{min-height:42px!important;padding:0 14px!important;font-size:11.5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-detail{padding:28px 30px 32px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-hero{gap:22px!important;padding-bottom:21px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-main{gap:17px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-avatar{width:70px!important;height:70px!important;flex-basis:70px!important;border-radius:19px!important;font-size:20px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-name{font-size:30px!important;line-height:1.04!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-title{font-size:14px!important;margin-top:6px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-tags{margin-top:11px!important;gap:7px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-tag{font-size:9px!important;padding:5px 9px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-actions{gap:8px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-actions .cux719-btn{min-height:42px!important;padding:0 14px!important;font-size:11.5px!important}
 
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-quick{gap:11px!important;margin:18px 0!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-quick div{padding:12px 13px!important;border-radius:12px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-quick span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-quick strong{font-size:13px!important;line-height:1.4!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-grid{gap:14px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-card{padding:18px 19px!important;border-radius:15px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-card-head{margin-bottom:13px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-card-title{font-size:10.5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-card-action{font-size:10px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-fields{gap:11px 14px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-field span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-field strong,
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-field a{font-size:12.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-about-row{margin-top:12px!important;padding-top:12px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-about-row span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-about-row p{font-size:12.5px!important;line-height:1.6!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-linkedin{margin-top:14px!important;padding:13px 14px!important;border-radius:12px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-linkedin-icon{width:34px!important;height:34px!important;border-radius:9px!important;font-size:13px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-linkedin strong{font-size:11.5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-linkedin span{font-size:9.5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-note{padding:12px 13px!important;border-radius:11px!important;margin-top:8px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-note time{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-note p{font-size:11.5px!important;line-height:1.55!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-activity{grid-template-columns:96px 84px minmax(0,1fr)!important;gap:12px!important;padding:11px 0!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-activity time,
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-activity b{font-size:10px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-activity div{font-size:11.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-role-actions{gap:8px!important;margin-top:14px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-quick{gap:11px!important;margin:18px 0!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-quick div{padding:12px 13px!important;border-radius:12px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-quick span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-quick strong{font-size:13px!important;line-height:1.4!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-grid{gap:14px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-card{padding:18px 19px!important;border-radius:15px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-card-head{margin-bottom:13px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-card-title{font-size:10.5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-card-action{font-size:10px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-fields{gap:11px 14px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-field span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-field strong,
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-field a{font-size:12.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-about-row{margin-top:12px!important;padding-top:12px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-about-row span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-about-row p{font-size:12.5px!important;line-height:1.6!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-linkedin{margin-top:14px!important;padding:13px 14px!important;border-radius:12px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-linkedin-icon{width:34px!important;height:34px!important;border-radius:9px!important;font-size:13px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-linkedin strong{font-size:11.5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-linkedin span{font-size:9.5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-note{padding:12px 13px!important;border-radius:11px!important;margin-top:8px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-note time{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-note p{font-size:11.5px!important;line-height:1.55!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-activity{grid-template-columns:96px 84px minmax(0,1fr)!important;gap:12px!important;padding:11px 0!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-activity time,
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-activity b{font-size:10px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-activity div{font-size:11.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-role-actions{gap:8px!important;margin-top:14px!important}
 
 /* Profile editor should feel like a proper Connect workspace, not a cramped utility dialog. */
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-modal-wrap{padding:28px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-modal{width:min(860px,calc(100vw - 54px))!important;max-height:calc(100vh - 56px)!important;border-radius:22px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-modal-head{padding:22px 24px 17px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-modal-head h3{font-size:25px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-modal-head p{margin-top:7px!important;font-size:12.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-form{padding:21px 24px 24px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-form-grid{gap:14px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-input{gap:6px!important;margin-bottom:13px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-input label{font-size:9px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-input input,
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-input select,
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-input textarea{font-size:12.5px!important;padding:11px 12px!important;border-radius:11px!important}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-input textarea{min-height:88px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-modal-wrap{padding:28px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-modal{width:min(860px,calc(100vw - 54px))!important;max-height:calc(100vh - 56px)!important;border-radius:22px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-modal-head{padding:22px 24px 17px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-modal-head h3{font-size:25px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-modal-head p{margin-top:7px!important;font-size:12.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-form{padding:21px 24px 24px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-form-grid{gap:14px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-input{gap:6px!important;margin-bottom:13px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-input label{font-size:9px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-input input,
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-input select,
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-input textarea{font-size:12.5px!important;padding:11px 12px!important;border-radius:11px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-input textarea{min-height:88px!important}
 
 @media(max-width:1320px){
- html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{padding-left:14px!important;padding-right:14px!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-workspace{grid-template-columns:320px minmax(0,1fr)!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-detail{padding:24px 25px 28px!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-grid{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{padding-left:14px!important;padding-right:14px!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-workspace{grid-template-columns:320px minmax(0,1fr)!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-detail{padding:24px 25px 28px!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-grid{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 @media(max-width:980px){
- html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{grid-template-columns:1fr!important;gap:16px!important;padding:20px 22px!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{justify-content:flex-start!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-workspace{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-list{max-height:330px!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{grid-template-columns:1fr!important;gap:16px!important;padding:20px 22px!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{justify-content:flex-start!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-workspace{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-list{max-height:330px!important}
 }
 @media(max-width:650px){
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-summary,
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-quick,
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-fields,
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-form-grid{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-detail{padding:18px!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-hero{flex-direction:column!important}
- html[data-connect-authoritative="v724"] #rp-overlay .cux719-profile-actions{justify-content:flex-start!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-summary,
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-quick,
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-fields,
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-form-grid{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-detail{padding:18px!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-hero{flex-direction:column!important}
+ html[data-connect-authoritative="v725"] #rp-overlay .cux719-profile-actions{justify-content:flex-start!important}
 }
 </style>
 <script id="connect-v723-contact-parity-boot">
 (function(){
  'use strict';
- var BUILD='v724',DISPLAY='V724',TITLE='Connect v724 — Sales Portal';
+ var BUILD='v725',DISPLAY='V725',TITLE='Connect v725 — Sales Portal';
  function enforce(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
@@ -73407,31 +73407,101 @@ html[data-connect-authoritative="v724"] #rp-overlay .cux719-input textarea{min-h
 </script>
 <style id="connect-v723-contacts-roster-finish">
 /* v723: final Contacts roster breathing-room pass. Header owns Add Contact; roster stays focused on people. */
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-head{padding:19px 18px 17px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-list{padding:14px 12px 18px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-row{grid-template-columns:50px minmax(0,1fr) 70px!important;gap:14px!important;min-height:88px!important;padding:16px 14px!important;margin-bottom:10px!important;border-radius:14px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-avatar{width:48px!important;height:48px!important;border-radius:13px!important;font-size:13px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-name{font-size:15px!important;line-height:1.18!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-role{font-size:11.25px!important;line-height:1.35!important;margin-top:5px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-meta{margin-top:9px!important;gap:6px!important;row-gap:6px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-next{font-size:9.75px!important;line-height:1.45!important;padding-left:6px!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-add{display:none!important;}
-@media(max-width:980px){html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-row{min-height:82px!important;padding:14px 13px!important;margin-bottom:8px!important;}}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-head{padding:19px 18px 17px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-list{padding:14px 12px 18px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-row{grid-template-columns:50px minmax(0,1fr) 70px!important;gap:14px!important;min-height:88px!important;padding:16px 14px!important;margin-bottom:10px!important;border-radius:14px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-avatar{width:48px!important;height:48px!important;border-radius:13px!important;font-size:13px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-name{font-size:15px!important;line-height:1.18!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-role{font-size:11.25px!important;line-height:1.35!important;margin-top:5px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-meta{margin-top:9px!important;gap:6px!important;row-gap:6px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-next{font-size:9.75px!important;line-height:1.45!important;padding-left:6px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-add{display:none!important;}
+@media(max-width:980px){html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-row{min-height:82px!important;padding:14px 13px!important;margin-bottom:8px!important;}}
 </style>
 
 
 <!-- v724 appended at EOF intentionally: do not insert before an embedded print-template </body>. -->
 <style id="connect-v724-contact-name-role-spacing">
 /* v724: roster identity stack — name, role, then badges. */
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-row > span:nth-child(2){display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-name{display:block!important;width:100%!important;margin:0!important;line-height:1.16!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-role{display:block!important;width:100%!important;margin:5px 0 0!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
-html[data-connect-authoritative="v724"] #rp-overlay .cux719-roster-meta{display:flex!important;flex-wrap:wrap!important;margin-top:9px!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-row > span:nth-child(2){display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-name{display:block!important;width:100%!important;margin:0!important;line-height:1.16!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-role{display:block!important;width:100%!important;margin:5px 0 0!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+html[data-connect-authoritative="v725"] #rp-overlay .cux719-roster-meta{display:flex!important;flex-wrap:wrap!important;margin-top:9px!important;}
 </style>
 <script id="connect-v724-contact-name-role-build">
 (function(){
-  var BUILD='v724', DISPLAY='V724', TITLE='Connect v724 — Sales Portal';
+  var BUILD='v725', DISPLAY='V725', TITLE='Connect v725 — Sales Portal';
   function apply(){try{document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title=TITLE;if(window.CONNECT_BUILD!==undefined)window.CONNECT_BUILD=BUILD;document.querySelectorAll('[data-build-label],.rp-build-badge,.portal-build,.sales-portal-build').forEach(function(el){if(/build/i.test(el.textContent||'')||el.hasAttribute('data-build-label'))el.textContent='SALES PORTAL · BUILD '+DISPLAY;});}catch(e){}}
   apply();setTimeout(apply,0);setTimeout(apply,250);
+})();
+</script>
+
+
+<!-- v725 appended at EOF intentionally: selected-contact activity timeline + filter. -->
+<style id="connect-v725-contact-activity-timeline-css">
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-activity-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;flex-wrap:wrap!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-activity-controls{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-filter{min-height:36px!important;padding:0 32px 0 11px!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:10px!important;background:#0D1823!important;color:#DDE7F0!important;font-size:11px!important;font-weight:750!important;cursor:pointer!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-count{font-size:10px!important;color:#7F93A5!important;white-space:nowrap!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-timeline{margin-top:7px!important;max-height:430px!important;overflow:auto!important;padding-right:5px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry{display:grid!important;grid-template-columns:108px 108px minmax(0,1fr)!important;gap:13px!important;align-items:start!important;padding:13px 2px!important;border-bottom:1px solid rgba(255,255,255,.055)!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry:last-child{border-bottom:0!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-date{font-size:10px!important;color:#7F93A5!important;line-height:1.45!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-type{display:inline-flex!important;align-items:center!important;gap:6px!important;width:max-content!important;max-width:100%!important;padding:4px 7px!important;border:1px solid rgba(0,175,239,.18)!important;border-radius:999px!important;background:rgba(0,175,239,.07)!important;color:#A7E8FF!important;font-size:9.5px!important;font-weight:850!important;line-height:1.2!important;white-space:nowrap!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-type.quote{border-color:rgba(155,107,255,.26)!important;background:rgba(155,107,255,.09)!important;color:#D7C5FF!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-type.note{border-color:rgba(239,159,39,.24)!important;background:rgba(239,159,39,.08)!important;color:#FFD496!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-type.follow-up{border-color:rgba(71,209,108,.23)!important;background:rgba(71,209,108,.08)!important;color:#A7FFC0!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry-main strong{display:block!important;font-size:12.5px!important;line-height:1.35!important;color:#E9F0F5!important;margin-bottom:4px!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry-main p{margin:0!important;font-size:11.5px!important;line-height:1.55!important;color:#AEBCC8!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry-main small{display:block!important;margin-top:5px!important;font-size:9.5px!important;line-height:1.45!important;color:#72889A!important}
+html[data-connect-authoritative="v725"] #rp-overlay .cux725-empty{padding:26px 8px!important;text-align:center!important;color:#71879A!important;font-size:11.5px!important}
+@media(max-width:780px){html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry{grid-template-columns:88px minmax(0,1fr)!important}html[data-connect-authoritative="v725"] #rp-overlay .cux725-type{grid-column:2!important;grid-row:1!important;margin-left:auto!important}html[data-connect-authoritative="v725"] #rp-overlay .cux725-entry-main{grid-column:1/-1!important}}
+</style>
+<script id="connect-v725-contact-activity-timeline-js">
+(function(){
+ 'use strict';
+ var BUILD='v725',DISPLAY='V725',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',DEMO='DEMO — Summit Ridge Industrial Services';
+ var filter='All Activity',pending=false;
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+ function arr(v){return Array.isArray(v)?v:[]}
+ function read(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')||d}catch(e){return d}}
+ function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+ function rep(){return clean(window._rp2&&window._rp2.rep)||'Demo Rep'}
+ function fmt(v){if(!v)return'—';var d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(String(v))?String(v)+'T12:00:00':v);return isNaN(d.getTime())?'—':d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+ function money(v){var n=Number(String(v==null?'':v).replace(/[^0-9.-]/g,''));return isFinite(n)?'$'+Math.round(n).toLocaleString():'—'}
+ function company(){try{return clean((window._cux721CurrentCompany&&window._cux721CurrentCompany())||window._cux8CurrentName||window._cw4CompanyName||'')}catch(e){return''}}
+ function acct(name){var st=read(CRM,{version:1,reps:{}}),rb=st.reps&&st.reps[rep()],accounts=rb&&rb.accounts||{},key=norm(name),data=null,k='';Object.keys(accounts).some(function(x){var a=accounts[x]||{},n=clean(a.profile&&a.profile.name||x);if(norm(n)===key){data=a;k=x;return true}return false});return{store:st,rb:rb,accounts:accounts,key:k||key,data:data}}
+ function selected(){var row=document.querySelector('#rp-overlay .cux719-roster-row.selected'),id=row&&row.getAttribute('data-contact-id')||'',name='';var h=document.querySelector('#rp-overlay .cux719-profile-name');if(h)name=clean(h.textContent);if(!name&&row){var n=row.querySelector('.cux719-roster-name');name=clean(n&&n.textContent)}var email='';var a=acct(company());if(a.data){var c=arr(a.data.contacts).filter(function(x){return clean(x.id||x.contactId)===clean(id)||(!id&&norm(x.name)===norm(name))})[0];if(c){id=clean(c.id||c.contactId||id);name=clean(c.name||name);email=clean(c.email)}}return{id:id,name:name,email:email}}
+ function companyOf(x){return clean(x&& (x.company||x.customer||x.companyName||x.account||x.accountName)||'')}
+ function contactMatch(x,c){if(!x||!c)return false;var cid=clean(x.contactId||x.primaryContactId||x.personId||''),cn=norm(x.contactName||x.contact||x.primaryContact||x.personName||''),em=norm(x.email||x.contactEmail||x.recipientEmail||x.toEmail||x.to||'');if(cid&&c.id&&cid===c.id)return true;if(cn&&c.name&&cn===norm(c.name))return true;if(em&&c.email&&em.indexOf(norm(c.email))>=0)return true;return false}
+ function dateOf(x){return clean(x.date||x.activityDate||x.createdAt||x.updatedAt||x.sentAt||x.quoteDate||x.issueDate||x.enteredAt||x.dueDate||x.followUpDate||'')}
+ function category(t){var s=clean(t).toLowerCase();if(s.indexOf('call')>=0||s.indexOf('phone')>=0)return'Calls';if(s.indexOf('email')>=0||s.indexOf('mail')>=0)return'Emails';if(s.indexOf('meeting')>=0||s.indexOf('video')>=0||s.indexOf('visit')>=0)return'Meetings';if(s.indexOf('note')>=0)return'Notes';if(s.indexOf('quote')>=0||s.indexOf('proposal')>=0||s.indexOf('estimate')>=0)return'Quotes';if(s.indexOf('follow')>=0||s.indexOf('task')>=0||s.indexOf('reminder')>=0)return'Follow-Ups';if(s.indexOf('text')>=0||s.indexOf('sms')>=0)return'Texts';return'Other'}
+ function icon(cat){return cat==='Calls'?'☎':cat==='Emails'?'✉':cat==='Meetings'?'◆':cat==='Notes'?'✎':cat==='Quotes'?'▤':cat==='Follow-Ups'?'✓':cat==='Texts'?'●':'•'}
+ function push(out,seen,row){if(!row)return;var key=clean(row.id)||[row.cat,row.date,row.subject,row.detail].join('|');if(seen[key])return;seen[key]=1;out.push(row)}
+ function normalActivity(a,source){var raw=clean(a.type||a.activityType||a.channel||'Activity'),cat=category(raw);return{id:clean(a.id||a.activityId||''),date:dateOf(a),cat:cat,type:raw||cat,subject:clean(a.subject||a.title||a.summary||'Customer touch'),detail:clean(a.detail||a.description||a.body||a.note||a.outcome||''),meta:clean(a.outcome&&a.detail?('Outcome: '+a.outcome):a.nextStep?('Next: '+a.nextStep):source||'')}}
+ function rows(){var name=company(),c=selected(),out=[],seen={},a=acct(name);if(!name||!c.name)return[];
+  if(a.data){
+   arr(a.data.activities).forEach(function(x){if(contactMatch(x,c))push(out,seen,normalActivity(x,'Account activity'))});
+   arr(a.data.notes).forEach(function(x){if(contactMatch(x,c))push(out,seen,{id:clean(x.id),date:dateOf(x),cat:'Notes',type:'Note',subject:clean(x.subject||x.title||'Account note'),detail:clean(x.text||x.note||x.detail||''),meta:'Contact-linked note'})});
+   arr(a.data.quotes).forEach(function(x){if(contactMatch(x,c)){var qn=clean(x.quoteNumber||x.quoteNum||x.number||'Quote'),status=clean(x.status||x.quoteStatus||'');push(out,seen,{id:clean(x.id||x.quoteId||qn),date:dateOf(x),cat:'Quotes',type:'Quote',subject:qn+(x.title?' · '+clean(x.title):''),detail:[status,money(x.amount||x.total||x.value)].filter(Boolean).join(' · '),meta:x.followUpDate?'Follow-up '+fmt(x.followUpDate):'Quote linked to '+c.name})}});
+  }
+  try{[S&&S.accountActivities,S&&S.customerActivities,S&&S.crmActivities].forEach(function(pool){arr(pool).forEach(function(x){if(norm(companyOf(x))===norm(name)&&contactMatch(x,c))push(out,seen,normalActivity(x,'Connected activity'))})});}catch(e){}
+  try{[['quotes',S&&S.quotes],['customerQuotes',S&&S.customerQuotes],['crmQuotes',S&&S.crmQuotes],['proposals',S&&S.proposals],['estimates',S&&S.estimates]].forEach(function(pair){arr(pair[1]).forEach(function(x){if(norm(companyOf(x))!==norm(name)||!contactMatch(x,c))return;var qn=clean(x.quoteNumber||x.quoteNum||x.number||x.id||pair[0]);push(out,seen,{id:clean(x.id||x.quoteId||pair[0]+'|'+qn),date:dateOf(x),cat:'Quotes',type:/proposal/i.test(pair[0])?'Proposal':/estimate/i.test(pair[0])?'Estimate':'Quote',subject:qn+(x.title?' · '+clean(x.title):''),detail:[clean(x.status||x.quoteStatus||''),money(x.amount||x.total||x.value)].filter(Boolean).join(' · '),meta:'Connected '+pair[0]})})})}catch(e){}
+  try{var ac=read(ACTION,{reps:{}}),b=ac.reps&&ac.reps[rep()]||{};arr(b.manual).forEach(function(x){if(norm(companyOf(x))!==norm(name)||!contactMatch(x,c))return;push(out,seen,{id:clean(x.id),date:dateOf(x),cat:'Follow-Ups',type:'Follow-Up',subject:clean(x.title||x.action||'Follow-up'),detail:clean(x.action||x.why||''),meta:x.dueDate?'Due '+fmt(x.dueDate):clean(x.status||'')})})}catch(e){}
+  out.sort(function(x,y){return String(y.date||'').localeCompare(String(x.date||''))});return out}
+ function typeClass(cat){return cat.toLowerCase().replace(/[^a-z]+/g,'-').replace(/^-|-$/g,'')}
+ function renderEntries(all){var show=filter==='All Activity'?all:all.filter(function(x){return x.cat===filter});var body=document.getElementById('cux725Timeline'),count=document.getElementById('cux725Count');if(count)count.textContent=show.length+' '+(show.length===1?'entry':'entries');if(!body)return;if(!show.length){body.innerHTML='<div class="cux725-empty">No '+esc(filter==='All Activity'?'contact-specific activity':filter.toLowerCase())+' recorded for this person yet.</div>';return}body.innerHTML=show.map(function(x){return'<div class="cux725-entry"><time class="cux725-date">'+esc(fmt(x.date))+'</time><span class="cux725-type '+typeClass(x.cat)+'">'+icon(x.cat)+' '+esc(x.type||x.cat)+'</span><div class="cux725-entry-main"><strong>'+esc(x.subject||'Customer activity')+'</strong>'+(x.detail?'<p>'+esc(x.detail)+'</p>':'')+(x.meta?'<small>'+esc(x.meta)+'</small>':'')+'</div></div>'}).join('')}
+ function enhance(){if(!document.querySelector('#rp-overlay .cux719-workspace'))return false;var cards=[].slice.call(document.querySelectorAll('#rp-overlay .cux719-card.wide')),card=cards.filter(function(x){var t=x.querySelector('.cux719-card-title');return t&&/^Recent Activity With /i.test(clean(t.textContent))})[0];if(!card)return false;var c=selected();if(!c.name)return false;var all=rows();card.setAttribute('data-cux725','1');card.innerHTML='<div class="cux719-card-head cux725-activity-head"><div class="cux719-card-title">Activity With '+esc(c.name.split(/\s+/)[0])+'</div><div class="cux725-activity-controls"><select class="cux725-filter" id="cux725ActivityFilter" onchange="_cux725FilterActivity(this.value)"><option>All Activity</option><option>Calls</option><option>Emails</option><option>Meetings</option><option>Notes</option><option>Quotes</option><option>Follow-Ups</option><option>Texts</option><option>Other</option></select><span class="cux725-count" id="cux725Count"></span><button class="cux719-card-action" onclick="_cux8Action(\'activity\')">Log Activity</button></div></div><div class="cux725-timeline" id="cux725Timeline"></div>';var sel=document.getElementById('cux725ActivityFilter');if(sel)sel.value=filter;renderEntries(all);return true}
+ window._cux725FilterActivity=function(v){filter=clean(v)||'All Activity';renderEntries(rows())};
+ function demoLinks(){var a=acct(DEMO);if(!a.data)return;var changed=false;arr(a.data.quotes).forEach(function(q){if(clean(q.id)==='demo_quote_fall'&&!q.contactName){q.contactName='Taylor Morgan';q.contactId='demo_ct_taylor';changed=true}});arr(a.data.notes).forEach(function(n){if(clean(n.id)==='demo_note_1'&&!n.contactName){n.contactName='Taylor Morgan';n.contactId='demo_ct_taylor';changed=true}});if(changed){a.store.reps=a.store.reps||{};a.rb=a.rb||{accounts:{}};a.rb.accounts=a.rb.accounts||{};a.rb.accounts[a.key]=a.data;a.store.reps[rep()]=a.rb;write(CRM,a.store)}var ac=read(ACTION,{reps:{}}),b=ac.reps&&ac.reps[rep()];if(b){var ch=false;arr(b.manual).forEach(function(t){if(clean(t.id)==='demo_task_1'&&!t.contactName){t.contactName='Taylor Morgan';t.contactId='demo_ct_taylor';ch=true}});if(ch)write(ACTION,ac)}}
+ function schedule(){if(pending)return;pending=true;setTimeout(function(){pending=false;enhance()},20)}
+ var oldSelect=window._cux719Select;if(typeof oldSelect==='function')window._cux719Select=function(){var r=oldSelect.apply(this,arguments);filter='All Activity';setTimeout(enhance,0);return r};
+ var oldForce=window._cux721ForceContacts;if(typeof oldForce==='function')window._cux721ForceContacts=function(){var r=oldForce.apply(this,arguments);setTimeout(enhance,0);return r};
+ var obs=new MutationObserver(function(){if(document.querySelector('#rp-overlay .cux719-workspace'))schedule()});
+ function boot(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title='Connect v725 — Sales Portal';demoLinks();var root=document.getElementById('rp-overlay');if(root)obs.observe(root,{childList:true,subtree:true});[0,100,350,800].forEach(function(ms){setTimeout(enhance,ms)});document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){console.warn('[v725 activity timeline]',e)}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+ window.TCP_CONTACT_ACTIVITY_TIMELINE_V725={version:BUILD,refresh:enhance};
 })();
 </script>
