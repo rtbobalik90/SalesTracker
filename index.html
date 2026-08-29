@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v729 — Sales Portal</title>
+<title>Connect v730 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v729', DISPLAY='V729', TITLE='Connect v729 — Sales Portal';
+  var BUILD='v730', DISPLAY='V730', TITLE='Connect v730 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -35182,7 +35182,7 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
  }
  function productCard(g,p){
   var status=reorderStatusLabel(p),image=p.imageUrl?'<img src="'+esc(p.imageUrl)+'" alt="">':'<span>'+(/hat|cap|headwear/i.test(p.category+' '+p.name)?'🧢':/jacket|outerwear|vest/i.test(p.category+' '+p.name)?'🧥':/drink|tumbler|bottle/i.test(p.category+' '+p.name)?'🥤':'👕')+'</span>';
-  return '<article class="cw6-product-card" data-status="'+p.reorderStatus+'" data-p588key="'+encodeURIComponent(p.key)+'" data-p588name="'+esc(p.name)+'" data-p588sku="'+esc(p.sku||'')+'" data-p588brand="'+esc(p.brand||'')+'" data-p588cat="'+esc(p.category||'')+'" data-p588sub="'+esc(p.subcategory||'')+'" data-p588units="'+Math.round(p.units||0)+'" data-p588rev="'+Math.round(p.revenue||0)+'" data-p588orders="'+(p.orderCount||0)+'" data-p588lastqty="'+(p.lastQty||0)+'" data-p588last="'+(p.lastDate?p.lastDate.toISOString().slice(0,10):'')+'" data-p588gap="'+(p.forecastGap==null?'':p.forecastGap)+' data-p588img="'+esc(p.imageUrl||'')+'" data-p588dec="'+esc(p.decoration||'')+'" data-search="'+esc((p.name+' '+p.sku+' '+p.category+' '+p.subcategory+' '+p.decoration).toLowerCase())+'"><button class="cw6-product-image" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+image+'</button><div class="cw6-product-body"><div class="cw6-product-top"><div><div class="cw6-product-brand">'+esc(p.brand||'Purchased product')+(p.sku?' · '+esc(p.sku):'')+'</div><button class="cw6-product-name" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+esc(p.name)+'</button><div class="cw6-product-meta">'+esc(p.category)+(p.subcategory?' · '+esc(p.subcategory):'')+'</div></div><span class="cw4-pill '+status.tone+'">'+status.label+'</span></div><div class="cw6-product-kpis"><div><span>Units</span><strong>'+Math.round(p.units).toLocaleString()+'</strong></div><div><span>Revenue</span><strong>'+money(p.revenue)+'</strong></div><div><span>Orders</span><strong>'+p.orderCount+'</strong></div><div><span>Last qty</span><strong>'+p.lastQty.toLocaleString()+'</strong></div></div><div class="cw6-forecast"><div><span>Directional reorder forecast</span><strong>'+fmt(p.nextForecast)+'</strong><small>'+esc(status.copy)+'</small></div><div class="cw6-confidence"><b>'+p.confidence.score+'%</b><span>'+p.confidence.label+' confidence</span></div></div><div class="cw6-product-copy">'+esc(p.decoration?('Decoration: '+p.decoration):'Decoration method not recorded')+' · '+esc(p.seasonality)+' purchase pattern · '+p.artwork.length+' linked artwork/file record'+(p.artwork.length===1?'':'s')+'</div><div class="cw4-mini-actions"><button class="cw4-mini-btn blue" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">Open product history</button><button class="cw4-mini-btn" onclick="_cw5Reorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.name)+'\')">Create reorder reminder</button><button class="cw4-mini-btn" onclick="_cw5StartReorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.key)+'\')">Start reorder</button></div></div></article>'
+  return '<article class="cw6-product-card" data-status="'+p.reorderStatus+'" data-p588key="'+encodeURIComponent(p.key)+'" data-p588name="'+esc(p.name)+'" data-p588sku="'+esc(p.sku||'')+'" data-p588brand="'+esc(p.brand||'')+'" data-p588cat="'+esc(p.category||'')+'" data-p588sub="'+esc(p.subcategory||'')+'" data-p588units="'+Math.round(p.units||0)+'" data-p588rev="'+Math.round(p.revenue||0)+'" data-p588orders="'+(p.orderCount||0)+'" data-p588lastqty="'+(p.lastQty||0)+'" data-p588last="'+(p.lastDate?p.lastDate.toISOString().slice(0,10):'')+'" data-p588gap="'+(p.forecastGap==null?'':p.forecastGap)+'" data-p588img="'+esc(p.imageUrl||'')+'" data-p588dec="'+esc(p.decoration||'')+'" data-search="'+esc((p.name+' '+p.sku+' '+p.category+' '+p.subcategory+' '+p.decoration).toLowerCase())+'"><button class="cw6-product-image" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+image+'</button><div class="cw6-product-body"><div class="cw6-product-top"><div><div class="cw6-product-brand">'+esc(p.brand||'Purchased product')+(p.sku?' · '+esc(p.sku):'')+'</div><button class="cw6-product-name" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">'+esc(p.name)+'</button><div class="cw6-product-meta">'+esc(p.category)+(p.subcategory?' · '+esc(p.subcategory):'')+'</div></div><span class="cw4-pill '+status.tone+'">'+status.label+'</span></div><div class="cw6-product-kpis"><div><span>Units</span><strong>'+Math.round(p.units).toLocaleString()+'</strong></div><div><span>Revenue</span><strong>'+money(p.revenue)+'</strong></div><div><span>Orders</span><strong>'+p.orderCount+'</strong></div><div><span>Last qty</span><strong>'+p.lastQty.toLocaleString()+'</strong></div></div><div class="cw6-forecast"><div><span>Directional reorder forecast</span><strong>'+fmt(p.nextForecast)+'</strong><small>'+esc(status.copy)+'</small></div><div class="cw6-confidence"><b>'+p.confidence.score+'%</b><span>'+p.confidence.label+' confidence</span></div></div><div class="cw6-product-copy">'+esc(p.decoration?('Decoration: '+p.decoration):'Decoration method not recorded')+' · '+esc(p.seasonality)+' purchase pattern · '+p.artwork.length+' linked artwork/file record'+(p.artwork.length===1?'':'s')+'</div><div class="cw4-mini-actions"><button class="cw4-mini-btn blue" onclick="_cw5OpenProduct(\''+encodeURIComponent(p.key)+'\')">Open product history</button><button class="cw4-mini-btn" onclick="_cw5Reorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.name)+'\')">Create reorder reminder</button><button class="cw4-mini-btn" onclick="_cw5StartReorder(\''+encodeURIComponent(g.name)+'\',\''+encodeURIComponent(p.key)+'\')">Start reorder</button></div></div></article>'
  }
  function productHistoryDetail(g,key){
   var rows=productHistoryRows(g),p=rows.filter(function(x){return x.key===key})[0];if(!p)return'';
@@ -57419,8 +57419,9 @@ window._cxp588Redraw=function(){
 window._cxp588Filter=function(){
   var q=((document.getElementById('cxp588-q')||{}).value||'').toLowerCase().trim();
   var st=((document.getElementById('cxp588-st')||{}).value||'all');
+  var nodes=document.querySelectorAll('.cxp588-card,.cxp730-history-row');
   var shown=0,total=0;
-  document.querySelectorAll('.cxp588-card').forEach(function(r){
+  nodes.forEach(function(r){
     total++;
     var okQ=!q||(r.dataset.search||'').indexOf(q)>=0;
     var okS=st==='all'||r.dataset.status===st||(st==='duenow'&&(r.dataset.status==='overdue'||r.dataset.status==='due'));
@@ -57436,14 +57437,14 @@ window._cxp588Filter=function(){
 window._cxp588SortRows=function(){
   var sel=document.getElementById('cxp588-sort');if(!sel)return;
   var mode=sel.value;
-  var list=document.querySelector('.cxp588-grid');if(!list)return;
-  var rows=Array.prototype.slice.call(list.querySelectorAll('.cxp588-card'));
+  var list=document.querySelector('.cxp588-grid,.cxp730-history-list');if(!list)return;
+  var rows=Array.prototype.slice.call(list.querySelectorAll('.cxp588-card,.cxp730-history-row'));
   var ord={overdue:0,due:1,upcoming:2,later:3,insufficient:4};
   rows.sort(function(a,b){
     if(mode==='revenue')return (Number(b.dataset.rev)||0)-(Number(a.dataset.rev)||0);
     if(mode==='units')return (Number(b.dataset.units)||0)-(Number(a.dataset.units)||0);
     if(mode==='recent')return String(b.dataset.last||'').localeCompare(String(a.dataset.last||''));
-    return (ord[a.dataset.status]-ord[b.dataset.status])||((Number(b.dataset.rev)||0)-(Number(a.dataset.rev)||0));
+    return ((ord[a.dataset.status]==null?9:ord[a.dataset.status])-(ord[b.dataset.status]==null?9:ord[b.dataset.status]))||((Number(b.dataset.rev)||0)-(Number(a.dataset.rev)||0));
   });
   rows.forEach(function(r){list.appendChild(r);});
 };
@@ -57496,38 +57497,93 @@ window._cxp588Render=function(){
         +bar;
     }
   }
-  // LANDING: stats + category tiles + opportunities
+  // V730 LANDING: product signals -> buying mix -> history -> expansion
   var dueNow=rows.filter(function(r){return r.status==='overdue'||r.status==='due';}).length;
-  var lifetime=rows.reduce(function(s,r){return s+r.rev;},0);
-  var cats=_cxp588CatStats(rows);
-  var topCat=cats[0];
-  function stat(l,v,s2,col){return '<div class="cxp588-stat"><span>'+l+'</span><strong'+(col?' style="color:'+col+';"':'')+'>'+v+'</strong>'+(s2?'<em>'+s2+'</em>':'')+'</div>';}
-  var stats='<div class="cxp588-stats">'
-    +stat('Products purchased',String(rows.length),rows.length?'':'no line items loaded')
-    +stat('Reorder due now',String(dueNow),dueNow?'overdue or due':'',dueNow?'#FA873D':null)
-    +stat('Lifetime product $',_cxp588Money(lifetime),'')
-    +stat('Top category',topCat?esc(topCat.cat):'\u2014',topCat?_cxp588Money(topCat.rev):'')
-    +'</div>';
+  var loadedSales=rows.reduce(function(s,r){return s+r.rev;},0);
+  var cats=_cxp588CatStats(rows),topCat=cats[0];
+  var repeatRows=rows.filter(function(r){return Number(r.orders)>=2;});
+  var repeatCount=repeatRows.length;
   var enc=encodeURIComponent(name);
-  var btns='<div class="cxp588-actions">'
-    +'<button class="cux8-action primary" onclick="_cw4OpenCenter(\'products\',\''+enc+'\')">Open Product Studio</button>'
-    +'<button class="cux8-action" onclick="_cw4OpenCenter(\'orders\',\''+enc+'\')">Open Orders</button>'
-    +'<button class="cux8-action" onclick="_cw4InlineEdit(\'buying\')">Edit buying profile</button>'
-    +'</div>';
-  var _pal=['#47D16C','#FA873D','#9B6BFF','#4C9DFF','#00AFEF','#FBBF24','#FB7185','#34D399'];
-  var tiles=cats.length?('<div class="cxp588-cath">Catalog \u00b7 shop by category</div><div class="cxp588-cats">'+cats.map(function(b,bi){
-    var col=_pal[bi%_pal.length];
-    return '<button class="cxp588-cat" style="--c:'+col+';" onclick="_cxp588OpenCat(\''+encodeURIComponent(b.cat)+'\')">'
-      +(b.due?'<span class="cxp588-cat-due">'+b.due+' due</span>':'')
-      +'<span class="cxp588-cat-ic">'+_cxp588Icon(b.cat)+'</span>'
-      +'<strong>'+esc(b.cat)+'</strong>'
-      +'<span class="cxp588-cat-copy">'+(b.top?('Top: '+esc(b.top.sku||b.top.name)):'')+'</span>'
-      +'<span class="cxp588-cat-meta"><b>'+b.n+'</b><i>product'+(b.n>1?'s':'')+' \u00b7 '+_cxp588Money(b.rev)+'</i><span class="cxp588-cat-arrow">\u2192</span></span>'
-      +'</button>';
-  }).join('')+'</div>')
-  :('<div class="cxp588-empty"><strong>No purchase history loaded for '+esc(name)+' yet.</strong><br>The industry opportunities below are the starting points \u2014 each category shows what similar '+(function(){var iv=(window._cx586Get&&_cx586Get(name,'industry'))||'';return iv?esc(iv.toLowerCase())+' customers':'customers in their industry';})()+' typically buy.</div>');
-  var opp=D.chips?('<div class="cxp588-opp-h">Opportunities \u00b7 what they don\u2019t buy yet</div><div class="cxp588-chips">'+D.chips+'</div>'):'';
-  return stats+btns+tiles+opp+bar;
+  function money(v){return _cxp588Money(v)}
+  function pct(v,total){return total?Math.round(v/total*100):0}
+  function fmtDate(iso){if(!iso)return '\u2014';try{return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}catch(e){return iso}}
+  function daysAgo(iso){if(!iso)return null;var d=new Date(iso+'T12:00:00');return isNaN(d.getTime())?null:Math.floor((Date.now()-d.getTime())/864e5)}
+  function short(v,n){v=String(v||'');return v.length>n?v.slice(0,n-1)+'\u2026':v}
+  var ctx=D.context||{},plan=ctx.plan||{},acct=ctx.account||{},recs=ctx.recommendations||[],samples=ctx.samples||[];
+  var quotes=(acct.quotes||[]).filter(function(q){return !/converted|declined|expired|closed/i.test(String(q.status||''))});
+  var opps=(acct.opportunities||[]).filter(function(o){return !/won|lost|closed/i.test(String(o.stage||o.status||''))});
+  var activeQuote=quotes.slice().sort(function(a,b){return String(b.updatedAt||b.issueDate||b.quoteDate||'').localeCompare(String(a.updatedAt||a.issueDate||a.quoteDate||''))})[0]||null;
+  var activeOpp=opps.slice().sort(function(a,b){return String(b.updatedAt||b.createdAt||b.nextStepDate||'').localeCompare(String(a.updatedAt||a.createdAt||a.nextStepDate||''))})[0]||null;
+  var openOrders=(ctx.orders||[]).filter(function(o){var st=String(o.status||o.orderStatus||'').toLowerCase();return /open|entered|processing|production|art|approval|pending|scheduled|backorder|hold/.test(st)&&!/complete|closed|shipped|delivered|invoiced|paid|cancel/.test(st)}).sort(function(a,b){return String(b.orderDate||b.date||b.createdAt||'').localeCompare(String(a.orderDate||a.date||a.createdAt||''))});
+  var activeOrder=openOrders[0]||null;
+  var recent=rows.slice().sort(function(a,b){return String(b.last||'').localeCompare(String(a.last||''))||b.rev-a.rev})[0]||null;
+  var motionLabel=activeQuote?(activeQuote.title||activeQuote.quoteNumber||'Open quote'):(activeOpp?(activeOpp.title||'Open opportunity'):(activeOrder?('Order '+(activeOrder.orderNumber||activeOrder.orderNum||'')):(recent&&daysAgo(recent.last)!=null&&daysAgo(recent.last)<=60?recent.name:'No active product motion')));
+  var biggest=String(plan.biggestOpportunity||'').toLowerCase();
+  var expansionRec=recs.slice().sort(function(a,b){
+    function score(r){var t=String((r.productName||r.title||'')+' '+(r.category||'')+' '+(r.reason||'')).toLowerCase(),sc=0;biggest.split(/[^a-z0-9]+/).forEach(function(w){if(w.length>=4&&t.indexOf(w)>=0)sc+=2});if(/standard|repeat|onboard|kit|consolidat|program/.test(t))sc++;return sc}
+    return score(b)-score(a)
+  })[0]||null;
+  var gapOpp=(D.opportunities||[]).filter(function(o){return !o.covered})[0]||null;
+  var expansionLabel=expansionRec?(expansionRec.productName||expansionRec.title||expansionRec.category):(gapOpp?gapOpp.cat:'Explore whitespace');
+  function snap(icon,label,value,copy,tone){return '<div class="cxp730-snap '+(tone||'')+'"><div class="cxp730-snap-icon">'+icon+'</div><span>'+label+'</span><strong>'+esc(value)+'</strong><small>'+esc(copy||'')+'</small></div>'}
+  var snapshot='<section class="cxp730-snapshot">'
+    +snap('\u21bb','Repeat products',repeatCount+' of '+rows.length,rows.length?'Purchased on 2+ loaded orders':'No line-item history','green')
+    +snap('\u25d2','Top buying category',topCat?topCat.cat:'\u2014',topCat?(pct(topCat.rev,loadedSales)+'% of loaded product sales'):'No category evidence','cyan')
+    +snap('\u25c9','Product motion',motionLabel,activeQuote?('Quote '+(activeQuote.quoteNumber||activeQuote.number||'')+' · '+(activeQuote.status||'Open')):(activeOpp?(activeOpp.stage||activeOpp.status||'Open opportunity'):(activeOrder?(activeOrder.status||activeOrder.orderStatus||'Open order'):(recent?('Last purchase '+fmtDate(recent.last)):'No recent motion'))),'orange')
+    +snap('\u2197','Expansion opportunity',expansionLabel,expansionRec?'Account recommendation':(gapOpp?'Industry discovery prompt':'No expansion signal yet'),'purple')
+    +'</section>';
+  function action(btn,fn,cls){return '<button class="cxp730-priority-btn '+(cls||'')+'" onclick="event.stopPropagation();'+fn+'">'+btn+'</button>'}
+  function priority(kicker,title,why,evidence,actions,tone){return '<article class="cxp730-priority '+tone+'"><div class="cxp730-priority-kick">'+esc(kicker)+'</div><h3>'+esc(title)+'</h3><p>'+esc(why)+'</p><div class="cxp730-evidence"><span>Evidence</span><strong>'+esc(evidence)+'</strong></div><div class="cxp730-priority-actions">'+actions+'</div></article>'}
+  var priorityCards=[];
+  if(activeQuote||activeOpp||activeOrder){
+    var qTitle=activeQuote?(activeQuote.title||activeQuote.quoteNumber||'Open quote'):(activeOpp?(activeOpp.title||'Open opportunity'):('Order '+(activeOrder.orderNumber||activeOrder.orderNum||'')));
+    var qWhy=activeQuote?('Quote '+(activeQuote.quoteNumber||activeQuote.number||'')+' is '+(activeQuote.status||'open')+(Number(activeQuote.amount||activeQuote.total||0)?(' for '+money(activeQuote.amount||activeQuote.total)):'')+(activeQuote.followUpDate?('. Follow-up '+fmtDate(String(activeQuote.followUpDate).slice(0,10))+'.'):'.')):(activeOpp?((activeOpp.stage||activeOpp.status||'Open opportunity')+(activeOpp.nextStep?(' · '+activeOpp.nextStep):'')):((activeOrder.status||activeOrder.orderStatus||'Open order')+' · placed '+fmtDate(String(activeOrder.orderDate||activeOrder.date||'').slice(0,10))));
+    priorityCards.push(priority('In motion',qTitle,qWhy,activeQuote&&activeOpp?'Current quote + opportunity':(activeQuote?'Current quote':(activeOpp?'Current opportunity':'Open order')),action('Call customer',"_cux8Action('call')",'primary')+action('Open orders',"_cw4OpenCenter('orders','"+enc+"')"),'motion'));
+  }else if(recent){
+    priorityCards.push(priority('In motion',recent.name+' has recent buying activity','Last purchased '+fmtDate(recent.last)+' across '+recent.orders+' loaded order'+(recent.orders===1?'':'s')+'.','Observed purchase history',action('Open product history',"_cw5OpenProduct('"+esc(recent.key)+"')",'primary'),'motion'));
+  }
+  if(rows.length){
+    var rp=repeatRows.slice().sort(function(a,b){return b.orders-a.orders||b.rev-a.rev})[0]||rows[0];
+    var repeatWhy=repeatCount===rows.length&&rows.length>1?('All '+rows.length+' loaded products have repeat purchase evidence. This account behaves like a program buyer, not a one-off buyer.'):((repeatCount?repeatCount:0)+' of '+rows.length+' loaded products have been purchased on 2+ orders.');
+    priorityCards.push(priority('Repeat pattern',repeatCount===rows.length&&rows.length>1?'This account runs repeat product programs':rp.name+' is a repeat purchase',repeatWhy,'Observed purchase history',action('View product history',"_cxp730ScrollHistory()",'primary')+action('Open top repeat product',"_cw5OpenProduct('"+esc(rp.key)+"')",''),'repeat'));
+  }
+  if(expansionRec){
+    priorityCards.push(priority('Expansion',expansionRec.productName||expansionRec.title||'Recommended expansion',expansionRec.reason||plan.biggestOpportunity||'A saved account recommendation is available.','Account recommendation'+(plan.biggestOpportunity?' + Account Strategy':''),action('Open Product Studio',"_cw4OpenCenter('products','"+enc+"')",'primary'),'expand'));
+  }else if(gapOpp){
+    priorityCards.push(priority('Expansion',gapOpp.cat,gapOpp.why,'Industry discovery prompt — not observed buying behavior',action('Explore category',gapOpp.onclick||"_cw4OpenCenter('products','"+enc+"')",'primary'),'expand'));
+  }
+  var priorities='<section class="cxp730-section cxp730-priorities"><div class="cxp730-section-head"><div><span>WHAT TO SELL / DISCUSS NEXT</span><h2>Product Priorities</h2><p>Three signals maximum. Observed behavior, current motion, and recommendations stay clearly separated.</p></div></div><div class="cxp730-priority-grid">'+(priorityCards.length?priorityCards.slice(0,3).join(''):'<div class="cxp588-empty">No product priority is strong enough to surface yet.</div>')+'</div></section>';
+  var mixMax=topCat?topCat.rev:1;
+  var mix='<section class="cxp730-section cxp730-mix"><div class="cxp730-section-head"><div><span>OBSERVED BUYING</span><h2>Buying Mix</h2><p>What has actually produced loaded product sales. Click a category to drill into its purchased products.</p></div><div class="cxp730-loaded">Loaded product sales <strong>'+money(loadedSales)+'</strong></div></div>'+(cats.length?'<div class="cxp730-mix-list">'+cats.slice(0,8).map(function(c){return '<button class="cxp730-mix-row" onclick="_cxp588OpenCat(\''+encodeURIComponent(c.cat)+'\')"><span class="cxp730-mix-name">'+esc(c.cat)+'</span><span class="cxp730-mix-bar"><i style="width:'+Math.max(3,pct(c.rev,mixMax))+'%"></i></span><strong>'+money(c.rev)+'</strong><em>'+pct(c.rev,loadedSales)+'%</em><b>'+c.n+' product'+(c.n===1?'':'s')+'</b></button>'}).join('')+'</div>':'<div class="cxp588-empty">No category purchase evidence is loaded.</div>')+'</section>';
+  var decos={};rows.forEach(function(r){String(r.dec||'').split(',').forEach(function(d){d=d.trim();if(d)decos[d]=(decos[d]||0)+1})});var decoTop=Object.keys(decos).sort(function(a,b){return decos[b]-decos[a]})[0]||'Not recorded';
+  var historyRows=rows.slice().sort(function(a,b){return String(b.last||'').localeCompare(String(a.last||''))||b.rev-a.rev}).map(function(r){var st=_cxp588Status(r.status),avg=r.orders?Math.round(r.units/r.orders):0;return '<button class="cxp730-history-row" data-status="'+r.status+'" data-search="'+esc(r.search)+'" data-rev="'+r.rev+'" data-units="'+r.units+'" data-last="'+esc(r.last)+'" onclick="_cw5OpenProduct(\''+esc(r.key)+'\')"><span class="cxp730-h-product"><strong>'+esc(r.name)+'</strong><small>'+esc(r.sku||r.brand||'Purchased product')+'</small></span><span>'+esc(r.cat||'Other')+'</span><span>'+r.orders+'</span><span>'+fmtDate(r.last)+'</span><span>'+avg.toLocaleString()+'</span><span class="cxp730-h-signal" style="--sig:'+st.c+'">'+esc(st.l)+'</span><span class="cxp730-h-arrow">\u2192</span></button>'}).join('');
+  var patterns='<div class="cxp730-patterns"><div><span>Common decoration</span><strong>'+esc(decoTop)+'</strong></div><div><span>Repeat coverage</span><strong>'+repeatCount+' / '+rows.length+' products</strong></div><div><span>Most recent product purchase</span><strong>'+(recent?fmtDate(recent.last):'\u2014')+'</strong></div></div>';
+  var history='<section id="cxp730-history" class="cxp730-section cxp730-history"><div class="cxp730-section-head"><div><span>DETAIL ON DEMAND</span><h2>Product History</h2><p>Search the customer’s purchased products, then open any row for order history, cadence, colors, decoration, and linked artwork.</p></div></div>'+patterns+_cxp588FilterRow(rows.length)+'<div class="cxp730-history-head"><span>Product</span><span>Category</span><span>Orders</span><span>Last purchase</span><span>Avg qty</span><span>Signal</span><span></span></div><div class="cxp730-history-list">'+historyRows+'</div><div id="cxp588-nomatch" class="cxp588-empty" style="display:none;">No products match — clear the search or choose another reorder state.</div></section>';
+  var recCards=recs.slice(0,4).map(function(r){return '<article class="cxp730-expand-card recommended"><div class="cxp730-expand-badge">Recommended</div><h3>'+esc(r.productName||r.title||r.category||'Product opportunity')+'</h3><p>'+esc(r.reason||'Saved account recommendation.')+'</p><div class="cxp730-expand-source">'+(plan.biggestOpportunity?'Account recommendation · Strategy context':'Account recommendation')+'</div><button onclick="_cw4OpenCenter(\'products\',\''+enc+'\')">Review in Product Studio</button></article>'}).join('');
+  var white=(D.opportunities||[]).filter(function(o){return !o.covered}).slice(0,4).map(function(o){return '<article class="cxp730-expand-card whitespace"><div class="cxp730-expand-badge">Explore whitespace</div><h3>'+esc(o.cat)+'</h3><p>'+esc(o.why)+'</p><div class="cxp730-expand-source">Industry discovery prompt · not purchase evidence</div><button onclick="'+(o.onclick||"_cw4OpenCenter('products','"+enc+"')")+'">Explore category</button></article>'}).join('');
+  var expansion='<section class="cxp730-section cxp730-expand"><div class="cxp730-section-head"><div><span>RECOMMENDED OPPORTUNITY</span><h2>Expansion & White Space</h2><p>Recommendations are kept separate from observed buying so reps can see exactly what is evidence and what is an opportunity hypothesis.</p></div></div>'+(recCards?'<div class="cxp730-expand-label">Recommended for this account</div><div class="cxp730-expand-grid">'+recCards+'</div>':'')+(white?'<div class="cxp730-expand-label secondary">Explore additional white space</div><div class="cxp730-expand-grid">'+white+'</div>':'')+(!recCards&&!white?'<div class="cxp588-empty">No expansion recommendation is currently supported by the loaded account context.</div>':'')+'</section>';
+  var actions='<div class="cxp730-utility"><button class="cux8-action" onclick="_cw4OpenCenter(\'products\',\''+enc+'\')">Product Studio</button><button class="cux8-action" onclick="_cw4OpenCenter(\'orders\',\''+enc+'\')">Orders</button><button class="cux8-action" onclick="_cw4InlineEdit(\'buying\')">Buying profile</button></div>';
+  return snapshot+priorities+mix+history+expansion+actions+bar;
+};
+window._cxp730ScrollHistory=function(){var el=document.getElementById('cxp730-history');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})};
+window._cxp730ReadContext=function(name){
+  function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+  function norm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+  function arr(v){if(Array.isArray(v))return v;if(!v)return[];try{if(typeof v==='object')return Object.keys(v).map(function(k){return v[k]}).filter(Boolean)}catch(e){}return[]}
+  function companyOf(x){return x&&(x.company||x.customer||x.account||x.accountName||x.companyName||x.organization||x.businessName)||''}
+  function repOf(x){return x&&(x.rep||x.owner||x.salesRep||x.repName||x.assignedRep||x.assignedTo)||''}
+  function pushUnique(dst,x){if(!x)return;var id=String(x.id||x.quoteId||x.opportunityId||x.orderNumber||x.orderNum||x.title||x.name||'');var sig=norm(id+' '+companyOf(x));if(!dst.some(function(y){var yi=String(y.id||y.quoteId||y.opportunityId||y.orderNumber||y.orderNum||y.title||y.name||'');return norm(yi+' '+companyOf(y))===sig}))dst.push(x)}
+  var rep=(window._rp2&&window._rp2.rep)||'',key=norm(name),out={plan:{},recommendations:[],samples:[],account:{quotes:[],opportunities:[]},orders:[]};
+  try{var crm=read('tcp_rp_company_crm_v510'),rb=crm&&crm.reps&&crm.reps[rep];if(rb&&rb.accounts){Object.keys(rb.accounts).some(function(k){var a=rb.accounts[k]||{},nm=(a.profile&&a.profile.name)||k;if(norm(nm)===key){out.account=a;out.account.quotes=arr(out.account.quotes);out.account.opportunities=arr(out.account.opportunities);return true}return false})}}catch(e){}
+  try{var ps=read('tcp_rp_account_plans_v517'),pr=ps&&ps.reps&&ps.reps[rep],plans=pr&&pr.plans;if(plans){Object.keys(plans).some(function(k){var x=plans[k]||{},nm=x.company||k;if(norm(nm)===key){out.plan=x;return true}return false})}}catch(e){}
+  try{var st=read('tcp_rp_products_v520'),sr=st&&st.reps&&st.reps[rep];if(sr){out.recommendations=arr(sr.recommendations).filter(function(x){return norm(x.company||x.customer)===key&&!/dismiss|declin|closed/i.test(String(x.status||''))});out.samples=arr(sr.samples).filter(function(x){return norm(x.company||x.customer)===key})}}catch(e){}
+  try{
+    var S=window.S||{};
+    ['quotes','crmQuotes','customerQuotes','proposals','estimates'].forEach(function(k){arr(S[k]).forEach(function(x){if(norm(companyOf(x))===key&&(!rep||!repOf(x)||String(repOf(x))===String(rep)))pushUnique(out.account.quotes,x)})});
+    ['opportunities','crmOpportunities','accountOpportunities','deals'].forEach(function(k){arr(S[k]).forEach(function(x){if(norm(companyOf(x))===key&&(!rep||!repOf(x)||String(repOf(x))===String(rep)))pushUnique(out.account.opportunities,x)})});
+    arr(S.orders).forEach(function(x){if(norm(companyOf(x))===key&&(!rep||!repOf(x)||String(repOf(x))===String(rep)))pushUnique(out.orders,x)});
+  }catch(e){}
+  return out
 };
 window._cxp588Body=function(content,name){
   try{
@@ -57545,7 +57601,7 @@ window._cxp588Body=function(content,name){
         search:a.getAttribute('data-search')||''
       });
     });
-    var chips='';
+    var chips='',opportunities=[];
     try{
       var gcards=content?content.querySelectorAll('.cw6-growth'):[];
       chips=Array.prototype.slice.call(gcards).map(function(g){
@@ -57554,12 +57610,13 @@ window._cxp588Body=function(content,name){
         var btn=g.querySelector('button');
         var oc=btn?btn.getAttribute('onclick'):'';
         var covered=g.classList.contains('covered');
+        opportunities.push({cat:cat,why:why,onclick:oc,covered:covered});
         return '<button class="cxp588-chip'+(covered?' covered':'')+'"'+(oc?' onclick="'+esc(oc)+'"':'')+' title="'+esc(why)+'">'
           +'<b>'+esc(cat)+'</b><span>'+(covered?esc(why):('No purchases in this category yet \u2014 '+esc(why).toLowerCase()))+'</span></button>';
       }).join('');
     }catch(e){}
     if(window._cxp588SelFor!==name){window._cxp588Sel={};window._cxp588SelFor=name;window._cxp588Cat=null;}
-    window._cxp588Data={name:name,rows:rowsData,chips:chips};
+    window._cxp588Data={name:name,rows:rowsData,chips:chips,opportunities:opportunities,context:(window._cxp730ReadContext?window._cxp730ReadContext(name):{})};
     if(window._cxp588Cat&&!rowsData.some(function(r){return (r.cat||'Other')===window._cxp588Cat;}))window._cxp588Cat=null;
     setTimeout(_cxp588Bar,60);
     return _cxp588Render();
@@ -59176,6 +59233,65 @@ html[data-connect-authoritative="v714"] body.nav-rail .tabs:after{content:var(--
 .cxp588-cart-empty{color:#8797AD;font-size:10.6px;padding:14px 4px;line-height:1.6;}
 .cxp588-cart-foot{display:flex;gap:9px;justify-content:flex-end;padding:12px 14px;border-top:1px solid rgba(255,255,255,.08);}
 @media(max-width:900px){.cxp588-stats{grid-template-columns:1fr 1fr;}.cxp588-banner-word{font-size:26px;}}
+
+
+/* ===== V730 COMPANY PRODUCTS SALES WORKSPACE ===== */
+.cxp730-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:4px 0 18px;}
+.cxp730-snap{position:relative;overflow:hidden;min-height:142px;padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(155deg,rgba(18,30,48,.96),rgba(7,13,24,.96));box-shadow:0 16px 38px rgba(0,0,0,.22);}
+.cxp730-snap:after{content:"";position:absolute;right:-34px;top:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--snapGlow,rgba(0,175,239,.18)),transparent 68%);pointer-events:none;}
+.cxp730-snap.green{--snapGlow:rgba(71,209,108,.28)}.cxp730-snap.cyan{--snapGlow:rgba(0,175,239,.28)}.cxp730-snap.orange{--snapGlow:rgba(250,135,61,.30)}.cxp730-snap.purple{--snapGlow:rgba(155,107,255,.28)}
+.cxp730-snap-icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:13px;border-radius:13px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.055);color:#DFF4FF;font-size:18px;font-weight:900;}
+.cxp730-snap>span{display:block;color:#91A2B9;font-size:9.5px;font-weight:950;text-transform:uppercase;letter-spacing:.75px;}
+.cxp730-snap>strong{display:block;margin-top:7px;color:#F4F8FD;font-size:22px;font-weight:950;line-height:1.08;letter-spacing:-.025em;overflow:hidden;text-overflow:ellipsis;}
+.cxp730-snap>small{display:block;margin-top:8px;color:#8294AA;font-size:10.5px;line-height:1.45;}
+.cxp730-section{margin:0 0 18px;padding:20px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(160deg,rgba(13,23,38,.86),rgba(7,12,22,.93));box-shadow:0 18px 44px rgba(0,0,0,.18);}
+.cxp730-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:16px;}
+.cxp730-section-head>div:first-child>span{display:block;color:#8EDCFA;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.cxp730-section-head h2{margin:0;color:#F4F8FD;font-size:22px;font-weight:950;letter-spacing:-.03em;}
+.cxp730-section-head p{margin:6px 0 0;max-width:760px;color:#8596AC;font-size:10.5px;line-height:1.55;}
+.cxp730-priority-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;}
+.cxp730-priority{position:relative;display:flex;flex-direction:column;min-height:245px;padding:18px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.025);overflow:hidden;}
+.cxp730-priority:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--priority,#00AFEF);}
+.cxp730-priority.motion{--priority:#FA873D}.cxp730-priority.repeat{--priority:#47D16C}.cxp730-priority.expand{--priority:#9B6BFF}
+.cxp730-priority-kick{color:var(--priority);font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.9px;}
+.cxp730-priority h3{margin:10px 0 8px;color:#fff;font-size:17px;font-weight:950;line-height:1.23;letter-spacing:-.02em;}
+.cxp730-priority p{margin:0;color:#9BAABD;font-size:11px;line-height:1.58;}
+.cxp730-evidence{margin-top:auto;padding-top:16px;}
+.cxp730-evidence span{display:block;color:#65768D;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.7px;}
+.cxp730-evidence strong{display:block;margin-top:4px;color:#C9D7E8;font-size:9.8px;font-weight:850;line-height:1.35;}
+.cxp730-priority-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;}
+.cxp730-priority-btn{border:1px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.04);color:#D6E0ED;padding:8px 10px;font-size:9.5px;font-weight:900;cursor:pointer;}
+.cxp730-priority-btn.primary{border-color:color-mix(in srgb,var(--priority) 55%,transparent);background:color-mix(in srgb,var(--priority) 14%,transparent);color:#fff;}
+.cxp730-priority-btn:hover{transform:translateY(-1px);border-color:var(--priority);}
+.cxp730-loaded{color:#8193AA;font-size:9.5px;font-weight:800;text-align:right;}.cxp730-loaded strong{display:block;margin-top:3px;color:#F1F6FC;font-size:17px;font-weight:950;}
+.cxp730-mix-list{display:flex;flex-direction:column;gap:7px;}
+.cxp730-mix-row{display:grid;grid-template-columns:minmax(145px,.8fr) minmax(160px,2fr) 95px 45px 82px;align-items:center;gap:12px;width:100%;padding:11px 12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.018);color:#DCE6F2;text-align:left;cursor:pointer;}
+.cxp730-mix-row:hover{border-color:rgba(0,175,239,.32);background:rgba(0,175,239,.045);}
+.cxp730-mix-name{font-size:11.5px;font-weight:900;color:#F1F6FC;}
+.cxp730-mix-bar{height:7px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;}.cxp730-mix-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00AFEF,#47D16C);}
+.cxp730-mix-row>strong{font-size:11px;text-align:right}.cxp730-mix-row>em{font-size:9.5px;color:#8EDCFA;font-style:normal;text-align:right}.cxp730-mix-row>b{font-size:9px;color:#8193AA;font-weight:850;text-align:right;}
+.cxp730-patterns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:-2px 0 13px;}
+.cxp730-patterns>div{padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.018);}
+.cxp730-patterns span{display:block;color:#718197;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.65px}.cxp730-patterns strong{display:block;margin-top:4px;color:#DCE6F2;font-size:10.5px;font-weight:900;}
+.cxp730-history .cxp588-filter{margin-top:4px;margin-bottom:8px;}
+.cxp730-history-head,.cxp730-history-row{display:grid;grid-template-columns:minmax(230px,1.75fr) minmax(110px,.85fr) 65px 105px 70px 105px 24px;gap:10px;align-items:center;}
+.cxp730-history-head{padding:8px 12px;color:#66778D;font-size:8.1px;font-weight:950;text-transform:uppercase;letter-spacing:.65px;border-bottom:1px solid rgba(255,255,255,.07);}
+.cxp730-history-list{display:flex;flex-direction:column;}
+.cxp730-history-row{width:100%;padding:12px;border:0;border-bottom:1px solid rgba(255,255,255,.065);background:transparent;color:#C6D2E0;text-align:left;cursor:pointer;font-size:10.5px;}
+.cxp730-history-row:hover{background:rgba(0,175,239,.04);}
+.cxp730-h-product strong{display:block;color:#F1F6FC;font-size:11.5px;font-weight:900;line-height:1.25}.cxp730-h-product small{display:block;margin-top:3px;color:#718197;font-size:8.8px;}
+.cxp730-h-signal{justify-self:start;padding:4px 8px;border:1px solid color-mix(in srgb,var(--sig) 55%,transparent);border-radius:999px;color:var(--sig);font-size:8.3px;font-weight:950;text-transform:uppercase;letter-spacing:.35px;background:color-mix(in srgb,var(--sig) 8%,transparent);}
+.cxp730-h-arrow{color:#8EDCFA;font-size:14px;text-align:right;}
+.cxp730-expand-label{margin:3px 0 9px;color:#AFC0D3;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.7px;}.cxp730-expand-label.secondary{margin-top:18px;color:#8294AA;}
+.cxp730-expand-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.cxp730-expand-card{padding:15px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.02);}.cxp730-expand-card.recommended{border-color:rgba(155,107,255,.24);background:rgba(155,107,255,.035)}.cxp730-expand-card.whitespace{border-color:rgba(76,157,255,.18);}
+.cxp730-expand-badge{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);color:#BFD6ED;font-size:7.8px;font-weight:950;text-transform:uppercase;letter-spacing:.55px;}
+.cxp730-expand-card h3{margin:10px 0 6px;color:#fff;font-size:14px;font-weight:950}.cxp730-expand-card p{margin:0;color:#91A1B5;font-size:10.4px;line-height:1.5;}.cxp730-expand-source{margin-top:11px;color:#6F8199;font-size:8.4px;font-weight:800;}
+.cxp730-expand-card button{margin-top:12px;padding:8px 10px;border-radius:10px;border:1px solid rgba(155,107,255,.30);background:rgba(155,107,255,.08);color:#D9CEFF;font-size:9.4px;font-weight:900;cursor:pointer;}.cxp730-expand-card button:hover{background:rgba(155,107,255,.16);}
+.cxp730-utility{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin:-4px 0 6px;opacity:.82;}
+@media(max-width:1180px){.cxp730-snapshot{grid-template-columns:repeat(2,1fr)}.cxp730-priority-grid{grid-template-columns:1fr}.cxp730-history-head,.cxp730-history-row{grid-template-columns:minmax(190px,1.6fr) 100px 55px 95px 65px 95px 20px}.cxp730-mix-row{grid-template-columns:130px minmax(120px,1fr) 90px 42px 75px}}
+@media(max-width:760px){.cxp730-snapshot,.cxp730-patterns,.cxp730-expand-grid{grid-template-columns:1fr}.cxp730-section{padding:15px}.cxp730-section-head{align-items:flex-start;flex-direction:column}.cxp730-loaded{text-align:left}.cxp730-mix-row{grid-template-columns:1fr 70px 42px}.cxp730-mix-bar,.cxp730-mix-row>b{display:none}.cxp730-history-head{display:none}.cxp730-history-row{grid-template-columns:1fr auto;gap:5px 10px}.cxp730-history-row>span:not(.cxp730-h-product):not(.cxp730-h-signal):not(.cxp730-h-arrow){display:none}.cxp730-h-signal{grid-column:2}.cxp730-h-arrow{display:none}.cxp730-utility{justify-content:flex-start}}
+@media(min-width:1100px){html.cxp588-master #rp-overlay .cxp730-snapshot,html.cxp588-master #rp-overlay .cxp730-priorities,html.cxp588-master #rp-overlay .cxp730-mix,html.cxp588-master #rp-overlay .cxp730-expand,html.cxp588-master #rp-overlay .cxp730-patterns,html.cxp588-master #rp-overlay .cxp730-utility{display:none!important}html.cxp588-master #rp-overlay .cxp730-history{padding:10px!important;margin:0!important}html.cxp588-master #rp-overlay .cxp730-section-head{margin-bottom:8px!important}html.cxp588-master #rp-overlay .cxp730-section-head h2{font-size:14px!important}html.cxp588-master #rp-overlay .cxp730-section-head p{display:none!important}html.cxp588-master #rp-overlay .cxp730-history-head{display:none!important}html.cxp588-master #rp-overlay .cxp730-history-row{grid-template-columns:1fr auto!important;padding:9px 7px!important}html.cxp588-master #rp-overlay .cxp730-history-row>span:not(.cxp730-h-product):not(.cxp730-h-signal){display:none!important}html.cxp588-master #rp-overlay .cxp730-h-signal{font-size:7px!important}}
 
 /* ---- product detail header fix: kicker no longer overlaps the title ---- */
 .cw6-detail-modal .cw4-modal-icon{width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;background:none!important;border:0!important;box-shadow:none!important;display:block!important;font-size:9.5px!important;font-weight:950!important;letter-spacing:.9px!important;color:#9DDCFF!important;white-space:nowrap!important;margin:0 0 5px!important;padding:0!important;line-height:1.2!important;}
@@ -73057,9 +73173,9 @@ html[data-connect-authoritative="v718"] body.nav-rail .tabs:after{content:var(--
 @media(max-width:1180px){#rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))}#rp-overlay .cux719-workspace{grid-template-columns:minmax(250px,290px) minmax(0,1fr)}#rp-overlay .cux719-profile-grid{grid-template-columns:1fr}#rp-overlay .cux719-card.wide{grid-column:auto}#rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){#rp-overlay .cux719-workspace{grid-template-columns:1fr}#rp-overlay .cux719-roster{border-right:0;border-bottom:1px solid rgba(255,255,255,.06)}#rp-overlay .cux719-roster-list{max-height:280px}#rp-overlay .cux719-profile-hero{flex-direction:column}#rp-overlay .cux719-profile-actions{justify-content:flex-start}}
 @media(max-width:620px){#rp-overlay .cux719-summary,#rp-overlay .cux719-quick,#rp-overlay .cux719-fields,#rp-overlay .cux719-form-grid{grid-template-columns:1fr}#rp-overlay .cux719-shell-head{align-items:flex-start;flex-direction:column}#rp-overlay .cux719-detail{padding:16px}#rp-overlay .cux719-activity{grid-template-columns:68px minmax(0,1fr)}#rp-overlay .cux719-activity div{grid-column:1/-1}}
-html[data-connect-authoritative="v729"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V729";--connect-build-short:"BUILD V729"}
-html[data-connect-authoritative="v729"] body .tabs:after{content:var(--connect-build-long)!important}
-html[data-connect-authoritative="v729"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
+html[data-connect-authoritative="v730"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V730";--connect-build-short:"BUILD V730"}
+html[data-connect-authoritative="v730"] body .tabs:after{content:var(--connect-build-long)!important}
+html[data-connect-authoritative="v730"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
 </style>
 <script id="connect-v720-relationship-workspace-js">
 (function(){
@@ -73119,9 +73235,9 @@ html[data-connect-authoritative="v729"] body.nav-rail .tabs:after{content:var(--
 
 
 <style id="connect-v721-live-contacts-css">
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster{display:flex!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-detail{display:block!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster{display:flex!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-detail{display:block!important}
 </style>
 <script id="connect-v721-live-contacts-binding">
 (function(){
@@ -73162,154 +73278,154 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux719-detail{display:block
 <!-- ===== CONNECT v723 · CONTACTS UI PARITY / READABILITY ===== -->
 <style id="connect-v723-contacts-ui-parity">
 /* Contacts should feel like the same command-center product as Company Overview / Manager Dashboard. */
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{
   max-width:1720px!important;margin:0 auto!important;padding:0 18px 28px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{
   grid-template-columns:minmax(0,1fr) auto!important;gap:28px!important;align-items:center!important;
   min-height:118px!important;padding:24px 28px!important;border-radius:24px!important;overflow:hidden!important;
   background:radial-gradient(circle at 92% 4%,rgba(155,107,255,.18),transparent 35%),linear-gradient(135deg,#16304A 0%,#17253F 52%,#252044 100%)!important;
   border-color:rgba(155,107,255,.25)!important;box-shadow:0 20px 52px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-id{gap:18px!important;align-items:center!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-back{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-id{gap:18px!important;align-items:center!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-back{
   width:46px!important;height:46px!important;flex:0 0 46px!important;border-radius:14px!important;font-size:17px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-icon{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-icon{
   width:58px!important;height:58px!important;flex:0 0 58px!important;border-radius:18px!important;font-size:25px!important;
   background:linear-gradient(145deg,rgba(155,107,255,.24),rgba(0,175,239,.09))!important;border-color:rgba(155,107,255,.38)!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-company{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-company{
   font-size:10.5px!important;line-height:1.3!important;letter-spacing:.12em!important;color:#94A6BF!important;margin-bottom:3px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-title{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-title{
   margin-top:2px!important;font-size:31px!important;line-height:1.02!important;letter-spacing:-.035em!important;color:#F7FAFC!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-copy{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-copy{
   margin-top:8px!important;font-size:13px!important;line-height:1.5!important;color:#A3B2C3!important;max-width:720px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{gap:10px!important;justify-content:flex-end!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions .cux8-action{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{gap:10px!important;justify-content:flex-end!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions .cux8-action{
   min-height:44px!important;padding:0 16px!important;border-radius:12px!important;font-size:12px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-content{margin-top:18px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-content{margin-top:18px!important}
 
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-wrap{max-width:none!important;gap:18px!important;padding-bottom:30px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-summary{gap:16px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-stat{padding:20px 22px!important;border-radius:19px!important;min-height:118px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-stat span{font-size:10.5px!important;margin-bottom:8px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-stat strong{font-size:28px!important;line-height:1.05!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-stat small{margin-top:8px!important;font-size:12.5px!important;line-height:1.45!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-wrap{max-width:none!important;gap:18px!important;padding-bottom:30px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-summary{gap:16px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-stat{padding:20px 22px!important;border-radius:19px!important;min-height:118px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-stat span{font-size:10.5px!important;margin-bottom:8px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-stat strong{font-size:28px!important;line-height:1.05!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-stat small{margin-top:8px!important;font-size:12.5px!important;line-height:1.45!important}
 
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-shell{border-radius:22px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-shell-head{padding:22px 26px!important;min-height:98px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-kick{font-size:10.5px!important;margin-bottom:6px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-title{font-size:27px!important;line-height:1.05!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-copy{margin-top:7px!important;font-size:13px!important;line-height:1.55!important;max-width:900px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-shell{border-radius:22px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-shell-head{padding:22px 26px!important;min-height:98px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-kick{font-size:10.5px!important;margin-bottom:6px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-title{font-size:27px!important;line-height:1.05!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-copy{margin-top:7px!important;font-size:13px!important;line-height:1.55!important;max-width:900px!important}
 /* Header actions already exist above; don't repeat them inside the relationship workspace. */
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-shell-head>.cux719-actions{display:none!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-shell-head>.cux719-actions{display:none!important}
 
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-workspace{
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-workspace{
   grid-template-columns:clamp(340px,24vw,390px) minmax(0,1fr)!important;min-height:680px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-head{padding:20px 18px 15px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-title{font-size:17px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-count{font-size:9.5px!important;padding:5px 8px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-search{margin-top:13px!important;min-height:43px!important;padding:0 13px!important;font-size:12px!important;border-radius:11px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-list{max-height:720px!important;padding:10px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-row{grid-template-columns:46px minmax(0,1fr) auto!important;gap:12px!important;padding:13px 12px!important;border-radius:13px!important;margin-bottom:6px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-avatar{width:46px!important;height:46px!important;border-radius:13px!important;font-size:13px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-name{font-size:14.5px!important;line-height:1.2!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-role{font-size:11px!important;margin-top:4px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-meta{margin-top:7px!important;gap:5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-mini-tag{font-size:8.5px!important;padding:4px 7px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-next{font-size:9.5px!important;line-height:1.4!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-add{padding:14px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-head{padding:20px 18px 15px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-title{font-size:17px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-count{font-size:9.5px!important;padding:5px 8px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-search{margin-top:13px!important;min-height:43px!important;padding:0 13px!important;font-size:12px!important;border-radius:11px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-list{max-height:720px!important;padding:10px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-row{grid-template-columns:46px minmax(0,1fr) auto!important;gap:12px!important;padding:13px 12px!important;border-radius:13px!important;margin-bottom:6px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-avatar{width:46px!important;height:46px!important;border-radius:13px!important;font-size:13px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-name{font-size:14.5px!important;line-height:1.2!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-role{font-size:11px!important;margin-top:4px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-meta{margin-top:7px!important;gap:5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-mini-tag{font-size:8.5px!important;padding:4px 7px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-next{font-size:9.5px!important;line-height:1.4!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-add{padding:14px!important}
 
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-detail{padding:28px 30px 32px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-hero{gap:22px!important;padding-bottom:21px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-main{gap:17px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-avatar{width:70px!important;height:70px!important;flex-basis:70px!important;border-radius:19px!important;font-size:20px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-name{font-size:30px!important;line-height:1.04!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-title{font-size:14px!important;margin-top:6px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-tags{margin-top:11px!important;gap:7px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-tag{font-size:9px!important;padding:5px 9px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-actions{gap:8px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-actions .cux719-btn{min-height:42px!important;padding:0 14px!important;font-size:11.5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-detail{padding:28px 30px 32px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-hero{gap:22px!important;padding-bottom:21px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-main{gap:17px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-avatar{width:70px!important;height:70px!important;flex-basis:70px!important;border-radius:19px!important;font-size:20px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-name{font-size:30px!important;line-height:1.04!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-title{font-size:14px!important;margin-top:6px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-tags{margin-top:11px!important;gap:7px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-tag{font-size:9px!important;padding:5px 9px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-actions{gap:8px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-actions .cux719-btn{min-height:42px!important;padding:0 14px!important;font-size:11.5px!important}
 
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-quick{gap:11px!important;margin:18px 0!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-quick div{padding:12px 13px!important;border-radius:12px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-quick span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-quick strong{font-size:13px!important;line-height:1.4!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-grid{gap:14px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-card{padding:18px 19px!important;border-radius:15px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-card-head{margin-bottom:13px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-card-title{font-size:10.5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-card-action{font-size:10px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-fields{gap:11px 14px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-field span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-field strong,
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-field a{font-size:12.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-about-row{margin-top:12px!important;padding-top:12px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-about-row span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-about-row p{font-size:12.5px!important;line-height:1.6!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-linkedin{margin-top:14px!important;padding:13px 14px!important;border-radius:12px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-linkedin-icon{width:34px!important;height:34px!important;border-radius:9px!important;font-size:13px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-linkedin strong{font-size:11.5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-linkedin span{font-size:9.5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-note{padding:12px 13px!important;border-radius:11px!important;margin-top:8px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-note time{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-note p{font-size:11.5px!important;line-height:1.55!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-activity{grid-template-columns:96px 84px minmax(0,1fr)!important;gap:12px!important;padding:11px 0!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-activity time,
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-activity b{font-size:10px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-activity div{font-size:11.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-role-actions{gap:8px!important;margin-top:14px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-quick{gap:11px!important;margin:18px 0!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-quick div{padding:12px 13px!important;border-radius:12px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-quick span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-quick strong{font-size:13px!important;line-height:1.4!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-grid{gap:14px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-card{padding:18px 19px!important;border-radius:15px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-card-head{margin-bottom:13px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-card-title{font-size:10.5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-card-action{font-size:10px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-fields{gap:11px 14px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-field span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-field strong,
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-field a{font-size:12.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-about-row{margin-top:12px!important;padding-top:12px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-about-row span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-about-row p{font-size:12.5px!important;line-height:1.6!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-linkedin{margin-top:14px!important;padding:13px 14px!important;border-radius:12px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-linkedin-icon{width:34px!important;height:34px!important;border-radius:9px!important;font-size:13px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-linkedin strong{font-size:11.5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-linkedin span{font-size:9.5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-note{padding:12px 13px!important;border-radius:11px!important;margin-top:8px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-note time{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-note p{font-size:11.5px!important;line-height:1.55!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-activity{grid-template-columns:96px 84px minmax(0,1fr)!important;gap:12px!important;padding:11px 0!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-activity time,
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-activity b{font-size:10px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-activity div{font-size:11.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-role-actions{gap:8px!important;margin-top:14px!important}
 
 /* Profile editor should feel like a proper Connect workspace, not a cramped utility dialog. */
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-modal-wrap{padding:28px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-modal{width:min(860px,calc(100vw - 54px))!important;max-height:calc(100vh - 56px)!important;border-radius:22px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-modal-head{padding:22px 24px 17px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-modal-head h3{font-size:25px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-modal-head p{margin-top:7px!important;font-size:12.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-form{padding:21px 24px 24px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-form-grid{gap:14px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-input{gap:6px!important;margin-bottom:13px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-input label{font-size:9px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-input input,
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-input select,
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-input textarea{font-size:12.5px!important;padding:11px 12px!important;border-radius:11px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-input textarea{min-height:88px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-modal-wrap{padding:28px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-modal{width:min(860px,calc(100vw - 54px))!important;max-height:calc(100vh - 56px)!important;border-radius:22px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-modal-head{padding:22px 24px 17px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-modal-head h3{font-size:25px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-modal-head p{margin-top:7px!important;font-size:12.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-form{padding:21px 24px 24px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-form-grid{gap:14px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-input{gap:6px!important;margin-bottom:13px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-input label{font-size:9px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-input input,
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-input select,
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-input textarea{font-size:12.5px!important;padding:11px 12px!important;border-radius:11px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-input textarea{min-height:88px!important}
 
 @media(max-width:1320px){
- html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{padding-left:14px!important;padding-right:14px!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-workspace{grid-template-columns:320px minmax(0,1fr)!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-detail{padding:24px 25px 28px!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-grid{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{padding-left:14px!important;padding-right:14px!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-workspace{grid-template-columns:320px minmax(0,1fr)!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-detail{padding:24px 25px 28px!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-grid{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 @media(max-width:980px){
- html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{grid-template-columns:1fr!important;gap:16px!important;padding:20px 22px!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{justify-content:flex-start!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-workspace{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-list{max-height:330px!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{grid-template-columns:1fr!important;gap:16px!important;padding:20px 22px!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{justify-content:flex-start!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-workspace{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-list{max-height:330px!important}
 }
 @media(max-width:650px){
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-summary,
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-quick,
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-fields,
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-form-grid{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-detail{padding:18px!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-hero{flex-direction:column!important}
- html[data-connect-authoritative="v729"] #rp-overlay .cux719-profile-actions{justify-content:flex-start!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-summary,
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-quick,
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-fields,
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-form-grid{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-detail{padding:18px!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-hero{flex-direction:column!important}
+ html[data-connect-authoritative="v730"] #rp-overlay .cux719-profile-actions{justify-content:flex-start!important}
 }
 </style>
 <script id="connect-v723-contact-parity-boot">
 (function(){
  'use strict';
- var BUILD='v729',DISPLAY='V729',TITLE='Connect v729 — Sales Portal';
+ var BUILD='v730',DISPLAY='V730',TITLE='Connect v730 — Sales Portal';
  function enforce(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
@@ -73325,16 +73441,16 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux719-input textarea{min-h
 </script>
 <style id="connect-v723-contacts-roster-finish">
 /* v723: final Contacts roster breathing-room pass. Header owns Add Contact; roster stays focused on people. */
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-head{padding:19px 18px 17px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-list{padding:14px 12px 18px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-row{grid-template-columns:50px minmax(0,1fr) 70px!important;gap:14px!important;min-height:88px!important;padding:16px 14px!important;margin-bottom:10px!important;border-radius:14px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-avatar{width:48px!important;height:48px!important;border-radius:13px!important;font-size:13px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-name{font-size:15px!important;line-height:1.18!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-role{font-size:11.25px!important;line-height:1.35!important;margin-top:5px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-meta{margin-top:9px!important;gap:6px!important;row-gap:6px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-next{font-size:9.75px!important;line-height:1.45!important;padding-left:6px!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-add{display:none!important;}
-@media(max-width:980px){html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-row{min-height:82px!important;padding:14px 13px!important;margin-bottom:8px!important;}}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-head{padding:19px 18px 17px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-list{padding:14px 12px 18px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-row{grid-template-columns:50px minmax(0,1fr) 70px!important;gap:14px!important;min-height:88px!important;padding:16px 14px!important;margin-bottom:10px!important;border-radius:14px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-avatar{width:48px!important;height:48px!important;border-radius:13px!important;font-size:13px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-name{font-size:15px!important;line-height:1.18!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-role{font-size:11.25px!important;line-height:1.35!important;margin-top:5px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-meta{margin-top:9px!important;gap:6px!important;row-gap:6px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-next{font-size:9.75px!important;line-height:1.45!important;padding-left:6px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-add{display:none!important;}
+@media(max-width:980px){html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-row{min-height:82px!important;padding:14px 13px!important;margin-bottom:8px!important;}}
 </style>
 
 
@@ -73342,10 +73458,10 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-add{display:n
 
 <!-- ===== CONNECT v727 · PERSISTENT COMPANY SUB-NAVIGATION ===== -->
 <style id="connect-v727-persistent-company-nav-css">
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent{
   margin:10px 0 14px!important;
 }
-html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent button.active{
+html[data-connect-authoritative="v730"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent button.active{
   background:rgba(0,175,239,.12)!important;border-color:rgba(0,175,239,.32)!important;color:#D7F7FF!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
 }
@@ -73353,7 +73469,7 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell .cux700-subnav.c
 <script id="connect-v727-persistent-company-nav-js">
 (function(){
  'use strict';
- var BUILD='v729', DISPLAY='V729', TITLE='Connect v729 — Sales Portal';
+ var BUILD='v730', DISPLAY='V730', TITLE='Connect v730 — Sales Portal';
  var timer=0;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
  function companyOpen(){return !!(window._rp2CompanyOpenKey||window._cw4CompanyName||document.querySelector('#rp-overlay .cux8-shell'))}
@@ -73449,48 +73565,48 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux8-shell .cux700-subnav.c
 </script>
 
 <style id="connect-v727-orders-rep-workspace-css">
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-orders{padding:14px 0 28px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-view-tabs{display:inline-flex;gap:5px;padding:4px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(6,14,22,.55);margin-bottom:16px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-view-tabs button{display:flex;align-items:center;gap:8px;min-height:38px;padding:0 15px;border:0;border-radius:10px;background:transparent;color:#8EA1B3;font:inherit;font-size:11.5px;font-weight:850;cursor:pointer}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-view-tabs button b{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.055);font-size:9px;color:#91A5B7}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-view-tabs button.on{background:rgba(0,175,239,.11);box-shadow:inset 0 0 0 1px rgba(0,175,239,.34);color:#E9F8FF}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi{position:relative;min-height:154px;padding:20px 20px 18px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(180deg,rgba(17,31,43,.92),rgba(10,21,31,.94));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--ord-accent,#00AFEF)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi.blue{--ord-accent:#00AFEF}html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi.amber{--ord-accent:#F0A234}html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi.green{--ord-accent:#47D16C}html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi.cyan{--ord-accent:#68D4F3}html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi.purple{--ord-accent:#B18AF5}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-kick{font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;color:var(--ord-accent)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-title{margin-top:10px;font-size:12px;font-weight:850;color:#A7B6C4}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-value{margin-top:5px;font-size:30px;line-height:1.05;font-weight:950;letter-spacing:-.035em;color:#F4F8FB}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-copy{margin-top:12px;font-size:11px;line-height:1.5;color:#8295A6}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-section{border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(8,18,27,.52);overflow:hidden}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 20px 17px;border-bottom:1px solid rgba(255,255,255,.06)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-section-head span{font-size:9px;font-weight:950;letter-spacing:.10em;color:#6DDDFB}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-section-head h2{margin:5px 0 0;font-size:22px;line-height:1.1;color:#F3F7FA}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-section-head p{margin:7px 0 0;max-width:760px;font-size:11.5px;line-height:1.55;color:#8396A7}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-list{display:flex;flex-direction:column;gap:10px;padding:14px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active{padding:17px 18px;border:1px solid rgba(255,255,255,.075);border-left:3px solid var(--ord-status,#00AFEF);border-radius:15px;background:linear-gradient(180deg,rgba(18,33,45,.84),rgba(11,23,33,.9))}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active.risk{--ord-status:#FB7185}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active.warn{--ord-status:#F0A234}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active.good{--ord-status:#47D16C}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active.info{--ord-status:#00AFEF}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-main{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-order-id button{border:0;background:none;padding:0;color:#F4F8FB;font-size:18px;font-weight:950;cursor:pointer;text-align:left}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-order-id span{display:block;margin-top:4px;font-size:10px;color:#738A9B}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-status{padding:5px 9px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);font-size:9px;font-weight:900;color:#AFC0CB;white-space:nowrap}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.24);background:rgba(71,209,108,.07)}html[data-connect-authoritative="v729"] #rp-overlay .ord727-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.25);background:rgba(240,162,52,.07)}html[data-connect-authoritative="v729"] #rp-overlay .ord727-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.24);background:rgba(251,113,133,.07)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body{display:grid;grid-template-columns:150px minmax(260px,1fr) 220px;gap:12px;margin-top:15px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body>div{padding:10px 11px;border:1px solid rgba(255,255,255,.05);border-radius:11px;background:rgba(255,255,255,.018)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body span{display:block;font-size:8px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#708697;margin-bottom:5px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body strong{display:block;font-size:12px;line-height:1.42;color:#DCE7ED}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-attention,html[data-connect-authoritative="v729"] #rp-overlay .ord727-ontrack{display:flex;gap:10px;align-items:baseline;margin-top:12px;padding:10px 11px;border-radius:10px;font-size:10.5px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-attention{border:1px solid rgba(240,162,52,.18);background:rgba(240,162,52,.055);color:#D1B487}html[data-connect-authoritative="v729"] #rp-overlay .ord727-attention b{color:#FFD38B}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-ontrack{border:1px solid rgba(71,209,108,.15);background:rgba(71,209,108,.045);color:#8FB6A0}html[data-connect-authoritative="v729"] #rp-overlay .ord727-ontrack b{color:#9DEDB7}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:13px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-btn{min-height:34px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:#101E29;color:#C4D0D8;font-size:9.5px;font-weight:850;cursor:pointer}html[data-connect-authoritative="v729"] #rp-overlay .ord727-btn.primary{border-color:rgba(0,175,239,.28);background:rgba(0,175,239,.08);color:#A9ECFF}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-search{display:flex;align-items:center;gap:9px}html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-search input{width:280px;min-height:38px;padding:0 12px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0D1823;color:#E7EFF4;font-size:11px}html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-search b{font-size:10px;color:#718799;white-space:nowrap}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-meta{display:flex;gap:9px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05)}html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-meta span{padding:5px 8px;border:1px solid rgba(255,255,255,.06);border-radius:999px;background:rgba(255,255,255,.025);font-size:9.5px;color:#8EA1B1}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-table-wrap{overflow:auto;max-height:560px}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table{width:100%;border-collapse:collapse}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table th{position:sticky;top:0;z-index:1;padding:10px 12px;background:#0E1A24;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:#708697}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.05);font-size:10.5px;line-height:1.42;color:#AFC0CB;vertical-align:top}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table tr:hover td{background:rgba(255,255,255,.018)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-order-link{display:block;border:0;background:none;padding:0;color:#EAF4F9;font-size:11.5px;font-weight:900;cursor:pointer}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table td small{display:block;margin-top:3px;font-size:8.5px;color:#718799}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table-status{display:inline-flex;padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.08);font-size:8.5px;font-weight:850;color:#AFC0CB}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.2)}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.2)}html[data-connect-authoritative="v729"] #rp-overlay .ord727-table-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.2)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord727-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;padding:28px;text-align:center}html[data-connect-authoritative="v729"] #rp-overlay .ord727-empty strong{font-size:16px;color:#DDE7ED}html[data-connect-authoritative="v729"] #rp-overlay .ord727-empty span{margin-top:7px;max-width:560px;font-size:11px;line-height:1.5;color:#788D9E}
-@media(max-width:1180px){html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body{grid-template-columns:130px minmax(0,1fr)}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body>div:last-child{grid-column:1/-1}}
-@media(max-width:760px){html[data-connect-authoritative="v729"] #rp-overlay .ord727-kpi-grid{grid-template-columns:1fr}html[data-connect-authoritative="v729"] #rp-overlay .ord727-section-head{align-items:flex-start;flex-direction:column}html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-search{width:100%}html[data-connect-authoritative="v729"] #rp-overlay .ord727-history-search input{width:100%}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body{grid-template-columns:1fr}html[data-connect-authoritative="v729"] #rp-overlay .ord727-active-body>div:last-child{grid-column:auto}}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-orders{padding:14px 0 28px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-view-tabs{display:inline-flex;gap:5px;padding:4px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(6,14,22,.55);margin-bottom:16px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-view-tabs button{display:flex;align-items:center;gap:8px;min-height:38px;padding:0 15px;border:0;border-radius:10px;background:transparent;color:#8EA1B3;font:inherit;font-size:11.5px;font-weight:850;cursor:pointer}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-view-tabs button b{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.055);font-size:9px;color:#91A5B7}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-view-tabs button.on{background:rgba(0,175,239,.11);box-shadow:inset 0 0 0 1px rgba(0,175,239,.34);color:#E9F8FF}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi{position:relative;min-height:154px;padding:20px 20px 18px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(180deg,rgba(17,31,43,.92),rgba(10,21,31,.94));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--ord-accent,#00AFEF)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi.blue{--ord-accent:#00AFEF}html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi.amber{--ord-accent:#F0A234}html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi.green{--ord-accent:#47D16C}html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi.cyan{--ord-accent:#68D4F3}html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi.purple{--ord-accent:#B18AF5}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-kick{font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;color:var(--ord-accent)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-title{margin-top:10px;font-size:12px;font-weight:850;color:#A7B6C4}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-value{margin-top:5px;font-size:30px;line-height:1.05;font-weight:950;letter-spacing:-.035em;color:#F4F8FB}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-copy{margin-top:12px;font-size:11px;line-height:1.5;color:#8295A6}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-section{border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(8,18,27,.52);overflow:hidden}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 20px 17px;border-bottom:1px solid rgba(255,255,255,.06)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-section-head span{font-size:9px;font-weight:950;letter-spacing:.10em;color:#6DDDFB}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-section-head h2{margin:5px 0 0;font-size:22px;line-height:1.1;color:#F3F7FA}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-section-head p{margin:7px 0 0;max-width:760px;font-size:11.5px;line-height:1.55;color:#8396A7}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-list{display:flex;flex-direction:column;gap:10px;padding:14px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active{padding:17px 18px;border:1px solid rgba(255,255,255,.075);border-left:3px solid var(--ord-status,#00AFEF);border-radius:15px;background:linear-gradient(180deg,rgba(18,33,45,.84),rgba(11,23,33,.9))}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active.risk{--ord-status:#FB7185}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active.warn{--ord-status:#F0A234}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active.good{--ord-status:#47D16C}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active.info{--ord-status:#00AFEF}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-main{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-order-id button{border:0;background:none;padding:0;color:#F4F8FB;font-size:18px;font-weight:950;cursor:pointer;text-align:left}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-order-id span{display:block;margin-top:4px;font-size:10px;color:#738A9B}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-status{padding:5px 9px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);font-size:9px;font-weight:900;color:#AFC0CB;white-space:nowrap}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.24);background:rgba(71,209,108,.07)}html[data-connect-authoritative="v730"] #rp-overlay .ord727-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.25);background:rgba(240,162,52,.07)}html[data-connect-authoritative="v730"] #rp-overlay .ord727-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.24);background:rgba(251,113,133,.07)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body{display:grid;grid-template-columns:150px minmax(260px,1fr) 220px;gap:12px;margin-top:15px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body>div{padding:10px 11px;border:1px solid rgba(255,255,255,.05);border-radius:11px;background:rgba(255,255,255,.018)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body span{display:block;font-size:8px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#708697;margin-bottom:5px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body strong{display:block;font-size:12px;line-height:1.42;color:#DCE7ED}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-attention,html[data-connect-authoritative="v730"] #rp-overlay .ord727-ontrack{display:flex;gap:10px;align-items:baseline;margin-top:12px;padding:10px 11px;border-radius:10px;font-size:10.5px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-attention{border:1px solid rgba(240,162,52,.18);background:rgba(240,162,52,.055);color:#D1B487}html[data-connect-authoritative="v730"] #rp-overlay .ord727-attention b{color:#FFD38B}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-ontrack{border:1px solid rgba(71,209,108,.15);background:rgba(71,209,108,.045);color:#8FB6A0}html[data-connect-authoritative="v730"] #rp-overlay .ord727-ontrack b{color:#9DEDB7}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:13px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-btn{min-height:34px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:#101E29;color:#C4D0D8;font-size:9.5px;font-weight:850;cursor:pointer}html[data-connect-authoritative="v730"] #rp-overlay .ord727-btn.primary{border-color:rgba(0,175,239,.28);background:rgba(0,175,239,.08);color:#A9ECFF}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-search{display:flex;align-items:center;gap:9px}html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-search input{width:280px;min-height:38px;padding:0 12px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0D1823;color:#E7EFF4;font-size:11px}html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-search b{font-size:10px;color:#718799;white-space:nowrap}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-meta{display:flex;gap:9px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05)}html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-meta span{padding:5px 8px;border:1px solid rgba(255,255,255,.06);border-radius:999px;background:rgba(255,255,255,.025);font-size:9.5px;color:#8EA1B1}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-table-wrap{overflow:auto;max-height:560px}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table{width:100%;border-collapse:collapse}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table th{position:sticky;top:0;z-index:1;padding:10px 12px;background:#0E1A24;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:#708697}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.05);font-size:10.5px;line-height:1.42;color:#AFC0CB;vertical-align:top}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table tr:hover td{background:rgba(255,255,255,.018)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-order-link{display:block;border:0;background:none;padding:0;color:#EAF4F9;font-size:11.5px;font-weight:900;cursor:pointer}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table td small{display:block;margin-top:3px;font-size:8.5px;color:#718799}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table-status{display:inline-flex;padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.08);font-size:8.5px;font-weight:850;color:#AFC0CB}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.2)}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.2)}html[data-connect-authoritative="v730"] #rp-overlay .ord727-table-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.2)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord727-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;padding:28px;text-align:center}html[data-connect-authoritative="v730"] #rp-overlay .ord727-empty strong{font-size:16px;color:#DDE7ED}html[data-connect-authoritative="v730"] #rp-overlay .ord727-empty span{margin-top:7px;max-width:560px;font-size:11px;line-height:1.5;color:#788D9E}
+@media(max-width:1180px){html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body{grid-template-columns:130px minmax(0,1fr)}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body>div:last-child{grid-column:1/-1}}
+@media(max-width:760px){html[data-connect-authoritative="v730"] #rp-overlay .ord727-kpi-grid{grid-template-columns:1fr}html[data-connect-authoritative="v730"] #rp-overlay .ord727-section-head{align-items:flex-start;flex-direction:column}html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-search{width:100%}html[data-connect-authoritative="v730"] #rp-overlay .ord727-history-search input{width:100%}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body{grid-template-columns:1fr}html[data-connect-authoritative="v730"] #rp-overlay .ord727-active-body>div:last-child{grid-column:auto}}
 </style>
 
 <style id="ord728-order-history-drilldown">
@@ -73505,23 +73621,23 @@ html[data-connect-authoritative="v729"] #rp-overlay .ord727-empty{display:flex;f
 </style>
 <script id="ord728-build-identity">
 (function(){
- window.CONNECT_BUILD=728;
- try{document.title='Connect v729 — Sales Portal';document.documentElement.setAttribute('data-connect-build','728');}catch(e){}
- function mark(){document.querySelectorAll('[data-build],.rp2-build,.rp2-side-build').forEach(function(el){var t=el.textContent||'';if(/BUILD\s*V?\d+/i.test(t))el.textContent=t.replace(/BUILD\s*V?\d+/i,'BUILD V729')});}
+ window.CONNECT_BUILD='v730';
+ try{document.title='Connect v730 — Sales Portal';document.documentElement.setAttribute('data-connect-build','v730');}catch(e){}
+ function mark(){document.querySelectorAll('[data-build],.rp2-build,.rp2-side-build').forEach(function(el){var t=el.textContent||'';if(/BUILD\s*V?\d+/i.test(t))el.textContent=t.replace(/BUILD\s*V?\d+/i,'BUILD V730')});}
  mark();setTimeout(mark,0);setTimeout(mark,120);setTimeout(mark,600);
 })();
 </script>
 </body>. -->
 <style id="connect-v724-contact-name-role-spacing">
 /* v724: roster identity stack — name, role, then badges. */
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-row > span:nth-child(2){display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-name{display:block!important;width:100%!important;margin:0!important;line-height:1.16!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-role{display:block!important;width:100%!important;margin:5px 0 0!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
-html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-meta{display:flex!important;flex-wrap:wrap!important;margin-top:9px!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-row > span:nth-child(2){display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-name{display:block!important;width:100%!important;margin:0!important;line-height:1.16!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-role{display:block!important;width:100%!important;margin:5px 0 0!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+html[data-connect-authoritative="v730"] #rp-overlay .cux719-roster-meta{display:flex!important;flex-wrap:wrap!important;margin-top:9px!important;}
 </style>
 <script id="connect-v724-contact-name-role-build">
 (function(){
-  var BUILD='v729', DISPLAY='V729', TITLE='Connect v729 — Sales Portal';
+  var BUILD='v730', DISPLAY='V730', TITLE='Connect v730 — Sales Portal';
   function apply(){try{document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title=TITLE;if(window.CONNECT_BUILD!==undefined)window.CONNECT_BUILD=BUILD;document.querySelectorAll('[data-build-label],.rp-build-badge,.portal-build,.sales-portal-build').forEach(function(el){if(/build/i.test(el.textContent||'')||el.hasAttribute('data-build-label'))el.textContent='SALES PORTAL · BUILD '+DISPLAY;});}catch(e){}}
   apply();setTimeout(apply,0);setTimeout(apply,250);
 })();
@@ -73530,28 +73646,28 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux719-roster-meta{display:
 
 <!-- v727 appended at EOF intentionally: selected-contact activity timeline + filter. -->
 <style id="connect-v727-contact-activity-timeline-css">
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-activity-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;flex-wrap:wrap!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-activity-controls{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-filter{min-height:36px!important;padding:0 32px 0 11px!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:10px!important;background:#0D1823!important;color:#DDE7F0!important;font-size:11px!important;font-weight:750!important;cursor:pointer!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-count{font-size:10px!important;color:#7F93A5!important;white-space:nowrap!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-timeline{margin-top:7px!important;max-height:430px!important;overflow:auto!important;padding-right:5px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry{display:grid!important;grid-template-columns:108px 108px minmax(0,1fr)!important;gap:13px!important;align-items:start!important;padding:13px 2px!important;border-bottom:1px solid rgba(255,255,255,.055)!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry:last-child{border-bottom:0!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-date{font-size:10px!important;color:#7F93A5!important;line-height:1.45!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-type{display:inline-flex!important;align-items:center!important;gap:6px!important;width:max-content!important;max-width:100%!important;padding:4px 7px!important;border:1px solid rgba(0,175,239,.18)!important;border-radius:999px!important;background:rgba(0,175,239,.07)!important;color:#A7E8FF!important;font-size:9.5px!important;font-weight:850!important;line-height:1.2!important;white-space:nowrap!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-type.quote{border-color:rgba(155,107,255,.26)!important;background:rgba(155,107,255,.09)!important;color:#D7C5FF!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-type.note{border-color:rgba(239,159,39,.24)!important;background:rgba(239,159,39,.08)!important;color:#FFD496!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-type.follow-up{border-color:rgba(71,209,108,.23)!important;background:rgba(71,209,108,.08)!important;color:#A7FFC0!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry-main strong{display:block!important;font-size:12.5px!important;line-height:1.35!important;color:#E9F0F5!important;margin-bottom:4px!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry-main p{margin:0!important;font-size:11.5px!important;line-height:1.55!important;color:#AEBCC8!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry-main small{display:block!important;margin-top:5px!important;font-size:9.5px!important;line-height:1.45!important;color:#72889A!important}
-html[data-connect-authoritative="v729"] #rp-overlay .cux725-empty{padding:26px 8px!important;text-align:center!important;color:#71879A!important;font-size:11.5px!important}
-@media(max-width:780px){html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry{grid-template-columns:88px minmax(0,1fr)!important}html[data-connect-authoritative="v729"] #rp-overlay .cux725-type{grid-column:2!important;grid-row:1!important;margin-left:auto!important}html[data-connect-authoritative="v729"] #rp-overlay .cux725-entry-main{grid-column:1/-1!important}}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-activity-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;flex-wrap:wrap!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-activity-controls{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-filter{min-height:36px!important;padding:0 32px 0 11px!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:10px!important;background:#0D1823!important;color:#DDE7F0!important;font-size:11px!important;font-weight:750!important;cursor:pointer!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-count{font-size:10px!important;color:#7F93A5!important;white-space:nowrap!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-timeline{margin-top:7px!important;max-height:430px!important;overflow:auto!important;padding-right:5px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry{display:grid!important;grid-template-columns:108px 108px minmax(0,1fr)!important;gap:13px!important;align-items:start!important;padding:13px 2px!important;border-bottom:1px solid rgba(255,255,255,.055)!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry:last-child{border-bottom:0!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-date{font-size:10px!important;color:#7F93A5!important;line-height:1.45!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-type{display:inline-flex!important;align-items:center!important;gap:6px!important;width:max-content!important;max-width:100%!important;padding:4px 7px!important;border:1px solid rgba(0,175,239,.18)!important;border-radius:999px!important;background:rgba(0,175,239,.07)!important;color:#A7E8FF!important;font-size:9.5px!important;font-weight:850!important;line-height:1.2!important;white-space:nowrap!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-type.quote{border-color:rgba(155,107,255,.26)!important;background:rgba(155,107,255,.09)!important;color:#D7C5FF!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-type.note{border-color:rgba(239,159,39,.24)!important;background:rgba(239,159,39,.08)!important;color:#FFD496!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-type.follow-up{border-color:rgba(71,209,108,.23)!important;background:rgba(71,209,108,.08)!important;color:#A7FFC0!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry-main strong{display:block!important;font-size:12.5px!important;line-height:1.35!important;color:#E9F0F5!important;margin-bottom:4px!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry-main p{margin:0!important;font-size:11.5px!important;line-height:1.55!important;color:#AEBCC8!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry-main small{display:block!important;margin-top:5px!important;font-size:9.5px!important;line-height:1.45!important;color:#72889A!important}
+html[data-connect-authoritative="v730"] #rp-overlay .cux725-empty{padding:26px 8px!important;text-align:center!important;color:#71879A!important;font-size:11.5px!important}
+@media(max-width:780px){html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry{grid-template-columns:88px minmax(0,1fr)!important}html[data-connect-authoritative="v730"] #rp-overlay .cux725-type{grid-column:2!important;grid-row:1!important;margin-left:auto!important}html[data-connect-authoritative="v730"] #rp-overlay .cux725-entry-main{grid-column:1/-1!important}}
 </style>
 <script id="connect-v727-contact-activity-timeline-js">
 (function(){
  'use strict';
- var BUILD='v729',DISPLAY='V729',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',DEMO='DEMO — Summit Ridge Industrial Services';
+ var BUILD='v730',DISPLAY='V730',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',DEMO='DEMO — Summit Ridge Industrial Services';
  var filter='All Activity',pending=false;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
  function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
@@ -73591,26 +73707,26 @@ html[data-connect-authoritative="v729"] #rp-overlay .cux725-empty{padding:26px 8
  var oldSelect=window._cux719Select;if(typeof oldSelect==='function')window._cux719Select=function(){var r=oldSelect.apply(this,arguments);filter='All Activity';setTimeout(enhance,0);return r};
  var oldForce=window._cux721ForceContacts;if(typeof oldForce==='function')window._cux721ForceContacts=function(){var r=oldForce.apply(this,arguments);setTimeout(enhance,0);return r};
  var obs=new MutationObserver(function(){if(document.querySelector('#rp-overlay .cux719-workspace'))schedule()});
- function boot(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title='Connect v729 — Sales Portal';demoLinks();var root=document.getElementById('rp-overlay');if(root)obs.observe(root,{childList:true,subtree:true});[0,100,350,800].forEach(function(ms){setTimeout(enhance,ms)});document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){console.warn('[v727 activity timeline]',e)}}
+ function boot(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title='Connect v730 — Sales Portal';demoLinks();var root=document.getElementById('rp-overlay');if(root)obs.observe(root,{childList:true,subtree:true});[0,100,350,800].forEach(function(ms){setTimeout(enhance,ms)});document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){console.warn('[v727 activity timeline]',e)}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
  window.TCP_CONTACT_ACTIVITY_TIMELINE_V727={version:BUILD,refresh:enhance};
 })();
 </script>
 <style id="ord728-order-history-drilldown-eof">
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row{cursor:pointer;transition:background .15s ease,box-shadow .15s ease}
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row:hover td{background:rgba(41,199,255,.055)}
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row:hover .ord728-order-number{color:#78dcff;text-decoration:underline;text-underline-offset:3px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row:focus-visible{outline:2px solid #29c7ff;outline-offset:-2px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row td:last-child{position:relative;padding-right:72px}
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-open-hint{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#29c7ff;opacity:0;transition:opacity .15s ease}
-html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row:hover .ord728-open-hint,html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row:focus-visible .ord728-open-hint{opacity:1}
-@media(max-width:900px){html[data-connect-authoritative="v729"] #rp-overlay .ord728-open-hint{display:none}html[data-connect-authoritative="v729"] #rp-overlay .ord728-history-row td:last-child{padding-right:14px}}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row{cursor:pointer;transition:background .15s ease,box-shadow .15s ease}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row:hover td{background:rgba(41,199,255,.055)}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row:hover .ord728-order-number{color:#78dcff;text-decoration:underline;text-underline-offset:3px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row:focus-visible{outline:2px solid #29c7ff;outline-offset:-2px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row td:last-child{position:relative;padding-right:72px}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-open-hint{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#29c7ff;opacity:0;transition:opacity .15s ease}
+html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row:hover .ord728-open-hint,html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row:focus-visible .ord728-open-hint{opacity:1}
+@media(max-width:900px){html[data-connect-authoritative="v730"] #rp-overlay .ord728-open-hint{display:none}html[data-connect-authoritative="v730"] #rp-overlay .ord728-history-row td:last-child{padding-right:14px}}
 </style>
-<script id="connect-v729-final-authority-eof">
+<script id="connect-v730-final-authority-eof">
 (function(){
- var BUILD='v729',DISPLAY='V729',TITLE='Connect v729 — Sales Portal';
+ var BUILD='v730',DISPLAY='V730',TITLE='Connect v730 — Sales Portal';
  function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){var t=b.textContent||'';if(/build/i.test(t))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});
- /* v729: no subtree build observer — early build authority is already idempotent */
+ /* v730: no subtree build observer — early build authority is already idempotent */
 })();
 </script>
