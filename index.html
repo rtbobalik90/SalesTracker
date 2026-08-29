@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v720 — Sales Portal</title>
-<script id="connect-build-authority-v720">
+<title>Connect v721 — Sales Portal</title>
+<script id="connect-build-authority-v721">
 (function(){
   'use strict';
-  var BUILD='v720', DISPLAY='V720', TITLE='Connect v720 — Sales Portal';
+  var BUILD='v721', DISPLAY='V721', TITLE='Connect v721 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -73137,9 +73137,9 @@ html[data-connect-authoritative="v718"] body.nav-rail .tabs:after{content:var(--
 @media(max-width:1180px){#rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))}#rp-overlay .cux719-workspace{grid-template-columns:minmax(250px,290px) minmax(0,1fr)}#rp-overlay .cux719-profile-grid{grid-template-columns:1fr}#rp-overlay .cux719-card.wide{grid-column:auto}#rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){#rp-overlay .cux719-workspace{grid-template-columns:1fr}#rp-overlay .cux719-roster{border-right:0;border-bottom:1px solid rgba(255,255,255,.06)}#rp-overlay .cux719-roster-list{max-height:280px}#rp-overlay .cux719-profile-hero{flex-direction:column}#rp-overlay .cux719-profile-actions{justify-content:flex-start}}
 @media(max-width:620px){#rp-overlay .cux719-summary,#rp-overlay .cux719-quick,#rp-overlay .cux719-fields,#rp-overlay .cux719-form-grid{grid-template-columns:1fr}#rp-overlay .cux719-shell-head{align-items:flex-start;flex-direction:column}#rp-overlay .cux719-detail{padding:16px}#rp-overlay .cux719-activity{grid-template-columns:68px minmax(0,1fr)}#rp-overlay .cux719-activity div{grid-column:1/-1}}
-html[data-connect-authoritative="v720"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V720";--connect-build-short:"BUILD V720"}
-html[data-connect-authoritative="v720"] body .tabs:after{content:var(--connect-build-long)!important}
-html[data-connect-authoritative="v720"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
+html[data-connect-authoritative="v721"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V721";--connect-build-short:"BUILD V721"}
+html[data-connect-authoritative="v721"] body .tabs:after{content:var(--connect-build-long)!important}
+html[data-connect-authoritative="v721"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
 </style>
 <script id="connect-v720-relationship-workspace-js">
 (function(){
@@ -73190,9 +73190,50 @@ html[data-connect-authoritative="v720"] body.nav-rail .tabs:after{content:var(--
  window._cux719SaveNote=function(encoded){var id=decodeURIComponent(encoded),hit=localContact(id),text=val('c719-note');if(!hit||!text)return;hit.c.profileNotes=arr(hit.c.profileNotes);hit.c.profileNotes.unshift({id:'pn_'+Date.now().toString(36),date:new Date().toISOString().slice(0,10),text:text});hit.c.updatedAt=new Date().toISOString();saveAccount(hit.x);selected.id=id;window._cux719CloseModal();rerender()}
  window._cux719ToggleBackup=function(encoded){var id=decodeURIComponent(encoded),hit=localContact(id);if(!hit)return;hit.c.backupRelationship=!hit.c.backupRelationship;hit.c.updatedAt=new Date().toISOString();saveAccount(hit.x);selected.id=id;rerender()}
  function enrichDemo(){var x=accountFor(DEMO);if(!x.data||!x.data.profile||!x.data.profile.__demoV718)return;var extra={demo_ct_taylor:{mobile:'608-555-1112',linkedin:'https://linkedin.example.invalid/in/taylor-morgan-demo',location:'Madison, WI',relationshipStrength:'Strong',influence:'High',responsibilities:'Owns branded apparel, uniform, and promotional purchasing. Coordinates final vendor selection and budget approval.',priorities:'Reliable in-hands dates, fewer vendors, repeatable product standards, and concise recommendations.',communicationStyle:'Prefers phone for decisions and short email recaps with 2–3 options, clear pricing, and delivery dates.',backupRelationship:false,profileNotes:[{id:'pn_t1',date:'2026-08-22',text:'Prefers concise choices and will trade a small price premium for reliable delivery.'},{id:'pn_t2',date:'2026-07-15',text:'Wants to consolidate vendors and standardize repeat programs where possible.'}]},demo_ct_jordan:{mobile:'608-555-1138',linkedin:'https://linkedin.example.invalid/in/jordan-lee-demo',location:'Madison, WI',relationshipStrength:'Developing',influence:'High',responsibilities:'Defines field safety requirements, employee headcount, sizing assumptions, and high-visibility garment needs.',priorities:'ANSI compliance, durability, easy size management, and minimizing field replacements.',communicationStyle:'Responds quickly to email. Appreciates technical product comparisons and clear compliance information.',backupRelationship:true,profileNotes:[{id:'pn_j1',date:'2026-08-21',text:'Strong operational champion; a good backup relationship if Taylor is unavailable.'}]},demo_ct_morgan:{mobile:'608-555-1174',linkedin:'https://linkedin.example.invalid/in/morgan-ellis-demo',location:'Madison, WI',relationshipStrength:'Strong',influence:'Medium',responsibilities:'Owns brand standards, logo placement, color approvals, and event merchandise artwork.',priorities:'Brand consistency, clean proofs, and fast artwork turnaround.',communicationStyle:'Email-first. Likes visual proofs and exact decoration specifications.',backupRelationship:false,profileNotes:[{id:'pn_m1',date:'2026-08-12',text:'Send visual proof options early when a new decoration method is being considered.'}]},demo_ct_casey:{mobile:'',linkedin:'',location:'Madison, WI',relationshipStrength:'Transactional',influence:'Low',responsibilities:'Handles accounts payable, invoice questions, tax documents, and payment processing.',priorities:'Correct PO references, clean invoices, and prompt tax documentation.',communicationStyle:'Email only for billing questions. Keep communication concise and include invoice/order references.',backupRelationship:false,profileNotes:[{id:'pn_c1',date:'2026-07-29',text:'Net 30 account; Casey is the best contact for invoice or tax-document questions.'}]}};arr(x.data.contacts).forEach(function(c){var e=extra[c.id];if(e)Object.keys(e).forEach(function(k){if(c[k]==null||c[k]===''||(k==='profileNotes'&&!arr(c[k]).length))c[k]=e[k]})});saveAccount(x)}
+ window._cux721RenderContacts=render; window._cux721Contacts=contacts; window._cux721CurrentCompany=currentCompany;
  function boot(){enrichDemo();try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();[120,450,1000].forEach(function(ms){setTimeout(boot,ms)});
  window.TCP_RELATIONSHIP_WORKSPACE_V720={version:BUILD};window.TCP_BUILD_IDENTITY_V720={version:BUILD,authority:true};
 })();
 </script>
 
+
+<style id="connect-v721-live-contacts-css">
+html[data-connect-authoritative="v721"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
+html[data-connect-authoritative="v721"] #rp-overlay .cux719-roster{display:flex!important}
+html[data-connect-authoritative="v721"] #rp-overlay .cux719-detail{display:block!important}
+</style>
+<script id="connect-v721-live-contacts-binding">
+(function(){
+ 'use strict';
+ var BUILD='v721',DISPLAY='V721';
+ function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+ function contactsOpen(){var t=document.querySelector('#rp-overlay .cux8-section-title');return !!(t&&clean(t.textContent).toLowerCase()==='contacts')}
+ function companyName(){try{return clean((window._cux721CurrentCompany&&window._cux721CurrentCompany())||window._cux8CurrentName||window._cw4CompanyName||'')}catch(e){return ''}}
+ function apply(){
+  try{
+   if(!contactsOpen()||typeof window._cux721RenderContacts!=='function')return false;
+   var content=document.querySelector('#rp-overlay .cux8-content'),n=companyName();
+   if(!content||!n)return false;
+   if(!content.querySelector('.cux719-workspace')) content.innerHTML=window._cux721RenderContacts(n);
+   var shell=document.querySelector('#rp-overlay .cux8-shell');
+   if(shell){shell.classList.remove('cux718-contacts-page');shell.classList.add('cux719-contacts-page')}
+   document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY});
+   return true;
+  }catch(e){console.warn('[v721 contacts]',e);return false}
+ }
+ window._cux721ForceContacts=apply;
+ var oldOpen=window._cux8Open;
+ if(typeof oldOpen==='function')window._cux8Open=function(section){var r=oldOpen.apply(this,arguments);if(section==='contacts')[0,30,90,220].forEach(function(ms){setTimeout(apply,ms)});return r};
+ var oldDraw=window._rp2CompanyProfileDraw;
+ if(typeof oldDraw==='function')window._rp2CompanyProfileDraw=function(){var r=oldDraw.apply(this,arguments);[0,30,90].forEach(function(ms){setTimeout(apply,ms)});return r};
+ var observer=new MutationObserver(function(){if(contactsOpen())setTimeout(apply,0)});
+ function boot(){
+  try{document.documentElement.setAttribute('data-connect-authoritative',BUILD);if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD()}catch(e){}
+  var root=document.getElementById('rp-overlay');if(root)try{observer.observe(root,{childList:true,subtree:true})}catch(e){}
+  [0,100,350,900].forEach(function(ms){setTimeout(apply,ms)});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+ window.TCP_CONTACTS_ROUTE_BINDING_V721={version:BUILD,apply:apply};
+})();
+</script>
