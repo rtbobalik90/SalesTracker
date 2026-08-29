@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v706 — Sales Portal</title>
-<script id="connect-build-authority-v706">
+<title>Connect v708 — Sales Portal</title>
+<script id="connect-build-authority-v708">
 (function(){
   'use strict';
-  var BUILD='v706', DISPLAY='V706', TITLE='Connect v706 — Sales Portal';
+  var BUILD='v708', DISPLAY='V708', TITLE='Connect v708 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -53,9 +53,9 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
   window.CONNECT_ENFORCE_BUILD=enforce;
 })();
 </script>
-<style id="connect-build-authority-v706-css">
-html[data-connect-authoritative="v706"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V706";--connect-build-short:"BUILD V706";}
-html[data-connect-authoritative="v706"] body .tabs:after{content:var(--connect-build-long)!important;}
+<style id="connect-build-authority-v707-css">
+html[data-connect-authoritative="v707"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V707";--connect-build-short:"BUILD V707";}
+html[data-connect-authoritative="v707"] body .tabs:after{content:var(--connect-build-long)!important;}
 html[data-connect-authoritative="v706"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -71712,7 +71712,8 @@ html[data-rp-theme="light"] #rp-overlay .cux702-card-copy b{color:#29465B!import
 #rp-overlay .cux706-sales-panel-body{padding:15px 16px 16px;}
 
 /* Annual history bars. */
-#rp-overlay .cux706-year-bars{height:210px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:end;padding-top:8px;}
+#rp-overlay .cux706-year-bars-wrap{width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 5px;scrollbar-width:thin;}
+#rp-overlay .cux706-year-bars{height:210px;display:grid;grid-template-columns:repeat(var(--cux706-year-count,4),minmax(74px,1fr));gap:12px;align-items:end;padding-top:8px;min-width:max(100%,calc(var(--cux706-year-count,4) * 86px));}
 #rp-overlay .cux706-year-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;min-width:0;}
 #rp-overlay .cux706-year-value{font-size:11px;font-weight:950;color:#EAF2F8;margin-bottom:6px;white-space:nowrap;}
 #rp-overlay .cux706-year-track{height:150px;border-radius:10px 10px 5px 5px;background:rgba(255,255,255,.035);display:flex;align-items:flex-end;overflow:hidden;border:1px solid rgba(255,255,255,.055);}
@@ -71784,6 +71785,32 @@ html[data-rp-theme="light"] #rp-overlay .cux706-sales-kpi strong{color:#173044!i
  function heroYTD(){var out=0;document.querySelectorAll('#rp-overlay .cux8-metric').forEach(function(m){var l=clean(m.querySelector('span')&&m.querySelector('span').textContent);if(/ytd/i.test(l))out=Math.max(out,num(clean(m.querySelector('strong')&&m.querySelector('strong').textContent)))});return out}
  function byYear(rows){var out={};rows.forEach(function(o){var d=dateOf(field(o,['orderDate','date','createdAt','enteredAt'],''));if(!d)return;var y=d.getFullYear(),v=num(field(o,['total','amount','revenue','sales','orderTotal','extendedSalesRevenue','netRevenue'],0));out[y]=(out[y]||0)+v});return out}
  function importedYear(c,y,cy){if(y===cy)return Math.max(num(c.importedSalesCurrentYear),num(c.importedSalesCurrentYearNew));if(y===cy-1)return Math.max(num(c.importedSalesLastYear),num(c.importedSalesLastYearNew));if(y===cy-2)return num(c.importedSales2YearsAgo);if(y===cy-3)return num(c.importedSales3YearsAgo);return 0}
+ function importedYearMap(c,cy){
+   c=c||{};var out={};
+   function put(y,v){y=+y;v=num(v);if(y>=1900&&y<=cy&&v>0)out[y]=Math.max(out[y]||0,v)}
+   put(cy,Math.max(num(c.importedSalesCurrentYear),num(c.importedSalesCurrentYearNew)));
+   put(cy-1,Math.max(num(c.importedSalesLastYear),num(c.importedSalesLastYearNew)));
+   put(cy-2,c.importedSales2YearsAgo);put(cy-3,c.importedSales3YearsAgo);
+   Object.keys(c).forEach(function(k){
+     var m=String(k).match(/(?:sales|revenue)[^0-9]*(19\d{2}|20\d{2})|(19\d{2}|20\d{2})[^a-z0-9]*(?:sales|revenue)/i);
+     if(m)put(m[1]||m[2],c[k]);
+   });
+   ['salesHistory','annualSales','salesByYear','yearlySales','revenueByYear','annualRevenue','historicalSales'].forEach(function(key){
+     var obj=c[key];if(!obj||typeof obj!=='object')return;
+     Object.keys(obj).forEach(function(y){
+       if(!/^(19|20)\d{2}$/.test(String(y)))return;
+       var row=obj[y],v=(row&&typeof row==='object')?field(row,['sales','revenue','total','amount','value','netSales'],0):row;
+       put(y,v);
+     });
+   });
+   return out
+ }
+ function allSalesYears(c,actual,cy){
+   var imp=importedYearMap(c,cy),seen={};Object.keys(actual||{}).forEach(function(y){if(+y>=1900&&+y<=cy)seen[+y]=1});Object.keys(imp).forEach(function(y){seen[+y]=1});
+   if(!Object.keys(seen).length){seen[cy]=1;seen[cy-1]=1;seen[cy-2]=1;seen[cy-3]=1}
+   var ys=Object.keys(seen).map(Number).filter(function(y){return y>=1900&&y<=cy}).sort(function(a,b){return a-b});
+   return ys.map(function(y){return{year:y,value:Math.max((actual&&actual[y])||0,imp[y]||0),current:y===cy}})
+ }
  function priorSameDate(rows,c,now){var py=now.getFullYear()-1,cut=new Date(py,now.getMonth(),now.getDate(),23,59,59,999),dated=0,datedFull=0,have=false;rows.forEach(function(o){var d=dateOf(field(o,['orderDate','date','createdAt','enteredAt'],''));if(!d||d.getFullYear()!==py)return;have=true;var val=num(field(o,['total','amount','revenue','sales','orderTotal','extendedSalesRevenue','netRevenue'],0));datedFull+=val;if(d<=cut)dated+=val});
    var m=c&&c.months||{},keys=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],monthFull=0;keys.forEach(function(k){monthFull+=num(m[k])});var importedFull=Math.max(num(c&&c.importedSalesLastYear),num(c&&c.importedSalesLastYearNew),monthFull),useMonthly=monthFull>0&&(!have||(importedFull>0&&datedFull<importedFull*.92));
    if(have&&!useMonthly)return{value:dated,mode:'dated orders'};
@@ -71793,11 +71820,11 @@ html[data-rp-theme="light"] #rp-overlay .cux706-sales-kpi strong{color:#173044!i
  }
  function monthModel(rows,c,py){var keys=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],vals=keys.map(function(k){return num(c&&c.months&&c.months[k])}),sum=vals.reduce(function(s,v){return s+v},0);if(sum>0)return{vals:vals,source:'imported prior-year months'};vals=new Array(12).fill(0);rows.forEach(function(o){var d=dateOf(field(o,['orderDate','date'],''));if(d&&d.getFullYear()===py)vals[d.getMonth()]+=num(field(o,['total','amount','revenue','sales','orderTotal'],0))});return{vals:vals,source:vals.reduce(function(s,v){return s+v},0)?'dated prior-year orders':'no monthly history'}
  }
- function model(name){var now=new Date(),cy=now.getFullYear(),py=cy-1,c=customer(name),rows=orders(name),actual=byYear(rows),years=[];for(var y=cy-3;y<=cy;y++){var imp=importedYear(c,y,cy),v=Math.max(actual[y]||0,imp);years.push({year:y,value:v,current:y===cy})}var hy=heroYTD();if(hy>0)years[years.length-1].value=Math.max(years[years.length-1].value,hy);var current=years[3].value,priorFull=years[2].value,ps=priorSameDate(rows,c,now),same=ps.value,yoy=same>0?(current-same)/same*100:null,target=priorFull>0?priorFull*GROWTH:0,expected=same>0?same*GROWTH:0,delta=expected>0?current-expected:null,deltaPct=expected>0?delta/expected*100:null;
-   var complete=years.slice(0,3),best=complete.reduce(function(a,b){return b.value>a.value?b:a},{year:0,value:0}),q=quarterModel(rows,c,py),mo=monthModel(rows,c,py),qsum=q.vals.reduce(function(s,v){return s+v},0),mmax=Math.max.apply(Math,mo.vals.concat([0])),hot=mo.vals.indexOf(mmax),largest=rows.reduce(function(a,o){var v=num(field(o,['total','amount','revenue','sales','orderTotal'],0));return v>a.value?{value:v,order:o}:a},{value:0,order:null}),src=[];if(rows.length)src.push('dated orders');if(num(c.importedSalesCurrentYear)||num(c.importedSalesLastYear)||num(c.importedSales2YearsAgo)||num(c.importedSales3YearsAgo))src.push('customer sales snapshot');return{name:name,cy:cy,py:py,years:years,current:current,priorFull:priorFull,priorSame:same,priorSameMode:ps.mode,yoy:yoy,target:target,expected:expected,delta:delta,deltaPct:deltaPct,best:best,quarters:q,qsum:qsum,months:mo,monthMax:mmax,hotMonth:hot,largest:largest,orders:rows.length,source:src.join(' + ')||'no historical sales source loaded'}
+ function model(name){var now=new Date(),cy=now.getFullYear(),py=cy-1,c=customer(name),rows=orders(name),actual=byYear(rows),years=allSalesYears(c,actual,cy),hy=heroYTD();var currentRow=years.filter(function(y){return y.year===cy})[0];if(!currentRow){currentRow={year:cy,value:0,current:true};years.push(currentRow);years.sort(function(a,b){return a.year-b.year})}if(hy>0)currentRow.value=Math.max(currentRow.value,hy);var priorRow=years.filter(function(y){return y.year===py})[0],current=currentRow.value,priorFull=priorRow?priorRow.value:0,ps=priorSameDate(rows,c,now),same=ps.value,yoy=same>0?(current-same)/same*100:null,target=priorFull>0?priorFull*GROWTH:0,expected=same>0?same*GROWTH:0,delta=expected>0?current-expected:null,deltaPct=expected>0?delta/expected*100:null;
+   var complete=years.filter(function(y){return !y.current&&y.value>0}),best=complete.reduce(function(a,b){return b.value>a.value?b:a},{year:0,value:0}),q=quarterModel(rows,c,py),mo=monthModel(rows,c,py),qsum=q.vals.reduce(function(s,v){return s+v},0),mmax=Math.max.apply(Math,mo.vals.concat([0])),hot=mo.vals.indexOf(mmax),largest=rows.reduce(function(a,o){var v=num(field(o,['total','amount','revenue','sales','orderTotal'],0));return v>a.value?{value:v,order:o}:a},{value:0,order:null}),src=[];if(rows.length)src.push('dated orders');if(Object.keys(importedYearMap(c,cy)).length)src.push('customer sales snapshot');return{name:name,cy:cy,py:py,years:years,current:current,priorFull:priorFull,priorSame:same,priorSameMode:ps.mode,yoy:yoy,target:target,expected:expected,delta:delta,deltaPct:deltaPct,best:best,quarters:q,qsum:qsum,months:mo,monthMax:mmax,hotMonth:hot,largest:largest,orders:rows.length,source:src.join(' + ')||'no historical sales source loaded'}
  }
  function yearGrowth(years,i){if(i<=0||!years[i-1].value||!years[i].value)return null;if(years[i].current)return null;return (years[i].value-years[i-1].value)/years[i-1].value*100}
- function bars(m){var max=Math.max.apply(Math,m.years.map(function(y){return y.value}).concat([1]));return '<div class="cux706-year-bars">'+m.years.map(function(y,i){var g=yearGrowth(m.years,i),h=Math.max(2,y.value/max*100),gl=y.current?(m.yoy==null?'YTD':pct(m.yoy)+' same-date'):(g==null?'':pct(g));return '<div class="cux706-year-col '+(y.current?'current':'')+'"><div class="cux706-year-value">'+money(y.value)+'</div><div class="cux706-year-track"><div class="cux706-year-fill" style="height:'+h.toFixed(1)+'%"></div></div><div class="cux706-year-label">'+y.year+(y.current?' YTD':'')+'</div><div class="cux706-year-growth '+(g!=null?(g>=0?'good':'risk'):'')+'">'+esc(gl||'—')+'</div></div>'}).join('')+'</div>'}
+ function bars(m){var max=Math.max.apply(Math,m.years.map(function(y){return y.value}).concat([1])),count=Math.max(1,m.years.length);return '<div class="cux706-year-bars-wrap"><div class="cux706-year-bars" style="--cux706-year-count:'+count+'">'+m.years.map(function(y,i){var g=yearGrowth(m.years,i),h=Math.max(2,y.value/max*100),gl=y.current?(m.yoy==null?'YTD':pct(m.yoy)+' same-date'):(g==null?'':pct(g));return '<div class="cux706-year-col '+(y.current?'current':'')+'"><div class="cux706-year-value">'+money(y.value)+'</div><div class="cux706-year-track"><div class="cux706-year-fill" style="height:'+h.toFixed(1)+'%"></div></div><div class="cux706-year-label">'+y.year+(y.current?' YTD':'')+'</div><div class="cux706-year-growth '+(g!=null?(g>=0?'good':'risk'):'')+'">'+esc(gl||'—')+'</div></div>'}).join('')+'</div></div>'}
  function rhythm(m){var qsum=m.qsum||1,mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],qhtml=m.quarters.vals.map(function(v,i){var sh=m.qsum?v/m.qsum*100:0;return '<div class="cux706-quarter"><b>Q'+(i+1)+'</b><i><em style="width:'+sh.toFixed(1)+'%"></em></i><span>'+money(v)+'</span></div>'}).join(''),mhtml=m.months.vals.map(function(v,i){var h=m.monthMax?v/m.monthMax*100:0;return '<div class="cux706-month '+(i===m.hotMonth&&v?'hot':'')+'"><i style="height:'+Math.max(2,h).toFixed(1)+'%"></i><span>'+mn[i]+'</span></div>'}).join(''),hot=m.hotMonth>=0&&m.monthMax?mn[m.hotMonth]:'—',strongQ=m.qsum?m.quarters.vals.indexOf(Math.max.apply(Math,m.quarters.vals))+1:null;return '<div class="cux706-rhythm-summary"><div class="cux706-rhythm-stat"><span>Strongest quarter</span><strong>'+(strongQ?'Q'+strongQ:'—')+'</strong></div><div class="cux706-rhythm-stat"><span>Strongest month</span><strong>'+hot+'</strong></div></div>'+qhtml+'<div class="cux706-months">'+mhtml+'</div>'}
  function table(m){var rows=m.years.slice().reverse().map(function(y,ri){var i=m.years.indexOf(y),growth;if(y.current)growth=m.yoy;else growth=yearGrowth(m.years,i);var comp=y.current?(m.priorSame>0?money(m.priorSame)+' prior same-date':'—'):(i>0?money(m.years[i-1].value):'—');return '<tr><td><strong>'+y.year+(y.current?' YTD':'')+'</strong></td><td><strong>'+money(y.value)+'</strong></td><td>'+comp+'</td><td class="'+(growth==null?'muted':growth>=0?'pos':'neg')+'">'+(growth==null?'—':pct(growth))+'</td><td class="muted">'+(y.current?'Same-date comparison':'Full-year comparison')+'</td></tr>'}).join('');return '<table class="cux706-history-table"><thead><tr><th>Period</th><th>Sales</th><th>Comparison</th><th>Growth</th><th>Basis</th></tr></thead><tbody>'+rows+'</tbody></table>'}
  function render(name){var m=model(name),paceTone=m.delta==null?'':m.delta>=0?'good':'risk',yoyTone=m.yoy==null?'':m.yoy>=0?'good':'risk',paceMain=m.delta==null?'—':money(Math.abs(m.delta)),paceCopy=m.delta==null?'Seasonal benchmark is still forming.':(m.delta>=0?'ahead':'behind')+' the +10% seasonal growth pace',sameCopy=m.priorSame>0?(money(m.priorSame)+' prior same-date · '+m.priorSameMode):'Prior same-date history unavailable',maxYear=Math.max.apply(Math,m.years.map(function(y){return y.value}).concat([0]));return '<section class="cux706-sales-history">'
@@ -71806,7 +71833,7 @@ html[data-rp-theme="light"] #rp-overlay .cux706-sales-kpi strong{color:#173044!i
    +'<div class="cux706-sales-kpi '+yoyTone+'"><span>Same-date YoY</span><strong>'+(m.yoy==null?'—':pct(m.yoy))+'</strong><small>'+esc(sameCopy)+'</small></div>'
    +'<div class="cux706-sales-kpi '+paceTone+'"><span>Seasonal growth pace</span><strong>'+paceMain+'</strong><small>'+(m.delta==null?'Expected marker unavailable.':'<b>'+esc(paceCopy)+'</b> · expected '+money(m.expected))+'</small></div>'
    +'<div class="cux706-sales-kpi"><span>10% annual growth target</span><strong>'+(m.target?money(m.target):'—')+'</strong><small>'+(m.priorFull?'Built from '+m.py+' full-year sales of '+money(m.priorFull)+'.':'Prior full-year sales are not loaded yet.')+'</small></div></div>'
-   +'<div class="cux706-sales-grid"><div class="cux706-sales-panel"><div class="cux706-sales-panel-head"><div><div class="cux706-sales-panel-kick">Annual history</div><div class="cux706-sales-panel-title">Sales by year</div><div class="cux706-sales-panel-copy">Current year is YTD. Completed years use the strongest available evidence from dated orders or the imported customer sales snapshot.</div></div><div class="cux706-source-pill">Best loaded year · '+(m.best.year?m.best.year:'—')+'</div></div><div class="cux706-sales-panel-body">'+bars(m)+'</div>'+table(m)+'</div>'
+   +'<div class="cux706-sales-grid"><div class="cux706-sales-panel"><div class="cux706-sales-panel-head"><div><div class="cux706-sales-panel-kick">Annual history</div><div class="cux706-sales-panel-title">Sales by year</div><div class="cux706-sales-panel-copy">Current year is YTD. Every available sales year is shown. Completed years use the strongest available evidence from dated orders or the imported customer sales snapshot.</div></div><div class="cux706-source-pill">'+m.years.length+' year'+(m.years.length===1?'':'s')+' loaded · Best · '+(m.best.year?m.best.year:'—')+'</div></div><div class="cux706-sales-panel-body">'+bars(m)+'</div>'+table(m)+'</div>'
    +'<div class="cux706-sales-panel"><div class="cux706-sales-panel-head"><div><div class="cux706-sales-panel-kick">Buying rhythm</div><div class="cux706-sales-panel-title">When this customer tends to spend</div><div class="cux706-sales-panel-copy">Customer-specific version of seasonal sales rhythm. Prior-year quarter/month shape is used instead of assuming sales should arrive evenly through the year.</div></div></div><div class="cux706-sales-panel-body">'+rhythm(m)+(m.largest.value?'<div class="cux706-rhythm-stat" style="margin-top:14px"><span>Largest dated order loaded</span><strong>'+money(m.largest.value)+'</strong></div>':'')+'</div><div class="cux706-data-note">Rhythm source: '+esc(m.quarters.source)+' / '+esc(m.months.source)+'. Same-date pace uses dated prior-year orders when available; otherwise Connect uses a month-weighted prior-year estimate. It never substitutes a straight-line annual pace for missing seasonality.</div></div></div></section>'}
  function setActive(which){document.querySelectorAll('#rp-overlay .cux700-subnav button').forEach(function(b){var t=clean(b.textContent).toLowerCase();b.classList.toggle('active',(which==='sales'&&t==='sales history')||(which==='overview'&&t==='overview'))})}
  function ensureCache(){var shell=document.querySelector('#rp-overlay .cux706-company'),overview=shell&&shell.querySelector('.cux8-overview');if(!shell||!overview)return null;var name=currentName();if(cache.company!==name||!cache.overview||overview.querySelector('.cux706-sales-history')){if(!overview.querySelector('.cux706-sales-history')){cache={company:name,overview:overview.innerHTML}}}return{shell:shell,overview:overview,name:name}}
@@ -71817,6 +71844,151 @@ html[data-rp-theme="light"] #rp-overlay .cux706-sales-kpi strong{color:#173044!i
  window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
  function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[100,450,1100,2200].forEach(function(ms){setTimeout(brand,ms)});
- window.TCP_COMPANY_SALES_HISTORY_V706={version:BUILD,growthTarget:GROWTH,focus:'single-screen overview + customer sales history + buying rhythm'};window.TCP_BUILD_IDENTITY_V706={version:BUILD,authority:true};
+ window.TCP_COMPANY_SALES_HISTORY_V707={version:BUILD,growthTarget:GROWTH,focus:'all available customer sales years + buying rhythm'};window.TCP_BUILD_IDENTITY_V707={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v708 · COMPANY READABILITY SCALE ===== -->
+<style id="connect-v708-company-readability-scale-css">
+/* v708 — typography/readability pass. Keep the v707 structure, but match the
+   Manager Dashboard's command-center scale instead of dense CRM typography. */
+
+/* Page-level context — readable without becoming another hero. */
+#rp-overlay:has(.cux702-company) .p639-page-top{padding:5px 0 10px!important;}
+#rp-overlay:has(.cux702-company) .p639-page-top>div:first-child>strong{
+  font-size:28px!important;line-height:1.02!important;letter-spacing:-.025em!important;
+}
+#rp-overlay:has(.cux702-company) .p639-page-top>div:first-child>span{
+  font-size:11.5px!important;line-height:1.35!important;margin-top:5px!important;
+}
+#rp-overlay:has(.cux702-company) .p639-page-top-actions button{
+  min-height:38px!important;padding:0 14px!important;font-size:11.5px!important;
+}
+
+/* Company command header — same compact shape, larger working type. */
+#rp-overlay .cux702-company .cux8-name{font-size:28px!important;line-height:1.04!important;}
+#rp-overlay .cux702-company .cux8-meta{font-size:11.5px!important;line-height:1.38!important;}
+#rp-overlay .cux702-company .cux8-contact{font-size:11.2px!important;line-height:1.35!important;}
+#rp-overlay .cux702-company .cux8-action{
+  min-height:38px!important;height:38px!important;padding:0 14px!important;font-size:11.5px!important;border-radius:11px!important;
+}
+#rp-overlay .cux702-company .cux8-metric span{font-size:9.5px!important;letter-spacing:.075em!important;}
+#rp-overlay .cux702-company .cux8-metric strong{font-size:14px!important;line-height:1.05!important;}
+#rp-overlay .cux702-company .cux695-open-title{font-size:10.5px!important;}
+#rp-overlay .cux702-company .cux695-open-item{font-size:9.5px!important;}
+
+/* Company sub-navigation — no tiny tabs. */
+#rp-overlay .cux702-company .cux700-subnav{min-height:45px!important;padding:5px 6px!important;gap:4px!important;}
+#rp-overlay .cux702-company .cux700-subnav button{
+  min-height:35px!important;padding:0 15px!important;font-size:11.5px!important;letter-spacing:.01em!important;border-radius:9px!important;
+}
+
+/* Four primary signals — Manager Dashboard reading scale. */
+#rp-overlay .cux702-signal-grid{gap:17px!important;margin-bottom:18px!important;}
+#rp-overlay .cux702-kpi-card{
+  min-height:266px!important;padding:24px 24px 22px!important;border-radius:22px!important;
+}
+#rp-overlay .cux702-card-head{margin-bottom:24px!important;gap:12px!important;}
+#rp-overlay .cux702-card-icon{width:42px!important;height:42px!important;min-width:42px!important;border-radius:14px!important;font-size:18px!important;}
+#rp-overlay .cux702-card-label{font-size:11.5px!important;letter-spacing:.085em!important;line-height:1.2!important;}
+#rp-overlay .cux702-card-badge{padding:6px 10px!important;font-size:9.8px!important;line-height:1.15!important;max-width:49%!important;}
+#rp-overlay .cux702-card-value{
+  font-size:37px!important;line-height:1.02!important;letter-spacing:-.045em!important;
+}
+#rp-overlay .cux702-next .cux702-card-value,
+#rp-overlay .cux702-opportunity .cux702-card-value{
+  font-size:28px!important;line-height:1.10!important;-webkit-line-clamp:2!important;
+}
+#rp-overlay .cux702-card-copy{
+  margin-top:15px!important;font-size:13px!important;line-height:1.48!important;color:#B2C0CC!important;-webkit-line-clamp:3!important;
+}
+#rp-overlay .cux702-card-foot{
+  left:24px!important;right:24px!important;bottom:20px!important;font-size:10.5px!important;line-height:1.25!important;
+}
+
+/* Pace bar and labels large enough to read at normal monitor distance. */
+#rp-overlay .cux702-sales{padding-bottom:100px!important;}
+#rp-overlay .cux702-pace-wrap{left:24px!important;right:24px!important;bottom:20px!important;}
+#rp-overlay .cux702-pace-bar{height:14px!important;margin-bottom:14px!important;}
+#rp-overlay .cux702-pace-marker{top:-8px!important;height:30px!important;}
+#rp-overlay .cux702-pace-marker:before{font-size:7.8px!important;top:-6px!important;}
+#rp-overlay .cux702-pace-labels{font-size:10.2px!important;line-height:1.2!important;}
+
+/* Conversation Prep — this is meant to be read, not decoded. */
+#rp-overlay .cux702-company .cux700-conversation{
+  padding:25px 24px 24px!important;border-radius:22px!important;min-height:300px!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-kicker{font-size:11px!important;letter-spacing:.10em!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-title{font-size:29px!important;line-height:1.05!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-copy{font-size:12.5px!important;line-height:1.5!important;max-width:900px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-card-title{font-size:17px!important;line-height:1.2!important;margin-bottom:13px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+  grid-template-columns:.95fr 1.42fr 1fr .95fr!important;gap:14px!important;margin-top:17px!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+  min-height:118px!important;padding:16px 16px!important;border-radius:14px!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row span{
+  font-size:9.8px!important;letter-spacing:.085em!important;line-height:1.2!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{
+  margin-top:7px!important;font-size:12.8px!important;line-height:1.5!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say div{font-size:13.5px!important;line-height:1.48!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux8-action{font-size:11.5px!important;min-height:38px!important;height:38px!important;}
+
+/* Sales History should inherit the same readable product scale. */
+#rp-overlay .cux706-sales-history{gap:17px!important;}
+#rp-overlay .cux706-sales-hero{padding:20px 22px!important;border-radius:19px!important;}
+#rp-overlay .cux706-sales-kick{font-size:10.5px!important;}
+#rp-overlay .cux706-sales-title{font-size:28px!important;}
+#rp-overlay .cux706-sales-copy{font-size:12.5px!important;line-height:1.5!important;max-width:860px!important;}
+#rp-overlay .cux706-source-pill{font-size:9.8px!important;padding:8px 11px!important;}
+#rp-overlay .cux706-sales-kpis{gap:16px!important;}
+#rp-overlay .cux706-sales-kpi{min-height:148px!important;padding:18px 18px!important;border-radius:18px!important;}
+#rp-overlay .cux706-sales-kpi span{font-size:10px!important;margin-bottom:10px!important;}
+#rp-overlay .cux706-sales-kpi strong{font-size:33px!important;}
+#rp-overlay .cux706-sales-kpi small{font-size:11px!important;line-height:1.45!important;margin-top:10px!important;}
+#rp-overlay .cux706-sales-panel-head{padding:18px 19px 14px!important;}
+#rp-overlay .cux706-sales-panel-kick{font-size:9.5px!important;}
+#rp-overlay .cux706-sales-panel-title{font-size:20px!important;}
+#rp-overlay .cux706-sales-panel-copy{font-size:11px!important;line-height:1.45!important;}
+#rp-overlay .cux706-sales-panel-body{padding:18px 19px 19px!important;}
+#rp-overlay .cux706-year-value{font-size:12.5px!important;}
+#rp-overlay .cux706-year-label{font-size:10.5px!important;}
+#rp-overlay .cux706-year-growth{font-size:9.5px!important;}
+#rp-overlay .cux706-rhythm-stat span{font-size:9px!important;}
+#rp-overlay .cux706-rhythm-stat strong{font-size:17px!important;}
+#rp-overlay .cux706-quarter b,#rp-overlay .cux706-quarter span{font-size:10.5px!important;}
+#rp-overlay .cux706-month span{font-size:8px!important;}
+#rp-overlay .cux706-history-table{font-size:11px!important;}
+#rp-overlay .cux706-history-table th{font-size:9px!important;padding:10px!important;}
+#rp-overlay .cux706-history-table td{padding:11px 10px!important;}
+#rp-overlay .cux706-data-note{font-size:10px!important;line-height:1.5!important;padding:12px 14px!important;}
+
+/* Step down gracefully rather than reverting to tiny typography. */
+@media(max-width:1450px) and (min-width:1181px){
+  #rp-overlay .cux702-kpi-card{min-height:252px!important;padding:22px 21px 20px!important;}
+  #rp-overlay .cux702-card-label{font-size:10.8px!important;}
+  #rp-overlay .cux702-card-value{font-size:34px!important;}
+  #rp-overlay .cux702-next .cux702-card-value,#rp-overlay .cux702-opportunity .cux702-card-value{font-size:25.5px!important;}
+  #rp-overlay .cux702-card-copy{font-size:12px!important;}
+  #rp-overlay .cux702-card-foot{font-size:10px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{font-size:12px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say div{font-size:12.7px!important;}
+}
+@media(max-width:1180px){
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{grid-template-columns:1fr 1fr!important;}
+}
+</style>
+<script id="connect-v708-company-readability-scale-js">
+(function(){
+ 'use strict';
+ var BUILD=window.CONNECT_BUILD_AUTHORITY||'v708',DISPLAY=window.CONNECT_BUILD_DISPLAY||'V708';
+ function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();[120,500,1200,2400].forEach(function(ms){setTimeout(brand,ms)});
+ window.TCP_COMPANY_READABILITY_V708={version:BUILD,focus:'manager-dashboard typography scale + company readability'};
+ window.TCP_BUILD_IDENTITY_V708={version:BUILD,authority:true};
 })();
 </script>
