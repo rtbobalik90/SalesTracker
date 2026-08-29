@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v704 — Sales Portal</title>
-<script id="connect-build-authority-v704">
+<title>Connect v705 — Sales Portal</title>
+<script id="connect-build-authority-v705">
 (function(){
   'use strict';
-  var BUILD='v704', DISPLAY='V704', TITLE='Connect v704 — Sales Portal';
+  var BUILD='v705', DISPLAY='V705', TITLE='Connect v705 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -53,10 +53,10 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
   window.CONNECT_ENFORCE_BUILD=enforce;
 })();
 </script>
-<style id="connect-build-authority-v704-css">
-html[data-connect-authoritative="v704"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V704";--connect-build-short:"BUILD V704";}
-html[data-connect-authoritative="v704"] body .tabs:after{content:var(--connect-build-long)!important;}
-html[data-connect-authoritative="v704"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
+<style id="connect-build-authority-v705-css">
+html[data-connect-authoritative="v705"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V705";--connect-build-short:"BUILD V705";}
+html[data-connect-authoritative="v705"] body .tabs:after{content:var(--connect-build-long)!important;}
+html[data-connect-authoritative="v705"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -71464,5 +71464,196 @@ html[data-rp-theme="light"] #rp-overlay .cux702-card-copy b{color:#29465B!import
   [120,600,1500,3000].forEach(function(ms){setTimeout(brand,ms)});
   window.TCP_COMPANY_MANAGER_RHYTHM_V704={version:BUILD,focus:'manager-dashboard spacing and KPI-card rhythm on Company Overview'};
   window.TCP_BUILD_IDENTITY_V704={version:BUILD,authority:true};
+})();
+</script>
+
+
+<!-- ===== CONNECT v705 · COMPANY VISUAL HIERARCHY REFINEMENT ===== -->
+<style id="connect-v705-company-visual-hierarchy-refinement-css">
+/* v705 — keep the v704 workflow, but finish the visual hierarchy so the Company
+   page shares the calm, readable rhythm of the Manager Dashboard. */
+
+/* Quieter command header: orientation, not the visual hero of the page. */
+#rp-overlay .cux702-company .cux8-hero{
+  padding:12px 16px 10px!important;
+  border-radius:18px!important;
+  border-color:rgba(255,255,255,.085)!important;
+  background:
+    radial-gradient(circle at 9% 12%,rgba(0,175,239,.11),transparent 28%),
+    radial-gradient(circle at 95% 10%,rgba(250,135,61,.09),transparent 31%),
+    linear-gradient(118deg,rgba(15,45,65,.97),rgba(25,33,54,.98) 58%,rgba(58,39,32,.94))!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+#rp-overlay .cux702-company .cux8-hero:after{opacity:.36!important;transform:scale(.88)!important;}
+#rp-overlay .cux702-company .cux8-hero-top{padding-bottom:8px!important;gap:13px!important;}
+#rp-overlay .cux702-company .cux8-name{font-size:24px!important;}
+#rp-overlay .cux702-company .cux8-avatar{width:47px!important;height:47px!important;min-width:47px!important;border-radius:14px!important;}
+#rp-overlay .cux702-company .cux8-back{width:36px!important;height:36px!important;min-width:36px!important;}
+#rp-overlay .cux702-company .cux8-action{height:33px!important;min-height:33px!important;}
+#rp-overlay .cux702-company .cux8-metrics{padding-top:8px!important;}
+#rp-overlay .cux702-company .cux8-metric strong{font-size:12px!important;}
+
+/* Sub-nav should read as one Company navigation system. */
+#rp-overlay .cux702-company .cux700-subnav{margin:8px 0 16px!important;padding:4px 5px!important;}
+#rp-overlay .cux702-company .cux700-subnav button{min-height:33px!important;padding:0 13px!important;font-size:9.2px!important;}
+#rp-overlay .cux702-company .cux700-subnav button.strategy{
+  margin-left:0!important;color:#899AAD!important;
+}
+#rp-overlay .cux702-company .cux700-subnav button.strategy:hover{
+  color:#BDF5D7!important;background:rgba(71,209,108,.06)!important;border-color:rgba(71,209,108,.16)!important;
+}
+
+/* KPI band — same strong proportions as the Manager Dashboard, but calmer copy. */
+#rp-overlay .cux702-signal-grid{gap:17px!important;margin-bottom:18px!important;}
+#rp-overlay .cux702-kpi-card{
+  display:flex!important;flex-direction:column!important;
+  min-height:246px!important;padding:22px 22px 20px!important;border-radius:21px!important;
+  background:radial-gradient(circle at 13% 4%,var(--glow),transparent 43%),linear-gradient(158deg,rgba(18,31,43,.985),rgba(10,19,29,.99))!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+#rp-overlay .cux702-kpi-card:before{
+  content:"";position:absolute;left:20px;right:20px;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 58%,transparent),transparent);opacity:.72;
+}
+#rp-overlay .cux702-card-head{margin-bottom:22px!important;}
+#rp-overlay .cux702-card-label{font-size:9.8px!important;letter-spacing:.09em!important;}
+#rp-overlay .cux702-card-icon{width:38px!important;height:38px!important;border-radius:13px!important;font-size:16px!important;}
+#rp-overlay .cux702-card-badge{padding:5px 9px!important;font-size:8.2px!important;max-width:46%!important;}
+#rp-overlay .cux702-card-value{
+  font-size:32px!important;line-height:1.02!important;letter-spacing:-.045em!important;
+  max-width:100%!important;
+}
+#rp-overlay .cux702-next .cux702-card-value,
+#rp-overlay .cux702-opportunity .cux702-card-value{
+  font-size:24px!important;line-height:1.11!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;
+}
+#rp-overlay .cux702-card-copy{
+  margin-top:13px!important;font-size:10.8px!important;line-height:1.52!important;color:#AAB9C7!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;overflow:hidden!important;
+}
+#rp-overlay .cux702-next .cux702-card-copy,
+#rp-overlay .cux702-opportunity .cux702-card-copy{max-width:95%!important;}
+#rp-overlay .cux702-card-foot{left:22px!important;right:22px!important;bottom:19px!important;font-size:8.8px!important;color:#778A9E!important;}
+
+/* Sales Pace is a real visual KPI, not a text card with a tiny bar. */
+#rp-overlay .cux702-sales{padding-bottom:92px!important;}
+#rp-overlay .cux702-sales .cux702-card-copy{-webkit-line-clamp:2!important;}
+#rp-overlay .cux702-pace-wrap{left:22px!important;right:22px!important;bottom:18px!important;}
+#rp-overlay .cux702-pace-bar{
+  height:12px!important;margin-bottom:12px!important;border-radius:999px!important;
+  background:rgba(255,255,255,.11)!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.24)!important;
+}
+#rp-overlay .cux702-pace-bar:after{
+  content:"";position:absolute;right:-1px;top:-4px;width:2px;height:20px;border-radius:2px;background:rgba(255,255,255,.30);
+}
+#rp-overlay .cux702-pace-fill{box-shadow:0 0 16px rgba(0,175,239,.32)!important;}
+#rp-overlay .cux702-pace-fill:after{
+  content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;transform:translateY(-50%);
+  border-radius:50%;background:#95EFFF;border:2px solid #0F2130;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 12px rgba(0,175,239,.36);
+}
+#rp-overlay .cux702-pace-marker{top:-7px!important;height:26px!important;width:2px!important;background:#F7FAFD!important;}
+#rp-overlay .cux702-pace-marker:before{
+  content:"EXPECTED";position:absolute;left:50%;top:-5px;transform:translate(-50%,-100%);
+  font-size:6.5px;font-weight:950;letter-spacing:.06em;color:#DDE9F2;white-space:nowrap;
+}
+#rp-overlay .cux702-pace-marker:after{width:7px!important;height:7px!important;top:-2px!important;}
+#rp-overlay .cux702-pace-labels{font-size:8.4px!important;gap:12px!important;}
+#rp-overlay .cux702-pace-labels span:nth-child(2){color:#9BAFC1!important;}
+#rp-overlay .cux703-pace-unavailable .cux702-pace-bar:after{background:rgba(255,255,255,.18)!important;}
+#rp-overlay .cux703-pace-unavailable .cux703-pace-placeholder{opacity:.52!important;}
+
+/* Conversation Prep — spacious nested work surface, not four cramped mini cards. */
+#rp-overlay .cux702-company .cux700-conversation{
+  padding:22px 22px 21px!important;margin-bottom:18px!important;border-radius:21px!important;
+  border-color:rgba(0,175,239,.16)!important;
+  background:linear-gradient(145deg,rgba(14,34,49,.96),rgba(13,25,38,.985))!important;
+  box-shadow:0 15px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux10-title{font-size:24px!important;letter-spacing:-.025em!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-copy{font-size:10.8px!important;max-width:820px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux10-card-title{font-size:15px!important;margin-bottom:11px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan{
+  grid-template-columns:.95fr 1.35fr 1fr .95fr!important;gap:12px!important;margin-top:15px!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{
+  min-height:105px!important;padding:14px 14px!important;border-radius:13px!important;background:rgba(255,255,255,.026)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row span{font-size:8.2px!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row div{font-size:10.7px!important;line-height:1.5!important;}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say{
+  border-color:rgba(0,175,239,.20)!important;background:rgba(0,175,239,.045)!important;
+}
+#rp-overlay .cux702-company .cux700-conversation .cux696-plan-row.say div{font-size:11px!important;}
+
+/* Account Intelligence is supporting detail. Deliberately quieter and more compact. */
+#rp-overlay .cux702-company .cux700-intelligence{
+  margin-bottom:10px!important;border-color:rgba(255,255,255,.065)!important;background:rgba(7,15,24,.42)!important;
+  box-shadow:none!important;
+}
+#rp-overlay .cux702-company .cux700-intelligence-head{padding:12px 15px 10px!important;background:rgba(255,255,255,.010)!important;}
+#rp-overlay .cux702-company .cux700-intelligence-title{font-size:15px!important;color:#E5EDF4!important;}
+#rp-overlay .cux702-company .cux700-intelligence-copy{font-size:8.4px!important;color:#718397!important;max-width:315px!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile{
+  min-height:73px!important;padding:10px 31px 9px 11px!important;opacity:.88!important;
+}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile:hover{opacity:1!important;background:rgba(255,255,255,.025)!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-icon{width:32px!important;height:32px!important;min-width:32px!important;border-radius:10px!important;font-size:14px!important;filter:saturate(.72)!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-name{font-size:10.8px!important;}
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-copy,
+#rp-overlay .cux702-company .cux700-intelligence .cux8-tile-meta{font-size:7.5px!important;color:#7F91A3!important;}
+
+/* Keep the four-card band readable longer; step down only when necessary. */
+@media(max-width:1450px) and (min-width:1181px){
+  #rp-overlay .cux702-signal-grid{gap:14px!important;}
+  #rp-overlay .cux702-kpi-card{min-height:232px!important;padding:20px 19px 18px!important;}
+  #rp-overlay .cux702-card-head{margin-bottom:19px!important;}
+  #rp-overlay .cux702-card-value{font-size:29px!important;}
+  #rp-overlay .cux702-next .cux702-card-value,#rp-overlay .cux702-opportunity .cux702-card-value{font-size:22px!important;}
+  #rp-overlay .cux702-card-copy{font-size:10.2px!important;}
+  #rp-overlay .cux702-card-foot{left:19px!important;right:19px!important;bottom:17px!important;}
+  #rp-overlay .cux702-pace-wrap{left:19px!important;right:19px!important;bottom:17px!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan-row{min-height:92px!important;}
+}
+@media(max-width:1180px){
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+@media(max-width:700px){
+  #rp-overlay .cux702-company .cux700-conversation .cux696-plan{grid-template-columns:1fr!important;}
+}
+</style>
+<script id="connect-v705-company-visual-hierarchy-refinement-js">
+(function(){
+  'use strict';
+  var BUILD=window.CONNECT_BUILD_AUTHORITY||'v705', DISPLAY=window.CONNECT_BUILD_DISPLAY||'V705';
+  var BASE_CUSTOMERS=window._rp2CustomersV2, BASE_PROFILE=window._rp2CompanyProfileV3;
+  function parse(markup){var t=document.createElement('template');t.innerHTML=String(markup||'').trim();return t.content}
+  function stringify(f){var d=document.createElement('div');d.appendChild(f.cloneNode(true));return d.innerHTML}
+  function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
+  function refine(markup){
+    if(!markup||String(markup).indexOf('cux702-signal-grid')<0)return markup;
+    var f=parse(markup);
+    var rel=f.querySelector('.cux702-relationship .cux702-card-copy');
+    if(rel){
+      var x=clean(rel.textContent)
+        .replace(/No contact depth loaded/ig,'No contacts loaded')
+        .replace(/purchasing authority not identified/ig,'decision-maker unknown')
+        .replace(/buying decision contacts?/ig,'decision-maker')
+        .replace(/backup relationship recorded/ig,'backup contact recorded');
+      rel.textContent=x;
+    }
+    var opp=f.querySelector('.cux702-opportunity .cux702-card-value');
+    if(opp&&clean(opp.textContent)==='Review reorder & cross-sell')opp.textContent='Reorder & cross-sell review';
+    var next=f.querySelector('.cux702-next .cux702-card-foot span:first-child');if(next)next.textContent='Open the recommended account area';
+    return stringify(f)
+  }
+  function wrap(fn){return typeof fn==='function'?function(){return refine(fn.apply(this,arguments))}:fn}
+  window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+  function brand(){try{if(typeof window.CONNECT_ENFORCE_BUILD==='function')window.CONNECT_ENFORCE_BUILD();document.querySelectorAll('#rp-overlay .cux695-build-badge,#rp-overlay .cux700-build-badge').forEach(function(b){b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',brand,{once:true});else brand();
+  [120,600,1500,3000].forEach(function(ms){setTimeout(brand,ms)});
+  window.TCP_COMPANY_VISUAL_HIERARCHY_V705={version:BUILD,focus:'quieter command header, manager-style KPI hierarchy, stronger sales pace tracker, roomier conversation prep'};
+  window.TCP_BUILD_IDENTITY_V705={version:BUILD,authority:true};
 })();
 </script>
