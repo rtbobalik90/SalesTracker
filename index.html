@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v735 — Sales Portal</title>
+<title>Connect v736 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v735', DISPLAY='V735', TITLE='Connect v735 — Sales Portal';
+  var BUILD='v736', DISPLAY='V736', TITLE='Connect v736 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -34448,8 +34448,8 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
 </style>
 
 
-<style id="rp2-products-v735-css">
-/* ===== V735 PRODUCT CENTER — REP-FIRST SIMPLIFICATION ===== */
+<style id="rp2-products-v736-css">
+/* ===== V736 PRODUCT CENTER — REP-FIRST SIMPLIFICATION ===== */
 #rp-overlay .pc733-shell{gap:16px!important;max-width:1560px;margin:0 auto;padding-bottom:36px}
 #rp-overlay .pc733-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:25px 28px;border-radius:24px;border:1px solid rgba(0,175,239,.20);background:radial-gradient(circle at 92% 0%,rgba(0,175,239,.15),transparent 32%),radial-gradient(circle at 8% 115%,rgba(250,135,61,.16),transparent 36%),linear-gradient(135deg,#17283a,#17243a 55%,#101923);box-shadow:0 20px 55px rgba(0,0,0,.22)}
 #rp-overlay .pc733-kick{color:#8EDCFA;font-size:9px;font-weight:950;letter-spacing:1.2px;text-transform:uppercase}
@@ -34529,8 +34529,8 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
 @media(max-width:760px){#rp-overlay .pc733-hero{align-items:flex-start;flex-direction:column;padding:20px}#rp-overlay .pc733-title{font-size:25px}#rp-overlay .pc733-hero-side{justify-content:flex-start}#rp-overlay .pc733-intents,#rp-overlay .pc733-result-grid,#rp-overlay .pc733-context-grid,#rp-overlay .pc733-reorder-stats,#rp-overlay .pc733-need-row,#rp-overlay .pc733-advanced{grid-template-columns:1fr}#rp-overlay .pc733-work-row{grid-template-columns:40px minmax(0,1fr)}#rp-overlay .pc733-work-side{grid-column:2;text-align:left}#rp-overlay .pc733-work-side .pc3-mini-actions{justify-content:flex-start}}
 </style>
 
-<style id="rp2-products-v735-cut-css">
-/* ===== V735 PRODUCTS — THREE REP JOBS ===== */
+<style id="rp2-products-v736-cut-css">
+/* ===== V736 PRODUCTS — THREE REP JOBS ===== */
 #rp-overlay .pc734-shell{max-width:1500px;margin:0 auto;display:grid;gap:16px;padding-bottom:42px}
 #rp-overlay .pc734-hero{padding:25px 28px;border:1px solid rgba(0,175,239,.18);border-radius:24px;background:radial-gradient(circle at 96% 0%,rgba(0,175,239,.12),transparent 34%),linear-gradient(135deg,#15263a,#101a28);box-shadow:0 18px 48px rgba(0,0,0,.22)}
 #rp-overlay .pc734-kick{font-size:8px;font-weight:950;letter-spacing:1.1px;text-transform:uppercase;color:#8EDCFA}
@@ -34825,12 +34825,12 @@ window._rp2NotificationsDraw=function(){if(typeof Chart!=='function'||window._rp
    if(['studio','reorders','work'].indexOf(tab)<0){tab='studio';window._rp2ProductsTab=tab}
    var heroTitle=tab==='studio'?'Products':tab==='reorders'?'Reorder Opportunities':'My Product Work',
        heroCopy=tab==='studio'?'Find the right product for a real customer need. Connect keeps the catalog logic, buying history, scoring, and verification behind the scenes.':tab==='reorders'?'Review repeat-product timing signals and turn the useful ones into customer conversations.':'Pick up recommendations, customer options, and samples that are already in motion.';
-   var hero='<div class="pc734-hero"><div><div class="pc734-kick">PRODUCTS · BUILD V735</div><div class="pc734-title">'+esc(heroTitle)+'</div><div class="pc734-copy">'+esc(heroCopy)+'</div></div></div>';
+   var hero='<div class="pc734-hero"><div><div class="pc734-kick">PRODUCTS · BUILD V736</div><div class="pc734-title">'+esc(heroTitle)+'</div><div class="pc734-copy">'+esc(heroCopy)+'</div></div></div>';
    var content=tab==='work'?myWork(g):tab==='reorders'?reorderCenter(g):studio(g);
    return '<div class="pc3-shell pc734-shell">'+hero+tabs(tab)+content+'</div>'+modal(g)
   }catch(e){
-   console.error('[Products v735]',e);
-   return '<div class="pc3-shell"><div class="pc734-hero"><div><div class="pc734-kick">PRODUCTS · BUILD V735 · RECOVERY MODE</div><div class="pc734-title">The product workspace hit a compatibility issue</div><div class="pc734-copy">'+esc(e.message||String(e))+'</div></div></div></div>'
+   console.error('[Products v736]',e);
+   return '<div class="pc3-shell"><div class="pc734-hero"><div><div class="pc734-kick">PRODUCTS · BUILD V736 · RECOVERY MODE</div><div class="pc734-title">The product workspace hit a compatibility issue</div><div class="pc734-copy">'+esc(e.message||String(e))+'</div></div></div></div>'
   }
  }
  window._rp2ProductsDraw=function(){if(typeof Chart!=='function')return;if(['command','decoration','intelligence','history'].indexOf(window._rp2ProductsTab)<0)return;var canvas=document.getElementById('pc3-chart');if(!canvas)return;var g=build();if(_rp2.productsChart){try{_rp2.productsChart.destroy()}catch(e){}}if(window._rp2ProductsTab==='command'){var map={};g.products.forEach(function(p){map[p.category]=(map[p.category]||0)+1});var rows=Object.keys(map).map(function(k){return{name:k,value:map[k]}}).sort(function(a,b){return b.value-a.value}).slice(0,12);_rp2.productsChart=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels:rows.map(function(x){return x.name}),datasets:[{data:rows.map(function(x){return x.value}),backgroundColor:'rgba(168,85,247,.68)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b95a7',font:{size:8}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:'#8b95a7',precision:0},grid:{color:'rgba(255,255,255,.05)'}}}}})}else if(window._rp2ProductsTab==='decoration'){var rows2=[{n:'Price entered',v:g.recommendations.filter(function(r){return r.planningUnitPrice>0}).length},{n:'Availability verified',v:g.recommendations.filter(function(r){return r.availabilityVerified}).length},{n:'Lead time verified',v:g.recommendations.filter(function(r){return r.leadTimeVerified}).length},{n:'Decoration compatible',v:g.recommendations.filter(function(r){return compatibility(r.product,r.decoration,r.quantity).ok}).length}];_rp2.productsChart=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels:rows2.map(function(x){return x.n}),datasets:[{data:rows2.map(function(x){return x.v}),backgroundColor:'rgba(34,197,94,.65)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b95a7',font:{size:8}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:'#8b95a7',precision:0},grid:{color:'rgba(255,255,255,.05)'}}}}})}else if(window._rp2ProductsTab==='intelligence'){var map2={};g.history.forEach(function(l){map2[l.category]=(map2[l.category]||0)+l.qty});var rows3=Object.keys(map2).map(function(k){return{name:k,value:map2[k]}}).sort(function(a,b){return b.value-a.value}).slice(0,12);_rp2.productsChart=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels:rows3.map(function(x){return x.name}),datasets:[{data:rows3.map(function(x){return x.value}),backgroundColor:'rgba(0,175,239,.65)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b95a7',font:{size:8}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:'#8b95a7',precision:0},grid:{color:'rgba(255,255,255,.05)'}}}}})}else{var map3={};arr(g.store.data.events).forEach(function(e){var d=stamp(e.at);if(d){var k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');map3[k]=(map3[k]||0)+1}});var total=0,rows4=[];Object.keys(map3).sort().forEach(function(k){total+=map3[k];rows4.push({n:k,v:total})});if(!rows4.length)return;_rp2.productsChart=new Chart(canvas.getContext('2d'),{type:'line',data:{labels:rows4.map(function(x){return x.n}),datasets:[{data:rows4.map(function(x){return x.v}),borderColor:'#a855f7',backgroundColor:'rgba(168,85,247,.12)',fill:true,tension:.25}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b95a7'},grid:{display:false}},y:{beginAtZero:true,ticks:{color:'#8b95a7',precision:0},grid:{color:'rgba(255,255,255,.05)'}}}}})}}
@@ -57695,7 +57695,7 @@ window._cxp588Render=function(){
         +bar;
     }
   }
-  // V735 LANDING: product signals -> buying mix -> history -> expansion
+  // V736 LANDING: product signals -> buying mix -> history -> expansion
   var dueNow=rows.filter(function(r){return r.status==='overdue'||r.status==='due';}).length;
   var loadedSales=rows.reduce(function(s,r){return s+r.rev;},0);
   var cats=_cxp588CatStats(rows),topCat=cats[0];
@@ -57778,7 +57778,7 @@ window._cxp731OpenStudio=function(companyEncoded,programEncoded){
       window._rp2Go('products');
       if(window._rp2&&window._rp2.page==='products')return true;
     }
-  }catch(e){try{console.warn('[Products v735 studio navigation]',e)}catch(_e){}}
+  }catch(e){try{console.warn('[Products v736 studio navigation]',e)}catch(_e){}}
   try{
     var host=document.querySelector('#rp-overlay #rp2-page');
     if(host&&typeof window._rp2ProductsV3==='function'){
@@ -57788,7 +57788,7 @@ window._cxp731OpenStudio=function(companyEncoded,programEncoded){
       var main=document.querySelector('#rp-overlay .rp2-main');if(main)main.scrollTop=0;
       return true;
     }
-  }catch(e){try{console.error('[Products v735 studio fallback]',e)}catch(_e){}}
+  }catch(e){try{console.error('[Products v736 studio fallback]',e)}catch(_e){}}
   return false;
 };
 window._cxp730ReadContext=function(name){
@@ -59461,7 +59461,7 @@ html[data-connect-authoritative="v714"] body.nav-rail .tabs:after{content:var(--
 @media(max-width:900px){.cxp588-stats{grid-template-columns:1fr 1fr;}.cxp588-banner-word{font-size:26px;}}
 
 
-/* ===== V735 COMPANY PRODUCTS SALES WORKSPACE ===== */
+/* ===== V736 COMPANY PRODUCTS SALES WORKSPACE ===== */
 .cxp730-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:4px 0 18px;}
 .cxp730-snap{position:relative;overflow:hidden;min-height:142px;padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(155deg,rgba(18,30,48,.96),rgba(7,13,24,.96));box-shadow:0 16px 38px rgba(0,0,0,.22);}
 .cxp730-snap:after{content:"";position:absolute;right:-34px;top:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--snapGlow,rgba(0,175,239,.18)),transparent 68%);pointer-events:none;}
@@ -73407,9 +73407,9 @@ html[data-connect-authoritative="v718"] body.nav-rail .tabs:after{content:var(--
 @media(max-width:1180px){#rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))}#rp-overlay .cux719-workspace{grid-template-columns:minmax(250px,290px) minmax(0,1fr)}#rp-overlay .cux719-profile-grid{grid-template-columns:1fr}#rp-overlay .cux719-card.wide{grid-column:auto}#rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){#rp-overlay .cux719-workspace{grid-template-columns:1fr}#rp-overlay .cux719-roster{border-right:0;border-bottom:1px solid rgba(255,255,255,.06)}#rp-overlay .cux719-roster-list{max-height:280px}#rp-overlay .cux719-profile-hero{flex-direction:column}#rp-overlay .cux719-profile-actions{justify-content:flex-start}}
 @media(max-width:620px){#rp-overlay .cux719-summary,#rp-overlay .cux719-quick,#rp-overlay .cux719-fields,#rp-overlay .cux719-form-grid{grid-template-columns:1fr}#rp-overlay .cux719-shell-head{align-items:flex-start;flex-direction:column}#rp-overlay .cux719-detail{padding:16px}#rp-overlay .cux719-activity{grid-template-columns:68px minmax(0,1fr)}#rp-overlay .cux719-activity div{grid-column:1/-1}}
-html[data-connect-authoritative="v735"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V735";--connect-build-short:"BUILD V735"}
-html[data-connect-authoritative="v735"] body .tabs:after{content:var(--connect-build-long)!important}
-html[data-connect-authoritative="v735"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
+html[data-connect-authoritative="v736"]{--connect-build-long:"Cloud Sync • Admin  ·  BUILD V736";--connect-build-short:"BUILD V736"}
+html[data-connect-authoritative="v736"] body .tabs:after{content:var(--connect-build-long)!important}
+html[data-connect-authoritative="v736"] body.nav-rail .tabs:after{content:var(--connect-build-short)!important}
 </style>
 <script id="connect-v720-relationship-workspace-js">
 (function(){
@@ -73469,9 +73469,9 @@ html[data-connect-authoritative="v735"] body.nav-rail .tabs:after{content:var(--
 
 
 <style id="connect-v721-live-contacts-css">
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster{display:flex!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-detail{display:block!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-workspace{display:grid!important;grid-template-columns:minmax(260px,28%) minmax(0,72%)!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster{display:flex!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-detail{display:block!important}
 </style>
 <script id="connect-v721-live-contacts-binding">
 (function(){
@@ -73512,154 +73512,154 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux719-detail{display:block
 <!-- ===== CONNECT v723 · CONTACTS UI PARITY / READABILITY ===== -->
 <style id="connect-v723-contacts-ui-parity">
 /* Contacts should feel like the same command-center product as Company Overview / Manager Dashboard. */
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{
   max-width:1720px!important;margin:0 auto!important;padding:0 18px 28px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{
   grid-template-columns:minmax(0,1fr) auto!important;gap:28px!important;align-items:center!important;
   min-height:118px!important;padding:24px 28px!important;border-radius:24px!important;overflow:hidden!important;
   background:radial-gradient(circle at 92% 4%,rgba(155,107,255,.18),transparent 35%),linear-gradient(135deg,#16304A 0%,#17253F 52%,#252044 100%)!important;
   border-color:rgba(155,107,255,.25)!important;box-shadow:0 20px 52px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-id{gap:18px!important;align-items:center!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-back{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-id{gap:18px!important;align-items:center!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-back{
   width:46px!important;height:46px!important;flex:0 0 46px!important;border-radius:14px!important;font-size:17px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-icon{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-icon{
   width:58px!important;height:58px!important;flex:0 0 58px!important;border-radius:18px!important;font-size:25px!important;
   background:linear-gradient(145deg,rgba(155,107,255,.24),rgba(0,175,239,.09))!important;border-color:rgba(155,107,255,.38)!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-company{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-company{
   font-size:10.5px!important;line-height:1.3!important;letter-spacing:.12em!important;color:#94A6BF!important;margin-bottom:3px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-title{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-title{
   margin-top:2px!important;font-size:31px!important;line-height:1.02!important;letter-spacing:-.035em!important;color:#F7FAFC!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-copy{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-copy{
   margin-top:8px!important;font-size:13px!important;line-height:1.5!important;color:#A3B2C3!important;max-width:720px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{gap:10px!important;justify-content:flex-end!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions .cux8-action{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{gap:10px!important;justify-content:flex-end!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions .cux8-action{
   min-height:44px!important;padding:0 16px!important;border-radius:12px!important;font-size:12px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-content{margin-top:18px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-content{margin-top:18px!important}
 
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-wrap{max-width:none!important;gap:18px!important;padding-bottom:30px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-summary{gap:16px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-stat{padding:20px 22px!important;border-radius:19px!important;min-height:118px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-stat span{font-size:10.5px!important;margin-bottom:8px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-stat strong{font-size:28px!important;line-height:1.05!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-stat small{margin-top:8px!important;font-size:12.5px!important;line-height:1.45!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-wrap{max-width:none!important;gap:18px!important;padding-bottom:30px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-summary{gap:16px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-stat{padding:20px 22px!important;border-radius:19px!important;min-height:118px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-stat span{font-size:10.5px!important;margin-bottom:8px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-stat strong{font-size:28px!important;line-height:1.05!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-stat small{margin-top:8px!important;font-size:12.5px!important;line-height:1.45!important}
 
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-shell{border-radius:22px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-shell-head{padding:22px 26px!important;min-height:98px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-kick{font-size:10.5px!important;margin-bottom:6px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-title{font-size:27px!important;line-height:1.05!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-copy{margin-top:7px!important;font-size:13px!important;line-height:1.55!important;max-width:900px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-shell{border-radius:22px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-shell-head{padding:22px 26px!important;min-height:98px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-kick{font-size:10.5px!important;margin-bottom:6px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-title{font-size:27px!important;line-height:1.05!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-copy{margin-top:7px!important;font-size:13px!important;line-height:1.55!important;max-width:900px!important}
 /* Header actions already exist above; don't repeat them inside the relationship workspace. */
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-shell-head>.cux719-actions{display:none!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-shell-head>.cux719-actions{display:none!important}
 
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-workspace{
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-workspace{
   grid-template-columns:clamp(340px,24vw,390px) minmax(0,1fr)!important;min-height:680px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-head{padding:20px 18px 15px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-title{font-size:17px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-count{font-size:9.5px!important;padding:5px 8px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-search{margin-top:13px!important;min-height:43px!important;padding:0 13px!important;font-size:12px!important;border-radius:11px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-list{max-height:720px!important;padding:10px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-row{grid-template-columns:46px minmax(0,1fr) auto!important;gap:12px!important;padding:13px 12px!important;border-radius:13px!important;margin-bottom:6px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-avatar{width:46px!important;height:46px!important;border-radius:13px!important;font-size:13px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-name{font-size:14.5px!important;line-height:1.2!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-role{font-size:11px!important;margin-top:4px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-meta{margin-top:7px!important;gap:5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-mini-tag{font-size:8.5px!important;padding:4px 7px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-next{font-size:9.5px!important;line-height:1.4!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-add{padding:14px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-head{padding:20px 18px 15px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-title{font-size:17px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-count{font-size:9.5px!important;padding:5px 8px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-search{margin-top:13px!important;min-height:43px!important;padding:0 13px!important;font-size:12px!important;border-radius:11px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-list{max-height:720px!important;padding:10px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-row{grid-template-columns:46px minmax(0,1fr) auto!important;gap:12px!important;padding:13px 12px!important;border-radius:13px!important;margin-bottom:6px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-avatar{width:46px!important;height:46px!important;border-radius:13px!important;font-size:13px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-name{font-size:14.5px!important;line-height:1.2!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-role{font-size:11px!important;margin-top:4px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-meta{margin-top:7px!important;gap:5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-mini-tag{font-size:8.5px!important;padding:4px 7px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-next{font-size:9.5px!important;line-height:1.4!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-add{padding:14px!important}
 
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-detail{padding:28px 30px 32px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-hero{gap:22px!important;padding-bottom:21px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-main{gap:17px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-avatar{width:70px!important;height:70px!important;flex-basis:70px!important;border-radius:19px!important;font-size:20px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-name{font-size:30px!important;line-height:1.04!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-title{font-size:14px!important;margin-top:6px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-tags{margin-top:11px!important;gap:7px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-tag{font-size:9px!important;padding:5px 9px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-actions{gap:8px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-actions .cux719-btn{min-height:42px!important;padding:0 14px!important;font-size:11.5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-detail{padding:28px 30px 32px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-hero{gap:22px!important;padding-bottom:21px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-main{gap:17px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-avatar{width:70px!important;height:70px!important;flex-basis:70px!important;border-radius:19px!important;font-size:20px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-name{font-size:30px!important;line-height:1.04!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-title{font-size:14px!important;margin-top:6px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-tags{margin-top:11px!important;gap:7px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-tag{font-size:9px!important;padding:5px 9px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-actions{gap:8px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-actions .cux719-btn{min-height:42px!important;padding:0 14px!important;font-size:11.5px!important}
 
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-quick{gap:11px!important;margin:18px 0!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-quick div{padding:12px 13px!important;border-radius:12px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-quick span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-quick strong{font-size:13px!important;line-height:1.4!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-grid{gap:14px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-card{padding:18px 19px!important;border-radius:15px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-card-head{margin-bottom:13px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-card-title{font-size:10.5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-card-action{font-size:10px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-fields{gap:11px 14px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-field span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-field strong,
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-field a{font-size:12.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-about-row{margin-top:12px!important;padding-top:12px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-about-row span{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-about-row p{font-size:12.5px!important;line-height:1.6!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-linkedin{margin-top:14px!important;padding:13px 14px!important;border-radius:12px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-linkedin-icon{width:34px!important;height:34px!important;border-radius:9px!important;font-size:13px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-linkedin strong{font-size:11.5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-linkedin span{font-size:9.5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-note{padding:12px 13px!important;border-radius:11px!important;margin-top:8px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-note time{font-size:8.5px!important;margin-bottom:5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-note p{font-size:11.5px!important;line-height:1.55!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-activity{grid-template-columns:96px 84px minmax(0,1fr)!important;gap:12px!important;padding:11px 0!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-activity time,
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-activity b{font-size:10px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-activity div{font-size:11.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-role-actions{gap:8px!important;margin-top:14px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-quick{gap:11px!important;margin:18px 0!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-quick div{padding:12px 13px!important;border-radius:12px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-quick span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-quick strong{font-size:13px!important;line-height:1.4!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-grid{gap:14px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-card{padding:18px 19px!important;border-radius:15px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-card-head{margin-bottom:13px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-card-title{font-size:10.5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-card-action{font-size:10px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-fields{gap:11px 14px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-field span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-field strong,
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-field a{font-size:12.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-about-row{margin-top:12px!important;padding-top:12px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-about-row span{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-about-row p{font-size:12.5px!important;line-height:1.6!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-linkedin{margin-top:14px!important;padding:13px 14px!important;border-radius:12px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-linkedin-icon{width:34px!important;height:34px!important;border-radius:9px!important;font-size:13px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-linkedin strong{font-size:11.5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-linkedin span{font-size:9.5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-note{padding:12px 13px!important;border-radius:11px!important;margin-top:8px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-note time{font-size:8.5px!important;margin-bottom:5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-note p{font-size:11.5px!important;line-height:1.55!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-activity{grid-template-columns:96px 84px minmax(0,1fr)!important;gap:12px!important;padding:11px 0!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-activity time,
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-activity b{font-size:10px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-activity div{font-size:11.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-role-actions{gap:8px!important;margin-top:14px!important}
 
 /* Profile editor should feel like a proper Connect workspace, not a cramped utility dialog. */
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-modal-wrap{padding:28px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-modal{width:min(860px,calc(100vw - 54px))!important;max-height:calc(100vh - 56px)!important;border-radius:22px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-modal-head{padding:22px 24px 17px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-modal-head h3{font-size:25px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-modal-head p{margin-top:7px!important;font-size:12.5px!important;line-height:1.5!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-form{padding:21px 24px 24px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-form-grid{gap:14px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-input{gap:6px!important;margin-bottom:13px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-input label{font-size:9px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-input input,
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-input select,
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-input textarea{font-size:12.5px!important;padding:11px 12px!important;border-radius:11px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-input textarea{min-height:88px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-modal-wrap{padding:28px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-modal{width:min(860px,calc(100vw - 54px))!important;max-height:calc(100vh - 56px)!important;border-radius:22px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-modal-head{padding:22px 24px 17px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-modal-head h3{font-size:25px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-modal-head p{margin-top:7px!important;font-size:12.5px!important;line-height:1.5!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-form{padding:21px 24px 24px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-form-grid{gap:14px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-input{gap:6px!important;margin-bottom:13px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-input label{font-size:9px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-input input,
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-input select,
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-input textarea{font-size:12.5px!important;padding:11px 12px!important;border-radius:11px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-input textarea{min-height:88px!important}
 
 @media(max-width:1320px){
- html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{padding-left:14px!important;padding-right:14px!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-workspace{grid-template-columns:320px minmax(0,1fr)!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-detail{padding:24px 25px 28px!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-grid{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-stage{padding-left:14px!important;padding-right:14px!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-workspace{grid-template-columns:320px minmax(0,1fr)!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-detail{padding:24px 25px 28px!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-grid{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 @media(max-width:980px){
- html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{grid-template-columns:1fr!important;gap:16px!important;padding:20px 22px!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{justify-content:flex-start!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-workspace{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-list{max-height:330px!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-head{grid-template-columns:1fr!important;gap:16px!important;padding:20px 22px!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell.cux719-contacts-page .cux8-section-actions{justify-content:flex-start!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-workspace{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-list{max-height:330px!important}
 }
 @media(max-width:650px){
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-summary,
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-quick,
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-fields,
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-form-grid{grid-template-columns:1fr!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-detail{padding:18px!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-hero{flex-direction:column!important}
- html[data-connect-authoritative="v735"] #rp-overlay .cux719-profile-actions{justify-content:flex-start!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-summary,
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-quick,
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-fields,
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-form-grid{grid-template-columns:1fr!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-detail{padding:18px!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-hero{flex-direction:column!important}
+ html[data-connect-authoritative="v736"] #rp-overlay .cux719-profile-actions{justify-content:flex-start!important}
 }
 </style>
 <script id="connect-v723-contact-parity-boot">
 (function(){
  'use strict';
- var BUILD='v735',DISPLAY='V735',TITLE='Connect v735 — Sales Portal';
+ var BUILD='v736',DISPLAY='V736',TITLE='Connect v736 — Sales Portal';
  function enforce(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
@@ -73675,16 +73675,16 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux719-input textarea{min-h
 </script>
 <style id="connect-v723-contacts-roster-finish">
 /* v723: final Contacts roster breathing-room pass. Header owns Add Contact; roster stays focused on people. */
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-head{padding:19px 18px 17px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-list{padding:14px 12px 18px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-row{grid-template-columns:50px minmax(0,1fr) 70px!important;gap:14px!important;min-height:88px!important;padding:16px 14px!important;margin-bottom:10px!important;border-radius:14px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-avatar{width:48px!important;height:48px!important;border-radius:13px!important;font-size:13px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-name{font-size:15px!important;line-height:1.18!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-role{font-size:11.25px!important;line-height:1.35!important;margin-top:5px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-meta{margin-top:9px!important;gap:6px!important;row-gap:6px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-next{font-size:9.75px!important;line-height:1.45!important;padding-left:6px!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-add{display:none!important;}
-@media(max-width:980px){html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-row{min-height:82px!important;padding:14px 13px!important;margin-bottom:8px!important;}}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-head{padding:19px 18px 17px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-list{padding:14px 12px 18px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-row{grid-template-columns:50px minmax(0,1fr) 70px!important;gap:14px!important;min-height:88px!important;padding:16px 14px!important;margin-bottom:10px!important;border-radius:14px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-avatar{width:48px!important;height:48px!important;border-radius:13px!important;font-size:13px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-name{font-size:15px!important;line-height:1.18!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-role{font-size:11.25px!important;line-height:1.35!important;margin-top:5px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-meta{margin-top:9px!important;gap:6px!important;row-gap:6px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-next{font-size:9.75px!important;line-height:1.45!important;padding-left:6px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-add{display:none!important;}
+@media(max-width:980px){html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-row{min-height:82px!important;padding:14px 13px!important;margin-bottom:8px!important;}}
 </style>
 
 
@@ -73692,10 +73692,10 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-add{display:n
 
 <!-- ===== CONNECT v727 · PERSISTENT COMPANY SUB-NAVIGATION ===== -->
 <style id="connect-v727-persistent-company-nav-css">
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent{
   margin:10px 0 14px!important;
 }
-html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent button.active{
+html[data-connect-authoritative="v736"] #rp-overlay .cux8-shell .cux700-subnav.cux726-persistent button.active{
   background:rgba(0,175,239,.12)!important;border-color:rgba(0,175,239,.32)!important;color:#D7F7FF!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
 }
@@ -73703,7 +73703,7 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell .cux700-subnav.c
 <script id="connect-v727-persistent-company-nav-js">
 (function(){
  'use strict';
- var BUILD='v735', DISPLAY='V735', TITLE='Connect v735 — Sales Portal';
+ var BUILD='v736', DISPLAY='V736', TITLE='Connect v736 — Sales Portal';
  var timer=0;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
  function companyOpen(){return !!(window._rp2CompanyOpenKey||window._cw4CompanyName||document.querySelector('#rp-overlay .cux8-shell'))}
@@ -73799,48 +73799,48 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux8-shell .cux700-subnav.c
 </script>
 
 <style id="connect-v727-orders-rep-workspace-css">
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-orders{padding:14px 0 28px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-view-tabs{display:inline-flex;gap:5px;padding:4px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(6,14,22,.55);margin-bottom:16px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-view-tabs button{display:flex;align-items:center;gap:8px;min-height:38px;padding:0 15px;border:0;border-radius:10px;background:transparent;color:#8EA1B3;font:inherit;font-size:11.5px;font-weight:850;cursor:pointer}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-view-tabs button b{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.055);font-size:9px;color:#91A5B7}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-view-tabs button.on{background:rgba(0,175,239,.11);box-shadow:inset 0 0 0 1px rgba(0,175,239,.34);color:#E9F8FF}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi{position:relative;min-height:154px;padding:20px 20px 18px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(180deg,rgba(17,31,43,.92),rgba(10,21,31,.94));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--ord-accent,#00AFEF)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi.blue{--ord-accent:#00AFEF}html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi.amber{--ord-accent:#F0A234}html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi.green{--ord-accent:#47D16C}html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi.cyan{--ord-accent:#68D4F3}html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi.purple{--ord-accent:#B18AF5}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-kick{font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;color:var(--ord-accent)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-title{margin-top:10px;font-size:12px;font-weight:850;color:#A7B6C4}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-value{margin-top:5px;font-size:30px;line-height:1.05;font-weight:950;letter-spacing:-.035em;color:#F4F8FB}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-copy{margin-top:12px;font-size:11px;line-height:1.5;color:#8295A6}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-section{border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(8,18,27,.52);overflow:hidden}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 20px 17px;border-bottom:1px solid rgba(255,255,255,.06)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-section-head span{font-size:9px;font-weight:950;letter-spacing:.10em;color:#6DDDFB}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-section-head h2{margin:5px 0 0;font-size:22px;line-height:1.1;color:#F3F7FA}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-section-head p{margin:7px 0 0;max-width:760px;font-size:11.5px;line-height:1.55;color:#8396A7}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-list{display:flex;flex-direction:column;gap:10px;padding:14px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active{padding:17px 18px;border:1px solid rgba(255,255,255,.075);border-left:3px solid var(--ord-status,#00AFEF);border-radius:15px;background:linear-gradient(180deg,rgba(18,33,45,.84),rgba(11,23,33,.9))}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active.risk{--ord-status:#FB7185}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active.warn{--ord-status:#F0A234}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active.good{--ord-status:#47D16C}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active.info{--ord-status:#00AFEF}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-main{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-order-id button{border:0;background:none;padding:0;color:#F4F8FB;font-size:18px;font-weight:950;cursor:pointer;text-align:left}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-order-id span{display:block;margin-top:4px;font-size:10px;color:#738A9B}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-status{padding:5px 9px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);font-size:9px;font-weight:900;color:#AFC0CB;white-space:nowrap}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.24);background:rgba(71,209,108,.07)}html[data-connect-authoritative="v735"] #rp-overlay .ord727-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.25);background:rgba(240,162,52,.07)}html[data-connect-authoritative="v735"] #rp-overlay .ord727-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.24);background:rgba(251,113,133,.07)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body{display:grid;grid-template-columns:150px minmax(260px,1fr) 220px;gap:12px;margin-top:15px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body>div{padding:10px 11px;border:1px solid rgba(255,255,255,.05);border-radius:11px;background:rgba(255,255,255,.018)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body span{display:block;font-size:8px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#708697;margin-bottom:5px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body strong{display:block;font-size:12px;line-height:1.42;color:#DCE7ED}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-attention,html[data-connect-authoritative="v735"] #rp-overlay .ord727-ontrack{display:flex;gap:10px;align-items:baseline;margin-top:12px;padding:10px 11px;border-radius:10px;font-size:10.5px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-attention{border:1px solid rgba(240,162,52,.18);background:rgba(240,162,52,.055);color:#D1B487}html[data-connect-authoritative="v735"] #rp-overlay .ord727-attention b{color:#FFD38B}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-ontrack{border:1px solid rgba(71,209,108,.15);background:rgba(71,209,108,.045);color:#8FB6A0}html[data-connect-authoritative="v735"] #rp-overlay .ord727-ontrack b{color:#9DEDB7}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:13px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-btn{min-height:34px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:#101E29;color:#C4D0D8;font-size:9.5px;font-weight:850;cursor:pointer}html[data-connect-authoritative="v735"] #rp-overlay .ord727-btn.primary{border-color:rgba(0,175,239,.28);background:rgba(0,175,239,.08);color:#A9ECFF}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-search{display:flex;align-items:center;gap:9px}html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-search input{width:280px;min-height:38px;padding:0 12px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0D1823;color:#E7EFF4;font-size:11px}html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-search b{font-size:10px;color:#718799;white-space:nowrap}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-meta{display:flex;gap:9px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05)}html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-meta span{padding:5px 8px;border:1px solid rgba(255,255,255,.06);border-radius:999px;background:rgba(255,255,255,.025);font-size:9.5px;color:#8EA1B1}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-table-wrap{overflow:auto;max-height:560px}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table{width:100%;border-collapse:collapse}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table th{position:sticky;top:0;z-index:1;padding:10px 12px;background:#0E1A24;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:#708697}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.05);font-size:10.5px;line-height:1.42;color:#AFC0CB;vertical-align:top}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table tr:hover td{background:rgba(255,255,255,.018)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-order-link{display:block;border:0;background:none;padding:0;color:#EAF4F9;font-size:11.5px;font-weight:900;cursor:pointer}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table td small{display:block;margin-top:3px;font-size:8.5px;color:#718799}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table-status{display:inline-flex;padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.08);font-size:8.5px;font-weight:850;color:#AFC0CB}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.2)}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.2)}html[data-connect-authoritative="v735"] #rp-overlay .ord727-table-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.2)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord727-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;padding:28px;text-align:center}html[data-connect-authoritative="v735"] #rp-overlay .ord727-empty strong{font-size:16px;color:#DDE7ED}html[data-connect-authoritative="v735"] #rp-overlay .ord727-empty span{margin-top:7px;max-width:560px;font-size:11px;line-height:1.5;color:#788D9E}
-@media(max-width:1180px){html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body{grid-template-columns:130px minmax(0,1fr)}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body>div:last-child{grid-column:1/-1}}
-@media(max-width:760px){html[data-connect-authoritative="v735"] #rp-overlay .ord727-kpi-grid{grid-template-columns:1fr}html[data-connect-authoritative="v735"] #rp-overlay .ord727-section-head{align-items:flex-start;flex-direction:column}html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-search{width:100%}html[data-connect-authoritative="v735"] #rp-overlay .ord727-history-search input{width:100%}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body{grid-template-columns:1fr}html[data-connect-authoritative="v735"] #rp-overlay .ord727-active-body>div:last-child{grid-column:auto}}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-orders{padding:14px 0 28px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-view-tabs{display:inline-flex;gap:5px;padding:4px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(6,14,22,.55);margin-bottom:16px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-view-tabs button{display:flex;align-items:center;gap:8px;min-height:38px;padding:0 15px;border:0;border-radius:10px;background:transparent;color:#8EA1B3;font:inherit;font-size:11.5px;font-weight:850;cursor:pointer}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-view-tabs button b{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.055);font-size:9px;color:#91A5B7}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-view-tabs button.on{background:rgba(0,175,239,.11);box-shadow:inset 0 0 0 1px rgba(0,175,239,.34);color:#E9F8FF}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi{position:relative;min-height:154px;padding:20px 20px 18px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(180deg,rgba(17,31,43,.92),rgba(10,21,31,.94));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--ord-accent,#00AFEF)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi.blue{--ord-accent:#00AFEF}html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi.amber{--ord-accent:#F0A234}html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi.green{--ord-accent:#47D16C}html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi.cyan{--ord-accent:#68D4F3}html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi.purple{--ord-accent:#B18AF5}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-kick{font-size:9px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;color:var(--ord-accent)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-title{margin-top:10px;font-size:12px;font-weight:850;color:#A7B6C4}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-value{margin-top:5px;font-size:30px;line-height:1.05;font-weight:950;letter-spacing:-.035em;color:#F4F8FB}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-copy{margin-top:12px;font-size:11px;line-height:1.5;color:#8295A6}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-section{border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(8,18,27,.52);overflow:hidden}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 20px 17px;border-bottom:1px solid rgba(255,255,255,.06)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-section-head span{font-size:9px;font-weight:950;letter-spacing:.10em;color:#6DDDFB}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-section-head h2{margin:5px 0 0;font-size:22px;line-height:1.1;color:#F3F7FA}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-section-head p{margin:7px 0 0;max-width:760px;font-size:11.5px;line-height:1.55;color:#8396A7}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-list{display:flex;flex-direction:column;gap:10px;padding:14px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active{padding:17px 18px;border:1px solid rgba(255,255,255,.075);border-left:3px solid var(--ord-status,#00AFEF);border-radius:15px;background:linear-gradient(180deg,rgba(18,33,45,.84),rgba(11,23,33,.9))}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active.risk{--ord-status:#FB7185}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active.warn{--ord-status:#F0A234}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active.good{--ord-status:#47D16C}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active.info{--ord-status:#00AFEF}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-main{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-order-id button{border:0;background:none;padding:0;color:#F4F8FB;font-size:18px;font-weight:950;cursor:pointer;text-align:left}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-order-id span{display:block;margin-top:4px;font-size:10px;color:#738A9B}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-status{padding:5px 9px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);font-size:9px;font-weight:900;color:#AFC0CB;white-space:nowrap}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.24);background:rgba(71,209,108,.07)}html[data-connect-authoritative="v736"] #rp-overlay .ord727-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.25);background:rgba(240,162,52,.07)}html[data-connect-authoritative="v736"] #rp-overlay .ord727-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.24);background:rgba(251,113,133,.07)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body{display:grid;grid-template-columns:150px minmax(260px,1fr) 220px;gap:12px;margin-top:15px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body>div{padding:10px 11px;border:1px solid rgba(255,255,255,.05);border-radius:11px;background:rgba(255,255,255,.018)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body span{display:block;font-size:8px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#708697;margin-bottom:5px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body strong{display:block;font-size:12px;line-height:1.42;color:#DCE7ED}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-attention,html[data-connect-authoritative="v736"] #rp-overlay .ord727-ontrack{display:flex;gap:10px;align-items:baseline;margin-top:12px;padding:10px 11px;border-radius:10px;font-size:10.5px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-attention{border:1px solid rgba(240,162,52,.18);background:rgba(240,162,52,.055);color:#D1B487}html[data-connect-authoritative="v736"] #rp-overlay .ord727-attention b{color:#FFD38B}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-ontrack{border:1px solid rgba(71,209,108,.15);background:rgba(71,209,108,.045);color:#8FB6A0}html[data-connect-authoritative="v736"] #rp-overlay .ord727-ontrack b{color:#9DEDB7}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:13px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-btn{min-height:34px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:9px;background:#101E29;color:#C4D0D8;font-size:9.5px;font-weight:850;cursor:pointer}html[data-connect-authoritative="v736"] #rp-overlay .ord727-btn.primary{border-color:rgba(0,175,239,.28);background:rgba(0,175,239,.08);color:#A9ECFF}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-search{display:flex;align-items:center;gap:9px}html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-search input{width:280px;min-height:38px;padding:0 12px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0D1823;color:#E7EFF4;font-size:11px}html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-search b{font-size:10px;color:#718799;white-space:nowrap}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-meta{display:flex;gap:9px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05)}html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-meta span{padding:5px 8px;border:1px solid rgba(255,255,255,.06);border-radius:999px;background:rgba(255,255,255,.025);font-size:9.5px;color:#8EA1B1}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-table-wrap{overflow:auto;max-height:560px}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table{width:100%;border-collapse:collapse}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table th{position:sticky;top:0;z-index:1;padding:10px 12px;background:#0E1A24;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:#708697}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.05);font-size:10.5px;line-height:1.42;color:#AFC0CB;vertical-align:top}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table tr:hover td{background:rgba(255,255,255,.018)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-order-link{display:block;border:0;background:none;padding:0;color:#EAF4F9;font-size:11.5px;font-weight:900;cursor:pointer}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table td small{display:block;margin-top:3px;font-size:8.5px;color:#718799}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table-status{display:inline-flex;padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.08);font-size:8.5px;font-weight:850;color:#AFC0CB}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table-status.good{color:#9DEDB7;border-color:rgba(71,209,108,.2)}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table-status.warn{color:#FFD38B;border-color:rgba(240,162,52,.2)}html[data-connect-authoritative="v736"] #rp-overlay .ord727-table-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.2)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord727-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;padding:28px;text-align:center}html[data-connect-authoritative="v736"] #rp-overlay .ord727-empty strong{font-size:16px;color:#DDE7ED}html[data-connect-authoritative="v736"] #rp-overlay .ord727-empty span{margin-top:7px;max-width:560px;font-size:11px;line-height:1.5;color:#788D9E}
+@media(max-width:1180px){html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body{grid-template-columns:130px minmax(0,1fr)}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body>div:last-child{grid-column:1/-1}}
+@media(max-width:760px){html[data-connect-authoritative="v736"] #rp-overlay .ord727-kpi-grid{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .ord727-section-head{align-items:flex-start;flex-direction:column}html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-search{width:100%}html[data-connect-authoritative="v736"] #rp-overlay .ord727-history-search input{width:100%}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .ord727-active-body>div:last-child{grid-column:auto}}
 </style>
 
 <style id="ord728-order-history-drilldown">
@@ -73855,23 +73855,23 @@ html[data-connect-authoritative="v735"] #rp-overlay .ord727-empty{display:flex;f
 </style>
 <script id="ord728-build-identity">
 (function(){
- window.CONNECT_BUILD='v735';
- try{document.title='Connect v735 — Sales Portal';document.documentElement.setAttribute('data-connect-build','v735');}catch(e){}
- function mark(){document.querySelectorAll('[data-build],.rp2-build,.rp2-side-build').forEach(function(el){var t=el.textContent||'';if(/BUILD\s*V?\d+/i.test(t))el.textContent=t.replace(/BUILD\s*V?\d+/i,'BUILD V735')});}
+ window.CONNECT_BUILD='v736';
+ try{document.title='Connect v736 — Sales Portal';document.documentElement.setAttribute('data-connect-build','v736');}catch(e){}
+ function mark(){document.querySelectorAll('[data-build],.rp2-build,.rp2-side-build').forEach(function(el){var t=el.textContent||'';if(/BUILD\s*V?\d+/i.test(t))el.textContent=t.replace(/BUILD\s*V?\d+/i,'BUILD V736')});}
  mark();setTimeout(mark,0);setTimeout(mark,120);setTimeout(mark,600);
 })();
 </script>
 </body>. -->
 <style id="connect-v724-contact-name-role-spacing">
 /* v724: roster identity stack — name, role, then badges. */
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-row > span:nth-child(2){display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-name{display:block!important;width:100%!important;margin:0!important;line-height:1.16!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-role{display:block!important;width:100%!important;margin:5px 0 0!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
-html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-meta{display:flex!important;flex-wrap:wrap!important;margin-top:9px!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-row > span:nth-child(2){display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-name{display:block!important;width:100%!important;margin:0!important;line-height:1.16!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-role{display:block!important;width:100%!important;margin:5px 0 0!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+html[data-connect-authoritative="v736"] #rp-overlay .cux719-roster-meta{display:flex!important;flex-wrap:wrap!important;margin-top:9px!important;}
 </style>
 <script id="connect-v724-contact-name-role-build">
 (function(){
-  var BUILD='v735', DISPLAY='V735', TITLE='Connect v735 — Sales Portal';
+  var BUILD='v736', DISPLAY='V736', TITLE='Connect v736 — Sales Portal';
   function apply(){try{document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title=TITLE;if(window.CONNECT_BUILD!==undefined)window.CONNECT_BUILD=BUILD;document.querySelectorAll('[data-build-label],.rp-build-badge,.portal-build,.sales-portal-build').forEach(function(el){if(/build/i.test(el.textContent||'')||el.hasAttribute('data-build-label'))el.textContent='SALES PORTAL · BUILD '+DISPLAY;});}catch(e){}}
   apply();setTimeout(apply,0);setTimeout(apply,250);
 })();
@@ -73880,28 +73880,28 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux719-roster-meta{display:
 
 <!-- v727 appended at EOF intentionally: selected-contact activity timeline + filter. -->
 <style id="connect-v727-contact-activity-timeline-css">
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-activity-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;flex-wrap:wrap!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-activity-controls{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-filter{min-height:36px!important;padding:0 32px 0 11px!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:10px!important;background:#0D1823!important;color:#DDE7F0!important;font-size:11px!important;font-weight:750!important;cursor:pointer!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-count{font-size:10px!important;color:#7F93A5!important;white-space:nowrap!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-timeline{margin-top:7px!important;max-height:430px!important;overflow:auto!important;padding-right:5px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry{display:grid!important;grid-template-columns:108px 108px minmax(0,1fr)!important;gap:13px!important;align-items:start!important;padding:13px 2px!important;border-bottom:1px solid rgba(255,255,255,.055)!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry:last-child{border-bottom:0!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-date{font-size:10px!important;color:#7F93A5!important;line-height:1.45!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-type{display:inline-flex!important;align-items:center!important;gap:6px!important;width:max-content!important;max-width:100%!important;padding:4px 7px!important;border:1px solid rgba(0,175,239,.18)!important;border-radius:999px!important;background:rgba(0,175,239,.07)!important;color:#A7E8FF!important;font-size:9.5px!important;font-weight:850!important;line-height:1.2!important;white-space:nowrap!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-type.quote{border-color:rgba(155,107,255,.26)!important;background:rgba(155,107,255,.09)!important;color:#D7C5FF!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-type.note{border-color:rgba(239,159,39,.24)!important;background:rgba(239,159,39,.08)!important;color:#FFD496!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-type.follow-up{border-color:rgba(71,209,108,.23)!important;background:rgba(71,209,108,.08)!important;color:#A7FFC0!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry-main strong{display:block!important;font-size:12.5px!important;line-height:1.35!important;color:#E9F0F5!important;margin-bottom:4px!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry-main p{margin:0!important;font-size:11.5px!important;line-height:1.55!important;color:#AEBCC8!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry-main small{display:block!important;margin-top:5px!important;font-size:9.5px!important;line-height:1.45!important;color:#72889A!important}
-html[data-connect-authoritative="v735"] #rp-overlay .cux725-empty{padding:26px 8px!important;text-align:center!important;color:#71879A!important;font-size:11.5px!important}
-@media(max-width:780px){html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry{grid-template-columns:88px minmax(0,1fr)!important}html[data-connect-authoritative="v735"] #rp-overlay .cux725-type{grid-column:2!important;grid-row:1!important;margin-left:auto!important}html[data-connect-authoritative="v735"] #rp-overlay .cux725-entry-main{grid-column:1/-1!important}}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-activity-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;flex-wrap:wrap!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-activity-controls{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-filter{min-height:36px!important;padding:0 32px 0 11px!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:10px!important;background:#0D1823!important;color:#DDE7F0!important;font-size:11px!important;font-weight:750!important;cursor:pointer!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-count{font-size:10px!important;color:#7F93A5!important;white-space:nowrap!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-timeline{margin-top:7px!important;max-height:430px!important;overflow:auto!important;padding-right:5px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry{display:grid!important;grid-template-columns:108px 108px minmax(0,1fr)!important;gap:13px!important;align-items:start!important;padding:13px 2px!important;border-bottom:1px solid rgba(255,255,255,.055)!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry:last-child{border-bottom:0!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-date{font-size:10px!important;color:#7F93A5!important;line-height:1.45!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-type{display:inline-flex!important;align-items:center!important;gap:6px!important;width:max-content!important;max-width:100%!important;padding:4px 7px!important;border:1px solid rgba(0,175,239,.18)!important;border-radius:999px!important;background:rgba(0,175,239,.07)!important;color:#A7E8FF!important;font-size:9.5px!important;font-weight:850!important;line-height:1.2!important;white-space:nowrap!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-type.quote{border-color:rgba(155,107,255,.26)!important;background:rgba(155,107,255,.09)!important;color:#D7C5FF!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-type.note{border-color:rgba(239,159,39,.24)!important;background:rgba(239,159,39,.08)!important;color:#FFD496!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-type.follow-up{border-color:rgba(71,209,108,.23)!important;background:rgba(71,209,108,.08)!important;color:#A7FFC0!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry-main strong{display:block!important;font-size:12.5px!important;line-height:1.35!important;color:#E9F0F5!important;margin-bottom:4px!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry-main p{margin:0!important;font-size:11.5px!important;line-height:1.55!important;color:#AEBCC8!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry-main small{display:block!important;margin-top:5px!important;font-size:9.5px!important;line-height:1.45!important;color:#72889A!important}
+html[data-connect-authoritative="v736"] #rp-overlay .cux725-empty{padding:26px 8px!important;text-align:center!important;color:#71879A!important;font-size:11.5px!important}
+@media(max-width:780px){html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry{grid-template-columns:88px minmax(0,1fr)!important}html[data-connect-authoritative="v736"] #rp-overlay .cux725-type{grid-column:2!important;grid-row:1!important;margin-left:auto!important}html[data-connect-authoritative="v736"] #rp-overlay .cux725-entry-main{grid-column:1/-1!important}}
 </style>
 <script id="connect-v727-contact-activity-timeline-js">
 (function(){
  'use strict';
- var BUILD='v735',DISPLAY='V735',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',DEMO='DEMO — Summit Ridge Industrial Services';
+ var BUILD='v736',DISPLAY='V736',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',DEMO='DEMO — Summit Ridge Industrial Services';
  var filter='All Activity',pending=false;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
  function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
@@ -73941,74 +73941,74 @@ html[data-connect-authoritative="v735"] #rp-overlay .cux725-empty{padding:26px 8
  var oldSelect=window._cux719Select;if(typeof oldSelect==='function')window._cux719Select=function(){var r=oldSelect.apply(this,arguments);filter='All Activity';setTimeout(enhance,0);return r};
  var oldForce=window._cux721ForceContacts;if(typeof oldForce==='function')window._cux721ForceContacts=function(){var r=oldForce.apply(this,arguments);setTimeout(enhance,0);return r};
  var obs=new MutationObserver(function(){if(document.querySelector('#rp-overlay .cux719-workspace'))schedule()});
- function boot(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title='Connect v735 — Sales Portal';demoLinks();var root=document.getElementById('rp-overlay');if(root)obs.observe(root,{childList:true,subtree:true});[0,100,350,800].forEach(function(ms){setTimeout(enhance,ms)});document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){console.warn('[v727 activity timeline]',e)}}
+ function boot(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title='Connect v736 — Sales Portal';demoLinks();var root=document.getElementById('rp-overlay');if(root)obs.observe(root,{childList:true,subtree:true});[0,100,350,800].forEach(function(ms){setTimeout(enhance,ms)});document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){console.warn('[v727 activity timeline]',e)}}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
  window.TCP_CONTACT_ACTIVITY_TIMELINE_V727={version:BUILD,refresh:enhance};
 })();
 </script>
 <style id="ord728-order-history-drilldown-eof">
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row{cursor:pointer;transition:background .15s ease,box-shadow .15s ease}
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row:hover td{background:rgba(41,199,255,.055)}
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row:hover .ord728-order-number{color:#78dcff;text-decoration:underline;text-underline-offset:3px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row:focus-visible{outline:2px solid #29c7ff;outline-offset:-2px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row td:last-child{position:relative;padding-right:72px}
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-open-hint{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#29c7ff;opacity:0;transition:opacity .15s ease}
-html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row:hover .ord728-open-hint,html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row:focus-visible .ord728-open-hint{opacity:1}
-@media(max-width:900px){html[data-connect-authoritative="v735"] #rp-overlay .ord728-open-hint{display:none}html[data-connect-authoritative="v735"] #rp-overlay .ord728-history-row td:last-child{padding-right:14px}}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row{cursor:pointer;transition:background .15s ease,box-shadow .15s ease}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row:hover td{background:rgba(41,199,255,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row:hover .ord728-order-number{color:#78dcff;text-decoration:underline;text-underline-offset:3px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row:focus-visible{outline:2px solid #29c7ff;outline-offset:-2px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row td:last-child{position:relative;padding-right:72px}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-open-hint{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#29c7ff;opacity:0;transition:opacity .15s ease}
+html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row:hover .ord728-open-hint,html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row:focus-visible .ord728-open-hint{opacity:1}
+@media(max-width:900px){html[data-connect-authoritative="v736"] #rp-overlay .ord728-open-hint{display:none}html[data-connect-authoritative="v736"] #rp-overlay .ord728-history-row td:last-child{padding-right:14px}}
 </style>
-<style id="connect-v735-company-activity-css">
-/* ===== V735 COMPANY ACTIVITY — ACCOUNT STORY ===== */
-html[data-connect-authoritative="v735"] #rp-overlay .act735-wrap{display:grid;gap:18px;max-width:1500px;margin:0 auto;padding:2px 0 34px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-snapshot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-stat{position:relative;overflow:hidden;min-height:142px;padding:20px 21px;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),rgba(8,18,31,.74);box-shadow:0 18px 44px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.07)}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-stat:after{content:"";position:absolute;right:-48px;top:-52px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--actGlow,rgba(0,175,239,.24)),transparent 68%);pointer-events:none}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-stat-label{position:relative;z-index:1;color:#8FA1B5;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-stat-value{position:relative;z-index:1;margin-top:11px;color:#fff;font-size:23px;font-weight:950;letter-spacing:-.035em;line-height:1.12}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-stat-copy{position:relative;z-index:1;margin-top:8px;color:#9EADBE;font-size:11px;line-height:1.55}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-panel{border:1px solid rgba(255,255,255,.10);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(8,18,31,.72);box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.065);overflow:hidden}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:21px 22px 17px;border-bottom:1px solid rgba(255,255,255,.075)}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-kick{color:#65D8FF;font-size:9px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-title{margin-top:5px;color:#fff;font-size:20px;font-weight:950;letter-spacing:-.025em}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-copy{margin-top:6px;max-width:800px;color:#899CB0;font-size:11px;line-height:1.55}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-btn{min-height:36px;padding:0 12px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(255,255,255,.045);color:#D9E5EE;font-size:10px;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s ease}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-btn:hover{transform:translateY(-1px);border-color:rgba(0,175,239,.40);background:rgba(0,175,239,.10);color:#fff}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-btn.primary{border-color:rgba(0,175,239,.34);background:linear-gradient(135deg,rgba(0,175,239,.22),rgba(250,135,61,.14));color:#fff}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-commitments{display:grid;gap:0;padding:2px 20px 8px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-commit{display:grid;grid-template-columns:104px 42px minmax(0,1fr) auto;gap:13px;align-items:center;padding:14px 2px;border-bottom:1px solid rgba(255,255,255,.06)}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-commit:last-child{border-bottom:0}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-due{font-size:10px;font-weight:900;color:#9BAABB;text-transform:uppercase;letter-spacing:.04em}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-due.overdue{color:#FF9A9A}html[data-connect-authoritative="v735"] #rp-overlay .act735-due.today{color:#FFD08A}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-commit-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;border:1px solid rgba(0,175,239,.15);background:rgba(0,175,239,.07);font-size:17px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-commit-main strong{display:block;color:#F2F7FA;font-size:12.5px;font-weight:900;line-height:1.35}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-commit-main span{display:block;margin-top:4px;color:#8999AA;font-size:10.5px;line-height:1.45}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-empty{padding:25px 20px;text-align:center;color:#7F93A5;font-size:11.5px;line-height:1.6}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 180px 220px auto;gap:9px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018)}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar input,html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar select{min-height:38px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:#0D1518;color:#E8EFF4;padding:8px 11px;font:inherit;font-size:10.5px;outline:none}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar input:focus,html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar select:focus{border-color:rgba(0,175,239,.68);box-shadow:0 0 0 3px rgba(0,175,239,.10)}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-count{display:flex;align-items:center;justify-content:center;padding:0 11px;border:1px solid rgba(0,175,239,.16);border-radius:11px;background:rgba(0,175,239,.055);color:#92E2FF;font-size:10px;font-weight:900;white-space:nowrap}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-feed{padding:5px 20px 13px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event{display:grid;grid-template-columns:112px 44px minmax(0,1fr) auto;gap:13px;align-items:start;padding:16px 2px;border-bottom:1px solid rgba(255,255,255,.06)}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event:last-child{border-bottom:0}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-date{padding-top:3px;color:#7F93A5;font-size:10px;line-height:1.45}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:14px;border:1px solid color-mix(in srgb,var(--evt,#00AFEF) 34%,rgba(255,255,255,.07));background:color-mix(in srgb,var(--evt,#00AFEF) 10%,transparent);font-size:18px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-title{color:#F0F5F8;font-size:13px;font-weight:930;line-height:1.35}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-type{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;border:1px solid color-mix(in srgb,var(--evt,#00AFEF) 30%,rgba(255,255,255,.07));background:color-mix(in srgb,var(--evt,#00AFEF) 8%,transparent);color:color-mix(in srgb,var(--evt,#00AFEF) 70%,white);font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-detail{margin-top:6px;color:#A5B4C0;font-size:11.5px;line-height:1.55}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-meta{margin-top:6px;color:#748A9C;font-size:9.5px;line-height:1.45}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-outcome{margin-top:8px;padding:8px 10px;border-left:3px solid #47D16C;border-radius:0 10px 10px 0;background:rgba(71,209,108,.055);color:#BDEBC9;font-size:10.5px;line-height:1.45}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-next{margin-top:7px;color:#FFD1B5;font-size:10px;line-height:1.45}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-event-action{padding-top:2px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-more{display:flex;justify-content:center;padding:4px 18px 18px}
-html[data-connect-authoritative="v735"] #rp-overlay .act735-note{padding:10px 18px 0;color:#667D90;font-size:9.5px;line-height:1.5;text-align:right}
-@media(max-width:1050px){html[data-connect-authoritative="v735"] #rp-overlay .act735-snapshot{grid-template-columns:1fr}html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar{grid-template-columns:1fr 1fr}html[data-connect-authoritative="v735"] #rp-overlay .act735-count{min-height:38px}html[data-connect-authoritative="v735"] #rp-overlay .act735-event{grid-template-columns:92px 40px minmax(0,1fr)}html[data-connect-authoritative="v735"] #rp-overlay .act735-event-action{grid-column:3}html[data-connect-authoritative="v735"] #rp-overlay .act735-commit{grid-template-columns:90px 38px minmax(0,1fr)}html[data-connect-authoritative="v735"] #rp-overlay .act735-commit>.act735-btn{grid-column:3;justify-self:start}}
-@media(max-width:680px){html[data-connect-authoritative="v735"] #rp-overlay .act735-panel-head{flex-direction:column}html[data-connect-authoritative="v735"] #rp-overlay .act735-head-actions{justify-content:flex-start}html[data-connect-authoritative="v735"] #rp-overlay .act735-toolbar{grid-template-columns:1fr}html[data-connect-authoritative="v735"] #rp-overlay .act735-event{grid-template-columns:38px minmax(0,1fr)}html[data-connect-authoritative="v735"] #rp-overlay .act735-event-date{grid-column:1/-1}html[data-connect-authoritative="v735"] #rp-overlay .act735-event-action{grid-column:2}html[data-connect-authoritative="v735"] #rp-overlay .act735-commit{grid-template-columns:38px minmax(0,1fr)}html[data-connect-authoritative="v735"] #rp-overlay .act735-due{grid-column:1/-1}html[data-connect-authoritative="v735"] #rp-overlay .act735-commit>.act735-btn{grid-column:2}}
+<style id="connect-v736-company-activity-css">
+/* ===== V736 COMPANY ACTIVITY — ACCOUNT STORY ===== */
+html[data-connect-authoritative="v736"] #rp-overlay .act735-wrap{display:grid;gap:18px;max-width:1500px;margin:0 auto;padding:2px 0 34px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-snapshot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-stat{position:relative;overflow:hidden;min-height:142px;padding:20px 21px;border:1px solid rgba(255,255,255,.10);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),rgba(8,18,31,.74);box-shadow:0 18px 44px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.07)}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-stat:after{content:"";position:absolute;right:-48px;top:-52px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--actGlow,rgba(0,175,239,.24)),transparent 68%);pointer-events:none}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-stat-label{position:relative;z-index:1;color:#8FA1B5;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-stat-value{position:relative;z-index:1;margin-top:11px;color:#fff;font-size:23px;font-weight:950;letter-spacing:-.035em;line-height:1.12}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-stat-copy{position:relative;z-index:1;margin-top:8px;color:#9EADBE;font-size:11px;line-height:1.55}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-panel{border:1px solid rgba(255,255,255,.10);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.022)),rgba(8,18,31,.72);box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.065);overflow:hidden}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:21px 22px 17px;border-bottom:1px solid rgba(255,255,255,.075)}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-kick{color:#65D8FF;font-size:9px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-title{margin-top:5px;color:#fff;font-size:20px;font-weight:950;letter-spacing:-.025em}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-copy{margin-top:6px;max-width:800px;color:#899CB0;font-size:11px;line-height:1.55}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-btn{min-height:36px;padding:0 12px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(255,255,255,.045);color:#D9E5EE;font-size:10px;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s ease}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-btn:hover{transform:translateY(-1px);border-color:rgba(0,175,239,.40);background:rgba(0,175,239,.10);color:#fff}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-btn.primary{border-color:rgba(0,175,239,.34);background:linear-gradient(135deg,rgba(0,175,239,.22),rgba(250,135,61,.14));color:#fff}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-commitments{display:grid;gap:0;padding:2px 20px 8px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-commit{display:grid;grid-template-columns:104px 42px minmax(0,1fr) auto;gap:13px;align-items:center;padding:14px 2px;border-bottom:1px solid rgba(255,255,255,.06)}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-commit:last-child{border-bottom:0}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-due{font-size:10px;font-weight:900;color:#9BAABB;text-transform:uppercase;letter-spacing:.04em}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-due.overdue{color:#FF9A9A}html[data-connect-authoritative="v736"] #rp-overlay .act735-due.today{color:#FFD08A}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-commit-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;border:1px solid rgba(0,175,239,.15);background:rgba(0,175,239,.07);font-size:17px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-commit-main strong{display:block;color:#F2F7FA;font-size:12.5px;font-weight:900;line-height:1.35}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-commit-main span{display:block;margin-top:4px;color:#8999AA;font-size:10.5px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-empty{padding:25px 20px;text-align:center;color:#7F93A5;font-size:11.5px;line-height:1.6}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 180px 220px auto;gap:9px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.018)}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar input,html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar select{min-height:38px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:#0D1518;color:#E8EFF4;padding:8px 11px;font:inherit;font-size:10.5px;outline:none}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar input:focus,html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar select:focus{border-color:rgba(0,175,239,.68);box-shadow:0 0 0 3px rgba(0,175,239,.10)}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-count{display:flex;align-items:center;justify-content:center;padding:0 11px;border:1px solid rgba(0,175,239,.16);border-radius:11px;background:rgba(0,175,239,.055);color:#92E2FF;font-size:10px;font-weight:900;white-space:nowrap}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-feed{padding:5px 20px 13px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event{display:grid;grid-template-columns:112px 44px minmax(0,1fr) auto;gap:13px;align-items:start;padding:16px 2px;border-bottom:1px solid rgba(255,255,255,.06)}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event:last-child{border-bottom:0}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-date{padding-top:3px;color:#7F93A5;font-size:10px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:14px;border:1px solid color-mix(in srgb,var(--evt,#00AFEF) 34%,rgba(255,255,255,.07));background:color-mix(in srgb,var(--evt,#00AFEF) 10%,transparent);font-size:18px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-title{color:#F0F5F8;font-size:13px;font-weight:930;line-height:1.35}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-type{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;border:1px solid color-mix(in srgb,var(--evt,#00AFEF) 30%,rgba(255,255,255,.07));background:color-mix(in srgb,var(--evt,#00AFEF) 8%,transparent);color:color-mix(in srgb,var(--evt,#00AFEF) 70%,white);font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-detail{margin-top:6px;color:#A5B4C0;font-size:11.5px;line-height:1.55}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-meta{margin-top:6px;color:#748A9C;font-size:9.5px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-outcome{margin-top:8px;padding:8px 10px;border-left:3px solid #47D16C;border-radius:0 10px 10px 0;background:rgba(71,209,108,.055);color:#BDEBC9;font-size:10.5px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-next{margin-top:7px;color:#FFD1B5;font-size:10px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-event-action{padding-top:2px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-more{display:flex;justify-content:center;padding:4px 18px 18px}
+html[data-connect-authoritative="v736"] #rp-overlay .act735-note{padding:10px 18px 0;color:#667D90;font-size:9.5px;line-height:1.5;text-align:right}
+@media(max-width:1050px){html[data-connect-authoritative="v736"] #rp-overlay .act735-snapshot{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar{grid-template-columns:1fr 1fr}html[data-connect-authoritative="v736"] #rp-overlay .act735-count{min-height:38px}html[data-connect-authoritative="v736"] #rp-overlay .act735-event{grid-template-columns:92px 40px minmax(0,1fr)}html[data-connect-authoritative="v736"] #rp-overlay .act735-event-action{grid-column:3}html[data-connect-authoritative="v736"] #rp-overlay .act735-commit{grid-template-columns:90px 38px minmax(0,1fr)}html[data-connect-authoritative="v736"] #rp-overlay .act735-commit>.act735-btn{grid-column:3;justify-self:start}}
+@media(max-width:680px){html[data-connect-authoritative="v736"] #rp-overlay .act735-panel-head{flex-direction:column}html[data-connect-authoritative="v736"] #rp-overlay .act735-head-actions{justify-content:flex-start}html[data-connect-authoritative="v736"] #rp-overlay .act735-toolbar{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .act735-event{grid-template-columns:38px minmax(0,1fr)}html[data-connect-authoritative="v736"] #rp-overlay .act735-event-date{grid-column:1/-1}html[data-connect-authoritative="v736"] #rp-overlay .act735-event-action{grid-column:2}html[data-connect-authoritative="v736"] #rp-overlay .act735-commit{grid-template-columns:38px minmax(0,1fr)}html[data-connect-authoritative="v736"] #rp-overlay .act735-due{grid-column:1/-1}html[data-connect-authoritative="v736"] #rp-overlay .act735-commit>.act735-btn{grid-column:2}}
 </style>
-<script id="connect-v735-company-activity-js">
+<script id="connect-v736-company-activity-js">
 (function(){
  'use strict';
- var BUILD='v735',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',PRODUCTS='tcp_rp_products_v520',DOCS='tcp_rp_documents_v519';
+ var BUILD='v736',CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504',PRODUCTS='tcp_rp_products_v520',DOCS='tcp_rp_documents_v519';
  var BASE=window._rp2CustomersV2;
  if(typeof BASE!=='function')return;
  var state={search:'',type:'All Activity',contact:'All Contacts',limit:25,data:null};
@@ -74068,21 +74068,186 @@ html[data-connect-authoritative="v735"] #rp-overlay .act735-note{padding:10px 18
  function eventRow(e){var meta=[e.contact,e.source].filter(Boolean).join(' · '),action=e.action?actionButton(e.action,e.action==='orders'?'Open Order History':e.action==='artwork'?'Open Artwork':e.action==='products'?'Open Products':e.action==='action'?'Open Action Center':'Open'):'';return'<div class="act735-event"><time class="act735-event-date">'+esc(fmtEvent(e.date))+'</time><div class="act735-event-icon" style="--evt:'+color(e.cat)+'">'+icon(e.cat)+'</div><div class="act735-event-main" style="--evt:'+color(e.cat)+'"><div class="act735-event-top"><span class="act735-type" style="--evt:'+color(e.cat)+'">'+esc(e.cat)+'</span><strong class="act735-event-title">'+esc(e.title)+'</strong></div>'+(e.detail?'<div class="act735-event-detail">'+esc(e.detail)+'</div>':'')+(meta?'<div class="act735-event-meta">'+esc(meta)+'</div>':'')+(e.outcome?'<div class="act735-outcome"><strong>Outcome:</strong> '+esc(e.outcome)+'</div>':'')+(e.next?'<div class="act735-next"><strong>Next:</strong> '+esc(e.next)+(e.nextDate?' · '+esc(fmt(e.nextDate)):'')+'</div>':'')+'</div><div class="act735-event-action">'+action+'</div></div>'}
  function timelineHtml(g){var all=filtered(g),show=all.slice(0,state.limit);return'<div class="act735-toolbar"><input id="act735Search" placeholder="Search account activity…" value="'+esc(state.search)+'" oninput="_act735Filter(\'search\',this.value)"><select id="act735Type" onchange="_act735Filter(\'type\',this.value)"><option'+(state.type==='All Activity'?' selected':'')+'>All Activity</option>'+['Calls','Emails','Meetings','Texts','Notes','Quotes','Orders','Follow-Ups','Artwork','Samples','Other'].map(function(x){return'<option'+(state.type===x?' selected':'')+'>'+x+'</option>'}).join('')+'</select><select id="act735Contact" onchange="_act735Filter(\'contact\',this.value)"><option'+(state.contact==='All Contacts'?' selected':'')+'>All Contacts</option>'+contactOptions(g)+'</select><div class="act735-count" id="act735Count">'+all.length+' meaningful event'+(all.length===1?'':'s')+'</div></div><div class="act735-feed" id="act735Feed">'+(show.length?show.map(eventRow).join(''):'<div class="act735-empty">No account events match these filters.</div>')+'</div>'+(all.length>show.length?'<div class="act735-more"><button class="act735-btn" onclick="_act735More()">Show '+Math.min(25,all.length-show.length)+' more</button></div>':'')+'<div class="act735-note">Meaningful customer and sales events only. Low-value system audit changes are intentionally excluded.</div>'}
  function renderActivity(g){var lt=g.lastTouch,commit=g.commitments[0],dl=commit?dueLabel(commit.date):null;return'<div class="act735-wrap"><div class="act735-snapshot"><article class="act735-stat" style="--actGlow:rgba(0,175,239,.28)"><div class="act735-stat-label">Last Meaningful Touch</div><div class="act735-stat-value">'+esc(lt?(fmt(lt.date)+' · '+(lt.contact||lt.type||'Customer')):'No touch recorded')+'</div><div class="act735-stat-copy">'+esc(lt?(lt.title+(lt.outcome?' · '+lt.outcome:'')):'Log a call, email, meeting, or text to establish the relationship history.')+'</div></article><article class="act735-stat" style="--actGlow:rgba(250,135,61,.28)"><div class="act735-stat-label">Next Commitment</div><div class="act735-stat-value">'+esc(commit?(dl.label+' · '+commit.title):'Nothing scheduled')+'</div><div class="act735-stat-copy">'+esc(commit?([commit.contact,commit.copy].filter(Boolean).join(' · ')):'Create the next customer commitment so the account never depends on memory.')+'</div></article><article class="act735-stat" style="--actGlow:rgba(71,209,108,.25)"><div class="act735-stat-label">Open Follow-Ups</div><div class="act735-stat-value">'+g.openTasks.length+'</div><div class="act735-stat-copy">'+(g.openTasks.length?'Executable customer commitments currently in the Action Center.':'No open account follow-ups are waiting in the Action Center.')+'</div></article></div><section class="act735-panel"><div class="act735-panel-head"><div><div class="act735-kick">Next Commitments</div><div class="act735-title">What this customer is waiting on next</div><div class="act735-copy">Only active, dated promises and relationship touches appear here. Execute the task in Action Center or create a new follow-up when the next step changes.</div></div><div class="act735-head-actions"><button class="act735-btn" onclick="_rp2Go(\'action\')">Open Action Center</button><button class="act735-btn primary" onclick="_cux8Action(\'task\')">＋ Create Follow-Up</button></div></div>'+renderCommitments(g)+'</section><section class="act735-panel"><div class="act735-panel-head"><div><div class="act735-kick">Account Timeline</div><div class="act735-title">The chronological story of the account</div><div class="act735-copy">Calls, emails, meetings, quotes, orders, artwork, samples, and meaningful follow-through in one account-scoped feed.</div></div><div class="act735-head-actions"><button class="act735-btn primary" onclick="_cux8Action(\'activity\')">＋ Log Activity</button></div></div><div id="act735TimelineHost">'+timelineHtml(g)+'</div></section></div>'}
- function patch(markup){if(window._cux8Section!=='activity')return markup;try{var name=currentCompany();if(!name)return markup;var g=getData(name);state.data=g;var doc=new DOMParser().parseFromString('<body>'+markup+'</body>','text/html'),content=doc.querySelector('.cux8-content');if(!content)return markup;content.innerHTML=renderActivity(g);var title=doc.querySelector('.cux8-section-title'),copy=doc.querySelector('.cux8-section-copy'),actions=doc.querySelector('.cux8-section-actions');if(title)title.textContent='Activity';if(copy)copy.textContent='What happened, what the customer decided, and what happens next.';if(actions)actions.innerHTML='<button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button><button class="cux8-action" onclick="_cux8Action(\'activity\')">Log Activity</button><button class="cux8-action orange" onclick="_cux8Action(\'task\')">Create Follow-Up</button>';return doc.body.innerHTML}catch(e){console.warn('[v735 activity]',e);return markup}}
+ function patch(markup){if(window._cux8Section!=='activity')return markup;try{var name=currentCompany();if(!name)return markup;var g=getData(name);state.data=g;var doc=new DOMParser().parseFromString('<body>'+markup+'</body>','text/html'),content=doc.querySelector('.cux8-content');if(!content)return markup;content.innerHTML=renderActivity(g);var title=doc.querySelector('.cux8-section-title'),copy=doc.querySelector('.cux8-section-copy'),actions=doc.querySelector('.cux8-section-actions');if(title)title.textContent='Activity';if(copy)copy.textContent='What happened, what the customer decided, and what happens next.';if(actions)actions.innerHTML='<button class="cux8-action primary" onclick="_cux8Action(\'call\')">☎ Call</button><button class="cux8-action" onclick="_cux8Action(\'activity\')">Log Activity</button><button class="cux8-action orange" onclick="_cux8Action(\'task\')">Create Follow-Up</button>';return doc.body.innerHTML}catch(e){console.warn('[v736 activity]',e);return markup}}
  function wrapped(){return patch(BASE.apply(this,arguments))}
  window._rp2CustomersV2=wrapped;window._rp2CompanyProfileV3=wrapped;
  window._act735Filter=function(kind,value){if(kind==='search')state.search=clean(value);else if(kind==='type')state.type=clean(value)||'All Activity';else if(kind==='contact')state.contact=clean(value)||'All Contacts';state.limit=25;window._act735Paint()};
  window._act735More=function(){state.limit+=25;window._act735Paint()};
  window._act735Paint=function(){var host=document.getElementById('act735TimelineHost');if(!host||!state.data)return;host.innerHTML=timelineHtml(state.data);var search=document.getElementById('act735Search');if(search&&state.search){search.focus();try{search.setSelectionRange(search.value.length,search.value.length)}catch(e){}}};
- window.TCP_COMPANY_ACTIVITY_V735={version:BUILD,render:renderActivity,refresh:function(){state.data=getData(currentCompany());window._act735Paint()}};
+ window.TCP_COMPANY_ACTIVITY_V736={version:BUILD,render:renderActivity,refresh:function(){state.data=getData(currentCompany());window._act735Paint()}};
 })();
 </script>
 
-<script id="connect-v735-final-authority-eof">
+
+<style id="connect-v736-company-artwork-workspace-css">
+html[data-connect-authoritative="v736"] #rp-overlay .art736-wrap{display:flex;flex-direction:column;gap:18px;padding:14px 0 34px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-snapshot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-stat{position:relative;overflow:hidden;min-height:145px;padding:19px 20px;border:1px solid rgba(255,255,255,.075);border-radius:19px;background:linear-gradient(180deg,rgba(16,29,41,.94),rgba(9,20,29,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-stat:after{content:"";position:absolute;right:-35px;top:-45px;width:140px;height:140px;border-radius:999px;background:radial-gradient(circle,var(--artGlow,rgba(179,108,255,.25)),transparent 68%);pointer-events:none}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-stat-label{position:relative;z-index:1;font-size:9px;font-weight:950;letter-spacing:.105em;text-transform:uppercase;color:#91A4B5}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-stat-value{position:relative;z-index:1;margin-top:9px;font-size:28px;line-height:1.06;font-weight:950;letter-spacing:-.035em;color:#F2F7FA}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-stat-copy{position:relative;z-index:1;margin-top:10px;font-size:11px;line-height:1.5;color:#8194A5}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-panel{border:1px solid rgba(255,255,255,.075);border-radius:20px;background:rgba(8,18,27,.54);overflow:hidden}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-panel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:19px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-kick{font-size:8.5px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;color:#B98BFF}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-title{margin-top:5px;font-family:Georgia,"Times New Roman",serif;font-size:22px;line-height:1.08;font-weight:900;color:#F2F6FA}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-copy{margin-top:7px;max-width:820px;font-size:11.3px;line-height:1.55;color:#8296A7}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-head-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-btn{min-height:35px;padding:0 12px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:#101E29;color:#C7D3DB;font:inherit;font-size:9.8px;font-weight:850;cursor:pointer;transition:.14s ease}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-btn:hover{border-color:rgba(179,108,255,.38);background:rgba(179,108,255,.08);color:#F2E8FF}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-btn.primary{border-color:rgba(179,108,255,.34);background:rgba(179,108,255,.11);color:#E2CBFF}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-btn.orange{border-color:rgba(250,135,61,.28);background:rgba(250,135,61,.08);color:#FFD2B5}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-btn:disabled{opacity:.45;cursor:not-allowed}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-attn-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;padding:14px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-attn{padding:15px 16px;border:1px solid rgba(240,162,52,.17);border-left:3px solid #F0A234;border-radius:14px;background:linear-gradient(180deg,rgba(42,31,18,.54),rgba(19,23,28,.8))}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-attn-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-attn strong{display:block;color:#F4F7F9;font-size:13px;font-weight:900}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-attn span{display:block;margin-top:4px;color:#A28E72;font-size:10px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-attn-copy{margin-top:10px;color:#D1BA93;font-size:10.5px;line-height:1.5}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-status{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);font-size:8.3px;font-weight:950;letter-spacing:.045em;text-transform:uppercase;white-space:nowrap;color:#A9B7C1}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-status.good{color:#9CEBB6;border-color:rgba(71,209,108,.22);background:rgba(71,209,108,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-status.warn{color:#FFD18A;border-color:rgba(240,162,52,.24);background:rgba(240,162,52,.06)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-status.risk{color:#FFB8C4;border-color:rgba(251,113,133,.22);background:rgba(251,113,133,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-status.info{color:#A9EFFF;border-color:rgba(0,175,239,.22);background:rgba(0,175,239,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-clear{margin:14px;padding:13px 14px;border:1px solid rgba(71,209,108,.15);border-radius:13px;background:rgba(71,209,108,.045);color:#9ED5AF;font-size:10.8px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-workspace{display:grid;grid-template-columns:minmax(250px,320px) minmax(420px,1fr) minmax(270px,350px);min-height:625px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-library{border-right:1px solid rgba(255,255,255,.06);background:rgba(6,14,21,.34)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-library-tools{padding:14px;border-bottom:1px solid rgba(255,255,255,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-search{width:100%;min-height:38px;padding:0 11px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0C1720;color:#E7EFF4;font:inherit;font-size:10.5px;outline:none}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-search:focus{border-color:rgba(179,108,255,.42);box-shadow:0 0 0 3px rgba(179,108,255,.08)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-filter-row{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:8px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-select{min-height:34px;padding:0 28px 0 9px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:#0D1822;color:#B9C7D0;font:inherit;font-size:9.5px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-count{display:flex;align-items:center;padding:0 8px;border:1px solid rgba(255,255,255,.06);border-radius:9px;background:rgba(255,255,255,.025);font-size:8.8px;font-weight:850;color:#71879A;white-space:nowrap}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-list{max-height:555px;overflow:auto;padding:8px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-row{width:100%;display:block;margin:0 0 6px;padding:11px 11px 10px;border:1px solid transparent;border-radius:11px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:inherit}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-row:hover{background:rgba(255,255,255,.027);border-color:rgba(255,255,255,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-row.on{background:rgba(179,108,255,.07);border-color:rgba(179,108,255,.23)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-row-title{font-size:11px;font-weight:900;color:#EAF0F4;line-height:1.3}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-row-meta{margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:8.5px;color:#72889A}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-row-coid{margin-left:auto;color:#8D9EAC}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-detail{padding:18px 20px 22px;min-width:0}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-detail-title{font-size:21px;line-height:1.12;font-weight:950;letter-spacing:-.025em;color:#F4F8FB}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-detail-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-chip{padding:4px 7px;border:1px solid rgba(255,255,255,.075);border-radius:999px;background:rgba(255,255,255,.025);font-size:8.5px;font-weight:800;color:#8298AA}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-preview{position:relative;display:grid;place-items:center;min-height:300px;margin-top:15px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:linear-gradient(135deg,#101B23,#0B141D);overflow:hidden}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-preview img{max-width:100%;max-height:420px;object-fit:contain;display:block}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-file-placeholder{text-align:center;padding:32px;color:#8A9CAA}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-file-icon{width:78px;height:78px;display:grid;place-items:center;margin:0 auto 13px;border:1px solid rgba(179,108,255,.18);border-radius:22px;background:rgba(179,108,255,.07);font-size:31px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-file-placeholder strong{display:block;color:#DCE6EB;font-size:12px;word-break:break-word}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-file-placeholder span{display:block;margin-top:6px;font-size:9.5px;line-height:1.5}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-fact{padding:10px 11px;border:1px solid rgba(255,255,255,.055);border-radius:10px;background:rgba(255,255,255,.018);min-width:0}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-fact span{display:block;font-size:7.7px;font-weight:950;letter-spacing:.075em;text-transform:uppercase;color:#708697}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-fact strong{display:block;margin-top:5px;color:#DCE6EC;font-size:10.5px;line-height:1.45;word-break:break-word}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-section-label{margin-top:17px;padding-top:14px;border-top:1px solid rgba(255,255,255,.055);font-size:8px;font-weight:950;letter-spacing:.105em;text-transform:uppercase;color:#9B79D6}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-color-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-color{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(255,255,255,.07);border-radius:999px;background:rgba(255,255,255,.025);font-size:9px;color:#AAB9C4}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-color i{width:9px;height:9px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:var(--sw,#687988)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-detail-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-side{border-left:1px solid rgba(255,255,255,.06);background:rgba(6,14,21,.25);padding:15px;overflow:auto;max-height:625px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-side-block{padding-bottom:15px;margin-bottom:15px;border-bottom:1px solid rgba(255,255,255,.055)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-side-block:last-child{border-bottom:0;margin-bottom:0}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-side-title{font-size:8px;font-weight:950;letter-spacing:.095em;text-transform:uppercase;color:#8499AA;margin-bottom:9px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-use{padding:9px 10px;margin-bottom:6px;border:1px solid rgba(255,255,255,.055);border-radius:10px;background:rgba(255,255,255,.018)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-use strong{display:block;color:#DDE7ED;font-size:10px;line-height:1.38}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-use span{display:block;margin-top:4px;color:#758A9B;font-size:8.5px;line-height:1.45}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-rev{display:grid;grid-template-columns:38px 1fr;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.045)}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-rev:last-child{border-bottom:0}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-rev-thumb{width:38px;height:34px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:#101B23;color:#879AAA;font-size:13px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-rev strong{display:block;color:#D9E4EA;font-size:9.5px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-rev span{display:block;margin-top:3px;color:#718798;font-size:8px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-empty{padding:16px;border:1px dashed rgba(255,255,255,.08);border-radius:11px;color:#72889B;background:rgba(255,255,255,.015);font-size:9.5px;line-height:1.5}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-brand{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:17px 19px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-brand strong{display:block;color:#F0F5F8;font-size:12px;margin-bottom:5px}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-brand p{margin:0;max-width:900px;color:#869AAB;font-size:10.8px;line-height:1.55}
+html[data-connect-authoritative="v736"] #rp-overlay .art736-protected{display:inline-flex;align-items:center;gap:6px;margin-top:9px;padding:5px 8px;border:1px solid rgba(0,175,239,.18);border-radius:999px;background:rgba(0,175,239,.045);color:#91DDF1;font-size:8.5px;font-weight:850}
+@media(max-width:1380px){html[data-connect-authoritative="v736"] #rp-overlay .art736-workspace{grid-template-columns:280px minmax(430px,1fr)}html[data-connect-authoritative="v736"] #rp-overlay .art736-side{grid-column:1/-1;border-left:0;border-top:1px solid rgba(255,255,255,.06);max-height:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}html[data-connect-authoritative="v736"] #rp-overlay .art736-side-block{margin:0;padding:0;border-bottom:0}}
+@media(max-width:900px){html[data-connect-authoritative="v736"] #rp-overlay .art736-snapshot{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .art736-workspace{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .art736-library{border-right:0;border-bottom:1px solid rgba(255,255,255,.06)}html[data-connect-authoritative="v736"] #rp-overlay .art736-list{max-height:300px}html[data-connect-authoritative="v736"] #rp-overlay .art736-side{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .art736-facts{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .art736-brand{grid-template-columns:1fr}html[data-connect-authoritative="v736"] #rp-overlay .art736-panel-head{align-items:flex-start;flex-direction:column}html[data-connect-authoritative="v736"] #rp-overlay .art736-head-actions{justify-content:flex-start}}
+</style>
+
+<script id="connect-v736-company-artwork-workspace-js">
 (function(){
- var BUILD='v735',DISPLAY='V735',TITLE='Connect v735 — Sales Portal';
+ 'use strict';
+ var BUILD='v736',BASE_CUSTOMERS=window._rp2CustomersV2,BASE_PROFILE=window._rp2CompanyProfileV3;
+ var CRM='tcp_rp_company_crm_v510',DOCS='tcp_rp_documents_v519',PLAN='tcp_rp_account_plans_v517';
+ var state=window._art736State||{search:'',type:'All Types',selected:'',data:null};window._art736State=state;
+ function arr(v){if(Array.isArray(v))return v;if(!v)return[];try{if(typeof v.length==='number'&&typeof v!=='string')return Array.prototype.slice.call(v);if(typeof v==='object')return Object.keys(v).map(function(k){return v[k]}).filter(Boolean)}catch(e){}return[]}
+ function clean(v){return String(v==null?'':v).trim()}
+ function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+ function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+ function read(k,def){try{return JSON.parse(localStorage.getItem(k)||'null')||def}catch(e){return def}}
+ function pick(o,names,def){for(var i=0;i<names.length;i++){var v=o&&o[names[i]];if(v!=null&&clean(v)!=='')return v}return def==null?'':def}
+ function rep(){return clean(window._rp2&&window._rp2.rep)||'Demo Rep'}
+ function currentCompany(){return clean(window._cux8CurrentName||window._cw4CompanyName||((document.querySelector('#rp-overlay .cux8-section-company')||{}).textContent||'').replace(/\s*·\s*Customer Command Center.*$/i,''))}
+ function dt(v){if(!v)return null;var d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(clean(v))?clean(v)+'T12:00:00':v);return isNaN(d.getTime())?null:d}
+ function fmt(v){var d=dt(v);return d?d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}
+ function list(v){if(Array.isArray(v))return v.map(clean).filter(Boolean);if(v&&typeof v==='object')return Object.keys(v).map(function(k){var x=v[k];return clean(typeof x==='string'?x:pick(x,['name','label','color','title'],k))}).filter(Boolean);return clean(v)?clean(v).split(/\s*[;,|]\s*/).map(clean).filter(Boolean):[]}
+ function companyOf(o){return clean(pick(o,['company','customer','account','accountName','companyName','organization'],'')||'')}
+ function matchesCompany(o,name){return norm(companyOf(o))===norm(name)}
+ function isArtwork(o){var t=[pick(o,['type','documentType','category','jobType','artType'],''),pick(o,['title','name','fileName','description','notes'],''),pick(o,['decorationMethod','decoration','method'],''),pick(o,['coid','colorOptionId','artId','artworkId'],'' )].join(' ');return /art|logo|proof|mockup|vector|embroid|screen\s*print|heat\s*transfer|sublimat|patch|cap|coid|color option|sewout|transparenc/i.test(t)}
+ function inferType(o){var t=clean(pick(o,['jobType','artType','type','documentType','category','decorationMethod','decoration','method'],'Art'));var all=(t+' '+pick(o,['title','name','fileName'],'')).toLowerCase();if(/embroid|sewout/.test(all))return'Embroidery';if(/screen\s*print|transparenc/.test(all))return'Screen Print';if(/sublimat/.test(all))return'Sublimation';if(/heat\s*transfer/.test(all))return'Heat Transfer';if(/custom\s*cap|cap/.test(all))return'Custom Caps';if(/mockup/.test(all))return'Mockup';if(/logo/.test(all))return'Logo';if(/proof/.test(all))return'Proof';return t||'Artwork'}
+ function statusInfo(s){var x=clean(s)||'Status not recorded',l=x.toLowerCase();if(/rejected|declined|error|failed/.test(l))return{label:x,tone:'risk',rank:0,pending:false,approved:false};if(/pending|await|review|proof needed|sewout needed|approval needed|sent for approval/.test(l))return{label:x,tone:'warn',rank:1,pending:true,approved:false};if(/approved|production ready|completed|complete/.test(l))return{label:x,tone:'good',rank:2,pending:false,approved:true};return{label:x,tone:'info',rank:3,pending:false,approved:false}}
+ function extensionIcon(file){var f=clean(file).toLowerCase();if(/\.pdf$/.test(f))return'PDF';if(/\.(ai|eps|svg)$/.test(f))return'✒';if(/\.(png|jpg|jpeg|gif|webp)$/.test(f))return'▧';if(/\.(dst|emb|pes)$/.test(f))return'⌁';return'ART'}
+ function previewUrl(d){var u=clean(pick(d.raw,['previewUrl','imageUrl','thumbnailUrl','url','dataUrl'],''));if(/^data:image\//i.test(u))return u;if(/^https?:/i.test(u)&&/\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(u))return u;return''}
+ function baseNormalize(raw,source,index){
+   var title=clean(pick(raw,['logoName','artName','title','name','description','fileName'],'Artwork '+(index+1)))||'Artwork';
+   var fileName=clean(pick(raw,['fileName','filename','embroideryFile','embFile','attachmentName'],''));
+   var status=clean(pick(raw,['approvalStatus','artStatus','jobStatus','status','approval'],'Status not recorded'));
+   var coid=clean(pick(raw,['coid','colorOptionId','colorOptionID','artId','artworkId','optionId'],''));
+   var id=clean(pick(raw,['id','key','documentId','artworkId','artId'],''))||coid||norm(title+' '+fileName+' '+source+' '+index);
+   var width=clean(pick(raw,['width','artWidth','logoWidth'],'')),height=clean(pick(raw,['height','artHeight','logoHeight'],'')),dims=clean(pick(raw,['dimensions','size','artSize'],''));if(!dims&&(width||height))dims=[width&&width+(String(width).match(/[a-z"]/i)?'':'"w'),height&&height+(String(height).match(/[a-z"]/i)?'':'"h')].filter(Boolean).join(' × ');
+   var colors=list(pick(raw,['colors','colorOptions','inkColors','threadColors','colorList'],[]));
+   var st=statusInfo(status);
+   return{key:source+'|'+id,id:id,raw:raw,source:source,title:title,fileName:fileName,type:inferType(raw),status:status,statusInfo:st,coid:coid,date:pick(raw,['date','updatedAt','createdAt','artDate','jobDate'],''),dimensions:dims,colors:colors,colorProtected:!!pick(raw,['colorProtected','colorsProtected','protectedColors'],false)||/color protected/i.test(clean(pick(raw,['notes','description','otherInfo'],''))),words:clean(pick(raw,['words','text','wording'],'')),clipart:clean(pick(raw,['clipart','clipArt','clipartDescription'],'')),placement:clean(pick(raw,['placement','artPlacement','location','decorationLocation'],'')),orderNumber:clean(pick(raw,['orderNumber','orderNum','so','salesOrder','invoiceNumber','poNumber'],'')),product:clean(pick(raw,['productName','product','style','skuDescription'],'')),poNumber:clean(pick(raw,['poNumber','poNum','purchaseOrder'],'')),stitchCount:clean(pick(raw,['stitchCount','stitches'],'')),embroideryFile:clean(pick(raw,['embroideryFile','embFile','embFilename'],'')),sentTo:clean(pick(raw,['sentTo','vendor','supplier'],'')),shipMethod:clean(pick(raw,['shipMethod','deliveryMethod'],'')),notes:clean(pick(raw,['notes','description','otherInfo','approvalNote'],'')),revisions:arr(pick(raw,['revisions','versions','colorRevisions','revisionHistory'],[])),history:arr(pick(raw,['history','statusHistory','printHistory','contactLog'],[])),customersUsed:arr(pick(raw,['customersUsed','usedByCustomers','customerUsage'],[])),uses:arr(pick(raw,['usedOn','usages','placements','salesLines','orderHistory'],[])),attachmentId:clean(pick(raw,['attachmentId'],'')),url:clean(pick(raw,['url','externalUrl'],'')),preview:''}
+ }
+ function addRaw(out,seen,raw,source,index,name){if(!raw||!matchesCompany(raw,name)||!isArtwork(raw))return;var n=baseNormalize(raw,source,index);var sig=norm(n.coid||n.id||n.title+' '+n.fileName);if(!sig)return;if(seen[sig]){var prev=seen[sig];Object.keys(n).forEach(function(k){if((prev[k]==null||prev[k]===''||(Array.isArray(prev[k])&&!prev[k].length))&&n[k]!=null&&n[k]!==''&&(!Array.isArray(n[k])||n[k].length))prev[k]=n[k]});return}seen[sig]=n;out.push(n)}
+ function accountFiles(name){var st=read(CRM,{version:1,reps:{}}),rb=st.reps&&st.reps[rep()],accounts=rb&&rb.accounts||{},hit=null;Object.keys(accounts).some(function(k){var a=accounts[k]||{},nm=clean(a.profile&&a.profile.name||k);if(norm(nm)===norm(name)){hit=a;return true}return false});return hit?arr(hit.files):[]}
+ function brandStandards(name){var st=read(PLAN,{version:1,reps:{}}),rb=st.reps&&st.reps[rep()]||{},plans=rb.plans||{},p=plans[norm(name)]||{};return clean(p.brandStandards||p.brandStandard||'')}
+ function runtimePools(){var s=window.S||{};return[s.documents,s.files,s.proofs,s.artwork,s.customerArtwork,s.logos,s.coids]}
+ function lineItems(name){var s=window.S||{};return arr(s.orderLineItems).filter(function(x){return matchesCompany(x,name)})}
+ function deriveUses(d,name){var uses=[];function push(u){if(!u)return;var product=clean(pick(u,['product','productName','style','description','name'],'')),order=clean(pick(u,['orderNumber','orderNum','so','invoiceNumber'],'')),place=clean(pick(u,['placement','artPlacement','decorationLocation','location'],'')),date=pick(u,['date','orderDate','invoiceDate'],''),sig=norm(product+'|'+order+'|'+place);if(!sig)return;if(!uses.some(function(x){return norm(x.product+'|'+x.order+'|'+x.placement)===sig}))uses.push({product:product||'Product not recorded',order:order,placement:place,date:date})}
+   d.uses.forEach(push);
+   var li=lineItems(name),orderKey=norm(d.orderNumber),prodKey=norm(d.product);
+   li.forEach(function(x){var o=norm(pick(x,['orderNumber','orderNum','so'],'')||''),p=norm(pick(x,['productName','description','product'],'')||'');if((orderKey&&o===orderKey)||(prodKey&&p.indexOf(prodKey)>=0))push({product:pick(x,['productName','description','product'],'Product'),order:pick(x,['orderNumber','orderNum','so'],''),placement:pick(x,['decorationLocation','placement'],'')||d.placement,date:pick(x,['orderDate','date'],'')})});
+   return uses
+ }
+ function demoOverlay(rows,name){if(norm(name)!==norm('DEMO — Summit Ridge Industrial Services'))return;rows.forEach(function(d){if(d.coid==='CO-DEMO-1001'||/primary summit ridge logo|primary logo artwork/i.test(d.title)){d.type=d.type==='Artwork'?'Embroidery':d.type;d.status='Approved';d.statusInfo=statusInfo(d.status);d.dimensions=d.dimensions||'3.00"w × 1.48"h';d.colors=d.colors.length?d.colors:['Navy','Safety Yellow','White'];d.colorProtected=true;d.placement=d.placement||'Left Chest';d.stitchCount=d.stitchCount||'3,738';d.embroideryFile=d.embroideryFile||'SR-PRIMARY-3738';d.uses=d.uses.length?d.uses:[{product:'Hi-Vis Softshell Jacket',order:'D2503',placement:'Left Chest',date:'2025-11-10'},{product:'Hi-Vis Softshell Jacket',order:'D2603',placement:'Left Chest',date:'2026-08-11'},{product:'Hi-Vis Softshell Jacket',order:'D2604',placement:'Left Chest',date:'2026-08-20'}];}
+     if(d.coid==='CO-DEMO-1002'||/fall jacket.*proof/i.test(d.title)){d.type='Embroidery Proof';d.status='Pending Customer Approval';d.statusInfo=statusInfo(d.status);d.colors=d.colors.length?d.colors:['Navy','Safety Yellow','White'];d.colorProtected=true;d.placement=d.placement||'Left Chest';d.product=d.product||'Hi-Vis Softshell Jacket';d.orderNumber=d.orderNumber||'D2604';d.uses=d.uses.length?d.uses:[{product:'Hi-Vis Softshell Jacket',order:'D2604',placement:'Left Chest',date:'2026-08-20'}];d.notes=d.notes||'Current fall jacket proof is waiting for customer artwork approval before production.';}
+   })}
+ function getData(name){var out=[],seen={},i=0;accountFiles(name).forEach(function(x){addRaw(out,seen,x,'Account CRM',i++,name)});var ds=read(DOCS,{version:1,reps:{}}),rb=ds.reps&&ds.reps[rep()]||{};arr(rb.documents).forEach(function(x){addRaw(out,seen,x,'Document Center',i++,name)});runtimePools().forEach(function(pool){arr(pool).forEach(function(x){addRaw(out,seen,x,'Connected artwork',i++,name)})});demoOverlay(out,name);out.forEach(function(d){d.preview=previewUrl(d);d.derivedUses=deriveUses(d,name)});out.sort(function(a,b){return(a.statusInfo.rank-b.statusInfo.rank)||((dt(b.date)||new Date(0))-(dt(a.date)||new Date(0)))||a.title.localeCompare(b.title)});return{name:name,rows:out,standards:brandStandards(name)}}
+ function filtered(g){var q=norm(state.search),t=state.type;return g.rows.filter(function(d){if(t!=='All Types'&&d.type!==t)return false;if(q&&norm([d.title,d.fileName,d.type,d.status,d.coid,d.product,d.orderNumber,d.words,d.clipart,d.colors.join(' ')].join(' ')).indexOf(q)<0)return false;return true})}
+ function status(d){return'<span class="art736-status '+d.statusInfo.tone+'">'+esc(d.statusInfo.label)+'</span>'}
+ function colorSwatch(c){var l=clean(c).toLowerCase(),sw='#687988';if(/white/.test(l))sw='#F1F2F3';else if(/black/.test(l))sw='#161A1D';else if(/navy/.test(l))sw='#17304C';else if(/yellow|neon/.test(l))sw='#D7F34A';else if(/green/.test(l))sw='#4BCB63';else if(/blue/.test(l))sw='#2F76D0';else if(/red/.test(l))sw='#C94A4A';else if(/orange/.test(l))sw='#EF873D';return'<span class="art736-color"><i style="--sw:'+sw+'"></i>'+esc(c)+'</span>'}
+ function attention(g){var p=g.rows.filter(function(d){return d.statusInfo.pending||d.statusInfo.tone==='risk'});if(!p.length)return'<div class="art736-clear">✓ Artwork is clear — no loaded proof or artwork record is currently marked as waiting for approval or blocked.</div>';return'<div class="art736-attn-list">'+p.slice(0,4).map(function(d){var next=d.statusInfo.tone==='risk'?'Resolve the rejected or failed artwork status before production.':'Get the required approval before production or the next dependent step.';return'<article class="art736-attn"><div class="art736-attn-top"><div><strong>'+esc(d.title)+'</strong><span>'+esc([d.type,d.coid,d.orderNumber&&('Order '+d.orderNumber)].filter(Boolean).join(' · '))+'</span></div>'+status(d)+'</div><div class="art736-attn-copy">'+esc(d.notes||next)+'</div><div class="art736-detail-actions"><button class="art736-btn primary" onclick="_art736Select(\''+esc(d.key).replace(/'/g,"\\'")+'\')">View Artwork</button>'+(d.orderNumber?'<button class="art736-btn" onclick="_cux8Open(\'orders\')">Open Related Order</button>':'')+'</div></article>'}).join('')+'</div>'}
+ function library(g){var rows=filtered(g),types={};g.rows.forEach(function(d){types[d.type]=1});if(rows.length&&!rows.some(function(d){return d.key===state.selected}))state.selected=rows[0].key;var options=Object.keys(types).sort().map(function(t){return'<option'+(state.type===t?' selected':'')+'>'+esc(t)+'</option>'}).join('');var items=rows.map(function(d){return'<button class="art736-row '+(d.key===state.selected?'on':'')+'" onclick="_art736Select(\''+esc(d.key).replace(/'/g,"\\'")+'\')"><div class="art736-row-title">'+esc(d.title)+'</div><div class="art736-row-meta"><span>'+esc(d.type)+'</span>'+status(d)+'<span class="art736-row-coid">'+esc(d.coid||fmt(d.date))+'</span></div></button>'}).join('');return'<aside class="art736-library"><div class="art736-library-tools"><input class="art736-search" id="art736Search" placeholder="Search artwork, text, COID, filename…" value="'+esc(state.search)+'" oninput="_art736Filter(\'search\',this.value)"><div class="art736-filter-row"><select class="art736-select" onchange="_art736Filter(\'type\',this.value)"><option'+(state.type==='All Types'?' selected':'')+'>All Types</option>'+options+'</select><div class="art736-count">'+rows.length+' shown</div></div></div><div class="art736-list">'+(items||'<div class="art736-empty">No artwork matches these filters.</div>')+'</div></aside>'}
+ function fact(label,value){if(!clean(value))return'';return'<div class="art736-fact"><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong></div>'}
+ function selected(g){var d=g.rows.filter(function(x){return x.key===state.selected})[0]||filtered(g)[0]||g.rows[0];if(!d)return'<main class="art736-detail"><div class="art736-empty">No artwork records are connected to this account yet. Add artwork through the Document Center, then Connect will organize approvals, usage, revisions, and production details here.</div></main>';
+   state.selected=d.key;var preview=d.preview?'<img src="'+esc(d.preview)+'" alt="'+esc(d.title)+' artwork preview">':'<div class="art736-file-placeholder"><div class="art736-file-icon">'+esc(extensionIcon(d.fileName))+'</div><strong>'+esc(d.fileName||d.title)+'</strong><span>No renderable preview is connected to this record. Connect will show the actual art when the source supplies an image or preview URL.</span></div>';
+   var operational=[fact('Placement',d.placement),fact('Related order',d.orderNumber),fact('Related product',d.product),fact('PO / source',d.poNumber),fact('Embroidery file',d.embroideryFile),fact('Stitch count',d.stitchCount),fact('Sent to / vendor',d.sentTo),fact('Delivery method',d.shipMethod)].filter(Boolean).join('');
+   return'<main class="art736-detail"><div class="art736-detail-head"><div><div class="art736-detail-title">'+esc(d.title)+'</div><div class="art736-detail-meta">'+status(d)+'<span class="art736-chip">'+esc(d.type)+'</span>'+(d.coid?'<span class="art736-chip">COID '+esc(d.coid)+'</span>':'')+(d.dimensions?'<span class="art736-chip">'+esc(d.dimensions)+'</span>':'')+'</div></div><div style="font-size:9px;color:#73899A;text-align:right">Updated<br><strong style="color:#BAC7CF">'+esc(fmt(d.date))+'</strong></div></div><div class="art736-preview">'+preview+'</div><div class="art736-facts">'+fact('File',d.fileName)+fact('Words / text',d.words)+fact('Clipart',d.clipart)+fact('Source',d.source)+'</div>'+(d.colors.length?'<div class="art736-section-label">Colors</div><div class="art736-color-row">'+d.colors.map(colorSwatch).join('')+'</div>':'')+(d.colorProtected?'<div class="art736-protected">● Colors protected for this artwork / revision</div>':'')+(operational?'<div class="art736-section-label">Production details</div><div class="art736-facts">'+operational+'</div>':'')+(d.notes?'<div class="art736-section-label">Artwork notes</div><div class="art736-use"><strong>'+esc(d.notes)+'</strong></div>':'')+'<div class="art736-detail-actions"><button class="art736-btn primary" onclick="_art736OpenDocs(false)">Open Source Record</button>'+(d.orderNumber?'<button class="art736-btn" onclick="_cux8Open(\'orders\')">View Related Orders</button>':'')+'<button class="art736-btn" onclick="_cux8Open(\'products\')">View Products</button></div></main>'}
+ function revisionRows(d){var rows=d.revisions;if(!rows.length)return'<div class="art736-empty">No revision history is loaded for this artwork. When the source provides revisions or color options, they will appear here without replacing the approved master.</div>';return rows.slice(0,12).map(function(r,i){var name=clean(pick(r,['title','name','revision','label'],'Revision '+(i+1))),meta=[pick(r,['colors','color','method'],''),pick(r,['status','approvalStatus'],''),pick(r,['date','updatedAt'],'' )&&fmt(pick(r,['date','updatedAt'],''))].filter(Boolean).join(' · ');return'<div class="art736-rev"><div class="art736-rev-thumb">'+(i+1)+'</div><div><strong>'+esc(name)+'</strong><span>'+esc(meta||'Revision details recorded in source')+'</span></div></div>'}).join('')}
+ function historyRows(d){var rows=d.history;if(!rows.length)return'<div class="art736-empty">No status or contact history is loaded for this artwork record.</div>';return rows.slice().reverse().slice(0,8).map(function(h){var title=clean(pick(h,['type','title','status'],'Artwork update')),copy=clean(pick(h,['copy','note','description','detail'],'')),when=fmt(pick(h,['at','date','updatedAt'],''));return'<div class="art736-use"><strong>'+esc(title)+'</strong><span>'+esc([when,copy].filter(function(x){return x&&x!=='—'}).join(' · '))+'</span></div>'}).join('')}
+ function side(g){var d=g.rows.filter(function(x){return x.key===state.selected})[0]||filtered(g)[0]||g.rows[0];if(!d)return'<aside class="art736-side"><div class="art736-empty">Select an artwork record to see prior usage and revision history.</div></aside>';var uses=d.derivedUses||[],customers=d.customersUsed;return'<aside class="art736-side"><section class="art736-side-block"><div class="art736-side-title">Used On / Prior Orders</div>'+(uses.length?uses.slice(0,12).map(function(u){return'<div class="art736-use"><strong>'+esc(u.product)+'</strong><span>'+esc([u.placement,u.order&&('Order '+u.order),u.date&&fmt(u.date)].filter(function(x){return x&&x!=='—'}).join(' · '))+'</span></div>'}).join(''):'<div class="art736-empty">No product or order usage is linked in the available source records.</div>')+'</section><section class="art736-side-block"><div class="art736-side-title">Revisions / Color Options</div>'+revisionRows(d)+'</section>'+(customers.length?'<section class="art736-side-block"><div class="art736-side-title">Also Used By</div>'+customers.slice(0,10).map(function(c){return'<div class="art736-use"><strong>'+esc(typeof c==='string'?c:pick(c,['company','customer','name'],'Customer'))+'</strong><span>Shared artwork usage recorded by source</span></div>'}).join('')+'</section>':'')+'<section class="art736-side-block"><div class="art736-side-title">Status / Contact History</div>'+historyRows(d)+'</section></aside>'}
+ function workspace(g){return'<section class="art736-panel"><div class="art736-panel-head"><div><div class="art736-kick">Artwork Library</div><div class="art736-title">Find the approved art, proof, or production record</div><div class="art736-copy">Search by artwork name, filename, COID, words, or art type. Select a record to see the preview, production details, prior usage, revisions, and status history.</div></div><div class="art736-head-actions"><button class="art736-btn primary" onclick="_art736OpenDocs(true)">＋ Add Artwork</button></div></div><div class="art736-workspace">'+library(g)+selected(g)+side(g)+'</div></section>'}
+ function brand(g){return'<section class="art736-panel"><div class="art736-brand"><div><div class="art736-kick">Customer Brand Standards</div><strong>Rules Connect should carry into every artwork conversation</strong><p>'+esc(g.standards||'No brand standards are recorded in Account Strategy yet. Add logo rules, approved colors, decoration placement, and approval expectations so the rep does not have to rediscover them on every order.')+'</p></div><button class="art736-btn" onclick="_cux726Go(\'strategy\')">'+(g.standards?'Edit Standards':'Add Standards')+'</button></div></section>'}
+ function render(g){var approved=g.rows.filter(function(d){return d.statusInfo.approved}).length,pending=g.rows.filter(function(d){return d.statusInfo.pending||d.statusInfo.tone==='risk'}).length,reused=g.rows.filter(function(d){return (d.derivedUses||[]).length>0}).length;return'<div class="art736-wrap"><div class="art736-snapshot"><article class="art736-stat" style="--artGlow:rgba(71,209,108,.24)"><div class="art736-stat-label">Approved Artwork</div><div class="art736-stat-value">'+approved+'</div><div class="art736-stat-copy">Artwork records explicitly marked approved and safe to review for reuse.</div></article><article class="art736-stat" style="--artGlow:rgba(240,162,52,.28)"><div class="art736-stat-label">Needs Attention</div><div class="art736-stat-value">'+pending+'</div><div class="art736-stat-copy">Pending, waiting, or rejected art/proof records that could block the next step.</div></article><article class="art736-stat" style="--artGlow:rgba(179,108,255,.28)"><div class="art736-stat-label">Used Before</div><div class="art736-stat-value">'+reused+'</div><div class="art736-stat-copy">Artwork with linked product or order usage the rep can review before starting from scratch.</div></article></div><section class="art736-panel"><div class="art736-panel-head"><div><div class="art736-kick">Needs Attention</div><div class="art736-title">Artwork that can hold up the customer</div><div class="art736-copy">Only approvals, proof decisions, and blocked artwork states are promoted here. Approved history stays in the library below.</div></div></div>'+attention(g)+'</section>'+workspace(g)+brand(g)+'</div>'}
+ function patch(markup){if(window._cux8Section!=='artwork')return markup;try{var name=currentCompany();if(!name)return markup;var g=getData(name);state.data=g;var rows=filtered(g);if(!state.selected||!rows.some(function(d){return d.key===state.selected}))state.selected=(rows[0]||g.rows[0]||{}).key||'';var doc=new DOMParser().parseFromString('<body>'+markup+'</body>','text/html'),content=doc.querySelector('.cux8-content');if(!content)return markup;content.innerHTML=render(g);var title=doc.querySelector('.cux8-section-title'),copy=doc.querySelector('.cux8-section-copy'),actions=doc.querySelector('.cux8-section-actions');if(title)title.textContent='Artwork';if(copy)copy.textContent='Approved logos, proofs, production art, revisions, and where each artwork has been used.';if(actions)actions.innerHTML='<button class="cux8-action primary" onclick="_art736OpenDocs(true)">＋ Add Artwork</button><button class="cux8-action" onclick="_cux8Open(\'orders\')">View Orders</button>';return doc.body.innerHTML}catch(e){console.warn('[v736 artwork]',e);return markup}}
+ function wrap(fn){return typeof fn==='function'?function(){return patch(fn.apply(this,arguments))}:fn}
+ window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
+ function paint(focusSearch){var content=document.querySelector('#rp-overlay .cux8-content');if(!content||window._cux8Section!=='artwork')return;var name=currentCompany(),g=getData(name);state.data=g;var rows=filtered(g);if(!rows.some(function(d){return d.key===state.selected}))state.selected=(rows[0]||g.rows[0]||{}).key||'';content.innerHTML=render(g);if(focusSearch){var e=document.getElementById('art736Search');if(e){e.focus();try{e.setSelectionRange(e.value.length,e.value.length)}catch(x){}}}}
+ window._art736Select=function(key){state.selected=key;paint(false)};
+ window._art736Filter=function(kind,value){if(kind==='search')state.search=clean(value);if(kind==='type')state.type=clean(value)||'All Types';paint(kind==='search')};
+ window._art736OpenDocs=function(createNew){var name=currentCompany();if(typeof window._cw4OpenCenter==='function')window._cw4OpenCenter('documents',encodeURIComponent(name));if(createNew)setTimeout(function(){try{if(typeof window._rp2DocumentsNew==='function'){window._rp2DocumentsNew();setTimeout(function(){var c=document.getElementById('dc3-f-company'),t=document.getElementById('dc3-f-type');if(c&&!c.value)c.value=name;if(t&&(!t.value||/general|other/i.test(t.value)))t.value='Artwork'},60)}}catch(e){}},180)};
+ window.TCP_COMPANY_ARTWORK_V736={version:BUILD,render:render,refresh:function(){paint(false)},collect:getData};
+})();
+</script>
+
+<script id="connect-v736-final-authority-eof">
+(function(){
+ var BUILD='v736',DISPLAY='V736',TITLE='Connect v736 — Sales Portal';
  function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){var t=b.textContent||'';if(/build/i.test(t))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});
- /* v735: no subtree build observer — early build authority is already idempotent */
+ /* v736: no subtree build observer — early build authority is already idempotent */
 })();
 </script>
