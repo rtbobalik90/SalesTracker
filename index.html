@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v747 — Sales Portal</title>
+<title>Connect v748 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v747', DISPLAY='V747', TITLE='Connect v747 — Sales Portal';
+  var BUILD='v748', DISPLAY='V748', TITLE='Connect v748 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v747',DISPLAY='V747',TITLE='Connect v747 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v748',DISPLAY='V748',TITLE='Connect v748 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75698,6 +75698,188 @@ window.CONNECT_V747_MAX_ENROLLMENT_DIAGNOSTICS=function(){
       document.title=TITLE;
       document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
         if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY
+      });
+    }catch(e){}
+  }
+  enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
+})();
+</script>
+
+<!-- ===== CONNECT V748 · MAX ENROLLMENT MY DAY NOTIFICATION ===== -->
+<style id="connect-v748-max-enrollment-my-day-css">
+
+/* V748 — Distributor enrollment becomes a compact My Day recommendation.
+   Remove the full-width enrollment block from Distributor Overview. */
+html[data-connect-authoritative="v739"] #rp-overlay .max748-recommendation{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  border:1px solid rgba(250,135,61,.22);
+  background:linear-gradient(90deg,rgba(250,135,61,.085),rgba(0,175,239,.035));
+  border-radius:14px;padding:12px 14px;margin:12px 0 16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.12)
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-left{
+  display:flex;align-items:flex-start;gap:12px;min-width:0
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-icon{
+  width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  flex:0 0 auto;background:rgba(250,135,61,.12);border:1px solid rgba(250,135,61,.28);
+  color:#ffb77f;font-size:16px;font-weight:900
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-copy{min-width:0}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-kicker{
+  color:#54d8f7;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-copy strong{
+  color:#f4f8fc;font-size:13px;line-height:1.3;display:block
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-copy span{
+  color:#97a9bd;font-size:10px;line-height:1.45;display:block;margin-top:3px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-actions{
+  display:flex;align-items:center;gap:8px;flex:0 0 auto
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-btn{
+  border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04);color:#d8e5ef;
+  border-radius:9px;padding:8px 11px;font-size:10px;font-weight:850;cursor:pointer
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-btn.primary{
+  border-color:rgba(0,175,239,.35);background:rgba(0,175,239,.11);color:#bdefff
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-btn:hover{filter:brightness(1.08)}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-backdrop{
+  display:none;position:fixed;inset:0;z-index:2147482600;background:rgba(0,6,14,.74);
+  align-items:center;justify-content:center;padding:20px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-backdrop.open{display:flex}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal{
+  width:min(600px,94vw);border:1px solid rgba(255,255,255,.1);border-radius:17px;
+  background:#101a2a;box-shadow:0 28px 80px rgba(0,0,0,.5);padding:18px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-head{
+  display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:12px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-head h3{
+  margin:0;color:#f4f9ff;font-size:18px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-head p,
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-body p{
+  margin:5px 0 0;color:#9fb2c8;font-size:11px;line-height:1.55
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-close{
+  border:0;background:transparent;color:#9fb2c8;font-size:24px;cursor:pointer
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-body{
+  border-top:1px solid rgba(255,255,255,.07);padding-top:12px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .max748-modal-actions{
+  display:flex;justify-content:flex-end;gap:9px;margin-top:16px
+}
+@media(max-width:760px){
+  html[data-connect-authoritative="v739"] #rp-overlay .max748-recommendation{align-items:flex-start;flex-direction:column}
+  html[data-connect-authoritative="v739"] #rp-overlay .max748-rec-actions{width:100%;justify-content:flex-end}
+}
+
+</style>
+<script id="connect-v748-max-enrollment-my-day-js">
+
+(function(){
+'use strict';
+var REP='Jordan Reed';
+
+function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function isMax(){return clean(window._rp2&&window._rp2.rep||'')===REP}
+function profiles(){
+  try{
+    var e=window.CONNECT_MAX_DREP_ENGINE_V746;
+    return e&&typeof e.getProfiles==='function'?(e.getProfiles()||{}):{};
+  }catch(err){return {}}
+}
+function needsMeridian(){return !profiles().meridian}
+
+function profileHost(){
+  return '<div id="max746ProfileBackdrop" class="max746-help-backdrop" onclick="if(event.target===this)_max746CloseProfile()"><div id="max746ProfileDialog" class="max746-dialog"></div></div>';
+}
+function reviewHost(){
+  return '<div id="max748ReviewBackdrop" class="max748-modal-backdrop" onclick="if(event.target===this)_max748CloseReview()"><div class="max748-modal"><div class="max748-modal-head"><div><h3>Distributor Profile recommendation</h3><p>Connect found one distributor relationship that may be easier to manage under an umbrella.</p></div><button class="max748-modal-close" onclick="_max748CloseReview()">×</button></div><div class="max748-modal-body"><p><strong style="color:#e8f8ff">Meridian Promo Alliance</strong> currently appears across <strong style="color:#e8f8ff">25 Company records</strong> with <strong style="color:#e8f8ff">124 contacts marked Distributor Rep</strong>.</p><p>Those 124 people are already part of the quarterly call universe. Creating a Distributor Profile does not change or replace the 25 Company Profiles; it simply gives the MAX rep one umbrella workspace for the relationship.</p><p>This is an organizational recommendation, not a required sales action. Connect should surface it when the structure becomes fragmented enough that an umbrella would reduce friction.</p></div><div class="max748-modal-actions"><button class="max748-rec-btn" onclick="_max748CloseReview()">Close</button><button class="max748-rec-btn primary" onclick="_max748CloseReview();_max746OpenMeridianEnroll()">Enroll umbrella</button></div></div></div>';
+}
+function recommendation(){
+  return '<section class="max748-recommendation" aria-label="Connect recommendation"><div class="max748-rec-left"><div class="max748-rec-icon">✦</div><div class="max748-rec-copy"><div class="max748-rec-kicker">Connect Recommendation · Distributor Organization</div><strong>Meridian Promo Alliance may benefit from a Distributor Profile.</strong><span>124 Distributor Reps are spread across 25 Company records. Their quarterly calls already count; enrollment would organize them under one umbrella.</span></div></div><div class="max748-rec-actions"><button class="max748-rec-btn" onclick="_max748OpenReview()">Review</button><button class="max748-rec-btn primary" onclick="_max746OpenMeridianEnroll()">Enroll umbrella</button></div>'+reviewHost()+profileHost()+'</section>';
+}
+window._max748OpenReview=function(){
+  var b=document.getElementById('max748ReviewBackdrop');if(b)b.classList.add('open');
+};
+window._max748CloseReview=function(){
+  var b=document.getElementById('max748ReviewBackdrop');if(b)b.classList.remove('open');
+};
+if(!window.__max748Esc){
+  window.__max748Esc=true;
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape')window._max748CloseReview();
+  });
+}
+function stripDistributorEnrollment(html){
+  var t=document.createElement('template');t.innerHTML=String(html||'').trim();
+  t.content.querySelectorAll('.max747-enrollment-intel').forEach(function(n){n.remove()});
+  var d=document.createElement('div');d.appendChild(t.content.cloneNode(true));return d.innerHTML;
+}
+function injectMyDay(html){
+  if(!needsMeridian())return html;
+  var t=document.createElement('template');t.innerHTML=String(html||'').trim();
+  if(t.content.querySelector('.max748-recommendation'))return html;
+  var anchor=t.content.querySelector('.p639-daily-strip');
+  if(anchor){
+    var holder=document.createElement('div');holder.innerHTML=recommendation();
+    anchor.insertAdjacentElement('afterend',holder.firstElementChild);
+  }
+  var d=document.createElement('div');d.appendChild(t.content.cloneNode(true));return d.innerHTML;
+}
+
+var priorPage=window._rp2Page;
+window._rp2Page=function(){
+  var html=typeof priorPage==='function'?priorPage.apply(this,arguments):'';
+  if(!isMax())return html;
+  var page=window._rp2&&window._rp2.page||'home';
+
+  // Main Distributor Overview stays clean; profile enrollment recommendations
+  // are surfaced as My Day actions instead.
+  if(page==='distributors' && window._demo740DistView!=='proforma'){
+    return stripDistributorEnrollment(html);
+  }
+  if(page==='home'){
+    return injectMyDay(html);
+  }
+  return html;
+};
+
+window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
+  return {
+    version:'v748',
+    distributorOverviewEnrollmentPanelRemoved:true,
+    myDayRecommendationVisible:isMax()&&needsMeridian(),
+    meridianEnrolled:!!profiles().meridian
+  };
+};
+})();
+
+</script>
+
+<script id="connect-v748-final-authority">
+(function(){
+  var BUILD='v748',DISPLAY='V748',TITLE='Connect v748 — Sales Portal';
+  function enforce(){
+    try{
+      window.CONNECT_BUILD_AUTHORITY=BUILD;
+      window.CONNECT_BUILD_DISPLAY=DISPLAY;
+      window.CONNECT_BUILD_TITLE=TITLE;
+      window.CONNECT_BUILD=BUILD;
+      window.TCP_BUILD_VERSION=BUILD;
+      document.documentElement.setAttribute('data-connect-authoritative','v739');
+      document.documentElement.setAttribute('data-connect-release',BUILD);
+      document.documentElement.setAttribute('data-connect-build',BUILD);
+      document.documentElement.setAttribute('data-tcp-build',BUILD);
+      document.title=TITLE;
+      document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
+        if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
       });
     }catch(e){}
   }
