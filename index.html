@@ -20,18 +20,19 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v739 — Sales Portal</title>
+<title>Connect v740 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v739', DISPLAY='V739', TITLE='Connect v739 — Sales Portal';
+  var BUILD='v740', DISPLAY='V740', TITLE='Connect v740 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
   window.CONNECT_BUILD=BUILD;
   window.TCP_BUILD_VERSION=BUILD;
   try{
-    document.documentElement.setAttribute('data-connect-authoritative',BUILD);
+    document.documentElement.setAttribute('data-connect-authoritative','v739');
+    document.documentElement.setAttribute('data-connect-release',BUILD);
     document.documentElement.setAttribute('data-tcp-build',BUILD);
     document.documentElement.setAttribute('data-connect-build',BUILD);
     document.title=TITLE;
@@ -74516,6 +74517,253 @@ html[data-connect-authoritative="v739"] #rp-overlay .str739-strategy-product{bor
  window.TCP_STRATEGY_INTEGRATION_V739={version:BUILD,planFor:rawPlan,reviewInfo:reviewInfo,patchCompany:patchCompany,patchPlans:patchPlans};
 })();
 </script>
-<script id="connect-v739-final-authority-integration">
-(function(){var BUILD='v739',DISPLAY='V739',TITLE='Connect v739 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});})();
+<script id="connect-v740-final-authority-integration">
+(function(){var BUILD='v740',DISPLAY='V740',TITLE='Connect v740 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});})();
 </script>
+
+<!-- ========================================================================
+     CONNECT V740 · DEMO SREP FOUNDATION + MAX DISTRIBUTOR PHASE ONE
+     ------------------------------------------------------------------------
+     Product rule:
+       - Existing Connect remains one application.
+       - Alex Morgan is a virtual TCP demo SREP.
+       - Jordan Reed is a virtual MAX Apparel demo SREP.
+       - Demo records are excluded from manager/team activeReps calculations.
+       - MAX is the same phased rep portal plus ONE additional Distributors nav.
+       - Proforma is the first distributor workspace to develop.
+     ======================================================================== -->
+<style id="connect-v740-demo-reps-max-distributors-css">
+html[data-connect-release="v740"] body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD V740"!important}
+html[data-connect-release="v740"] body.nav-rail .tabs:after{content:"V740"!important}
+#rp-admin .demo740-rep-name{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#rp-admin .demo740-tag{display:inline-flex;align-items:center;min-height:18px;padding:0 7px;border:1px solid rgba(0,175,239,.28);border-radius:999px;background:rgba(0,175,239,.07);color:#8EDCFA;font-size:8px;font-weight:950;letter-spacing:.05em;text-transform:uppercase}
+#rp-admin .demo740-tag.max{border-color:rgba(250,135,61,.32);background:rgba(250,135,61,.08);color:#FFC39C}
+#rp-admin .demo740-pw-note{font-size:9px;color:#7BE3A9;font-weight:850}
+
+/* Distributor workspace intentionally uses the existing phased-portal visual language. */
+#rp-overlay .d740{--d740-card:#0B1621;--d740-card2:#0D1B27;--d740-line:rgba(148,163,184,.16);--d740-muted:#8394A7;--d740-text:#F4F8FB;--d740-cyan:#00AFEF;--d740-orange:#FA873D;--d740-green:#5DCAA5;--d740-purple:#9B6BFF;max-width:1510px;margin:0 auto;padding:26px 30px 72px;color:var(--d740-text);font-family:'Open Sans','Segoe UI',Arial,sans-serif}
+#rp-overlay .d740 *{box-sizing:border-box}
+#rp-overlay .d740-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:24px 26px;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:radial-gradient(circle at 8% 0,rgba(250,135,61,.20),transparent 31rem),radial-gradient(circle at 96% 0,rgba(0,175,239,.13),transparent 28rem),linear-gradient(145deg,#101D27,#08131C);box-shadow:0 20px 56px rgba(0,0,0,.25);margin-bottom:14px}
+#rp-overlay .d740-kick{font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;color:#6CDBF9;margin-bottom:7px}
+#rp-overlay .d740-hero h1{margin:0;color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:29px;line-height:1.05;letter-spacing:-.035em}
+#rp-overlay .d740-hero p{max-width:830px;margin:8px 0 0;color:#93A3B4;font-size:10px;line-height:1.62}
+#rp-overlay .d740-demo-pill{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:7px 10px;border:1px solid rgba(250,135,61,.30);border-radius:999px;background:rgba(250,135,61,.08);color:#FFC29A;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}
+#rp-overlay .d740-back{border:0;background:transparent;color:#73D9F5;font-size:9px;font-weight:900;padding:0 0 10px;cursor:pointer}
+#rp-overlay .d740-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:14px}
+#rp-overlay .d740-kpi{position:relative;overflow:hidden;min-height:105px;padding:15px;border:1px solid var(--d740-line);border-radius:15px;background:linear-gradient(155deg,rgba(255,255,255,.055),rgba(255,255,255,.018)),var(--d740-card);box-shadow:0 13px 34px rgba(0,0,0,.18)}
+#rp-overlay .d740-kpi:after{content:"";position:absolute;right:-28px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,var(--glow,rgba(0,175,239,.13)),transparent 67%)}
+#rp-overlay .d740-kpi span{position:relative;display:block;color:#7E90A3;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.085em}
+#rp-overlay .d740-kpi strong{position:relative;display:block;margin-top:8px;color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1;letter-spacing:-.03em}
+#rp-overlay .d740-kpi small{position:relative;display:block;margin-top:7px;color:#718598;font-size:7.8px;line-height:1.4}
+#rp-overlay .d740-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(350px,.78fr);gap:14px;margin-bottom:14px}
+#rp-overlay .d740-card{border:1px solid var(--d740-line);border-radius:17px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.016)),var(--d740-card);box-shadow:0 15px 40px rgba(0,0,0,.20);overflow:hidden}
+#rp-overlay .d740-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 16px 12px;border-bottom:1px solid rgba(255,255,255,.065)}
+#rp-overlay .d740-card-head strong{display:block;color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:14px}
+#rp-overlay .d740-card-head span{display:block;color:#718699;font-size:7.8px;margin-top:4px;line-height:1.45}
+#rp-overlay .d740-card-body{padding:15px 16px}
+#rp-overlay .d740-legend{display:flex;gap:12px;flex-wrap:wrap;color:#7F91A2;font-size:7.5px}
+#rp-overlay .d740-legend i{display:inline-block;width:16px;height:2px;margin-right:5px;vertical-align:middle;border-radius:999px}
+#rp-overlay .d740-chart{height:220px;border-left:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);position:relative;margin:6px 4px 22px 33px}
+#rp-overlay .d740-chart svg{width:100%;height:100%;overflow:visible}
+#rp-overlay .d740-months{position:absolute;left:0;right:0;bottom:-18px;display:grid;color:#667C8D;font-size:7px}
+#rp-overlay .d740-bar-list{display:flex;flex-direction:column;gap:10px}
+#rp-overlay .d740-bar-row{display:grid;grid-template-columns:minmax(135px,.95fr) minmax(180px,1.55fr) 70px 48px;gap:8px;align-items:center;color:#DCE7EE;font-size:8.5px}
+#rp-overlay .d740-bar-row strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .d740-track{height:9px;border-radius:999px;background:#142B38;overflow:hidden}
+#rp-overlay .d740-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00AFEF,#67DFF7)}
+#rp-overlay .d740-money{font-family:Georgia,'Times New Roman',serif;font-weight:900;font-size:10.5px;text-align:right}
+#rp-overlay .d740-yoy{font-size:7.5px;font-weight:950;text-align:right;color:#5DCAA5}
+#rp-overlay .d740-yoy.down{color:#F09595}
+#rp-overlay .d740-table{width:100%;border-collapse:collapse}
+#rp-overlay .d740-table th{padding:9px 11px;background:#09151E;border-bottom:1px solid var(--d740-line);color:#71879A;font-size:7px;text-align:left;text-transform:uppercase;letter-spacing:.08em}
+#rp-overlay .d740-table td{padding:11px;border-bottom:1px solid rgba(255,255,255,.055);color:#D9E3E9;font-size:8.8px;vertical-align:middle}
+#rp-overlay .d740-table tbody tr:last-child td{border-bottom:0}
+#rp-overlay .d740-table tbody tr:hover{background:rgba(0,175,239,.028)}
+#rp-overlay .d740-table .name{color:#fff;font-weight:950;font-size:9.6px}
+#rp-overlay .d740-badge{display:inline-flex;margin-top:4px;padding:3px 6px;border:1px solid rgba(93,202,165,.28);border-radius:999px;background:rgba(93,202,165,.06);color:#8EDDBE;font-size:6.8px;font-weight:950;text-transform:uppercase}
+#rp-overlay .d740-badge.watch{border-color:rgba(250,135,61,.3);background:rgba(250,135,61,.06);color:#FFC09A}
+#rp-overlay .d740-open{min-height:29px;padding:0 9px;border:1px solid rgba(0,175,239,.30);border-radius:8px;background:rgba(0,175,239,.07);color:#86E2FB;font-size:7.5px;font-weight:950;cursor:pointer}
+#rp-overlay .d740-open.primary{border-color:rgba(250,135,61,.42);background:linear-gradient(135deg,rgba(250,135,61,.20),rgba(0,175,239,.08));color:#FFD3B7}
+#rp-overlay .d740-priority{padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:rgba(255,255,255,.022);margin-bottom:8px}
+#rp-overlay .d740-priority:last-child{margin-bottom:0}
+#rp-overlay .d740-priority span{display:block;color:#FA873D;font-size:6.8px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}
+#rp-overlay .d740-priority strong{display:block;margin-top:5px;color:#fff;font-size:9.8px}
+#rp-overlay .d740-priority p{margin:5px 0 0;color:#8295A6;font-size:7.8px;line-height:1.5}
+#rp-overlay .d740-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+#rp-overlay .d740-penetration{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+#rp-overlay .d740-pen{padding:13px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:rgba(255,255,255,.021);text-align:center}
+#rp-overlay .d740-pen strong{display:block;color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:19px}
+#rp-overlay .d740-pen span{display:block;color:#75899A;font-size:7px;margin-top:5px;text-transform:uppercase;font-weight:900}
+#rp-overlay .d740-note{margin-top:13px;padding:10px 12px;border-left:3px solid #00AFEF;border-radius:0 11px 11px 0;background:rgba(0,175,239,.045);color:#8296A7;font-size:8px;line-height:1.55}
+@media(max-width:1280px){#rp-overlay .d740-kpis{grid-template-columns:repeat(3,1fr)}#rp-overlay .d740-grid{grid-template-columns:1fr}}
+@media(max-width:820px){#rp-overlay .d740{padding:18px 16px 50px}#rp-overlay .d740-hero{align-items:flex-start;flex-direction:column}#rp-overlay .d740-kpis{grid-template-columns:1fr 1fr}#rp-overlay .d740-mini-grid{grid-template-columns:1fr}#rp-overlay .d740-bar-row{grid-template-columns:110px 1fr 60px}#rp-overlay .d740-yoy{display:none}.d740-table-wrap{overflow:auto}#rp-overlay .d740-table{min-width:760px}}
+</style>
+<script id="connect-v740-demo-reps-max-distributors-js">
+(function(){
+'use strict';
+var BUILD='v740',TCP_NAME='Alex Morgan',MAX_NAME='Jordan Reed';
+var CRM='tcp_rp_company_crm_v510',ACTION='tcp_rp_action_center_v504';
+var DEMOS={};
+DEMOS[TCP_NAME]={name:TCP_NAME,division:'TCP',password:'tcpdemo',hash:'ca64142ffbac22ceb071cfa1fbb55ca41ee4417af23148298e3d74c84a74cb5a'};
+DEMOS[MAX_NAME]={name:MAX_NAME,division:'MAX',password:'maxdemo',hash:'4955e4af9b6211edc5e5656a36c3f79c1d35f0110937cce4417464bfc626d9e5'};
+window.CONNECT_DEMO_REPS_V740=DEMOS;
+function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function norm(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function arr(v){return Array.isArray(v)?v:[]}
+function n(v){var x=Number(v);return isFinite(x)?x:0}
+function money(v){return '$'+Math.round(n(v)).toLocaleString()}
+function isDemo(rep){return !!DEMOS[clean(rep)]}
+function isMax(rep){return clean(rep)===MAX_NAME}
+function nowDate(){var d=new Date();d.setHours(12,0,0,0);return d}
+function isoOffset(days){var d=nowDate();d.setDate(d.getDate()+Number(days||0));return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function stampOffset(days){return isoOffset(days)+'T12:00:00'}
+function read(k,def){try{var x=JSON.parse(localStorage.getItem(k)||'null');return x||def}catch(e){return def}}
+function write(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function account(name,owner,industry,status,tier,city,state,contact,contactTitle,phone,email){return{
+ profile:{name:name,owner:owner,industry:industry,status:status||'Active',lifecycle:'Customer',tier:tier||'Core',city:city,state:state,country:'USA',phone:phone,email:email,source:'V740 demo data',updatedAt:new Date().toISOString()},
+ contacts:[{id:'c_'+norm(name).replace(/ /g,'_')+'_1',name:contact,title:contactTitle,phone:phone,email:email,isPrimary:true,buyingRole:'Primary relationship'},{id:'c_'+norm(name).replace(/ /g,'_')+'_2',name:contact.split(' ')[0]+' Team',title:'Operations / Purchasing',phone:phone,email:'ops.'+email}],
+ activities:[{id:'a_'+Math.random().toString(36).slice(2),type:'Call',subject:'Account review',detail:'Reviewed current program, buying timing, and next customer need.',date:stampOffset(-9),createdAt:stampOffset(-9)},{id:'a_'+Math.random().toString(36).slice(2),type:'Email',subject:'Product follow-up',detail:'Sent customer-specific options and confirmed the next decision point.',date:stampOffset(-4),createdAt:stampOffset(-4)}],
+ opportunities:[],quotes:[],notes:[],files:[]
+}}
+function buildData(){
+ var tcpAccounts={},maxAccounts={};
+ function add(map,a){map[norm(a.profile.name)]=a;return a}
+ var a;
+ a=add(tcpAccounts,account('Summit Ridge Industrial Services',TCP_NAME,'Industrial Services','Active','Strategic','Madison','WI','Taylor Morgan','Operations Director','608-555-0141','taylor@summitridge.example'));a.opportunities.push({id:'tcp-o1',company:a.profile.name,title:'Cold-weather program expansion',amount:28500,stage:'Qualified',nextStep:'Confirm fall headcount and jacket sizes',nextStepDate:isoOffset(1),contactName:'Taylor Morgan'});a.quotes.push({id:'tcp-q1',company:a.profile.name,quoteNumber:'Q-2608',title:'Fall safety apparel program',amount:27850,status:'Sent – customer review',sentDate:isoOffset(-3),followUpDate:isoOffset(0),expirationDate:isoOffset(12),nextStep:'Decision check and size confirmation',contactName:'Taylor Morgan'});
+ a=add(tcpAccounts,account('Lakeview Mechanical Group',TCP_NAME,'Mechanical Contractor','Active','Growth','Milwaukee','WI','Jason Moore','Purchasing Manager','414-555-0182','jason@lakeviewmech.example'));a.opportunities.push({id:'tcp-o2',company:a.profile.name,title:'Outerwear white space',amount:16400,stage:'Discovery',nextStep:'Call to review winter crews',nextStepDate:isoOffset(0),contactName:'Jason Moore'});a.quotes.push({id:'tcp-q2',company:a.profile.name,quoteNumber:'Q-2611',title:'Outerwear options',amount:14600,status:'Sent',sentDate:isoOffset(-5),followUpDate:isoOffset(1),expirationDate:isoOffset(9),nextStep:'Confirm preferred jacket and quantities',contactName:'Jason Moore'});
+ a=add(tcpAccounts,account('Cedar Valley Construction',TCP_NAME,'Construction','Active','Core','Cedar Rapids','IA','Morgan Blake','Safety Manager','319-555-0117','morgan@cedarvalley.example'));a.opportunities.push({id:'tcp-o3',company:a.profile.name,title:'Hi-vis replenishment',amount:11800,stage:'Open',nextStep:'Reorder timing call',nextStepDate:isoOffset(2),contactName:'Morgan Blake'});
+ a=add(tcpAccounts,account('Beacon Safety Services',TCP_NAME,'Safety Services','Active','Core','Rockford','IL','Renee Collins','Office Manager','815-555-0136','renee@beaconsafety.example'));a.quotes.push({id:'tcp-q3',company:a.profile.name,quoteNumber:'Q-2597',title:'Employee onboarding kits',amount:9350,status:'Sent – customer review',sentDate:isoOffset(-7),followUpDate:isoOffset(0),expirationDate:isoOffset(6),nextStep:'Confirm onboarding count',contactName:'Renee Collins'});
+ a=add(tcpAccounts,account('Northstar Facility Services',TCP_NAME,'Facility Services','Active','Growth','Green Bay','WI','Megan Hill','People Operations','920-555-0164','megan@northstarfacility.example'));a.opportunities.push({id:'tcp-o4',company:a.profile.name,title:'New-location penetration',amount:13200,stage:'Qualified',nextStep:'Confirm second branch rollout',nextStepDate:isoOffset(3),contactName:'Megan Hill'});
+ a=add(tcpAccounts,account('Prairie State Utilities',TCP_NAME,'Utilities','Active','Core','Springfield','IL','Chris Nolan','Procurement','217-555-0178','chris@prairiestate.example'));
+
+ a=add(maxAccounts,account('Proforma',MAX_NAME,'Promotional Products Distributor','Active','Strategic','Cleveland','OH','Jamie Mercer','Senior Account Executive','216-555-0101','jamie@proforma-demo.example'));a.opportunities.push({id:'max-o1',company:a.profile.name,title:'Branch penetration expansion',amount:64000,stage:'Qualified',nextStep:'Review inactive branch list',nextStepDate:isoOffset(0),contactName:'Jamie Mercer'},{id:'max-o2',company:a.profile.name,title:'Distributor rep activation',amount:42000,stage:'Discovery',nextStep:'Review two under-penetrated rep books',nextStepDate:isoOffset(2),contactName:'Jamie Mercer'});a.quotes.push({id:'max-q1',company:a.profile.name,quoteNumber:'MX-Q-1142',title:'Multi-location apparel program',amount:48600,status:'Sent – customer review',sentDate:isoOffset(-3),followUpDate:isoOffset(0),expirationDate:isoOffset(11),nextStep:'Program review with Jamie',contactName:'Jamie Mercer'});
+ a=add(maxAccounts,account('BrightLine Promotions',MAX_NAME,'Promotional Products Distributor','Active','Growth','Dallas','TX','Monica Wells','VP Sales','972-555-0150','monica@brightlinepromo.example'));a.opportunities.push({id:'max-o3',company:a.profile.name,title:'Distributor rep activation',amount:29500,stage:'Qualified',nextStep:'Share rep-level MAX sales snapshot',nextStepDate:isoOffset(1),contactName:'Monica Wells'});a.quotes.push({id:'max-q2',company:a.profile.name,quoteNumber:'MX-Q-1147',title:'Core polo program',amount:22400,status:'Pending approval',sentDate:isoOffset(-4),followUpDate:isoOffset(1),expirationDate:isoOffset(10),nextStep:'Pricing approval',contactName:'Monica Wells'});
+ a=add(maxAccounts,account('Northstar Brand Group',MAX_NAME,'Promotional Products Distributor','Active','Core','Chicago','IL','Chris Lane','Account Director','312-555-0133','chris@northstarbrand.example'));a.opportunities.push({id:'max-o4',company:a.profile.name,title:'Outerwear category expansion',amount:24100,stage:'Discovery',nextStep:'Review category mix',nextStepDate:isoOffset(2),contactName:'Chris Lane'});
+ a=add(maxAccounts,account('Axis Promotional Partners',MAX_NAME,'Promotional Products Distributor','Active','Growth','Atlanta','GA','Avery Chen','Sales Director','404-555-0118','avery@axispromo.example'));a.quotes.push({id:'max-q3',company:a.profile.name,quoteNumber:'MX-Q-1138',title:'End-customer uniform refresh',amount:18150,status:'Sent',sentDate:isoOffset(-6),followUpDate:isoOffset(0),expirationDate:isoOffset(5),nextStep:'End-customer decision',contactName:'Avery Chen'});
+ a=add(maxAccounts,account('Evergreen Identity Solutions',MAX_NAME,'Promotional Products Distributor','Active','Core','Denver','CO','Jordan Price','Account Executive','303-555-0191','jprice@evergreenidentity.example'));a.opportunities.push({id:'max-o5',company:a.profile.name,title:'Account reactivation',amount:19800,stage:'Open',nextStep:'Reconnect on fall programs',nextStepDate:isoOffset(1),contactName:'Jordan Price'});
+ a=add(maxAccounts,account('Summit Promotional Network',MAX_NAME,'Promotional Products Distributor','Active','Core','Columbus','OH','Dana Foster','Account Executive','614-555-0122','dana@summitpromo.example'));
+
+ var tcpOrders=[
+ {id:'dtcp1',demoOnly:true,rep:TCP_NAME,kind:'order',orderNum:'D2604',customer:'Summit Ridge Industrial Services',orderDate:isoOffset(-12),total:12450,status:'Pending Artwork Approval',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_09'},
+ {id:'dtcp2',demoOnly:true,rep:TCP_NAME,kind:'order',orderNum:'D2605',customer:'Summit Ridge Industrial Services',orderDate:isoOffset(-7),total:6000,status:'In Production',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_10'},
+ {id:'dtcp3',demoOnly:true,rep:TCP_NAME,kind:'order',orderNum:'D2588',customer:'Cedar Valley Construction',orderDate:isoOffset(-18),total:7175,status:'In Production',placement:'Website',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_08'},
+ {id:'dtcp4',demoOnly:true,rep:TCP_NAME,kind:'order',orderNum:'D2579',customer:'Lakeview Mechanical Group',orderDate:isoOffset(-28),total:11294,status:'Shipped',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_06'}];
+ var maxOrders=[
+ {id:'dmax1',demoOnly:true,rep:MAX_NAME,kind:'order',orderNum:'MX-8431',customer:'Proforma',orderDate:isoOffset(-9),total:31840,status:'In Production',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_09'},
+ {id:'dmax2',demoOnly:true,rep:MAX_NAME,kind:'order',orderNum:'MX-8422',customer:'BrightLine Promotions',orderDate:isoOffset(-14),total:17650,status:'Pending Artwork Approval',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_08'},
+ {id:'dmax3',demoOnly:true,rep:MAX_NAME,kind:'order',orderNum:'MX-8408',customer:'Northstar Brand Group',orderDate:isoOffset(-20),total:14320,status:'In Production',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_07'},
+ {id:'dmax4',demoOnly:true,rep:MAX_NAME,kind:'order',orderNum:'MX-8391',customer:'Axis Promotional Partners',orderDate:isoOffset(-31),total:9860,status:'Shipped',placement:'Entered',orderType:'General Sale',effYr:2026,effQ:'Q3',effWeekKey:'2026_Q3_05'}];
+ function li(id,rep,company,order,days,name,cat,qty,rev){return{id:id,demoOnly:true,rep:rep,company:company,customer:company,orderNumber:order,orderDate:isoOffset(days),lineClass:'product',productName:name,productCategory:cat,quantityOrdered:qty,extendedSalesRevenue:rev,sku:id.toUpperCase()}}
+ var tcpLines=[li('tl1',TCP_NAME,'Summit Ridge Industrial Services','D2604',-12,'ANSI Safety Polo','Polos',85,5525),li('tl2',TCP_NAME,'Summit Ridge Industrial Services','D2604',-12,'Softshell Safety Jacket','Outerwear',45,6925),li('tl3',TCP_NAME,'Lakeview Mechanical Group','D2579',-28,'Performance Polo','Polos',120,7020),li('tl4',TCP_NAME,'Lakeview Mechanical Group','D2579',-28,'Structured Cap','Headwear',110,4274),li('tl5',TCP_NAME,'Cedar Valley Construction','D2588',-18,'Hi-Vis Hoodie','Safety',70,7175)];
+ var maxLines=[li('ml1',MAX_NAME,'Proforma','MX-8431',-9,'Performance Polo','Polos',240,11280),li('ml2',MAX_NAME,'Proforma','MX-8431',-9,'Softshell Jacket','Outerwear',160,14160),li('ml3',MAX_NAME,'Proforma','MX-8431',-9,'Structured Cap','Headwear',200,6400),li('ml4',MAX_NAME,'BrightLine Promotions','MX-8422',-14,'Performance Polo','Polos',220,10340),li('ml5',MAX_NAME,'BrightLine Promotions','MX-8422',-14,'Quarter Zip','Outerwear',100,7310),li('ml6',MAX_NAME,'Northstar Brand Group','MX-8408',-20,'Work Shirt','Workwear',180,14320),li('ml7',MAX_NAME,'Axis Promotional Partners','MX-8391',-31,'Hi-Vis Performance Tee','Safety',170,9860)];
+ var tcpActions=[
+ {id:'tcp-act-1',source:'demo',category:'customer',score:225,customer:'Summit Ridge Industrial Services',page:'customers',title:'Confirm fall program sizing',action:'Confirm headcount and jacket sizes before quote expiration.',why:'Current quote and seasonal buying window.',dueDate:isoOffset(0)},
+ {id:'tcp-act-2',source:'demo',category:'customer',score:215,customer:'Lakeview Mechanical Group',page:'customers',title:'Call on outerwear expansion',action:'Review winter crews and outerwear fit.',why:'Strong polo history and current outerwear opportunity.',dueDate:isoOffset(0)},
+ {id:'tcp-act-3',source:'demo',category:'customer',score:195,customer:'Beacon Safety Services',page:'dealdesk',title:'Advance onboarding-kit quote',action:'Confirm onboarding count and timing.',why:'Quote is in customer review.',dueDate:isoOffset(1)},
+ {id:'tcp-act-4',source:'demo',category:'customer',score:182,customer:'Northstar Facility Services',page:'customers',title:'Confirm second location rollout',action:'Validate new-location size and buying contact.',why:'Known second branch with expansion potential.',dueDate:isoOffset(2)}];
+ var maxActions=[
+ {id:'max-act-1',source:'demo',category:'customer',score:235,customer:'Proforma',page:'customers',title:'Review inactive branch list',action:'Review known locations without attributed MAX purchases.',why:'Distributor branch penetration opportunity.',dueDate:isoOffset(0)},
+ {id:'max-act-2',source:'demo',category:'customer',score:225,customer:'BrightLine Promotions',page:'customers',title:'Activate distributor reps',action:'Share rep-level MAX performance snapshot.',why:'Several rep books are under-penetrated.',dueDate:isoOffset(0)},
+ {id:'max-act-3',source:'demo',category:'customer',score:205,customer:'Northstar Brand Group',page:'customers',title:'Review outerwear category mix',action:'Position outerwear against current polo/headwear volume.',why:'Product whitespace opportunity.',dueDate:isoOffset(1)},
+ {id:'max-act-4',source:'demo',category:'customer',score:188,customer:'Evergreen Identity Solutions',page:'customers',title:'Reactivation call',action:'Reconnect on fall program pipeline.',why:'Current pace is below prior activity.',dueDate:isoOffset(2)}];
+ var distributors=[
+ {id:'proforma',name:'Proforma',status:'Strategic',ytd:342100,prior:292400,l12m:526800,endCustomers:18,knownBranches:34,activeBranches:23,opps:7,lastOrder:'Aug 29'},
+ {id:'brightline',name:'BrightLine Promotions',status:'Growth',ytd:196400,prior:183100,l12m:302900,endCustomers:11,knownBranches:21,activeBranches:15,opps:4,lastOrder:'Aug 27'},
+ {id:'northstar',name:'Northstar Brand Group',status:'Core',ytd:151250,prior:147900,l12m:241800,endCustomers:9,knownBranches:16,activeBranches:13,opps:3,lastOrder:'Aug 24'},
+ {id:'axis',name:'Axis Promotional Partners',status:'Growth',ytd:123600,prior:108500,l12m:194600,endCustomers:8,knownBranches:18,activeBranches:11,opps:4,lastOrder:'Aug 18'},
+ {id:'evergreen',name:'Evergreen Identity Solutions',status:'Attention',ytd:115350,prior:137800,l12m:176200,endCustomers:7,knownBranches:12,activeBranches:8,opps:3,lastOrder:'Aug 12'}];
+ var months=[{m:'Jan',cy:84200,py:73500},{m:'Feb',cy:90300,py:77900},{m:'Mar',cy:101700,py:88500},{m:'Apr',cy:108900,py:93600},{m:'May',cy:117400,py:102100},{m:'Jun',cy:126800,py:111900},{m:'Jul',cy:144300,py:126700},{m:'Aug',cy:155100,py:139500}];
+ var proformaMonths=[{m:'Jan',cy:31200,py:25500},{m:'Feb',cy:33800,py:27400},{m:'Mar',cy:40100,py:32900},{m:'Apr',cy:37800,py:34600},{m:'May',cy:42800,py:35700},{m:'Jun',cy:45100,py:38200},{m:'Jul',cy:52900,py:46300},{m:'Aug',cy:58300,py:51800}];
+ return{
+  reps:{},
+  tcp:{accounts:tcpAccounts,orders:tcpOrders,lineItems:tcpLines,actions:tcpActions,perf:{week:{revenue:34650,orders:7,calls:43,hours:31.5},qtd:{revenue:612450,orders:96,calls:472,hours:355},goal:845000,rank:3,totalReps:9}},
+  max:{accounts:maxAccounts,orders:maxOrders,lineItems:maxLines,actions:maxActions,perf:{week:{revenue:52750,orders:9,calls:51,hours:32.2},qtd:{revenue:928700,orders:124,calls:518,hours:361},goal:1250000,rank:2,totalReps:8},distributors:distributors,months:months,proformaMonths:proformaMonths}
+ }
+}
+var DATA=buildData();
+DATA.reps[TCP_NAME]=DATA.tcp;DATA.reps[MAX_NAME]=DATA.max;
+window.CONNECT_DEMO_DATA_V740=DATA;
+
+function seedPortalStores(){
+ var crm=read(CRM,{version:1,reps:{}});crm.version=1;crm.reps=crm.reps||{};
+ [TCP_NAME,MAX_NAME].forEach(function(rep){var src=DATA.reps[rep];var existing=crm.reps[rep];if(!existing||existing._demoV740){crm.reps[rep]={_demoV740:true,accounts:src.accounts}}});
+ write(CRM,crm);
+ var ac=read(ACTION,{version:1,reps:{}});ac.version=1;ac.reps=ac.reps||{};
+ [TCP_NAME,MAX_NAME].forEach(function(rep){var ex=ac.reps[rep];if(!ex||ex._demoV740){ac.reps[rep]={_demoV740:true,manual:DATA.reps[rep].actions,state:{},events:[]}}});
+ write(ACTION,ac);
+ try{window._cw4DirectoryCache=null;window._cw4ProfileCache={}}catch(e){}
+}
+seedPortalStores();
+
+/* Virtual roster: demo SREPs appear in Rep Portal access, never in activeReps manager calculations. */
+var priorCanonical=window._rpCanonicalRepName;
+window._rpCanonicalRepName=function(name){var t=norm(name);if(t===norm(TCP_NAME))return TCP_NAME;if(t===norm(MAX_NAME))return MAX_NAME;return typeof priorCanonical==='function'?priorCanonical.apply(this,arguments):''};
+function ensureDemoAccounts(){try{var g=typeof window._rpEnsure==='function'?window._rpEnsure():null;if(!g)return;Object.keys(DEMOS).forEach(function(name){g.accounts[name]=g.accounts[name]||{};if(!g.accounts[name].hash)g.accounts[name].hash=DEMOS[name].hash;g.accounts[name].demo=true;g.accounts[name].division=DEMOS[name].division})}catch(e){console.warn('[v740 demo accounts]',e)}}
+var priorAdmin=window._rpRenderAdmin;
+window._rpRenderAdmin=function(){ensureDemoAccounts();var result=typeof priorAdmin==='function'?priorAdmin.apply(this,arguments):undefined;try{var host=document.getElementById('rp-admin'),tbody=host&&host.querySelector('.rp-tbl tbody');if(!tbody)return result;Object.keys(DEMOS).forEach(function(name){if(tbody.querySelector('tr[data-demo740="'+(name===TCP_NAME?'tcp':'max')+'"]'))return;var d=DEMOS[name],tr=document.createElement('tr');tr.setAttribute('data-demo740',name===TCP_NAME?'tcp':'max');var safe=esc(name).replace(/'/g,"\\'");tr.innerHTML='<td style="text-align:left;font-weight:600;"><div class="demo740-rep-name"><span>'+esc(name)+'</span><span class="demo740-tag '+(d.division==='MAX'?'max':'')+'">Demo · '+esc(d.division==='MAX'?'MAX Apparel':'TCP')+'</span></div></td><td><span style="color:#7BE3A9;">● set</span></td><td><div class="demo740-pw-note">Demo password: '+esc(d.password)+'</div></td><td style="text-align:right;white-space:nowrap;"><button class="rp-btn rp-link-full" data-rep="'+esc(name)+'" onclick="_rpCopyRepLinkForView(this.dataset.rep,\'full\')">🔗 Full</button> <button class="rp-btn rp-link-phased" data-rep="'+esc(name)+'" onclick="_rpCopyRepLinkForView(this.dataset.rep,\'phased\')">🧪 Phased</button></td>';tbody.appendChild(tr)})}catch(e){console.warn('[v740 admin demo rows]',e)}return result};
+ensureDemoAccounts();
+
+/* Demo performance is virtual. Nothing is written into manager weekly sales/call data. */
+var priorWeek=window._rp2SelectedWeekData,priorTot=window._rp2Tot,priorGoal=window._rp2Goal,priorRanks=window._rp2Ranks;
+window._rp2SelectedWeekData=function(rep){if(isDemo(rep))return Object.assign({},DATA.reps[rep].perf.week);return typeof priorWeek==='function'?priorWeek.apply(this,arguments):{revenue:0,orders:0,calls:0}};
+window._rp2Tot=function(rep){if(isDemo(rep))return Object.assign({},DATA.reps[rep].perf.qtd);return typeof priorTot==='function'?priorTot.apply(this,arguments):{revenue:0,orders:0,calls:0}};
+window._rp2Goal=function(rep){if(isDemo(rep))return DATA.reps[rep].perf.goal;return typeof priorGoal==='function'?priorGoal.apply(this,arguments):0};
+window._rp2Ranks=function(){var rep=window._rp2&&_rp2.rep||'';if(isDemo(rep)){var p=DATA.reps[rep].perf,rows=[],i;for(i=1;i<=p.totalReps;i++)rows.push({name:i===p.rank?rep:'Demo Peer '+i,rev:i===p.rank?p.qtd.revenue:Math.max(10000,p.qtd.revenue+(p.rank-i)*52000)});return rows.sort(function(a,b){return b.rev-a.rev})}return typeof priorRanks==='function'?priorRanks.apply(this,arguments):[]};
+if(window.TCP_TRAFFIC_SCORE_V548&&typeof TCP_TRAFFIC_SCORE_V548.repScore==='function'){
+ var priorScore=TCP_TRAFFIC_SCORE_V548.repScore;
+ TCP_TRAFFIC_SCORE_V548.repScore=function(rep,period,yr,q){if(!isDemo(rep))return priorScore.apply(this,arguments);var p=DATA.reps[rep].perf,metrics=rep===MAX_NAME?{sales:104,outbound:102,hours:98,art:99,creditRate:.14}:{sales:97,outbound:103,hours:99,art:98,creditRate:.18};var s=typeof TCP_TRAFFIC_SCORE_V548.scoreFromMetrics==='function'?TCP_TRAFFIC_SCORE_V548.scoreFromMetrics(metrics):{total:94,status:{key:'green',label:'Green'},metrics:metrics,contributions:{},metricStatus:{}};s.rep=rep;s.yr=yr;s.q=q;s.period=period||'quarter';s.raw={salesActual:p.qtd.revenue,salesTarget:p.goal*.74,outboundActual:p.qtd.calls,outboundTarget:500,hoursActual:p.qtd.hours,hoursTarget:365,artErrors:2,orders:p.qtd.orders,artRate:p.qtd.orders?2/p.qtd.orders*100:0,credits:1280,creditRate:.18};s.tot=Object.assign({},p.qtd);s.goalMissing=false;s.unscored=false;return s
+ };
+}
+
+/* Populate the phased My Day / Call Workspace call-cycle diagnostics for demo reps only. */
+if(window.TCP_PROJECT_SIMPLIFY_REP_V560&&typeof TCP_PROJECT_SIMPLIFY_REP_V560.callCycle==='function'){
+ var priorDemo740Cycle=TCP_PROJECT_SIMPLIFY_REP_V560.callCycle;
+ TCP_PROJECT_SIMPLIFY_REP_V560.callCycle=function(rep){
+   if(!isDemo(rep))return priorDemo740Cycle.apply(this,arguments);
+   var src=DATA.reps[rep],isM=rep===MAX_NAME,target=isM?20:18,done=isM?8:6,setSize=isM?58:52,completed=isM?31:29;
+   var g={};try{g=typeof window._rp2DesktopBuild==='function'?window._rp2DesktopBuild():{}}catch(e){}
+   return {queue:arr(g&&g.calls),diagnostics:{set:setSize,size:setSize,completed:completed,attempted:completed,emailed:isM?7:5,targetPct:65,dailyTarget:target,todayTarget:target,todayCompleted:done,todayRemaining:Math.max(0,target-done),targetCount:target,status:'On pace',tone:'ahead',cycle:{label:'September–October Account Updates'}}};
+ };
+}
+
+/* Add synthetic orders/line items only while a demo rep page is being rendered. */
+function withDemoState(rep,fn){if(!isDemo(rep)||!window.S)return fn();var oldOrders=S.orders,oldLines=S.orderLineItems;try{S.orders=arr(oldOrders).concat(DATA.reps[rep].orders);S.orderLineItems=arr(oldLines).concat(DATA.reps[rep].lineItems);return fn()}finally{S.orders=oldOrders;S.orderLineItems=oldLines}}
+
+/* Make the unified desktop/call workspace see demo order and product history without polluting manager state. */
+var priorDesktop=window._rp2DesktopBuild;
+window._rp2DesktopBuild=function(){var rep=window._rp2&&_rp2.rep||'';if(!isDemo(rep))return typeof priorDesktop==='function'?priorDesktop.apply(this,arguments):{};return withDemoState(rep,function(){var g=typeof priorDesktop==='function'?priorDesktop.apply(window,arguments):{};g=g||{};g.perf=Object.assign({},g.perf||{},DATA.reps[rep].perf);return g})};
+
+/* Distributor view model */
+window._demo740DistView='list';
+function distTotals(){var ds=DATA.max.distributors,total=0,prior=0,l12=0,opps=0;ds.forEach(function(d){total+=d.ytd;prior+=d.prior;l12+=d.l12m;opps+=d.opps});return{ytd:total,prior:prior,l12m:l12,opps:opps,yoy:prior?(total-prior)/prior*100:0}}
+function kpi(label,value,copy,color){return'<div class="d740-kpi" style="--glow:'+color+'"><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong><small>'+esc(copy)+'</small></div>'}
+function lineChart(rows){var W=720,H=205,pad=10,vals=[];rows.forEach(function(r){vals.push(n(r.cy),n(r.py))});var max=Math.max.apply(Math,vals.concat([1]))*1.08;function x(i){return pad+i*(W-pad*2)/(rows.length-1)}function y(v){return H-pad-(v/max)*(H-pad*2)}function pts(k){return rows.map(function(r,i){return x(i)+','+y(r[k])}).join(' ')}return'<div class="d740-chart"><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><polyline points="'+pts('py')+'" fill="none" stroke="#FA873D" stroke-width="3" opacity=".82"/><polyline points="'+pts('cy')+'" fill="none" stroke="#00AFEF" stroke-width="4"/>'+rows.map(function(r,i){return'<circle cx="'+x(i)+'" cy="'+y(r.cy)+'" r="4" fill="#00AFEF"/><circle cx="'+x(i)+'" cy="'+y(r.py)+'" r="3" fill="#FA873D"/>'}).join('')+'</svg><div class="d740-months" style="grid-template-columns:repeat('+rows.length+',1fr)">'+rows.map(function(r){return'<span style="text-align:center">'+esc(r.m)+'</span>'}).join('')+'</div></div>'}
+function bars(rows){var max=Math.max.apply(Math,rows.map(function(r){return n(r.ytd||r.value)}).concat([1]));return'<div class="d740-bar-list">'+rows.map(function(r){var v=n(r.ytd||r.value),p=r.prior!=null?n(r.prior):0,y=p?(v-p)/p*100:(r.yoy||0);return'<div class="d740-bar-row"><strong>'+esc(r.name)+'</strong><div class="d740-track"><i style="width:'+Math.max(4,Math.round(v/max*100))+'%"></i></div><div class="d740-money">'+money(v)+'</div><div class="d740-yoy '+(y<0?'down':'')+'">'+(y>0?'+':'')+Math.round(y)+'%</div></div>'}).join('')+'</div>'}
+function distributorList(){var t=distTotals(),ds=DATA.max.distributors;return'<div class="d740">'+
+ '<section class="d740-hero"><div><div class="d740-kick">MAX APPAREL · DISTRIBUTOR INTELLIGENCE · PHASE ONE</div><h1>Distributor Overview</h1><p>This is an additional workspace for the MAX SREP. Every normal Connect workflow remains in place; this page adds a management-style view of the distributor book and a path into distributor-level intelligence.</p></div><span class="d740-demo-pill">Illustrative demo data</span></section>'+
+ '<div class="d740-kpis">'+kpi('Distributor YTD',money(t.ytd),Math.round(t.yoy)+'% vs prior YTD','rgba(93,202,165,.24)')+kpi('Prior YTD',money(t.prior),'Comparable demo period','rgba(0,175,239,.20)')+kpi('L12M Sales',money(t.l12m),'Attributed distributor book','rgba(155,107,255,.18)')+kpi('Active Distributors',String(ds.length),'Assigned to Jordan Reed','rgba(0,175,239,.18)')+kpi('Growth Opportunities',String(t.opps),'Across distributor network','rgba(250,135,61,.20)')+kpi('Top Distributor','Proforma','First distributor workspace','rgba(250,135,61,.22)')+'</div>'+
+ '<div class="d740-grid"><section class="d740-card"><div class="d740-card-head"><div><strong>Distributor Sales Trend</strong><span>Current demo year versus prior year by month</span></div><div class="d740-legend"><span><i style="background:#00AFEF"></i>2026</span><span><i style="background:#FA873D"></i>2025</span></div></div><div class="d740-card-body">'+lineChart(DATA.max.months)+'</div></section><section class="d740-card"><div class="d740-card-head"><div><strong>Distributor Performance</strong><span>YTD contribution and direction</span></div></div><div class="d740-card-body">'+bars(ds)+'</div></section></div>'+
+ '<section class="d740-card"><div class="d740-card-head"><div><strong>My Distributors</strong><span>Open Proforma to begin developing the distributor-specific account experience.</span></div></div><div class="d740-table-wrap"><table class="d740-table"><thead><tr><th>Distributor</th><th>YTD</th><th>Prior YTD</th><th>YoY</th><th>L12M</th><th>End Customers</th><th>Active / Known Branches</th><th>Growth Opps</th><th></th></tr></thead><tbody>'+ds.map(function(d){var yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0;return'<tr><td><div class="name">'+esc(d.name)+'</div><span class="d740-badge '+(d.status==='Attention'?'watch':'')+'">'+esc(d.status)+'</span></td><td class="d740-money" style="text-align:left">'+money(d.ytd)+'</td><td>'+money(d.prior)+'</td><td class="d740-yoy '+(yoy<0?'down':'')+'" style="text-align:left">'+(yoy>0?'+':'')+Math.round(yoy)+'%</td><td>'+money(d.l12m)+'</td><td>'+d.endCustomers+'</td><td>'+d.activeBranches+' / '+d.knownBranches+'</td><td>'+d.opps+'</td><td><button class="d740-open '+(d.id==='proforma'?'primary':'')+'" onclick="_demo740OpenDistributor(\''+esc(d.id)+'\')">'+(d.id==='proforma'?'Open Proforma':'View')+'</button></td></tr>'}).join('')+'</tbody></table></div></section>'+
+ '<div class="d740-note"><strong style="color:#BEEAF7">Phase One boundary:</strong> the distributor list and Proforma overview are the first build targets. Normal MAX Companies, Calls, Follow-Ups, Quotes, Orders, Growth Opportunities, and My Performance remain the same Connect rep workflows.</div></div>'}
+function proforma(){var d=DATA.max.distributors[0],yoy=(d.ytd-d.prior)/d.prior*100,end=[{name:'Apex Industrial Services',ytd:87400,prior:72100},{name:'Horizon Construction Group',ytd:68900,prior:52600},{name:'Sterling Building Services',ytd:54400,prior:50300},{name:'Metro Facility Solutions',ytd:43700,prior:48000},{name:'Redwood Energy Services',ytd:35600,prior:30900}],reps=[{name:'Jamie Mercer',ytd:126800,prior:102400},{name:'Alex Rivera',ytd:88400,prior:79700},{name:'Priya Shah',ytd:71200,prior:75700},{name:'Derek Cole',ytd:55700,prior:64800}];return'<div class="d740"><button class="d740-back" onclick="_demo740BackDistributors()">← Back to Distributor Overview</button><section class="d740-hero"><div><div class="d740-kick">MAX APPAREL · DISTRIBUTOR PROFILE · PHASE ONE</div><h1>Proforma</h1><p>The first distributor workspace. This page begins the management-style view of Proforma’s MAX business: performance, contribution, branch penetration, and where the MAX SREP should focus next.</p></div><span class="d740-demo-pill">Illustrative Proforma data</span></section><div class="d740-kpis">'+kpi('YTD Sales',money(d.ytd),(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD','rgba(93,202,165,.24)')+kpi('L12M Sales',money(d.l12m),'Attributed MAX sales','rgba(0,175,239,.20)')+kpi('Distributor Reps','4','Known active sellers','rgba(155,107,255,.18)')+kpi('End Customers',String(d.endCustomers),'Known attributed customers','rgba(0,175,239,.18)')+kpi('Active Branches',String(d.activeBranches),'Locations with attributed sales','rgba(93,202,165,.20)')+kpi('White Space',String(d.knownBranches-d.activeBranches),'No attributed MAX purchases currently loaded','rgba(250,135,61,.22)')+'</div><div class="d740-grid"><section class="d740-card"><div class="d740-card-head"><div><strong>Proforma Sales Performance</strong><span>Current demo year versus prior year by month</span></div><div class="d740-legend"><span><i style="background:#00AFEF"></i>2026</span><span><i style="background:#FA873D"></i>2025</span></div></div><div class="d740-card-body">'+lineChart(DATA.max.proformaMonths)+'</div></section><section class="d740-card"><div class="d740-card-head"><div><strong>Distributor Priorities</strong><span>What Jordan should work on next</span></div></div><div class="d740-card-body"><div class="d740-priority"><span>Branch expansion</span><strong>11 known locations are not currently active</strong><p>Use active-location success as the proof point before asking Proforma to expand the MAX program.</p></div><div class="d740-priority"><span>Distributor rep activation</span><strong>Derek Cole has room to expand MAX penetration</strong><p>Review the customers in Derek’s book and identify the accounts where a MAX conversation is supported by evidence.</p></div><div class="d740-priority"><span>Product expansion</span><strong>Several end customers show outerwear whitespace</strong><p>Validate the need before positioning products; do not treat whitespace as proof of demand.</p></div></div></section></div><div class="d740-mini-grid"><section class="d740-card"><div class="d740-card-head"><div><strong>End Customer Contribution</strong><span>Where Proforma-attributed MAX sales are coming from</span></div></div><div class="d740-card-body">'+bars(end)+'</div></section><section class="d740-card"><div class="d740-card-head"><div><strong>Distributor Rep Contribution</strong><span>Sales attributed to known Proforma reps</span></div></div><div class="d740-card-body">'+bars(reps)+'<div style="height:13px"></div><div class="d740-penetration"><div class="d740-pen"><strong>'+d.knownBranches+'</strong><span>Known branches</span></div><div class="d740-pen"><strong>'+d.activeBranches+'</strong><span>Active branches</span></div><div class="d740-pen"><strong>'+(d.knownBranches-d.activeBranches)+'</strong><span>White space</span></div></div></div></section></div><div class="d740-note"><strong style="color:#BEEAF7">Next development step:</strong> audit this overview first. Then we can build the distributor-rep, end-customer, and branch drill-downs without changing the normal MAX CRM.</div></div>'}
+function distributorPage(){return window._demo740DistView==='proforma'?proforma():distributorList()}
+window._demo740OpenDistributor=function(id){if(id==='proforma')window._demo740DistView='proforma';else{alert('Phase One builds Proforma first. The other distributors are list-level demo records for now.');return}_rp2Go('distributors')};
+window._demo740BackDistributors=function(){window._demo740DistView='list';_rp2Go('distributors')};
+
+/* Final routing wrapper: preserve every existing page; add one MAX-only page. */
+var priorPage=window._rp2Page,priorHtml=window._rp2Html,priorGo=window._rp2Go;
+window._rp2Page=function(){var rep=window._rp2&&_rp2.rep||'',page=window._rp2&&_rp2.page||'home';if(page==='distributors'){return isMax(rep)?distributorPage():'<div class="d740"><div class="d740-note">Distributor intelligence is a MAX Apparel workspace.</div></div>'}if(isDemo(rep))return withDemoState(rep,function(){return typeof priorPage==='function'?priorPage.apply(window,arguments):''});return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
+function injectDistributorNav(html,rep){if(!isMax(rep)||String(html).indexOf('rp2-mode-phased')<0)return html;var btn='<button data-demo740-distributors="1"'+((window._rp2&&_rp2.page==='distributors')?' class="on"':'')+' onclick="_rp2Go(\'distributors\')"><i>◫</i>Distributors</button>';if(String(html).indexOf('data-demo740-distributors')<0){if(String(html).indexOf('data-go686-nav')>=0)html=String(html).replace(/(<button[^>]*data-go686-nav[^>]*>[\s\S]*?<\/button>)/,function(m){return m+btn});else html=String(html).replace(/(<button[^>]*onclick="_rp2Go\('customers'\)"[^>]*>[\s\S]*?<\/button>)/,function(m){return m+btn})}if(window._rp2&&_rp2.page==='distributors')html=String(html).replace(/(<div class="p639-page-top"><div><strong>)([^<]*)(<\/strong>)/,'$1Distributors$3');return html}
+window._rp2Html=function(rep){seedPortalStores();ensureDemoAccounts();var html=isDemo(rep)?withDemoState(rep,function(){return typeof priorHtml==='function'?priorHtml.call(window,rep):''}):typeof priorHtml==='function'?priorHtml.apply(this,arguments):'';return injectDistributorNav(html,rep)};
+window._rp2Go=function(page){var rep=window._rp2&&_rp2.rep||'';if(page==='distributors'){if(!isMax(rep))return typeof priorGo==='function'?priorGo.call(this,'home'):undefined;window._rp2.page='distributors';var overlay=document.getElementById('rp-overlay');if(overlay){overlay.innerHTML=window._rp2Html(rep);try{if(typeof window._rp2After==='function')window._rp2After()}catch(e){}var main=overlay.querySelector('.rp2-main');if(main)main.scrollTop=0}return}return typeof priorGo==='function'?priorGo.apply(this,arguments):undefined};
+
+/* Keep demo stores and admin rows available after late cloud hydration/re-render events. */
+[0,250,1000,2500].forEach(function(ms){setTimeout(function(){seedPortalStores();ensureDemoAccounts();try{if(document.getElementById('rp-admin'))window._rpRenderAdmin()}catch(e){}},ms)});
+window.CONNECT_V740_DEMO_SREP_DIAGNOSTICS=function(){return{version:BUILD,demoReps:Object.keys(DEMOS),activeManagerReps:typeof activeReps==='function'?activeReps().map(function(r){return r.name}):[],demoInActiveManagerReps:typeof activeReps==='function'?activeReps().some(function(r){return isDemo(r.name)}):false,maxDistributorNav:isMax(window._rp2&&_rp2.rep||''),crmSeeded:!!(read(CRM,{reps:{}}).reps||{})[MAX_NAME],actionSeeded:!!(read(ACTION,{reps:{}}).reps||{})[MAX_NAME]}};
+})();
+</script>
+<script id="connect-v740-authority-final">
+(function(){var BUILD='v740',DISPLAY='V740',TITLE='Connect v740 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});try{new MutationObserver(enforce).observe(document.documentElement,{attributes:true,attributeFilter:['data-connect-build','data-tcp-build','data-connect-release']})}catch(e){}})();
+</script>
+
