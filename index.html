@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v743 — Sales Portal</title>
+<title>Connect v745 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v743', DISPLAY='V743', TITLE='Connect v743 — Sales Portal';
+  var BUILD='v745', DISPLAY='V745', TITLE='Connect v745 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,13 +74846,13 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v743',DISPLAY='V743',TITLE='Connect v743 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v745',DISPLAY='V745',TITLE='Connect v745 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
 
-<style id="connect-v743-max-distributor-command-center-css">
-/* ===== V743 MAX Distributor Command Center + contextual section help ===== */
+<style id="connect-v744-max-distributor-command-center-css">
+/* ===== V744 MAX Distributor Command Center + contextual section help + growth outlook ===== */
 #rp-overlay .d742{max-width:1500px;margin:0 auto;padding:4px 0 34px;--d742-line:rgba(255,255,255,.09);--d742-soft:rgba(255,255,255,.038);--d742-panel:#0D1B25;--d742-panel2:#10212C}
 #rp-overlay .d742-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:0 0 15px;padding:4px 2px 2px}
 #rp-overlay .d742-kick,#rp-overlay .d742-section-kick{font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.14em;color:#21C8F6}
@@ -75000,7 +75000,7 @@ var HELP={
  network:{title:'Network Growth',what:'Shows how deeply MAX is penetrating the known distributor network through end customers and branches. White-space locations represent known branches with no attributed MAX purchases currently loaded.',use:'Use this area to identify structural room to grow. A large white-space count is a reason to investigate branch expansion, not an automatic sales opportunity.',truth:'No attributed purchase evidence means unknown or white space — never proof that a location does not buy MAX.'},
  actions:{title:'Action Center',what:'A short, ranked queue of the distributor situations with the clearest current reason to act. It deliberately prioritizes sales relevance instead of simply ranking the largest distributors.',use:'Start here when deciding what to work next. Open the highest-priority item, validate the underlying evidence, then move the resulting action into the normal Connect workflow.',truth:'This list should stay short. The full Growth Opportunities workspace can hold the broader opportunity inventory.'},
  directory:{title:'My Distributors',what:'The working directory for every distributor assigned to the MAX SREP. Each row combines performance, account health, network penetration, recency, and the strongest current signal.',use:'Search or filter the book, scan the Primary Signal column, and open the distributor that deserves a deeper account review.',truth:'The directory is for navigation and comparison. It should not duplicate every metric available inside the distributor profile.'},
- forecast:{title:'Path to the 3× Benchmark',what:'Frames the size of the sales-growth challenge by comparing the current L12M distributor book with a simple 3× benchmark and the known expansion inventory already visible in Connect.',use:'Use this to keep growth ambition connected to concrete levers: protect existing revenue, penetrate known branches, convert high-priority plays, and expand through end customers and distributor relationships.',truth:'The 3× value is a mathematical benchmark, not a forecast, quota, or promise. Connect should only add opportunity-dollar estimates when attribution is defensible.'}
+ forecast:{title:'Growth Outlook',what:'Summarizes the current distributor book and the visible growth runway already identifiable in Connect: white-space branches, high-priority plays, end-customer reach, and accounts that need protection.',use:'Use this to keep aggressive growth connected to concrete levers: protect existing revenue, penetrate known branches, convert high-priority plays, and expand through end customers and distributor relationships.',truth:'This is a directional growth-planning view. Connect should not invent a precise revenue forecast or opportunity value until the underlying attribution is defensible.'}
 };
 function helpBtn(key,label){return'<button type="button" class="d743-help-btn" aria-label="Explain '+esc(label||'this section')+'" title="What is this section?" onclick="_demo743Help(event,\''+key+'\')">?</button>'}
 function helpModal(){return'<div id="d743-help-backdrop" class="d743-help-backdrop" role="presentation" onclick="if(event.target===this)_demo743CloseHelp()"><section class="d743-help-dialog" role="dialog" aria-modal="true" aria-labelledby="d743-help-title"><div class="d743-help-top"><div><div class="d743-help-kick">How this area works</div><div id="d743-help-title" class="d743-help-title">Section help</div></div><button type="button" class="d743-help-close" aria-label="Close help" onclick="_demo743CloseHelp()">×</button></div><div id="d743-help-body" class="d743-help-body"></div></section></div>'}
@@ -75041,10 +75041,243 @@ function filtered(){return ds().filter(function(d){var h=healthOf(d);if(S.filter
 function directory(){var rows=filtered();return'<section class="d742-card d742-directory"><div class="d742-card-head"><div class="d743-head-title"><div><strong>My Distributors</strong><span>The directory: performance, health, network penetration, recency, and the clearest reason to act</span></div>'+helpBtn('directory','My Distributors')+'</div></div><div class="d742-dir-tools">'+[['all','All'],['growing','Growing'],['stable','Stable'],['attention','Attention'],['whitespace','White Space']].map(function(x){return'<button class="d742-filter '+(S.filter===x[0]?'on':'')+'" onclick="_demo742SetFilter(\''+x[0]+'\')">'+x[1]+'</button>'}).join('')+'<input id="d742-dir-search" class="d742-dir-search" placeholder="Search distributors…" oninput="_demo742SearchDirectory(this.value)"></div><div class="d742-table-wrap"><table class="d742-table"><thead><tr><th>Distributor</th><th>Revenue / Pace</th><th>Health</th><th>Network Penetration</th><th>Last Order</th><th>Primary Signal</th><th></th></tr></thead><tbody>'+rows.map(function(d){var yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0,h=healthOf(d);return'<tr data-d742-row="'+esc(d.id)+'" data-search="'+esc((d.name+' '+h+' '+(SIGNALS[d.id]&&SIGNALS[d.id].title||'')).toLowerCase())+'"><td><div class="name">'+esc(d.name)+'</div><span style="color:#738D9D;font-size:7.5px">'+money(d.l12m)+' L12M</span></td><td><div class="d742-money">'+money(d.ytd)+' YTD</div><div class="d742-yoy '+(yoy<0?'down':'')+'">'+(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD</div></td><td><span class="d742-health '+h+'">'+(h==='growing'?'Growing':h==='attention'?'Attention':'Stable')+'</span></td><td>'+branchCell(d)+'</td><td>'+esc(d.lastOrder||'—')+'</td><td>'+signal(d)+'</td><td><button class="d742-open '+(d.id==='proforma'?'primary':'')+'" onclick="'+(d.id==='proforma'?"_demo740OpenDistributor('proforma')":"_demo742OpenAction('"+esc(d.id)+"')")+'">'+(d.id==='proforma'?'Open Proforma':'Review')+'</button></td></tr>'}).join('')+'</tbody></table></div></section>'}
 window._demo742SetFilter=function(f){S.filter=f;renderHost('d742-directory-host',directory())};
 window._demo742SearchDirectory=function(q){q=clean(q).toLowerCase();document.querySelectorAll('[data-d742-row]').forEach(function(r){r.style.display=!q||(r.getAttribute('data-search')||'').indexOf(q)>=0?'table-row':'none'})};
-function forecast(t,h){var x3=t.l12m*3,gap=x3-t.l12m;return'<section class="d742-card"><div class="d742-card-head"><div class="d743-head-title"><div><div class="d742-section-kick">Growth Forecast</div><strong style="margin-top:4px">Path to the 3× benchmark</strong><span>Use the current distributor book as the starting point, then quantify the levers that can close the gap</span></div>'+helpBtn('forecast','Path to the 3× benchmark')+'</div></div><div class="d742-forecast"><div class="d742-forecast-grid"><div class="d742-forecast-stat"><span>Current L12M</span><strong>'+money(t.l12m)+'</strong></div><div class="d742-forecast-stat"><span>3× benchmark</span><strong>'+money(x3)+'</strong></div><div class="d742-forecast-stat"><span>Gap to 3×</span><strong>'+money(gap)+'</strong></div><div class="d742-forecast-stat"><span>Expansion inventory</span><strong>'+t.opps+' plays · '+t.white+' branches</strong></div></div><div class="d742-x3bar"><i></i></div><div class="d742-x3labels"><span>Current book · 1×</span><span>3× benchmark</span></div><div class="d742-levers"><div class="d742-lever"><span>Protect</span><strong>'+h.attention+' distributor needs recovery</strong><p>Stop avoidable revenue loss before chasing only new growth.</p></div><div class="d742-lever"><span>Penetrate</span><strong>'+t.white+' white-space branches</strong><p>Validate where current distributor/end-customer programs can expand.</p></div><div class="d742-lever"><span>Convert</span><strong>6 high-priority plays</strong><p>Work the highest-confidence opportunities before the long tail.</p></div><div class="d742-lever"><span>Expand</span><strong>'+t.end+' end customers identified</strong><p>Use distributor relationships to widen product and location penetration.</p></div></div><div class="d742-truth">The 3× figure is a mathematical benchmark based on the current L12M demo book, not a forecast or promise. Opportunity values should only be added as Connect gains defensible attribution.</div></div></section>'}
+function forecast(t,h){return'<section class="d742-card"><div class="d742-card-head"><div class="d743-head-title"><div><div class="d742-section-kick">Growth Outlook</div><strong style="margin-top:4px">Where the next wave of growth can come from</strong><span>Keep the book pointed toward aggressive growth without turning ambition into a made-up target</span></div>'+helpBtn('forecast','Growth Outlook')+'</div></div><div class="d742-forecast"><div class="d742-forecast-grid"><div class="d742-forecast-stat"><span>Current L12M</span><strong>'+money(t.l12m)+'</strong></div><div class="d742-forecast-stat"><span>White-space branches</span><strong>'+t.white+'</strong></div><div class="d742-forecast-stat"><span>High-priority plays</span><strong>6</strong></div><div class="d742-forecast-stat"><span>End customers identified</span><strong>'+t.end+'</strong></div></div><div class="d742-levers"><div class="d742-lever"><span>Protect</span><strong>'+h.attention+' distributor needs recovery</strong><p>Stop avoidable revenue loss before chasing only new growth.</p></div><div class="d742-lever"><span>Penetrate</span><strong>'+t.white+' white-space branches</strong><p>Validate where current distributor and end-customer programs can expand.</p></div><div class="d742-lever"><span>Convert</span><strong>6 high-priority plays</strong><p>Work the highest-confidence opportunities before the long tail.</p></div><div class="d742-lever"><span>Expand</span><strong>'+t.end+' end customers identified</strong><p>Use distributor relationships to widen product and location penetration.</p></div></div><div class="d742-truth">This section shows visible growth runway, not a fixed multiplier or fabricated forecast. As Connect gains defensible attribution, it can quantify opportunity value without changing the growth-first operating lens.</div></div></section>'}
 function dashboard(){var t=totals(),h=health();return'<div class="d742"><div class="d742-head"><div><div class="d742-kick">MAX Apparel · Distributor Command Center</div><h1>Distributor Overview</h1><p>Run the distributor book from one place: pace, health, network penetration, action priorities, and the path toward materially more sales.</p></div><span class="d742-demo">Illustrative demo data</span></div><div class="d742-snapshot"><div class="d742-snap-icon">✦</div><div><div class="d743-head-title"><div><strong>Distributor Book Snapshot</strong></div>'+helpBtn('snapshot','Distributor Book Snapshot')+'</div><span><b style="color:#FFC092">Top growth signal:</b> Proforma is +17% YTD with 11 known white-space branches — momentum and expansion are present in the same account.</span></div><span class="d742-watch">Watch: Evergreen is 16% below prior-year pace.</span></div><div class="d742-section-label"><div class="d742-section-kick">Executive Snapshot</div>'+helpBtn('executive','Executive Snapshot')+'</div><div class="d742-kpis">'+kpi('$','Revenue Pace',money(t.ytd),'Data through Aug',Math.round(t.yoy)+'% vs prior YTD',null,'rgba(250,135,61,.24)')+kpi('◎','Distributor Health',(h.growing+h.stable)+' / '+ds().length+' healthy','1 needs attention',h.growing+' growing · '+h.stable+' stable · '+h.attention+' attention',(h.growing+h.stable)/Math.max(ds().length,1)*100,'rgba(0,175,239,.22)')+kpi('⌂','Network Penetration',Math.round(t.pen)+'%','31 white-space branches',t.active+' of '+t.known+' known branches active',t.pen,'rgba(71,209,108,.22)')+kpi('↗','Growth Pipeline',String(t.opps),'6 high priority','Expansion plays across the distributor network',6/Math.max(t.opps,1)*100,'rgba(155,107,255,.22)')+'</div><div class="d742-grid"><section id="d742-trend-host" class="d742-card">'+trendBlock()+'</section><section class="d742-card">'+networkPanel(t,h)+'</section></div>'+actions()+'<div id="d742-directory-host">'+directory()+'</div>'+forecast(t,h)+helpModal()+'</div>'}
 var priorPage=window._rp2Page;
 window._rp2Page=function(){var rep=window._rp2&&window._rp2.rep||'',page=window._rp2&&window._rp2.page||'home';if(page==='distributors'&&clean(rep)===REP&&window._demo740DistView!=='proforma')return dashboard();return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
 window.CONNECT_V743_DISTRIBUTOR_COMMAND_CENTER_DIAGNOSTICS=function(){var t=totals(),h=health();return{version:'v743',mode:S.mode,selected:S.selected.slice(),revenue:{ytd:t.ytd,prior:t.prior,l12m:t.l12m,yoy:Math.round(t.yoy)},health:h,network:{endCustomers:t.end,activeBranches:t.active,knownBranches:t.known,whiteSpace:t.white,penetration:Math.round(t.pen)},growth:{opportunities:t.opps,highPriority:6,x3Benchmark:t.l12m*3,gap:t.l12m*2}}};
 })();
 </script>
+
+<!-- ===== CONNECT V745 · MAX DISTRIBUTOR REP COVERAGE + PROFORMA OVERVIEW ===== -->
+<style id="connect-v745-max-proforma-quarterly-coverage-css">
+/* ===== V745 MAX Distributor quarterly rep coverage + Proforma workspace overview ===== */
+#rp-overlay .d745-title-with-help{display:flex;align-items:flex-start;gap:8px;min-width:0}
+#rp-overlay .d745-title-with-help>div{min-width:0}
+#rp-overlay .d745-help{width:20px;height:20px;display:inline-grid;place-items:center;flex:0 0 auto;border:1px solid rgba(83,176,220,.58);border-radius:50%;background:rgba(0,175,239,.06);color:#BDEEFF;font:950 10px/1 "Segoe UI",Arial,sans-serif;cursor:pointer;transition:.15s ease}
+#rp-overlay .d745-help:hover{background:rgba(0,175,239,.15);border-color:rgba(76,211,248,.9);transform:translateY(-1px);color:#fff}
+#rp-overlay .d745-help-backdrop{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(2,8,12,.76);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+#rp-overlay .d745-help-backdrop.open{display:flex}
+#rp-overlay .d745-help-dialog{width:min(560px,calc(100vw - 34px));max-height:min(700px,calc(100vh - 44px));overflow:auto;border:1px solid rgba(0,175,239,.27);border-radius:22px;background:linear-gradient(155deg,#122633,#0A1720 72%);box-shadow:0 35px 90px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.06);padding:21px}
+#rp-overlay .d745-help-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08)}
+#rp-overlay .d745-help-kick{font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.13em;color:#20C8F5;margin-bottom:5px}
+#rp-overlay .d745-help-title{font:900 22px/1.1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-help-close{width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.035);color:#9EB4C2;cursor:pointer;font-size:16px}
+#rp-overlay .d745-help-body{padding-top:15px}
+#rp-overlay .d745-help-block{padding:12px 13px;margin-bottom:9px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.025)}
+#rp-overlay .d745-help-block span{display:block;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.09em;color:#22C8F5;margin-bottom:5px}
+#rp-overlay .d745-help-block p{margin:0;color:#A4B6C2;font-size:9.5px;line-height:1.58}
+
+#rp-overlay .d745-book-coverage{margin:0 0 16px!important}
+#rp-overlay .d745-cadence{display:inline-flex;align-items:center;padding:5px 9px;border:1px solid rgba(250,135,61,.3);border-radius:999px;background:rgba(250,135,61,.08);color:#FFC298;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+#rp-overlay .d745-book-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(330px,.75fr);gap:16px;padding:15px}
+#rp-overlay .d745-book-main,#rp-overlay .d745-book-side{min-width:0}
+#rp-overlay .d745-book-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px}
+#rp-overlay .d745-book-stats>div{padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.025)}
+#rp-overlay .d745-book-stats span{display:block;color:#7F97A8;font-size:7.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}
+#rp-overlay .d745-book-stats strong{display:block;margin-top:5px;font:900 20px/1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-big-progress{padding:13px 14px;border:1px solid rgba(0,175,239,.13);border-radius:14px;background:rgba(0,175,239,.035);margin-bottom:12px}
+#rp-overlay .d745-big-progress>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:8px;color:#8CA3B4;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+#rp-overlay .d745-big-progress>div:first-child b{color:#D9F4FC;font-size:8px}
+#rp-overlay .d745-big-track{height:11px;border-radius:999px;background:#102B36;overflow:hidden;margin:9px 0 7px}
+#rp-overlay .d745-big-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00AFEF,#47D16C);box-shadow:0 0 18px rgba(0,175,239,.2)}
+#rp-overlay .d745-big-progress p{margin:0;color:#8199A9;font-size:8px;line-height:1.45}
+#rp-overlay .d745-big-progress p strong{color:#7FE69A}
+#rp-overlay .d745-month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+#rp-overlay .d745-month{padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.024)}
+#rp-overlay .d745-month-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#rp-overlay .d745-month-top span{font-size:8px;font-weight:950;color:#DCE9EF;text-transform:uppercase;letter-spacing:.06em}
+#rp-overlay .d745-month-top em{font-style:normal;font-size:7px;font-weight:950;color:#FFC094}
+#rp-overlay .d745-month-top em.done{color:#70E58F}
+#rp-overlay .d745-month>strong{display:block;margin-top:8px;font:900 18px/1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-month>strong small{font:800 8px "Segoe UI",Arial,sans-serif;color:#728B9B}
+#rp-overlay .d745-mini-track{height:6px;border-radius:999px;background:#132C36;overflow:hidden;margin:8px 0 6px}
+#rp-overlay .d745-mini-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#FA873D,#00AFEF)}
+#rp-overlay .d745-month p{margin:0;color:#718A9A;font-size:7px;line-height:1.35}
+#rp-overlay .d745-book-side{padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.02)}
+#rp-overlay .d745-side-title{font:900 13px/1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-book-side>p{margin:6px 0 11px;color:#7891A2;font-size:8px;line-height:1.45}
+#rp-overlay .d745-cover-list{display:flex;flex-direction:column;gap:8px}
+#rp-overlay .d745-cover-row{display:grid;grid-template-columns:minmax(120px,1.2fr) minmax(90px,.9fr) 38px auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+#rp-overlay .d745-cover-row:last-child{border-bottom:0}
+#rp-overlay .d745-cover-row strong{display:block;font-size:8px;color:#EDF5F8}
+#rp-overlay .d745-cover-row span{display:block;margin-top:2px;color:#6F899A;font-size:7px}
+#rp-overlay .d745-row-track{height:6px;border-radius:999px;background:#132B36;overflow:hidden}
+#rp-overlay .d745-row-track i{display:block;height:100%;background:#00AFEF;border-radius:inherit}
+#rp-overlay .d745-cover-row b{font-size:8px;color:#AEEBFA;text-align:right}
+#rp-overlay .d745-cover-row button{border:1px solid rgba(250,135,61,.32);border-radius:8px;background:rgba(250,135,61,.08);color:#FFC39A;padding:5px 7px;font-size:7px;font-weight:900;cursor:pointer}
+
+#rp-overlay .d745-pro{max-width:1500px;margin:0 auto;padding:2px 0 34px}
+#rp-overlay .d745-back{border:0;background:transparent;color:#6EDCF8;font-size:9px;font-weight:900;cursor:pointer;padding:2px 0 10px}
+#rp-overlay .d745-pro-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:6px 2px 15px}
+#rp-overlay .d745-kick,#rp-overlay .d745-section-kick{font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.13em;color:#21C8F6}
+#rp-overlay .d745-pro-head h1{margin:5px 0 6px;font:900 32px/1 Georgia,"Times New Roman",serif;color:#fff;letter-spacing:-.04em}
+#rp-overlay .d745-pro-head p{max-width:850px;margin:0;color:#8DA4B4;font-size:10px;line-height:1.55}
+#rp-overlay .d745-demo{padding:6px 10px;border:1px solid rgba(250,135,61,.36);border-radius:999px;background:rgba(250,135,61,.07);color:#FFC096;font-size:8px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+#rp-overlay .d745-subnav{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:8px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:#08151D;margin-bottom:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+#rp-overlay .d745-subnav button{border:1px solid transparent;border-radius:9px;background:transparent;color:#8EA5B4;padding:8px 11px;font-size:8px;font-weight:900;cursor:pointer}
+#rp-overlay .d745-subnav button:hover{color:#fff;background:rgba(255,255,255,.035)}
+#rp-overlay .d745-subnav button.on{background:linear-gradient(135deg,#FA873D,#E66D29);color:#fff;border-color:rgba(255,255,255,.12);box-shadow:0 8px 18px rgba(250,135,61,.16)}
+#rp-overlay .d745-pro-body{display:flex;flex-direction:column;gap:14px}
+#rp-overlay .d745-pro-snapshot{display:grid;grid-template-columns:40px minmax(0,1fr) minmax(230px,.45fr);gap:12px;align-items:center;padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:linear-gradient(90deg,rgba(250,135,61,.08),rgba(0,175,239,.035),rgba(255,255,255,.02))}
+#rp-overlay .d745-snap-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,rgba(250,135,61,.22),rgba(0,175,239,.12));border:1px solid rgba(255,255,255,.08)}
+#rp-overlay .d745-pro-snapshot strong{font:900 13px/1.2 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-pro-snapshot span{display:block;color:#849CAD;font-size:8px;line-height:1.45;margin-top:4px}
+#rp-overlay .d745-pro-snapshot span b{color:#FFC096}
+#rp-overlay .d745-pro-snapshot em{font-style:normal;color:#9EDFF0;font-size:8px;font-weight:850;line-height:1.45;text-align:right}
+#rp-overlay .d745-pro-snapshot em b{color:#fff}
+#rp-overlay .d745-section-row{display:flex;align-items:center;gap:8px;padding-left:2px}
+#rp-overlay .d745-pro-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#rp-overlay .d745-pro-kpi{padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:linear-gradient(145deg,#10232E,#0B1922);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#rp-overlay .d745-pro-kpi-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#rp-overlay .d745-pro-kpi-top i{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:rgba(0,175,239,.08);border:1px solid rgba(0,175,239,.19);font-style:normal;color:#68DCF8}
+#rp-overlay .d745-pro-kpi-top span{font-size:7px;font-weight:900;color:#8BA2B2;text-align:right}
+#rp-overlay .d745-pro-kpi>small{display:block;margin-top:10px;color:#7F98A8;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}
+#rp-overlay .d745-pro-kpi>strong{display:block;margin-top:5px;font:900 22px/1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-pro-kpi>p{margin:6px 0 0;color:#7791A2;font-size:7.5px;line-height:1.4}
+#rp-overlay .d745-pro-track{height:6px;border-radius:999px;background:#132C37;overflow:hidden;margin-top:9px}
+#rp-overlay .d745-pro-track b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00AFEF,#47D16C)}
+#rp-overlay .d745-panel{border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#0D1B25;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#rp-overlay .d745-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+#rp-overlay .d745-panel-head strong{display:block;margin-top:4px;font:900 14px/1.15 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-panel-head span{display:block;margin-top:4px;color:#7891A2;font-size:8px}
+#rp-overlay .d745-primary,#rp-overlay .d745-ghost{border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 10px;font-size:8px;font-weight:900;cursor:pointer;white-space:nowrap}
+#rp-overlay .d745-primary{background:#FA873D;color:#fff;border-color:rgba(250,135,61,.45)}
+#rp-overlay .d745-ghost{background:rgba(255,255,255,.035);color:#9FDDF0;border-color:rgba(0,175,239,.22)}
+#rp-overlay .d745-coverage{padding-bottom:14px}
+#rp-overlay .d745-coverage-top{display:grid;grid-template-columns:130px minmax(0,1fr);gap:20px;align-items:center;padding:18px 18px 12px}
+#rp-overlay .d745-coverage-ring{--p:70;width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#47D16C calc(var(--p)*1%),#16313B 0);position:relative;box-shadow:0 14px 32px rgba(0,0,0,.18)}
+#rp-overlay .d745-coverage-ring:after{content:"";position:absolute;inset:12px;border-radius:50%;background:#0D1B25;border:1px solid rgba(255,255,255,.06)}
+#rp-overlay .d745-coverage-ring>div{position:relative;z-index:1;text-align:center}
+#rp-overlay .d745-coverage-ring strong{display:block;font:900 27px/1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-coverage-ring span{display:block;margin-top:4px;color:#7792A2;font-size:7px;text-transform:uppercase;letter-spacing:.08em;font-weight:900}
+#rp-overlay .d745-coverage-copy>strong{display:block;font:900 20px/1.1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-coverage-copy>span{display:block;margin-top:5px;color:#8DA5B5;font-size:9px}
+#rp-overlay .d745-coverage-copy>p{margin:7px 0 0;color:#7891A1;font-size:8px;line-height:1.45}
+#rp-overlay .d745-coverage-copy>p b{color:#76E394}
+#rp-overlay .d745-coverage>.d745-month-grid{padding:0 18px}
+#rp-overlay .d745-two{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);gap:14px}
+#rp-overlay .d745-chart{padding:12px 15px 13px;position:relative}
+#rp-overlay .d745-chart-legend{display:flex;justify-content:flex-end;gap:13px;margin-bottom:7px;color:#7D96A7;font-size:7.5px}
+#rp-overlay .d745-chart-legend i{display:inline-block;width:13px;height:2px;margin-right:5px;vertical-align:middle}
+#rp-overlay .d745-chart svg{width:100%;height:230px;display:block}
+#rp-overlay .d745-chart-months{display:grid;margin-top:5px;color:#708A9B;font-size:7px}
+#rp-overlay .d745-chart-months span{text-align:center}
+#rp-overlay .d745-attention-list{padding:6px 14px 14px}
+#rp-overlay .d745-attention{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+#rp-overlay .d745-attention:last-child{border-bottom:0}
+#rp-overlay .d745-attention>b{width:26px;height:26px;display:grid;place-items:center;border-radius:9px;background:rgba(250,135,61,.09);color:#FA873D;font:900 14px Georgia,"Times New Roman",serif}
+#rp-overlay .d745-attention span{display:block;color:#36CFF6;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}
+#rp-overlay .d745-attention strong{display:block;margin-top:3px;color:#F2F7FA;font-size:9px}
+#rp-overlay .d745-attention p{margin:4px 0 0;color:#748D9E;font-size:7.5px;line-height:1.4}
+#rp-overlay .d745-attention button{border:1px solid rgba(0,175,239,.22);border-radius:8px;background:rgba(0,175,239,.05);color:#A5E7F8;padding:7px 8px;font-size:7px;font-weight:900;cursor:pointer}
+#rp-overlay .d745-rep-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:13px 14px 5px}
+#rp-overlay .d745-rep-summary>div{padding:10px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.02)}
+#rp-overlay .d745-rep-summary span{display:block;color:#718B9C;font-size:7px;text-transform:uppercase;font-weight:900;letter-spacing:.06em}
+#rp-overlay .d745-rep-summary strong{display:block;margin-top:4px;font:900 17px/1 Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-rep-table-wrap{overflow:auto;padding:8px 14px 14px}
+#rp-overlay .d745-rep-table{width:100%;border-collapse:collapse;min-width:720px}
+#rp-overlay .d745-rep-table th{padding:8px 9px;border-bottom:1px solid rgba(255,255,255,.08);color:#6F8A9B;font-size:7px;text-align:left;text-transform:uppercase;letter-spacing:.07em}
+#rp-overlay .d745-rep-table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.055);color:#B4C4CE;font-size:8px}
+#rp-overlay .d745-rep-table td strong{color:#EFF5F8}
+#rp-overlay .d745-money{font:900 10px Georgia,"Times New Roman",serif;color:#fff!important}
+#rp-overlay .d745-rep-status{display:inline-flex;padding:4px 7px;border-radius:999px;border:1px solid;font-size:7px;font-weight:900}
+#rp-overlay .d745-rep-status.good{color:#72E590;border-color:rgba(71,209,108,.32);background:rgba(71,209,108,.06)}
+#rp-overlay .d745-rep-status.due{color:#FFC091;border-color:rgba(250,135,61,.33);background:rgba(250,135,61,.06)}
+#rp-overlay .d745-rep-status.follow{color:#9BE5FA;border-color:rgba(0,175,239,.32);background:rgba(0,175,239,.06)}
+#rp-overlay .d745-placeholder{padding:38px 28px;text-align:center;border:1px dashed rgba(0,175,239,.22);border-radius:18px;background:rgba(0,175,239,.025)}
+#rp-overlay .d745-placeholder-icon{font-size:28px;color:#2CCCF5;margin-bottom:12px}
+#rp-overlay .d745-placeholder h2{margin:5px 0 8px;font:900 24px Georgia,"Times New Roman",serif;color:#fff}
+#rp-overlay .d745-placeholder p{max-width:680px;margin:0 auto 15px;color:#829AAA;font-size:9px;line-height:1.55}
+#rp-overlay .d745-next-note{max-width:720px;margin:0 auto 16px;padding:11px 13px;border:1px solid rgba(250,135,61,.18);border-radius:12px;background:rgba(250,135,61,.05);color:#9BAEBA;font-size:8px;line-height:1.45}
+#rp-overlay .d745-next-note strong{color:#FFC094}
+@media(max-width:1120px){#rp-overlay .d745-book-grid,#rp-overlay .d745-two{grid-template-columns:1fr}#rp-overlay .d745-pro-kpis{grid-template-columns:1fr 1fr}#rp-overlay .d745-book-stats{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){#rp-overlay .d745-pro-head{align-items:flex-start;flex-direction:column}#rp-overlay .d745-pro-snapshot{grid-template-columns:38px 1fr}#rp-overlay .d745-pro-snapshot em{grid-column:2;text-align:left}#rp-overlay .d745-pro-kpis,#rp-overlay .d745-book-stats,#rp-overlay .d745-month-grid,#rp-overlay .d745-rep-summary{grid-template-columns:1fr}#rp-overlay .d745-coverage-top{grid-template-columns:1fr}#rp-overlay .d745-cover-row{grid-template-columns:1fr 1fr}#rp-overlay .d745-cover-row .d745-row-track{grid-column:1/-1}#rp-overlay .d745-attention{grid-template-columns:28px 1fr}#rp-overlay .d745-attention button{grid-column:2;justify-self:start}}
+
+</style>
+<script id="connect-v745-max-proforma-quarterly-coverage-js">
+(function(){
+'use strict';
+var REP='Jordan Reed';
+var COVERAGE={
+ quarter:'Q3 2026',total:412,contacted:282,
+ months:[
+  {name:'July',target:136,completed:138,status:'Complete'},
+  {name:'August',target:136,completed:137,status:'Complete'},
+  {name:'September',target:140,completed:7,status:'In progress'}
+ ],
+ distributors:[
+  {id:'proforma',name:'Proforma',total:200,contacted:139},
+  {id:'brightline',name:'BrightLine Promotions',total:78,contacted:52},
+  {id:'northstar',name:'Northstar Brand Group',total:56,contacted:38},
+  {id:'axis',name:'Axis Promo Network',total:43,contacted:31},
+  {id:'evergreen',name:'Evergreen Identity Solutions',total:35,contacted:22}
+ ],
+ proforma:{
+  total:200,contacted:139,followups:12,
+  months:[
+   {name:'July',target:66,completed:67,status:'Complete'},
+   {name:'August',target:67,completed:68,status:'Complete'},
+   {name:'September',target:67,completed:4,status:'In progress'}
+  ]
+ }
+};
+var PRO_REPS=[
+ {name:'Jamie Mercer',status:'Contacted',last:'Aug 12',customers:7,sales:126800,signal:'Branch expansion'},
+ {name:'Alex Rivera',status:'Needs Call',last:'Jun 3',customers:5,sales:88400,signal:'Customer growth'},
+ {name:'Priya Shah',status:'Needs Call',last:'May 21',customers:4,sales:71200,signal:'Sales declining'},
+ {name:'Derek Cole',status:'Follow-Up',last:'Aug 29',customers:4,sales:55700,signal:'2 inactive customers'},
+ {name:'Morgan Lee',status:'Contacted',last:'Jul 28',customers:3,sales:44300,signal:'Product whitespace'},
+ {name:'Chris Bennett',status:'Needs Call',last:'Jun 14',customers:2,sales:37200,signal:'New branch'}
+];
+var PRO_TABS=[['overview','Overview'],['reps','Distributor Reps'],['customers','End Customers'],['branches','Branches'],['sales','Sales'],['products','Products'],['activity','Activity'],['strategy','Strategy'],['profile','Profile']];
+var HELP={
+ bookcoverage:{title:'Quarterly Distributor Rep Coverage',what:'Tracks the real quarterly relationship workload across the MAX distributor book. A distributor can represent one company in Connect while containing many individual distributor reps who each require a quarterly call.',use:'Use the total, remaining count, monthly 33/33/33 pacing, and distributor breakdown to see whether the rep network is being worked consistently instead of leaving most calls for the end of the quarter.',truth:'Coverage in this demo counts completed distributor-rep calls. Opening a record does not count. Demo calls remain isolated from actual management call totals.'},
+ prosnapshot:{title:'Proforma Account Snapshot',what:'A fast account briefing that combines one commercial signal with one relationship-coverage signal. It is designed to tell the MAX SREP what changed and where attention is needed before reading the rest of the page.',use:'Start here before a Proforma work session. The commercial signal points toward growth; the relationship signal tells you whether enough of the distributor rep network has been worked this quarter.',truth:'The signals are demo examples. In production they must be supported by loaded sales, branch, call, and activity evidence.'},
+ proexec:{title:'Proforma Executive Snapshot',what:'Four lenses on the distributor: revenue pace, distributor-rep coverage, network penetration, and active growth plays.',use:'Use these cards to decide whether the immediate issue is revenue, relationship coverage, branch penetration, or opportunity execution.',truth:'Revenue and network metrics are separate from relationship coverage. Calling a distributor rep does not imply sales, and a white-space branch is not proof of demand.'},
+ procov:{title:'Q3 Distributor Rep Coverage',what:'Shows how many Proforma distributor reps have received their required quarterly call and how that workload is paced across July, August, and September.',use:'The 33/33/33 pacing keeps the 200-rep relationship obligation manageable. Work the remaining reps continuously instead of allowing the list to build up at quarter end.',truth:'A rep is counted only after a completed qualifying call in this demo. The final qualifying-contact policy can be expanded later if MAX management chooses to recognize other two-way interactions.'},
+ protrend:{title:'Proforma Revenue Trend',what:'Monthly attributed MAX revenue for Proforma compared with the prior-year period.',use:'Use the trend to understand direction and seasonality, then connect any change to actual distributor-rep, end-customer, product, branch, and activity evidence.',truth:'The chart shows correlation and timing only. It does not claim that a specific rep call caused a revenue change.'},
+ proattention:{title:'What Needs Attention',what:'A short account-level action queue that combines relationship coverage with branch, product, and revenue signals.',use:'Work from the top down. Validate the evidence, contact the right Proforma rep, then let the outcome feed normal Connect follow-up and growth workflows.',truth:'This is a prioritized working queue, not a complete list of everything happening inside Proforma.'},
+ proreps:{title:'Distributor Rep Snapshot',what:'A small sample of Proforma distributor reps that helps Jordan see top producers, people still requiring a quarterly call, and reps with follow-up or growth signals.',use:'Use this as an account overview only. The full Distributor Reps tab will become the call-workspace-style list for all 200 reps.',truth:'Attributed sales and customer counts should remain separate from call coverage. A high-producing rep can still be overdue for quarterly contact.'}
+};
+function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function num(v){var n=Number(v);return isFinite(n)?n:0}
+function money(v){return '$'+Math.round(num(v)).toLocaleString()}
+function pct(done,total){return total?Math.round(done/total*100):0}
+function helpBtn(key,label){return'<button type="button" class="d745-help" title="What is this section?" aria-label="Explain '+esc(label)+'" onclick="_demo745Help(event,\''+key+'\')">?</button>'}
+function helpModal(){return'<div id="d745-help-backdrop" class="d745-help-backdrop" onclick="if(event.target===this)_demo745CloseHelp()"><section class="d745-help-dialog" role="dialog" aria-modal="true"><div class="d745-help-top"><div><div class="d745-help-kick">How this area works</div><div id="d745-help-title" class="d745-help-title">Section help</div></div><button class="d745-help-close" onclick="_demo745CloseHelp()">×</button></div><div id="d745-help-body" class="d745-help-body"></div></section></div>'}
+window._demo745Help=function(e,key){if(e){e.preventDefault();e.stopPropagation()}var h=HELP[key],b=document.getElementById('d745-help-backdrop'),t=document.getElementById('d745-help-title'),body=document.getElementById('d745-help-body');if(!h||!b||!t||!body)return;t.textContent=h.title;body.innerHTML='<div class="d745-help-block"><span>What this shows</span><p>'+esc(h.what)+'</p></div><div class="d745-help-block"><span>How to use it</span><p>'+esc(h.use)+'</p></div><div class="d745-help-block"><span>Data truth</span><p>'+esc(h.truth)+'</p></div>';b.classList.add('open')};
+window._demo745CloseHelp=function(){var b=document.getElementById('d745-help-backdrop');if(b)b.classList.remove('open')};
+if(!window.__demo745Esc){window.__demo745Esc=true;document.addEventListener('keydown',function(e){if(e.key==='Escape')window._demo745CloseHelp()})}
+function monthCards(rows){return'<div class="d745-month-grid">'+rows.map(function(m){var p=pct(m.completed,m.target);return'<div class="d745-month"><div class="d745-month-top"><span>'+esc(m.name)+'</span><em class="'+(m.status==='Complete'?'done':'')+'">'+esc(m.status)+'</em></div><strong>'+m.completed+' <small>/ '+m.target+'</small></strong><div class="d745-mini-track"><i style="width:'+Math.min(100,p)+'%"></i></div><p>'+Math.max(0,m.target-m.completed)+' target calls remaining in this monthly tranche</p></div>'}).join('')+'</div>'}
+function coverageRows(){return'<div class="d745-cover-list">'+COVERAGE.distributors.map(function(d){var p=pct(d.contacted,d.total),rem=d.total-d.contacted;return'<div class="d745-cover-row"><div><strong>'+esc(d.name)+'</strong><span>'+d.contacted+' contacted · '+rem+' remaining</span></div><div class="d745-row-track"><i style="width:'+p+'%"></i></div><b>'+p+'%</b>'+(d.id==='proforma'?'<button onclick="_demo740OpenDistributor(\'proforma\')">Open</button>':'')+'</div>'}).join('')+'</div>'}
+function bookCoveragePanel(){var p=pct(COVERAGE.contacted,COVERAGE.total),remaining=COVERAGE.total-COVERAGE.contacted;return'<section class="d742-card d745-book-coverage"><div class="d742-card-head"><div class="d745-title-with-help"><div><div class="d742-section-kick">Relationship Coverage</div><strong style="margin-top:4px">Quarterly Distributor Rep Coverage</strong><span>'+esc(COVERAGE.quarter)+' · one required call per active distributor rep</span></div>'+helpBtn('bookcoverage','Quarterly Distributor Rep Coverage')+'</div><span class="d745-cadence">33 / 33 / 33 pacing</span></div><div class="d745-book-grid"><div class="d745-book-main"><div class="d745-book-stats"><div><span>Total distributor reps</span><strong>'+COVERAGE.total+'</strong></div><div><span>Contacted this quarter</span><strong>'+COVERAGE.contacted+'</strong></div><div><span>Remaining</span><strong>'+remaining+'</strong></div><div><span>Coverage</span><strong>'+p+'%</strong></div></div><div class="d745-big-progress"><div><span>Quarter progress</span><b>'+COVERAGE.contacted+' of '+COVERAGE.total+' reps called</b></div><div class="d745-big-track"><i style="width:'+p+'%"></i></div><p><strong>On pace:</strong> July + August finished 3 calls ahead of their combined monthly target. September is now in progress.</p></div>'+monthCards(COVERAGE.months)+'</div><div class="d745-book-side"><div class="d745-side-title">Coverage by distributor</div><p>One distributor can represent hundreds of quarterly relationships. This view keeps the workload visible at the person level.</p>'+coverageRows()+'</div></div></section>'+helpModal()}
+function injectBookCoverage(html){html=String(html||'');if(html.indexOf('d745-book-coverage')>=0)return html;var marker='<div class="d742-grid">';if(html.indexOf(marker)>=0)return html.replace(marker,bookCoveragePanel()+marker);return html}
+function data(){return window.CONNECT_DEMO_DATA_V740&&window.CONNECT_DEMO_DATA_V740.max?window.CONNECT_DEMO_DATA_V740.max:{} }
+function distributor(){var a=data().distributors||[];return a[0]||{name:'Proforma',ytd:342100,prior:292400,l12m:526800,endCustomers:18,knownBranches:34,activeBranches:23,opps:7}}
+function proNav(tab){return'<nav class="d745-subnav" aria-label="Proforma distributor workspace">'+PRO_TABS.map(function(t){return'<button class="'+(t[0]===tab?'on':'')+'" onclick="_demo745SetProformaTab(\''+t[0]+'\')">'+esc(t[1])+'</button>'}).join('')+'</nav>'}
+window._demo745SetProformaTab=function(tab){window._demo745ProformaTab=tab||'overview';if(typeof window._rp2Go==='function')window._rp2Go('distributors')};
+var priorOpenDistributor=window._demo740OpenDistributor;
+if(typeof priorOpenDistributor==='function')window._demo740OpenDistributor=function(id){if(id==='proforma')window._demo745ProformaTab='overview';return priorOpenDistributor.apply(this,arguments)};
+function proHeader(tab){return'<div class="d745-pro"><button class="d745-back" onclick="_demo740BackDistributors()">← Back to Distributor Overview</button><header class="d745-pro-head"><div><div class="d745-kick">MAX Apparel · Distributor Workspace</div><h1>Proforma</h1><p>One distributor account with a large relationship network. Revenue, quarterly distributor-rep coverage, end customers, branches, and growth signals belong in one working account view.</p></div><span class="d745-demo">Illustrative Proforma data</span></header>'+proNav(tab)}
+function proKpi(icon,label,value,badge,copy,bar){return'<div class="d745-pro-kpi"><div class="d745-pro-kpi-top"><i>'+icon+'</i><span>'+esc(badge)+'</span></div><small>'+esc(label)+'</small><strong>'+esc(value)+'</strong><p>'+esc(copy)+'</p>'+(bar==null?'':'<div class="d745-pro-track"><b style="width:'+Math.min(100,Math.max(0,bar))+'%"></b></div>')+'</div>'}
+function proChart(){var rows=data().proformaMonths||[],W=760,H=235,pad=12,vals=[];rows.forEach(function(r){vals.push(num(r.cy),num(r.py))});var max=Math.max.apply(Math,vals.concat([1]))*1.12,slot=(W-pad*2)/Math.max(rows.length,1),bar=Math.min(38,slot*.43);function x(i){return pad+i*slot+slot*.5}function y(v){return H-pad-v/max*(H-pad*2)}var grid='';[.25,.5,.75,1].forEach(function(q){var yy=y(max*q);grid+='<line x1="0" y1="'+yy+'" x2="'+W+'" y2="'+yy+'" stroke="rgba(255,255,255,.05)"/>'});var bars=rows.map(function(r,i){var yy=y(r.cy);return'<rect x="'+(x(i)-bar/2)+'" y="'+yy+'" width="'+bar+'" height="'+(H-pad-yy)+'" rx="4" fill="#FA873D"><title>'+esc(r.m)+' current · '+money(r.cy)+'</title></rect>'}).join('');var pts=rows.map(function(r,i){return x(i)+','+y(r.py)}).join(' ');return'<div class="d745-chart"><div class="d745-chart-legend"><span><i style="background:#FA873D"></i>Current year</span><span><i style="background:#69DDF7"></i>Prior year</span></div><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+grid+bars+'<polyline points="'+pts+'" fill="none" stroke="#69DDF7" stroke-width="3" stroke-dasharray="7 6"/>'+rows.map(function(r,i){return'<circle cx="'+x(i)+'" cy="'+y(r.py)+'" r="3.5" fill="#69DDF7"/>'}).join('')+'</svg><div class="d745-chart-months" style="grid-template-columns:repeat('+Math.max(rows.length,1)+',1fr)">'+rows.map(function(r){return'<span>'+esc(r.m)+'</span>'}).join('')+'</div></div>'}
+function proCoverage(){var c=COVERAGE.proforma,p=pct(c.contacted,c.total),remaining=c.total-c.contacted;return'<section class="d745-panel d745-coverage"><div class="d745-panel-head"><div class="d745-title-with-help"><div><div class="d745-section-kick">Quarterly Relationship Work</div><strong>Q3 Distributor Rep Coverage</strong><span>Every active Proforma distributor rep should receive one completed call this quarter.</span></div>'+helpBtn('procov','Q3 Distributor Rep Coverage')+'</div><button class="d745-primary" onclick="_demo745SetProformaTab(\'reps\')">Work Remaining Reps →</button></div><div class="d745-coverage-top"><div class="d745-coverage-ring" style="--p:'+p+'"><div><strong>'+p+'%</strong><span>covered</span></div></div><div class="d745-coverage-copy"><strong>'+c.contacted+' of '+c.total+' reps contacted</strong><span>'+remaining+' still need their quarterly call</span><div class="d745-big-track"><i style="width:'+p+'%"></i></div><p><b>On pace:</b> July + August finished 2 calls ahead of their combined monthly targets. September is in progress.</p></div></div>'+monthCards(c.months)+'</section>'}
+function attention(){var rows=[
+ ['Quarterly coverage','61 Proforma reps still need a Q3 call','Keep the 33/33/33 cadence moving instead of allowing the relationship list to pile up at quarter end.','Work reps','reps'],
+ ['Branch expansion','11 known locations have no attributed MAX purchases currently loaded','Use active-branch success as the proof point, then validate which Proforma rep owns each expansion conversation.','Review branches','branches'],
+ ['Distributor rep development','Derek Cole has 4 known end customers but only 2 active','Review Derek’s book for accounts where a MAX conversation is supported by real customer or product evidence.','View reps','reps'],
+ ['Product expansion','Several Proforma end customers show outerwear whitespace','Validate fit before positioning products. White space creates a question, not a claim of demand.','Review products','products']
+ ];return'<section class="d745-panel"><div class="d745-panel-head"><div class="d745-title-with-help"><div><div class="d745-section-kick">Action Center</div><strong>What Needs Attention</strong><span>Relationship coverage and commercial signals in one account queue</span></div>'+helpBtn('proattention','What Needs Attention')+'</div></div><div class="d745-attention-list">'+rows.map(function(r,i){return'<div class="d745-attention"><b>'+(i+1)+'</b><div><span>'+esc(r[0])+'</span><strong>'+esc(r[1])+'</strong><p>'+esc(r[2])+'</p></div><button onclick="_demo745SetProformaTab(\''+r[4]+'\')">'+esc(r[3])+'</button></div>'}).join('')+'</div></section>'}
+function repSnapshot(){return'<section class="d745-panel"><div class="d745-panel-head"><div class="d745-title-with-help"><div><div class="d745-section-kick">Relationship Network</div><strong>Distributor Rep Snapshot</strong><span>Priority people only — the full 200-rep working list belongs in Distributor Reps</span></div>'+helpBtn('proreps','Distributor Rep Snapshot')+'</div><button class="d745-ghost" onclick="_demo745SetProformaTab(\'reps\')">View all 200 reps →</button></div><div class="d745-rep-summary"><div><span>Total reps</span><strong>200</strong></div><div><span>Contacted Q3</span><strong>139</strong></div><div><span>Remaining</span><strong>61</strong></div><div><span>Follow-ups due</span><strong>12</strong></div></div><div class="d745-rep-table-wrap"><table class="d745-rep-table"><thead><tr><th>Distributor Rep</th><th>Q3 Status</th><th>Last Contact</th><th>End Customers</th><th>Attributed MAX Sales</th><th>Signal</th></tr></thead><tbody>'+PRO_REPS.map(function(r){var cls=r.status==='Contacted'?'good':(r.status==='Follow-Up'?'follow':'due');return'<tr><td><strong>'+esc(r.name)+'</strong></td><td><span class="d745-rep-status '+cls+'">'+esc(r.status)+'</span></td><td>'+esc(r.last)+'</td><td>'+r.customers+'</td><td class="d745-money">'+money(r.sales)+'</td><td>'+esc(r.signal)+'</td></tr>'}).join('')+'</tbody></table></div></section>'}
+function proOverview(){var d=distributor(),yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0,cover=COVERAGE.proforma,p=pct(cover.contacted,cover.total),pen=pct(d.activeBranches,d.knownBranches);return proHeader('overview')+'<div class="d745-pro-body"><div class="d745-pro-snapshot"><div class="d745-snap-icon">✦</div><div><div class="d745-title-with-help"><strong>Proforma Account Snapshot</strong>'+helpBtn('prosnapshot','Proforma Account Snapshot')+'</div><span><b>Top growth signal:</b> '+(d.knownBranches-d.activeBranches)+' known branches have no attributed MAX purchases currently loaded.</span></div><em><b>Relationship signal:</b> '+(cover.total-cover.contacted)+' of '+cover.total+' Proforma reps still need a Q3 call.</em></div><div class="d745-section-row"><div class="d745-section-kick">Executive Snapshot</div>'+helpBtn('proexec','Proforma Executive Snapshot')+'</div><div class="d745-pro-kpis">'+proKpi('$','Revenue Pace',money(d.ytd),(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD','Data through August',null)+proKpi('☎','Distributor Rep Coverage',cover.contacted+' / '+cover.total,(cover.total-cover.contacted)+' remaining',p+'% of Proforma reps contacted this quarter',p)+proKpi('⌂','Network Penetration',d.activeBranches+' / '+d.knownBranches,(d.knownBranches-d.activeBranches)+' white-space',pen+'% of known branches have attributed MAX sales',pen)+proKpi('↗','Growth Pipeline',String(d.opps),'3 high priority','Active Proforma expansion plays',3/Math.max(1,d.opps)*100)+'</div>'+proCoverage()+'<div class="d745-two"><section class="d745-panel"><div class="d745-panel-head"><div class="d745-title-with-help"><div><div class="d745-section-kick">Sales Performance</div><strong>Proforma Revenue Trend</strong><span>Current demo year versus prior year by month</span></div>'+helpBtn('protrend','Proforma Revenue Trend')+'</div></div>'+proChart()+'</section>'+attention()+'</div>'+repSnapshot()+helpModal()+'</div></div>'}
+function placeholder(tab){var label=(PRO_TABS.find(function(t){return t[0]===tab})||['',tab])[1];return proHeader(tab)+'<div class="d745-pro-body"><section class="d745-placeholder"><div class="d745-placeholder-icon">◫</div><div class="d745-section-kick">Next Workspace Build</div><h2>'+esc(label)+'</h2><p>The navigation architecture is now in place, but we are intentionally building the Proforma workspace one page at a time. <strong>Overview is the completed page in this pass.</strong></p>'+(tab==='reps'?'<div class="d745-next-note"><strong>Next:</strong> this becomes the call-workspace-style list for all 200 Proforma distributor reps, including Q3 status, last contact, end customers, attributed sales, signals, filters, and a Call action.</div>':'')+'<button class="d745-primary" onclick="_demo745SetProformaTab(\'overview\')">Return to Overview</button></section>'+helpModal()+'</div></div>'}
+function proformaPage(){var tab=window._demo745ProformaTab||'overview';return tab==='overview'?proOverview():placeholder(tab)}
+var priorPage=window._rp2Page;
+window._rp2Page=function(){var rep=window._rp2&&window._rp2.rep||'',page=window._rp2&&window._rp2.page||'home';if(page==='distributors'&&clean(rep)===REP){if(window._demo740DistView==='proforma')return proformaPage();var html=typeof priorPage==='function'?priorPage.apply(this,arguments):'';return injectBookCoverage(html)}return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
+window.CONNECT_V745_MAX_DISTRIBUTOR_COVERAGE_DIAGNOSTICS=function(){return{version:'v745',book:{quarter:COVERAGE.quarter,total:COVERAGE.total,contacted:COVERAGE.contacted,remaining:COVERAGE.total-COVERAGE.contacted,coverage:pct(COVERAGE.contacted,COVERAGE.total)},proforma:{total:COVERAGE.proforma.total,contacted:COVERAGE.proforma.contacted,remaining:COVERAGE.proforma.total-COVERAGE.proforma.contacted,coverage:pct(COVERAGE.proforma.contacted,COVERAGE.proforma.total)},rule:'One completed distributor-rep call per active rep per quarter; workload paced 33/33/33.'}};
+})();
+
+</script>
+
