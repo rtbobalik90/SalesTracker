@@ -20,7 +20,7 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v740 — Sales Portal</title>
+<title>Connect v741 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
@@ -74763,7 +74763,89 @@ window._rp2Go=function(page){var rep=window._rp2&&_rp2.rep||'';if(page==='distri
 window.CONNECT_V740_DEMO_SREP_DIAGNOSTICS=function(){return{version:BUILD,demoReps:Object.keys(DEMOS),activeManagerReps:typeof activeReps==='function'?activeReps().map(function(r){return r.name}):[],demoInActiveManagerReps:typeof activeReps==='function'?activeReps().some(function(r){return isDemo(r.name)}):false,maxDistributorNav:isMax(window._rp2&&_rp2.rep||''),crmSeeded:!!(read(CRM,{reps:{}}).reps||{})[MAX_NAME],actionSeeded:!!(read(ACTION,{reps:{}}).reps||{})[MAX_NAME]}};
 })();
 </script>
+\n<style id="connect-v741-max-distributor-dashboard-css">
+/* ===== V741 MAX Distributor Overview — sales-focus refinement ===== */
+#rp-overlay .d741-trend-controls{display:flex;align-items:center;gap:7px;min-width:0;max-width:100%;overflow-x:auto;scrollbar-width:thin;padding:1px 0 3px}
+#rp-overlay .d741-trend-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:0 8px;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.035);color:#BDD0DD;font-size:7px;font-weight:900;cursor:pointer;white-space:nowrap;transition:opacity .15s ease,border-color .15s ease,background .15s ease}
+#rp-overlay .d741-trend-chip:hover{border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.065)}
+#rp-overlay .d741-trend-chip.off{opacity:.38;background:rgba(255,255,255,.018)}
+#rp-overlay .d741-trend-chip i{width:13px;height:3px;border-radius:999px;display:inline-block}
+#rp-overlay .d741-trend-reset{flex:0 0 auto;min-height:26px;padding:0 8px;border:1px solid rgba(0,175,239,.22);border-radius:999px;background:rgba(0,175,239,.045);color:#75D9F4;font-size:6.8px;font-weight:950;cursor:pointer;white-space:nowrap}
+#rp-overlay .d741-trend-wrap{position:relative}
+#rp-overlay .d741-trend-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#728797;font-size:8px;font-weight:800;pointer-events:none}
+#rp-overlay .d741-focus-list{display:flex;flex-direction:column;gap:9px}
+#rp-overlay .d741-focus{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:start;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.025)}
+#rp-overlay .d741-focus-rank{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:rgba(250,135,61,.10);border:1px solid rgba(250,135,61,.22);color:#FFAD79;font-family:Georgia,'Times New Roman',serif;font-size:13px;font-weight:950}
+#rp-overlay .d741-focus-copy span{display:block;color:#00AFEF;font-size:6.5px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+#rp-overlay .d741-focus-copy strong{display:block;color:#fff;font-size:9px;line-height:1.3}
+#rp-overlay .d741-focus-copy p{margin:4px 0 0;color:#7E93A3;font-size:7.4px;line-height:1.45}
+#rp-overlay .d741-focus-btn{min-height:29px;padding:0 8px;border:1px solid rgba(250,135,61,.30);border-radius:8px;background:rgba(250,135,61,.07);color:#FFC29C;font-size:6.8px;font-weight:950;cursor:pointer;white-space:nowrap}
+#rp-overlay .d741-book-health{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+#rp-overlay .d741-health-dot{display:inline-flex;align-items:center;gap:4px;color:#8196A7;font-size:6.5px;font-weight:850;white-space:nowrap}
+#rp-overlay .d741-health-dot i{width:6px;height:6px;border-radius:50%;display:inline-block}
+#rp-overlay .d741-branch-cell strong{display:block;color:#EEF6FA;font-size:8.3px}
+#rp-overlay .d741-branch-cell span{display:block;color:#758A9A;font-size:6.8px;margin-top:3px}
+#rp-overlay .d741-signal{max-width:190px;color:#B6C6D1;font-size:7.5px;line-height:1.4}
+#rp-overlay .d741-signal strong{display:block;color:#F3F8FB;font-size:7.9px;margin-bottom:2px}
+#rp-overlay .d741-row-flash{animation:d741Flash 1.25s ease}
+@keyframes d741Flash{0%,100%{background:transparent}30%,70%{background:rgba(250,135,61,.10)}}
+@media(max-width:820px){#rp-overlay .d741-focus{grid-template-columns:26px 1fr}#rp-overlay .d741-focus-btn{grid-column:2;justify-self:start}}
+</style>
+<script id="connect-v741-max-distributor-dashboard-js">
+(function(){
+'use strict';
+var REP='Jordan Reed';
+var DATA=window.CONNECT_DEMO_DATA_V740||{};
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+var COLORS={proforma:'#00AFEF',brightline:'#FA873D',northstar:'#9B6BFF',axis:'#47D16C',evergreen:'#F1B34A'};
+var TREND={
+ proforma:[31200,33800,40100,37800,42800,45100,52900,58400],
+ brightline:[15913,17187,19720,22976,24767,27330,32508,35999],
+ northstar:[13598,14624,15985,18593,19239,21231,23511,24469],
+ axis:[8970,10252,11814,14390,16132,18434,21062,22546],
+ evergreen:[14519,14437,14081,15141,14462,14705,14319,13686]
+};
+var SIGNALS={
+ proforma:{title:'Branch expansion',copy:'11 known branch white spaces',priority:'High'},
+ brightline:{title:'Distributor rep activation',copy:'Under-penetrated rep books',priority:'High'},
+ northstar:{title:'Product expansion',copy:'Outerwear category whitespace',priority:'Medium'},
+ axis:{title:'End-customer expansion',copy:'Known customer growth path',priority:'High'},
+ evergreen:{title:'Reactivation / recovery',copy:'YTD down 16% vs prior year',priority:'High'}
+};
+function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function num(v){var x=Number(v);return isFinite(x)?x:0}
+function money(v){return '$'+Math.round(num(v)).toLocaleString()}
+function ds(){return DATA.max&&Array.isArray(DATA.max.distributors)?DATA.max.distributors:[]}
+function totals(){var d=ds(),t={ytd:0,prior:0,l12m:0,end:0,known:0,active:0,opps:0};d.forEach(function(x){t.ytd+=num(x.ytd);t.prior+=num(x.prior);t.l12m+=num(x.l12m);t.end+=num(x.endCustomers);t.known+=num(x.knownBranches);t.active+=num(x.activeBranches);t.opps+=num(x.opps)});t.yoy=t.prior?(t.ytd-t.prior)/t.prior*100:0;t.pen=t.known?t.active/t.known*100:0;t.white=t.known-t.active;return t}
+function health(){var h={growing:0,stable:0,attention:0};ds().forEach(function(d){var y=d.prior?(d.ytd-d.prior)/d.prior*100:0;if(y>=5)h.growing++;else if(y<=-5)h.attention++;else h.stable++});return h}
+function kpi(label,value,copy,color){return'<div class="d740-kpi" style="--glow:'+color+'"><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong><small>'+esc(copy)+'</small></div>'}
+function hiddenMap(){window._demo741TrendHidden=window._demo741TrendHidden||{};return window._demo741TrendHidden}
+function visibleSeries(){var hidden=hiddenMap();return ds().filter(function(d){return TREND[d.id]&&!hidden[d.id]})}
+function trendSvg(){var visible=visibleSeries(),W=720,H=205,pad=12,vals=[];visible.forEach(function(d){TREND[d.id].forEach(function(v){vals.push(v)})});var max=Math.max.apply(Math,vals.concat([1]))*1.12;function x(i){return pad+i*(W-pad*2)/(MONTHS.length-1)}function y(v){return H-pad-(v/max)*(H-pad*2)}function pts(id){return TREND[id].map(function(v,i){return x(i)+','+y(v)}).join(' ')}var grid='';[.25,.5,.75,1].forEach(function(p){var yy=y(max*p);grid+='<line x1="0" y1="'+yy+'" x2="'+W+'" y2="'+yy+'" stroke="rgba(255,255,255,.045)" stroke-width="1"/>'});var paths=visible.map(function(d){var color=COLORS[d.id]||'#00AFEF';return'<polyline points="'+pts(d.id)+'" fill="none" stroke="'+color+'" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>'+TREND[d.id].map(function(v,i){return'<circle cx="'+x(i)+'" cy="'+y(v)+'" r="3.5" fill="'+color+'"><title>'+esc(d.name)+' · '+MONTHS[i]+' · '+money(v)+'</title></circle>'}).join('')}).join('');return'<div class="d741-trend-wrap"><div class="d740-chart"><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+grid+paths+'</svg><div class="d740-months" style="grid-template-columns:repeat('+MONTHS.length+',1fr)">'+MONTHS.map(function(m){return'<span style="text-align:center">'+m+'</span>'}).join('')+'</div></div>'+(visible.length?'':'<div class="d741-trend-empty">All distributors are hidden. Click a distributor in the key to bring it back.</div>')+'</div>'}
+function trendBlock(){var hidden=hiddenMap(),legend='<div class="d741-trend-controls">'+ds().map(function(d){return'<button class="d741-trend-chip '+(hidden[d.id]?'off':'')+'" onclick="_demo741ToggleTrend(\''+esc(d.id)+'\')"><i style="background:'+(COLORS[d.id]||'#00AFEF')+'"></i>'+esc(d.name)+'</button>'}).join('')+'<button class="d741-trend-reset" onclick="_demo741ShowAllTrend()">Show all</button></div>';return'<div class="d740-card-head"><div><strong>Distributor Sales Trend</strong><span>Monthly MAX sales by distributor · click a distributor in the key to show or hide it</span></div>'+legend+'</div><div class="d740-card-body">'+trendSvg()+'</div>'}
+window._demo741ToggleTrend=function(id){var h=hiddenMap();h[id]=!h[id];var host=document.getElementById('d741-trend-host');if(host)host.innerHTML=trendBlock()};
+window._demo741ShowAllTrend=function(){window._demo741TrendHidden={};var host=document.getElementById('d741-trend-host');if(host)host.innerHTML=trendBlock()};
+function focusCards(){return'<div class="d741-focus-list">'+[
+ {id:'proforma',type:'Branch expansion',title:'Proforma has 11 known white-space branches',copy:'The largest distributor also has the clearest branch-penetration path.',button:'Open Proforma'},
+ {id:'evergreen',type:'Account decline',title:'Evergreen is 16% below prior-year pace',copy:'Protect the existing book before the decline becomes a larger recovery problem.',button:'Find distributor'},
+ {id:'brightline',type:'Distributor rep activation',title:'BrightLine has an under-penetrated rep opportunity',copy:'Use the rep-level snapshot to identify sellers who can carry more MAX business.',button:'Find distributor'}
+].map(function(f,i){return'<div class="d741-focus"><div class="d741-focus-rank">'+(i+1)+'</div><div class="d741-focus-copy"><span>'+esc(f.type)+'</span><strong>'+esc(f.title)+'</strong><p>'+esc(f.copy)+'</p></div><button class="d741-focus-btn" onclick="_demo741FocusDistributor(\''+f.id+'\')">'+esc(f.button)+'</button></div>'}).join('')+'</div>'}
+window._demo741FocusDistributor=function(id){if(id==='proforma'&&typeof window._demo740OpenDistributor==='function'){window._demo740OpenDistributor('proforma');return}var row=document.querySelector('[data-d741-row="'+id+'"]');if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.classList.remove('d741-row-flash');void row.offsetWidth;row.classList.add('d741-row-flash')}};
+function branchCell(d){var pen=d.knownBranches?Math.round(d.activeBranches/d.knownBranches*100):0,white=d.knownBranches-d.activeBranches;return'<div class="d741-branch-cell"><strong>'+d.activeBranches+' / '+d.knownBranches+' · '+pen+'%</strong><span>'+white+' white-space location'+(white===1?'':'s')+'</span></div>'}
+function signalCell(d){var s=SIGNALS[d.id]||{title:'Review distributor',copy:'Open the account for current signals'};return'<div class="d741-signal"><strong>'+esc(s.title)+'</strong>'+esc(s.copy)+'</div>'}
+function table(){return'<section class="d740-card"><div class="d740-card-head"><div><strong>My Distributors</strong><span>Performance + penetration + recency + the clearest reason to act</span></div></div><div class="d740-table-wrap"><table class="d740-table"><thead><tr><th>Distributor</th><th>YTD / YoY</th><th>L12M</th><th>End Customers</th><th>Branch Penetration</th><th>Last Order</th><th>Primary Signal</th><th></th></tr></thead><tbody>'+ds().map(function(d){var yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0;return'<tr data-d741-row="'+esc(d.id)+'"><td><div class="name">'+esc(d.name)+'</div><span class="d740-badge '+(d.status==='Attention'?'watch':'')+'">'+esc(d.status)+'</span></td><td><div class="d740-money" style="text-align:left">'+money(d.ytd)+'</div><div class="d740-yoy '+(yoy<0?'down':'')+'" style="text-align:left;margin-top:3px">'+(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD</div></td><td>'+money(d.l12m)+'</td><td>'+d.endCustomers+'</td><td>'+branchCell(d)+'</td><td>'+esc(d.lastOrder||'—')+'</td><td>'+signalCell(d)+'</td><td><button class="d740-open '+(d.id==='proforma'?'primary':'')+'" onclick="'+(d.id==='proforma'?"_demo740OpenDistributor('proforma')":"_demo741FocusDistributor('"+esc(d.id)+"')")+'">'+(d.id==='proforma'?'Open Proforma':'Review')+'</button></td></tr>'}).join('')+'</tbody></table></div></section>'}
+function dashboard(){var t=totals(),h=health();return'<div class="d740">'+
+ '<section class="d740-hero"><div><div class="d740-kick">MAX APPAREL · DISTRIBUTOR INTELLIGENCE · PHASE ONE</div><h1>Distributor Overview</h1><p>See how the distributor book is performing, where the growth is hiding, and which distributor deserves attention next — without replacing the normal Connect sales workflow.</p></div><span class="d740-demo-pill">Illustrative demo data</span></section>'+
+ '<div class="d740-kpis">'+kpi('YTD Sales',money(t.ytd),Math.round(t.yoy)+'% vs prior YTD','rgba(93,202,165,.24)')+kpi('L12M Sales',money(t.l12m),'Attributed distributor book','rgba(0,175,239,.20)')+kpi('Distributor Health',h.growing+' Growing',h.stable+' stable · '+h.attention+' attention','rgba(155,107,255,.18)')+kpi('End Customers Identified',String(t.end),'Across known distributor business','rgba(0,175,239,.18)')+kpi('Branch Penetration',Math.round(t.pen)+'%',t.active+' / '+t.known+' active · '+t.white+' white space','rgba(93,202,165,.20)')+kpi('Growth Opportunities',String(t.opps),'6 high priority across the network','rgba(250,135,61,.22)')+'</div>'+
+ '<div class="d740-grid"><section id="d741-trend-host" class="d740-card">'+trendBlock()+'</section><section class="d740-card"><div class="d740-card-head"><div><strong>Where to Focus</strong><span>The three distributor plays most worth Jordan’s attention right now</span></div></div><div class="d740-card-body">'+focusCards()+'</div></section></div>'+table()+
+ '<div class="d740-note"><strong style="color:#BEEAF7">Sales-first design:</strong> this page now answers how the book is doing, where the growth is hiding, and which distributor to open next. Normal MAX Companies, Calls, Follow-Ups, Quotes, Orders, Growth Opportunities, and My Performance remain unchanged.</div></div>'}
+var priorPage=window._rp2Page;
+window._rp2Page=function(){var rep=window._rp2&&window._rp2.rep||'',page=window._rp2&&window._rp2.page||'home';if(page==='distributors'&&clean(rep)===REP&&window._demo740DistView!=='proforma')return dashboard();return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
+window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),trendTotals={};Object.keys(TREND).forEach(function(id){trendTotals[id]=TREND[id].reduce(function(a,b){return a+b},0)});return{version:'v741',ytd:t.ytd,l12m:t.l12m,endCustomers:t.end,branches:{active:t.active,known:t.known,whiteSpace:t.white,penetration:Math.round(t.pen)},opportunities:t.opps,trendTotals:trendTotals}};
+})();
+</script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v740',DISPLAY='V740',TITLE='Connect v740 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v741',DISPLAY='V741',TITLE='Connect v741 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
