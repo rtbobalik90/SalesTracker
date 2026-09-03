@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v754 — Sales Portal</title>
+<title>Connect v755 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v754', DISPLAY='V754', TITLE='Connect v754 — Sales Portal';
+  var BUILD='v755', DISPLAY='V755', TITLE='Connect v755 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v755',DISPLAY='V755',TITLE='Connect v755 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75007,7 +75007,11 @@ function helpModal(){return'<div id="d743-help-backdrop" class="d743-help-backdr
 window._demo743Help=function(evt,key){if(evt){evt.preventDefault();evt.stopPropagation()}var h=HELP[key]||HELP.executive,back=document.getElementById('d743-help-backdrop'),ttl=document.getElementById('d743-help-title'),body=document.getElementById('d743-help-body');if(!back||!ttl||!body)return;ttl.textContent=h.title;body.innerHTML='<div class="d743-help-block"><span>What this shows</span><p>'+esc(h.what)+'</p></div><div class="d743-help-block"><span>How to use it</span><p>'+esc(h.use)+'</p></div><div class="d743-help-block"><span>Data truth</span><p>'+esc(h.truth)+'</p></div>';back.classList.add('open');setTimeout(function(){var c=back.querySelector('.d743-help-close');if(c)c.focus()},0)};
 window._demo743CloseHelp=function(){var back=document.getElementById('d743-help-backdrop');if(back)back.classList.remove('open')};
 if(!window.__demo743HelpEsc){window.__demo743HelpEsc=true;document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('d743-help-backdrop')&&document.getElementById('d743-help-backdrop').classList.contains('open'))window._demo743CloseHelp()})}
-var S=window._demo742State=window._demo742State||{mode:'book',compareOpen:false,selected:['proforma','brightline'],filter:'all'};
+var S=window._demo742State=window._demo742State||{mode:'book',compareOpen:false,selected:['proforma','brightline'],filter:'all',dirSort:'ytd_desc',dirRows:25,dirPage:0,dirSearch:''};
+if(!S.dirSort)S.dirSort='ytd_desc';
+if(S.dirRows==null)S.dirRows=25;
+if(S.dirPage==null)S.dirPage=0;
+if(S.dirSearch==null)S.dirSearch='';
 function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function num(v){var x=Number(v);return isFinite(x)?x:0}
@@ -75043,10 +75047,103 @@ function actions(){var rows=[
 window._demo742OpenAction=function(id){if(id==='proforma'&&typeof window._demo740OpenDistributor==='function'){window._demo740OpenDistributor('proforma');return}var row=document.querySelector('[data-d742-row="'+id+'"]');if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.classList.remove('d742-row-flash');void row.offsetWidth;row.classList.add('d742-row-flash')}};
 function branchCell(d){var p=d.knownBranches?Math.round(d.activeBranches/d.knownBranches*100):0,w=d.knownBranches-d.activeBranches;return'<strong>'+d.activeBranches+' / '+d.knownBranches+' · '+p+'%</strong><div style="color:#718B9C;font-size:7.5px;margin-top:3px">'+w+' white-space</div>'}
 function signal(d){var s=SIGNALS[d.id]||{title:'Review distributor',copy:'Open current signals'};return'<div class="d742-signal"><strong>'+esc(s.title)+'</strong><span>'+esc(s.copy)+'</span></div>'}
-function filtered(){return ds().filter(function(d){var h=healthOf(d);if(S.filter==='growing'&&h!=='growing')return false;if(S.filter==='stable'&&h!=='stable')return false;if(S.filter==='attention'&&h!=='attention')return false;if(S.filter==='whitespace'&&(d.knownBranches-d.activeBranches)<5)return false;return true})}
-function directory(){var rows=filtered();return'<section class="d742-card d742-directory"><div class="d742-card-head"><div class="d743-head-title"><div><strong>My Distributors</strong><span>The directory: performance, health, network penetration, recency, and the clearest reason to act</span></div>'+helpBtn('directory','My Distributors')+'</div></div><div class="d742-dir-tools">'+[['all','All'],['growing','Growing'],['stable','Stable'],['attention','Attention'],['whitespace','White Space']].map(function(x){return'<button class="d742-filter '+(S.filter===x[0]?'on':'')+'" onclick="_demo742SetFilter(\''+x[0]+'\')">'+x[1]+'</button>'}).join('')+'<input id="d742-dir-search" class="d742-dir-search" placeholder="Search distributors…" oninput="_demo742SearchDirectory(this.value)"></div><div class="d742-table-wrap"><table class="d742-table"><thead><tr><th>Distributor</th><th>Revenue / Pace</th><th>Health</th><th>Network Penetration</th><th>Last Order</th><th>Primary Signal</th><th></th></tr></thead><tbody>'+rows.map(function(d){var yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0,h=healthOf(d);return'<tr data-d742-row="'+esc(d.id)+'" data-search="'+esc((d.name+' '+h+' '+(SIGNALS[d.id]&&SIGNALS[d.id].title||'')).toLowerCase())+'"><td><div class="name">'+esc(d.name)+'</div><span style="color:#738D9D;font-size:7.5px">'+money(d.l12m)+' L12M</span></td><td><div class="d742-money">'+money(d.ytd)+' YTD</div><div class="d742-yoy '+(yoy<0?'down':'')+'">'+(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD</div></td><td><span class="d742-health '+h+'">'+(h==='growing'?'Growing':h==='attention'?'Attention':'Stable')+'</span></td><td>'+branchCell(d)+'</td><td>'+esc(d.lastOrder||'—')+'</td><td>'+signal(d)+'</td><td><button class="d742-open '+(d.id==='proforma'?'primary':'')+'" onclick="'+(d.id==='proforma'?"_demo740OpenDistributor('proforma')":"_demo742OpenAction('"+esc(d.id)+"')")+'">'+(d.id==='proforma'?'Open Proforma':'Review')+'</button></td></tr>'}).join('')+'</tbody></table></div></section>'}
-window._demo742SetFilter=function(f){S.filter=f;renderHost('d742-directory-host',directory())};
-window._demo742SearchDirectory=function(q){q=clean(q).toLowerCase();document.querySelectorAll('[data-d742-row]').forEach(function(r){r.style.display=!q||(r.getAttribute('data-search')||'').indexOf(q)>=0?'table-row':'none'})};
+
+function filtered(){
+ var q=clean(S.dirSearch||'').toLowerCase();
+ return ds().filter(function(d){
+  var h=healthOf(d);
+  if(S.filter==='growing'&&h!=='growing')return false;
+  if(S.filter==='stable'&&h!=='stable')return false;
+  if(S.filter==='attention'&&h!=='attention')return false;
+  if(S.filter==='whitespace'&&(d.knownBranches-d.activeBranches)<5)return false;
+  if(q){
+   var hay=(d.name+' '+h+' '+(SIGNALS[d.id]&&SIGNALS[d.id].title||'')+' '+(SIGNALS[d.id]&&SIGNALS[d.id].copy||'')).toLowerCase();
+   if(hay.indexOf(q)<0)return false;
+  }
+  return true
+ })
+}
+function d755Yoy(d){return d.prior?(num(d.ytd)-num(d.prior))/num(d.prior)*100:0}
+function d755Pen(d){return d.knownBranches?num(d.activeBranches)/num(d.knownBranches)*100:0}
+function d755LastOrder(d){
+ var v=clean(d.lastOrder||'');
+ if(!v)return 0;
+ var y=(new Date()).getFullYear(),t=Date.parse(v+' '+y);
+ return isFinite(t)?t:0
+}
+function d755SortRows(rows){
+ var mode=S.dirSort||'ytd_desc';
+ return rows.slice().sort(function(a,b){
+  if(mode==='name_asc')return clean(a.name).localeCompare(clean(b.name));
+  if(mode==='ytd_asc')return num(a.ytd)-num(b.ytd)||clean(a.name).localeCompare(clean(b.name));
+  if(mode==='yoy_desc')return d755Yoy(b)-d755Yoy(a)||num(b.ytd)-num(a.ytd);
+  if(mode==='yoy_asc')return d755Yoy(a)-d755Yoy(b)||num(b.ytd)-num(a.ytd);
+  if(mode==='l12m_desc')return num(b.l12m)-num(a.l12m)||clean(a.name).localeCompare(clean(b.name));
+  if(mode==='penetration_desc')return d755Pen(b)-d755Pen(a)||num(b.ytd)-num(a.ytd);
+  if(mode==='last_desc')return d755LastOrder(b)-d755LastOrder(a)||num(b.ytd)-num(a.ytd);
+  return num(b.ytd)-num(a.ytd)||clean(a.name).localeCompare(clean(b.name))
+ })
+}
+function d755PageSize(count){
+ if(String(S.dirRows)==='all')return Math.max(1,count||1);
+ var n=parseInt(S.dirRows,10);
+ return [10,25,50,100].indexOf(n)>=0?n:25
+}
+function d755SortOptions(){
+ var opts=[
+  ['ytd_desc','YTD Sales · High to Low'],
+  ['ytd_asc','YTD Sales · Low to High'],
+  ['yoy_desc','YoY Growth · High to Low'],
+  ['yoy_asc','YoY Growth · Low to High'],
+  ['l12m_desc','L12M Sales · High to Low'],
+  ['penetration_desc','Network Penetration · High to Low'],
+  ['last_desc','Most Recent Order'],
+  ['name_asc','Distributor A–Z']
+ ];
+ return opts.map(function(x){return'<option value="'+x[0]+'" '+((S.dirSort||'ytd_desc')===x[0]?'selected':'')+'>'+x[1]+'</option>'}).join('')
+}
+function d755ViewOptions(){
+ var v=String(S.dirRows==null?25:S.dirRows),opts=[['10','10 rows'],['25','25 rows'],['50','50 rows'],['100','100 rows'],['all','Whole list']];
+ return opts.map(function(x){return'<option value="'+x[0]+'" '+(v===x[0]?'selected':'')+'>'+x[1]+'</option>'}).join('')
+}
+function d755Pager(page,pages,count,start,end){
+ return'<div class="d755-pager"><span>'+(count?('Showing '+(start+1)+'–'+end+' of '+count+' distributors'):'0 distributors')+(pages>1?' · Page '+(page+1)+' of '+pages:'')+'</span><div class="d755-pager-actions">'+
+  (page>0?'<button type="button" class="d755-page-btn" onclick="_demo755DirectoryPage(-1)">← Previous</button>':'')+
+  (page<pages-1?'<button type="button" class="d755-page-btn primary" onclick="_demo755DirectoryPage(1)">Next →</button>':'')+
+ '</div></div>'
+}
+function directory(){
+ var rows=d755SortRows(filtered()),
+     size=d755PageSize(rows.length),
+     pages=Math.max(1,Math.ceil(Math.max(1,rows.length)/size)),
+     page=Math.max(0,Math.min(pages-1,num(S.dirPage)));
+ S.dirPage=page;
+ var start=page*size,end=Math.min(rows.length,start+size),show=rows.slice(start,end);
+ return'<section class="d742-card d742-directory"><div class="d742-card-head"><div class="d743-head-title"><div><strong>My Distributors</strong><span>The directory: performance, health, network penetration, recency, and the clearest reason to act</span></div>'+helpBtn('directory','My Distributors')+'</div></div>'+
+ '<div class="d742-dir-tools d755-dir-tools"><div class="d755-filter-group">'+
+  [['all','All'],['growing','Growing'],['stable','Stable'],['attention','Attention'],['whitespace','White Space']].map(function(x){return'<button class="d742-filter '+(S.filter===x[0]?'on':'')+'" onclick="_demo742SetFilter(\''+x[0]+'\')">'+x[1]+'</button>'}).join('')+
+ '</div><div class="d755-dir-controls">'+
+  '<label class="d755-control"><span>Sort</span><select aria-label="Sort distributors" onchange="_demo755DirectorySort(this.value)">'+d755SortOptions()+'</select></label>'+
+  '<label class="d755-control compact"><span>View</span><select aria-label="Rows per page" onchange="_demo755DirectoryRows(this.value)">'+d755ViewOptions()+'</select></label>'+
+  '<input id="d742-dir-search" class="d742-dir-search" value="'+esc(S.dirSearch||'')+'" placeholder="Search distributors…" oninput="_demo755DirectorySearch(this.value)">'+
+ '</div></div>'+
+ '<div class="d742-table-wrap"><table class="d742-table"><thead><tr><th>Distributor</th><th>Revenue / Pace</th><th>Health</th><th>Network Penetration</th><th>Last Order</th><th>Primary Signal</th><th></th></tr></thead><tbody>'+
+ (show.length?show.map(function(d){var yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0,h=healthOf(d);return'<tr data-d742-row="'+esc(d.id)+'" data-search="'+esc((d.name+' '+h+' '+(SIGNALS[d.id]&&SIGNALS[d.id].title||'')).toLowerCase())+'"><td><div class="name">'+esc(d.name)+'</div><span style="color:#738D9D;font-size:7.5px">'+money(d.l12m)+' L12M</span></td><td><div class="d742-money">'+money(d.ytd)+' YTD</div><div class="d742-yoy '+(yoy<0?'down':'')+'">'+(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD</div></td><td><span class="d742-health '+h+'">'+(h==='growing'?'Growing':h==='attention'?'Attention':'Stable')+'</span></td><td>'+branchCell(d)+'</td><td>'+esc(d.lastOrder||'—')+'</td><td>'+signal(d)+'</td><td><button class="d742-open '+(d.id==='proforma'?'primary':'')+'" onclick="'+(d.id==='proforma'?"_demo740OpenDistributor('proforma')":"_demo742OpenAction('"+esc(d.id)+"')")+'">'+(d.id==='proforma'?'Open Proforma':'Review')+'</button></td></tr>'}).join(''):'<tr><td colspan="7"><div class="d755-empty"><strong>No distributors match this view</strong><span>Clear the search or choose another filter.</span></div></td></tr>')+
+ '</tbody></table></div>'+d755Pager(page,pages,rows.length,start,end)+'</section>'
+}
+window._demo742SetFilter=function(f){S.filter=f;S.dirPage=0;renderHost('d742-directory-host',directory())};
+window._demo755DirectorySort=function(v){S.dirSort=v||'ytd_desc';S.dirPage=0;renderHost('d742-directory-host',directory())};
+window._demo755DirectoryRows=function(v){S.dirRows=v==='all'?'all':parseInt(v,10)||25;S.dirPage=0;renderHost('d742-directory-host',directory())};
+window._demo755DirectoryPage=function(delta){S.dirPage=Math.max(0,num(S.dirPage)+num(delta));renderHost('d742-directory-host',directory());var h=document.getElementById('d742-directory-host');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})};
+window._demo755DirectorySearch=function(v){
+ S.dirSearch=v||'';S.dirPage=0;
+ renderHost('d742-directory-host',directory());
+ setTimeout(function(){
+  var el=document.getElementById('d742-dir-search');
+  if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(e){}}
+ },0)
+};
+window._demo742SearchDirectory=window._demo755DirectorySearch;
 function forecast(t,h){return''}
 function dashboard(){var t=totals(),h=health();return'<div class="d742 d754-full">'+
  '<div class="d742-head"><div><div class="d742-kick">MAX Apparel · Distributor Command Center</div><h1>Distributor Overview</h1><p>Run the distributor book from one place: pace, health, network penetration, action priorities, and the path toward materially more sales.</p></div><span class="d742-demo">Illustrative demo data</span></div>'+
@@ -75887,7 +75984,7 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 
 <script id="connect-v748-final-authority">
 (function(){
-  var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';
+  var BUILD='v755',DISPLAY='V755',TITLE='Connect v755 — Sales Portal';
   function enforce(){
     try{
       window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -75986,7 +76083,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row p{
 
 (function(){
 'use strict';
-var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';
+var BUILD='v755',DISPLAY='V755',TITLE='Connect v755 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -76093,7 +76190,103 @@ enforce();
 
 (function(){
 'use strict';
-var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';
+var BUILD='v755',DISPLAY='V755',TITLE='Connect v755 — Sales Portal';
+function enforce(){
+  try{
+    window.CONNECT_BUILD_AUTHORITY=BUILD;
+    window.CONNECT_BUILD_DISPLAY=DISPLAY;
+    window.CONNECT_BUILD_TITLE=TITLE;
+    window.CONNECT_BUILD=BUILD;
+    window.TCP_BUILD_VERSION=BUILD;
+    document.documentElement.setAttribute('data-connect-authoritative','v739');
+    document.documentElement.setAttribute('data-connect-release',BUILD);
+    document.documentElement.setAttribute('data-connect-build',BUILD);
+    document.documentElement.setAttribute('data-tcp-build',BUILD);
+    document.title=TITLE;
+    document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
+      if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
+    });
+  }catch(e){}
+}
+enforce();
+[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
+})();
+
+</script>
+
+<!-- ===== CONNECT V755 · DISTRIBUTOR DIRECTORY SORT + VIEW ===== -->
+<style id="connect-v755-distributor-directory-controls-css">
+
+/* ============================================================
+   V755 — My Distributors sort + view controls
+   Mirrors the scalable Customer List pattern: Sort + Rows/View + pager.
+   ============================================================ */
+#rp-overlay .d755-dir-tools{
+  justify-content:space-between;
+  gap:12px;
+}
+#rp-overlay .d755-filter-group{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+#rp-overlay .d755-dir-controls{
+  margin-left:auto;
+  display:flex;align-items:flex-end;justify-content:flex-end;gap:8px;flex-wrap:wrap;
+}
+#rp-overlay .d755-control{
+  display:flex;flex-direction:column;gap:4px;
+}
+#rp-overlay .d755-control>span{
+  color:#728B9B;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;
+}
+#rp-overlay .d755-control select{
+  min-width:190px;min-height:34px;border:1px solid #294351;border-radius:9px;
+  background:#07151D;color:#D9EAF1;padding:0 28px 0 10px;font-size:8px;font-weight:800;
+  color-scheme:dark;cursor:pointer;
+}
+#rp-overlay .d755-control.compact select{min-width:112px}
+#rp-overlay .d755-dir-controls .d742-dir-search{
+  margin-left:0;
+  min-width:220px;
+}
+#rp-overlay .d755-pager{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 16px;border-top:1px solid rgba(255,255,255,.065);
+  color:#728B9B;font-size:8px;
+}
+#rp-overlay .d755-pager-actions{
+  display:flex;align-items:center;gap:7px;
+}
+#rp-overlay .d755-page-btn{
+  border:1px solid #294351;border-radius:8px;background:#081720;color:#9FB6C4;
+  padding:6px 9px;font-size:7.5px;font-weight:900;cursor:pointer;
+}
+#rp-overlay .d755-page-btn.primary{
+  border-color:rgba(0,175,239,.35);background:rgba(0,175,239,.08);color:#77DDF7;
+}
+#rp-overlay .d755-empty{
+  padding:24px;text-align:center;color:#778F9E;
+}
+#rp-overlay .d755-empty strong{
+  display:block;color:#D8E7ED;font-size:10px;margin-bottom:4px;
+}
+#rp-overlay .d755-empty span{font-size:8px}
+@media(max-width:1000px){
+  #rp-overlay .d755-dir-tools{align-items:stretch}
+  #rp-overlay .d755-dir-controls{width:100%;margin-left:0;justify-content:flex-start}
+}
+@media(max-width:680px){
+  #rp-overlay .d755-dir-controls{display:grid;grid-template-columns:1fr 1fr}
+  #rp-overlay .d755-control select{width:100%;min-width:0}
+  #rp-overlay .d755-dir-controls .d742-dir-search{grid-column:1/-1;width:100%;min-width:0}
+  #rp-overlay .d755-pager{align-items:flex-start;flex-direction:column}
+}
+
+</style>
+<script id="connect-v755-final-authority">
+
+(function(){
+'use strict';
+var BUILD='v755',DISPLAY='V755',TITLE='Connect v755 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
