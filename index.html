@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v748 — Sales Portal</title>
+<title>Connect v752 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v748', DISPLAY='V748', TITLE='Connect v748 — Sales Portal';
+  var BUILD='v752', DISPLAY='V752', TITLE='Connect v752 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v748',DISPLAY='V748',TITLE='Connect v748 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v752',DISPLAY='V752',TITLE='Connect v752 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75865,7 +75865,7 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 
 <script id="connect-v748-final-authority">
 (function(){
-  var BUILD='v748',DISPLAY='V748',TITLE='Connect v748 — Sales Portal';
+  var BUILD='v752',DISPLAY='V752',TITLE='Connect v752 — Sales Portal';
   function enforce(){
     try{
       window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -75887,4 +75887,239 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 })();
 </script>
 
+<!-- ===== CONNECT V752 · REBASED FROM WORKING V748 · VISUAL CLEANUP ONLY ===== -->
+<style id="connect-v752-distributor-cleanup-css">
+
+/* V752 — visual-only Distributor Overview cleanup, rebased from working V748.
+   No distributor routing functions are replaced in this patch. */
+html[data-connect-authoritative="v739"] #rp-overlay .d752-risk .d742-kpi-value{color:#FFD0B2}
+html[data-connect-authoritative="v739"] #rp-overlay .d752-concentration .d742-kpi-value{color:#F7FBFF}
+html[data-connect-authoritative="v739"] #rp-overlay .d752-expansion-note{
+  border-left-color:#00AFEF!important
+}
+
+</style>
+<script id="connect-v752-distributor-cleanup-js">
+
+(function(){
+'use strict';
+
+var REP='Jordan Reed';
+
+function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function isMax(){
+  return clean(window._rp2&&window._rp2.rep||'')===REP;
+}
+function money(v){
+  return '$'+Math.round(Number(v)||0).toLocaleString();
+}
+function distributors(){
+  try{
+    return (window.CONNECT_DEMO_DATA_V740 &&
+            window.CONNECT_DEMO_DATA_V740.max &&
+            window.CONNECT_DEMO_DATA_V740.max.distributors) || [];
+  }catch(e){return []}
+}
+function metrics(){
+  var rows=distributors(),total=0,gap=0,attention=0;
+  var sorted=rows.slice().sort(function(a,b){
+    return (Number(b.ytd)||0)-(Number(a.ytd)||0);
+  });
+  rows.forEach(function(d){
+    var y=Number(d.ytd)||0,p=Number(d.prior)||0;
+    total+=y;
+    if(p>y){gap+=(p-y);attention++}
+  });
+  var top=sorted[0]?Number(sorted[0].ytd)||0:0;
+  var top2=top+(sorted[1]?Number(sorted[1].ytd)||0:0);
+  return{
+    total:total,
+    topShare:total?Math.round(top/total*100):0,
+    top2Share:total?Math.round(top2/total*100):0,
+    riskGap:Math.round(gap),
+    attention:attention
+  };
+}
+function card(icon,label,value,badge,copy,pct){
+  pct=Math.max(0,Math.min(100,Number(pct)||0));
+  return '<div class="d742-kpi-top">'+
+           '<div class="d742-kpi-icon">'+icon+'</div>'+
+           '<span class="d742-kpi-badge">'+badge+'</span>'+
+         '</div>'+
+         '<div class="d742-kpi-label">'+label+'</div>'+
+         '<strong class="d742-kpi-value">'+value+'</strong>'+
+         '<div class="d742-kpi-copy">'+copy+'</div>'+
+         '<div class="d742-kpi-bar"><i style="width:'+pct+'%"></i></div>';
+}
+
+/* IMPORTANT:
+   This function edits the already-rendered DOM only.
+   It does not wrap _rp2Page, _rp2Html, _rp2Go, _demo740OpenDistributor,
+   or _demo740BackDistributors. The known-good V748 route remains the route. */
+function patchOverviewDOM(){
+  try{
+    if(!isMax())return;
+    if(!window._rp2 || window._rp2.page!=='distributors')return;
+    if(window._demo740DistView==='proforma')return;
+
+    var root=document.querySelector('#rp-overlay .d740');
+    if(!root || root.getAttribute('data-v752-cleaned')==='1')return;
+
+    var m=metrics();
+    var kpis=root.querySelectorAll('.d742-kpis .d742-kpi');
+
+    if(kpis.length>=4){
+      kpis[2].classList.add('d752-concentration');
+      kpis[2].style.setProperty('--glow','rgba(139,92,246,.22)');
+      kpis[2].innerHTML=card(
+        '◈',
+        'Book Concentration',
+        m.topShare+'%',
+        'Top 2 = '+m.top2Share+'%',
+        'Share of YTD distributor revenue coming from Proforma',
+        m.topShare
+      );
+
+      kpis[3].classList.add('d752-risk');
+      kpis[3].style.setProperty('--glow','rgba(250,135,61,.24)');
+      kpis[3].innerHTML=card(
+        '△',
+        'Revenue at Risk',
+        money(m.riskGap),
+        m.attention+' distributor'+(m.attention===1?'':'s')+' below PY',
+        'Comparable prior-YTD gap for distributors currently running behind last year',
+        Math.min(100,m.total?(m.riskGap/m.total)*500:0)
+      );
+    }
+
+    var grid=root.querySelector('.d742-grid');
+    if(grid && grid.children.length>1){
+      var network=grid.children[1];
+      var title=network.querySelector('.d742-card-head strong');
+      var sub=network.querySelector('.d742-card-head span');
+      if(title)title.textContent='Expansion Inventory';
+      if(sub)sub.textContent='Where the known distributor network still has room to grow';
+
+      var help=network.querySelector('.d743-help-btn');
+      if(help){
+        help.setAttribute('aria-label','Explain Expansion Inventory');
+        help.setAttribute('title','What is Expansion Inventory?');
+      }
+
+      /* The second progress bar duplicated Distributor Health from the
+         executive cards. Remove it entirely. Branch penetration stays here. */
+      var bars=network.querySelectorAll('.d742-network-bar');
+      if(bars.length>1){
+        for(var i=bars.length-1;i>=1;i--)bars[i].remove();
+      }
+
+      var note=network.querySelector('.d742-network-note');
+      if(note){
+        note.classList.add('d752-expansion-note');
+        note.innerHTML='<strong style="color:#8EEBFF">How to read this:</strong> '+
+          'this panel is expansion inventory, not another scorecard. Use it to see '+
+          'where MAX can grow through branches, end customers, and high-priority plays.';
+      }
+    }
+
+    root.setAttribute('data-v752-cleaned','1');
+  }catch(e){
+    console.warn('[V752 visual cleanup]',e);
+  }
+}
+
+/* Safe post-render hook only. It calls the working V748 after-render behavior
+   first, then performs visual DOM cleanup. */
+var priorAfter=window._rp2After;
+window._rp2After=function(){
+  var result;
+  if(typeof priorAfter==='function')result=priorAfter.apply(this,arguments);
+  patchOverviewDOM();
+  return result;
+};
+
+/* Update only help copy. No navigation behavior is touched. */
+var priorHelp=window._demo743Help;
+window._demo743Help=function(evt,key){
+  if((key==='executive'||key==='network')){
+    if(evt){evt.preventDefault();evt.stopPropagation()}
+    var back=document.getElementById('d743-help-backdrop');
+    var ttl=document.getElementById('d743-help-title');
+    var body=document.getElementById('d743-help-body');
+    if(back&&ttl&&body){
+      if(key==='executive'){
+        ttl.textContent='Executive Snapshot';
+        body.innerHTML=
+          '<div class="d743-help-block"><span>What this shows</span><p>'+
+          'Revenue pace, distributor health, book concentration, and the comparable prior-year gap currently at risk.</p></div>'+
+          '<div class="d743-help-block"><span>How to use it</span><p>'+
+          'Use these four cards to understand performance and risk. Expansion detail is intentionally separated below.</p></div>'+
+          '<div class="d743-help-block"><span>Data truth</span><p>'+
+          'Revenue at Risk is a prior-YTD gap for distributors running behind. It is not a prediction that the revenue will be lost.</p></div>';
+      }else{
+        ttl.textContent='Expansion Inventory';
+        body.innerHTML=
+          '<div class="d743-help-block"><span>What this shows</span><p>'+
+          'Known surfaces where the distributor channel can expand: end customers, active branches, white-space branches, and high-priority plays.</p></div>'+
+          '<div class="d743-help-block"><span>How to use it</span><p>'+
+          'Use this after the executive snapshot to understand where additional distributor-channel growth may be available.</p></div>'+
+          '<div class="d743-help-block"><span>Data truth</span><p>'+
+          'White space means no attributed MAX purchase is currently loaded for that known branch. It does not prove the branch has never purchased MAX.</p></div>';
+      }
+      back.classList.add('open');
+      return;
+    }
+  }
+  if(typeof priorHelp==='function')return priorHelp.apply(this,arguments);
+};
+
+/* Catch an already-rendered overview without forcing a route or re-render. */
+[0,150,500,1200].forEach(function(ms){setTimeout(patchOverviewDOM,ms)});
+
+window.CONNECT_V752_REBASE_DIAGNOSTICS=function(){
+  return{
+    version:'v752',
+    base:'user-confirmed working V748',
+    routingOverridesAdded:{
+      rp2Go:false,
+      rp2Html:false,
+      rp2Page:false,
+      demo740OpenDistributor:false,
+      demo740BackDistributors:false
+    },
+    visualCleanupOnly:true,
+    currentPage:window._rp2&&window._rp2.page||null,
+    currentDistributorView:window._demo740DistView||null
+  };
+};
+})();
+
+</script>
+<script id="connect-v752-final-authority">
+
+(function(){
+'use strict';
+var BUILD='v752',DISPLAY='V752',TITLE='Connect v752 — Sales Portal';
+function enforce(){
+  try{
+    window.CONNECT_BUILD_AUTHORITY=BUILD;
+    window.CONNECT_BUILD_DISPLAY=DISPLAY;
+    window.CONNECT_BUILD_TITLE=TITLE;
+    window.CONNECT_BUILD=BUILD;
+    window.TCP_BUILD_VERSION=BUILD;
+    document.documentElement.setAttribute('data-connect-authoritative','v739');
+    document.documentElement.setAttribute('data-connect-release',BUILD);
+    document.documentElement.setAttribute('data-connect-build',BUILD);
+    document.documentElement.setAttribute('data-tcp-build',BUILD);
+    document.title=TITLE;
+    document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
+      if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
+    });
+  }catch(e){}
+}
+enforce();
+[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
+})();
+
+</script>
 
