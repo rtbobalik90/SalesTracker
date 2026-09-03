@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v752 — Sales Portal</title>
+<title>Connect v753 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v752', DISPLAY='V752', TITLE='Connect v752 — Sales Portal';
+  var BUILD='v753', DISPLAY='V753', TITLE='Connect v753 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v752',DISPLAY='V752',TITLE='Connect v752 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v753',DISPLAY='V753',TITLE='Connect v753 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -74997,7 +74997,7 @@ var HELP={
  snapshot:{title:'Distributor Book Snapshot',what:'A fast read of the most important change in the MAX distributor book right now. It highlights one growth signal and one watch item so the rep does not have to interpret the entire dashboard before knowing where attention may be needed.',use:'Use this as the opening briefing. The signal should point you toward the most important account or network change, then the sections below provide the evidence and the action path.',truth:'This is a prioritized summary, not a complete list of opportunities. It should only surface signals supported by loaded distributor data.'},
  executive:{title:'Executive Snapshot',what:'Four high-level lenses on the distributor book: revenue pace, distributor health, network penetration, and the growth pipeline. Together they answer whether the current book is producing, protected, penetrated, and generating enough expansion activity.',use:'Scan these cards before drilling into individual distributors. A weak card tells you which part of the growth system deserves attention first.',truth:'The cards summarize the distributor demo book only. Demo activity is isolated from actual TCP/MAX management reporting.'},
  trend:{title:'Distributor Book Revenue Trend',what:'Monthly revenue performance for the MAX distributor book. Whole Book compares the current demo year with the prior year; Compare lets you select up to four distributors without creating an endless legend.',use:'Use Whole Book to understand direction and seasonality. Switch to Compare only when you need to understand which distributors are driving a change in the total.',truth:'A trend explains movement; it does not prove why sales changed. Use the distributor workspace and activity evidence to validate the cause.'},
- network:{title:'Network Growth',what:'Shows how deeply MAX is penetrating the known distributor network through end customers and branches. White-space locations represent known branches with no attributed MAX purchases currently loaded.',use:'Use this area to identify structural room to grow. A large white-space count is a reason to investigate branch expansion, not an automatic sales opportunity.',truth:'No attributed purchase evidence means unknown or white space — never proof that a location does not buy MAX.'},
+ network:{title:'Where Is the Growth?',what:'Breaks the current Growth Pipeline into the specific types of sales plays Connect has identified so the opportunity count above has meaning.',use:'Use this panel to understand what kind of growth is available right now — branch expansion, Distributor Rep activation, end-customer expansion, product expansion, or revenue recovery — and which distributor currently carries the strongest example.',truth:'These are categorized demo opportunities and signals, not guaranteed revenue. White space and under-penetration are reasons to investigate, not proof of demand.'},
  actions:{title:'Action Center',what:'A short, ranked queue of the distributor situations with the clearest current reason to act. It deliberately prioritizes sales relevance instead of simply ranking the largest distributors.',use:'Start here when deciding what to work next. Open the highest-priority item, validate the underlying evidence, then move the resulting action into the normal Connect workflow.',truth:'This list should stay short. The full Growth Opportunities workspace can hold the broader opportunity inventory.'},
  directory:{title:'My Distributors',what:'The working directory for every distributor assigned to the MAX SREP. Each row combines performance, account health, network penetration, recency, and the strongest current signal.',use:'Search or filter the book, scan the Primary Signal column, and open the distributor that deserves a deeper account review.',truth:'The directory is for navigation and comparison. It should not duplicate every metric available inside the distributor profile.'},
  forecast:{title:'Growth Outlook',what:'Summarizes the current distributor book and the visible growth runway already identifiable in Connect: white-space branches, high-priority plays, end-customer reach, and accounts that need protection.',use:'Use this to keep aggressive growth connected to concrete levers: protect existing revenue, penetrate known branches, convert high-priority plays, and expand through end customers and distributor relationships.',truth:'This is a directional growth-planning view. Connect should not invent a precise revenue forecast or opportunity value until the underlying attribution is defensible.'}
@@ -75027,7 +75027,13 @@ window._demo742ToggleComparePanel=function(){S.compareOpen=!S.compareOpen;render
 window._demo742FilterCompare=function(q){q=clean(q).toLowerCase();document.querySelectorAll('#d742-compare-options .d742-compare-option').forEach(function(r){r.style.display=!q||(r.getAttribute('data-name')||'').indexOf(q)>=0?'grid':'none'})};
 window._demo742ToggleCompare=function(id){var i=S.selected.indexOf(id);if(i>=0)S.selected.splice(i,1);else if(S.selected.length<4)S.selected.push(id);S.compareOpen=true;renderHost('d742-trend-host',trendBlock())};
 function renderHost(id,html){var h=document.getElementById(id);if(h)h.innerHTML=html}
-function networkPanel(t,h){return'<div class="d742-card-head"><div class="d743-head-title"><div><strong>Network Growth</strong><span>Where the distributor channel still has room to expand</span></div>'+helpBtn('network','Network Growth')+'</div></div><div class="d742-card-body"><div class="d742-network-grid"><div class="d742-network-stat"><span>End customers identified</span><strong>'+t.end+'</strong></div><div class="d742-network-stat"><span>Active branches</span><strong>'+t.active+'</strong></div><div class="d742-network-stat"><span>White-space branches</span><strong>'+t.white+'</strong></div><div class="d742-network-stat"><span>High-priority plays</span><strong>6</strong></div></div><div class="d742-network-bar"><div class="d742-network-bar-head"><span>Branch penetration</span><span>'+t.active+' / '+t.known+' · '+Math.round(t.pen)+'%</span></div><div class="d742-track"><i style="width:'+Math.round(t.pen)+'%"></i></div></div><div class="d742-network-bar"><div class="d742-network-bar-head"><span>Healthy / stable distributors</span><span>'+(h.growing+h.stable)+' / '+ds().length+'</span></div><div class="d742-track"><i style="width:'+Math.round((h.growing+h.stable)/Math.max(ds().length,1)*100)+'%"></i></div></div><div class="d742-network-note"><strong style="color:#FFC094">MAX growth lever:</strong> revenue can expand through the distributor, the distributor’s sellers, their end customers, and the branches those customers operate. This page should expose the largest gap without making Jordan hunt for it.</div></div>'}
+function networkPanel(t,h){var rows=[
+ {type:'Branch Expansion',count:7,lead:'Proforma · 11 white-space branches',tone:'branch'},
+ {type:'Distributor Rep Activation',count:5,lead:'BrightLine · under-penetrated rep books',tone:'rep'},
+ {type:'End-Customer Expansion',count:4,lead:'Proforma · 18 identified end customers',tone:'customer'},
+ {type:'Product Expansion',count:3,lead:'Northstar · outerwear category whitespace',tone:'product'},
+ {type:'Revenue Recovery',count:2,lead:'Evergreen · 16% below prior-year pace',tone:'recovery'}
+ ];return'<div class="d742-card-head"><div class="d743-head-title"><div><strong>Where Is the Growth?</strong><span>What is actually creating the '+t.opps+' opportunities in the Growth Pipeline</span></div>'+helpBtn('network','Where Is the Growth?')+'</div><span class="d753-growth-priority">6 high priority</span></div><div class="d742-card-body"><div class="d753-growth-total"><div><span>Identified growth plays</span><strong>'+t.opps+'</strong></div><p>The top banner tells you how much opportunity exists. This panel tells you <b>what kind</b> of opportunity it is.</p></div><div class="d753-growth-list">'+rows.map(function(r){var pct=Math.round(r.count/Math.max(t.opps,1)*100);return'<div class="d753-growth-row '+r.tone+'"><div class="d753-growth-row-top"><div><span>'+esc(r.type)+'</span><strong>'+r.count+' opportunities</strong></div><b>'+pct+'%</b></div><div class="d753-growth-bar"><i style="width:'+pct+'%"></i></div><p>'+esc(r.lead)+'</p></div>'}).join('')+'</div></div>'}
 function actions(){var rows=[
  {id:'proforma',type:'Branch expansion',title:'Proforma · 11 known white-space branches',copy:'Largest distributor + strong YTD momentum makes branch penetration the clearest expansion play.',button:'Open Proforma'},
  {id:'evergreen',type:'Revenue recovery',title:'Evergreen · 16% behind prior-year pace',copy:'Protect the existing book before the decline turns into a larger recovery problem.',button:'Review distributor'},
@@ -75041,7 +75047,7 @@ function filtered(){return ds().filter(function(d){var h=healthOf(d);if(S.filter
 function directory(){var rows=filtered();return'<section class="d742-card d742-directory"><div class="d742-card-head"><div class="d743-head-title"><div><strong>My Distributors</strong><span>The directory: performance, health, network penetration, recency, and the clearest reason to act</span></div>'+helpBtn('directory','My Distributors')+'</div></div><div class="d742-dir-tools">'+[['all','All'],['growing','Growing'],['stable','Stable'],['attention','Attention'],['whitespace','White Space']].map(function(x){return'<button class="d742-filter '+(S.filter===x[0]?'on':'')+'" onclick="_demo742SetFilter(\''+x[0]+'\')">'+x[1]+'</button>'}).join('')+'<input id="d742-dir-search" class="d742-dir-search" placeholder="Search distributors…" oninput="_demo742SearchDirectory(this.value)"></div><div class="d742-table-wrap"><table class="d742-table"><thead><tr><th>Distributor</th><th>Revenue / Pace</th><th>Health</th><th>Network Penetration</th><th>Last Order</th><th>Primary Signal</th><th></th></tr></thead><tbody>'+rows.map(function(d){var yoy=d.prior?(d.ytd-d.prior)/d.prior*100:0,h=healthOf(d);return'<tr data-d742-row="'+esc(d.id)+'" data-search="'+esc((d.name+' '+h+' '+(SIGNALS[d.id]&&SIGNALS[d.id].title||'')).toLowerCase())+'"><td><div class="name">'+esc(d.name)+'</div><span style="color:#738D9D;font-size:7.5px">'+money(d.l12m)+' L12M</span></td><td><div class="d742-money">'+money(d.ytd)+' YTD</div><div class="d742-yoy '+(yoy<0?'down':'')+'">'+(yoy>0?'+':'')+Math.round(yoy)+'% vs prior YTD</div></td><td><span class="d742-health '+h+'">'+(h==='growing'?'Growing':h==='attention'?'Attention':'Stable')+'</span></td><td>'+branchCell(d)+'</td><td>'+esc(d.lastOrder||'—')+'</td><td>'+signal(d)+'</td><td><button class="d742-open '+(d.id==='proforma'?'primary':'')+'" onclick="'+(d.id==='proforma'?"_demo740OpenDistributor('proforma')":"_demo742OpenAction('"+esc(d.id)+"')")+'">'+(d.id==='proforma'?'Open Proforma':'Review')+'</button></td></tr>'}).join('')+'</tbody></table></div></section>'}
 window._demo742SetFilter=function(f){S.filter=f;renderHost('d742-directory-host',directory())};
 window._demo742SearchDirectory=function(q){q=clean(q).toLowerCase();document.querySelectorAll('[data-d742-row]').forEach(function(r){r.style.display=!q||(r.getAttribute('data-search')||'').indexOf(q)>=0?'table-row':'none'})};
-function forecast(t,h){return'<section class="d742-card"><div class="d742-card-head"><div class="d743-head-title"><div><div class="d742-section-kick">Growth Outlook</div><strong style="margin-top:4px">Where the next wave of growth can come from</strong><span>Keep the book pointed toward aggressive growth without turning ambition into a made-up target</span></div>'+helpBtn('forecast','Growth Outlook')+'</div></div><div class="d742-forecast"><div class="d742-forecast-grid"><div class="d742-forecast-stat"><span>Current L12M</span><strong>'+money(t.l12m)+'</strong></div><div class="d742-forecast-stat"><span>White-space branches</span><strong>'+t.white+'</strong></div><div class="d742-forecast-stat"><span>High-priority plays</span><strong>6</strong></div><div class="d742-forecast-stat"><span>End customers identified</span><strong>'+t.end+'</strong></div></div><div class="d742-levers"><div class="d742-lever"><span>Protect</span><strong>'+h.attention+' distributor needs recovery</strong><p>Stop avoidable revenue loss before chasing only new growth.</p></div><div class="d742-lever"><span>Penetrate</span><strong>'+t.white+' white-space branches</strong><p>Validate where current distributor and end-customer programs can expand.</p></div><div class="d742-lever"><span>Convert</span><strong>6 high-priority plays</strong><p>Work the highest-confidence opportunities before the long tail.</p></div><div class="d742-lever"><span>Expand</span><strong>'+t.end+' end customers identified</strong><p>Use distributor relationships to widen product and location penetration.</p></div></div><div class="d742-truth">This section shows visible growth runway, not a fixed multiplier or fabricated forecast. As Connect gains defensible attribution, it can quantify opportunity value without changing the growth-first operating lens.</div></div></section>'}
+function forecast(t,h){return''}
 function dashboard(){var t=totals(),h=health();return'<div class="d742"><div class="d742-head"><div><div class="d742-kick">MAX Apparel · Distributor Command Center</div><h1>Distributor Overview</h1><p>Run the distributor book from one place: pace, health, network penetration, action priorities, and the path toward materially more sales.</p></div><span class="d742-demo">Illustrative demo data</span></div><div class="d742-snapshot"><div class="d742-snap-icon">✦</div><div><div class="d743-head-title"><div><strong>Distributor Book Snapshot</strong></div>'+helpBtn('snapshot','Distributor Book Snapshot')+'</div><span><b style="color:#FFC092">Top growth signal:</b> Proforma is +17% YTD with 11 known white-space branches — momentum and expansion are present in the same account.</span></div><span class="d742-watch">Watch: Evergreen is 16% below prior-year pace.</span></div><div class="d742-section-label"><div class="d742-section-kick">Executive Snapshot</div>'+helpBtn('executive','Executive Snapshot')+'</div><div class="d742-kpis">'+kpi('$','Revenue Pace',money(t.ytd),'Data through Aug',Math.round(t.yoy)+'% vs prior YTD',null,'rgba(250,135,61,.24)')+kpi('◎','Distributor Health',(h.growing+h.stable)+' / '+ds().length+' healthy','1 needs attention',h.growing+' growing · '+h.stable+' stable · '+h.attention+' attention',(h.growing+h.stable)/Math.max(ds().length,1)*100,'rgba(0,175,239,.22)')+kpi('⌂','Network Penetration',Math.round(t.pen)+'%','31 white-space branches',t.active+' of '+t.known+' known branches active',t.pen,'rgba(71,209,108,.22)')+kpi('↗','Growth Pipeline',String(t.opps),'6 high priority','Expansion plays across the distributor network',6/Math.max(t.opps,1)*100,'rgba(155,107,255,.22)')+'</div><div class="d742-grid"><section id="d742-trend-host" class="d742-card">'+trendBlock()+'</section><section class="d742-card">'+networkPanel(t,h)+'</section></div>'+actions()+'<div id="d742-directory-host">'+directory()+'</div>'+forecast(t,h)+helpModal()+'</div>'}
 var priorPage=window._rp2Page;
 window._rp2Page=function(){var rep=window._rp2&&window._rp2.rep||'',page=window._rp2&&window._rp2.page||'home';if(page==='distributors'&&clean(rep)===REP&&window._demo740DistView!=='proforma')return dashboard();return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
@@ -75865,7 +75871,7 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 
 <script id="connect-v748-final-authority">
 (function(){
-  var BUILD='v752',DISPLAY='V752',TITLE='Connect v752 — Sales Portal';
+  var BUILD='v753',DISPLAY='V753',TITLE='Connect v753 — Sales Portal';
   function enforce(){
     try{
       window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -75887,219 +75893,84 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 })();
 </script>
 
-<!-- ===== CONNECT V752 · REBASED FROM WORKING V748 · VISUAL CLEANUP ONLY ===== -->
-<style id="connect-v752-distributor-cleanup-css">
+<!-- ===== CONNECT V753 · WHERE IS THE GROWTH · REBASED FROM WORKING V748 ===== -->
+<style id="connect-v753-where-is-growth-css">
 
-/* V752 — visual-only Distributor Overview cleanup, rebased from working V748.
-   No distributor routing functions are replaced in this patch. */
-html[data-connect-authoritative="v739"] #rp-overlay .d752-risk .d742-kpi-value{color:#FFD0B2}
-html[data-connect-authoritative="v739"] #rp-overlay .d752-concentration .d742-kpi-value{color:#F7FBFF}
-html[data-connect-authoritative="v739"] #rp-overlay .d752-expansion-note{
-  border-left-color:#00AFEF!important
+/* ============================================================
+   V753 — WHERE IS THE GROWTH?
+   Replaces the redundant Network Growth panel.
+   Growth Outlook is intentionally removed.
+   ============================================================ */
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-priority{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid rgba(155,107,255,.28);
+  background:rgba(155,107,255,.08);
+  color:#D8C7FF;border-radius:999px;padding:5px 9px;
+  font-size:8px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+  white-space:nowrap
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-total{
+  display:grid;grid-template-columns:135px minmax(0,1fr);gap:13px;align-items:center;
+  padding:11px 12px;margin-bottom:10px;border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;background:rgba(255,255,255,.025)
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-total span{
+  display:block;color:#748FA0;font-size:8px;text-transform:uppercase;
+  letter-spacing:.06em;font-weight:900
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-total strong{
+  display:block;margin-top:4px;font:900 25px/1 Georgia,"Times New Roman",serif;color:#fff
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-total p{
+  margin:0;color:#91A7B5;font-size:8.5px;line-height:1.5
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-total p b{color:#DFF7FF}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-list{
+  display:flex;flex-direction:column;gap:7px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row{
+  border:1px solid rgba(255,255,255,.065);border-radius:12px;
+  background:rgba(255,255,255,.02);padding:9px 10px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row-top{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row-top span{
+  display:block;color:#55DDF8;font-size:7.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.055em
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row-top strong{
+  display:block;color:#F4F8FC;font-size:9.5px;margin-top:2px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row-top>b{
+  color:#B8CBD8;font-size:8px;font-weight:900
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-bar{
+  height:4px;border-radius:999px;background:rgba(255,255,255,.07);
+  overflow:hidden;margin:7px 0 6px
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-bar i{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,#00AFEF,#69DDF7)
+}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row.branch .d753-growth-bar i{background:linear-gradient(90deg,#FA873D,#FFB177)}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row.rep .d753-growth-bar i{background:linear-gradient(90deg,#00AFEF,#69DDF7)}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row.customer .d753-growth-bar i{background:linear-gradient(90deg,#47D16C,#86E8A0)}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row.product .d753-growth-bar i{background:linear-gradient(90deg,#9B6BFF,#C1A6FF)}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row.recovery .d753-growth-bar i{background:linear-gradient(90deg,#E75D5D,#FF9696)}
+html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row p{
+  margin:0;color:#8199A8;font-size:7.8px;line-height:1.35
+}
+@media(max-width:720px){
+  html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-total{grid-template-columns:1fr}
 }
 
 </style>
-<script id="connect-v752-distributor-cleanup-js">
+<script id="connect-v753-final-authority">
 
 (function(){
 'use strict';
-
-var REP='Jordan Reed';
-
-function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
-function isMax(){
-  return clean(window._rp2&&window._rp2.rep||'')===REP;
-}
-function money(v){
-  return '$'+Math.round(Number(v)||0).toLocaleString();
-}
-function distributors(){
-  try{
-    return (window.CONNECT_DEMO_DATA_V740 &&
-            window.CONNECT_DEMO_DATA_V740.max &&
-            window.CONNECT_DEMO_DATA_V740.max.distributors) || [];
-  }catch(e){return []}
-}
-function metrics(){
-  var rows=distributors(),total=0,gap=0,attention=0;
-  var sorted=rows.slice().sort(function(a,b){
-    return (Number(b.ytd)||0)-(Number(a.ytd)||0);
-  });
-  rows.forEach(function(d){
-    var y=Number(d.ytd)||0,p=Number(d.prior)||0;
-    total+=y;
-    if(p>y){gap+=(p-y);attention++}
-  });
-  var top=sorted[0]?Number(sorted[0].ytd)||0:0;
-  var top2=top+(sorted[1]?Number(sorted[1].ytd)||0:0);
-  return{
-    total:total,
-    topShare:total?Math.round(top/total*100):0,
-    top2Share:total?Math.round(top2/total*100):0,
-    riskGap:Math.round(gap),
-    attention:attention
-  };
-}
-function card(icon,label,value,badge,copy,pct){
-  pct=Math.max(0,Math.min(100,Number(pct)||0));
-  return '<div class="d742-kpi-top">'+
-           '<div class="d742-kpi-icon">'+icon+'</div>'+
-           '<span class="d742-kpi-badge">'+badge+'</span>'+
-         '</div>'+
-         '<div class="d742-kpi-label">'+label+'</div>'+
-         '<strong class="d742-kpi-value">'+value+'</strong>'+
-         '<div class="d742-kpi-copy">'+copy+'</div>'+
-         '<div class="d742-kpi-bar"><i style="width:'+pct+'%"></i></div>';
-}
-
-/* IMPORTANT:
-   This function edits the already-rendered DOM only.
-   It does not wrap _rp2Page, _rp2Html, _rp2Go, _demo740OpenDistributor,
-   or _demo740BackDistributors. The known-good V748 route remains the route. */
-function patchOverviewDOM(){
-  try{
-    if(!isMax())return;
-    if(!window._rp2 || window._rp2.page!=='distributors')return;
-    if(window._demo740DistView==='proforma')return;
-
-    var root=document.querySelector('#rp-overlay .d740');
-    if(!root || root.getAttribute('data-v752-cleaned')==='1')return;
-
-    var m=metrics();
-    var kpis=root.querySelectorAll('.d742-kpis .d742-kpi');
-
-    if(kpis.length>=4){
-      kpis[2].classList.add('d752-concentration');
-      kpis[2].style.setProperty('--glow','rgba(139,92,246,.22)');
-      kpis[2].innerHTML=card(
-        '◈',
-        'Book Concentration',
-        m.topShare+'%',
-        'Top 2 = '+m.top2Share+'%',
-        'Share of YTD distributor revenue coming from Proforma',
-        m.topShare
-      );
-
-      kpis[3].classList.add('d752-risk');
-      kpis[3].style.setProperty('--glow','rgba(250,135,61,.24)');
-      kpis[3].innerHTML=card(
-        '△',
-        'Revenue at Risk',
-        money(m.riskGap),
-        m.attention+' distributor'+(m.attention===1?'':'s')+' below PY',
-        'Comparable prior-YTD gap for distributors currently running behind last year',
-        Math.min(100,m.total?(m.riskGap/m.total)*500:0)
-      );
-    }
-
-    var grid=root.querySelector('.d742-grid');
-    if(grid && grid.children.length>1){
-      var network=grid.children[1];
-      var title=network.querySelector('.d742-card-head strong');
-      var sub=network.querySelector('.d742-card-head span');
-      if(title)title.textContent='Expansion Inventory';
-      if(sub)sub.textContent='Where the known distributor network still has room to grow';
-
-      var help=network.querySelector('.d743-help-btn');
-      if(help){
-        help.setAttribute('aria-label','Explain Expansion Inventory');
-        help.setAttribute('title','What is Expansion Inventory?');
-      }
-
-      /* The second progress bar duplicated Distributor Health from the
-         executive cards. Remove it entirely. Branch penetration stays here. */
-      var bars=network.querySelectorAll('.d742-network-bar');
-      if(bars.length>1){
-        for(var i=bars.length-1;i>=1;i--)bars[i].remove();
-      }
-
-      var note=network.querySelector('.d742-network-note');
-      if(note){
-        note.classList.add('d752-expansion-note');
-        note.innerHTML='<strong style="color:#8EEBFF">How to read this:</strong> '+
-          'this panel is expansion inventory, not another scorecard. Use it to see '+
-          'where MAX can grow through branches, end customers, and high-priority plays.';
-      }
-    }
-
-    root.setAttribute('data-v752-cleaned','1');
-  }catch(e){
-    console.warn('[V752 visual cleanup]',e);
-  }
-}
-
-/* Safe post-render hook only. It calls the working V748 after-render behavior
-   first, then performs visual DOM cleanup. */
-var priorAfter=window._rp2After;
-window._rp2After=function(){
-  var result;
-  if(typeof priorAfter==='function')result=priorAfter.apply(this,arguments);
-  patchOverviewDOM();
-  return result;
-};
-
-/* Update only help copy. No navigation behavior is touched. */
-var priorHelp=window._demo743Help;
-window._demo743Help=function(evt,key){
-  if((key==='executive'||key==='network')){
-    if(evt){evt.preventDefault();evt.stopPropagation()}
-    var back=document.getElementById('d743-help-backdrop');
-    var ttl=document.getElementById('d743-help-title');
-    var body=document.getElementById('d743-help-body');
-    if(back&&ttl&&body){
-      if(key==='executive'){
-        ttl.textContent='Executive Snapshot';
-        body.innerHTML=
-          '<div class="d743-help-block"><span>What this shows</span><p>'+
-          'Revenue pace, distributor health, book concentration, and the comparable prior-year gap currently at risk.</p></div>'+
-          '<div class="d743-help-block"><span>How to use it</span><p>'+
-          'Use these four cards to understand performance and risk. Expansion detail is intentionally separated below.</p></div>'+
-          '<div class="d743-help-block"><span>Data truth</span><p>'+
-          'Revenue at Risk is a prior-YTD gap for distributors running behind. It is not a prediction that the revenue will be lost.</p></div>';
-      }else{
-        ttl.textContent='Expansion Inventory';
-        body.innerHTML=
-          '<div class="d743-help-block"><span>What this shows</span><p>'+
-          'Known surfaces where the distributor channel can expand: end customers, active branches, white-space branches, and high-priority plays.</p></div>'+
-          '<div class="d743-help-block"><span>How to use it</span><p>'+
-          'Use this after the executive snapshot to understand where additional distributor-channel growth may be available.</p></div>'+
-          '<div class="d743-help-block"><span>Data truth</span><p>'+
-          'White space means no attributed MAX purchase is currently loaded for that known branch. It does not prove the branch has never purchased MAX.</p></div>';
-      }
-      back.classList.add('open');
-      return;
-    }
-  }
-  if(typeof priorHelp==='function')return priorHelp.apply(this,arguments);
-};
-
-/* Catch an already-rendered overview without forcing a route or re-render. */
-[0,150,500,1200].forEach(function(ms){setTimeout(patchOverviewDOM,ms)});
-
-window.CONNECT_V752_REBASE_DIAGNOSTICS=function(){
-  return{
-    version:'v752',
-    base:'user-confirmed working V748',
-    routingOverridesAdded:{
-      rp2Go:false,
-      rp2Html:false,
-      rp2Page:false,
-      demo740OpenDistributor:false,
-      demo740BackDistributors:false
-    },
-    visualCleanupOnly:true,
-    currentPage:window._rp2&&window._rp2.page||null,
-    currentDistributorView:window._demo740DistView||null
-  };
-};
-})();
-
-</script>
-<script id="connect-v752-final-authority">
-
-(function(){
-'use strict';
-var BUILD='v752',DISPLAY='V752',TITLE='Connect v752 — Sales Portal';
+var BUILD='v753',DISPLAY='V753',TITLE='Connect v753 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
