@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v750 — Sales Portal</title>
+<title>Connect v751 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v750', DISPLAY='V750', TITLE='Connect v750 — Sales Portal';
+  var BUILD='v751', DISPLAY='V751', TITLE='Connect v751 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v750',DISPLAY='V750',TITLE='Connect v750 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v751',DISPLAY='V751',TITLE='Connect v751 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75912,95 +75912,241 @@ window.CONNECT_V749_MAX_DISTRIBUTOR_DIAGNOSTICS=function(){var m=metrics();retur
 })();</script>
 <script id="connect-v749-final-authority">(function(){var BUILD='v749',DISPLAY='V749',TITLE='Connect v749 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)})})();</script>
 
-<!-- ===== CONNECT V750 · MAX DISTRIBUTOR NAV FIX ===== -->
-<script id="connect-v750-max-distributor-nav-js">
+<!-- ===== CONNECT V751 · MAX DISTRIBUTOR ROUTER HARDENING ===== -->
+<script id="connect-v751-max-distributor-router-js">
 
 (function(){
 'use strict';
 
-function currentRep(){
-  return String(window._rp2&&window._rp2.rep||'').replace(/\s+/g,' ').trim();
-}
-function isMax(){
-  return currentRep()==='Jordan Reed';
-}
-function renderPortal(){
+/* ============================================================
+   V751 — FINAL MAX DISTRIBUTOR ROUTER
+   One canonical route owner for:
+   - side-nav Distributors
+   - Proforma open
+   - Back to Distributor Overview
+   - programmatic _rp2Go('distributors')
+   This intentionally bypasses the late full-shell wrapper chain
+   when the phased shell is already mounted.
+   ============================================================ */
+
+var MAX_DEMO_REP='Jordan Reed';
+
+function state(){
   try{
-    var rep=currentRep();
-    var overlay=document.getElementById('rp-overlay');
-    if(!overlay||!rep||typeof window._rp2Html!=='function')return false;
-    overlay.innerHTML=window._rp2Html(rep);
+    if(window._rp2 && typeof window._rp2==='object')return window._rp2;
+  }catch(e){}
+  try{
+    if(typeof _rp2!=='undefined' && _rp2 && typeof _rp2==='object')return _rp2;
+  }catch(e){}
+  return null;
+}
+
+function repName(){
+  var s=state();
+  return String(s&&s.rep||'').replace(/\s+/g,' ').trim();
+}
+
+function isMax(){
+  var rep=repName();
+  if(rep===MAX_DEMO_REP)return true;
+  try{
+    var demos=window.CONNECT_DEMO_REPS_V740||{};
+    return !!(demos[rep] && String(demos[rep].division||'').toUpperCase()==='MAX');
+  }catch(e){}
+  return false;
+}
+
+function markDistributorNav(){
+  try{
+    var nav=document.querySelector('#rp-overlay .p639-nav');
+    if(!nav)return;
+    nav.querySelectorAll('button').forEach(function(b){b.classList.remove('on')});
+    var btn=nav.querySelector('[data-demo740-distributors="1"]');
+    if(btn)btn.classList.add('on');
+  }catch(e){}
+}
+
+function afterRender(){
+  try{
     if(typeof window._rp2After==='function')window._rp2After();
-    var main=overlay.querySelector('.rp2-main');
+  }catch(e){console.warn('[V751 after render]',e)}
+  markDistributorNav();
+  try{
+    var main=document.querySelector('#rp-overlay .rp2-main');
     if(main)main.scrollTop=0;
+    var overlay=document.getElementById('rp-overlay');
+    if(overlay)overlay.scrollTop=0;
+  }catch(e){}
+}
+
+function pageOnlyRender(){
+  var s=state();
+  if(!s || !isMax() || typeof window._rp2Page!=='function')return false;
+  var host=document.getElementById('rp2-page');
+  if(!host)return false;
+  try{
+    host.className='p639-subpage';
+    host.innerHTML=window._rp2Page();
+    afterRender();
     return true;
   }catch(e){
-    console.warn('[V750 distributor nav]',e);
+    console.error('[V751 page render]',e);
     return false;
   }
 }
 
-/* The side-nav should always mean "open the Distributor Overview".
-   It must not inherit the last distributor drill-down state (for example Proforma). */
-window._max750OpenDistributorOverview=function(){
-  if(!isMax())return;
-  window._demo740DistView='list';
-  window._demo745ProformaTab='overview';
-  if(window._rp2)window._rp2.page='distributors';
-  if(!renderPortal() && typeof window._rp2Go==='function'){
-    window._rp2Go('distributors');
+function fullShellRender(){
+  var s=state(),overlay=document.getElementById('rp-overlay');
+  if(!s || !overlay || !s.rep || typeof window._rp2Html!=='function')return false;
+  try{
+    overlay.innerHTML=window._rp2Html(s.rep);
+    afterRender();
+    return true;
+  }catch(e){
+    console.error('[V751 shell render]',e);
+    return false;
   }
+}
+
+function route(view){
+  var s=state();
+  if(!s || !isMax())return false;
+
+  s.page='distributors';
+  window._demo740DistView=(view==='proforma'?'proforma':'list');
+  if(view==='proforma')window._demo745ProformaTab='overview';
+
+  /* Primary path: update only the phased page body.
+     This avoids re-entering the long _rp2Html wrapper stack. */
+  if(pageOnlyRender())return true;
+
+  /* Fallback only when the shell is not mounted yet. */
+  return fullShellRender();
+}
+
+window._max751OpenDistributorOverview=function(evt){
+  if(evt){
+    try{evt.preventDefault()}catch(e){}
+    try{evt.stopPropagation()}catch(e){}
+    try{evt.stopImmediatePropagation()}catch(e){}
+  }
+  return route('list');
 };
 
-/* Patch the final phased HTML so the MAX Distributors nav button uses the
-   explicit overview route instead of the older generic _rp2Go route. */
+window._max751OpenDistributorProfile=function(id,evt){
+  if(id!=='proforma')return false;
+  if(evt){
+    try{evt.preventDefault()}catch(e){}
+    try{evt.stopPropagation()}catch(e){}
+    try{evt.stopImmediatePropagation()}catch(e){}
+  }
+  return route('proforma');
+};
+
+window._max751BackToDistributorOverview=function(evt){
+  return window._max751OpenDistributorOverview(evt);
+};
+
+/* Capture-phase handler means the Distributor nav works even if an older
+   inline onclick survived one of the legacy HTML-string wrappers. */
+if(!window.__max751DistributorCaptureInstalled){
+  window.__max751DistributorCaptureInstalled=true;
+  document.addEventListener('click',function(evt){
+    var target=evt.target;
+    var btn=target&&target.closest?target.closest('[data-demo740-distributors="1"]'):null;
+    if(!btn)return;
+    if(!isMax())return;
+    window._max751OpenDistributorOverview(evt);
+  },true);
+}
+
+/* Final programmatic router. No recursive call back into _rp2Go for this route. */
+var priorGo=window._rp2Go;
+window._rp2Go=function(page){
+  if(page==='distributors' && isMax()){
+    return window._max751OpenDistributorOverview();
+  }
+  return typeof priorGo==='function'?priorGo.apply(this,arguments):undefined;
+};
+
+/* Point all known distributor entry points at the same canonical router. */
+window._demo740OpenDistributor=function(id){
+  if(id==='proforma')return window._max751OpenDistributorProfile('proforma');
+  try{
+    alert('This demo distributor is list-level only right now. Proforma is the active Distributor Profile build target.');
+  }catch(e){}
+  return false;
+};
+
+window._demo740BackDistributors=window._max751BackToDistributorOverview;
+window._max749OpenDistributorProfile=window._max751OpenDistributorProfile;
+window._max749BackToDistributorOverview=window._max751BackToDistributorOverview;
+
+/* Final HTML hardening:
+   - removes any old Distributor onclick
+   - uses one explicit handler
+   - does not depend on attribute order or exact old function text */
 var priorHtml=window._rp2Html;
 window._rp2Html=function(rep){
-  var html=typeof priorHtml==='function'?priorHtml.apply(this,arguments):'';
-  if(String(rep||'').replace(/\s+/g,' ').trim()!=='Jordan Reed')return html;
+  var markup=typeof priorHtml==='function'?priorHtml.apply(this,arguments):'';
+  if(String(rep||'').replace(/\s+/g,' ').trim()!==MAX_DEMO_REP)return markup;
 
-  html=String(html).replace(
-    /(<button[^>]*data-demo740-distributors="1"[^>]*?)onclick="_rp2Go\('distributors'\)"/,
-    '$1onclick="_max750OpenDistributorOverview()"'
+  return String(markup).replace(
+    /<button([^>]*\bdata-demo740-distributors="1"[^>]*)>/i,
+    function(full,attrs){
+      attrs=String(attrs)
+        .replace(/\s+onclick=(?:"[^"]*"|'[^']*')/ig,'')
+        .replace(/\s+type=(?:"[^"]*"|'[^']*')/ig,'');
+      return '<button'+attrs+' type="button" onclick="return _max751OpenDistributorOverview(event)">';
+    }
   );
-  return html;
 };
 
-window.CONNECT_V750_DISTRIBUTOR_NAV_DIAGNOSTICS=function(){
+window.CONNECT_V751_DISTRIBUTOR_ROUTER_DIAGNOSTICS=function(){
+  var s=state();
+  var btn=document.querySelector('#rp-overlay [data-demo740-distributors="1"]');
   return {
-    version:'v750',
+    version:'v751',
+    routeOwner:'single-final-router',
+    rep:s&&s.rep||null,
     maxRep:isMax(),
-    navHandler:typeof window._max750OpenDistributorOverview==='function',
-    currentView:window._demo740DistView||'list'
+    page:s&&s.page||null,
+    distributorView:window._demo740DistView||null,
+    navButtonPresent:!!btn,
+    navOnclick:btn&&btn.getAttribute('onclick')||null,
+    pageHostPresent:!!document.getElementById('rp2-page'),
+    captureHandlerInstalled:!!window.__max751DistributorCaptureInstalled,
+    finalGoIntercept:true
   };
 };
 })();
 
 </script>
+<script id="connect-v751-final-authority">
 
-<script id="connect-v750-final-authority">
 (function(){
-  var BUILD='v750',DISPLAY='V750',TITLE='Connect v750 — Sales Portal';
-  function enforce(){
-    try{
-      window.CONNECT_BUILD_AUTHORITY=BUILD;
-      window.CONNECT_BUILD_DISPLAY=DISPLAY;
-      window.CONNECT_BUILD_TITLE=TITLE;
-      window.CONNECT_BUILD=BUILD;
-      window.TCP_BUILD_VERSION=BUILD;
-      document.documentElement.setAttribute('data-connect-authoritative','v739');
-      document.documentElement.setAttribute('data-connect-release',BUILD);
-      document.documentElement.setAttribute('data-connect-build',BUILD);
-      document.documentElement.setAttribute('data-tcp-build',BUILD);
-      document.title=TITLE;
-      document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
-        if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
-      });
-    }catch(e){}
-  }
-  enforce();
-  [50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
+'use strict';
+var BUILD='v751',DISPLAY='V751',TITLE='Connect v751 — Sales Portal';
+function enforce(){
+  try{
+    window.CONNECT_BUILD_AUTHORITY=BUILD;
+    window.CONNECT_BUILD_DISPLAY=DISPLAY;
+    window.CONNECT_BUILD_TITLE=TITLE;
+    window.CONNECT_BUILD=BUILD;
+    window.TCP_BUILD_VERSION=BUILD;
+    document.documentElement.setAttribute('data-connect-authoritative','v739');
+    document.documentElement.setAttribute('data-connect-release',BUILD);
+    document.documentElement.setAttribute('data-connect-build',BUILD);
+    document.documentElement.setAttribute('data-tcp-build',BUILD);
+    document.title=TITLE;
+    document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
+      if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
+    });
+  }catch(e){}
+}
+enforce();
+[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
 })();
-</script>
 
+</script>
 
