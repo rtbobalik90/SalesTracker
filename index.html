@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v749 — Sales Portal</title>
+<title>Connect v750 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v749', DISPLAY='V749', TITLE='Connect v749 — Sales Portal';
+  var BUILD='v750', DISPLAY='V750', TITLE='Connect v750 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v749',DISPLAY='V749',TITLE='Connect v749 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v750',DISPLAY='V750',TITLE='Connect v750 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75911,3 +75911,96 @@ var priorPage=window._rp2Page;window._rp2Page=function(){var html=typeof priorPa
 window.CONNECT_V749_MAX_DISTRIBUTOR_DIAGNOSTICS=function(){var m=metrics();return{version:'v749',redundancyReduced:true,topShare:m.top,topTwoShare:m.top2,priorYTDGap:m.gap,proformaDirectOpen:typeof window._max749OpenDistributorProfile==='function'}};
 })();</script>
 <script id="connect-v749-final-authority">(function(){var BUILD='v749',DISPLAY='V749',TITLE='Connect v749 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)})})();</script>
+
+<!-- ===== CONNECT V750 · MAX DISTRIBUTOR NAV FIX ===== -->
+<script id="connect-v750-max-distributor-nav-js">
+
+(function(){
+'use strict';
+
+function currentRep(){
+  return String(window._rp2&&window._rp2.rep||'').replace(/\s+/g,' ').trim();
+}
+function isMax(){
+  return currentRep()==='Jordan Reed';
+}
+function renderPortal(){
+  try{
+    var rep=currentRep();
+    var overlay=document.getElementById('rp-overlay');
+    if(!overlay||!rep||typeof window._rp2Html!=='function')return false;
+    overlay.innerHTML=window._rp2Html(rep);
+    if(typeof window._rp2After==='function')window._rp2After();
+    var main=overlay.querySelector('.rp2-main');
+    if(main)main.scrollTop=0;
+    return true;
+  }catch(e){
+    console.warn('[V750 distributor nav]',e);
+    return false;
+  }
+}
+
+/* The side-nav should always mean "open the Distributor Overview".
+   It must not inherit the last distributor drill-down state (for example Proforma). */
+window._max750OpenDistributorOverview=function(){
+  if(!isMax())return;
+  window._demo740DistView='list';
+  window._demo745ProformaTab='overview';
+  if(window._rp2)window._rp2.page='distributors';
+  if(!renderPortal() && typeof window._rp2Go==='function'){
+    window._rp2Go('distributors');
+  }
+};
+
+/* Patch the final phased HTML so the MAX Distributors nav button uses the
+   explicit overview route instead of the older generic _rp2Go route. */
+var priorHtml=window._rp2Html;
+window._rp2Html=function(rep){
+  var html=typeof priorHtml==='function'?priorHtml.apply(this,arguments):'';
+  if(String(rep||'').replace(/\s+/g,' ').trim()!=='Jordan Reed')return html;
+
+  html=String(html).replace(
+    /(<button[^>]*data-demo740-distributors="1"[^>]*?)onclick="_rp2Go\('distributors'\)"/,
+    '$1onclick="_max750OpenDistributorOverview()"'
+  );
+  return html;
+};
+
+window.CONNECT_V750_DISTRIBUTOR_NAV_DIAGNOSTICS=function(){
+  return {
+    version:'v750',
+    maxRep:isMax(),
+    navHandler:typeof window._max750OpenDistributorOverview==='function',
+    currentView:window._demo740DistView||'list'
+  };
+};
+})();
+
+</script>
+
+<script id="connect-v750-final-authority">
+(function(){
+  var BUILD='v750',DISPLAY='V750',TITLE='Connect v750 — Sales Portal';
+  function enforce(){
+    try{
+      window.CONNECT_BUILD_AUTHORITY=BUILD;
+      window.CONNECT_BUILD_DISPLAY=DISPLAY;
+      window.CONNECT_BUILD_TITLE=TITLE;
+      window.CONNECT_BUILD=BUILD;
+      window.TCP_BUILD_VERSION=BUILD;
+      document.documentElement.setAttribute('data-connect-authoritative','v739');
+      document.documentElement.setAttribute('data-connect-release',BUILD);
+      document.documentElement.setAttribute('data-connect-build',BUILD);
+      document.documentElement.setAttribute('data-tcp-build',BUILD);
+      document.title=TITLE;
+      document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
+        if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
+      });
+    }catch(e){}
+  }
+  enforce();
+  [50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
+})();
+</script>
+
+
