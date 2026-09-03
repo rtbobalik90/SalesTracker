@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v753 — Sales Portal</title>
+<title>Connect v754 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v753', DISPLAY='V753', TITLE='Connect v753 — Sales Portal';
+  var BUILD='v754', DISPLAY='V754', TITLE='Connect v754 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74846,7 +74846,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v753',DISPLAY='V753',TITLE='Connect v753 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative','v739');document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75048,7 +75048,23 @@ function directory(){var rows=filtered();return'<section class="d742-card d742-d
 window._demo742SetFilter=function(f){S.filter=f;renderHost('d742-directory-host',directory())};
 window._demo742SearchDirectory=function(q){q=clean(q).toLowerCase();document.querySelectorAll('[data-d742-row]').forEach(function(r){r.style.display=!q||(r.getAttribute('data-search')||'').indexOf(q)>=0?'table-row':'none'})};
 function forecast(t,h){return''}
-function dashboard(){var t=totals(),h=health();return'<div class="d742"><div class="d742-head"><div><div class="d742-kick">MAX Apparel · Distributor Command Center</div><h1>Distributor Overview</h1><p>Run the distributor book from one place: pace, health, network penetration, action priorities, and the path toward materially more sales.</p></div><span class="d742-demo">Illustrative demo data</span></div><div class="d742-snapshot"><div class="d742-snap-icon">✦</div><div><div class="d743-head-title"><div><strong>Distributor Book Snapshot</strong></div>'+helpBtn('snapshot','Distributor Book Snapshot')+'</div><span><b style="color:#FFC092">Top growth signal:</b> Proforma is +17% YTD with 11 known white-space branches — momentum and expansion are present in the same account.</span></div><span class="d742-watch">Watch: Evergreen is 16% below prior-year pace.</span></div><div class="d742-section-label"><div class="d742-section-kick">Executive Snapshot</div>'+helpBtn('executive','Executive Snapshot')+'</div><div class="d742-kpis">'+kpi('$','Revenue Pace',money(t.ytd),'Data through Aug',Math.round(t.yoy)+'% vs prior YTD',null,'rgba(250,135,61,.24)')+kpi('◎','Distributor Health',(h.growing+h.stable)+' / '+ds().length+' healthy','1 needs attention',h.growing+' growing · '+h.stable+' stable · '+h.attention+' attention',(h.growing+h.stable)/Math.max(ds().length,1)*100,'rgba(0,175,239,.22)')+kpi('⌂','Network Penetration',Math.round(t.pen)+'%','31 white-space branches',t.active+' of '+t.known+' known branches active',t.pen,'rgba(71,209,108,.22)')+kpi('↗','Growth Pipeline',String(t.opps),'6 high priority','Expansion plays across the distributor network',6/Math.max(t.opps,1)*100,'rgba(155,107,255,.22)')+'</div><div class="d742-grid"><section id="d742-trend-host" class="d742-card">'+trendBlock()+'</section><section class="d742-card">'+networkPanel(t,h)+'</section></div>'+actions()+'<div id="d742-directory-host">'+directory()+'</div>'+forecast(t,h)+helpModal()+'</div>'}
+function dashboard(){var t=totals(),h=health();return'<div class="d742 d754-full">'+
+ '<div class="d742-head"><div><div class="d742-kick">MAX Apparel · Distributor Command Center</div><h1>Distributor Overview</h1><p>Run the distributor book from one place: pace, health, network penetration, action priorities, and the path toward materially more sales.</p></div><span class="d742-demo">Illustrative demo data</span></div>'+
+ '<div class="d742-snapshot"><div class="d742-snap-icon">✦</div><div><div class="d743-head-title"><div><strong>Distributor Book Snapshot</strong></div>'+helpBtn('snapshot','Distributor Book Snapshot')+'</div><span><b style="color:#FFC092">Top growth signal:</b> Proforma is +17% YTD with 11 known white-space branches — momentum and expansion are present in the same account.</span></div><span class="d742-watch">Watch: Evergreen is 16% below prior-year pace.</span></div>'+
+ '<div class="d742-section-label"><div class="d742-section-kick">Executive Snapshot</div>'+helpBtn('executive','Executive Snapshot')+'</div>'+
+ '<div class="d742-kpis">'+
+  kpi('$','Revenue Pace',money(t.ytd),'Data through Aug',Math.round(t.yoy)+'% vs prior YTD',null,'rgba(250,135,61,.24)')+
+  kpi('◎','Distributor Health',(h.growing+h.stable)+' / '+ds().length+' healthy','1 needs attention',h.growing+' growing · '+h.stable+' stable · '+h.attention+' attention',(h.growing+h.stable)/Math.max(ds().length,1)*100,'rgba(0,175,239,.22)')+
+  kpi('⌂','Network Penetration',Math.round(t.pen)+'%','31 white-space branches',t.active+' of '+t.known+' known branches active',t.pen,'rgba(71,209,108,.22)')+
+  kpi('↗','Growth Pipeline',String(t.opps),'6 high priority','Expansion plays across the distributor network',6/Math.max(t.opps,1)*100,'rgba(155,107,255,.22)')+
+ '</div>'+
+ '<div class="d754-primary-grid">'+
+   '<section id="d742-trend-host" class="d742-card d754-trend-card">'+trendBlock()+'</section>'+
+   '<div class="d754-attention-host">'+actions()+'</div>'+
+ '</div>'+
+ '<div id="d742-directory-host">'+directory()+'</div>'+
+ helpModal()+
+ '</div>'}
 var priorPage=window._rp2Page;
 window._rp2Page=function(){var rep=window._rp2&&window._rp2.rep||'',page=window._rp2&&window._rp2.page||'home';if(page==='distributors'&&clean(rep)===REP&&window._demo740DistView!=='proforma')return dashboard();return typeof priorPage==='function'?priorPage.apply(this,arguments):''};
 window.CONNECT_V743_DISTRIBUTOR_COMMAND_CENTER_DIAGNOSTICS=function(){var t=totals(),h=health();return{version:'v743',mode:S.mode,selected:S.selected.slice(),revenue:{ytd:t.ytd,prior:t.prior,l12m:t.l12m,yoy:Math.round(t.yoy)},health:h,network:{endCustomers:t.end,activeBranches:t.active,knownBranches:t.known,whiteSpace:t.white,penetration:Math.round(t.pen)},growth:{opportunities:t.opps,highPriority:6,x3Benchmark:t.l12m*3,gap:t.l12m*2}}};
@@ -75871,7 +75887,7 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 
 <script id="connect-v748-final-authority">
 (function(){
-  var BUILD='v753',DISPLAY='V753',TITLE='Connect v753 — Sales Portal';
+  var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';
   function enforce(){
     try{
       window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -75970,7 +75986,114 @@ html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row p{
 
 (function(){
 'use strict';
-var BUILD='v753',DISPLAY='V753',TITLE='Connect v753 — Sales Portal';
+var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';
+function enforce(){
+  try{
+    window.CONNECT_BUILD_AUTHORITY=BUILD;
+    window.CONNECT_BUILD_DISPLAY=DISPLAY;
+    window.CONNECT_BUILD_TITLE=TITLE;
+    window.CONNECT_BUILD=BUILD;
+    window.TCP_BUILD_VERSION=BUILD;
+    document.documentElement.setAttribute('data-connect-authoritative','v739');
+    document.documentElement.setAttribute('data-connect-release',BUILD);
+    document.documentElement.setAttribute('data-connect-build',BUILD);
+    document.documentElement.setAttribute('data-tcp-build',BUILD);
+    document.title=TITLE;
+    document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){
+      if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY;
+    });
+  }catch(e){}
+}
+enforce();
+[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
+})();
+
+</script>
+
+<!-- ===== CONNECT V754 · FULL-WIDTH DISTRIBUTOR TWO-COLUMN LAYOUT ===== -->
+<style id="connect-v754-distributor-layout-css">
+
+/* ============================================================
+   V754 — DISTRIBUTOR COMMAND CENTER LAYOUT
+   Full-width command-center feel matching My Day.
+   ============================================================ */
+#rp-overlay .p639-subpage > .d742.d754-full{
+  width:100%;
+  max-width:none!important;
+  margin:0;
+  padding:4px 0 34px;
+}
+#rp-overlay .d742.d754-full{
+  width:100%;
+  max-width:none!important;
+}
+#rp-overlay .d754-primary-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(420px,.85fr);
+  gap:18px;
+  align-items:stretch;
+  margin-bottom:18px;
+}
+#rp-overlay .d754-primary-grid > .d742-card,
+#rp-overlay .d754-attention-host,
+#rp-overlay .d754-attention-host > .d742-card{
+  min-width:0;
+  height:100%;
+}
+#rp-overlay .d754-attention-host > .d742-action-card{
+  margin-bottom:0;
+}
+#rp-overlay .d754-attention-host .d742-action-list{
+  padding:0 17px 8px;
+}
+#rp-overlay .d754-attention-host .d742-action{
+  grid-template-columns:34px minmax(0,1fr) auto;
+  gap:11px;
+  padding:15px 0;
+}
+#rp-overlay .d754-attention-host .d742-action-btn{
+  min-width:102px;
+  white-space:nowrap;
+}
+#rp-overlay .d754-trend-card .d742-chart{
+  height:335px;
+}
+#rp-overlay .d754-full .d742-directory{
+  width:100%;
+  margin-bottom:18px;
+}
+@media(min-width:1600px){
+  #rp-overlay .d754-primary-grid{
+    grid-template-columns:minmax(0,1.45fr) minmax(470px,.72fr);
+  }
+  #rp-overlay .d754-trend-card .d742-chart{
+    height:360px;
+  }
+}
+@media(max-width:1180px){
+  #rp-overlay .d754-primary-grid{
+    grid-template-columns:1fr;
+  }
+  #rp-overlay .d754-trend-card .d742-chart{
+    height:310px;
+  }
+}
+@media(max-width:760px){
+  #rp-overlay .d754-attention-host .d742-action{
+    grid-template-columns:32px minmax(0,1fr);
+  }
+  #rp-overlay .d754-attention-host .d742-action-btn{
+    grid-column:2;
+    justify-self:start;
+  }
+}
+
+</style>
+<script id="connect-v754-final-authority">
+
+(function(){
+'use strict';
+var BUILD='v754',DISPLAY='V754',TITLE='Connect v754 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
