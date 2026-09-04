@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v758 — Sales Portal</title>
+<title>Connect v759 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v758', DISPLAY='V758', TITLE='Connect v758 — Sales Portal';
+  var BUILD='v759', DISPLAY='V759', TITLE='Connect v759 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -76743,8 +76743,8 @@ window.CONNECT_V757_CORPORATE_ACCESS={version:'v757',visibleWorkspace:'Corporate
 
 <!-- ===== CONNECT V758 · COMPANY MASTER FOUNDATION ===== -->
 <style id="connect-v758-company-master-css">
-html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD V758"!important}
-body.nav-rail .tabs:after{content:"BUILD V758"!important}
+html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD V759"!important}
+body.nav-rail .tabs:after{content:"BUILD V759"!important}
 #rp-overlay .cm758-master-row>td{background:linear-gradient(90deg,rgba(250,135,61,.085),rgba(0,175,239,.045))!important;border-top:1px solid rgba(250,135,61,.18)!important;border-bottom:1px solid rgba(255,255,255,.075)!important}
 #rp-overlay .cm758-master-row:hover>td{background:linear-gradient(90deg,rgba(250,135,61,.14),rgba(0,175,239,.07))!important}
 #rp-overlay .cm758-master-name{display:flex;align-items:center;gap:8px;color:#fff;font-weight:950;cursor:pointer}
@@ -76914,5 +76914,66 @@ var priorToggle=window._cw4ToggleRow;if(typeof priorToggle==='function')window._
 function authority(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE='Connect v758 — Sales Portal';window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Connect v758 — Sales Portal';document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V758'})}catch(e){}}
 authority();[0,50,200,700,1600,3200,6000].forEach(function(ms){setTimeout(authority,ms)});
 window.CONNECT_V758_COMPANY_MASTER={version:BUILD,storageKey:STORE,masters:masters,open:function(id){return window._cm758OpenMaster(id)},create:function(){return window._cm758OpenWizard()},diagnostics:function(){var list=masters(),used=usedMap('');return{version:BUILD,rep:rep(),masters:list.length,memberAccounts:Object.keys(used).length,corporateNavRetired:true}}};
+})();
+</script>
+
+<!-- ===== CONNECT V759 · COMPANY MASTER CREATE CONTROL VISIBILITY FIX ===== -->
+<style id="connect-v759-company-master-launcher-css">
+#rp-overlay .cm759-master-launcher{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 14px;padding:14px 16px;border:1px solid rgba(250,135,61,.28);border-radius:17px;background:linear-gradient(100deg,rgba(250,135,61,.11),rgba(0,175,239,.055) 52%,rgba(255,255,255,.025));box-shadow:0 12px 30px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.045)}
+#rp-overlay .cm759-master-launcher-copy{min-width:0}
+#rp-overlay .cm759-master-launcher-kick{font-size:7.5px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;color:#00AFEF;margin-bottom:3px}
+#rp-overlay .cm759-master-launcher strong{display:block;color:#fff;font-size:12px;font-weight:950;letter-spacing:-.015em}
+#rp-overlay .cm759-master-launcher span{display:block;margin-top:3px;color:#8D9DB3;font-size:8.5px;line-height:1.45}
+#rp-overlay .cm759-master-launcher-btn{flex:0 0 auto;min-height:38px;padding:9px 14px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:linear-gradient(135deg,#FA873D,#00AFEF);color:#fff;font-size:9px;font-weight:950;cursor:pointer;box-shadow:0 10px 24px rgba(250,135,61,.20)}
+#rp-overlay .cm759-master-launcher-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+#rp-overlay .cw4-actions .cm758-create-btn{display:inline-flex!important;align-items:center!important;visibility:visible!important;opacity:1!important}
+@media(max-width:760px){#rp-overlay .cm759-master-launcher{align-items:flex-start;flex-direction:column}#rp-overlay .cm759-master-launcher-btn{width:100%}}
+</style>
+<script id="connect-v759-company-master-launcher-js">
+(function(){
+'use strict';
+function isCompaniesDirectory(){
+  try{
+    var page=window._rp2&&window._rp2.page||'';
+    if(page!=='customers')return false;
+    if(window._cm758CurrentMaster)return false;
+    if(window._cw4CompanyName||window._rp2CompanyOpenKey)return false;
+    return true;
+  }catch(e){return false}
+}
+function ensureCreateControls(){
+  try{
+    var host=document.querySelector('#rp-overlay #rp2-page');
+    if(!host)return;
+    var old=host.querySelector('.cm759-master-launcher');
+    if(!isCompaniesDirectory()){if(old)old.remove();return}
+    var actions=host.querySelector('.cw4-directory-top .cw4-actions');
+    if(actions&&!actions.querySelector('.cm758-create-btn')){
+      var add=actions.querySelector('button[onclick*="new-company"]');
+      var compact=document.createElement('button');
+      compact.className='cw4-btn cm758-create-btn';
+      compact.setAttribute('onclick','_cm758OpenWizard()');
+      compact.textContent='＋ Create Company Master';
+      if(add&&add.nextSibling)actions.insertBefore(compact,add.nextSibling);else actions.appendChild(compact);
+    }
+    if(!old){
+      var launcher=document.createElement('div');
+      launcher.className='cm759-master-launcher';
+      launcher.innerHTML='<div class="cm759-master-launcher-copy"><div class="cm759-master-launcher-kick">Company Relationships</div><strong>Create a Company Master</strong><span>Tether related accounts or locations together while keeping every individual Company record intact.</span></div><button class="cm759-master-launcher-btn" onclick="_cm758OpenWizard()">＋ Create Company Master</button>';
+      var hero=host.querySelector('.cw4-directory-hero');
+      if(hero&&hero.parentNode)hero.parentNode.insertBefore(launcher,hero.nextSibling);else host.insertBefore(launcher,host.firstChild);
+    }
+  }catch(e){console.error('[v759 Company Master launcher]',e)}
+}
+window._cm759EnsureCompanyMasterCreate=ensureCreateControls;
+var priorAfter=window._rp2After;
+window._rp2After=function(){var r;if(typeof priorAfter==='function')r=priorAfter.apply(this,arguments);setTimeout(ensureCreateControls,0);return r};
+var priorGo759=window._rp2Go;
+window._rp2Go=function(page){var r=typeof priorGo759==='function'?priorGo759.apply(this,arguments):undefined;setTimeout(ensureCreateControls,0);setTimeout(ensureCreateControls,80);return r};
+var queued=false;
+try{new MutationObserver(function(){if(queued)return;queued=true;setTimeout(function(){queued=false;ensureCreateControls()},25)}).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+[0,60,180,500,1200,2500].forEach(function(ms){setTimeout(ensureCreateControls,ms)});
+function authority759(){try{window.CONNECT_BUILD_AUTHORITY='v759';window.CONNECT_BUILD_DISPLAY='V759';window.CONNECT_BUILD_TITLE='Connect v759 — Sales Portal';window.CONNECT_BUILD='v759';window.TCP_BUILD_VERSION='v759';document.documentElement.setAttribute('data-connect-release','v759');document.documentElement.setAttribute('data-connect-build','v759');document.documentElement.setAttribute('data-tcp-build','v759');document.title='Connect v759 — Sales Portal';document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V759'})}catch(e){}}
+authority759();[100,500,1600,4000].forEach(function(ms){setTimeout(authority759,ms)});
 })();
 </script>
