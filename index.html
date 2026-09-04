@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v761 — Sales Portal</title>
+<title>Connect v762 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v761', DISPLAY='V761', TITLE='Connect v761 — Sales Portal';
+  var BUILD='v762', DISPLAY='V762', TITLE='Connect v762 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74233,7 +74233,10 @@ html[data-connect-authoritative="v739"] #rp-overlay .art736-protected{display:in
  function workspace(g){return'<section class="art736-panel"><div class="art736-panel-head"><div><div class="art736-kick">Artwork Library</div><div class="art736-title">Find the approved art, proof, or production record</div><div class="art736-copy">Search by artwork name, filename, COID, words, or art type. Select a record to see the preview, production details, prior usage, revisions, and status history.</div></div><div class="art736-head-actions"><button class="art736-btn primary" onclick="_art736OpenDocs(true)">＋ Add Artwork</button></div></div><div class="art736-workspace">'+library(g)+selected(g)+side(g)+'</div></section>'}
  function brand(g){return'<section class="art736-panel"><div class="art736-brand"><div><div class="art736-kick">Customer Brand Standards</div><strong>Rules Connect should carry into every artwork conversation</strong><p>'+esc(g.standards||'No brand standards are recorded in Account Strategy yet. Add logo rules, approved colors, decoration placement, and approval expectations so the rep does not have to rediscover them on every order.')+'</p></div><button class="art736-btn" onclick="_cux726Go(\'strategy\')">'+(g.standards?'Edit Standards':'Add Standards')+'</button></div></section>'}
  function render(g){var approved=g.rows.filter(function(d){return d.statusInfo.approved}).length,pending=g.rows.filter(function(d){return d.statusInfo.pending||d.statusInfo.tone==='risk'}).length,reused=g.rows.filter(function(d){return (d.derivedUses||[]).length>0}).length;return'<div class="art736-wrap"><div class="art736-snapshot"><article class="art736-stat" style="--artGlow:rgba(71,209,108,.24)"><div class="art736-stat-label">Approved Artwork</div><div class="art736-stat-value">'+approved+'</div><div class="art736-stat-copy">Artwork records explicitly marked approved and safe to review for reuse.</div></article><article class="art736-stat" style="--artGlow:rgba(240,162,52,.28)"><div class="art736-stat-label">Needs Attention</div><div class="art736-stat-value">'+pending+'</div><div class="art736-stat-copy">Pending, waiting, or rejected art/proof records that could block the next step.</div></article><article class="art736-stat" style="--artGlow:rgba(179,108,255,.28)"><div class="art736-stat-label">Used Before</div><div class="art736-stat-value">'+reused+'</div><div class="art736-stat-copy">Artwork with linked product or order usage the rep can review before starting from scratch.</div></article></div><section class="art736-panel"><div class="art736-panel-head"><div><div class="art736-kick">Needs Attention</div><div class="art736-title">Artwork that can hold up the customer</div><div class="art736-copy">Only approvals, proof decisions, and blocked artwork states are promoted here. Approved history stays in the library below.</div></div></div>'+attention(g)+'</section>'+workspace(g)+brand(g)+'</div>'}
- function patch(markup){if(window._cux8Section!=='artwork')return markup;try{var name=currentCompany();if(!name)return markup;var g=getData(name);state.data=g;var rows=filtered(g);if(!state.selected||!rows.some(function(d){return d.key===state.selected}))state.selected=(rows[0]||g.rows[0]||{}).key||'';var doc=new DOMParser().parseFromString('<body>'+markup+'</body>','text/html'),content=doc.querySelector('.cux8-content');if(!content)return markup;content.innerHTML=render(g);var title=doc.querySelector('.cux8-section-title'),copy=doc.querySelector('.cux8-section-copy'),actions=doc.querySelector('.cux8-section-actions');if(title)title.textContent='Artwork';if(copy)copy.textContent='Approved logos, proofs, production art, revisions, and where each artwork has been used.';if(actions)actions.innerHTML='<button class="cux8-action primary" onclick="_art736OpenDocs(true)">＋ Add Artwork</button><button class="cux8-action" onclick="_cux8Open(\'orders\')">View Orders</button>';return doc.body.innerHTML}catch(e){console.warn('[v739 artwork]',e);return markup}}
+ function patch(markup){if(window._cux8Section!=='artwork')return markup;try{var name=currentCompany();if(!name)return markup;var g=getData(name);state.data=g;var rows=filtered(g);if(!state.selected||!rows.some(function(d){return d.key===state.selected}))state.selected=(rows[0]||g.rows[0]||{}).key||'';var doc=new DOMParser().parseFromString('<body>'+markup+'
+
+
+</body>','text/html'),content=doc.querySelector('.cux8-content');if(!content)return markup;content.innerHTML=render(g);var title=doc.querySelector('.cux8-section-title'),copy=doc.querySelector('.cux8-section-copy'),actions=doc.querySelector('.cux8-section-actions');if(title)title.textContent='Artwork';if(copy)copy.textContent='Approved logos, proofs, production art, revisions, and where each artwork has been used.';if(actions)actions.innerHTML='<button class="cux8-action primary" onclick="_art736OpenDocs(true)">＋ Add Artwork</button><button class="cux8-action" onclick="_cux8Open(\'orders\')">View Orders</button>';return doc.body.innerHTML}catch(e){console.warn('[v739 artwork]',e);return markup}}
  function wrap(fn){return typeof fn==='function'?function(){return patch(fn.apply(this,arguments))}:fn}
  window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
  function paint(focusSearch){var content=document.querySelector('#rp-overlay .cux8-content');if(!content||window._cux8Section!=='artwork')return;var name=currentCompany(),g=getData(name);state.data=g;var rows=filtered(g);if(!rows.some(function(d){return d.key===state.selected}))state.selected=(rows[0]||g.rows[0]||{}).key||'';content.innerHTML=render(g);if(focusSearch){var e=document.getElementById('art736Search');if(e){e.focus();try{e.setSelectionRange(e.value.length,e.value.length)}catch(x){}}}}
@@ -77041,9 +77044,9 @@ authority759();[100,500,1600,4000].forEach(function(ms){setTimeout(authority759,
 </script>
 
 
-<!-- ===== CONNECT V761 · SALES CENTER LIGHT SYSTEM ===== -->
-<style id="connect-v761-sales-center-light-system-css">
-/* ===== CONNECT v761 · SALES CENTER LIGHT SYSTEM AUTHORITY =====
+<!-- ===== CONNECT V762 · SALES CENTER LIGHT SYSTEM ===== -->
+<style id="connect-v762-sales-center-light-system-css">
+/* ===== CONNECT v762 · SALES CENTER LIGHT SYSTEM AUTHORITY =====
    Final light-mode cascade for the phased Sales Portal.
    Reference direction: TCP Sales Center — bright neutral workspace, navy text,
    restrained cyan system accents, orange primary actions, low-noise shadows.
@@ -77276,10 +77279,10 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
 ):is([class$="-track"],[class*="-track "]){background:#E1E9EE!important;border-color:#D2DEE5!important;}
 
 </style>
-<script id="connect-v761-light-system-authority-js">
+<script id="connect-v762-light-system-authority-js">
 (function(){
  'use strict';
- var BUILD='v761',DISPLAY='V761',TITLE='Connect v761 — Sales Portal';
+ var BUILD='v762',DISPLAY='V762',TITLE='Connect v762 — Sales Portal';
  function authority(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
@@ -77287,7 +77290,7 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
    if(document.documentElement.getAttribute('data-connect-build')!==BUILD)document.documentElement.setAttribute('data-connect-build',BUILD);
    if(document.documentElement.getAttribute('data-tcp-build')!==BUILD)document.documentElement.setAttribute('data-tcp-build',BUILD);
    if(document.title!==TITLE)document.title=TITLE;
-   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||'')&&b.textContent!=='Sales Portal · Build V761')b.textContent='Sales Portal · Build V761'});
+   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||'')&&b.textContent!=='Sales Portal · Build V762')b.textContent='Sales Portal · Build V762'});
    var light=document.documentElement.getAttribute('data-rp-theme')==='light';document.documentElement.style.colorScheme=light?'light':'dark';
   }catch(e){}
  }
@@ -77297,7 +77300,256 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
  }
  sync();[120,320,780,1900,4400,7200,9000].forEach(function(ms){setTimeout(authority,ms)});
  try{new MutationObserver(function(){if(document.documentElement.getAttribute('data-connect-build')!==BUILD||document.documentElement.getAttribute('data-tcp-build')!==BUILD||document.title!==TITLE)authority()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-connect-release','data-connect-build','data-tcp-build']});}catch(e){}
- var old=window._rp679ToggleTheme;if(typeof old==='function'&&!old._v761){var wrapped=function(){var r=old.apply(this,arguments);setTimeout(sync,0);return r};wrapped._v761=true;window._rp679ToggleTheme=wrapped;}
- window.CONNECT_V761_LIGHT_SYSTEM={version:BUILD,palette:{background:'#F3F6F8',surface:'#FFFFFF',surfaceSoft:'#F8FAFB',border:'#D4DEE6',ink:'#102A3E',muted:'#63798B',cyan:'#008DBD',cyanStrong:'#00759E',orange:'#F47B2F',orangeAction:'#C55212',green:'#157B52',amber:'#9B6317',red:'#B33F4F'},reference:'TCP Sales Center light workspace'};
+ var old=window._rp679ToggleTheme;if(typeof old==='function'&&!old._v762){var wrapped=function(){var r=old.apply(this,arguments);setTimeout(sync,0);return r};wrapped._v762=true;window._rp679ToggleTheme=wrapped;}
+ window.CONNECT_V762_LIGHT_SYSTEM={version:BUILD,palette:{background:'#EDF3F7',surface:'#FFFFFF',surfaceSoft:'#F7FAFC',border:'#CAD8E2',ink:'#0B2940',muted:'#607A8D',cyan:'#00A7DF',cyanStrong:'#007EA9',orange:'#FA873D',orangeAction:'#D65E17',green:'#138057',amber:'#9A6518',red:'#B13D4D'},reference:'TCP Sales Center balanced light glass'};
 })();
 </script>
+
+<!-- ===== CONNECT V762 · BALANCED LIGHT GLASS POLISH ===== -->
+<style id="connect-v762-balanced-light-glass-css">
+/* v762: course correction from flat light to premium, readable light glass. */
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased.rp679-light{
+  --cl-bg:#EDF3F7;
+  --cl-bg-2:#E7EFF4;
+  --cl-surface:rgba(255,255,255,.92);
+  --cl-surface-soft:#F7FAFC;
+  --cl-surface-alt:#E9F2F7;
+  --cl-line:#CAD8E2;
+  --cl-line-strong:#AFC3D0;
+  --cl-ink:#0B2940;
+  --cl-ink-2:#294D65;
+  --cl-muted:#607A8D;
+  --cl-muted-2:#7D93A2;
+  --cl-cyan:#00A7DF;
+  --cl-cyan-strong:#007EA9;
+  --cl-cyan-soft:#E1F6FD;
+  --cl-orange:#FA873D;
+  --cl-orange-strong:#D65E17;
+  --cl-orange-soft:#FFF0E5;
+  --cl-green:#138057;
+  --cl-green-soft:#E7F8F0;
+  --cl-amber:#9A6518;
+  --cl-amber-soft:#FFF5DA;
+  --cl-red:#B13D4D;
+  --cl-red-soft:#FDECEF;
+  --cl-shadow:0 10px 28px rgba(17,48,69,.085),inset 0 1px 0 rgba(255,255,255,.92);
+  --cl-shadow-strong:0 22px 58px rgba(17,48,69,.14),inset 0 1px 0 rgba(255,255,255,.94);
+  background:
+    radial-gradient(circle at 20% -8%,rgba(0,167,223,.12),transparent 30rem),
+    radial-gradient(circle at 91% 5%,rgba(250,135,61,.095),transparent 25rem),
+    linear-gradient(180deg,#F5F8FA 0%,#EDF3F7 52%,#EAF1F5 100%)!important;
+}
+
+/* Light shell keeps a branded, dimensional frame rather than turning into a blank document. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .rp2-side{
+  background:
+    radial-gradient(circle at 50% -4%,rgba(0,167,223,.10),transparent 15rem),
+    linear-gradient(180deg,rgba(255,255,255,.98),rgba(247,250,252,.97) 64%,rgba(239,245,248,.98))!important;
+  border-right:1px solid #C8D7E1!important;
+  box-shadow:10px 0 34px rgba(20,52,74,.08)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-brand{
+  position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.48),rgba(227,245,252,.32));
+  border-bottom-color:#CFDCE4!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-brand:after{
+  content:"";position:absolute;left:18px;right:18px;bottom:-1px;height:2px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,#FA873D 24%,#00AFEF 76%,transparent);opacity:.72;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-brand strong{color:#0B2940!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-brand span{color:#32627E!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-brand em{
+  background:linear-gradient(135deg,#E4F8FE,#F4FBFD)!important;border-color:#9EDCF0!important;color:#007EA9!important;
+  box-shadow:0 5px 14px rgba(0,167,223,.08)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-nav-label{color:#617F94!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-nav button{
+  border-color:transparent!important;background:transparent!important;color:#183B52!important;box-shadow:none!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-nav button i{color:#6C8799!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-nav button:hover{
+  background:linear-gradient(90deg,rgba(0,167,223,.09),rgba(255,255,255,.68))!important;
+  border-color:#C9E7F1!important;color:#0B2940!important;transform:translateX(2px);
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-nav button.on{
+  background:linear-gradient(105deg,#FA873D 0%,#F27931 54%,#F08A4C 100%)!important;
+  border-color:#E36C24!important;color:#FFFFFF!important;
+  box-shadow:0 10px 24px rgba(250,135,61,.22),inset 0 1px 0 rgba(255,255,255,.32)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-nav button.on i{color:#FFFFFF!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-user{border-top-color:#D3DFE6!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-user-card,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-logout{
+  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(241,247,250,.9))!important;
+  border-color:#C9D9E3!important;box-shadow:0 7px 18px rgba(23,55,75,.06)!important;
+}
+
+/* Main canvas and headline area. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-home{
+  background:
+    radial-gradient(circle at 24% -8%,rgba(0,167,223,.10),transparent 34rem),
+    radial-gradient(circle at 96% 2%,rgba(250,135,61,.07),transparent 27rem),
+    transparent!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-hello h1{color:#0A2B45!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-hello p{color:#58758A!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-date{color:#56758A!important;}
+
+/* My Day summary strip: light glass with accent glow, not flat white. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-daily-strip{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(0,167,223,.09),transparent 28%),
+    radial-gradient(circle at 92% 0%,rgba(250,135,61,.08),transparent 26%),
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(244,249,252,.91))!important;
+  border-color:#C7D7E1!important;box-shadow:0 16px 38px rgba(19,49,69,.10),inset 0 1px 0 #fff!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-daily-stat{
+  position:relative;background:radial-gradient(circle at 14% 4%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 45%)!important;
+  border-right-color:#D6E2E9!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-stat-icon{
+  background:color-mix(in srgb,var(--accent) 10%,#FFFFFF)!important;
+  border-color:color-mix(in srgb,var(--accent) 38%,#C7D7E1)!important;
+  box-shadow:0 7px 18px color-mix(in srgb,var(--accent) 12%,transparent),inset 0 1px 0 #fff!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-daily-stat strong{color:#0B2940!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-daily-stat span{color:#173D55!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-daily-stat small{color:#617B8D!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-start{
+  background:linear-gradient(180deg,rgba(255,255,255,.64),rgba(239,247,251,.74))!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-start button{
+  background:linear-gradient(135deg,#FA873D,#F36E24)!important;border-color:#E7681E!important;color:#fff!important;
+  box-shadow:0 10px 24px rgba(250,135,61,.24),inset 0 1px 0 rgba(255,255,255,.34)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-start button:hover{filter:brightness(1.035);transform:translateY(-1px);}
+
+/* Core cards regain glass, highlights and premium edge definition. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-panel,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-momentum{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(246,250,252,.90))!important;
+  border-color:#C9D8E2!important;
+  box-shadow:0 15px 36px rgba(19,49,69,.095),inset 0 1px 0 rgba(255,255,255,.95)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-panel-head{
+  background:linear-gradient(90deg,rgba(0,167,223,.055),rgba(255,255,255,.20),rgba(250,135,61,.035))!important;
+  border-bottom-color:#D8E3E9!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-panel-head strong,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-momentum-title{color:#007EA9!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-panel-head button{color:#D75F17!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action{border-bottom-color:#DCE6EB!important;transition:.15s ease;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action:hover{background:linear-gradient(90deg,rgba(0,167,223,.035),rgba(250,135,61,.025))!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action-icon,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-mini-icon,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-metric-icon{
+  background:color-mix(in srgb,var(--action,var(--accent)) 10%,#FFFFFF)!important;
+  box-shadow:0 6px 16px color-mix(in srgb,var(--action,var(--accent)) 10%,transparent),inset 0 1px 0 #fff!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action-copy h3{color:#0B2940!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action-copy p{color:#496A80!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action-copy small{color:#738A9A!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action-buttons button:not(.primary){
+  background:linear-gradient(145deg,#FFFFFF,#EFF6F9)!important;border-color:#BFD2DE!important;color:#163A51!important;
+  box-shadow:0 6px 15px rgba(20,53,74,.055)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-action-buttons button.primary{
+  background:linear-gradient(135deg,#FA873D,#F16B20)!important;border-color:#E5651D!important;color:#fff!important;
+  box-shadow:0 8px 18px rgba(250,135,61,.22)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-glance-row{border-bottom-color:#DEE7EC!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-glance-label strong,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-glance-value{color:#0C2D44!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-track{background:#D9E5EB!important;box-shadow:inset 0 1px 2px rgba(27,61,82,.08)!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-day-status{
+  background:color-mix(in srgb,var(--tone) 7%,#FFFFFF)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-book-track{background:repeating-linear-gradient(90deg,#D5E2E9 0 9px,transparent 9px 12px),#E5EDF1!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-book-coach{
+  background:linear-gradient(135deg,#F1FBF6,#F8FCFA)!important;border-color:#B9E3D1!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-metric{
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(240,247,250,.82))!important;
+  border-color:#D2DFE7!important;box-shadow:0 7px 18px rgba(25,55,75,.055)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-performance-link{
+  background:linear-gradient(145deg,#EDF9FD,#F8FCFE)!important;border-color:#AEDDEB!important;color:#007CA5!important;
+  box-shadow:0 7px 18px rgba(0,167,223,.06)!important;
+}
+
+/* Generic late-build cards: dimensional glass instead of paper-flat white. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
+  [class*="cux"],[class*="ord727"],[class*="ord728"],[class*="act735"],[class*="art736"],[class*="str738"],
+  [class*="d740"],[class*="d742"],[class*="d743"],[class*="d745"],[class*="d753"],[class*="d754"],[class*="max746"],[class*="ea756"],[class*="cm758"]
+):is([class$="-panel"],[class*="-panel "],[class$="-card"],[class*="-card "],[class$="-hero"],[class*="-hero "],[class$="-workspace"],[class*="-workspace "],[class$="-snapshot"],[class*="-snapshot "],[class$="-context"],[class*="-context "]){
+  background:
+    radial-gradient(circle at 95% 0%,rgba(0,167,223,.035),transparent 30%),
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(245,250,252,.90))!important;
+  border-color:#CAD9E3!important;
+  box-shadow:0 13px 32px rgba(19,49,69,.085),inset 0 1px 0 rgba(255,255,255,.96)!important;
+}
+
+/* Company/CRM surfaces retain subtle blue glass while preserving high contrast. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cux719-hero,.cux719-toolbar,.cux719-table-shell,.cm758-master-profile,.cm758-profile-hero){
+  background:
+    radial-gradient(circle at 92% 0%,rgba(0,167,223,.055),transparent 30%),
+    linear-gradient(145deg,#FFFFFF,#F5FAFC)!important;
+  border-color:#C7D8E2!important;box-shadow:var(--cl-shadow)!important;
+}
+
+/* Call Workspace: keep airy readability, restore cinematic composition through soft tint/depth. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c649-hero{
+  background:
+    radial-gradient(circle at 92% 4%,rgba(0,167,223,.12),transparent 34%),
+    radial-gradient(circle at 5% 100%,rgba(250,135,61,.09),transparent 38%),
+    linear-gradient(145deg,#FFFFFF,#F4F9FC)!important;
+  border-color:#BDD2DE!important;box-shadow:0 20px 48px rgba(17,48,69,.12),inset 0 1px 0 #fff!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.c649-panel,.c649-side-card,.c649-talk,.c649-context-card){
+  background:linear-gradient(145deg,#FFFFFF,#F5F9FB)!important;border-color:#C9D9E2!important;box-shadow:0 13px 30px rgba(18,49,69,.085)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c649-step.on{
+  background:linear-gradient(135deg,#FFF0E5,#F8FBFC)!important;border-color:#E9A273!important;box-shadow:0 6px 18px rgba(250,135,61,.10)!important;
+}
+
+/* Primary actions across late modules are allowed to look like actions again. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
+ .cux719-btn.primary,.ord727-btn.primary,.act735-btn.primary,.art736-btn.primary,.str738-btn.primary,
+ .d740-btn.primary,.d742-btn.primary,.d745-btn.primary,.max746-btn.primary,.ea756-btn.primary,.cm758-btn.primary
+){
+  background:linear-gradient(135deg,#FA873D,#F16A20)!important;border-color:#E5641C!important;color:#FFFFFF!important;
+  box-shadow:0 9px 22px rgba(250,135,61,.20),inset 0 1px 0 rgba(255,255,255,.30)!important;
+}
+
+/* Modals float above the page rather than looking embedded in it. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cux719-modal,.str738-modal,.cm758-modal,[class$="-dialog"],[class*="-dialog "]){
+  background:
+    radial-gradient(circle at 92% 0%,rgba(0,167,223,.055),transparent 28%),
+    linear-gradient(145deg,#FFFFFF,#F6FAFC)!important;
+  border-color:#B9CEDA!important;box-shadow:0 28px 70px rgba(17,43,60,.22),inset 0 1px 0 #fff!important;
+}
+
+/* Tables stay clean, but headers gain a soft brand wash. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(th,[class$="-th"],[class*="-th "]){
+  background:linear-gradient(180deg,#EDF5F9,#E4EEF4)!important;color:#315C75!important;border-color:#C8D7E1!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light tbody tr:hover td{background:#F0F8FB!important;}
+
+/* Secondary controls get a subtle glass lift; forms remain intentionally simple for readability. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(button,.sbtn,.cbtn-n,[class$="-btn"],[class*="-btn "]):not(.primary):not(.orange):not(.cyan):not(.green):not(.danger):not(.red):not(.on){
+  background:linear-gradient(145deg,#FFFFFF,#F0F6F9)!important;border-color:#BFD1DC!important;color:#14384F!important;
+  box-shadow:0 5px 13px rgba(19,52,72,.05),inset 0 1px 0 #fff!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(input,select,textarea){
+  background:linear-gradient(180deg,#FFFFFF,#FBFCFD)!important;border-color:#B9CAD5!important;color:#0C2C43!important;
+  box-shadow:inset 0 1px 2px rgba(18,49,69,.035)!important;
+}
+
+/* Respect reduced motion. */
+@media(prefers-reduced-motion:reduce){
+ html[data-rp-theme="light"] #rp-overlay .rp679-light *{transition:none!important;}
+}
+</style>
