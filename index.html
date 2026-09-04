@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v764 — Sales Portal</title>
+<title>Connect v765 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v764', DISPLAY='V764', TITLE='Connect v764 — Sales Portal';
+  var BUILD='v765', DISPLAY='V765', TITLE='Connect v765 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -74236,6 +74236,223 @@ html[data-connect-authoritative="v739"] #rp-overlay .art736-protected{display:in
  function patch(markup){if(window._cux8Section!=='artwork')return markup;try{var name=currentCompany();if(!name)return markup;var g=getData(name);state.data=g;var rows=filtered(g);if(!state.selected||!rows.some(function(d){return d.key===state.selected}))state.selected=(rows[0]||g.rows[0]||{}).key||'';var doc=new DOMParser().parseFromString('<body>'+markup+'
 
 
+
+
+<!-- ===== CONNECT V765 · ACRYLIC NAV + SYSTEM-WIDE CUSTOMER/COMPANY ZEBRA AUTHORITY ===== -->
+<style id="connect-v765-acrylic-zebra-authority-css">
+/*
+  v765 authority goals:
+  1) make the acrylic/pill visual language unmistakable in light mode;
+  2) make alternating customer/company rows visibly different;
+  3) use the same zebra rule across the shared company/customer list patterns.
+*/
+html[data-rp-theme="light"] #rp-overlay .rp679-light{
+  --v765-zebra-a:#FFFFFF;
+  --v765-zebra-b:#E2EEF5;
+  --v765-zebra-b-2:#DCEAF3;
+  --v765-zebra-hover:#CFE7F3;
+  --v765-line:#B7CEDB;
+  --v765-acrylic-top:rgba(255,255,255,.94);
+  --v765-acrylic-bottom:rgba(221,236,244,.78);
+}
+
+/* Stronger, more tactile frosted capsule navigation. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-viewbar{
+  padding:8px!important;
+  gap:7px!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.78),rgba(209,228,239,.68))!important;
+  border:1px solid rgba(92,139,166,.42)!important;
+  box-shadow:
+    0 13px 30px rgba(20,57,80,.13),
+    inset 0 2px 1px rgba(255,255,255,.98),
+    inset 0 -2px 3px rgba(75,121,148,.10)!important;
+  backdrop-filter:blur(22px) saturate(135%)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(135%)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-view{
+  min-height:42px!important;
+  padding:0 17px!important;
+  border-radius:999px!important;
+  border:1px solid rgba(96,142,168,.34)!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.88),rgba(222,236,244,.72))!important;
+  color:#244C64!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.85)!important;
+  box-shadow:
+    0 5px 12px rgba(28,66,89,.07),
+    inset 0 1px 1px rgba(255,255,255,1),
+    inset 0 -2px 3px rgba(76,121,146,.08)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-view:hover:not(.active){
+  transform:translateY(-1px)!important;
+  background:linear-gradient(180deg,#FFFFFF,#D9EDF6)!important;
+  border-color:rgba(0,141,189,.42)!important;
+  color:#006B91!important;
+  box-shadow:0 9px 18px rgba(0,126,169,.11),inset 0 1px 0 #fff!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-view.active{
+  background:
+    linear-gradient(180deg,#51D0F1 0%,#08A8DD 48%,#007AA5 100%)!important;
+  border:1px solid #00769F!important;
+  color:#FFFFFF!important;
+  text-shadow:0 1px 1px rgba(0,65,90,.28)!important;
+  box-shadow:
+    0 12px 24px rgba(0,122,165,.26),
+    inset 0 2px 1px rgba(255,255,255,.52),
+    inset 0 -3px 4px rgba(0,75,103,.18)!important;
+}
+
+/* Utility actions become deliberate acrylic capsules instead of flat form buttons. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-directory-hero .cw4-btn,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-toolbar .cw4-btn,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-mini-btn.blue{
+  border-radius:999px!important;
+  box-shadow:
+    0 8px 18px rgba(24,62,84,.10),
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 -2px 3px rgba(76,121,146,.08)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-directory-hero .cw4-btn:not(.primary):not(.cm758-create-btn),
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-toolbar .cw4-btn{
+  background:linear-gradient(180deg,#FFFFFF,#DCEAF2)!important;
+  border-color:#9EBECC!important;
+  color:#163F58!important;
+}
+
+/* COMPANY DIRECTORY — use explicit zebra classes and inline authority fallback from JS. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.connect-zebra-a:not(.cm758-master-row) > td,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.cw4-zebra-base:not(.cm758-master-row) > td{
+  background:#FFFFFF!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.connect-zebra-b:not(.cm758-master-row) > td,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.cw4-zebra-alt:not(.cm758-master-row) > td{
+  background:#DDEBF3!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row:not(.cm758-master-row) > td{
+  border-bottom:1px solid #BFD2DD!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.connect-zebra-a:not(.cm758-master-row):hover > td,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.connect-zebra-b:not(.cm758-master-row):hover > td,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.cw4-zebra-base:not(.cm758-master-row):hover > td,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.cw4-zebra-alt:not(.cm758-master-row):hover > td{
+  background:#CDE6F2!important;
+}
+
+/* Master rows remain special, but more distinct from ordinary alternating rows. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cm758-master-row > td{
+  background:linear-gradient(90deg,#FFE8D7 0%,#F5F1EA 42%,#D8EDF6 100%)!important;
+  border-top:1px solid #E5A271!important;
+  border-bottom:1px solid #9FC6D8!important;
+}
+
+/* Shared customer/company list system. These classes are added by the v765 observer. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .connect-customer-zebra.connect-zebra-a{
+  background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,251,253,.98))!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .connect-customer-zebra.connect-zebra-b{
+  background:linear-gradient(180deg,#E7F1F6,#DCEAF2)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .connect-customer-zebra{
+  border-color:#BBD0DB!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .connect-customer-zebra:hover{
+  background:linear-gradient(180deg,#D7ECF5,#CBE4F0)!important;
+  border-color:#8CB9CE!important;
+}
+
+/* Call Workspace customer source tables are grid rows, not TRs. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c656-row.connect-zebra-a{background:#FFFFFF!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c656-row.connect-zebra-b{background:#DFECF3!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c656-row.connect-zebra-a .c656-cell{background:transparent!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c656-row.connect-zebra-b .c656-cell{background:transparent!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c656-row.connect-zebra-a:hover,
+html[data-rp-theme="light"] #rp-overlay .rp679-light .c656-row.connect-zebra-b:hover{background:#CFE7F2!important;}
+
+/* Customer cards/queues use visible alternating acrylic panels. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.c652-list-row,.cl1-queue-card,.cl2-qcard).connect-zebra-a{
+  background:linear-gradient(180deg,#FFFFFF,#F8FBFC)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.c652-list-row,.cl1-queue-card,.cl2-qcard).connect-zebra-b{
+  background:linear-gradient(180deg,#E5F0F5,#D9E8F0)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.c652-list-row,.cl1-queue-card,.cl2-qcard).connect-zebra-a,
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.c652-list-row,.cl1-queue-card,.cl2-qcard).connect-zebra-b{
+  border-color:#B7CDD9!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95)!important;
+}
+
+/* Selected/current customer remains visually selected above the zebra pattern. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.c652-list-row,.cl1-queue-card,.cl2-qcard).on{
+  background:linear-gradient(135deg,#D6F1FB,#E8F6FB)!important;
+  border-color:#4CAFD0!important;
+  box-shadow:inset 4px 0 #00A7DF,0 8px 18px rgba(0,126,169,.10)!important;
+}
+
+/* Dark mode gets the same system rule with two unmistakably different navy glass levels. */
+html:not([data-rp-theme="light"]) #rp-overlay .cw4-table tbody > tr.cw4-row.connect-zebra-a:not(.cm758-master-row) > td{background:#0B151F!important;}
+html:not([data-rp-theme="light"]) #rp-overlay .cw4-table tbody > tr.cw4-row.connect-zebra-b:not(.cm758-master-row) > td{background:#142536!important;}
+html:not([data-rp-theme="light"]) #rp-overlay :is(.c652-list-row,.cl1-queue-card,.cl2-qcard,.c656-row).connect-zebra-a{background:#0B151F!important;}
+html:not([data-rp-theme="light"]) #rp-overlay :is(.c652-list-row,.cl1-queue-card,.cl2-qcard,.c656-row).connect-zebra-b{background:#142536!important;}
+
+/* Keep preview/detail rows visually married to their parent stripe. */
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.connect-zebra-a + tr.cw4-preview-row > td{background:#F7FAFC!important;}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table tbody > tr.cw4-row.connect-zebra-b + tr.cw4-preview-row > td{background:#D5E6EF!important;}
+</style>
+<script id="connect-v765-zebra-system-js">
+(function(){
+ 'use strict';
+ var BUILD='v765',DISPLAY='V765',TITLE='Connect v765 — Sales Portal';
+ var queued=false,observer=null;
+ function visible(el){
+   try{return !(el.hidden||el.style.display==='none'||getComputedStyle(el).display==='none')}catch(e){return true}
+ }
+ function clean(items){return Array.prototype.slice.call(items||[]).filter(visible)}
+ function mark(items,tableMode){
+   var rows=clean(items),i=0;
+   rows.forEach(function(el){
+     el.classList.remove('connect-zebra-a','connect-zebra-b','cw4-zebra-base','cw4-zebra-alt');
+     var cls=(i++%2)?'connect-zebra-b':'connect-zebra-a';
+     el.classList.add(cls,'connect-customer-zebra');
+     if(el.classList.contains('cw4-row'))el.classList.add(cls==='connect-zebra-b'?'cw4-zebra-alt':'cw4-zebra-base');
+     /* Inline important fallback makes the stripe visible even when an old page-specific rule has higher specificity. */
+     if(tableMode&&el.matches('tr.cw4-row')&&!el.classList.contains('cm758-master-row')){
+       var isLight=document.documentElement.getAttribute('data-rp-theme')==='light';
+       var bg=isLight?(cls==='connect-zebra-b'?'#DDEBF3':'#FFFFFF'):(cls==='connect-zebra-b'?'#142536':'#0B151F');
+       Array.prototype.forEach.call(el.children,function(td){try{td.style.setProperty('background',bg,'important')}catch(e){}});
+     }
+   });
+ }
+ function stripe(){
+   queued=false;
+   try{
+     document.querySelectorAll('#rp-overlay .cw4-table tbody').forEach(function(tb){mark(tb.querySelectorAll(':scope > tr.cw4-row'),true)});
+     document.querySelectorAll('#rp-overlay .c656-table').forEach(function(box){mark(box.querySelectorAll(':scope > .c656-row'),false)});
+     document.querySelectorAll('#rp-overlay .c652-full-list').forEach(function(box){mark(box.querySelectorAll(':scope > .c652-list-row'),false)});
+     document.querySelectorAll('#rp-overlay .cl1-queue-list,#rp-overlay .cl1-queue').forEach(function(box){mark(box.querySelectorAll(':scope > .cl1-queue-card'),false)});
+     document.querySelectorAll('#rp-overlay .cl2-queue,#rp-overlay .cl2-list').forEach(function(box){mark(box.querySelectorAll(':scope > .cl2-qcard'),false)});
+     /* Fallback when queue cards are rendered without a named list wrapper. */
+     var cards=document.querySelectorAll('#rp-overlay .cl1-queue-card');if(cards.length&&!cards[0].closest('.cl1-queue-list,.cl1-queue'))mark(cards,false);
+     var qcards=document.querySelectorAll('#rp-overlay .cl2-qcard');if(qcards.length&&!qcards[0].closest('.cl2-queue,.cl2-list'))mark(qcards,false);
+   }catch(e){console.warn('[v765 zebra]',e)}
+ }
+ function schedule(){if(queued)return;queued=true;setTimeout(stripe,20)}
+ function authority(){
+   try{
+     window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
+     document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;
+     document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V765'});
+   }catch(e){}
+ }
+ function boot(){authority();schedule();try{if(!observer){observer=new MutationObserver(schedule);observer.observe(document.body,{childList:true,subtree:true})}}catch(e){}}
+ boot();[80,200,500,1000,2200,4500,8000].forEach(function(ms){setTimeout(boot,ms)});
+ document.addEventListener('click',function(){setTimeout(stripe,35)},true);
+ document.addEventListener('input',function(){setTimeout(stripe,35)},true);
+ document.addEventListener('change',function(){setTimeout(stripe,35)},true);
+ window.CONNECT_V765_ZEBRA_SYSTEM={version:BUILD,companyRows:true,customerQueues:true,visibleAlternation:true};
+})();
+</script>
 </body>','text/html'),content=doc.querySelector('.cux8-content');if(!content)return markup;content.innerHTML=render(g);var title=doc.querySelector('.cux8-section-title'),copy=doc.querySelector('.cux8-section-copy'),actions=doc.querySelector('.cux8-section-actions');if(title)title.textContent='Artwork';if(copy)copy.textContent='Approved logos, proofs, production art, revisions, and where each artwork has been used.';if(actions)actions.innerHTML='<button class="cux8-action primary" onclick="_art736OpenDocs(true)">＋ Add Artwork</button><button class="cux8-action" onclick="_cux8Open(\'orders\')">View Orders</button>';return doc.body.innerHTML}catch(e){console.warn('[v739 artwork]',e);return markup}}
  function wrap(fn){return typeof fn==='function'?function(){return patch(fn.apply(this,arguments))}:fn}
  window._rp2CustomersV2=wrap(BASE_CUSTOMERS);window._rp2CompanyProfileV3=wrap(BASE_PROFILE);
