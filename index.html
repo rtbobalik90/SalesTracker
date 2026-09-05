@@ -75895,3 +75895,100 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is(
 <script id="connect-v776-late-canary-js">
 (function(){var n=0,t=setInterval(function(){n++;try{if(window.CONNECT_V776_VISUAL_AUTHORITY){var ev=new Event('resize');window.dispatchEvent(ev);}var a=document.querySelector('#rp-overlay .rp2-app.rp2-mode-phased');if(a&&!a.classList.contains('v776-visual-authority'))a.classList.add('v776-visual-authority');if(a){var b=a.querySelector('.p639-start button');if(b){b.style.setProperty('background','linear-gradient(135deg,#FA873D,#E96E24)','important');b.style.setProperty('color','#fff','important');}}}catch(e){}if(n>20)clearInterval(t)},350)})();
 </script>
+<!-- ===== CONNECT V777 · LIGHT MODE READABILITY PASS ===== -->
+<style id="connect-v777-light-readability-css">
+/*
+  Several rep pages were authored dark-first and never received light-mode
+  colours, so dark-theme ink survived onto white surfaces. Worst case: the
+  Quotes list rendered its quote-number and value columns white on white, so
+  a rep could not see quote numbers or dollar amounts at all in light mode.
+
+  Everything here is scoped to html[data-rp-theme="light"], so dark mode --
+  rebuilt in the v776 token layer -- is untouched. Tokens mirror the v776
+  naming so the two passes read as one system.
+*/
+html[data-rp-theme="light"] #rp-overlay{
+  --lt-ink:#0B2A3F;      /* primary values and figures */
+  --lt-ink-2:#17384D;    /* secondary headings */
+  --lt-body:#3E5566;     /* body copy */
+  --lt-muted:#566E80;    /* meta and labels */
+  --lt-soft:#647A8C;     /* least prominent meta */
+  --lt-kick:#0682AD;     /* eyebrow cyan, darkened for white ground */
+  --lt-line:#C7D8E2;
+  --lt-chip:#F2F7FA;
+}
+
+/* 1. Eyebrow / kicker labels — brand cyan measures 2.07:1 on white. */
+/* The per-family kicker rules resolve var(--v677-cyan) at #id + 3 classes,
+   which outranks a flat override -- so retune the token itself for light and
+   every kicker (Call Workspace, Follow-Ups, Companies, Quotes, Orders, My
+   Performance) corrects at once. */
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased{
+  --v677-cyan:var(--lt-kick);
+}
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased :is(.q673-section-kick,
+  .ea756-kicker,.cw4-card-kick,.cux8-section-kick,.ps68-kick,.ps68-cycle-kick,
+  .tb607-kick,.tb607-section-kick,.o671-rp-kicker){
+  color:var(--lt-kick)!important;
+}
+
+/* 2. Quotes list — dark-theme ink on white, including two invisible columns. */
+html[data-rp-theme="light"] #rp-overlay :is(.q673-quote-num,.q673-value){color:var(--lt-ink)!important;}
+html[data-rp-theme="light"] #rp-overlay .q673-customer{color:var(--lt-ink-2)!important;}
+html[data-rp-theme="light"] #rp-overlay .q673-next{color:var(--lt-body)!important;}
+html[data-rp-theme="light"] #rp-overlay :is(.q673-quote-sub,.q673-contact,.q673-count,.q673-next span){color:var(--lt-soft)!important;}
+html[data-rp-theme="light"] #rp-overlay .q673-status{
+  border-color:var(--lt-line)!important;background:var(--lt-chip)!important;color:#40596B!important;
+}
+html[data-rp-theme="light"] #rp-overlay .q673-status.converted{
+  border-color:rgba(21,120,70,.30)!important;background:rgba(71,209,108,.13)!important;color:#14724A!important;
+}
+html[data-rp-theme="light"] #rp-overlay :is(.q673-status.declined,.q673-status.expired){
+  border-color:rgba(168,32,58,.26)!important;background:rgba(214,69,96,.09)!important;color:#A3213C!important;
+}
+
+/* 3. Count badges on an active chip / tab. The active state resolves to a pale
+      cyan wash in light mode while the inner count stayed #fff -- 1.09:1. The
+      selectors below carry the full app-class chain plus the theme attribute so
+      they outrank the v683 light rules that set the white. Chips that do get a
+      solid dark fill keep white text via the variant rules underneath. */
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .q673-chip.on strong,
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .c656-tab.on em{color:var(--lt-ink)!important;}
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .q673-chip.on[data-q673-chip="overdue"] strong,
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .q673-chip.on[data-q673-chip="expiring"] strong,
+html[data-rp-theme="light"] #rp-overlay .rp2-app.rp2-mode-phased.rp2-v639.rp679-light .q673-chip.on[data-q673-chip="closed"] strong{color:#fff!important;}
+
+/* 4. Follow-Ups counts and the collapsed Completed summary (was near-white). */
+html[data-rp-theme="light"] #rp-overlay .f654-count{color:var(--lt-kick)!important;}
+html[data-rp-theme="light"] #rp-overlay .f654-completed summary span{color:var(--lt-ink-2)!important;}
+
+/* 5. Orders hero summary kept a dark translucent fill, which renders as a grey
+      slab in light mode and drags its labels under 3:1. */
+html[data-rp-theme="light"] #rp-overlay .o671-rp-summary{
+  background:#F4F8FA!important;border-color:var(--lt-line)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .o671-rp-summary strong{color:var(--lt-ink)!important;}
+
+/* 6. Meta greys that fall under 3:1 on white. */
+html[data-rp-theme="light"] #rp-overlay :is(.mp669-pace-top span,.f654-kpi span,
+  .o671-rp-summary span,.ea756-message-head span,.mp669-overall p){color:var(--lt-muted)!important;}
+html[data-rp-theme="light"] #rp-overlay .mp669-overall small{color:var(--lt-soft)!important;}
+
+/* 6. Weighted-score ring — the donut centre is a hard-coded dark disc, so in
+      light mode the darkened score sat on near-black. Light disc, dark ink. */
+html[data-rp-theme="light"] #rp-overlay .mp669-ring:after{
+  background:#F7FAFC!important;border-color:rgba(20,58,81,.12)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .mp669-ring strong{color:var(--lt-ink)!important;}
+html[data-rp-theme="light"] #rp-overlay .mp669-ring span{color:var(--lt-muted)!important;}
+
+/* 7. Email — the search field kept a dark fill, and two labels washed out. */
+html[data-rp-theme="light"] #rp-overlay .ea756-search{
+  background:#F4F8FA!important;border-color:var(--lt-line)!important;color:var(--lt-muted)!important;
+}
+html[data-rp-theme="light"] #rp-overlay .ea756-search input{color:var(--lt-ink)!important;}
+html[data-rp-theme="light"] #rp-overlay .ea756-search input::placeholder{color:var(--lt-soft)!important;}
+html[data-rp-theme="light"] #rp-overlay .ea756-demo{
+  border-color:rgba(154,75,18,.34)!important;background:rgba(250,135,61,.12)!important;color:#8F440F!important;
+}
+</style>
