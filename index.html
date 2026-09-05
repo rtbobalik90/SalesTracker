@@ -20,11 +20,11 @@ html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-event
 </style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
-<title>Connect v775 — Sales Portal</title>
+<title>Connect v776 — Sales Portal</title>
 <script id="connect-build-authority-v723">
 (function(){
   'use strict';
-  var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+  var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
   window.CONNECT_BUILD_AUTHORITY=BUILD;
   window.CONNECT_BUILD_DISPLAY=DISPLAY;
   window.CONNECT_BUILD_TITLE=TITLE;
@@ -3459,6 +3459,271 @@ select.nav-sel{background:var(--tcp-panel-2);border:1px solid var(--tcp-line);co
   window.__tcpV680SyncThemePrepaint=sync;
 })();
 </script>
+
+<!-- ===== CONNECT V776 · TRUE VISUAL AUTHORITY REPAIR ===== -->
+<style id="connect-v776-true-visual-authority-css">
+/*
+  V776 intentionally targets the ACTUAL rendered phased-portal component family.
+  This is a visual-only authority layer: no information architecture, workflow,
+  data, navigation destination, or business-logic changes.
+*/
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority{
+  --v776-bg:#EAF2F6;
+  --v776-surface:rgba(255,255,255,.94);
+  --v776-surface-soft:rgba(247,251,253,.90);
+  --v776-ink:#092C43;
+  --v776-muted:#607C8E;
+  --v776-cyan:#00AEEF;
+  --v776-blue:#2474F5;
+  --v776-orange:#FA873D;
+  --v776-orange2:#E96E24;
+  --v776-shadow1:0 8px 22px rgba(38,72,92,.08),0 2px 7px rgba(38,72,92,.045);
+  --v776-shadow2:0 20px 54px rgba(38,72,92,.14),0 5px 16px rgba(38,72,92,.075),inset 0 1px 0 rgba(255,255,255,.96);
+  --v776-shadow3:0 24px 68px rgba(26,64,87,.19),0 8px 22px rgba(26,64,87,.10),inset 0 1px 0 rgba(255,255,255,.96);
+  background:
+    radial-gradient(circle at 18% 1%,rgba(0,174,239,.12),transparent 31rem),
+    radial-gradient(circle at 90% 4%,rgba(250,135,61,.08),transparent 29rem),
+    linear-gradient(145deg,#F4F8FA 0%,#E8F1F5 54%,#EEF5F8 100%)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .rp2-main{
+  background:transparent!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-home{
+  background:transparent!important;
+}
+
+/* SIDEBAR — navigation, not a stack of outlined buttons. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .rp2-side{
+  background:linear-gradient(180deg,rgba(252,254,255,.97),rgba(244,249,251,.95))!important;
+  border-right:0!important;
+  box-shadow:16px 0 44px rgba(37,72,92,.11),inset -1px 0 0 rgba(70,108,130,.06)!important;
+  backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-brand{
+  border-bottom-color:transparent!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,255,255,0))!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-brand:after{
+  left:24px!important;right:24px!important;height:1px!important;opacity:.42!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav{padding-left:8px!important;padding-right:8px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav-group{margin-bottom:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav-label{
+  color:#688293!important;padding-left:12px!important;font-size:9.5px!important;letter-spacing:.145em!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button,
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button:not(.on){
+  -webkit-appearance:none!important;appearance:none!important;
+  min-height:46px!important;margin:2px 0!important;padding:0 13px!important;
+  border:0!important;outline:0!important;border-radius:13px!important;
+  background:transparent!important;background-image:none!important;
+  box-shadow:none!important;filter:none!important;
+  color:#274A5F!important;font-size:13px!important;font-weight:820!important;
+  transform:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button i{
+  color:#6B899B!important;background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button:not(.on):hover{
+  background:rgba(0,174,239,.075)!important;color:#123A52!important;box-shadow:none!important;transform:translateX(1px)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button.on,
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button.on:hover{
+  border:0!important;
+  background:linear-gradient(90deg,rgba(0,174,239,.22),rgba(36,116,245,.085) 68%,rgba(255,255,255,.28))!important;
+  color:#073B58!important;
+  box-shadow:inset 4px 0 0 #00A4DC,0 10px 24px rgba(0,129,174,.10)!important;
+  transform:none!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-nav button.on i{color:#008FC3!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-user{border-top-color:rgba(57,94,117,.07)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-user-card,
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-logout{
+  border:0!important;border-radius:16px!important;background:rgba(255,255,255,.82)!important;box-shadow:var(--v776-shadow1)!important;
+}
+
+/* PAGE HEADING — stronger hierarchy, same content. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-hello{padding-top:4px!important;padding-bottom:10px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-hello h1{
+  color:var(--v776-ink)!important;font-size:36px!important;line-height:1.04!important;letter-spacing:-.04em!important;font-weight:900!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-hello p{color:#5A778A!important;font-size:13px!important;margin-top:7px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-date{color:#5F7A8D!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .rp679-theme-btn{
+  border:0!important;border-radius:13px!important;background:rgba(255,255,255,.84)!important;box-shadow:var(--v776-shadow1)!important;
+}
+
+/* KPI HERO — clearly floating and dimensional. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-daily-strip{
+  gap:10px!important;padding:10px!important;margin-bottom:20px!important;overflow:visible!important;
+  border:0!important;border-radius:26px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(247,251,253,.86))!important;
+  box-shadow:var(--v776-shadow2)!important;
+  backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-daily-stat{
+  min-height:108px!important;border:0!important;border-radius:19px!important;
+  background:
+    radial-gradient(circle at 12% 14%,color-mix(in srgb,var(--accent) 15%,transparent),transparent 48%),
+    linear-gradient(180deg,rgba(255,255,255,.88),rgba(244,250,252,.62))!important;
+  box-shadow:inset 0 1px 0 #fff,0 5px 16px rgba(40,77,99,.045)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-stat-icon{
+  width:52px!important;height:52px!important;border:0!important;border-radius:17px!important;
+  background:color-mix(in srgb,var(--accent) 14%,#fff)!important;
+  box-shadow:0 10px 23px color-mix(in srgb,var(--accent) 15%,transparent),inset 0 1px 0 #fff!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-daily-stat strong{font-size:25px!important;letter-spacing:-.045em!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-daily-stat span{font-weight:900!important;color:#123B52!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-start{
+  border:0!important;border-radius:19px!important;
+  background:linear-gradient(155deg,rgba(255,241,232,.95),rgba(255,252,249,.80))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.94)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-start button{
+  min-height:54px!important;border:0!important;border-radius:15px!important;
+  background:linear-gradient(135deg,var(--v776-orange),var(--v776-orange2))!important;
+  color:#fff!important;font-weight:950!important;
+  box-shadow:0 15px 32px rgba(234,108,34,.30),inset 0 1px 0 rgba(255,255,255,.35)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-start button:hover{
+  transform:translateY(-2px)!important;box-shadow:0 20px 40px rgba(234,108,34,.36),inset 0 1px 0 rgba(255,255,255,.38)!important;
+}
+
+/* PRIMARY MODULES — elevation replaces heavy outlines. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-work{gap:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-right{gap:20px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-panel,
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-momentum{
+  border:0!important;border-radius:26px!important;
+  background:linear-gradient(155deg,rgba(255,255,255,.97),rgba(247,251,253,.90))!important;
+  box-shadow:var(--v776-shadow2)!important;
+  overflow:hidden!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-panel-head{
+  min-height:60px!important;padding:16px 19px!important;
+  border-bottom:1px solid rgba(56,96,120,.065)!important;
+  background:linear-gradient(90deg,rgba(0,174,239,.055),rgba(255,255,255,.50) 45%,rgba(250,135,61,.045))!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-panel-head strong,
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-momentum-title{
+  color:#143A51!important;font-size:11.5px!important;letter-spacing:.115em!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-panel-head button{color:#007FAE!important;font-weight:950!important;}
+
+/* NEXT BEST ACTIONS — quiet internal work surface, stronger CTA hierarchy. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action-list{padding:14px 15px 5px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action{
+  min-height:112px!important;margin:0 0 12px!important;padding:15px 12px!important;
+  border:0!important;border-radius:20px!important;
+  background:linear-gradient(145deg,#FBFDFE,#F1F8FB)!important;
+  box-shadow:0 9px 24px rgba(33,72,95,.07),inset 0 1px 0 #fff!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action:hover{
+  transform:translateY(-2px)!important;background:linear-gradient(145deg,#FFFFFF,#ECF8FC)!important;
+  box-shadow:0 15px 34px rgba(33,72,95,.11),0 0 0 1px rgba(0,174,239,.07)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action-icon{
+  width:62px!important;height:62px!important;border:0!important;border-radius:19px!important;
+  box-shadow:0 10px 25px color-mix(in srgb,var(--action) 14%,transparent),inset 0 1px 0 #fff!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action-copy h3{font-size:16px!important;color:#12384F!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action-buttons button:not(.primary){
+  border:0!important;border-radius:13px!important;background:#FFFFFF!important;color:#153D55!important;
+  box-shadow:0 9px 22px rgba(29,66,88,.11),inset 0 0 0 1px rgba(60,100,124,.09)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-action-buttons button.primary{
+  border:0!important;border-radius:13px!important;background:linear-gradient(135deg,var(--v776-orange),var(--v776-orange2))!important;color:#fff!important;
+  box-shadow:0 11px 25px rgba(234,108,34,.27)!important;
+}
+
+/* RIGHT COLUMN — integrated utility surfaces. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-glance{padding:11px 15px 14px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-glance-row{
+  border-bottom:0!important;border-radius:15px!important;margin:3px 0!important;padding-left:7px!important;padding-right:7px!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-glance-row:hover{background:rgba(0,174,239,.045)!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-mini-icon{
+  border:0!important;border-radius:15px!important;box-shadow:0 8px 20px rgba(31,76,102,.07),inset 0 1px 0 #fff!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-day-status{
+  border:0!important;border-radius:17px!important;background:#FFF9F3!important;
+  box-shadow:inset 0 0 0 1px rgba(239,156,69,.24),0 6px 16px rgba(60,86,100,.045)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-book{padding:18px!important;}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-book-track{
+  height:16px!important;border-radius:999px!important;overflow:hidden!important;
+  box-shadow:inset 0 2px 5px rgba(44,82,103,.09)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-book-coach{
+  border:0!important;border-radius:17px!important;background:linear-gradient(145deg,#F0FBF6,#F8FCFA)!important;
+  box-shadow:inset 0 0 0 1px rgba(56,159,111,.11)!important;
+}
+
+/* GLOBAL FORM / CONTROL SOFTENING WITHIN PHASED PORTAL — no page restructure. */
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority #rp2-page :is(input,select,textarea){
+  border-color:rgba(72,108,130,.14)!important;border-radius:13px!important;
+  background:rgba(249,252,253,.92)!important;box-shadow:inset 0 1px 2px rgba(42,76,96,.035)!important;
+}
+#rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority #rp2-page :is(input,select,textarea):focus{
+  border-color:rgba(0,174,239,.62)!important;box-shadow:0 0 0 3px rgba(0,174,239,.12),inset 0 1px 2px rgba(42,76,96,.035)!important;
+}
+
+@media(max-width:1180px){
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-hello h1{font-size:31px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-daily-strip{border-radius:22px!important;gap:7px!important;padding:8px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-panel,
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-momentum{border-radius:22px!important;}
+}
+@media(max-width:720px){
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-hello h1{font-size:28px!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-daily-strip{border-radius:19px!important;box-shadow:0 10px 25px rgba(35,67,86,.10)!important;}
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-panel,
+  #rp-overlay .rp2-app.rp2-mode-phased.v776-visual-authority .p639-momentum{border-radius:19px!important;}
+}
+</style>
+
+<script id="connect-v776-true-visual-authority-js">
+(function(){
+ 'use strict';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
+ var pending=false;
+ function imp(el,p,v){try{if(el)el.style.setProperty(p,v,'important')}catch(e){}}
+ function all(root,sel,fn){try{root.querySelectorAll(sel).forEach(fn)}catch(e){}}
+ function enforceCanaries(app){
+  if(!app)return;
+  app.classList.add('v776-visual-authority');
+  /* Inline-important canaries deliberately beat the historical CSS stack. */
+  var start=app.querySelector('.p639-start button');
+  if(start){imp(start,'background','linear-gradient(135deg,#FA873D,#E96E24)');imp(start,'color','#fff');imp(start,'border','0');imp(start,'border-radius','15px');imp(start,'box-shadow','0 15px 32px rgba(234,108,34,.30), inset 0 1px 0 rgba(255,255,255,.35)');}
+  var strip=app.querySelector('.p639-daily-strip');
+  if(strip){imp(strip,'border','0');imp(strip,'border-radius','26px');imp(strip,'background','linear-gradient(145deg,rgba(255,255,255,.96),rgba(247,251,253,.86))');imp(strip,'box-shadow','0 20px 54px rgba(38,72,92,.14),0 5px 16px rgba(38,72,92,.075),inset 0 1px 0 rgba(255,255,255,.96)');}
+  all(app,'.p639-panel,.p639-momentum',function(el){imp(el,'border','0');imp(el,'border-radius','26px');imp(el,'background','linear-gradient(155deg,rgba(255,255,255,.97),rgba(247,251,253,.90))');imp(el,'box-shadow','0 20px 54px rgba(38,72,92,.14),0 5px 16px rgba(38,72,92,.075),inset 0 1px 0 rgba(255,255,255,.96)');});
+  all(app,'.p639-nav button',function(btn){
+    var on=btn.classList.contains('on');
+    imp(btn,'border','0');imp(btn,'box-shadow',on?'inset 4px 0 0 #00A4DC,0 10px 24px rgba(0,129,174,.10)':'none');
+    imp(btn,'background',on?'linear-gradient(90deg,rgba(0,174,239,.22),rgba(36,116,245,.085) 68%,rgba(255,255,255,.28))':'transparent');
+    imp(btn,'color',on?'#073B58':'#274A5F');imp(btn,'border-radius','13px');
+  });
+  var side=app.querySelector('.rp2-side');if(side){imp(side,'border-right','0');imp(side,'background','linear-gradient(180deg,rgba(252,254,255,.97),rgba(244,249,251,.95))');imp(side,'box-shadow','16px 0 44px rgba(37,72,92,.11), inset -1px 0 0 rgba(70,108,130,.06)');}
+  var main=app.querySelector('.rp2-main');if(main)imp(main,'background','transparent');
+  var home=app.querySelector('.p639-home');if(home)imp(home,'background','transparent');
+ }
+ function enforceBuild(){
+  try{
+   window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
+   document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;
+   document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'});
+  }catch(e){}
+ }
+ function run(){pending=false;enforceBuild();try{document.querySelectorAll('#rp-overlay .rp2-app.rp2-mode-phased').forEach(enforceCanaries)}catch(e){}}
+ function schedule(){if(pending)return;pending=true;setTimeout(run,0)}
+ enforceBuild();schedule();
+ [20,80,180,350,700,1200,2200,4000,7000,10000,14000].forEach(function(ms){setTimeout(run,ms)});
+ try{new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class','data-rp-theme']})}catch(e){}
+ window.CONNECT_V776_VISUAL_AUTHORITY={version:BUILD,source:'Higgsfield visual exploration',magnific:'attempted but premium plan required',layoutChanges:false,functionalChanges:false,canaries:['orange Start My Day','borderless sidebar rows','cyan active nav','floating KPI slab','elevated primary panels']};
+})();
+</script>
 </head>
 <body>
 <div id="tcpBootCurtain" role="status" aria-live="polite" aria-label="Loading Connect"><div class="tcp-boot-card"><div class="tcp-boot-mark">TCP</div><div class="tcp-boot-title">Connect</div><div class="tcp-boot-sub">Connect Sales Operations</div><div class="tcp-boot-line"><i></i></div><div id="tcpBootStatus" class="tcp-boot-status">Loading your saved Connect data…</div></div></div>
@@ -5450,7 +5715,7 @@ function makeReportEditable(html){
     +'<button onclick="window.__resetEdits()" title="Discard edits and revert to original">&#8634; Reset</button>'
     +'</div>'
     +'<div class="__editor-hint no-print">Edit mode on &middot; click any text to edit &middot; hover a row/section for the &times; delete button &middot; Print or Save HTML when done</div>'
-    +'<script>(function(){var snap=null;function markRemovable(){document.querySelectorAll("tbody tr, .sechdr, h1, h2, h3").forEach(function(el){if(el.classList.contains("removable"))return;if(el.closest(".__editor-toolbar, .__editor-hint"))return;el.classList.add("removable");var btn=document.createElement("button");btn.className="__del-btn no-print";btn.innerHTML="\\u00D7";btn.title="Remove this row/section";btn.onclick=function(e){e.stopPropagation();e.preventDefault();if(confirm("Remove this item?"))el.parentNode.removeChild(el);};el.appendChild(btn);});}function makeEditable(){var sel=".body, .body p, .body div, .body span, td, th, .sechdr span, h1, h2, h3, h4, .hero div";document.querySelectorAll(sel).forEach(function(el){if(el.closest(".__editor-toolbar, .__editor-hint"))return;if(el.querySelector(".__editor-toolbar, .__del-btn"))return;var hasBlockChild=false;for(var i=0;i<el.children.length;i++){var t=el.children[i].tagName;if(["DIV","P","TABLE","UL","OL","TR","TD","TH","SECTION","TBODY","THEAD"].indexOf(t)>=0){hasBlockChild=true;break;}}if(!hasBlockChild&&el.textContent.trim())el.setAttribute("contenteditable","true");});}window.__toggleEdit=function(){if(snap===null)snap=document.body.innerHTML;document.body.classList.toggle("edit-mode");var on=document.body.classList.contains("edit-mode");var b=document.getElementById("__toggleEditBtn");if(b){b.classList.toggle("active",on);b.innerHTML=on?"\\u2713 Editing":"\\u270E Edit";}var ub=document.getElementById("__undoBtn"),rb=document.getElementById("__redoBtn");if(ub)ub.style.display=on?"inline-flex":"none";if(rb)rb.style.display=on?"inline-flex":"none";if(on){markRemovable();makeEditable();}};window.__undo=function(){if(!document.body.classList.contains("edit-mode"))return;try{document.execCommand("undo",false,null);}catch(e){console.warn("Undo failed",e);}};window.__redo=function(){if(!document.body.classList.contains("edit-mode"))return;try{document.execCommand("redo",false,null);}catch(e){console.warn("Redo failed",e);}};document.addEventListener("keydown",function(e){if(!document.body.classList.contains("edit-mode"))return;var ctrl=e.ctrlKey||e.metaKey;if(ctrl&&!e.shiftKey&&e.key.toLowerCase()==="z"){e.preventDefault();window.__undo();}else if(ctrl&&(e.key.toLowerCase()==="y"||(e.shiftKey&&e.key.toLowerCase()==="z"))){e.preventDefault();window.__redo();}});window.__saveHTML=function(){var clone=document.documentElement.cloneNode(true);clone.querySelectorAll(".__editor-toolbar, .__del-btn, .__editor-hint").forEach(function(el){el.remove();});clone.querySelectorAll("[contenteditable]").forEach(function(el){el.removeAttribute("contenteditable");});clone.querySelectorAll(".removable").forEach(function(el){el.classList.remove("removable");});var html="<!DOCTYPE html>\\n"+clone.outerHTML;var blob=new Blob([html],{type:"text/html"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;var ttl=(document.title||"report").replace(/[^a-zA-Z0-9_\\-]/g,"_");a.download=ttl+".html";document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},200);};window.__resetEdits=function(){if(!confirm("Discard all edits and restore the original report?"))return;if(snap!==null){document.body.innerHTML=snap;document.body.classList.remove("edit-mode");snap=null;var b=document.getElementById("__toggleEditBtn");if(b){b.classList.remove("active");b.innerHTML="\\u270E Edit";}var ub=document.getElementById("__undoBtn"),rb=document.getElementById("__redoBtn");if(ub)ub.style.display="none";if(rb)rb.style.display="none";}else{location.reload();}};})();<\/script>';
+    +'<script>(function(){var snap=null;function markRemovable(){document.querySelectorAll("tbody tr, .sechdr, h1, h2, h3").forEach(function(el){if(el.classList.contains("removable"))return;if(el.closest(".__editor-toolbar, .__editor-hint"))return;el.classList.add("removable");var btn=document.createElement("button");btn.className="__del-btn no-print";btn.innerHTML="\\u00D7";btn.title="Remove this row/section";btn.onclick=function(e){e.stopPropagation();e.preventDefault();if(confirm("Remove this item?"))el.parentNode.removeChild(el);};el.appendChild(btn);});}function makeEditable(){var sel=".body, .body p, .body div, .body span, td, th, .sechdr span, h1, h2, h3, h4, .hero div";document.querySelectorAll(sel).forEach(function(el){if(el.closest(".__editor-toolbar, .__editor-hint"))return;if(el.querySelector(".__editor-toolbar, .__del-btn"))return;var hasBlockChild=false;for(var i=0;i<el.children.length;i++){var t=el.children[i].tagName;if(["DIV","P","TABLE","UL","OL","TR","TD","TH","SECTION","TBODY","THEAD"].indexOf(t)>=0){hasBlockChild=true;break;}}if(!hasBlockChild&&el.textContent.trim())el.setAttribute("contenteditable","true");});}window.__toggleEdit=function(){if(snap===null)snap=document.body.innerHTML;document.body.classList.toggle("edit-mode");var on=document.body.classList.contains("edit-mode");var b=document.getElementById("__toggleEditBtn");if(b){b.classList.toggle("active",on);b.innerHTML=on?"\\u2713 Editing":"\\u270E Edit";}var ub=document.getElementById("__undoBtn"),rb=document.getElementById("__redoBtn");if(ub)ub.style.display=on?"inline-flex":"none";if(rb)rb.style.display=on?"inline-flex":"none";if(on){markRemovable();makeEditable();}};window.__undo=function(){if(!document.body.classList.contains("edit-mode"))return;try{document.execCommand("undo",false,null);}catch(e){console.warn("Undo failed",e);}};window.__redo=function(){if(!document.body.classList.contains("edit-mode"))return;try{document.execCommand("redo",false,null);}catch(e){console.warn("Redo failed",e);}};document.addEventListener("keydown",function(e){if(!document.body.classList.contains("edit-mode"))return;var ctrl=e.ctrlKey||e.metaKey;if(ctrl&&!e.shiftKey&&e.key.toLowerCase()==="z"){e.preventDefault();window.__undo();}else if(ctrl&&(e.key.toLowerCase()==="y"||(e.shiftKey&&e.key.toLowerCase()==="z"))){e.preventDefault();window.__redo();}});window.__saveHTML=function(){var clone=document.documentElement.cloneNode(true);clone.querySelectorAll(".__editor-toolbar, .__del-btn, .__editor-hint").forEach(function(el){el.remove();});clone.querySelectorAll("[contenteditable]").forEach(function(el){el.removeAttribute("contenteditable");});clone.querySelectorAll(".removable").forEach(function(el){el.classList.remove("removable");});var html="<!DOCTYPE html>\\n"+clone.outerHTML;var blob=new Blob([html],{type:"text/html"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;var ttl=(document.title||"report").replace(/[^a-zA-Z0-9_\\-]/g,"_");a.download=ttl+".html";document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},200);};window.__resetEdits=function(){if(!confirm("Discard all edits and restore the original report?"))return;if(snap!==null){document.body.innerHTML=snap;document.body.classList.remove("edit-mode");snap=null;var b=document.getElementById("__toggleEditBtn");if(b){b.classList.remove("active");b.innerHTML="\\u270E Edit";}var ub=document.getElementById("__undoBtn"),rb=document.getElementById("__redoBtn");if(ub)ub.style.display="none";if(rb)rb.style.display="none";}else{location.reload();}};})();</script>';
   if(html.indexOf('</body>')>=0)return html.replace('</body>',injection+'</body>');
   return html+injection;
 }
@@ -7524,7 +7789,7 @@ function _rpPhasedDevBundle(){
     '  var base=window._rp2Html;',
     '  if(typeof base==="function")window._rp2Html=function(rep){var v=readView();if(v)try{localStorage.setItem("tcp.repPortal.viewMode.v608."+String(rep||"default").toLowerCase().replace(/[^a-z0-9]+/g,"-"),v)}catch(e){}return base.apply(this,arguments)};',
     '})();',
-    '<\/script>'
+    '</script>'
   ].join('\n'));
   return parts.join('\n\n');
 }
@@ -23323,7 +23588,7 @@ body.coach-seated #pg-coach .coach-panel-head,
       +'<div class="cols"><div><h2>Wins</h2>'+list(w,'No major win signal detected.')+'</div><div><h2>Watchouts</h2>'+list(watch,'No major watchout signal detected.')+'</div></div>'
       +'<h2>Coaching Summary</h2><p><strong>Keep doing:</strong> '+esc(coach.keep.title)+' — '+esc(coach.keep.copy)+'</p><p><strong>Change:</strong> '+esc(coach.change.title)+' — '+esc(coach.change.copy)+'</p><p><strong>Focus next:</strong> '+esc(coach.focus.title)+' — '+esc(coach.focus.copy)+'</p>'
       +'<h2>Next Three Priorities</h2><ol>'+coach.priorities.map(function(x){return '<li><strong>'+esc(x.title)+'</strong><br>'+esc(x.copy)+'</li>'}).join('')+'</ol>'
-      +'<script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script></body></html>'
+      +'<script>window.onload=function(){setTimeout(function(){window.print()},250)}</script></body></html>'
   }
 
   window._rp2ReportSetTab=function(id){
@@ -47896,7 +48161,7 @@ h1,h2,.dash-hero h1,.entry-hero h1,.reviews-hero h1,.reports-hero h1,
    '<div class="head"><div><div class="title">Daily Sales & Calls</div><div class="sub">'+label+' · generated '+new Date().toLocaleDateString()+'</div></div><span class="badge">Live + weekly reconciliation</span></div>'+
    '<table><thead><tr><th>Date</th><th>Day</th><th>Daily sales</th><th>CORP</th><th>SMB</th><th>Running total</th><th>Daily calls</th><th>Calls WTD</th></tr></thead><tbody>'+
    rows.map(function(row){return'<tr><td>'+esc(row.date)+'</td><td>'+esc(row.day)+'</td><td>'+money(row.dailySales)+'</td><td>'+money(row.corp)+'</td><td>'+money(row.smb)+'</td><td>'+money(row.running)+'</td><td>'+Math.round(row.dailyCalls)+'</td><td>'+Math.round(row.cumulativeCalls)+'</td></tr>'}).join('')+
-   '</tbody></table><div class="foot">Sales and calls are entered live. Orders and work hours are finalized through the weekly spreadsheet upload.</div><script>window.onload=function(){window.print()}<\/script></body></html>';
+   '</tbody></table><div class="foot">Sales and calls are entered live. Orders and work hours are finalized through the weekly spreadsheet upload.</div><script>window.onload=function(){window.print()}</script></body></html>';
   var win=window.open('','_blank');if(win){win.document.write(html);win.document.close()}else alert('Please allow pop-ups to create the PDF.')
  }
 
@@ -64896,7 +65161,7 @@ if(typeof priorSaveCall==='function'){window._call652SaveCall=function(){var act
 setTimeout(function(){mountManagerBuilderSetting();var tries=0,t=setInterval(function(){tries++;if(mountManagerBuilderSetting()||tries>20)clearInterval(t)},500)},0);
 var cc658PriorTab=window._cc547AdminTab;if(typeof cc658PriorTab==='function'&&!cc658PriorTab._cc658){var cc658Tab=function(){var r=cc658PriorTab.apply(this,arguments);setTimeout(mountManagerBuilderSetting,20);return r};cc658Tab._cc658=true;window._cc547AdminTab=cc658Tab}var cc658PriorGt=window.gt;if(typeof cc658PriorGt==='function'&&!cc658PriorGt._cc658){var cc658Gt=function(){var r=cc658PriorGt.apply(this,arguments);setTimeout(mountManagerBuilderSetting,60);return r};cc658Gt._cc658=true;window.gt=cc658Gt}
 window.TCP_PHASED_CALL_HUB_V663={version:BUILD,render:hub,desktop:desktop,pace:pace,clockInfo:clockInfo,zoneFor:zoneFor,activePromotions:activePromos,promoMatches:promoMatches,salesFor:salesFor,salesRange:salesRange,todayState:todayState,filterCustomers:filterBuilderCustomers,facets:facets,lists:myLists};window.TCP_PHASED_CALL_HUB_V662=window.TCP_PHASED_CALL_HUB_V663;window.TCP_PHASED_CALL_HUB_V661=window.TCP_PHASED_CALL_HUB_V663;window.TCP_PHASED_CALL_HUB_V660=window.TCP_PHASED_CALL_HUB_V663;window.TCP_PHASED_CALL_HUB_V659=window.TCP_PHASED_CALL_HUB_V663;window.TCP_PHASED_CALL_HUB_V658=window.TCP_PHASED_CALL_HUB_V663;window.TCP_PHASED_CALL_HUB_V656=window.TCP_PHASED_CALL_HUB_V663;
-window._rpPhasedDevBundle=function(){var base=typeof priorBundle==='function'?priorBundle():'',css=document.getElementById('tcp-v656-call-workspace-hub-css'),extra=document.getElementById('tcp-v658-call-list-builder-css'),v663=document.getElementById('tcp-v663-my-call-lists-css'),js=document.getElementById('tcp-v658-call-workspace-hub-js');return base+'\n\n/* v663 My Call Lists + Contextual Call Source */\n<style id=\"tcp-v656-call-workspace-hub-css\">'+(css?css.textContent:'')+'<\/style>\n<style id=\"tcp-v658-call-list-builder-css\">'+(extra?extra.textContent:'')+'<\/style>\n<style id=\"tcp-v663-my-call-lists-css\">'+(v663?v663.textContent:'')+'<\/style>\n<script id=\"tcp-v658-call-workspace-hub-js\">'+(js?js.textContent:'')+'<\/script>'};
+window._rpPhasedDevBundle=function(){var base=typeof priorBundle==='function'?priorBundle():'',css=document.getElementById('tcp-v656-call-workspace-hub-css'),extra=document.getElementById('tcp-v658-call-list-builder-css'),v663=document.getElementById('tcp-v663-my-call-lists-css'),js=document.getElementById('tcp-v658-call-workspace-hub-js');return base+'\n\n/* v663 My Call Lists + Contextual Call Source */\n<style id=\"tcp-v656-call-workspace-hub-css\">'+(css?css.textContent:'')+'<\/style>\n<style id=\"tcp-v658-call-list-builder-css\">'+(extra?extra.textContent:'')+'<\/style>\n<style id=\"tcp-v663-my-call-lists-css\">'+(v663?v663.textContent:'')+'<\/style>\n<script id=\"tcp-v658-call-workspace-hub-js\">'+(js?js.textContent:'')+'</script>'};
 window.TCP_BUILD_VERSION=BUILD;try{document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Connect v663 — My Call Lists Command Center'}catch(e){}
 setTimeout(function(){try{if(isPhased()&&window._rp2&&_rp2.page==='call'&&!window._call656Detail)renderHub(0)}catch(e){console.warn('[v663 initial hub]',e)}},0);
 })();
@@ -65562,7 +65827,7 @@ var priorTab=window._cc547AdminTab;if(typeof priorTab==='function'&&!priorTab._c
 var priorGt=window.gt;if(typeof priorGt==='function'&&!priorGt._cc664){var wrapGt=function(){var r=priorGt.apply(this,arguments);setTimeout(function(){try{if(document.getElementById('pg-callcampaigns')&&document.getElementById('pg-callcampaigns').classList.contains('active'))mount()}catch(e){}},80);return r};wrapGt._cc664=true;window.gt=wrapGt}
 setTimeout(function(){mount();var tries=0,t=setInterval(function(){tries++;if(mount()||tries>20)clearInterval(t)},500)},0);
 window.TCP_MANAGER_CALL_CAMPAIGNS_V664={version:BUILD,mount:mount,managerData:managerData,matchRep:matchRep,campaigns:campaigns,lists:lists};
-var priorBundle=window._rpPhasedDevBundle;window._rpPhasedDevBundle=function(){var base=typeof priorBundle==='function'?priorBundle():'',css=document.getElementById('tcp-v664-manager-campaign-css'),js=document.getElementById('tcp-v664-manager-campaign-js');return base+'\n\n/* v664 Manager Campaign Builder */\n<style id="tcp-v664-manager-campaign-css">'+(css?css.textContent:'')+'<\/style>\n<script id="tcp-v664-manager-campaign-js">'+(js?js.textContent:'')+'<\/script>'};
+var priorBundle=window._rpPhasedDevBundle;window._rpPhasedDevBundle=function(){var base=typeof priorBundle==='function'?priorBundle():'',css=document.getElementById('tcp-v664-manager-campaign-css'),js=document.getElementById('tcp-v664-manager-campaign-js');return base+'\n\n/* v664 Manager Campaign Builder */\n<style id="tcp-v664-manager-campaign-css">'+(css?css.textContent:'')+'<\/style>\n<script id="tcp-v664-manager-campaign-js">'+(js?js.textContent:'')+'</script>'};
 })();
 </script>
 <style id="tcp-v664-footer">html body .tabs:after{content:"Cloud Sync • Admin  ·  BUILD v664"!important}body.nav-rail .tabs:after{content:"v664"!important}</style>
@@ -66615,7 +66880,7 @@ body.nav-rail .tabs:after{content:"v672"!important}
   var issueHtml=issues.count?'<div class="issue-grid">'+issues.arts.map(function(a){return'<div class="issue"><strong>Art Error</strong>'+esc(a.issueTypeLabel||a.type||'Art issue')+(a.desc?'<br>'+esc(a.desc):'')+'</div>'}).concat(issues.cms.map(function(c){return'<div class="issue"><strong>Credit Memo · '+money(-Math.abs(n(c.amount)))+'</strong>'+esc(c.desc||'Credit memo')+'</div>'})).join('')+'</div>':'<div class="ok">✓ No linked Art Errors or Credit Memos</div>';
   function sectionTable(title,meta,headers,body){return body?'<section><div class="sec-head"><h2>'+title+'</h2><span>'+meta+'</span></div><table><thead><tr>'+headers.map(function(h){return'<th'+(h==='Qty'||h==='Revenue'||h==='Amount'?' class="num"':'')+'>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+body+'</tbody></table></section>':''}
   var toolbar=mode==='pdf'?'<div class="screen-note no-print"><strong>Save PDF:</strong> choose <b>Save as PDF</b> as the printer/destination, then save. <button onclick="window.print()">Open dialog again</button></div>':'<div class="screen-note no-print"><strong>Print-ready order detail.</strong> <button onclick="window.print()">Print</button> <button onclick="window.close()">Close</button></div>';
-  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});<\/script>\n\n</body></html>'
+  return'<!doctype html><html><head><meta charset="utf-8"><title>'+esc(fname)+'</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5px;line-height:1.45}.page{max-width:8.25in;margin:0 auto;padding:.42in}.screen-note{position:sticky;top:0;z-index:5;margin:-.42in -.42in .28in;padding:10px 18px;background:#172033;color:#fff;font-size:11px}.screen-note button{margin-left:8px;padding:6px 10px;border:0;border-radius:6px;background:#FA873D;color:#fff;font-weight:800;cursor:pointer}.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:3px solid #FA873D}.brand-left{display:flex;align-items:center;gap:12px}.brand img{max-width:145px;max-height:50px;object-fit:contain}.brand-name{font-size:17px;font-weight:900;color:#111827}.doc{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748B;font-weight:850}.title{margin:18px 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:25px;line-height:1.08;color:#111827}.sub{color:#64748B;font-size:10px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{padding:10px 11px;border:1px solid #DDE3EA;border-radius:8px;background:#F8FAFC}.stat span,.info span{display:block;color:#64748B;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}.stat strong{display:block;margin-top:4px;color:#111827;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.info{padding:8px;border:1px solid #E4E9EF;border-radius:7px}.info strong{display:block;margin-top:3px;color:#1F2937;font-size:9px;overflow-wrap:anywhere}section{margin-top:14px;break-inside:avoid}.sec-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid #CDD5DF}.sec-head h2{margin:0;color:#111827;font-size:11px;text-transform:uppercase;letter-spacing:.055em}.sec-head span{color:#64748B;font-size:8px}table{width:100%;border-collapse:collapse}thead{display:table-header-group}tr{break-inside:avoid}th{padding:6px 7px;background:#F1F5F9;color:#475569;text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #CBD5E1}td{padding:6px 7px;border-bottom:1px solid #E7EBF0;color:#334155;vertical-align:top}.num{text-align:right;white-space:nowrap}.muted{margin-top:1px;color:#94A3B8;font-size:8px}.ok{padding:8px 10px;border:1px solid #BBE5C7;border-radius:7px;background:#F0FBF3;color:#23713A;font-weight:800}.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.issue{padding:8px;border:1px solid #F0CCD5;border-radius:7px;background:#FFF7F9;color:#526072}.issue strong{display:block;color:#9F2645;margin-bottom:2px}.note{margin-top:15px;padding-top:9px;border-top:1px solid #E3E8EF;color:#7C899A;font-size:8px}.footer{margin-top:15px;padding-top:8px;border-top:1px solid #D9E0E8;display:flex;justify-content:space-between;color:#94A3B8;font-size:7.5px}@page{size:letter;margin:.42in}@media print{.no-print{display:none!important}.page{max-width:none;padding:0}body{font-size:9.5px}section{break-inside:auto}.summary,.info-grid{break-inside:avoid}}</style></head><body>'+toolbar+'<div class="page"><div class="brand"><div class="brand-left">'+(logo?'<img src="'+attr(logo)+'" alt="Logo">':'')+'<div><div class="brand-name">'+esc(company)+'</div><div class="doc">Connect · Order Detail</div></div></div><div class="doc">Print-friendly order record</div></div><h1 class="title">'+esc(o.orderNum||o.base||'Order')+' · '+esc(o.customer||'Customer')+'</h1><div class="sub">'+fmtDate(g.date)+' · '+esc(o.rep||'Rep not recorded')+' · '+esc(statusLabel(o.status))+(invoice?' · Invoice '+esc(invoice):'')+'</div><div class="summary"><div class="stat"><span>Net order value</span><strong>'+money(g.net)+'</strong></div><div class="stat"><span>Status</span><strong>'+esc(statusLabel(o.status))+'</strong></div><div class="stat"><span>Order type</span><strong>'+esc(clean(o.orderType)||'Unknown')+'</strong></div><div class="stat"><span>Invoice</span><strong>'+esc(invoice||'Not recorded')+'</strong></div></div><div class="info-grid"><div class="info"><span>Rep</span><strong>'+esc(clean(o.rep)||'—')+'</strong></div><div class="info"><span>Account ID</span><strong>'+esc(account||'—')+'</strong></div><div class="info"><span>Placement</span><strong>'+esc(placement)+'</strong></div><div class="info"><span>Customer class</span><strong>'+esc(cls)+'</strong></div><div class="info"><span>Source</span><strong>'+esc(sourceValue(o))+'</strong></div><div class="info"><span>Order date</span><strong>'+fmtDate(g.date)+'</strong></div></div><section><div class="sec-head"><h2>Order Activity</h2><span>Net '+money(g.net)+'</span></div><table><thead><tr><th>Date</th><th>Type</th><th>Order / Invoice</th><th class="num">Amount</th></tr></thead><tbody>'+family+'</tbody></table></section>'+sectionTable('Products',Math.round(sumQty(groups.products)).toLocaleString()+' units · '+money(sumRev(groups.products)),['SKU','Product','Category','Decoration','Qty','Revenue'],printRows(groups.products,'products'))+sectionTable('Decoration & Charges',money(sumRev(groups.charges)),['Type','Detail','Decoration','Qty','Revenue'],printRows(groups.charges,'charges'))+sectionTable('Credits / Discounts',money(sumRev(groups.credits)),['Description','Qty','Amount'],printRows(groups.credits,'credits'))+'<section><div class="sec-head"><h2>Order Issues</h2><span>'+issues.count+' linked</span></div>'+issueHtml+'</section><div class="note"><strong>Data coverage:</strong> '+esc(dataCoverage(g,items))+'</div><div class="footer"><span>'+esc(company)+' · Connect</span><span>Order '+esc(o.orderNum||o.base||'')+' · Generated '+generated.toLocaleString()+'</span></div></div><script>window.addEventListener("load",function(){setTimeout(function(){window.print()},220)});</script>\n\n</body></html>'
  }
  window._ord672Print=function(mode){var g=currentGroup();if(!g)return;mode=mode==='pdf'?'pdf':'print';var w=window.open('','_blank');if(!w){alert('Please allow pop-ups to create the print-friendly order document.');return}w.document.open();w.document.write(printDocument(g,mode));w.document.close();try{w.focus()}catch(e){}};
  try{document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('o671-modal'))window._ord671Close()})}catch(e){}
@@ -73660,7 +73925,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .cux719-input textarea{min-h
 <script id="connect-v723-contact-parity-boot">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function enforce(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
@@ -73704,7 +73969,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .cux8-shell .cux700-subnav.c
 <script id="connect-v727-persistent-company-nav-js">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  var timer=0;
  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
  function companyOpen(){return !!(window._rp2CompanyOpenKey||window._cw4CompanyName||document.querySelector('#rp-overlay .cux8-shell'))}
@@ -74246,7 +74511,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .art736-protected{display:in
 
 <script id="connect-v739-final-authority-eof">
 (function(){
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){var t=b.textContent||'';if(/build/i.test(t))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});
  /* v739: no subtree build observer — early build authority is already idempotent */
@@ -74352,7 +74617,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .prof737-modal-actions{displ
 </script>
 <script id="connect-v739-final-authority-eof">
 (function(){
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){var t=b.textContent||'';if(/build/i.test(t))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
  enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});
 })();
@@ -74447,7 +74712,7 @@ html[data-connect-authoritative="v739"] .str738-toast{position:fixed;right:24px;
 })();
 </script>
 <script id="connect-v739-final-authority-eof">
-(function(){var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});})();
+(function(){var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});})();
 </script>
 
 
@@ -74518,7 +74783,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .str739-strategy-product{bor
 })();
 </script>
 <script id="connect-v740-final-authority-integration">
-(function(){var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});})();
+(function(){var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[0,60,180,500,1200].forEach(function(ms){setTimeout(enforce,ms)});})();
 </script>
 
 <!-- ========================================================================
@@ -74870,7 +75135,7 @@ window.CONNECT_V741_DISTRIBUTOR_DASHBOARD_DIAGNOSTICS=function(){var t=totals(),
 })();
 </script>
 <script id="connect-v740-authority-final">
-(function(){var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
+(function(){var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});/* stability fix: do not observe attributes that enforce() itself writes */})();
 </script>
 
 
@@ -75828,7 +76093,7 @@ window.CONNECT_V747_MAX_ENROLLMENT_DIAGNOSTICS=function(){
 
 <script id="connect-v747-final-authority">
 (function(){
-  var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+  var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
   function enforce(){
     try{
       window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -76010,7 +76275,7 @@ window.CONNECT_V748_MAX_ENROLLMENT_NOTIFICATION_DIAGNOSTICS=function(){
 
 <script id="connect-v748-final-authority">
 (function(){
-  var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+  var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
   function enforce(){
     try{
       window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -76109,7 +76374,7 @@ html[data-connect-authoritative="v739"] #rp-overlay .d753-growth-row p{
 
 (function(){
 'use strict';
-var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -76216,7 +76481,7 @@ enforce();
 
 (function(){
 'use strict';
-var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -76312,7 +76577,7 @@ enforce();
 
 (function(){
 'use strict';
-var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
 function enforce(){
   try{
     window.CONNECT_BUILD_AUTHORITY=BUILD;
@@ -76621,7 +76886,7 @@ window.CONNECT_V756_CORPORATE_PROFILE={version:'v756',internalProfileKey:'profor
 <script id="connect-v756-integrated-final-authority">
 (function(){
 'use strict';
-var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
 function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build '+DISPLAY})}catch(e){}}
 enforce();[50,200,700,1600,3200].forEach(function(ms){setTimeout(enforce,ms)});
 })();
@@ -76924,7 +77189,7 @@ var priorFilter=window._cw4FilterRows;if(typeof priorFilter==='function')window.
 var priorToggle=window._cw4ToggleRow;if(typeof priorToggle==='function')window._cw4ToggleRow=function(){var r=priorToggle.apply(this,arguments);return r};
 // Retire direct Corporate APIs so stale buttons/bookmarks land safely in Companies.
 [' _demo740RenderDistributorNow','_demo740OpenDistributor','_demo756OpenCorporateHome','_demo756OpenProformaProfile','_demo756OpenProformaCorporate','_demo757OpenProformaProfile','_demo757OpenProformaCorporate'].forEach(function(k){k=clean(k);if(!k)return;window[k]=function(){if(typeof window._rp2Go==='function')window._rp2Go('customers');return true}});
-function authority(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE='Connect v760 — Sales Portal';window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Connect v760 — Sales Portal';document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}
+function authority(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE='Connect v760 — Sales Portal';window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title='Connect v760 — Sales Portal';document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}
 authority();[0,50,200,700,1600,3200,6000].forEach(function(ms){setTimeout(authority,ms)});
 window.CONNECT_V758_COMPANY_MASTER={version:BUILD,storageKey:STORE,masters:masters,open:function(id){return window._cm758OpenMaster(id)},create:function(){return window._cm758OpenWizard()},diagnostics:function(){var list=masters(),used=usedMap('');return{version:BUILD,rep:rep(),masters:list.length,memberAccounts:Object.keys(used).length,corporateNavRetired:true}}};
 })();
@@ -76980,7 +77245,7 @@ window._rp2Go=function(page){var r=typeof priorGo759==='function'?priorGo759.app
 var queued=false;
 try{new MutationObserver(function(){if(queued)return;queued=true;setTimeout(function(){queued=false;ensureCreateControls()},25)}).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
 [0,60,180,500,1200,2500].forEach(function(ms){setTimeout(ensureCreateControls,ms)});
-function authority759(){try{window.CONNECT_BUILD_AUTHORITY='v760';window.CONNECT_BUILD_DISPLAY='V760';window.CONNECT_BUILD_TITLE='Connect v760 — Sales Portal';window.CONNECT_BUILD='v760';window.TCP_BUILD_VERSION='v760';document.documentElement.setAttribute('data-connect-release','v760');document.documentElement.setAttribute('data-connect-build','v760');document.documentElement.setAttribute('data-tcp-build','v760');document.title='Connect v760 — Sales Portal';document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}
+function authority759(){try{window.CONNECT_BUILD_AUTHORITY='v760';window.CONNECT_BUILD_DISPLAY='V760';window.CONNECT_BUILD_TITLE='Connect v760 — Sales Portal';window.CONNECT_BUILD='v760';window.TCP_BUILD_VERSION='v760';document.documentElement.setAttribute('data-connect-release','v760');document.documentElement.setAttribute('data-connect-build','v760');document.documentElement.setAttribute('data-tcp-build','v760');document.title='Connect v760 — Sales Portal';document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}
 authority759();[100,500,1600,4000].forEach(function(ms){setTimeout(authority759,ms)});
 })();
 </script>
@@ -77044,7 +77309,7 @@ authority759();[100,500,1600,4000].forEach(function(ms){setTimeout(authority759,
    document.documentElement.setAttribute('data-connect-build','v760');
    document.documentElement.setAttribute('data-tcp-build','v760');
    document.title='Connect v760 — Sales Portal';
-   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'});
+   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'});
    removeDuplicateLauncher();
  }catch(e){}}
  authority760();[80,250,700,1800,4200,7000].forEach(function(ms){setTimeout(authority760,ms)});
@@ -77292,7 +77557,7 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
 <script id="connect-v766-light-system-authority-js">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function authority(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
@@ -77300,7 +77565,7 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light :is(
    if(document.documentElement.getAttribute('data-connect-build')!==BUILD)document.documentElement.setAttribute('data-connect-build',BUILD);
    if(document.documentElement.getAttribute('data-tcp-build')!==BUILD)document.documentElement.setAttribute('data-tcp-build',BUILD);
    if(document.title!==TITLE)document.title=TITLE;
-   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||'')&&b.textContent!=='Sales Portal · Build V775')b.textContent='Sales Portal · Build V775'});
+   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||'')&&b.textContent!=='Sales Portal · Build V776')b.textContent='Sales Portal · Build V776'});
    var light=document.documentElement.getAttribute('data-rp-theme')==='light';document.documentElement.style.colorScheme=light?'light':'dark';
   }catch(e){}
  }
@@ -77991,12 +78256,12 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cw4-company-sub,.cw4-c
 <script id="connect-v766-frosted-acrylic-light-authority-js">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function authority(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
    document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;
-   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'});
+   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'});
   }catch(e){}
  }
  authority();[120,420,1000,2600,6000].forEach(function(ms){setTimeout(authority,ms)});
@@ -78040,12 +78305,12 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-expand{border-radius:9
 <script id="connect-v766-stable-authority-js">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function authority(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
    document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;
-   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'});
+   document.querySelectorAll('.cux695-build-badge,.cux700-build-badge,.rp-build-badge,.rp2-build,.rp2-side-build').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'});
   }catch(e){}
  }
  authority();[100,400,1200,3200,6500,9000].forEach(function(ms){setTimeout(authority,ms)});
@@ -78132,12 +78397,12 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-empty-strategy{borde
 html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-note-compose[open] .cm758-note-box{background:#F7FBFD;border-color:#BFD1DD;box-shadow:0 20px 46px rgba(33,75,101,.18)}
 </style>
 <script id="connect-v768-company-master-authority-js">
-(function(){'use strict';var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}enforce();[50,250,800,1800,4000,7000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V768_COMPANY_MASTER={version:BUILD,focus:'sales workspace overview'};})();
+(function(){'use strict';var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}enforce();[50,250,800,1800,4000,7000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V768_COMPANY_MASTER={version:BUILD,focus:'sales workspace overview'};})();
 </script>
 
 <!-- CONNECT V768 FINAL BUILD AUTHORITY — true EOF authority -->
 <script id="connect-v768-final-build-authority-js">
-(function(){'use strict';var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}enforce();[20,100,300,800,1800,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V768_FIX={version:BUILD,fix:'EOF-safe Company Master workspace injection'};})();
+(function(){'use strict';var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}enforce();[20,100,300,800,1800,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V768_FIX={version:BUILD,fix:'EOF-safe Company Master workspace injection'};})();
 </script>
 
 
@@ -78167,7 +78432,7 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-performance-wrap{bor
 html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-expansion{background:radial-gradient(circle at 96% 0%,rgba(21,184,233,.16),transparent 31%),linear-gradient(145deg,#FFF8F3,#F1F8FB)!important;border-color:rgba(233,112,45,.22)!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-expansion-hot{background:linear-gradient(120deg,rgba(255,144,79,.16),rgba(27,184,227,.11),rgba(255,255,255,.58))!important;border-color:rgba(211,99,35,.20)!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-expansion-main p,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-action-card p{color:#567183!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-proof{color:#A64C18!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-action-target{background:linear-gradient(135deg,#FFF7F1,#F4FAFC)!important;border-color:rgba(211,99,35,.16)!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-action-target strong{color:#0B2940!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-coverage-grid>div{background:linear-gradient(145deg,#FFFFFF,#E6F1F7)!important;border-color:rgba(42,98,131,.13)!important;box-shadow:inset 0 1px 0 #fff,0 8px 18px rgba(39,87,112,.05)!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-coverage-grid strong{color:#0B2940!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-empty-strategy{background:rgba(241,248,251,.72)!important;border-color:rgba(42,98,131,.16)!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-empty-strategy strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-latest-note strong{color:#0B2940!important}html[data-rp-theme="light"] #rp-overlay .rp679-light .cm767-latest-note{background:linear-gradient(90deg,rgba(255,135,56,.08),rgba(255,255,255,.60))!important}
 @media(max-width:1380px){#rp-overlay .cm767-kpis{grid-template-columns:repeat(3,1fr)!important}#rp-overlay .cm767-coverage-grid{grid-template-columns:repeat(2,1fr)!important}}@media(max-width:900px){#rp-overlay .cm767-hero{padding:24px!important}#rp-overlay .cm767-hero h1{font-size:32px!important}#rp-overlay .cm767-overview>.cm758-card{padding:20px!important}#rp-overlay .cm767-expansion-hot{grid-template-columns:54px 1fr!important}#rp-overlay .cm767-signal-icon{width:52px!important;height:52px!important}.cm767-action-stack{grid-column:1/-1!important;flex-direction:row!important}}@media(max-width:680px){#rp-overlay .cm767-kpis{grid-template-columns:1fr!important}#rp-overlay .cm767-coverage-grid{grid-template-columns:1fr!important}}
 </style>
-<script id="connect-v769-final-build-authority-js">(function(){'use strict';var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V769_MASTER_VISUAL={version:BUILD,benchmark:'manager tracker command center',darkLightParity:true};})();</script>
+<script id="connect-v769-final-build-authority-js">(function(){'use strict';var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V769_MASTER_VISUAL={version:BUILD,benchmark:'manager tracker command center',darkLightParity:true};})();</script>
 
 <!-- ===== CONNECT V770 · REP READABILITY + CALM LIGHT NAV AUTHORITY ===== -->
 <style id="connect-v770-rep-readability-authority-css">
@@ -78323,7 +78588,7 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table-shell{
 }
 </style>
 <script id="connect-v770-final-build-authority-js">
-(function(){'use strict';var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V770_READABILITY={version:BUILD,goal:'18-to-60-plus rapid scan readability',lightNav:'blue-active-only',layoutChanges:false};})();
+(function(){'use strict';var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V770_READABILITY={version:BUILD,goal:'18-to-60-plus rapid scan readability',lightNav:'blue-active-only',layoutChanges:false};})();
 </script>
 
 <!-- ===== CONNECT V772 · LIGHT NAV AUTHORITY + DRAGGABLE COLUMN ORDER ===== -->
@@ -78526,11 +78791,11 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table-shell{
 })();
 </script>
 <script id="connect-v772-final-build-authority-js">
-(function(){'use strict';var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V772_UX={version:BUILD,lightNav:'quiet-until-active-blue',columnReorder:'drag-persist'};})();
+(function(){'use strict';var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});window.CONNECT_V772_UX={version:BUILD,lightNav:'quiet-until-active-blue',columnReorder:'drag-persist'};})();
 </script>
 
-<!-- ===== CONNECT V775 · VISUAL HIERARCHY + READABILITY AUTHORITY ===== -->
-<style id="connect-v775-visual-hierarchy-css">
+<!-- ===== CONNECT V776 · VISUAL HIERARCHY + READABILITY AUTHORITY ===== -->
+<style id="connect-v776-visual-hierarchy-css">
 /*
   Goal: make busy rep screens calmer without removing information.
   - navigation should read as navigation, not a wall of buttons
@@ -78636,14 +78901,14 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table-shell{
 
 /* Column drag remains discoverable without a permanent sentence above the list. */
 #rp-overlay .v772-column-hint{display:none!important}
-#rp-overlay .v775-reorder-btn{
+#rp-overlay .v776-reorder-btn{
   display:inline-flex!important;align-items:center!important;gap:6px!important;white-space:nowrap!important;
   min-height:40px!important;padding:0 12px!important;border-radius:11px!important;
   border:1px solid #C7D8E2!important;background:rgba(248,251,253,.92)!important;color:#49687B!important;
   font-size:11.5px!important;font-weight:850!important;cursor:pointer!important;box-shadow:none!important;
 }
-#rp-overlay .v775-reorder-btn:hover{border-color:#93C9DC!important;background:#EEF8FC!important;color:#007FAE!important}
-#rp-overlay .v775-reorder-tip{
+#rp-overlay .v776-reorder-btn:hover{border-color:#93C9DC!important;background:#EEF8FC!important;color:#007FAE!important}
+#rp-overlay .v776-reorder-tip{
   margin:6px 3px 0!important;padding:8px 11px!important;border-radius:10px!important;
   background:#EAF7FC!important;border:1px solid #BDE3F0!important;color:#3F667A!important;font-size:11.5px!important;line-height:1.4!important;
 }
@@ -78661,18 +78926,18 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table-shell{
   #rp-overlay .rp2-app.rp2-mode-phased .cw4-company-name{font-size:13.5px!important}
 }
 </style>
-<script id="connect-v775-readability-ui-js">
+<script id="connect-v776-readability-ui-js">
 (function(){
  'use strict';
  function addReorderControl(){
    try{
      var root=document.getElementById('rp2-page');if(!root)return;
      var table=root.querySelector('.cw4-table');var toolbar=root.querySelector('.cw4-toolbar');
-     if(!table||!toolbar||toolbar.querySelector('.v775-reorder-btn'))return;
-     var btn=document.createElement('button');btn.type='button';btn.className='v775-reorder-btn';btn.innerHTML='↔ <span>Reorder columns</span>';
+     if(!table||!toolbar||toolbar.querySelector('.v776-reorder-btn'))return;
+     var btn=document.createElement('button');btn.type='button';btn.className='v776-reorder-btn';btn.innerHTML='↔ <span>Reorder columns</span>';
      btn.addEventListener('click',function(){
-       var old=root.querySelector('.v775-reorder-tip');if(old){old.remove();return}
-       var tip=document.createElement('div');tip.className='v775-reorder-tip';tip.textContent='Drag any labeled column header left or right. Your order saves automatically for this rep on this device.';
+       var old=root.querySelector('.v776-reorder-tip');if(old){old.remove();return}
+       var tip=document.createElement('div');tip.className='v776-reorder-tip';tip.textContent='Drag any labeled column header left or right. Your order saves automatically for this rep on this device.';
        toolbar.insertAdjacentElement('afterend',tip);
        try{table.querySelectorAll('th[data-v772-column-drag="1"]').forEach(function(th){th.animate([{backgroundColor:'rgba(0,175,239,.10)'},{backgroundColor:'transparent'}],{duration:700})})}catch(e){}
      });
@@ -78681,18 +78946,18 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cw4-table-shell{
    }catch(e){}
  }
  function sync(){setTimeout(addReorderControl,20)}
- var oldAfter=window._rp2After;if(typeof oldAfter==='function'&&!oldAfter._v775read){var f=function(){var r=oldAfter.apply(this,arguments);sync();return r};f._v775read=true;window._rp2After=f}
+ var oldAfter=window._rp2After;if(typeof oldAfter==='function'&&!oldAfter._v776read){var f=function(){var r=oldAfter.apply(this,arguments);sync();return r};f._v776read=true;window._rp2After=f}
  [0,120,500,1400].forEach(function(ms){setTimeout(addReorderControl,ms)});
- window.CONNECT_V775_READABILITY={version:'v775',principle:'less chrome, stronger hierarchy, larger supporting text'};
+ window.CONNECT_V776_READABILITY={version:'v776',principle:'less chrome, stronger hierarchy, larger supporting text'};
 })();
 </script>
-<script id="connect-v775-final-build-authority-js">
-(function(){'use strict';var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});})();
+<script id="connect-v776-final-build-authority-js">
+(function(){'use strict';var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';function enforce(){try{window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'})}catch(e){}}enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});})();
 </script>
 
 
-<!-- ===== CONNECT V775 · PHASE 1 GLOBAL VISUAL SYSTEM AUTHORITY ===== -->
-<style id="connect-v775-global-visual-system-css">
+<!-- ===== CONNECT V776 · PHASE 1 GLOBAL VISUAL SYSTEM AUTHORITY ===== -->
+<style id="connect-v776-global-visual-system-css">
 /*
   PHASE 1 — GLOBAL CONNECT VISUAL PUSH
   Visual-system-only authority. No layout, workflow, data, navigation destination,
@@ -78901,7 +79166,7 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is([class$="-sub
 
 /* ---------- BUTTON SYSTEM ---------- */
 html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is(
-  button[class*="btn"],button[class*="action"],.cw4-btn,.cw4-mini-btn,.cw4-expand,.v775-reorder-btn
+  button[class*="btn"],button[class*="action"],.cw4-btn,.cw4-mini-btn,.cw4-expand,.v776-reorder-btn
 ){
   border-radius:var(--connect-radius-small)!important;
   border-color:rgba(53,94,119,.13)!important;
@@ -78923,14 +79188,14 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is(
 ):hover{transform:translateY(-1px)!important;box-shadow:0 13px 28px rgba(250,135,61,.28)!important;}
 /* Secondary controls: soft white surface, low border dependency. */
 html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is(
-  button[class*="btn"],button[class*="action"],.cw4-btn,.cw4-mini-btn,.cw4-expand,.v775-reorder-btn
+  button[class*="btn"],button[class*="action"],.cw4-btn,.cw4-mini-btn,.cw4-expand,.v776-reorder-btn
 ):not(.primary):not([class*="primary"]):not(.on):not(.active){
   background:linear-gradient(155deg,rgba(255,255,255,.96),rgba(244,249,252,.91))!important;
   color:#274A60!important;
   box-shadow:var(--connect-shadow-1)!important;
 }
 html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is(
-  button[class*="btn"],button[class*="action"],.cw4-btn,.cw4-mini-btn,.cw4-expand,.v775-reorder-btn
+  button[class*="btn"],button[class*="action"],.cw4-btn,.cw4-mini-btn,.cw4-expand,.v776-reorder-btn
 ):not(.primary):not([class*="primary"]):not(.on):not(.active):hover{
   border-color:rgba(0,175,239,.24)!important;background:#F1FAFD!important;color:#007CA6!important;transform:translateY(-1px)!important;
 }
@@ -79062,19 +79327,19 @@ html:not([data-rp-theme="light"]) #rp-overlay .rp2-app.rp2-mode-phased #rp2-page
   html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is([class$="-card"],[class*="-card "],[class$="-panel"],[class*="-panel "],[class$="-shell"],[class*="-shell "]){box-shadow:0 6px 18px rgba(22,55,77,.065)!important;}
 }
 </style>
-<script id="connect-v775-global-visual-system-js">
+<script id="connect-v776-global-visual-system-js">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function enforce(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
    document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;
-   document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'});
+   document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'});
   }catch(e){}
  }
  enforce();[20,100,350,900,1900,4000,7000,10000].forEach(function(ms){setTimeout(enforce,ms)});
- window.CONNECT_V775_GLOBAL_VISUAL_SYSTEM={
+ window.CONNECT_V776_GLOBAL_VISUAL_SYSTEM={
   version:BUILD,phase:1,scope:'global visual system only',
   tokens:['workspace background','surface background','elevated surface','navy text','muted text','TCP orange','cyan','blue','green','purple','amber','danger','border subtle','shadow level 1','shadow level 2','shadow level 3','radius small','radius medium','radius large','transition speed'],
   layoutChanges:false,functionalChanges:false
@@ -79083,8 +79348,8 @@ html:not([data-rp-theme="light"]) #rp-overlay .rp2-app.rp2-mode-phased #rp2-page
 </script>
 
 
-<!-- ===== CONNECT V775 · GLOBAL VISUAL SYSTEM AUTHORITY · HIGGSFIELD-LED PASS ===== -->
-<style id="connect-v775-global-authority-css">
+<!-- ===== CONNECT V776 · GLOBAL VISUAL SYSTEM AUTHORITY · HIGGSFIELD-LED PASS ===== -->
+<style id="connect-v776-global-authority-css">
 :root{
   --connect-workspace:#EEF5F9;
   --connect-workspace-deep:#E7F0F5;
@@ -79304,18 +79569,22 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light #rp2-page :is(
   html[data-rp-theme="light"] #rp-overlay .rp679-light .p639-momentum{border-radius:18px!important;}
 }
 </style>
-<script id="connect-v775-global-authority-js">
+<script id="connect-v776-global-authority-js">
 (function(){
  'use strict';
- var BUILD='v775',DISPLAY='V775',TITLE='Connect v775 — Sales Portal';
+ var BUILD='v776',DISPLAY='V776',TITLE='Connect v776 — Sales Portal';
  function enforce(){
   try{
    window.CONNECT_BUILD_AUTHORITY=BUILD;window.CONNECT_BUILD_DISPLAY=DISPLAY;window.CONNECT_BUILD_TITLE=TITLE;window.CONNECT_BUILD=BUILD;window.TCP_BUILD_VERSION=BUILD;
    document.documentElement.setAttribute('data-connect-authoritative',BUILD);document.documentElement.setAttribute('data-connect-release',BUILD);document.documentElement.setAttribute('data-connect-build',BUILD);document.documentElement.setAttribute('data-tcp-build',BUILD);document.title=TITLE;
-   document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V775'});
+   document.querySelectorAll('.rp-build-badge,.rp2-build,.rp2-side-build,.cux695-build-badge,.cux700-build-badge').forEach(function(b){if(/build/i.test(b.textContent||''))b.textContent='Sales Portal · Build V776'});
   }catch(e){}
  }
  enforce();[20,100,350,900,1900,4000,7000,10000,12000].forEach(function(ms){setTimeout(enforce,ms)});
- window.CONNECT_V775_GLOBAL_AUTHORITY={version:BUILD,phase:1,visualReference:'Higgsfield concept exploration',layoutChanges:false,functionalChanges:false};
+ window.CONNECT_V776_GLOBAL_AUTHORITY={version:BUILD,phase:1,visualReference:'Higgsfield concept exploration',layoutChanges:false,functionalChanges:false};
 })();
+</script>
+\n<!-- CONNECT V776 · LATE CANARY RE-ENFORCEMENT -->
+<script id="connect-v776-late-canary-js">
+(function(){var n=0,t=setInterval(function(){n++;try{if(window.CONNECT_V776_VISUAL_AUTHORITY){var ev=new Event('resize');window.dispatchEvent(ev);}var a=document.querySelector('#rp-overlay .rp2-app.rp2-mode-phased');if(a&&!a.classList.contains('v776-visual-authority'))a.classList.add('v776-visual-authority');if(a){var b=a.querySelector('.p639-start button');if(b){b.style.setProperty('background','linear-gradient(135deg,#FA873D,#E96E24)','important');b.style.setProperty('color','#fff','important');}}}catch(e){}if(n>20)clearInterval(t)},350)})();
 </script>
