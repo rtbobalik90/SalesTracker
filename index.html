@@ -18,6 +18,113 @@ html.tcp-booting body > *:not(#tcpBootCurtain){visibility:hidden!important;}
 html:not(.tcp-booting) #tcpBootCurtain{opacity:0;visibility:hidden;pointer-events:none;}
 @media (prefers-reduced-motion:reduce){#tcpBootCurtain,#tcpBootCurtain .tcp-boot-line i{transition:none;animation:none}}
 </style>
+
+<!-- ===== CONNECT V777 · COMPANY MASTER SIMPLIFIED 2x2 OVERVIEW ===== -->
+<style id="connect-v777-company-master-overview-css">
+#rp-overlay .cm777-overview{
+  display:grid;
+  grid-template-columns:minmax(0,1.16fr) minmax(360px,.84fr);
+  grid-template-areas:"network next" "growth plan";
+  gap:18px;
+  align-items:stretch;
+}
+#rp-overlay .cm777-card{
+  min-width:0;
+  margin:0;
+  padding:22px 23px!important;
+  border:1px solid rgba(147,189,218,.15)!important;
+  border-radius:22px!important;
+  background:linear-gradient(155deg,rgba(255,255,255,.052),rgba(9,26,38,.72))!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+#rp-overlay .cm777-network{grid-area:network!important}
+#rp-overlay .cm777-next{grid-area:next!important;border-color:rgba(255,135,56,.24)!important;background:radial-gradient(circle at 100% 0,rgba(255,135,56,.12),transparent 34%),linear-gradient(155deg,rgba(255,255,255,.052),rgba(9,26,38,.72))!important}
+#rp-overlay .cm777-growth{grid-area:growth!important}
+#rp-overlay .cm777-plan{grid-area:plan!important}
+#rp-overlay .cm777-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:15px}
+#rp-overlay .cm777-card-head h3{margin:3px 0 0!important;color:#F7FAFD!important;font-size:20px!important;line-height:1.15!important;letter-spacing:-.025em!important}
+#rp-overlay .cm777-card-head p{margin-top:6px!important;color:#8799AC!important;font-size:10px!important;line-height:1.45!important}
+#rp-overlay .cm777-count,#rp-overlay .cm777-signal,#rp-overlay .cm777-health{display:inline-flex;align-items:center;min-height:27px;padding:5px 9px;border:1px solid rgba(22,189,242,.23);border-radius:999px;background:rgba(22,189,242,.075);color:#96E9FF;font-size:8px;font-weight:950;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+#rp-overlay .cm777-signal{border-color:rgba(255,135,56,.28);background:rgba(255,135,56,.09);color:#FFD0AE}
+#rp-overlay .cm777-health.good{border-color:rgba(72,217,149,.28);background:rgba(72,217,149,.09);color:#9AEBBF}
+#rp-overlay .cm777-health.watch{border-color:rgba(246,199,81,.28);background:rgba(246,199,81,.09);color:#F8DA84}
+#rp-overlay .cm777-health.risk{border-color:rgba(255,121,121,.28);background:rgba(255,121,121,.09);color:#FFB1B1}
+#rp-overlay .cm777-account-list{display:flex;flex-direction:column;border:1px solid rgba(147,189,218,.11);border-radius:15px;overflow:hidden;background:rgba(1,10,17,.20)}
+#rp-overlay .cm777-account-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 82px 18px;gap:12px;align-items:center;width:100%;min-height:62px;padding:10px 12px;border:0;border-top:1px solid rgba(147,189,218,.09);background:transparent;color:inherit;text-align:left;cursor:pointer}
+#rp-overlay .cm777-account-row:first-child{border-top:0}
+#rp-overlay .cm777-account-row:hover{background:linear-gradient(90deg,rgba(22,189,242,.08),rgba(255,135,56,.045))}
+#rp-overlay .cm777-account-name{min-width:0}
+#rp-overlay .cm777-account-name strong{display:block;color:#EDF5FA;font-size:11px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cm777-account-name small{display:block;margin-top:4px;color:#72869A;font-size:8.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cm777-parent{display:inline-block;margin:0 0 3px;color:#F6C751;font-size:7px;font-style:normal;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+#rp-overlay .cm777-account-sales small{display:block;color:#708398;font-size:7px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+#rp-overlay .cm777-account-sales strong{display:block;margin-top:4px;color:#EAF3F8;font-size:11px}
+#rp-overlay .cm777-state{justify-self:start;padding:4px 7px;border:1px solid rgba(147,189,218,.14);border-radius:999px;background:rgba(255,255,255,.035);color:#A7B6C6;font-size:7.5px;font-weight:950;white-space:nowrap}
+#rp-overlay .cm777-state.good{border-color:rgba(72,217,149,.22);background:rgba(72,217,149,.07);color:#8DE9B7}
+#rp-overlay .cm777-state.risk{border-color:rgba(255,121,121,.22);background:rgba(255,121,121,.07);color:#FFAAAA}
+#rp-overlay .cm777-state.space{border-color:rgba(255,135,56,.23);background:rgba(255,135,56,.07);color:#FFC196}
+#rp-overlay .cm777-row-arrow{color:#5E7588;font-size:18px}
+#rp-overlay .cm777-footer-link,#rp-overlay .cm777-head-link{border:0;background:transparent;color:#75DDF8;font-size:9px;font-weight:900;cursor:pointer}
+#rp-overlay .cm777-footer-link{display:block;margin:13px 0 0;padding:0}
+#rp-overlay .cm777-head-link{padding:5px 0;white-space:nowrap}
+#rp-overlay .cm777-footer-link:hover,#rp-overlay .cm777-head-link:hover{color:#B8F1FF}
+#rp-overlay .cm777-target{padding:16px;border:1px solid rgba(255,135,56,.19);border-radius:16px;background:linear-gradient(135deg,rgba(255,135,56,.095),rgba(22,189,242,.045))}
+#rp-overlay .cm777-target span,#rp-overlay .cm777-strategy>span{display:block;color:#8395A8;font-size:8px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+#rp-overlay .cm777-target strong{display:block;margin-top:6px;color:#fff;font-size:20px;line-height:1.15;letter-spacing:-.025em}
+#rp-overlay .cm777-target small{display:block;margin-top:6px;color:#A2B2C2;font-size:9px;line-height:1.4}
+#rp-overlay .cm777-reason{margin:15px 0 0!important;color:#A7B6C5!important;font-size:10px!important;line-height:1.65!important}
+#rp-overlay .cm777-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+#rp-overlay .cm777-actions .cm758-btn{min-height:39px!important;padding:9px 14px!important}
+#rp-overlay .cm777-growth-list{display:flex;flex-direction:column;gap:8px}
+#rp-overlay .cm777-growth-row{display:grid;grid-template-columns:31px minmax(0,1fr) auto;gap:11px;align-items:center;min-height:70px;padding:11px 12px;border:1px solid rgba(147,189,218,.10);border-radius:14px;background:rgba(2,10,17,.18)}
+#rp-overlay .cm777-growth-rank{display:grid;place-items:center;width:31px;height:31px;border:1px solid rgba(22,189,242,.17);border-radius:10px;background:rgba(22,189,242,.07);color:#70DFFA;font-size:10px;font-weight:950}
+#rp-overlay .cm777-growth-row strong{display:block;color:#EDF5FA;font-size:11px}
+#rp-overlay .cm777-growth-row span:not(.cm777-growth-rank){display:block;margin-top:4px;color:#8EA0B1;font-size:8.5px;line-height:1.35}
+#rp-overlay .cm777-growth-row small{display:block;margin-top:3px;color:#C17B4E;font-size:8px}
+#rp-overlay .cm777-growth-row button{min-height:30px;padding:6px 9px;border:1px solid rgba(255,135,56,.21);border-radius:9px;background:rgba(255,135,56,.07);color:#FFC39C;font-size:8px;font-weight:950;cursor:pointer}
+#rp-overlay .cm777-coverage-list{display:flex;flex-direction:column;border-top:1px solid rgba(147,189,218,.10)}
+#rp-overlay .cm777-coverage-list>div{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(147,189,218,.09)}
+#rp-overlay .cm777-coverage-list span{color:#A7B5C3;font-size:9.5px}
+#rp-overlay .cm777-coverage-list strong{color:#F1F7FA;font-size:12px}
+#rp-overlay .cm777-coverage-list small{grid-column:1/-1;margin-top:3px;color:#6F8396;font-size:8px}
+#rp-overlay .cm777-strategy{margin-top:14px;padding:13px 14px;border-left:3px solid #FF8738;border-radius:0 13px 13px 0;background:rgba(255,135,56,.055)}
+#rp-overlay .cm777-strategy strong{display:block;margin-top:6px;color:#EAF2F7;font-size:10px;line-height:1.5}
+#rp-overlay .cm777-strategy small{display:block;margin-top:5px;color:#768A9D;font-size:8px}
+#rp-overlay .cm777-note{margin-top:10px}
+#rp-overlay .cm777-note>summary{list-style:none;display:inline-flex;align-items:center;min-height:31px;padding:6px 9px;border:1px solid rgba(147,189,218,.13);border-radius:9px;background:rgba(255,255,255,.025);color:#AFC0CF;font-size:8px;font-weight:900;cursor:pointer}
+#rp-overlay .cm777-note>summary::-webkit-details-marker{display:none}
+#rp-overlay .cm777-note .cm758-note-box{grid-template-columns:1fr auto;margin-top:9px}
+#rp-overlay .cm777-note textarea{min-height:72px!important}
+#rp-overlay .cm777-empty{padding:20px;border:1px dashed rgba(147,189,218,.16);border-radius:14px;color:#8093A5;font-size:9.5px;line-height:1.5;text-align:center}
+#rp-overlay .cm777-empty strong,#rp-overlay .cm777-empty span{display:block}
+#rp-overlay .cm777-empty span{margin-top:5px;color:#6E8295;font-size:8.5px}
+
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-card{border-color:rgba(42,98,131,.14)!important;background:linear-gradient(155deg,rgba(255,255,255,.95),rgba(232,243,249,.88))!important;box-shadow:0 16px 36px rgba(39,87,112,.09),inset 0 1px 0 #fff!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-next{border-color:rgba(211,99,35,.20)!important;background:radial-gradient(circle at 100% 0,rgba(255,135,56,.11),transparent 34%),linear-gradient(155deg,#FFFDFB,#EDF6FA)!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-card-head h3,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-account-name strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-account-sales strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-target strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-growth-row strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-coverage-list strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-strategy strong{color:#102D41!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-card-head p,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-account-name small,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-reason,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-growth-row span:not(.cm777-growth-rank),html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-coverage-list span{color:#587184!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-account-list,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-growth-row{border-color:rgba(42,98,131,.13);background:rgba(255,255,255,.58)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-account-row{border-color:rgba(42,98,131,.10)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-account-row:hover{background:linear-gradient(90deg,rgba(22,189,242,.09),rgba(255,135,56,.05))}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-target{background:linear-gradient(135deg,#FFF5EE,#EDF8FC);border-color:rgba(211,99,35,.16)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm777-strategy{background:rgba(255,135,56,.07)}
+
+@media(max-width:1180px){
+  #rp-overlay .cm777-overview{grid-template-columns:1fr 1fr;grid-template-areas:"network network" "next plan" "growth growth"}
+}
+@media(max-width:780px){
+  #rp-overlay .cm777-overview{grid-template-columns:1fr;grid-template-areas:"next" "network" "growth" "plan"}
+  #rp-overlay .cm777-card{padding:18px!important}
+  #rp-overlay .cm777-account-row{grid-template-columns:minmax(0,1fr) 88px 18px}
+  #rp-overlay .cm777-state{display:none}
+}
+@media(max-width:520px){
+  #rp-overlay .cm777-account-sales{display:none}
+  #rp-overlay .cm777-account-row{grid-template-columns:minmax(0,1fr) 18px}
+  #rp-overlay .cm777-growth-row{grid-template-columns:30px minmax(0,1fr)}
+  #rp-overlay .cm777-growth-row button{grid-column:2;justify-self:start}
+}
+</style>
 <!-- Connect v622: dashboard explainability layer + readable coaching metric provenance; retains v620 integrity and v621 readability -->
 <!-- v617 second sweep: removed unused globals/theme tokens after v616 cleanup; preserved v614 durable autosave + v615 full-state safety. -->
 <title>Connect v776 — Sales Portal</title>
@@ -73474,6 +73581,22 @@ function cm767AccountPerformance(m,rows,catData){var total=sum(rows,'current')||
 function overviewSection(m,rows){var notes=arr(m.notes),catData=cm767TopCategories(rows),signals=cm767Expansion(rows,catData),coverage=cm767Coverage(rows),priority=cm767Priority(m,rows,signals),strongest=rows.slice().sort(function(a,b){return metric(b,'current')-metric(a,'current')})[0],weakest=rows.slice().sort(function(a,b){return metric(a,'current')-metric(b,'current')})[0],signal=signals[0],target=priority.target,latest=notes.length?notes[notes.length-1]:null,allSales=sum(rows,'current');var insight='';if(strongest&&weakest&&strongest!==weakest){var pct=allSales?Math.round(metric(strongest,'current')/allSales*100):0;insight='<strong>'+esc(strongest.name)+'</strong> is producing '+pct+'% of scoped Master sales. <strong>'+esc(weakest.name)+'</strong> is currently the lowest-producing account at '+money(metric(weakest,'current'))+' YTD.'}else insight='Connect is comparing sales, product history, contacts, and pipeline across the selected accounts.';var expansion=signal?'<div class="cm767-expansion-hot"><div class="cm767-signal-icon">↗</div><div class="cm767-expansion-main"><div class="cm767-eyebrow">EXPANSION OPPORTUNITY</div><h4>'+esc(signal.category)+'</h4><p>Purchased by <strong>'+signal.buyers+' of '+signal.total+' accounts</strong>. '+esc(signal.targets.map(function(r){return r.name}).join(', '))+' '+(signal.targets.length===1?'has':'have')+' no loaded purchases in this category.</p><div class="cm767-proof">'+(signal.revenue?money(signal.revenue)+' visible line-item revenue':'Existing purchase behavior')+' across the accounts already buying.</div></div><div class="cm767-action-stack"><button class="cm758-btn primary" onclick="_cm767BuildOpportunity(\''+encodeURIComponent(signal.targets[0].name)+'\')">Build Opportunity</button><button class="cm758-btn" onclick="_cm767PrepCall(\''+encodeURIComponent(signal.targets[0].name)+'\')">Prep Call</button></div></div>':'<div class="cm767-expansion-hot quiet"><div class="cm767-signal-icon">◎</div><div class="cm767-expansion-main"><div class="cm767-eyebrow">EXPANSION INTELLIGENCE</div><h4>Product whitespace will appear here</h4><p>No cross-account category gap is supported by the currently loaded line-item history. Connect will surface it automatically when sibling purchasing patterns are available.</p></div></div>';return '<div class="cm758-grid cm767-overview"><section class="cm758-card cm767-snapshot"><div class="cm767-card-head"><div><div class="cm767-eyebrow">MASTER RELATIONSHIP SNAPSHOT</div><h3>Where the relationship is producing — and where it is not</h3></div><span class="cm767-scope-count">'+rows.length+' accounts in scope</span></div><p class="cm767-insight">'+insight+'</p>'+cm767AccountPerformance(m,rows,catData)+'</section><section class="cm758-card cm767-expansion"><div class="cm767-card-head"><div><div class="cm767-eyebrow">SELL THE NETWORK</div><h3>Expansion Intelligence</h3></div><button class="cm767-text-btn" onclick="_cm758SetTab(\'products\')">View Products →</button></div>'+expansion+'</section><section class="cm758-card half cm767-action-card"><div class="cm767-eyebrow">NEXT BEST ACTION</div><h3>'+(target?'Move '+esc(target.name)+' forward':'Set the Master relationship objective')+'</h3><p>'+esc(priority.reason||'Choose the most valuable next customer-facing move across the relationship.')+'</p>'+(target?'<div class="cm767-action-target"><span>Target account</span><strong>'+esc(target.name)+'</strong>'+(priority.category?'<small>Use sibling success in '+esc(priority.category)+' as proof.</small>':'<small>'+esc(cm767Next(target))+'</small>')+'</div><div class="cm767-inline-actions"><button class="cm758-btn primary" onclick="_cm767PrepCall(\''+encodeURIComponent(target.name)+'\')">Prep Call</button><button class="cm758-btn" onclick="_cm758OpenCompany(\''+encodeURIComponent(target.name)+'\')">Open Account</button></div>':'')+'</section><section class="cm758-card half cm767-coverage"><div class="cm767-eyebrow">RELATIONSHIP COVERAGE</div><h3>Are we protected across the organization?</h3><div class="cm767-coverage-grid"><div><span>Contacts</span><strong>'+coverage.contacts+'</strong><small>across '+rows.length+' accounts</small></div><div><span>Decision Makers</span><strong>'+coverage.decisionMakers+'</strong><small>'+coverage.accountsWithDm+' accounts covered</small></div><div><span>Future Touches</span><strong>'+coverage.futureAccounts+'/'+rows.length+'</strong><small>accounts with a scheduled contact</small></div><div><span>Recently Active</span><strong>'+coverage.recentAccounts+'/'+rows.length+'</strong><small>activity in the last 90 days</small></div></div><button class="cm767-text-btn" onclick="_cm758SetTab(\'contacts\')">Review all contacts →</button></section><section class="cm758-card cm767-notes"><div class="cm767-card-head"><div><div class="cm767-eyebrow">MASTER STRATEGY</div><h3>Relationship Notes & Strategy</h3></div><details class="cm767-note-compose"><summary>＋ Add Master Note</summary><div class="cm758-note-box"><textarea id="cm758-note-text" placeholder="Record an umbrella-level strategy, commitment, or relationship note."></textarea><button class="cm758-btn primary" onclick="_cm758AddNote(\''+esc(m.id)+'\')">Save Note</button></div></details></div>'+(latest?'<div class="cm767-latest-note"><span>Latest Master note</span><strong>'+esc(latest.text)+'</strong><small>Master only · '+fmtDate(latest.createdAt)+'</small></div>':'<div class="cm767-empty-strategy"><strong>No Master-level strategy recorded yet.</strong><span>Add only information that applies to the umbrella relationship. Account-specific work stays on the child account.</span></div>')+(notes.length>1?'<div class="cm767-note-history">'+notes.slice(0,-1).slice(-3).reverse().map(function(n){return '<div>'+esc(n.text)+'<small>'+fmtDate(n.createdAt)+'</small></div>'}).join('')+'</div>':'')+'</section></div>'}
 window._cm767PrepCall=function(encoded){var name=decodeURIComponent(encoded||'');if(typeof window._cw5Call==='function')return window._cw5Call(encodeURIComponent(name));return window._cm758OpenCompany(encodeURIComponent(name))};
 window._cm767BuildOpportunity=function(encoded){var name=decodeURIComponent(encoded||'');window._cm758OpenCompany(encodeURIComponent(name));setTimeout(function(){try{if(typeof window._cw4OpenModal==='function')window._cw4OpenModal('opportunity')}catch(e){}},80)};
+function overviewSectionV777(m,rows){
+ var notes=arr(m.notes),catData=cm767TopCategories(rows),signals=cm767Expansion(rows,catData),coverage=cm767Coverage(rows),priority=cm767Priority(m,rows,signals),target=priority.target,latest=notes.length?notes[notes.length-1]:null;
+ var sorted=rows.slice().sort(function(a,b){var ap=norm(a.name)===m.parentAccountId?1:0,bp=norm(b.name)===m.parentAccountId?1:0;return bp-ap||metric(b,'current')-metric(a,'current')});
+ function accountState(r){var g=cm767Growth(r);if(metric(r,'current')<=0)return{label:'Whitespace',tone:'space'};if(g.tone==='risk')return{label:'At Risk',tone:'risk'};if(g.tone==='good')return{label:'Growing',tone:'good'};return{label:'Active',tone:'steady'}}
+ var accountRows=sorted.slice(0,6).map(function(r){var state=accountState(r),parent=norm(r.name)===m.parentAccountId;return '<button class="cm777-account-row" onclick="_cm758OpenCompany(\''+encodeURIComponent(r.name)+'\')"><span class="cm777-account-name">'+(parent?'<i class="cm777-parent">★ Parent</i>':'')+'<strong>'+esc(r.name)+'</strong><small>'+esc(cm767Next(r))+'</small></span><span class="cm777-account-sales"><small>YTD Sales</small><strong>'+money(metric(r,'current'))+'</strong></span><span class="cm777-state '+state.tone+'">'+state.label+'</span><span class="cm777-row-arrow">›</span></button>'}).join('');
+ var growthRows=signals.slice(0,3).map(function(s,i){var firstTarget=s.targets&&s.targets[0],targetNames=arr(s.targets).slice(0,2).map(function(r){return r.name}).join(', ');return '<div class="cm777-growth-row"><span class="cm777-growth-rank">'+(i+1)+'</span><div><strong>'+esc(s.category)+'</strong><span>'+s.buyers+' of '+s.total+' accounts buying · '+esc(targetNames||'No open target')+(s.targets.length>2?' +'+(s.targets.length-2)+' more':'')+'</span><small>'+(s.revenue?money(s.revenue)+' visible revenue':'Supported by existing purchase behavior')+'</small></div>'+(firstTarget?'<button onclick="_cm767BuildOpportunity(\''+encodeURIComponent(firstTarget.name)+'\')">Build</button>':'')+'</div>'}).join('');
+ var dmMissing=Math.max(0,rows.length-coverage.accountsWithDm),touchMissing=Math.max(0,rows.length-coverage.futureAccounts),inactive=Math.max(0,rows.length-coverage.recentAccounts);
+ var relationshipTone=dmMissing===0&&touchMissing===0?'good':dmMissing>Math.max(1,rows.length/2)||touchMissing>Math.max(1,rows.length/2)?'risk':'watch';
+ return '<div class="cm777-overview">'
+  +'<section class="cm758-card cm777-card cm777-network"><div class="cm777-card-head"><div><div class="cm767-eyebrow">ACCOUNT NETWORK</div><h3>Accounts in this Master</h3><p>See the relationship structure and the next move for each account.</p></div><span class="cm777-count">'+rows.length+' accounts</span></div><div class="cm777-account-list">'+(accountRows||'<div class="cm777-empty">No accounts are available in the selected scope.</div>')+'</div><button class="cm777-footer-link" onclick="_cm758SetTab(\'sales\')">View complete account performance →</button></section>'
+  +'<section class="cm758-card cm777-card cm777-next"><div class="cm777-card-head"><div><div class="cm767-eyebrow">NEXT BEST MOVE</div><h3>'+(target?'Move '+esc(target.name)+' forward':'Set the relationship objective')+'</h3></div><span class="cm777-signal">Recommended</span></div>'+(target?'<div class="cm777-target"><span>Priority account</span><strong>'+esc(target.name)+'</strong><small>'+esc(priority.category?'Expansion opportunity · '+priority.category:cm767Next(target))+'</small></div><p class="cm777-reason">'+esc(priority.reason)+'</p><div class="cm777-actions"><button class="cm758-btn primary" onclick="_cm767PrepCall(\''+encodeURIComponent(target.name)+'\')">Prep Call</button><button class="cm758-btn" onclick="_cm758OpenCompany(\''+encodeURIComponent(target.name)+'\')">Open Account</button></div>':'<div class="cm777-empty">Add accounts or activity to generate a recommended move.</div>')+'</section>'
+  +'<section class="cm758-card cm777-card cm777-growth"><div class="cm777-card-head"><div><div class="cm767-eyebrow">GROWTH OPPORTUNITIES</div><h3>Where the network can expand</h3><p>Product gaps supported by buying behavior across related accounts.</p></div><button class="cm777-head-link" onclick="_cm758SetTab(\'products\')">Products →</button></div><div class="cm777-growth-list">'+(growthRows||'<div class="cm777-empty"><strong>No supported whitespace signal yet.</strong><span>Opportunities will appear when line-item product history is available across the accounts.</span></div>')+'</div></section>'
+  +'<section class="cm758-card cm777-card cm777-plan"><div class="cm777-card-head"><div><div class="cm767-eyebrow">RELATIONSHIP PLAN</div><h3>Coverage and strategy</h3></div><span class="cm777-health '+relationshipTone+'">'+(relationshipTone==='good'?'Healthy':relationshipTone==='risk'?'Needs Attention':'Watch')+'</span></div><div class="cm777-coverage-list"><div><span>Decision-maker coverage</span><strong>'+coverage.accountsWithDm+' / '+rows.length+'</strong><small>'+dmMissing+' account'+(dmMissing===1?'':'s')+' missing</small></div><div><span>Future touches scheduled</span><strong>'+coverage.futureAccounts+' / '+rows.length+'</strong><small>'+touchMissing+' account'+(touchMissing===1?'':'s')+' without a touch</small></div><div><span>Active in last 90 days</span><strong>'+coverage.recentAccounts+' / '+rows.length+'</strong><small>'+inactive+' inactive</small></div></div><div class="cm777-strategy"><span>Current Master strategy</span>'+(latest?'<strong>'+esc(latest.text)+'</strong><small>Updated '+fmtDate(latest.createdAt)+'</small>':'<strong>No Master strategy recorded yet.</strong><small>Add only guidance that applies across the relationship.</small>')+'</div><details class="cm777-note"><summary>＋ Update strategy</summary><div class="cm758-note-box"><textarea id="cm758-note-text" placeholder="Record the relationship objective, commitment, or next strategic move."></textarea><button class="cm758-btn primary" onclick="_cm758AddNote(\''+esc(m.id)+'\')">Save</button></div></details><button class="cm777-footer-link" onclick="_cm758SetTab(\'contacts\')">Review all contacts →</button></section>'
+  +'</div>'
+}
+overviewSection=overviewSectionV777;
 window._cm758AddNote=function(id){var m=masterById(id),el=document.getElementById('cm758-note-text'),text=clean(el&&el.value);if(!m||!text)return;m.notes=arr(m.notes);m.notes.push({id:'mn_'+Date.now().toString(36),text:text,createdAt:new Date().toISOString(),scope:'master'});m.updatedAt=new Date().toISOString();var list=masters().map(function(x){return x.id===m.id?m:x});setMasters(list);refresh()};
 function contactsSection(m,rows){var data=[];rows.forEach(function(r){arr(r.contacts).forEach(function(c){data.push({account:r.name,c:c})})});return cardTable('Contacts','Contacts remain tied to their actual account/location and continue to drive person-level calling.',['Contact','Role','Decision Maker','Account / Location','Email','Phone','Last Contact','Next Follow-Up'],data.map(function(x){var c=x.c||{};return[clean(field(c,['name'],'Contact')),clean(field(c,['title','buyingRole'],'—')),c.decisionMaker||/decision maker/i.test(clean(c.buyingRole))?'Yes':'—',x.account,clean(c.email)||'—',clean(c.phone)||'—',fmtDate(c.lastTouch||c.lastContact),fmtDate(c.nextTouch||c.nextFollowUp)]}))}
 function ordersSection(m,rows){var data=[];rows.forEach(function(r){arr(r.orders).forEach(function(o){data.push({account:r.name,o:o})})});data.sort(function(a,b){return String(field(b.o,['date','orderDate','createdAt'],'')).localeCompare(String(field(a.o,['date','orderDate','createdAt'],'')))});return cardTable('Orders','Transactional records continue to originate from the real individual account.',['Order','Account','Date','Status','Value'],data.slice(0,120).map(function(x){return[clean(field(x.o,['orderNum','orderNumber','so','base','id'],'Order')),x.account,fmtDate(field(x.o,['date','orderDate','createdAt'],'')),clean(field(x.o,['status','orderStatus'],'Completed'))||'—',money(Number(field(x.o,['total','amount','value','netSales'],0))||Number(x.o._value)||0)]}))}
