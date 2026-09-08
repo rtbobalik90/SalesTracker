@@ -73597,6 +73597,36 @@ function overviewSectionV777(m,rows){
   +'</div>'
 }
 overviewSection=overviewSectionV777;
+var CM778_VIS='tcp_cm_branch_chart_visibility_v778';
+function cm778Visibility(){try{return JSON.parse(localStorage.getItem(CM778_VIS)||'{}')||{}}catch(e){return{}}}
+function cm778SaveVisibility(value){try{localStorage.setItem(CM778_VIS,JSON.stringify(value))}catch(e){}}
+function cm778DecisionMaker(r){var contacts=arr(r&&r.contacts),primary=r&&r.primaryContact||null;return contacts.filter(function(c){return c&&(c.decisionMaker||/decision maker|owner|president|chief|director|manager/i.test(clean(field(c,['buyingRole','title','role'],''))))})[0]||primary||contacts.filter(Boolean)[0]||null}
+function cm778RecentActivity(r){var dates=arr(r&&r.activities).map(function(a){var value=field(a,['date','activityDate','createdAt','updatedAt','lastTouch'],'');var d=value?new Date(value):null;return d&&!isNaN(d.getTime())?d:null}).filter(Boolean).sort(function(a,b){return b-a});return dates[0]||null}
+window._cm778ToggleBranch=function(id,encoded){var m=masterById(id),key=norm(decodeURIComponent(encoded||''));if(!m||!key)return;var value=cm778Visibility(),scope=rep()+'|'+id,bucket=value[scope]||{},rows=scopedRows(m),visible=rows.filter(function(r){return !bucket[norm(r.name)]});if(!bucket[key]&&visible.length<=1)return;bucket[key]=!bucket[key];if(!bucket[key])delete bucket[key];value[scope]=bucket;cm778SaveVisibility(value);refresh()};
+function overviewSectionV778(m,rows){
+ var notes=arr(m.notes),latest=notes.length?notes[notes.length-1]:null,sorted=rows.slice().sort(function(a,b){var ap=norm(a.name)===m.parentAccountId?1:0,bp=norm(b.name)===m.parentAccountId?1:0;return bp-ap||metric(b,'current')-metric(a,'current')});
+ function accountState(r){var g=cm767Growth(r);if(metric(r,'current')<=0)return{label:'Whitespace',tone:'space'};if(g.tone==='risk')return{label:'At Risk',tone:'risk'};if(g.tone==='good')return{label:'Growing',tone:'good'};return{label:'Active',tone:'steady'}}
+ var accountRows=sorted.slice(0,6).map(function(r){var state=accountState(r),parent=norm(r.name)===m.parentAccountId;return '<button class="cm777-account-row" onclick="_cm758OpenCompany(\''+encodeURIComponent(r.name)+'\')"><span class="cm777-account-name">'+(parent?'<i class="cm777-parent">★ Parent</i>':'')+'<strong>'+esc(r.name)+'</strong><small>'+esc(cm767Next(r))+'</small></span><span class="cm777-account-sales"><small>YTD Sales</small><strong>'+money(metric(r,'current'))+'</strong></span><span class="cm777-state '+state.tone+'">'+state.label+'</span><span class="cm777-row-arrow">›</span></button>'}).join('');
+
+ var vis=cm778Visibility(),visKey=rep()+'|'+m.id,hidden=vis[visKey]||{},visibleRows=sorted.filter(function(r){return !hidden[norm(r.name)]}),maxValue=visibleRows.reduce(function(max,r){return Math.max(max,metric(r,'current'))},0),colors=['#16BDF2','#FF8738','#48D995','#F6C751','#9B7BFF','#5DD6D0'];
+ var chartBars=visibleRows.map(function(r){var index=sorted.indexOf(r),value=metric(r,'current'),width=maxValue?Math.max(3,Math.round(value/maxValue*100)):3;return '<div class="cm778-chart-row" style="--cm778-color:'+colors[index%colors.length]+'"><div class="cm778-chart-label"><strong>'+esc(r.name)+'</strong><span>'+money(value)+'</span></div><div class="cm778-chart-track"><i style="width:'+width+'%"></i></div></div>'}).join('');
+ var chartToggles=sorted.map(function(r,i){var off=!!hidden[norm(r.name)];return '<button class="cm778-branch-toggle '+(off?'off':'on')+'" style="--cm778-color:'+colors[i%colors.length]+'" aria-pressed="'+(!off)+'" onclick="_cm778ToggleBranch(\''+esc(m.id)+'\',\''+encodeURIComponent(r.name)+'\')"><i></i>'+esc(r.name)+'</button>'}).join('');
+
+ var pace=null;try{var engine=window.TCP_CALL_CYCLE_V547;if(engine&&typeof engine.paceFor==='function')pace=engine.paceFor(rep(),new Date())}catch(e){}
+ var memberMap={};rows.forEach(function(r){memberMap[norm(r.name)]=r});var roundItems=pace?arr(pace.set).filter(function(item){return memberMap[norm(item&&item.company)]}):[],called=roundItems.filter(function(item){return !!item.callAttemptAt}).length,remaining=roundItems.filter(function(item){return !item.callAttemptAt}),roundPct=roundItems.length?Math.round(called/roundItems.length*100):0;
+ var callRows=remaining.slice(0,6).map(function(item){var r=memberMap[norm(item.company)],dm=cm778DecisionMaker(r),name=clean(field(dm,['name','contactName'],'Decision maker not recorded')),title=clean(field(dm,['title','buyingRole','role'],'')),phone=clean(field(dm,['phone','mobile','phoneNumber'],''));return '<div class="cm778-call-row"><div class="cm778-call-avatar">'+esc(name==='Decision maker not recorded'?'?':name.split(/\s+/).filter(Boolean).map(function(x){return x.charAt(0)}).join('').slice(0,2).toUpperCase())+'</div><div class="cm778-call-person"><strong>'+esc(name)+'</strong><span>'+esc((title?title+' · ':'')+item.company)+'</span><small>'+esc(phone||item.reason||'Account update call required')+'</small></div><button onclick="_cm767PrepCall(\''+encodeURIComponent(item.company)+'\')">Prep Call</button></div>'}).join('');
+
+ var watch=[];rows.forEach(function(r){var dm=cm778DecisionMaker(r),last=cm778RecentActivity(r),age=last?Math.floor((new Date()-last)/86400000):null,opps=arr(r&&r.openOpps),signals=[],score=0,tone='watch';if(!dm){signals.push('Decision maker missing');score=Math.max(score,100);tone='risk'}if(age==null||age>90){signals.push(age==null?'No activity recorded':'Quiet for '+age+' days');score=Math.max(score,85)}if(metric(r,'current')<=0){signals.push('No YTD sales');score=Math.max(score,70);if(tone!=='risk')tone='space'}if(opps.length){signals.push(opps.length+' open opportunit'+(opps.length===1?'y':'ies'));score=Math.max(score,60);if(tone==='watch'&&signals.length===1)tone='good'}if(signals.length)watch.push({score:score,tone:tone,account:r.name,label:signals[0]+(signals.length>1?' +'+(signals.length-1)+' more':''),copy:signals.join(' · ')})});watch.sort(function(a,b){return b.score-a.score});
+ var watchRows=watch.slice(0,5).map(function(x){return '<button class="cm778-watch-row '+x.tone+'" onclick="_cm758OpenCompany(\''+encodeURIComponent(x.account)+'\')"><i></i><span><strong>'+esc(x.account)+'</strong><b>'+esc(x.label)+'</b><small>'+esc(x.copy)+'</small></span><em>›</em></button>'}).join('');
+
+ return '<div class="cm777-overview cm778-overview">'
+  +'<section class="cm758-card cm777-card cm777-network"><div class="cm777-card-head"><div><div class="cm767-eyebrow">ACCOUNT NETWORK</div><h3>Accounts in this Master</h3><p>See the relationship structure and the next move for each account.</p></div><span class="cm777-count">'+rows.length+' accounts</span></div><div class="cm777-account-list">'+(accountRows||'<div class="cm777-empty">No accounts are available in the selected scope.</div>')+'</div><button class="cm777-footer-link" onclick="_cm758SetTab(\'sales\')">View complete account performance →</button></section>'
+  +'<section class="cm758-card cm777-card cm777-next cm778-compare"><div class="cm777-card-head"><div><div class="cm767-eyebrow">BRANCH COMPARISON</div><h3>YTD sales by company</h3><p>Toggle branches on or off to focus the comparison.</p></div><span class="cm777-signal">'+visibleRows.length+' visible</span></div><div class="cm778-chart">'+(chartBars||'<div class="cm777-empty">Select at least one branch to compare.</div>')+'</div><div class="cm778-branch-toggles">'+chartToggles+'</div></section>'
+  +'<section class="cm758-card cm777-card cm777-growth cm778-calls"><div class="cm778-call-head"><div><div class="cm767-eyebrow">DECISION-MAKER CALL ROUND</div><h3>'+esc(pace&&pace.cycle&&pace.cycle.label||'Current calling round')+'</h3><p>Decision makers stay here until a call attempt is recorded.</p></div><div class="cm778-call-score"><strong>'+called+' / '+roundItems.length+'</strong><span>called</span></div></div><div class="cm778-progress"><i style="width:'+roundPct+'%"></i></div><div class="cm778-progress-copy"><span>'+roundPct+'% complete</span><strong>'+remaining.length+' remaining</strong></div><div class="cm778-call-list">'+(callRows||(pace?'<div class="cm777-empty"><strong>'+(roundItems.length?'This Master call round is complete.':'No accounts from this Master are required in the current round.')+'</strong><span>'+(roundItems.length?'Every included company has a recorded call attempt.':'The active campaign rules do not currently include these accounts.')+'</span></div>':'<div class="cm777-empty"><strong>Calling round unavailable.</strong><span>Call-cycle data will appear here when the active round is loaded.</span></div>'))+'</div>'+(remaining.length>6?'<button class="cm777-footer-link" onclick="_rp2Go(\'call\')">Open all '+remaining.length+' remaining calls →</button>':'')+'</section>'
+  +'<section class="cm758-card cm777-card cm777-plan cm778-watch"><div class="cm777-card-head"><div><div class="cm767-eyebrow">MASTER WATCHLIST</div><h3>Relationships needing attention</h3><p>Exceptions across contacts, activity, sales, and open opportunities.</p></div><span class="cm777-health '+(watch.length?'watch':'good')+'">'+watch.length+' signal'+(watch.length===1?'':'s')+'</span></div><div class="cm778-watch-list">'+(watchRows||'<div class="cm777-empty"><strong>No relationship gaps detected.</strong><span>The selected Master is covered across the available records.</span></div>')+'</div>'+(latest?'<div class="cm778-note"><span>Latest Master note</span><strong>'+esc(latest.text)+'</strong><small>'+fmtDate(latest.createdAt)+'</small></div>':'')+'<button class="cm777-footer-link" onclick="_cm758SetTab(\'activity\')">Review Master activity →</button></section>'
+  +'</div>'
+}
+overviewSection=overviewSectionV778;
 window._cm758AddNote=function(id){var m=masterById(id),el=document.getElementById('cm758-note-text'),text=clean(el&&el.value);if(!m||!text)return;m.notes=arr(m.notes);m.notes.push({id:'mn_'+Date.now().toString(36),text:text,createdAt:new Date().toISOString(),scope:'master'});m.updatedAt=new Date().toISOString();var list=masters().map(function(x){return x.id===m.id?m:x});setMasters(list);refresh()};
 function contactsSection(m,rows){var data=[];rows.forEach(function(r){arr(r.contacts).forEach(function(c){data.push({account:r.name,c:c})})});return cardTable('Contacts','Contacts remain tied to their actual account/location and continue to drive person-level calling.',['Contact','Role','Decision Maker','Account / Location','Email','Phone','Last Contact','Next Follow-Up'],data.map(function(x){var c=x.c||{};return[clean(field(c,['name'],'Contact')),clean(field(c,['title','buyingRole'],'—')),c.decisionMaker||/decision maker/i.test(clean(c.buyingRole))?'Yes':'—',x.account,clean(c.email)||'—',clean(c.phone)||'—',fmtDate(c.lastTouch||c.lastContact),fmtDate(c.nextTouch||c.nextFollowUp)]}))}
 function ordersSection(m,rows){var data=[];rows.forEach(function(r){arr(r.orders).forEach(function(o){data.push({account:r.name,o:o})})});data.sort(function(a,b){return String(field(b.o,['date','orderDate','createdAt'],'')).localeCompare(String(field(a.o,['date','orderDate','createdAt'],'')))});return cardTable('Orders','Transactional records continue to originate from the real individual account.',['Order','Account','Date','Status','Value'],data.slice(0,120).map(function(x){return[clean(field(x.o,['orderNum','orderNumber','so','base','id'],'Order')),x.account,fmtDate(field(x.o,['date','orderDate','createdAt'],'')),clean(field(x.o,['status','orderStatus'],'Completed'))||'—',money(Number(field(x.o,['total','amount','value','netSales'],0))||Number(x.o._value)||0)]}))}
@@ -76113,5 +76143,78 @@ html[data-rp-theme="light"] #rp-overlay .ea756-search input{color:var(--lt-ink)!
 html[data-rp-theme="light"] #rp-overlay .ea756-search input::placeholder{color:var(--lt-soft)!important;}
 html[data-rp-theme="light"] #rp-overlay .ea756-demo{
   border-color:rgba(154,75,18,.34)!important;background:rgba(250,135,61,.12)!important;color:#8F440F!important;
+}
+</style>
+
+<!-- ===== CONNECT V778 · MASTER COMPARISON + CALL ROUND ===== -->
+<style id="connect-v778-company-master-workflow-css">
+#rp-overlay .cm778-compare{background:radial-gradient(circle at 100% 0,rgba(22,189,242,.12),transparent 35%),linear-gradient(155deg,rgba(255,255,255,.052),rgba(9,26,38,.72))!important;border-color:rgba(22,189,242,.20)!important}
+#rp-overlay .cm778-chart{display:flex;flex-direction:column;gap:13px;margin-top:4px}
+#rp-overlay .cm778-chart-row{min-width:0}
+#rp-overlay .cm778-chart-label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+#rp-overlay .cm778-chart-label strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#DDEAF2;font-size:9.5px}
+#rp-overlay .cm778-chart-label span{color:#F3F8FB;font-size:10px;font-weight:950;white-space:nowrap}
+#rp-overlay .cm778-chart-track{height:11px;overflow:hidden;border-radius:999px;background:rgba(147,189,218,.09);box-shadow:inset 0 1px 3px rgba(0,0,0,.20)}
+#rp-overlay .cm778-chart-track i{display:block;height:100%;min-width:3px;border-radius:inherit;background:linear-gradient(90deg,var(--cm778-color),color-mix(in srgb,var(--cm778-color) 70%,#fff));box-shadow:0 0 18px color-mix(in srgb,var(--cm778-color) 30%,transparent)}
+#rp-overlay .cm778-branch-toggles{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;padding-top:14px;border-top:1px solid rgba(147,189,218,.10)}
+#rp-overlay .cm778-branch-toggle{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-height:29px;padding:6px 8px;border:1px solid rgba(147,189,218,.13);border-radius:9px;background:rgba(255,255,255,.025);color:#9FB0BF;font-size:7.5px;font-weight:850;cursor:pointer}
+#rp-overlay .cm778-branch-toggle i{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--cm778-color);box-shadow:0 0 8px color-mix(in srgb,var(--cm778-color) 35%,transparent)}
+#rp-overlay .cm778-branch-toggle.off{opacity:.48;text-decoration:line-through;background:transparent}
+#rp-overlay .cm778-branch-toggle.off i{background:transparent;border:1px solid var(--cm778-color);box-shadow:none}
+#rp-overlay .cm778-call-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+#rp-overlay .cm778-call-head h3{margin:3px 0 0;color:#F7FAFD;font-size:20px;line-height:1.15;letter-spacing:-.025em}
+#rp-overlay .cm778-call-head p{margin:6px 0 0;color:#8799AC;font-size:10px;line-height:1.45}
+#rp-overlay .cm778-call-score{min-width:78px;padding:9px 11px;border:1px solid rgba(72,217,149,.20);border-radius:13px;background:rgba(72,217,149,.065);text-align:center}
+#rp-overlay .cm778-call-score strong{display:block;color:#A0EDC2;font-size:17px;line-height:1}
+#rp-overlay .cm778-call-score span{display:block;margin-top:5px;color:#769889;font-size:7.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+#rp-overlay .cm778-progress{height:9px;margin-top:16px;overflow:hidden;border-radius:999px;background:rgba(147,189,218,.10)}
+#rp-overlay .cm778-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#16BDF2,#48D995);box-shadow:0 0 18px rgba(72,217,149,.22)}
+#rp-overlay .cm778-progress-copy{display:flex;align-items:center;justify-content:space-between;margin:7px 1px 14px;color:#71869A;font-size:8px}
+#rp-overlay .cm778-progress-copy strong{color:#AAB9C7;font-size:8.5px}
+#rp-overlay .cm778-call-list{display:flex;flex-direction:column;border:1px solid rgba(147,189,218,.11);border-radius:15px;overflow:hidden;background:rgba(1,10,17,.18)}
+#rp-overlay .cm778-call-row{display:grid;grid-template-columns:35px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:64px;padding:10px 11px;border-top:1px solid rgba(147,189,218,.09)}
+#rp-overlay .cm778-call-row:first-child{border-top:0}
+#rp-overlay .cm778-call-avatar{display:grid;place-items:center;width:35px;height:35px;border:1px solid rgba(22,189,242,.19);border-radius:11px;background:linear-gradient(145deg,rgba(22,189,242,.12),rgba(255,135,56,.06));color:#A8EFFF;font-size:9px;font-weight:950}
+#rp-overlay .cm778-call-person{min-width:0}
+#rp-overlay .cm778-call-person strong{display:block;color:#EAF3F8;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cm778-call-person span{display:block;margin-top:3px;color:#8FA1B2;font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cm778-call-person small{display:block;margin-top:3px;color:#6E8295;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cm778-call-row>button{min-height:31px;padding:6px 9px;border:1px solid rgba(255,135,56,.23);border-radius:9px;background:rgba(255,135,56,.075);color:#FFC49E;font-size:8px;font-weight:950;cursor:pointer}
+#rp-overlay .cm778-watch-list{display:flex;flex-direction:column;border:1px solid rgba(147,189,218,.10);border-radius:15px;overflow:hidden;background:rgba(1,10,17,.16)}
+#rp-overlay .cm778-watch-row{display:grid;grid-template-columns:8px minmax(0,1fr) 12px;gap:10px;align-items:center;width:100%;min-height:61px;padding:10px 11px;border:0;border-top:1px solid rgba(147,189,218,.09);background:transparent;color:inherit;text-align:left;cursor:pointer}
+#rp-overlay .cm778-watch-row:first-child{border-top:0}
+#rp-overlay .cm778-watch-row:hover{background:rgba(22,189,242,.045)}
+#rp-overlay .cm778-watch-row>i{width:8px;height:8px;border-radius:50%;background:#F6C751;box-shadow:0 0 10px rgba(246,199,81,.25)}
+#rp-overlay .cm778-watch-row.risk>i{background:#FF7979;box-shadow:0 0 10px rgba(255,121,121,.25)}
+#rp-overlay .cm778-watch-row.space>i{background:#FF8738;box-shadow:0 0 10px rgba(255,135,56,.24)}
+#rp-overlay .cm778-watch-row.good>i{background:#48D995;box-shadow:0 0 10px rgba(72,217,149,.24)}
+#rp-overlay .cm778-watch-row span{min-width:0}
+#rp-overlay .cm778-watch-row strong{display:block;color:#EAF3F8;font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rp-overlay .cm778-watch-row b{display:block;margin-top:3px;color:#B0BFCC;font-size:8.5px}
+#rp-overlay .cm778-watch-row small{display:block;margin-top:3px;color:#6F8396;font-size:7.5px;line-height:1.35}
+#rp-overlay .cm778-watch-row em{color:#668094;font-size:16px;font-style:normal}
+#rp-overlay .cm778-note{margin-top:12px;padding:11px 12px;border-left:3px solid #16BDF2;border-radius:0 11px 11px 0;background:rgba(22,189,242,.045)}
+#rp-overlay .cm778-note span{display:block;color:#6F8799;font-size:7px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+#rp-overlay .cm778-note strong{display:block;margin-top:5px;color:#DCE8EF;font-size:8.5px;line-height:1.45}
+#rp-overlay .cm778-note small{display:block;margin-top:4px;color:#687F91;font-size:7px}
+
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-compare{border-color:rgba(20,145,184,.18)!important;background:radial-gradient(circle at 100% 0,rgba(22,189,242,.10),transparent 35%),linear-gradient(155deg,#FFFFFF,#EAF5FA)!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-chart-label strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-chart-label span,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-call-head h3,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-call-person strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-watch-row strong,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-note strong{color:#123249!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-chart-track,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-progress{background:rgba(38,92,123,.11)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-branch-toggle{border-color:rgba(38,92,123,.14);background:rgba(255,255,255,.56);color:#4F6D80}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-call-list,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-watch-list{border-color:rgba(38,92,123,.13);background:rgba(255,255,255,.54)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-call-row,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-watch-row{border-color:rgba(38,92,123,.10)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-call-person span,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-call-person small,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-watch-row small{color:#60798A}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-watch-row b{color:#415F73}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-note{background:rgba(22,189,242,.06)}
+
+@media(max-width:780px){
+  #rp-overlay .cm778-overview{grid-template-areas:"network" "growth" "next" "plan"!important}
+  #rp-overlay .cm778-call-head{flex-direction:column}
+  #rp-overlay .cm778-call-score{text-align:left}
+}
+@media(max-width:520px){
+  #rp-overlay .cm778-call-row{grid-template-columns:35px minmax(0,1fr)}
+  #rp-overlay .cm778-call-row>button{grid-column:2;justify-self:start}
 }
 </style>
