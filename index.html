@@ -73627,6 +73627,40 @@ function overviewSectionV778(m,rows){
   +'</div>'
 }
 overviewSection=overviewSectionV778;
+var CM779_METRIC='tcp_cm_master_metric_v779';
+function cm779Encoded(v){return encodeURIComponent(String(v==null?'':v)).replace(/'/g,'%27')}
+function cm779MetricState(){try{return JSON.parse(localStorage.getItem(CM779_METRIC)||'{}')||{}}catch(e){return{}}}
+function cm779MetricFor(id){var state=cm779MetricState(),value=state[rep()+'|'+id];return /^(ytd|prior|growth|pipeline)$/.test(value)?value:'ytd'}
+window._cm779SetMetric=function(id,value){if(!/^(ytd|prior|growth|pipeline)$/.test(value))return;var state=cm779MetricState();state[rep()+'|'+id]=value;try{localStorage.setItem(CM779_METRIC,JSON.stringify(state))}catch(e){}refresh()};
+function cm779MetricValue(r,key){var current=metric(r,'current'),prior=cm767PriorSales(r);if(key==='prior')return prior;if(key==='pipeline')return metric(r,'pipeline');if(key==='growth')return prior>0?(current-prior)/prior*100:null;return current}
+function cm779MetricFormat(value,key){if(key==='growth')return value==null?'Not loaded':(value>0?'+':'')+Math.round(value)+'%';return money(value)}
+function cm779ExplicitDm(r){return arr(r&&r.contacts).some(function(c){return c&&(c.decisionMaker||/decision maker|owner|president|chief|director|manager/i.test(clean(field(c,['buyingRole','title','role'],''))))})}
+function cm779TouchState(r){var today=new Date();today.setHours(0,0,0,0);var dates=[];arr(r&&r.contacts).forEach(function(c){var value=field(c,['nextTouch','nextFollowUp','nextContactDate','followUpDate'],'');if(!value)return;var d=new Date(value);if(!isNaN(d.getTime()))dates.push(d)});return{future:dates.some(function(d){return d>=today}),overdue:dates.some(function(d){return d<today})}}
+function cm779Attention(rows){var now=new Date(),items=[];rows.forEach(function(r){var signals=[],score=0,dm=cm779ExplicitDm(r),touch=cm779TouchState(r),last=cm778RecentActivity(r),age=last?Math.max(0,Math.floor((now-last)/86400000)):null,bareOpp=arr(r&&r.openOpps).some(function(o){return !clean(field(o,['nextStep','nextAction','nextActivity','followUp'],'')||'')});if(!dm){signals.push('Decision maker missing');score+=45}if(touch.overdue){signals.push('Follow-up overdue');score+=35}else if(!touch.future){signals.push('No future touch');score+=25}if(age==null){signals.push('No activity recorded');score+=28}else if(age>90){signals.push('Inactive '+age+' days');score+=Math.min(30,18+Math.floor((age-90)/30)*3)}if(bareOpp){signals.push('Opportunity needs a next step');score+=32}if(signals.length)items.push({account:r.name,signals:signals,score:score,dm:dm,future:touch.future})});return items.sort(function(a,b){return b.score-a.score||a.account.localeCompare(b.account)})}
+function overviewSectionV779(m,rows){
+ var colors=['#16BDF2','#FF8738','#48D995','#F6C751','#9B7BFF','#5DD6D0'],metricKey=cm779MetricFor(m.id),metricLabels={ytd:'YTD Sales',prior:'Prior Year',growth:'YoY Growth',pipeline:'Pipeline'};
+ var ordered=rows.slice().sort(function(a,b){var ap=norm(a.name)===m.parentAccountId?1:0,bp=norm(b.name)===m.parentAccountId?1:0;return bp-ap||a.name.localeCompare(b.name)}),visibility=cm778Visibility(),visibilityKey=rep()+'|'+m.id,hidden=visibility[visibilityKey]||{},visible=ordered.filter(function(r){return !hidden[norm(r.name)]});
+ var series=visible.map(function(r){return{row:r,value:cm779MetricValue(r,metricKey),color:colors[Math.max(0,ordered.indexOf(r))%colors.length]}}),numeric=series.filter(function(x){return x.value!=null}),maxPositive=numeric.reduce(function(max,x){return Math.max(max,x.value)},0),maxAbsolute=numeric.reduce(function(max,x){return Math.max(max,Math.abs(x.value))},0),hasChartData=metricKey==='growth'?maxAbsolute>0:maxPositive>0;
+ var chartRows=hasChartData?series.map(function(x){var value=x.value,index=ordered.indexOf(x.row),parent=norm(x.row.name)===m.parentAccountId;if(metricKey==='growth'){var width=value==null?0:Math.round(Math.abs(value)/maxAbsolute*50);return '<button type="button" class="cm779-bar-row growth" style="--cm779-color:'+x.color+'" onclick="_cm758OpenCompany(\''+cm779Encoded(x.row.name)+'\')"><span class="cm779-bar-label"><strong>'+esc(x.row.name)+'</strong>'+(parent?'<small>Parent</small>':'')+'</span><span class="cm779-growth-track"><i class="'+(value!=null&&value<0?'neg':'pos')+'" style="width:'+width+'%"></i></span><b class="'+(value==null?'muted':value<0?'risk':'good')+'">'+esc(cm779MetricFormat(value,metricKey))+'</b></button>'}var width=maxPositive?Math.round(Math.max(0,value)/maxPositive*100):0;return '<button type="button" class="cm779-bar-row" style="--cm779-color:'+x.color+'" onclick="_cm758OpenCompany(\''+cm779Encoded(x.row.name)+'\')"><span class="cm779-bar-label"><strong>'+esc(x.row.name)+'</strong>'+(parent?'<small>Parent</small>':'')+'</span><span class="cm779-bar-track"><i style="width:'+width+'%"></i></span><b>'+esc(cm779MetricFormat(value,metricKey))+'</b></button>'}).join(''):'<div class="cm779-zero"><strong>No '+esc(metricLabels[metricKey].toLowerCase())+' data recorded</strong><span>The comparison will populate as this metric becomes available for the selected branches.</span></div>';
+ var ranked=series.slice().sort(function(a,b){if(a.value==null&&b.value==null)return a.row.name.localeCompare(b.row.name);if(a.value==null)return 1;if(b.value==null)return-1;return b.value-a.value}),rankRows=ranked.map(function(x,i){var parent=norm(x.row.name)===m.parentAccountId;return '<button type="button" class="cm779-rank-row" onclick="_cm758OpenCompany(\''+cm779Encoded(x.row.name)+'\')"><i style="--cm779-color:'+x.color+'">'+(i+1)+'</i><span><strong>'+esc(x.row.name)+'</strong><small>'+(parent?'Parent account':'Branch account')+'</small></span><b class="'+(metricKey==='growth'&&x.value!=null?(x.value<0?'risk':'good'):'')+'">'+esc(cm779MetricFormat(x.value,metricKey))+'</b><em>›</em></button>'}).join('');
+ var picker=ordered.map(function(r,i){var off=!!hidden[norm(r.name)];return '<label><input type="checkbox" '+(!off?'checked':'')+' onchange="_cm778ToggleBranch(\''+esc(m.id)+'\',\''+cm779Encoded(r.name)+'\')"><i style="--cm779-color:'+colors[i%colors.length]+'"></i><span>'+esc(r.name)+'</span></label>'}).join('');
+
+ var pace=null;try{var engine=window.TCP_CALL_CYCLE_V547;if(engine&&typeof engine.paceFor==='function')pace=engine.paceFor(rep(),new Date())}catch(e){}
+ var memberMap={};rows.forEach(function(r){memberMap[norm(r.name)]=r});var roundItems=pace?arr(pace.set).filter(function(item){return memberMap[norm(item&&item.company)]}):[],calledItems=roundItems.filter(function(item){return !!item.callAttemptAt}),remaining=roundItems.filter(function(item){return !item.callAttemptAt}),roundPct=roundItems.length?Math.round(calledItems.length/roundItems.length*100):0;
+ var callRows=remaining.slice(0,8).map(function(item){var r=memberMap[norm(item.company)],dm=cm778DecisionMaker(r),name=clean(field(dm,['name','contactName'],'Decision maker not recorded')),title=clean(field(dm,['title','buyingRole','role'],'')),phone=clean(field(dm,['phone','mobile','phoneNumber'],'')),last=cm778RecentActivity(r),initials=name==='Decision maker not recorded'?'?':name.split(/\s+/).filter(Boolean).map(function(x){return x.charAt(0)}).join('').slice(0,2).toUpperCase();return '<div class="cm779-call-row"><div class="cm779-call-avatar">'+esc(initials)+'</div><div class="cm779-call-person"><strong>'+esc(name)+'</strong><span>'+esc((title?title+' · ':'')+item.company)+'</span><small>'+esc(phone||'Phone not recorded')+' · Last contact '+esc(last?fmtDate(last):'not recorded')+'</small></div><button type="button" onclick="_cm767PrepCall(\''+cm779Encoded(item.company)+'\')">Prep Call</button></div>'}).join('');
+ var completedRows=calledItems.map(function(item){var r=memberMap[norm(item.company)],dm=cm778DecisionMaker(r),name=clean(field(dm,['name','contactName'],'Decision maker'));return '<button type="button" onclick="_cm758OpenCompany(\''+cm779Encoded(item.company)+'\')"><span><strong>'+esc(name)+'</strong><small>'+esc(item.company)+'</small></span><b>'+esc(fmtDate(item.callAttemptAt))+'</b></button>'}).join('');
+ var callEmpty=pace?(roundItems.length?'<div class="cm779-state success"><strong>Calling round complete</strong><span>Every included decision maker has a recorded call attempt.</span></div>':'<div class="cm779-state"><strong>No Master accounts in this round</strong><span>The active call-cycle rules do not currently include these accounts.</span></div>'):'<div class="cm779-state"><strong>Call-cycle data is not available</strong><span>This list will populate when an active calling round is loaded.</span></div>';
+
+ var attention=cm779Attention(rows),dmCovered=rows.filter(cm779ExplicitDm).length,futureCovered=rows.filter(function(r){return cm779TouchState(r).future}).length;
+ var attentionRows=attention.slice(0,6).map(function(x){return '<button type="button" class="cm779-attention-row" onclick="_cm758OpenCompany(\''+cm779Encoded(x.account)+'\')"><i class="'+(x.score>=70?'risk':'watch')+'"></i><span><strong>'+esc(x.account)+'</strong><small>'+esc(x.signals.join(' · '))+'</small></span><em>›</em></button>'}).join('');
+ var metrics=['ytd','prior','growth','pipeline'].map(function(key){return '<button type="button" class="'+(metricKey===key?'on':'')+'" onclick="_cm779SetMetric(\''+esc(m.id)+'\',\''+key+'\')">'+metricLabels[key]+'</button>'}).join('');
+ return '<div class="cm779-overview">'
+  +'<section class="cm758-card cm779-performance"><div class="cm779-section-head"><div><div class="cm767-eyebrow">MASTER PERFORMANCE</div><h3>How the branches compare</h3><p>Switch the measure, focus the branches, and open any account directly.</p></div><div class="cm779-performance-tools"><div class="cm779-metrics">'+metrics+'</div><details class="cm779-picker"><summary>'+visible.length+' of '+ordered.length+' branches ▾</summary><div>'+picker+'</div></details></div></div><div class="cm779-performance-body"><div class="cm779-chart"><div class="cm779-chart-title"><strong>'+esc(metricLabels[metricKey])+'</strong><span>'+visible.length+' visible</span></div>'+chartRows+'</div><aside class="cm779-ranking"><div class="cm779-chart-title"><strong>Branch ranking</strong><span>'+esc(metricLabels[metricKey])+'</span></div><div class="cm779-rank-list">'+(rankRows||'<div class="cm779-state"><strong>No branches selected</strong><span>Choose a branch to build the ranking.</span></div>')+'</div></aside></div></section>'
+  +'<div class="cm779-lower"><section class="cm758-card cm779-calls"><div class="cm779-call-head"><div><div class="cm767-eyebrow">DECISION-MAKER CALL ROUND</div><h3>'+esc(pace&&pace.cycle&&pace.cycle.label||'Current calling round')+'</h3><p>People remain in this queue until a call attempt is recorded.</p></div><div class="cm779-call-score"><strong>'+calledItems.length+' / '+roundItems.length+'</strong><span>called</span></div></div><div class="cm779-progress"><i style="width:'+roundPct+'%"></i></div><div class="cm779-progress-copy"><span>'+roundPct+'% complete</span><strong>'+remaining.length+' remaining</strong></div><div class="cm779-call-list">'+(callRows||callEmpty)+'</div>'+(remaining.length>8?'<button type="button" class="cm779-footer" onclick="_rp2Go(\'call\')">Open all '+remaining.length+' remaining calls →</button>':'')+(calledItems.length?'<details class="cm779-completed"><summary>Completed this round <b>'+calledItems.length+'</b></summary><div>'+completedRows+'</div></details>':'')+'</section>'
+  +'<section class="cm758-card cm779-attention"><div class="cm779-section-head"><div><div class="cm767-eyebrow">RELATIONSHIP ATTENTION</div><h3>What needs intervention</h3><p>Only actionable coverage and follow-up gaps.</p></div><span class="cm779-signal '+(attention.length?'watch':'good')+'">'+attention.length+' issue'+(attention.length===1?'':'s')+'</span></div><div class="cm779-coverage"><div><span>Decision makers</span><strong>'+dmCovered+' / '+rows.length+'</strong></div><div><span>Future touches</span><strong>'+futureCovered+' / '+rows.length+'</strong></div></div><div class="cm779-attention-list">'+(attentionRows||'<div class="cm779-state success"><strong>No relationship gaps detected</strong><span>Decision-maker, follow-up, activity, and opportunity coverage are current.</span></div>')+'</div><button type="button" class="cm779-footer" onclick="_cm758SetTab(\'contacts\')">Review all contacts →</button></section></div>'
+  +'</div>'
+}
+overviewSection=overviewSectionV779;
 window._cm758AddNote=function(id){var m=masterById(id),el=document.getElementById('cm758-note-text'),text=clean(el&&el.value);if(!m||!text)return;m.notes=arr(m.notes);m.notes.push({id:'mn_'+Date.now().toString(36),text:text,createdAt:new Date().toISOString(),scope:'master'});m.updatedAt=new Date().toISOString();var list=masters().map(function(x){return x.id===m.id?m:x});setMasters(list);refresh()};
 function contactsSection(m,rows){var data=[];rows.forEach(function(r){arr(r.contacts).forEach(function(c){data.push({account:r.name,c:c})})});return cardTable('Contacts','Contacts remain tied to their actual account/location and continue to drive person-level calling.',['Contact','Role','Decision Maker','Account / Location','Email','Phone','Last Contact','Next Follow-Up'],data.map(function(x){var c=x.c||{};return[clean(field(c,['name'],'Contact')),clean(field(c,['title','buyingRole'],'—')),c.decisionMaker||/decision maker/i.test(clean(c.buyingRole))?'Yes':'—',x.account,clean(c.email)||'—',clean(c.phone)||'—',fmtDate(c.lastTouch||c.lastContact),fmtDate(c.nextTouch||c.nextFollowUp)]}))}
 function ordersSection(m,rows){var data=[];rows.forEach(function(r){arr(r.orders).forEach(function(o){data.push({account:r.name,o:o})})});data.sort(function(a,b){return String(field(b.o,['date','orderDate','createdAt'],'')).localeCompare(String(field(a.o,['date','orderDate','createdAt'],'')))});return cardTable('Orders','Transactional records continue to originate from the real individual account.',['Order','Account','Date','Status','Value'],data.slice(0,120).map(function(x){return[clean(field(x.o,['orderNum','orderNumber','so','base','id'],'Order')),x.account,fmtDate(field(x.o,['date','orderDate','createdAt'],'')),clean(field(x.o,['status','orderStatus'],'Completed'))||'—',money(Number(field(x.o,['total','amount','value','netSales'],0))||Number(x.o._value)||0)]}))}
@@ -76216,5 +76250,146 @@ html[data-rp-theme="light"] #rp-overlay .rp679-light .cm778-note{background:rgba
 @media(max-width:520px){
   #rp-overlay .cm778-call-row{grid-template-columns:35px minmax(0,1fr)}
   #rp-overlay .cm778-call-row>button{grid-column:2;justify-self:start}
+}
+</style>
+
+<!-- ===== CONNECT V779 · COMPANY MASTER COMMAND CENTER ===== -->
+<style id="connect-v779-company-master-command-css">
+#rp-overlay .cm779-overview{display:flex!important;flex-direction:column;gap:18px;width:100%}
+#rp-overlay .cm779-overview>.cm758-card,#rp-overlay .cm779-lower>.cm758-card{grid-column:auto!important;margin:0!important;padding:22px!important;border-radius:20px!important}
+#rp-overlay .cm779-performance{background:radial-gradient(circle at 100% 0,rgba(22,189,242,.13),transparent 34%),linear-gradient(155deg,rgba(255,255,255,.052),rgba(8,25,38,.74))!important;border-color:rgba(22,189,242,.20)!important}
+#rp-overlay .cm779-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+#rp-overlay .cm779-section-head h3,#rp-overlay .cm779-call-head h3{margin:4px 0 0!important;color:#F7FAFD!important;font-size:20px!important;line-height:1.15;letter-spacing:-.025em}
+#rp-overlay .cm779-section-head p,#rp-overlay .cm779-call-head p{margin:7px 0 0!important;color:#8799AC!important;font-size:10px!important;line-height:1.5}
+#rp-overlay .cm779-performance-tools{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+#rp-overlay .cm779-metrics{display:flex;align-items:center;padding:3px;border:1px solid rgba(147,189,218,.13);border-radius:11px;background:rgba(1,10,17,.22)}
+#rp-overlay .cm779-metrics button{min-height:31px;padding:6px 10px;border:0;border-radius:8px;background:transparent;color:#8298A9;font-size:8px;font-weight:900;cursor:pointer;white-space:nowrap}
+#rp-overlay .cm779-metrics button:hover{color:#CDE4EE}
+#rp-overlay .cm779-metrics button.on{background:linear-gradient(135deg,rgba(22,189,242,.18),rgba(255,135,56,.12));color:#F4FAFC;box-shadow:0 1px 7px rgba(0,0,0,.16)}
+#rp-overlay .cm779-picker{position:relative}
+#rp-overlay .cm779-picker summary{list-style:none;min-height:39px;padding:10px 12px;border:1px solid rgba(147,189,218,.14);border-radius:11px;background:rgba(255,255,255,.035);color:#C7D6E0;font-size:8.5px;font-weight:900;cursor:pointer;white-space:nowrap}
+#rp-overlay .cm779-picker summary::-webkit-details-marker{display:none}
+#rp-overlay .cm779-picker>div{position:absolute;z-index:40;top:45px;right:0;width:280px;max-height:300px;overflow:auto;padding:8px;border:1px solid rgba(147,189,218,.18);border-radius:13px;background:#0D1B28;box-shadow:0 20px 45px rgba(0,0,0,.42)}
+#rp-overlay .cm779-picker label{display:grid;grid-template-columns:16px 9px minmax(0,1fr);gap:8px;align-items:center;min-height:38px;padding:7px 8px;border-radius:9px;color:#C1D0DA;font-size:9px;cursor:pointer}
+#rp-overlay .cm779-picker label:hover{background:rgba(255,255,255,.045)}
+#rp-overlay .cm779-picker input{margin:0;accent-color:#16BDF2}
+#rp-overlay .cm779-picker label i{width:8px;height:8px;border-radius:50%;background:var(--cm779-color);box-shadow:0 0 8px color-mix(in srgb,var(--cm779-color) 35%,transparent)}
+#rp-overlay .cm779-performance-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:26px;margin-top:22px}
+#rp-overlay .cm779-chart,#rp-overlay .cm779-ranking{min-width:0;padding:15px;border:1px solid rgba(147,189,218,.10);border-radius:16px;background:rgba(1,10,17,.16)}
+#rp-overlay .cm779-chart-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#rp-overlay .cm779-chart-title strong{color:#E8F1F6;font-size:10px}
+#rp-overlay .cm779-chart-title span{color:#72889A;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.055em}
+#rp-overlay .cm779-bar-row{display:grid;grid-template-columns:minmax(125px,190px) minmax(100px,1fr) 76px;gap:12px;align-items:center;width:100%;min-height:48px;padding:7px 5px;border:0;border-top:1px solid rgba(147,189,218,.075);background:transparent;color:inherit;text-align:left;cursor:pointer}
+#rp-overlay .cm779-bar-row:first-of-type{border-top:0}
+#rp-overlay .cm779-bar-row:hover{background:rgba(22,189,242,.035)}
+#rp-overlay .cm779-bar-label{min-width:0}
+#rp-overlay .cm779-bar-label strong{display:block;overflow:hidden;color:#DCE8EF;font-size:9.5px;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cm779-bar-label small{display:block;margin-top:3px;color:#D5AE46;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+#rp-overlay .cm779-bar-track{height:12px;overflow:hidden;border-radius:999px;background:rgba(147,189,218,.09);box-shadow:inset 0 1px 3px rgba(0,0,0,.18)}
+#rp-overlay .cm779-bar-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--cm779-color),color-mix(in srgb,var(--cm779-color) 70%,#fff));box-shadow:0 0 15px color-mix(in srgb,var(--cm779-color) 30%,transparent)}
+#rp-overlay .cm779-bar-row>b{color:#F3F8FB;font-size:10px;text-align:right;white-space:nowrap}
+#rp-overlay .cm779-growth-track{position:relative;height:14px;border-radius:999px;background:linear-gradient(90deg,rgba(255,121,121,.08) 0 49.65%,rgba(147,189,218,.28) 49.65% 50.35%,rgba(72,217,149,.08) 50.35% 100%)}
+#rp-overlay .cm779-growth-track i{position:absolute;top:2px;height:10px;border-radius:999px;background:var(--cm779-color)}
+#rp-overlay .cm779-growth-track i.pos{left:50%;background:#48D995}
+#rp-overlay .cm779-growth-track i.neg{right:50%;background:#FF7979}
+#rp-overlay .cm779-bar-row>b.good,#rp-overlay .cm779-rank-row>b.good{color:#83E8AE}
+#rp-overlay .cm779-bar-row>b.risk,#rp-overlay .cm779-rank-row>b.risk{color:#FFA0A0}
+#rp-overlay .cm779-bar-row>b.muted{color:#72889A;font-size:8px}
+#rp-overlay .cm779-zero,#rp-overlay .cm779-state{display:flex;min-height:94px;flex-direction:column;align-items:center;justify-content:center;padding:15px;border:1px dashed rgba(147,189,218,.13);border-radius:13px;background:rgba(255,255,255,.018);text-align:center}
+#rp-overlay .cm779-zero strong,#rp-overlay .cm779-state strong{color:#D9E5EC;font-size:10px}
+#rp-overlay .cm779-zero span,#rp-overlay .cm779-state span{max-width:420px;margin-top:5px;color:#74899B;font-size:8.5px;line-height:1.5}
+#rp-overlay .cm779-state.success{border-color:rgba(72,217,149,.18);background:rgba(72,217,149,.035)}
+#rp-overlay .cm779-state.success strong{color:#94EABA}
+#rp-overlay .cm779-rank-list{display:flex;flex-direction:column}
+#rp-overlay .cm779-rank-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto 10px;gap:9px;align-items:center;width:100%;min-height:52px;padding:8px 3px;border:0;border-top:1px solid rgba(147,189,218,.075);background:transparent;color:inherit;text-align:left;cursor:pointer}
+#rp-overlay .cm779-rank-row:first-child{border-top:0}
+#rp-overlay .cm779-rank-row:hover{background:rgba(22,189,242,.035)}
+#rp-overlay .cm779-rank-row>i{display:grid;place-items:center;width:25px;height:25px;border:1px solid color-mix(in srgb,var(--cm779-color) 32%,transparent);border-radius:8px;background:color-mix(in srgb,var(--cm779-color) 8%,transparent);color:var(--cm779-color);font-size:8px;font-style:normal;font-weight:950}
+#rp-overlay .cm779-rank-row span{min-width:0}
+#rp-overlay .cm779-rank-row span strong{display:block;overflow:hidden;color:#DDE8EF;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cm779-rank-row span small{display:block;margin-top:3px;color:#6E8295;font-size:7px}
+#rp-overlay .cm779-rank-row>b{padding-left:8px;color:#EFF6FA;font-size:9px;white-space:nowrap}
+#rp-overlay .cm779-rank-row>em{color:#5F7A8F;font-size:14px;font-style:normal}
+#rp-overlay .cm779-lower{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(340px,.85fr);gap:18px;align-items:start}
+#rp-overlay .cm779-call-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+#rp-overlay .cm779-call-score{min-width:82px;padding:10px 12px;border:1px solid rgba(72,217,149,.20);border-radius:13px;background:rgba(72,217,149,.065);text-align:center}
+#rp-overlay .cm779-call-score strong{display:block;color:#9DEABF;font-size:18px;line-height:1}
+#rp-overlay .cm779-call-score span{display:block;margin-top:5px;color:#739486;font-size:7.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+#rp-overlay .cm779-progress{height:10px;margin-top:18px;overflow:hidden;border-radius:999px;background:rgba(147,189,218,.10)}
+#rp-overlay .cm779-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#16BDF2,#48D995);box-shadow:0 0 18px rgba(72,217,149,.22)}
+#rp-overlay .cm779-progress-copy{display:flex;align-items:center;justify-content:space-between;margin:7px 1px 14px;color:#71869A;font-size:8px}
+#rp-overlay .cm779-progress-copy strong{color:#AAB9C7;font-size:8.5px}
+#rp-overlay .cm779-call-list{display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(147,189,218,.11);border-radius:15px;background:rgba(1,10,17,.16)}
+#rp-overlay .cm779-call-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:11px;align-items:center;min-height:68px;padding:10px 12px;border-top:1px solid rgba(147,189,218,.085)}
+#rp-overlay .cm779-call-row:first-child{border-top:0}
+#rp-overlay .cm779-call-avatar{display:grid;place-items:center;width:38px;height:38px;border:1px solid rgba(22,189,242,.19);border-radius:11px;background:linear-gradient(145deg,rgba(22,189,242,.12),rgba(255,135,56,.06));color:#A8EFFF;font-size:9px;font-weight:950}
+#rp-overlay .cm779-call-person{min-width:0}
+#rp-overlay .cm779-call-person strong{display:block;overflow:hidden;color:#EAF3F8;font-size:10.5px;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cm779-call-person span{display:block;overflow:hidden;margin-top:3px;color:#99AAB8;font-size:8.5px;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cm779-call-person small{display:block;overflow:hidden;margin-top:4px;color:#6E8295;font-size:7.5px;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cm779-call-row>button{min-height:33px;padding:7px 10px;border:1px solid rgba(255,135,56,.24);border-radius:9px;background:rgba(255,135,56,.08);color:#FFC39B;font-size:8px;font-weight:950;cursor:pointer}
+#rp-overlay .cm779-completed{margin-top:12px;border-top:1px solid rgba(147,189,218,.09)}
+#rp-overlay .cm779-completed summary{padding:12px 2px 4px;color:#8398A9;font-size:8.5px;font-weight:850;cursor:pointer;list-style:none}
+#rp-overlay .cm779-completed summary::-webkit-details-marker{display:none}
+#rp-overlay .cm779-completed summary b{margin-left:5px;color:#A9BBC8}
+#rp-overlay .cm779-completed>div{margin-top:7px;border:1px solid rgba(147,189,218,.09);border-radius:12px;overflow:hidden}
+#rp-overlay .cm779-completed button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:47px;padding:8px 10px;border:0;border-top:1px solid rgba(147,189,218,.07);background:transparent;color:inherit;text-align:left;cursor:pointer}
+#rp-overlay .cm779-completed button:first-child{border-top:0}
+#rp-overlay .cm779-completed button strong{display:block;color:#C6D4DD;font-size:8.5px}
+#rp-overlay .cm779-completed button small{display:block;margin-top:3px;color:#6F8394;font-size:7.5px}
+#rp-overlay .cm779-completed button>b{color:#6FA889;font-size:7.5px}
+#rp-overlay .cm779-signal{padding:7px 9px;border:1px solid rgba(246,199,81,.24);border-radius:999px;background:rgba(246,199,81,.07);color:#F8D470;font-size:7.5px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+#rp-overlay .cm779-signal.good{border-color:rgba(72,217,149,.22);background:rgba(72,217,149,.07);color:#91E9B6}
+#rp-overlay .cm779-coverage{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+#rp-overlay .cm779-coverage>div{padding:11px 12px;border:1px solid rgba(147,189,218,.09);border-radius:12px;background:rgba(255,255,255,.022)}
+#rp-overlay .cm779-coverage span{display:block;color:#71879A;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+#rp-overlay .cm779-coverage strong{display:block;margin-top:5px;color:#EAF2F6;font-size:16px}
+#rp-overlay .cm779-attention-list{display:flex;flex-direction:column;margin-top:12px;border:1px solid rgba(147,189,218,.10);border-radius:14px;overflow:hidden;background:rgba(1,10,17,.14)}
+#rp-overlay .cm779-attention-row{display:grid;grid-template-columns:8px minmax(0,1fr) 10px;gap:10px;align-items:center;width:100%;min-height:58px;padding:10px 11px;border:0;border-top:1px solid rgba(147,189,218,.08);background:transparent;color:inherit;text-align:left;cursor:pointer}
+#rp-overlay .cm779-attention-row:first-child{border-top:0}
+#rp-overlay .cm779-attention-row:hover{background:rgba(22,189,242,.035)}
+#rp-overlay .cm779-attention-row>i{width:8px;height:8px;border-radius:50%;background:#F6C751;box-shadow:0 0 9px rgba(246,199,81,.25)}
+#rp-overlay .cm779-attention-row>i.risk{background:#FF7979;box-shadow:0 0 9px rgba(255,121,121,.25)}
+#rp-overlay .cm779-attention-row span{min-width:0}
+#rp-overlay .cm779-attention-row strong{display:block;overflow:hidden;color:#E4EEF3;font-size:9.5px;text-overflow:ellipsis;white-space:nowrap}
+#rp-overlay .cm779-attention-row small{display:block;margin-top:4px;color:#778C9E;font-size:7.5px;line-height:1.4}
+#rp-overlay .cm779-attention-row em{color:#607A8F;font-size:14px;font-style:normal}
+#rp-overlay .cm779-footer{margin-top:12px;padding:4px 0;border:0;background:transparent;color:#63DDF8;font-size:8.5px;font-weight:900;cursor:pointer;text-align:left}
+
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-performance{border-color:rgba(20,145,184,.18)!important;background:radial-gradient(circle at 100% 0,rgba(22,189,242,.10),transparent 34%),linear-gradient(155deg,#FFFFFF,#EAF5FA)!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cm779-section-head h3,.cm779-call-head h3,.cm779-chart-title strong,.cm779-bar-label strong,.cm779-bar-row>b,.cm779-rank-row span strong,.cm779-rank-row>b,.cm779-call-person strong,.cm779-coverage strong,.cm779-attention-row strong,.cm779-zero strong,.cm779-state strong,.cm779-completed button strong){color:#123249!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cm779-section-head p,.cm779-call-head p,.cm779-call-person span,.cm779-call-person small,.cm779-attention-row small,.cm779-rank-row span small,.cm779-zero span,.cm779-state span){color:#60798A!important}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cm779-chart,.cm779-ranking,.cm779-call-list,.cm779-attention-list){border-color:rgba(38,92,123,.13);background:rgba(255,255,255,.54)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light :is(.cm779-bar-row,.cm779-rank-row,.cm779-call-row,.cm779-attention-row,.cm779-completed button){border-color:rgba(38,92,123,.10)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-metrics{border-color:rgba(38,92,123,.14);background:rgba(255,255,255,.52)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-metrics button{color:#597285}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-metrics button.on{color:#123249;background:linear-gradient(135deg,rgba(22,189,242,.15),rgba(255,135,56,.10))}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-picker summary{border-color:rgba(38,92,123,.15);background:rgba(255,255,255,.66);color:#34566B}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-picker>div{border-color:rgba(38,92,123,.18);background:#F5FAFC}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-picker label{color:#35566B}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-bar-track,html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-progress{background:rgba(38,92,123,.11)}
+html[data-rp-theme="light"] #rp-overlay .rp679-light .cm779-coverage>div{border-color:rgba(38,92,123,.11);background:rgba(255,255,255,.58)}
+
+@media(max-width:1100px){
+ #rp-overlay .cm779-performance-body,#rp-overlay .cm779-lower{grid-template-columns:1fr}
+ #rp-overlay .cm779-ranking{max-width:none}
+}
+@media(max-width:760px){
+ #rp-overlay .cm779-overview>.cm758-card,#rp-overlay .cm779-lower>.cm758-card{padding:16px!important}
+ #rp-overlay .cm779-section-head,#rp-overlay .cm779-call-head{flex-direction:column}
+ #rp-overlay .cm779-performance-tools{width:100%;justify-content:flex-start}
+ #rp-overlay .cm779-metrics{width:100%;overflow:auto}
+ #rp-overlay .cm779-metrics button{flex:1}
+ #rp-overlay .cm779-picker>div{left:0;right:auto;width:min(280px,calc(100vw - 56px))}
+ #rp-overlay .cm779-bar-row{grid-template-columns:minmax(95px,130px) minmax(80px,1fr) 62px;gap:8px}
+}
+@media(max-width:520px){
+ #rp-overlay .cm779-performance-tools{align-items:stretch;flex-direction:column}
+ #rp-overlay .cm779-metrics button{padding:6px 7px;font-size:7px}
+ #rp-overlay .cm779-bar-row{grid-template-columns:minmax(0,1fr) 65px;min-height:58px}
+ #rp-overlay .cm779-bar-track,#rp-overlay .cm779-growth-track{grid-column:1/3;grid-row:2}
+ #rp-overlay .cm779-call-row{grid-template-columns:38px minmax(0,1fr)}
+ #rp-overlay .cm779-call-row>button{grid-column:2;justify-self:start}
+ #rp-overlay .cm779-coverage{grid-template-columns:1fr}
 }
 </style>
